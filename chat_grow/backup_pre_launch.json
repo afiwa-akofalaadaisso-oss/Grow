@@ -1,0 +1,104 @@
+{
+  "entreprises": [
+    {
+      "id": "c3144ff0-013e-498f-9fdb-a2127c95f68f",
+      "nom_entreprise": "Grow Dakar Test",
+      "telephone_whatsapp": "221788773827",
+      "secteur_activite": "Commerce",
+      "capital_initial_fcfa": 0,
+      "date_inscription": "2026-11-10T18:11:35.158017+00:00",
+      "heure_rappel_quotidien": "20:00:00",
+      "ninea": null,
+      "date_creation_officielle": null,
+      "adresse_siege": null,
+      "nombre_employes": 1,
+      "operateurs_paiement": null,
+      "etape_onboarding": "DEMANDE_NINEA",
+      "donnees_onboarding": {}
+    },
+    {
+      "id": "a7160961-9040-4745-8537-ae2fe6d91cf2",
+      "nom_entreprise": "Entreprise 0000",
+      "telephone_whatsapp": "221770000000",
+      "secteur_activite": "Commerce & PME",
+      "capital_initial_fcfa": 100000,
+      "date_inscription": "2026-11-10T19:12:57.006925+00:00",
+      "heure_rappel_quotidien": "20:00:00",
+      "ninea": null,
+      "date_creation_officielle": null,
+      "adresse_siege": null,
+      "nombre_employes": 1,
+      "operateurs_paiement": null,
+      "etape_onboarding": "DEMANDE_NINEA",
+      "donnees_onboarding": {}
+    }
+  ],
+  "transactions": [
+    {
+      "id": "c9e419b0-116e-408e-ad3f-077436d4f86a",
+      "entreprise_id": "c3144ff0-013e-498f-9fdb-a2127c95f68f",
+      "date_operation": "2026-11-10",
+      "libelle": "Vente de 2 sacs de riz",
+      "compte_syscohada": "701",
+      "type_flux": "ENTREE",
+      "est_professionnel": true,
+      "montant_fcfa": 42000,
+      "source_paiement": "WAVE",
+      "statut_validation": "EN_ATTENTE_JUSTIFICATIF",
+      "created_at": "2026-11-10T18:12:58.128326+00:00"
+    },
+    {
+      "id": "3b44e199-008e-4b63-81dd-dc978e96e783",
+      "entreprise_id": "c3144ff0-013e-498f-9fdb-a2127c95f68f",
+      "date_operation": "2026-11-10",
+      "libelle": "Achat de carburant",
+      "compte_syscohada": "605",
+      "type_flux": "SORTIE",
+      "est_professionnel": true,
+      "montant_fcfa": 10000,
+      "source_paiement": "ESPECES",
+      "statut_validation": "EN_ATTENTE_JUSTIFICATIF",
+      "created_at": "2026-11-10T18:16:10.182755+00:00"
+    },
+    {
+      "id": "4c6710f8-fd51-440a-8755-c87b9f552b5b",
+      "entreprise_id": "c3144ff0-013e-498f-9fdb-a2127c95f68f",
+      "date_operation": "2026-11-10",
+      "libelle": "Remboursement partiel dette fournisseur Fall",
+      "compte_syscohada": "401",
+      "type_flux": "SORTIE",
+      "est_professionnel": true,
+      "montant_fcfa": 40000,
+      "source_paiement": "WAVE",
+      "statut_validation": "VALIDE_PME",
+      "created_at": "2026-11-10T18:50:00.979891+00:00"
+    },
+    {
+      "id": "17ea2737-2080-4cab-baf5-7861edeb0714",
+      "entreprise_id": "c3144ff0-013e-498f-9fdb-a2127c95f68f",
+      "date_operation": "2026-11-11",
+      "libelle": "Décaissement Wave à préciser - Ibrahima Sow (Achat stock / marchandises)",
+      "compte_syscohada": "601",
+      "type_flux": "SORTIE",
+      "est_professionnel": true,
+      "montant_fcfa": 35000,
+      "source_paiement": "WAVE",
+      "statut_validation": "VALIDE_PME",
+      "created_at": "2026-11-11T12:13:24.300673+00:00"
+    }
+  ],
+  "preuves": [],
+  "dettes": [],
+  "etats": [
+    {
+      "id": "ffae1fc2-0e9b-4a5d-be38-b04ca7a149b7",
+      "entreprise_id": "c3144ff0-013e-498f-9fdb-a2127c95f68f",
+      "periode_mois": "2026-11",
+      "valeur_stock_fcfa": 850000,
+      "creances_clients_fcfa": 0,
+      "dettes_fournisseurs_fcfa": 100000,
+      "immobilisations_fcfa": 0,
+      "updated_at": "2026-11-10T18:37:23.187482+00:00"
+    }
+  ]
+}

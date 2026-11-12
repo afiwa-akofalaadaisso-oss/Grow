@@ -1,0 +1,51 @@
+{
+  "221764093183": {
+    "etape": "TERMINE",
+    "ninea": null,
+    "nom_entreprise": null,
+    "capital": null,
+    "date_creation": null,
+    "adresse_siege": null,
+    "nombre_employes": null,
+    "operateurs": null,
+    "immobilisations": null,
+    "statut": "COMPLET",
+    "premier_contact_effectue": true,
+    "abonnement_valide": true
+  },
+  "221770009911": {
+    "etape": "TERMINE",
+    "ninea": null,
+    "nom_entreprise": null,
+    "capital": null,
+    "date_creation": null,
+    "adresse_siege": null,
+    "nombre_employes": null,
+    "operateurs": null,
+    "immobilisations": null,
+    "statut": "COMPLET"
+  },
+  "221788773827": {
+    "etape": "TERMINE",
+    "nom_personne_physique": "FATOU THIAM",
+    "nom_entreprise": "FATOU THIAM",
+    "ninea": "00802996",
+    "capital": 1000000,
+    "nombre_employes": "2 personnes",
+    "operateurs": "Wave, Orange Money",
+    "liste_operateurs_cles": [
+      "Wave",
+      "Orange Money"
+    ],
+    "immobilisations": "Aucun matériel d'exploitation",
+    "valeur_equipements_fcfa": 0,
+    "equipements_photo_validee": true,
+    "statut": "COMPLET",
+    "abonnement_valide": true,
+    "premier_contact_effectue": true,
+    "solde_initial_t0": 988,
+    "soldes_multi_operateurs": {
+      "WAVE": 988
+    }
+  }
+}
