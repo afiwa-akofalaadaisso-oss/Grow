@@ -261,94 +261,124 @@ async def transcrire_note_vocale(media_bytes: bytes, mime_type: str = "audio/ogg
     return None
 
 
+def extraire_phrase_orale(texte: str, langue: str = "fr") -> str:
+    """
+    Extrait ou compose une phrase orale concise, fluide et naturelle (1 à 2 phrases max)
+    pour les notes vocales WhatsApp, en éliminant tout jargon technique, tableaux et puces.
+    """
+    if not texte:
+        return ""
+
+    # Éliminer le préfixe de transcription 'Note vocale comprise : ...'
+    t = re.sub(r'Note vocale comprise\s*:\s*«[^»]*»\s*', '', texte, flags=re.IGNORECASE)
+    t = re.sub(r'Note vocale comprise\s*:\s*[^\n]+\n*', '', t, flags=re.IGNORECASE)
+    t = t.strip()
+
+    # Détection des montants et natures pour formuler une réponse parlée impeccable
+    m_vente = re.search(r'(?:vente|encaissement|jaay).*?([\d\s,.]+)\s*(?:fcfa|cfa|francs?)?.*?(wave|orange\s*money|free|espèces|cash)?', t, re.IGNORECASE)
+    m_depense = re.search(r'(?:d[ée]pense|achat|j[ëe]nd).*?([\d\s,.]+)\s*(?:fcfa|cfa|francs?)?.*?(wave|orange\s*money|free|espèces|cash)?', t, re.IGNORECASE)
+
+    def _fmt_amt(raw):
+        clean = re.sub(r'[^\d]', '', str(raw or ""))
+        return f"{int(clean):,}".replace(",", " ") if clean else ""
+
+    if langue == "wo":
+        if m_vente and _fmt_amt(m_vente.group(1)):
+            amt = _fmt_amt(m_vente.group(1))
+            op = m_vente.group(2) or "Wave"
+            return f"Jéréjéf ! Sa diaye bou {amt} francs CFA tchi {op} doug na bou bakh te bind nagnou ko."
+        elif m_depense and _fmt_amt(m_depense.group(1)):
+            amt = _fmt_amt(m_depense.group(1))
+            return f"Sa dépense bou {amt} francs CFA bind nagnou ko tchi sa teere comptable."
+    elif langue == "en":
+        if m_vente and _fmt_amt(m_vente.group(1)):
+            amt = _fmt_amt(m_vente.group(1))
+            op = m_vente.group(2) or "Wave"
+            return f"Your sale of {amt} CFA francs via {op} has been successfully recorded in your accounts."
+        elif m_depense and _fmt_amt(m_depense.group(1)):
+            amt = _fmt_amt(m_depense.group(1))
+            return f"Your expense of {amt} CFA francs has been successfully recorded in your accounts."
+    else:  # fr
+        if m_vente and _fmt_amt(m_vente.group(1)):
+            amt = _fmt_amt(m_vente.group(1))
+            op = m_vente.group(2) or "Wave"
+            return f"Votre vente de {amt} francs CFA sur {op} a bien été enregistrée dans vos comptes."
+        elif m_depense and _fmt_amt(m_depense.group(1)):
+            amt = _fmt_amt(m_depense.group(1))
+            return f"Votre dépense de {amt} francs CFA a bien été enregistrée dans vos comptes."
+
+    # Pour les réponses générales ou conseils : garder les 1 à 2 premières phrases nettoyées
+    lignes = [
+        l.strip() for l in t.split("\n")
+        if l.strip() and not l.strip().startswith(("•", "-", "*", "#", "RÉSUMÉ", "RESUME", "http"))
+    ]
+    phrase = " ".join(lignes[:2])
+    return phrase[:260]
+
+
 def adapter_phonetique_wolof(texte_wolof: str) -> str:
     """
-    Convertit l'orthographe wolof écrite vers une phonétique orale
-    parfaitement prononçable par un moteur de synthèse vocale francophone.
-    Exemples :
-    - 'ci Wave' -> 'tchi Wèyve'
-    - 'jërejëf' -> 'djiérédjièf'
-    - 'jaay' -> 'djaaye'
-    - 'xaalis' -> 'khaliss'
-    - 'dug na' -> 'dougue na'
+    Rend le Wolof authentique parfaitement intelligible pour un synthétiseur vocal neural.
+    Pas de distorsions agressives qui font épeler les mots lettre par lettre.
     """
     if not texte_wolof:
         return ""
     t = texte_wolof
 
-    # Remplacement des termes d'opérateurs
-    t = re.sub(r'\bWave\b', 'Wèyve', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bOrange Money\b', 'Orandj Mònèy', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bFree Money\b', 'Fri Mònèy', t, flags=re.IGNORECASE)
+    # Remplacements ciblés sur les mots usuels sans déformer les mots français
     t = re.sub(r'\bFCFA\b', 'francs CFA', t, flags=re.IGNORECASE)
-
-    # Protection des mots français techniques
-    t = re.sub(r'\breçus?\b', '___RECU___', t, flags=re.IGNORECASE)
-    t = re.sub(r'\brecus?\b', '___RECU___', t, flags=re.IGNORECASE)
-
-    # Phonétique consonnes & diphtongues Wolof
-    t = re.sub(r'\bjërejëf\b', 'djiérédjièf', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bjerejef\b', 'djiérédjièf', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bjërejëf\b', 'Jéréjéf', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bjerejef\b', 'Jéréjéf', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bjaay\b', 'diaye', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bjënd\b', 'diènde', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bjend\b', 'diènde', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bdug na\b', 'doug na', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bdugna\b', 'doug na', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bbu baax\b', 'bou bakh', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bbaax na\b', 'bakh na', t, flags=re.IGNORECASE)
     t = re.sub(r'\bci\b', 'tchi', t, flags=re.IGNORECASE)
     t = re.sub(r'\bca\b', 'tcha', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bco\b', 'tcho', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bcu\b', 'tchou', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bjaay\b', 'djaaye', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bjënd\b', 'djiènde', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bjend\b', 'djiènde', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bxaalis\b', 'khaliss', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bxalis\b', 'khaliss', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bdërëm\b', 'dieuureume', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bderem\b', 'dieuureume', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bdug na\b', 'dougue na', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bdugna\b', 'dougue na', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bbu baax\b', 'bou baakh', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bbaax na\b', 'baakh na', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bleegi\b', 'léégi', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bléegi\b', 'léégi', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bbu bees\b', 'bou béss', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bbu\b', 'bou', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bbii\b', 'bi', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bxaalis\b', 'xaliss', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bxalis\b', 'xaliss', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bdërëm\b', 'deureum', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bderem\b', 'deureum', t, flags=re.IGNORECASE)
     t = re.sub(r'\bñu\b', 'gnou', t, flags=re.IGNORECASE)
     t = re.sub(r'\bnañu\b', 'nagnou', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bñaar\b', 'gniarr', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bñett\b', 'gniète', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bñent\b', 'gniènte', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bjuróom\b', 'diourom', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bjuroom\b', 'diourom', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bjunni\b', 'diounni', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bbu\b', 'bou', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bleegi\b', 'léégi', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bjunni\b', 'djiouni', t, flags=re.IGNORECASE)
     t = re.sub(r'\btollu\b', 'tollou', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bkom-kom\b', 'kome-kome', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bleer na\b', 'léére na', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bmën a\b', 'meune a', t, flags=re.IGNORECASE)
-    t = re.sub(r'\bdimbali\b', 'dimbeuli', t, flags=re.IGNORECASE)
-
-    # Remplacement régulier des 'j' isolés par 'dj'
-    t = re.sub(r'\bj([aeiouéë])', r'dj\1', t, flags=re.IGNORECASE)
-    # Remplacement des 'u' par 'ou'
-    t = re.sub(r'(?<!o)u(?![aeiou])', 'ou', t, flags=re.IGNORECASE)
-
-    # Restauration des mots réservés
-    t = t.replace('___RECU___', 'reçu')
 
     return t
 
 
 def adapter_texte_pour_oral(texte: str, langue: str = "fr") -> str:
-    """Nettoie le texte pour l'élocution (retire URLs, puces markdown)."""
+    """Nettoie le texte pour l'élocution et remplace les acronymes pour éviter l'épellation."""
     if not texte:
         return ""
     t = re.sub(r'https?://\S+', '', texte)
-    t = re.sub(r'[*_#`]', '', t)
+    t = re.sub(r'[*_#`«»"~]', '', t)
     t = re.sub(r'^[•\-]\s*', '', t, flags=re.MULTILINE)
     t = re.sub(r'\n+', '. ', t).strip()
 
+    # Remplacement systématique des acronymes comptables pour éviter qu'ils soient épelés lettre par lettre
+    t = re.sub(r'\bSYSCOHADA\b', 'Siscohada', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bNINEA\b', 'Ninèya', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bRCCM\b', 'Registre de commerce', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bSMS\b', 'message', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bPME\b', 'P M E', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bTVA\b', 'T V A', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bHT\b', 'hors taxe', t)
+    t = re.sub(r'\bTTC\b', 'toutes taxes comprises', t, flags=re.IGNORECASE)
+
     if langue == "fr":
-        # Prononciation naturelle des termes au Sénégal
-        t = re.sub(r'\bWave\b', 'Wèyve', t, flags=re.IGNORECASE)
         t = re.sub(r'\bFCFA\b', 'francs CFA', t, flags=re.IGNORECASE)
+        t = re.sub(r'\bCFA\b', 'francs CFA', t, flags=re.IGNORECASE)
     elif langue == "en":
         t = re.sub(r'\bFCFA\b', 'CFA francs', t, flags=re.IGNORECASE)
+        t = re.sub(r'\bCFA\b', 'CFA francs', t, flags=re.IGNORECASE)
+    elif langue == "wo":
+        t = re.sub(r'\bFCFA\b', 'francs CFA', t, flags=re.IGNORECASE)
 
     return t
 
@@ -449,11 +479,11 @@ async def traduire_texte_en_anglais(texte_francais: str) -> str:
 
 async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
     """
-    Génère un fichier audio MP3 de haute qualité (Neural TTS) pour WhatsApp.
-    Langues :
-    - 'fr' : Français professionnel (VivienneMultilingualNeural / DeniseNeural)
-    - 'wo' : Wolof authentique avec adaptation phonétique dakaroise
-    - 'en' : Anglais natif studio (JennyNeural)
+    Génère une note vocale OGG OPUS (PTT) pour WhatsApp.
+    Voix sélectionnées pour une diction pure sans épellation et sans mélange de langues :
+    - 'fr' : fr-FR-VivienneMultilingualNeural (Studio Français)
+    - 'wo' : fr-FR-RemyMultilingualNeural (Studio Multilingue adapté Wolof)
+    - 'en' : en-US-JennyNeural (Studio Anglais)
     """
     try:
         import edge_tts
@@ -461,28 +491,32 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
         print("Erreur : edge-tts n'est pas installé")
         return None
 
-    texte_propre = adapter_texte_pour_oral(texte, langue=langue)
-    if not texte_propre:
-        return None
+    # 1. Extraction d'une phrase orale naturelle (concise, 1 à 2 phrases max, sans tableaux ni puces)
+    phrase_orale = extraire_phrase_orale(texte, langue=langue)
+    if not phrase_orale:
+        phrase_orale = texte
 
-    texte_a_lire = texte_propre
-    voix_candidates = ["fr-FR-VivienneMultilingualNeural", "fr-FR-DeniseNeural"]
+    # 2. Nettoyage et adaptation selon la langue
+    texte_a_lire = adapter_texte_pour_oral(phrase_orale, langue=langue)
 
     if langue == "wo":
-        # 1. Traduire en wolof authentique
-        wolof_raw = await traduire_texte_en_wolof_oral(texte_propre)
-        # 2. Appliquer la phonétique sénégalaise
-        texte_a_lire = adapter_phonetique_wolof(wolof_raw)
-        voix_candidates = ["fr-FR-VivienneMultilingualNeural", "fr-FR-DeniseNeural"]
-        print(f"[WOLOF PHONÉTIQUE GÉNÉRÉ] : « {texte_a_lire} »")
+        # Si la phrase n'est pas encore en Wolof, on la traduit ou on l'adapte
+        if not re.search(r'\b(jaay|diaye|jënd|diènde|dug|doug|jërejëf|jerejef|naka|xaalis|xaliss)\b', texte_a_lire, re.IGNORECASE):
+            texte_a_lire = await traduire_texte_en_wolof_oral(texte_a_lire)
+        texte_a_lire = adapter_phonetique_wolof(texte_a_lire)
+        voix_candidates = ["fr-FR-RemyMultilingualNeural", "fr-FR-VivienneMultilingualNeural"]
+        print(f"[WOLOF PUR PARLÉ SANS ÉPELLATION] : « {texte_a_lire} »")
     elif langue == "en":
-        # 1. Traduire en anglais natif
-        en_raw = await traduire_texte_en_anglais(texte_propre)
-        texte_a_lire = adapter_texte_pour_oral(en_raw, langue="en")
+        if not re.search(r'\b(sale|sold|bought|recorded|payment|balance|thank|hello)\b', texte_a_lire, re.IGNORECASE):
+            texte_a_lire = await traduire_texte_en_anglais(texte_a_lire)
+            texte_a_lire = adapter_texte_pour_oral(texte_a_lire, langue="en")
         voix_candidates = ["en-US-JennyNeural", "en-US-GuyNeural"]
-        print(f"[ANGLAIS NATIF GÉNÉRÉ] : « {texte_a_lire} »")
+        print(f"[ANGLAIS PUR PARLÉ SANS ÉPELLATION] : « {texte_a_lire} »")
+    else:  # fr
+        voix_candidates = ["fr-FR-VivienneMultilingualNeural", "fr-FR-DeniseNeural"]
+        print(f"[FRANÇAIS PUR PARLÉ SANS ÉPELLATION] : « {texte_a_lire} »")
 
-    # Nettoyage des caractères spéciaux pour TTS
+    # Nettoyage final des caractères spéciaux
     texte_a_lire = re.sub(r'[\"«»_~^]', '', texte_a_lire).strip()
 
     audio_dir = os.path.join(os.path.dirname(__file__), "static", "audio")
@@ -497,8 +531,6 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
             await communicate.save(filepath)
             if os.path.exists(filepath) and os.path.getsize(filepath) > 500:
                 integrer_logo_mp3(filepath)
-                # Conversion en OGG OPUS (format officiel des Notes Vocales WhatsApp)
-                # Cela remplace définitivement l'icône casque jaune par la vraie note vocale avec logo de profil Grow
                 ogg_fn = convertir_mp3_en_ogg_opus(filepath)
                 print(f"[NOTE VOCALE OFFICIELLE GÉNÉRÉE ({langue.upper()})] : {ogg_fn}")
                 return ogg_fn
@@ -552,7 +584,6 @@ def convertir_mp3_en_ogg_opus(mp3_path: str) -> str:
 def integrer_logo_mp3(filepath: str):
     """
     Intègre le logo officiel Grow dans les métadonnées ID3v2 (Cover Art APIC) du fichier MP3.
-    Remplace ainsi l'icône casque jaune par défaut sur WhatsApp par le logo officiel Grow.
     """
     try:
         from mutagen.mp3 import MP3
@@ -590,24 +621,40 @@ def integrer_logo_mp3(filepath: str):
 
 
 def detecter_langue_texte(texte: str) -> str:
-    """Détecte si le texte ou la transcription est en Wolof, Anglais ou Français."""
+    """
+    Détecte avec certitude la langue du texte (Wolof 'wo', Anglais 'en', ou Français 'fr').
+    Ignore les citations et ne confond JAMAIS des termes financiers français comme 'cash' ou 'reçu' avec l'anglais.
+    """
     if not texte:
         return "fr"
-    t_lower = texte.lower()
 
-    wolof_keywords = [
-        "jaay", "jend", "jënd", "xaalis", "xalis", "derem", "dërëm",
-        "jerejef", "sant", "baax", "dama", "am na", "amna", "nek",
-        "ci wave", "waaw", "deedet", "naka", "kaye", "dina", "wolof"
+    # Nettoyage des citations éventuelles pour ne pas être pollué par du texte rapporté
+    t_clean = re.sub(r'«[^»]*»', '', texte)
+    t_clean = re.sub(r'"[^"]*"', '', t_clean)
+    t_clean = re.sub(r'Note vocale comprise\s*:\s*[^\n]+', '', t_clean, flags=re.IGNORECASE)
+    t_lower = t_clean.lower()
+
+    # Mots et expressions caractéristiques du Wolof commercial dakarois
+    wolof_patterns = [
+        r'\bjaay\b', r'\bjaay na\b', r'\bdama jaay\b', r'\bjënd\b', r'\bjend\b',
+        r'\bjënd na\b', r'\bdama jënd\b', r'\bxaalis\b', r'\bxalis\b', r'\bdug na\b',
+        r'\bgenn na\b', r'\bfey na\b', r'\bam na\b', r'\bamna\b', r'\blebal\b',
+        r'\bñata\b', r'\bnaka nga\b', r'\bsalaam alaikum\b', r'\bjërejëf\b',
+        r'\bjerejef\b', r'\bwaaw\b', r'\bdeedet\b', r'\btiak tiak\b', r'\bkom-kom\b'
     ]
-    if any(re.search(r'\b' + re.escape(w) + r'\b', t_lower) for w in wolof_keywords):
+    if any(re.search(pat, t_lower) for pat in wolof_patterns):
         return "wo"
 
-    en_keywords = [
-        "hello", "hi", "sold", "sale", "bought", "cash", "balance",
-        "receipt", "today", "yesterday", "payment", "thanks", "english"
+    # Mots et expressions caractéristiques de l'Anglais
+    # Attention : 'cash', 'balance', 'receipt' sont d'usage courant en français à Dakar,
+    # donc on n'utilise QUE de véritables marqueurs de phrases anglaises complètes !
+    en_patterns = [
+        r'\bhello\b', r'\bhi\b', r'\bplease\b', r'\bthank you\b', r'\bthanks\b',
+        r'\bi sold\b', r'\bi bought\b', r'\bmy balance\b', r'\bgood morning\b',
+        r'\bhow much\b', r'\bcan you\b', r'\brecord this\b', r'\bwhat is\b'
     ]
-    if any(re.search(r'\b' + re.escape(w) + r'\b', t_lower) for w in en_keywords):
+    if any(re.search(pat, t_lower) for pat in en_patterns):
         return "en"
 
+    # Langue par défaut des affaires et de la pré-comptabilité au Sénégal
     return "fr"

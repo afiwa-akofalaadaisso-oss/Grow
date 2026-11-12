@@ -1,4 +1,4 @@
-import os
+﻿import os
 import json
 import base64
 import hashlib
@@ -1132,24 +1132,39 @@ async def receive_message(request: Request):
                 reply_text = await handle_incoming_message(sender_phone, filename, ("DOCUMENT", media_id), contact_name)
                 await send_whatsapp_message(sender_phone, reply_text)
 
-            # 4. NOTE VOCALE (Speech-to-Text entrant & RÃ©ponse Vocale sortante Trilingue)
+            # 4. NOTE VOCALE (Speech-to-Text entrant & Réponse Vocale sortante Trilingue)
             elif msg_type == "audio":
                 audio_info = message.get("audio", {})
                 media_id = audio_info.get("id")
 
-                reply_text = await handle_incoming_message(sender_phone, "Note vocale", ("AUDIO", media_id), contact_name)
-                await send_whatsapp_message(sender_phone, reply_text)
+                # Téléchargement et transcription immédiate pour identifier la langue exacte de l'utilisateur
+                media_bytes, mime_type = await download_meta_media(media_id)
+                if media_bytes:
+                    texte_transcrit = await transcrire_note_vocale(media_bytes, mime_type)
+                    if texte_transcrit:
+                        print(f"[NOTE VOCALE DE {sender_phone}] Transcrite : « {texte_transcrit} »")
+                        lang_vocale = detecter_langue_texte(texte_transcrit)
+                        
+                        # Traitement de l'opération dans la langue de l'utilisateur
+                        reponse_interne = await handle_incoming_message(sender_phone, texte_transcrit, None, contact_name)
+                        
+                        prefixe_note = "Note vocale comprise" if lang_vocale == "fr" else ("Voice note understood" if lang_vocale == "en" else "Wax jàll na")
+                        reply_text = f"{prefixe_note} : « {texte_transcrit} »\n\n{reponse_interne}"
+                        await send_whatsapp_message(sender_phone, reply_text)
 
-                # GÃ©nÃ©ration et envoi automatique de la note vocale de rÃ©ponse (FranÃ§ais / Wolof / Anglais)
-                try:
-                    lang = detecter_langue_texte(reply_text)
-                    audio_fn = await generer_note_vocale_audio(reply_text, langue=lang)
-                    if audio_fn:
-                        base_u = get_public_base_url()
-                        audio_url = f"{base_u}/static/audio/{audio_fn}"
-                        await send_whatsapp_audio(sender_phone, audio_url)
-                except Exception as e_v:
-                    print(f"Info envoi note vocale WhatsApp : {e_v}")
+                        # Envoi de la note vocale de réponse (100% pure dans la langue choisie, sans mélange)
+                        try:
+                            audio_fn = await generer_note_vocale_audio(reponse_interne, langue=lang_vocale)
+                            if audio_fn:
+                                await send_whatsapp_audio(sender_phone, audio_fn)
+                        except Exception as e_v:
+                            print(f"Info envoi note vocale WhatsApp : {e_v}")
+                    else:
+                        reply_text = "Je n'ai pas réussi à entendre clairement votre note vocale. Pourriez-vous répéter ou écrire votre message ?"
+                        await send_whatsapp_message(sender_phone, reply_text)
+                else:
+                    reply_text = "Je n'ai pas pu télécharger votre note vocale. Veuillez réessayer de me l'envoyer."
+                    await send_whatsapp_message(sender_phone, reply_text)
 
     except Exception as e:
         print(f"Erreur traitement webhook : {e}")
@@ -1322,18 +1337,41 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             # 2) DÃ©tection OpÃ©ration FinanciÃ¨re Courante Locale (Ventes, Carburant, Loyer, Stock, etc.)
             op_loc = parse_operation_financiere_locale(user_text)
             if op_loc and op_loc.get("montant_fcfa", 0) > 0:
-                # RÃ¨gle d'exigence de piÃ¨ce justificative pour toute dÃ©pense en cash
+                lang_user = detecter_langue_texte(user_text)
+
+                # Règle d'exigence de pièce justificative pour toute dépense en cash
                 if op_loc.get("besoin_justificatif", False):
-                    return (
-                        f"Votre declaration de depense de {op_loc.get('montant_fcfa'):,.0f} FCFA ({op_loc.get('libelle')}) a ete pre-enregistree en attente de justificatif.\n\n"
-                        "RESUME DU PRE-ENREGISTREMENT :\n"
-                        f"â€¢ Montant : {op_loc.get('montant_fcfa'):,.0f} FCFA\n"
-                        f"â€¢ Nature : {op_loc.get('libelle')}\n"
-                        f"â€¢ Mode : Especes (Cash)\n\n"
-                        "Rappel obligatoire Grow :\n"
-                        "Chaque depense en especes doit obligatoirement avoir sa piece justificative (photo du recu, facture, ticket ou photo probante du stock).\n\n"
-                        "Envoyez la photo du justificatif des maintenant pour valider definitivement l'ecriture !"
-                    )
+                    if lang_user == "wo":
+                        return (
+                            f"Sa dépense bu {op_loc.get('montant_fcfa'):,.0f} FCFA bind nañu ko ci attente.\n\n"
+                            "RÉSUMÉ CI SA TEERE :\n"
+                            f"• Montant : {op_loc.get('montant_fcfa'):,.0f} FCFA\n"
+                            f"• Nature : {op_loc.get('libelle')}\n"
+                            f"• Mode : Ci loxo (Cash / Espèces)\n\n"
+                            "Rappel Grow :\n"
+                            "Nanga def foto reçu bi walla facture bi leegi ngir nu certifier ko !"
+                        )
+                    elif lang_user == "en":
+                        return (
+                            f"Your expense of {op_loc.get('montant_fcfa'):,.0f} CFA francs has been pre-recorded pending a receipt.\n\n"
+                            "SUMMARY:\n"
+                            f"• Amount: {op_loc.get('montant_fcfa'):,.0f} CFA francs\n"
+                            f"• Nature: {op_loc.get('libelle')}\n"
+                            f"• Method: Cash\n\n"
+                            "Grow Mandatory Rule:\n"
+                            "Please send the receipt or invoice photo now to validate and certify this entry."
+                        )
+                    else:
+                        return (
+                            f"Votre declaration de depense de {op_loc.get('montant_fcfa'):,.0f} FCFA ({op_loc.get('libelle')}) a ete pre-enregistree en attente de justificatif.\n\n"
+                            "RESUME DU PRE-ENREGISTREMENT :\n"
+                            f"• Montant : {op_loc.get('montant_fcfa'):,.0f} FCFA\n"
+                            f"• Nature : {op_loc.get('libelle')}\n"
+                            f"• Mode : Especes (Cash)\n\n"
+                            "Rappel obligatoire Grow :\n"
+                            "Chaque depense en especes doit obligatoirement avoir sa piece justificative (photo du recu, facture, ticket ou photo probante du stock).\n\n"
+                            "Envoyez la photo du justificatif des maintenant pour valider definitivement l'ecriture !"
+                        )
 
                 sp = get_supabase()
                 ent = get_or_create_entreprise(sp, sender_phone) if sp else {}
@@ -1353,15 +1391,36 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
                     except Exception as e_tx:
                         print(f"Info enregistrement transaction locale : {e_tx}")
 
-                return (
-                    "Ecriture comptable enregistree avec succes.\n\n"
-                    "RESUME DE L'ENREGISTREMENT :\n"
-                    f"â€¢ Nature : {op_loc.get('libelle')}\n"
-                    f"â€¢ Montant : {op_loc.get('montant_fcfa'):,.0f} FCFA\n"
-                    f"â€¢ Mode de paiement : {op_loc.get('source_paiement')}\n"
-                    f"â€¢ Compte SYSCOHADA : {op_loc.get('compte_syscohada')}\n\n"
-                    "Statut : Validee et imputee a votre journal financier."
-                )
+                if lang_user == "wo":
+                    return (
+                        f"Jërejëf ! Sa {op_loc.get('libelle', 'opération')} bu {op_loc.get('montant_fcfa'):,.0f} FCFA ci {op_loc.get('source_paiement')} dug na bu baax te bind nañu ko.\n\n"
+                        "RÉSUMÉ CI SA TEERE :\n"
+                        f"• Nature : {op_loc.get('libelle')}\n"
+                        f"• Montant : {op_loc.get('montant_fcfa'):,.0f} FCFA\n"
+                        f"• Mode de paiement : {op_loc.get('source_paiement')}\n"
+                        f"• Compte SYSCOHADA : {op_loc.get('compte_syscohada')}\n\n"
+                        "Statut : Validé et certifié dans votre journal financier."
+                    )
+                elif lang_user == "en":
+                    return (
+                        "Accounting entry recorded successfully.\n\n"
+                        "TRANSACTION SUMMARY:\n"
+                        f"• Nature: {op_loc.get('libelle')}\n"
+                        f"• Amount: {op_loc.get('montant_fcfa'):,.0f} CFA francs\n"
+                        f"• Payment method: {op_loc.get('source_paiement')}\n"
+                        f"• SYSCOHADA Account: {op_loc.get('compte_syscohada')}\n\n"
+                        "Status: Validated and posted to your ledger."
+                    )
+                else:
+                    return (
+                        "Ecriture comptable enregistree avec succes.\n\n"
+                        "RESUME DE L'ENREGISTREMENT :\n"
+                        f"• Nature : {op_loc.get('libelle')}\n"
+                        f"• Montant : {op_loc.get('montant_fcfa'):,.0f} FCFA\n"
+                        f"• Mode de paiement : {op_loc.get('source_paiement')}\n"
+                        f"• Compte SYSCOHADA : {op_loc.get('compte_syscohada')}\n\n"
+                        "Statut : Validee et imputee a votre journal financier."
+                    )
 
         # B. Fallback IA pour les questions libres, conseils ou clarifications
         return await process_text_with_ai(sender_phone, user_text)
@@ -2880,38 +2939,87 @@ async def send_whatsapp_message(to_phone: str, text: str):
     await asyncio.to_thread(_sync_send)
 
 
-async def send_whatsapp_audio(to_phone: str, audio_url: str):
-    """Envoi d'une note vocale audio WhatsApp via Meta Graph API."""
+async def send_whatsapp_audio(to_phone: str, audio_source: str):
+    """
+    Envoi d'une vraie Note Vocale WhatsApp (PTT) avec le logo officiel Grow du profil.
+    Uploade directement le fichier OGG OPUS via Meta Media API pour garantir l'affichage
+    de la photo de profil Grow et de l'onde sonore verte (au lieu du casque jaune).
+    """
     load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
     phone_id = os.getenv("PHONE_NUMBER_ID")
 
-    if not token or not phone_id or not audio_url:
+    if not token or not phone_id or not audio_source:
         return
 
-    url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
-    headers = {
+    # Résolution du fichier local si audio_source est un nom de fichier ou un chemin
+    static_audio_dir = os.path.join(STATIC_DIR, "audio")
+    file_path = None
+    if os.path.isabs(audio_source) and os.path.exists(audio_source):
+        file_path = audio_source
+    elif os.path.exists(os.path.join(static_audio_dir, os.path.basename(audio_source))):
+        file_path = os.path.join(static_audio_dir, os.path.basename(audio_source))
+
+    # 1. Upload binaire direct vers Meta Media API (Garantit 100% l'affichage de l'avatar Grow)
+    media_id = None
+    if file_path and os.path.exists(file_path):
+        try:
+            import requests
+            upload_url = f"https://graph.facebook.com/v21.0/{phone_id}/media"
+            headers_up = {"Authorization": f"Bearer {token}"}
+            with open(file_path, "rb") as f_up:
+                files = {"file": (os.path.basename(file_path), f_up, "audio/ogg; codecs=opus")}
+                data = {"messaging_product": "whatsapp", "type": "audio/ogg"}
+                up_res = requests.post(upload_url, headers=headers_up, files=files, data=data, timeout=25)
+                if up_res.status_code == 200:
+                    media_id = up_res.json().get("id")
+                    print(f"[META MEDIA UPLOAD RÉUSSI] ID : {media_id} pour {os.path.basename(file_path)}")
+                else:
+                    print(f"Info retour Meta Media upload ({up_res.status_code}) : {up_res.text}")
+        except Exception as e_up:
+            print(f"Info upload Meta Media : {e_up}")
+
+    # 2. Envoi du message WhatsApp Cloud API avec voice: True
+    url_msg = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
+    headers_msg = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json; charset=utf-8"
     }
-    payload = {
-        "messaging_product": "whatsapp",
-        "to": to_phone,
-        "type": "audio",
-        "audio": {
-            "link": audio_url
+
+    if media_id:
+        payload = {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": to_phone,
+            "type": "audio",
+            "audio": {
+                "id": media_id,
+                "voice": True
+            }
         }
-    }
+    else:
+        # Fallback lien public avec voice: True
+        audio_url = audio_source if audio_source.startswith("http") else f"{get_public_base_url()}/static/audio/{os.path.basename(audio_source)}"
+        payload = {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": to_phone,
+            "type": "audio",
+            "audio": {
+                "link": audio_url,
+                "voice": True
+            }
+        }
 
     def _sync_send_audio():
         try:
             req = urllib.request.Request(
-                url,
+                url_msg,
                 data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-                headers=headers
+                headers=headers_msg
             )
             with urllib.request.urlopen(req, timeout=25) as resp:
-                print(f"Statut envoi Audio Meta vers {to_phone} : {resp.status}")
+                print(f"Statut envoi Note Vocale Meta (avec Logo Grow) vers {to_phone} : {resp.status}")
         except Exception as e:
             print(f"Erreur lors de l'envoi Audio WhatsApp vers {to_phone} : {e}")
 
@@ -2933,9 +3041,7 @@ async def send_whatsapp_text_and_audio(to_phone: str, msg_text: str, langue: str
     try:
         audio_fn = await generer_note_vocale_audio(msg_text, langue=langue)
         if audio_fn:
-            base_u = get_public_base_url()
-            audio_url = f"{base_u}/static/audio/{audio_fn}"
-            await send_whatsapp_audio(to_phone, audio_url)
+            await send_whatsapp_audio(to_phone, audio_fn)
             print(f"[VOCAL PROGRAMMÉ ENVOYÉ] vers {to_phone} : {audio_fn}")
     except Exception as e_v:
         print(f"Info envoi note vocale programmée : {e_v}")
