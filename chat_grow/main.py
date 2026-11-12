@@ -313,7 +313,8 @@ def get_onboarding_state(phone: str) -> dict:
 
         if not loaded_from_db:
             states[clean_p] = {
-                "etape": "DEMANDE_NINEA",
+                "etape": "CHOIX_LANGUE",
+                "langue_preferee": None,
                 "ninea": None,
                 "nom_entreprise": None,
                 "nom_personne_physique": None,
@@ -326,9 +327,9 @@ def get_onboarding_state(phone: str) -> dict:
                 "immobilisations": None,
                 "valeur_equipements_fcfa": None,
                 "equipements_photo_validee": False,
-                "statut": "EN_COURS",
-                "abonnement_valide": True,
-                "premier_contact_effectue": True
+                "statut": "EN_ATTENTE_LANGUE",
+                "abonnement_valide": False,
+                "premier_contact_effectue": False
             }
         save_onboarding_states(states)
     else:
@@ -1300,20 +1301,61 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     else:
         premier_contact = onboarding.get("premier_contact_effectue", False)
 
-    # 1. MESSAGE EXCLUSIF DU PREMIER CONTACT (Message de Bienvenue officiel Grow)
+    # 1. MESSAGE EXCLUSIF DU PREMIER CONTACT (Choix de la langue officielle Grow)
     if not premier_contact:
         update_onboarding_state(sender_phone, "premier_contact_effectue", True)
-        update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_ABONNEMENT")
-        update_onboarding_state(sender_phone, "etape", "PAIEMENT_ABONNEMENT")
+        update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_LANGUE")
+        update_onboarding_state(sender_phone, "etape", "CHOIX_LANGUE")
         return (
-            "Bienvenue sur Grow !\n\n"
-            "Je suis votre assistant prÃ©-comptable officiel sur WhatsApp. J'enregistre vos ventes et vos dÃ©penses au quotidien pour tenir vos comptes aux normes SYSCOHADA et prÃ©parer vos bilans financiers avec nos agences partenaires.\n\n"
-            "Vos donnÃ©es financiÃ¨res seront consultables en direct sur votre tableau de bord personnel :\n"
-            f"{base_url}/dashboard?phone={sender_phone}\n\n"
-            "Pour activer votre prÃ©-comptabilitÃ© et configurer votre entreprise, veuillez d'abord souscrire Ã  votre abonnement mensuel Grow sur ce lien sÃ©curisÃ© :\n"
-            f"{base_url}/abonnement?phone={sender_phone}\n\n"
-            "DÃ¨s que votre paiement est effectuÃ©, Ã©crivez simplement Â« J'ai payÃ© Â» ou envoyez votre reÃ§u de paiement ici pour lancer la configuration de votre entreprise."
+            "Dalal ak jàmm ci Grow ! / Bienvenue sur Grow ! / Welcome to Grow !\n\n"
+            "Tànnal sa làkk ngir nu tàmbli / Choisissez votre langue pour démarrer :\n\n"
+            "1️⃣ Wolof\n"
+            "2️⃣ Français\n"
+            "3️⃣ English\n\n"
+            "Bindal 1, 2 walla 3 / Répondez par 1, 2 ou 3."
         )
+
+    # 1.1 GESTION DU CHOIX DE LA LANGUE
+    if statut == "EN_ATTENTE_LANGUE" or onboarding.get("etape") == "CHOIX_LANGUE":
+        raw = (user_text or "").strip().lower()
+        if raw in ["1", "wolof", "wo"]:
+            lang = "wo"
+            update_onboarding_state(sender_phone, "langue_preferee", "wo")
+            update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_ABONNEMENT")
+            update_onboarding_state(sender_phone, "etape", "PAIEMENT_ABONNEMENT")
+            return (
+                "Jërejëf ! Làkku Wolof lañu tànn ngir sa compte Grow.\n\n"
+                "Man maay sa assistant pré-comptable ci WhatsApp. Damay bind sa jaay ak sa dépense bés bu nekk ngir sa teere comptable dëppoo ak sàrti SYSCOHADA.\n\n"
+                "Ngir ubbi sa compte ak configurar sa boutique, feyal sa abonnement Grow ci lii :\n"
+                f"{base_url}/abonnement?phone={sender_phone}\n\n"
+                "Boo feyee ba noppi, bindal rekk « Fey naa » walla nga yónnee foto reçu bi ngir nu tàmbli."
+            )
+        elif raw in ["3", "english", "anglais", "en"]:
+            lang = "en"
+            update_onboarding_state(sender_phone, "langue_preferee", "en")
+            update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_ABONNEMENT")
+            update_onboarding_state(sender_phone, "etape", "PAIEMENT_ABONNEMENT")
+            return (
+                "Thank you! English selected for your Grow accounting assistant.\n\n"
+                "I am your official pre-accounting assistant on WhatsApp. I record your sales and expenses daily to keep your books compliant with SYSCOHADA standards.\n\n"
+                "To activate your account and configure your business, please subscribe to Grow here:\n"
+                f"{base_url}/abonnement?phone={sender_phone}\n\n"
+                "Once paid, simply reply \"I paid\" or send your payment receipt to start configuration."
+            )
+        else:  # Par defaut 2 / Francais
+            lang = "fr"
+            update_onboarding_state(sender_phone, "langue_preferee", "fr")
+            update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_ABONNEMENT")
+            update_onboarding_state(sender_phone, "etape", "PAIEMENT_ABONNEMENT")
+            return (
+                "Parfait ! Le Français est configuré pour votre assistant Grow.\n\n"
+                "Je suis votre assistant pré-comptable officiel sur WhatsApp. J'enregistre vos ventes et vos dépenses au quotidien pour tenir vos comptes aux normes SYSCOHADA et préparer vos bilans avec nos agences partenaires.\n\n"
+                "Vos données financières seront consultables en direct sur votre tableau de bord personnel :\n"
+                f"{base_url}/dashboard?phone={sender_phone}\n\n"
+                "Pour activer votre pré-comptabilité et configurer votre entreprise, veuillez d'abord souscrire à votre abonnement mensuel Grow sur ce lien sécurisé :\n"
+                f"{base_url}/abonnement?phone={sender_phone}\n\n"
+                "Dès que votre paiement est effectué, écrivez simplement « J'ai payé » ou envoyez votre reçu de paiement ici pour lancer la configuration de votre entreprise."
+            )
 
     statut = onboarding.get("statut", "EN_ATTENTE_ABONNEMENT")
 
