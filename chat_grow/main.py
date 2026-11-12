@@ -1,4 +1,4 @@
-﻿import os
+import os
 import json
 import base64
 import hashlib
@@ -29,6 +29,15 @@ from voice_processor import (
     transcrire_note_vocale,
     generer_note_vocale_audio,
     detecter_langue_texte
+)
+
+from gemini_audio_processor import (
+    analyser_audio_gemini,
+    extraire_transcription,
+    extraire_langue,
+    extraire_reponse_wolof,
+    extraire_operation_syscohada,
+    est_gemini_disponible
 )
 
 from local_extractor import (
@@ -1132,38 +1141,70 @@ async def receive_message(request: Request):
                 reply_text = await handle_incoming_message(sender_phone, filename, ("DOCUMENT", media_id), contact_name)
                 await send_whatsapp_message(sender_phone, reply_text)
 
-            # 4. NOTE VOCALE (Speech-to-Text entrant & Réponse Vocale sortante Trilingue)
+            # 4. NOTE VOCALE - Pipeline Gemini (prioritaire) + fallback Groq/Whisper
             elif msg_type == "audio":
                 audio_info = message.get("audio", {})
                 media_id = audio_info.get("id")
 
-                # Téléchargement et transcription immédiate pour identifier la langue exacte de l'utilisateur
                 media_bytes, mime_type = await download_meta_media(media_id)
                 if media_bytes:
-                    texte_transcrit = await transcrire_note_vocale(media_bytes, mime_type)
+                    gemini_result = None
+                    texte_transcrit = None
+                    lang_vocale = "fr"
+                    reponse_wolof_gemini = None
+
+                    # NIVEAU 1 : Gemini (comprend OGG wolof/francais directement, 0 transcription intermediaire)
+                    if est_gemini_disponible():
+                        try:
+                            gemini_result = await analyser_audio_gemini(media_bytes, mime_type)
+                            if gemini_result:
+                                texte_transcrit = extraire_transcription(gemini_result)
+                                lang_vocale = extraire_langue(gemini_result)
+                                reponse_wolof_gemini = extraire_reponse_wolof(gemini_result)
+                                print(f"[GEMINI PIPELINE] Transcription : \"{texte_transcrit}\" | Langue : {lang_vocale}")
+                        except Exception as e_gem:
+                            print(f"[GEMINI] Erreur pipeline : {e_gem}")
+
+                    # NIVEAU 2 : Fallback Groq/Whisper si Gemini indisponible ou echec
+                    if not texte_transcrit:
+                        texte_transcrit = await transcrire_note_vocale(media_bytes, mime_type)
+                        if texte_transcrit:
+                            lang_vocale = detecter_langue_texte(texte_transcrit)
+
                     if texte_transcrit:
-                        print(f"[NOTE VOCALE DE {sender_phone}] Transcrite : « {texte_transcrit} »")
-                        lang_vocale = detecter_langue_texte(texte_transcrit)
-                        
-                        # Traitement de l'opération dans la langue de l'utilisateur
+                        print(f"[NOTE VOCALE DE {sender_phone}] Transcrite : \"{texte_transcrit}\" | Langue : {lang_vocale}")
+
+                        # Traitement comptable Claude via handle_incoming_message
                         reponse_interne = await handle_incoming_message(sender_phone, texte_transcrit, None, contact_name)
-                        
-                        prefixe_note = "Note vocale comprise" if lang_vocale == "fr" else ("Voice note understood" if lang_vocale == "en" else "Wax jàll na")
-                        reply_text = f"{prefixe_note} : « {texte_transcrit} »\n\n{reponse_interne}"
+
+                        # Prefixe de confirmation dans la langue de l'utilisateur
+                        if lang_vocale == "wo":
+                            prefixe_note = "Wax jall na"
+                        elif lang_vocale == "en":
+                            prefixe_note = "Voice note understood"
+                        else:
+                            prefixe_note = "Note vocale comprise"
+
+                        reply_text = f"{prefixe_note} : \"{texte_transcrit}\"\n\n{reponse_interne}"
                         await send_whatsapp_message(sender_phone, reply_text)
 
-                        # Envoi de la note vocale de réponse (100% pure dans la langue choisie, sans mélange)
+                        # Envoi de la note vocale de reponse en Wolof natif (Meta MMS)
                         try:
-                            audio_fn = await generer_note_vocale_audio(reponse_interne, langue=lang_vocale)
+                            # Si Gemini a fourni une reponse wolof directe et que la langue est wolof,
+                            # on l'utilise directement (evite une traduction Claude supplementaire)
+                            if lang_vocale == "wo" and reponse_wolof_gemini:
+                                audio_fn = await generer_note_vocale_audio(reponse_wolof_gemini, langue="wo")
+                            else:
+                                audio_fn = await generer_note_vocale_audio(reponse_interne, langue=lang_vocale)
                             if audio_fn:
                                 await send_whatsapp_audio(sender_phone, audio_fn)
                         except Exception as e_v:
                             print(f"Info envoi note vocale WhatsApp : {e_v}")
                     else:
-                        reply_text = "Je n'ai pas réussi à entendre clairement votre note vocale. Pourriez-vous répéter ou écrire votre message ?"
+                        reply_text = "Je n'ai pas reussi a entendre clairement votre note vocale. Pourriez-vous la renvoyer ou ecrire votre message ?"
                         await send_whatsapp_message(sender_phone, reply_text)
                 else:
-                    reply_text = "Je n'ai pas pu télécharger votre note vocale. Veuillez réessayer de me l'envoyer."
+                    reply_text = "Je n'ai pas pu telecharger votre note vocale. Veuillez reessayer de me l'envoyer."
                     await send_whatsapp_message(sender_phone, reply_text)
 
     except Exception as e:
