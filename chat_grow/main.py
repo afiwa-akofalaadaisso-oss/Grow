@@ -1,4 +1,4 @@
-﻿import os
+import os
 import json
 import base64
 import hashlib
@@ -2580,6 +2580,24 @@ REGLES D'EXIGENCE DE PREUVES ET JUSTIFICATIFS :
   "Votre depense de [montant] FCFA a ete pre-enregistree en attente de justificatif.
   Rappel obligatoire : Pour que cette depense soit acceptee et enregistree dans vos donnees financieres officielles, vous devez obligatoirement envoyer sa piece justificative (photo du recu, facture, ticket ou photo du stock achete).
   Sans justificatif, cette depense ne sera pas comptabilisee et c'est vous qui perdez !"
+
+COMPRÉHENSION ET RÉPONSE EN WOLOF URBAIN DAKAROIS :
+Les commerçants de Dakar s'expriment très régulièrement en Wolof ou mélangent Wolof et Français :
+- Vocabulaire commercial Wolof :
+  * "jaay", "jaay naa", "dama jaay", "am na jaay", "dug na" -> Vente / Encaissement (Compte 701, ENTREE).
+  * "jënd", "jënd naa", "dama jënd", "marchandise", "stock" -> Achat de stock (Compte 601, SORTIE).
+  * "essence", "carburant", "tiak tiak", "taxi", "dem ak dikk" -> Transport / Carburant (Compte 605, SORTIE).
+  * "fey na", "fey naa" -> Règlement / Paiement (SORTIE).
+  * "bor", "bor bi", "lebal", "ku ma lebal", "ku ma ameel" -> Dette ou créance.
+  * "ana sama solde", "wax ma solde bi", "xaalis bi tollu na fan" -> Consultation de trésorerie.
+  * "ci Wave" -> WAVE, "ci Orange" -> ORANGE_MONEY, "ci cash / ci loxo" -> ESPECES.
+- RÈGLE STRICTE POUR "reponse_whatsapp" :
+  * Si l'utilisateur s'exprime en Wolof (ex: "dama jaay...", "ana sama solde...", "jënd naa...") : Formule IMPÉRATIVEMENT "reponse_whatsapp" en Wolof dakarois fluide, authentique et chaleureux (sans inventer de mots bizarres ni archaïques).
+    Exemples naturels de réponses en Wolof :
+    - Vente Wave : "Jërejëf ! Sa jaay bu [montant] FCFA ci Wave dug na bu baax. Sa solde disponible tollu na ci [solde] FCFA."
+    - Dépense sans reçu : "Sa dépense bu [montant] FCFA ci espèces bind nañu ko ci attente. Nanga def foto reçu bi ngir nu mën ko certifier."
+    - Consultation : "Salaam alaikum ! Sa kom-kom ak sa solde ci direct tollu na ci [solde] FCFA."
+  * Si l'utilisateur s'exprime en Français : Réponds en Français clair et professionnel selon les normes SYSCOHADA.
 
 Retourne STRICTEMENT un objet JSON valide suivant ce format :
 {

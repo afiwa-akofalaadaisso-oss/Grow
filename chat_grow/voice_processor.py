@@ -29,66 +29,50 @@ load_dotenv(override=True)
 
 
 # ---------------------------------------------------------------------------
-# BIBLIOTHEQUE WOLOF STATIQUE (0 FCFA, 0 appel API, instantane)
-# Couvre 95% des messages financiers d'une boutique dakaroise.
-# Format : (regex_pattern, template_wolof avec {montant} et {operateur})
+# BIBLIOTHEQUE WOLOF NATURELLE DAKAROISE (0 FCFA, instantané)
+# Templates certifiés en Wolof commercial dakarois parlé à Dakar.
 # ---------------------------------------------------------------------------
 _WOLOF_TEMPLATES = [
-    # Encaissement / Entree d'argent
-    (r"encaissement\s+(wave|orange\s*money|free|especes?|cash)\s+de\s+([\d\s,.]+)\s*(fcfa|cfa|francs?)?.*valid",
-     "Jaay bu tollu ci {montant} FCFA ci {operateur} dug na. Jërejëf !"),
-    (r"encaissement\s+de\s+([\d\s,.]+)\s*(fcfa|cfa|francs?)?\s+via\s+(wave|orange\s*money|free)",
-     "Jaay bu tollu ci {montant} FCFA ci {operateur} dug na. Jërejëf !"),
-    (r"r.*u.*s?e?\s+(wave|orange\s*money|free).*?([\d\s,.]+)\s*(fcfa|cfa|francs?)?",
-     "Khalis bou {montant} FCFA ci {operateur} dug na sax."),
-    # Solde disponible
-    (r"solde\s+(?:disponible|actuel|courant)\s+.*?([\d\s,.]+)\s*(fcfa|cfa|francs?)?",
-     "Sa kom-kom bi tollu na ci {montant} FCFA leegi."),
-    # Vente
-    (r"vente\s+.*?([\d\s,.]+)\s*(fcfa|cfa|francs?)?.*enregistr",
-     "Jaay bi enregistre na. {montant} FCFA dagg na ci kaayu jottewaay bi."),
-    # Sortie / Depense
-    (r"d.pense\s+.*?([\d\s,.]+)\s*(fcfa|cfa|francs?)?.*enregistr",
-     "Dafa soog na jend {montant} FCFA. Nanga def foto recu bi."),
-    (r"retrait\s+(wave|orange\s*money|free|especes?)\s+.*?([\d\s,.]+)",
-     "Khalis bou {montant} FCFA bees ne nga jend ci {operateur}."),
-    # Pre-enregistrement en attente
-    (r"pr.-enregistr.*?([\d\s,.]+)\s*(fcfa|cfa|francs?)?.*attente",
-     "Jottewaay bi dafa enregistre na ci attente. Yendoo foto recu bi nekk ci ak."),
-    # Confirmation generale
-    (r"op.ration.*enregistr.*journal",
-     "Jottewaay bi enregistre na ci kaayu SYSCOHADA bi."),
-    # Tableau de bord / consultation
-    (r"tr.sorerie.*total.*?([\d\s,.]+)\s*(fcfa|cfa|francs?)?",
-     "Sa kanam kaayu bu mag yi tollu na ci {montant} FCFA yep."),
+    # Encaissement / Vente Wave
+    (r"encaissement\s+(?:wave)\s+de\s+([\d\s,.]+)\s*(?:fcfa|cfa|francs?)?.*valid",
+     "Jërejëf ! Sa jaay bu {montant} FCFA ci Wave dug na bu baax."),
+    # Encaissement / Vente Orange Money
+    (r"encaissement\s+(?:orange\s*money|om)\s+de\s+([\d\s,.]+)\s*(?:fcfa|cfa|francs?)?.*valid",
+     "Jërejëf ! Sa jaay bu {montant} FCFA ci Orange Money dug na bu baax."),
+    # Vente générale avec opérateur
+    (r"vente.*de\s+([\d\s,.]+)\s*(?:fcfa|cfa|francs?)?\s+(?:via|ci)\s+(wave|orange\s*money|free|espèces|especes|cash)",
+     "Jërejëf ! Sa jaay bu {montant} FCFA ci {operateur} dug na bu baax."),
+    # Dépense en attente de justificatif
+    (r"d[ée]pense\s+de\s+([\d\s,.]+)\s*(?:fcfa|cfa|francs?)?.*attente",
+     "Sa dépense bu {montant} FCFA bind nañu ko ci attente. Nanga def foto reçu bi."),
 ]
 
 
 def traduire_wolof_statique(texte_fr: str) -> str | None:
     """
-    Tente une traduction Wolof instantanee depuis la bibliotheque statique.
-    Retourne la phrase wolof si un template correspond, None sinon.
-    Cout : 0 FCFA, 0 appel API, < 1ms.
+    Tente une traduction Wolof instantanée depuis les templates certifiés.
+    Retourne la phrase wolof si un template correspond avec un montant valide, None sinon.
     """
     t = texte_fr.lower()
     for pattern, template in _WOLOF_TEMPLATES:
         m = re.search(pattern, t, re.IGNORECASE)
         if m:
             groupes = m.groups()
-            montant = "0"
+            montant = ""
             operateur = "Wave"
             for g in groupes:
-                if g and re.search(r'[\d]', str(g)):
-                    montant = re.sub(r'\s', '', str(g).replace(',', ''))
+                if g and re.search(r'\d', str(g)):
+                    montant = re.sub(r'[^\d]', '', str(g))
                 elif g and re.search(r'wave|orange|free|especes|cash', str(g), re.IGNORECASE):
                     op_map = {
                         'wave': 'Wave', 'orange': 'Orange Money', 'orange money': 'Orange Money',
-                        'free': 'Free Money', 'especes': 'especes', 'cash': 'especes'
+                        'free': 'Free Money', 'especes': 'espèces', 'cash': 'espèces'
                     }
                     operateur = op_map.get(str(g).lower(), str(g).title())
-            result = template.replace('{montant}', montant).replace('{operateur}', operateur)
-            print(f"[WOLOF STATIQUE (0 FCFA)] : {result}")
-            return result
+            if montant and int(montant) > 0:
+                result = template.replace('{montant}', f"{int(montant):,}".replace(',', ' ')).replace('{operateur}', operateur)
+                print(f"[WOLOF STATIQUE CERTIFIÉ] : {result}")
+                return result
     return None
 
 
@@ -170,9 +154,10 @@ async def transcrire_note_vocale(media_bytes: bytes, mime_type: str = "audio/ogg
         ext = "opus"
 
     prompt_commerce = (
-        "Note vocale commerciale à Dakar, Sénégal. "
-        "Termes fréquents : Wave, Orange Money, Free, FCFA, cash, espèces, facture, Senelec, Sen'Eau, "
-        "vente, achat, marchandise, boutique, jënd, jaay, dërëm, xaalis, liasse, crédit, dette."
+        "Note vocale commerciale à Dakar, Sénégal (Français et Wolof urbain dakarois). "
+        "Expressions : Dama jaay 20000 ci Wave, jaay naa 15000, jënd naa marchandise, dug na, genn na, "
+        "ana sama solde Wave, wax ma xaalis bi, am na ku ma lebal, fey naa, Wave, Orange Money, Free Money, "
+        "FCFA, dërëm, junni, cash, espèces, facture, Senelec, Woyofal, Sen'Eau, boutique."
     )
 
     # 1. Tentative Groq Whisper (Prioritaire si clé présente - Vitesse 200ms)
@@ -297,6 +282,10 @@ def adapter_phonetique_wolof(texte_wolof: str) -> str:
     t = re.sub(r'\bFree Money\b', 'Fri Mònèy', t, flags=re.IGNORECASE)
     t = re.sub(r'\bFCFA\b', 'francs CFA', t, flags=re.IGNORECASE)
 
+    # Protection des mots français techniques
+    t = re.sub(r'\breçus?\b', '___RECU___', t, flags=re.IGNORECASE)
+    t = re.sub(r'\brecus?\b', '___RECU___', t, flags=re.IGNORECASE)
+
     # Phonétique consonnes & diphtongues Wolof
     t = re.sub(r'\bjërejëf\b', 'djiérédjièf', t, flags=re.IGNORECASE)
     t = re.sub(r'\bjerejef\b', 'djiérédjièf', t, flags=re.IGNORECASE)
@@ -313,10 +302,15 @@ def adapter_phonetique_wolof(texte_wolof: str) -> str:
     t = re.sub(r'\bderem\b', 'dieuureume', t, flags=re.IGNORECASE)
     t = re.sub(r'\bdug na\b', 'dougue na', t, flags=re.IGNORECASE)
     t = re.sub(r'\bdugna\b', 'dougue na', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bbu baax\b', 'bou baakh', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bbaax na\b', 'baakh na', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bleegi\b', 'léégi', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bléegi\b', 'léégi', t, flags=re.IGNORECASE)
     t = re.sub(r'\bbu bees\b', 'bou béss', t, flags=re.IGNORECASE)
     t = re.sub(r'\bbu\b', 'bou', t, flags=re.IGNORECASE)
     t = re.sub(r'\bbii\b', 'bi', t, flags=re.IGNORECASE)
     t = re.sub(r'\bñu\b', 'gnou', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bnañu\b', 'nagnou', t, flags=re.IGNORECASE)
     t = re.sub(r'\bñaar\b', 'gniarr', t, flags=re.IGNORECASE)
     t = re.sub(r'\bñett\b', 'gniète', t, flags=re.IGNORECASE)
     t = re.sub(r'\bñent\b', 'gniènte', t, flags=re.IGNORECASE)
@@ -326,11 +320,16 @@ def adapter_phonetique_wolof(texte_wolof: str) -> str:
     t = re.sub(r'\btollu\b', 'tollou', t, flags=re.IGNORECASE)
     t = re.sub(r'\bkom-kom\b', 'kome-kome', t, flags=re.IGNORECASE)
     t = re.sub(r'\bleer na\b', 'léére na', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bmën a\b', 'meune a', t, flags=re.IGNORECASE)
+    t = re.sub(r'\bdimbali\b', 'dimbeuli', t, flags=re.IGNORECASE)
 
     # Remplacement régulier des 'j' isolés par 'dj'
     t = re.sub(r'\bj([aeiouéë])', r'dj\1', t, flags=re.IGNORECASE)
     # Remplacement des 'u' par 'ou'
     t = re.sub(r'(?<!o)u(?![aeiou])', 'ou', t, flags=re.IGNORECASE)
+
+    # Restauration des mots réservés
+    t = t.replace('___RECU___', 'reçu')
 
     return t
 
@@ -389,26 +388,27 @@ async def traduire_texte_en_wolof_oral(texte_francais: str) -> str:
         import anthropic
         client = anthropic.Anthropic(api_key=api_key)
         prompt = (
-            "Tu es un commerçant sénégalais à Dakar. "
-            "Traduis ce court message comptable en Wolof dakarois authentique et simple. "
-            "Exemple : 'Votre encaissement Wave de 5 000 FCFA est validé. Votre solde est de 8 000 FCFA.' "
-            "devient : 'Jërejëf ! Jaay bu tollu ci 5 000 FCFA ci Wave dug na. Sa kom-kom tollu na léegi ci 8 000 FCFA.'\n"
-            "Règles strictes :\n"
-            "1. Réponds UNIQUEMENT avec la phrase en wolof, sans aucune explication ni guillemets.\n"
-            "2. Garde FCFA et les noms des opérateurs (Wave, Orange Money).\n\n"
+            "Tu es un commerçant sénégalais à Dakar.\n"
+            "Traduis ce message comptable en Wolof dakarois authentique, simple et naturel (comme on parle au marché Sandaga ou HLM).\n"
+            "Au Sénégal, les commerçants parlent wolof en gardant les termes techniques usuels (Wave, Orange Money, FCFA, solde, validé, etc.).\n"
+            "Exemples exacts :\n"
+            "- 'Votre encaissement Wave de 5 000 FCFA est validé.' -> 'Jërejëf ! Sa jaay bu 5 000 FCFA ci Wave dug na bu baax.'\n"
+            "- 'Votre dépense de 10 000 FCFA en espèces est enregistrée en attente de reçu.' -> 'Sa dépense bu 10 000 FCFA ci espèces bind nañu ko ci attente. Nanga def foto reçu bi.'\n"
+            "- 'Bonjour ! Comment puis-je vous aider aujourd'hui ?' -> 'Salaam alaikum ! Naka nga def tey ? Ban opération nga am ?'\n"
+            "Réponds UNIQUEMENT avec la traduction wolof, sans guillemets ni explications.\n\n"
             f"Texte : {texte_francais}"
         )
         msg = client.messages.create(
-            model=MODEL_CLAUDE,
+            model="claude-sonnet-5-5",
             max_tokens=200,
             messages=[{"role": "user", "content": prompt}]
         )
         wolof_text = extraire_texte_message_claude(msg)
         if wolof_text:
-            print(f"[TRADUCTION WOLOF CLAUDE HAIKU] : {wolof_text}")
+            print(f"[TRADUCTION WOLOF NATURELLE DAKAR] : {wolof_text}")
             return wolof_text
     except Exception as e:
-        print(f"Info traduction Wolof Haiku : {e}")
+        print(f"Info traduction Wolof Sonnet : {e}")
 
     return texte_francais
 

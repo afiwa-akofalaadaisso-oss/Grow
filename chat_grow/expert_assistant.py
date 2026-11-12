@@ -123,8 +123,14 @@ def executer_consultation_donnees_locale(user_text: str, entreprise_id: str, sp)
 
     clean = user_text.lower().strip()
 
-    # 1. Consultation du Solde / De la Trésorerie en cours
-    if any(k in clean for k in ["mon solde", "mes soldes", "solde en caisse", "combien j'ai", "combien jai", "argent disponible", "ma tresorerie", "ma trésorerie"]):
+    # 1. Consultation du Solde / De la Trésorerie en cours (Français & Wolof)
+    mots_solde = [
+        "mon solde", "mes soldes", "solde en caisse", "combien j'ai", "combien jai",
+        "argent disponible", "ma tresorerie", "ma trésorerie",
+        "ana sama solde", "ana sama xalis", "ana sama xaalis", "wax ma solde",
+        "solde bi", "kom-kom bi", "kom kom", "xaalis bi"
+    ]
+    if any(k in clean for k in mots_solde):
         try:
             txs = sp.table("transactions").select("source_paiement, type_flux, montant_fcfa").eq("entreprise_id", entreprise_id).execute().data or []
             soldes = {"WAVE": 0, "ORANGE_MONEY": 0, "ESPECES": 0, "BANQUE": 0}
@@ -139,6 +145,17 @@ def executer_consultation_donnees_locale(user_text: str, entreprise_id: str, sp)
                         soldes[src] -= montant
 
             total = sum(soldes.values())
+            is_wolof = any(w in clean for w in ["ana", "sama", "xalis", "xaalis", "wax", "kom-kom", "tollu"])
+            if is_wolof:
+                return (
+                    f"Sa kom-kom ak sa solde ci direct leegi :\n\n"
+                    f"• Compte Wave : {soldes['WAVE']:,.0f} FCFA\n"
+                    f"• Compte Orange Money : {soldes['ORANGE_MONEY']:,.0f} FCFA\n"
+                    f"• Caisse Espèces : {soldes['ESPECES']:,.0f} FCFA\n"
+                    f"• Compte Banque : {soldes['BANQUE']:,.0f} FCFA\n\n"
+                    f"Total sa kom-kom disponible : {total:,.0f} FCFA\n\n"
+                    "Lépp leer na ci norme SYSCOHADA SMT."
+                )
             return (
                 "État de votre trésorerie en direct :\n\n"
                 f"• Compte Wave : {soldes['WAVE']:,.0f} FCFA\n"
@@ -151,13 +168,26 @@ def executer_consultation_donnees_locale(user_text: str, entreprise_id: str, sp)
         except Exception as e:
             print(f"Erreur calcul solde direct : {e}")
 
-    # 2. Consultation des Ventes du Jour
-    if any(k in clean for k in ["vente d'aujourd'hui", "ventes aujourd'hui", "combien j'ai vendu", "combien jai vendu", "chiffre du jour", "recettes du jour"]):
+    # 2. Consultation des Ventes du Jour (Français & Wolof)
+    mots_ventes_jour = [
+        "vente d'aujourd'hui", "ventes aujourd'hui", "combien j'ai vendu", "combien jai vendu",
+        "chiffre du jour", "recettes du jour",
+        "jaay yi tey", "jaay tey", "niaata laa jaay", "niaata am tey", "dug tey", "am na jaay tey"
+    ]
+    if any(k in clean for k in mots_ventes_jour):
         try:
             today_str = datetime.now().strftime("%Y-%m-%d")
             txs = sp.table("transactions").select("montant_fcfa, source_paiement, libelle").eq("entreprise_id", entreprise_id).eq("type_flux", "ENTREE").gte("created_at", f"{today_str}T00:00:00").execute().data or []
             total_ventes = sum(int(t.get("montant_fcfa") or 0) for t in txs)
             nb_ventes = len(txs)
+            is_wolof = any(w in clean for w in ["jaay", "tey", "niaata", "laa", "dug"])
+            if is_wolof:
+                return (
+                    f"Sa jaay yi tey ({datetime.now().strftime('%d/%m/%Y')}) :\n\n"
+                    f"• Limu jaay yi : {nb_ventes}\n"
+                    f"• Xaalis bu duggu tey : {total_ventes:,.0f} FCFA\n\n"
+                    "Bu ngoonee ci rituel bi nu dresseel la bilan bi lépp."
+                )
             return (
                 f"Synthèse de vos ventes du jour ({datetime.now().strftime('%d/%m/%Y')}) :\n\n"
                 f"• Nombre d'encaissements : {nb_ventes}\n"

@@ -311,30 +311,56 @@ def parse_operation_financiere_locale(user_text: str) -> Optional[Dict[str, Any]
     if montant <= 0:
         return None
 
-    # Source de paiement
+    # Source de paiement (Français & Wolof)
     source = "ESPECES"
     if "wave" in lower:
         source = "WAVE"
     elif "orange" in lower or "om" in lower:
         source = "ORANGE_MONEY"
-    elif any(k in lower for k in ["banque", "chèque", "cheque", "virement"]):
+    elif any(k in lower for k in ["banque", "chèque", "cheque", "virement", "kàmp"]):
         source = "BANQUE"
+    elif any(k in lower for k in ["espece", "espèces", "cash", "loxo", "ci loxo"]):
+        source = "ESPECES"
 
-    # Type de flux & Affectation SYSCOHADA
-    # 1. Ventes (Entrées)
-    if any(k in lower for k in ["vente", "vendu", "encaissement", "reçu", "recu", "chiffre d'affaire", "chiffre d affaire"]):
+    # Type de flux & Affectation SYSCOHADA (Français & Wolof)
+    # 1. Ventes (Entrées) : vente, vendu, encaissement, reçu, jaay, jaay naa, dug na, jot naa
+    mots_ventes = [
+        "vente", "vendu", "encaissement", "reçu", "recu", "chiffre d'affaire", "chiffre d affaire",
+        "jaay", "jaay na", "jaay naa", "dama jaay", "am na jaay", "dug na", "dugna", "jot naa", "encaisser"
+    ]
+    if any(k in lower for k in mots_ventes):
         return {
             "is_transaction": True,
             "type_flux": "ENTREE",
             "montant_fcfa": montant,
             "source_paiement": source,
             "compte_syscohada": "701",
-            "libelle": f"Vente de marchandises ({source})",
+            "libelle": f"Vente de marchandises / Jaay ({source})",
             "besoin_justificatif": False
         }
 
-    # 2. Carburant / Transport
-    if any(k in lower for k in ["carburant", "essence", "gasoil", "total", "shell", "ola", "transport", "taxi", "tiak tiak"]):
+    # 2. Achats & Marchandise (Sorties 601) : jënd, jend, achat, marchandise, stock
+    mots_achats = [
+        "achat", "acheté", "achete", "jënd", "jënd na", "jënd naa", "jend", "jend na", "jend naa",
+        "dama jënd", "dama jend", "marchandise", "stock"
+    ]
+    if any(k in lower for k in mots_achats):
+        return {
+            "is_transaction": True,
+            "type_flux": "SORTIE",
+            "montant_fcfa": montant,
+            "source_paiement": source,
+            "compte_syscohada": "601",
+            "libelle": f"Achat de marchandises / Jënd ({source})",
+            "besoin_justificatif": source == "ESPECES"
+        }
+
+    # 3. Carburant / Transport : essence, carburant, tiak tiak, taxi, dem ak dikk
+    mots_transport = [
+        "carburant", "essence", "gasoil", "total", "shell", "ola",
+        "transport", "taxi", "tiak tiak", "tiak-tiak", "car rapide", "dem ak dikk"
+    ]
+    if any(k in lower for k in mots_transport):
         return {
             "is_transaction": True,
             "type_flux": "SORTIE",
@@ -345,8 +371,8 @@ def parse_operation_financiere_locale(user_text: str) -> Optional[Dict[str, Any]
             "besoin_justificatif": source == "ESPECES"
         }
 
-    # 3. Loyer
-    if any(k in lower for k in ["loyer", "bail"]):
+    # 4. Loyer : loyer, bail, kër gi
+    if any(k in lower for k in ["loyer", "bail", "kër gi", "keur gui"]):
         return {
             "is_transaction": True,
             "type_flux": "SORTIE",
@@ -357,8 +383,8 @@ def parse_operation_financiere_locale(user_text: str) -> Optional[Dict[str, Any]
             "besoin_justificatif": source == "ESPECES"
         }
 
-    # 4. Électricité & Eau (Senelec, Sen'Eau)
-    if any(k in lower for k in ["senelec", "woyofal", "électricité", "electricite", "eau", "sen'eau", "sde"]):
+    # 5. Électricité & Eau (Senelec, Sen'Eau, Woyofal)
+    if any(k in lower for k in ["senelec", "woyofal", "électricité", "electricite", "eau", "sen'eau", "sde", "kuraŋ"]):
         return {
             "is_transaction": True,
             "type_flux": "SORTIE",
@@ -369,8 +395,8 @@ def parse_operation_financiere_locale(user_text: str) -> Optional[Dict[str, Any]
             "besoin_justificatif": source == "ESPECES"
         }
 
-    # 5. Salaires
-    if any(k in lower for k in ["salaire", "salaires", "paie", "avance salaire"]):
+    # 6. Salaires / Fey : salaire, salaires, paie, avance, fey liggeeykat
+    if any(k in lower for k in ["salaire", "salaires", "paie", "avance salaire", "fey liggeeykat", "fey"]):
         return {
             "is_transaction": True,
             "type_flux": "SORTIE",
