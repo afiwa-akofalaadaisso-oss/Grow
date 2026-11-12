@@ -73,6 +73,24 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 if os.path.exists(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+# Cache anti-doublon pour les webhooks Meta WhatsApp (retries dans les 120s)
+PROCESSED_MESSAGE_IDS: dict[str, float] = {}
+
+def is_duplicate_message(msg_id: str) -> bool:
+    """Evite le double traitement d'un message WhatsApp si Meta renvoie le webhook."""
+    if not msg_id:
+        return False
+    import time
+    now = time.time()
+    # Nettoyage des entrees de plus de 10 minutes
+    to_delete = [k for k, t in PROCESSED_MESSAGE_IDS.items() if now - t > 600]
+    for k in to_delete:
+        PROCESSED_MESSAGE_IDS.pop(k, None)
+    if msg_id in PROCESSED_MESSAGE_IDS:
+        return True
+    PROCESSED_MESSAGE_IDS[msg_id] = now
+    return False
+
 scheduler = AsyncIOScheduler()
 
 VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "grow_dakar_secret_2026")
@@ -1111,6 +1129,11 @@ async def receive_message(request: Request):
 
         if "messages" in value and value["messages"]:
             message = value["messages"][0]
+            msg_id = message.get("id")
+            if is_duplicate_message(msg_id):
+                print(f"[WEBHOOK] Message {msg_id} deja traite (retry Meta ignore).")
+                return {"status": "already_processed"}
+
             sender_phone = message.get("from")
             msg_type = message.get("type")
 

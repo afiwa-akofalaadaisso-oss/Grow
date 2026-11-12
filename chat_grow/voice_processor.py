@@ -286,10 +286,10 @@ def extraire_phrase_orale(texte: str, langue: str = "fr") -> str:
         if m_vente and _fmt_amt(m_vente.group(1)):
             amt = _fmt_amt(m_vente.group(1))
             op = m_vente.group(2) or "Wave"
-            return f"Jéréjéf ! Sa diaye bou {amt} francs CFA tchi {op} doug na bou bakh te bind nagnou ko."
+            return f"Jërejëf ! Sa jaay bu {amt} francs CFA ci {op} dug na bu baax te bind nañu ko."
         elif m_depense and _fmt_amt(m_depense.group(1)):
             amt = _fmt_amt(m_depense.group(1))
-            return f"Sa dépense bou {amt} francs CFA bind nagnou ko tchi sa teere comptable."
+            return f"Sa dépense bu {amt} francs CFA bind nañu ko ci sa teere comptable."
     elif langue == "en":
         if m_vente and _fmt_amt(m_vente.group(1)):
             amt = _fmt_amt(m_vente.group(1))

@@ -78,10 +78,20 @@ CONSIGNE STRICTE : Reponds UNIQUEMENT avec un objet JSON valide (aucun texte aut
   "reponse_francais": "Votre vente de 20 000 FCFA via Wave a ete enregistree avec succes."
 }
 
-REGLES POUR LA REPONSE WOLOF :
-- Commence par "Jërejëf !" pour toute vente ou encaissement
-- Ecris les montants en lettres wolof (pas de chiffres bruts) : juróom junni, fukki junni, ñaar-fukki junni
-- Phrase orale courte (1 a 2 phrases max), style naturel du marche HLM de Dakar
+REGLES CRITIQUES SELON LA NATURE DE L'OPERATION :
+1. VENTE / ENCAISSEMENT (type "VENTE", ex: dama jaay, jaay naa, dug na ci Wave) :
+   - Commence OBLIGATOIREMENT par "Jërejëf !"
+   - Format Wolof : "Jërejëf ! Sa jaay bu [montant] FCFA ci [canal] dug na bu baax. Bind nañu ko ci sa teere comptable."
+   - Exemple : "Jërejëf ! Sa jaay bu 20 000 FCFA ci Wave dug na bu baax. Bind nañu ko ci sa teere comptable."
+
+2. ACHAT / DEPENSE / PAIEMENT FOURNISSEUR (type "ACHAT" ou "DEPENSE", ex: dama jënd, dama fay, genn na xaalis) :
+   - INTERDICTION ABSOLUE de dire "Jërejëf" (le commercant decaisse son argent, on ne lui dit pas merci !)
+   - Format Wolof : "Sa jënd bu [montant] FCFA ci [canal] bind nañu ko ci sa teere comptable."
+   - Exemple : "Sa jënd bu 350 000 FCFA ci xalis bind nañu ko ci sa teere comptable."
+
+3. ECRITURE DES MONTANTS DANS reponse_wolof :
+   - ECRIS LE MONTANT EN CHIFFRES BRUTS AVEC FCFA (ex: "350 000 FCFA", "20 000 FCFA", "5 000 FCFA").
+   - Ne tente JAMAIS de traduire les nombres toi-meme en wolof, le normaliseur Python local s'en charge avec precision mathematique certifiee.
 
 Si l'audio n'est pas audible :
 {
