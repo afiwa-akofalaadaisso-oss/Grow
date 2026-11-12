@@ -477,35 +477,140 @@ async def traduire_texte_en_anglais(texte_francais: str) -> str:
         return texte_francais
 
 
+_MMS_WOLOF_MODEL = None
+_MMS_WOLOF_TOKENIZER = None
+
+
+def get_mms_wolof_tts():
+    """Charge ou retourne le modèle VITS Meta MMS Wolof en mémoire."""
+    global _MMS_WOLOF_MODEL, _MMS_WOLOF_TOKENIZER
+    if _MMS_WOLOF_MODEL is None or _MMS_WOLOF_TOKENIZER is None:
+        try:
+            from transformers import VitsModel, AutoTokenizer
+            model_id = "rnjema-unima/mms-tts-wol-baseline"
+            _MMS_WOLOF_TOKENIZER = AutoTokenizer.from_pretrained(model_id)
+            _MMS_WOLOF_MODEL = VitsModel.from_pretrained(model_id)
+            print("[META MMS WOLOF TTS CHARGÉ AVEC SUCCÈS]")
+        except Exception as e_mms:
+            print(f"Info chargement MMS Wolof : {e_mms}")
+            return None, None
+    return _MMS_WOLOF_MODEL, _MMS_WOLOF_TOKENIZER
+
+
+def convertir_wav_en_ogg_opus(wav_path: str) -> str:
+    """Convertit un WAV direct en OGG OPUS (Mono 48kHz natif WhatsApp)."""
+    ogg_path = wav_path.rsplit(".", 1)[0] + ".ogg"
+    try:
+        import av
+        in_container = av.open(wav_path)
+        in_stream = in_container.streams.audio[0]
+
+        out_container = av.open(ogg_path, "w", format="ogg")
+        out_stream = out_container.add_stream("libopus", rate=48000)
+        out_stream.layout = "mono"
+
+        resampler = av.AudioResampler(format="s16", layout="mono", rate=48000)
+
+        for frame in in_container.decode(in_stream):
+            frame.pts = None
+            for resampled in resampler.resample(frame):
+                for packet in out_stream.encode(resampled):
+                    out_container.mux(packet)
+
+        for packet in out_stream.encode():
+            out_container.mux(packet)
+
+        in_container.close()
+        out_container.close()
+
+        if os.path.exists(ogg_path) and os.path.getsize(ogg_path) > 500:
+            return os.path.basename(ogg_path)
+    except Exception as e:
+        print(f"Info conversion WAV vers OGG OPUS : {e}")
+
+    return os.path.basename(wav_path)
+
+
+def generer_note_vocale_mms_wolof(texte: str) -> str | None:
+    """
+    Synthèse vocale native Wolof via Meta MMS (mms-tts-wol).
+    Normalise les montants bruts en mots en toutes lettres (ex: 45 000 FCFA -> ñent-fukk ak juróom junni francs CFA).
+    Produit un fichier OGG OPUS avec la vraie prononciation native dakaroise.
+    """
+    try:
+        from wolof_normalizer import normaliser_texte_wolof_pour_tts
+        model, tokenizer = get_mms_wolof_tts()
+        if not model or not tokenizer:
+            return None
+
+        # 1. Normalisation en Wolof intégral en toutes lettres
+        texte_norm = normaliser_texte_wolof_pour_tts(texte)
+        print(f"[META MMS WOLOF TEXTE NORMALISÉ] : « {texte_norm} »")
+
+        import torch
+        import soundfile as sf
+
+        inputs = tokenizer(texte_norm, return_tensors="pt")
+        with torch.no_grad():
+            waveform = model(**inputs).waveform
+
+        audio_dir = os.path.join(os.path.dirname(__file__), "static", "audio")
+        os.makedirs(audio_dir, exist_ok=True)
+
+        filename_wav = f"grow_mms_wo_{uuid.uuid4().hex[:8]}.wav"
+        filepath_wav = os.path.join(audio_dir, filename_wav)
+
+        output_np = waveform.squeeze().cpu().numpy()
+        sf.write(filepath_wav, output_np, model.config.sampling_rate)
+
+        if os.path.exists(filepath_wav) and os.path.getsize(filepath_wav) > 500:
+            ogg_fn = convertir_wav_en_ogg_opus(filepath_wav)
+            print(f"[NOTE VOCALE META MMS WOLOF GÉNÉRÉE] : {ogg_fn}")
+            try:
+                os.remove(filepath_wav)
+            except Exception:
+                pass
+            return ogg_fn
+    except Exception as e_mms_gen:
+        print(f"Info génération Meta MMS Wolof : {e_mms_gen}")
+
+    return None
+
+
 async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
     """
     Génère une note vocale OGG OPUS (PTT) pour WhatsApp.
-    Voix sélectionnées pour une diction pure sans épellation et sans mélange de langues :
+    - 'wo' : Meta MMS Wolof (mms-tts-wol) natif avec normalisation intégrale en toutes lettres.
     - 'fr' : fr-FR-VivienneMultilingualNeural (Studio Français)
-    - 'wo' : fr-FR-RemyMultilingualNeural (Studio Multilingue adapté Wolof)
     - 'en' : en-US-JennyNeural (Studio Anglais)
     """
+    # 1. Extraction d'une phrase orale naturelle (concise, 1 à 2 phrases max, sans tableaux ni puces)
+    phrase_orale = extraire_phrase_orale(texte, langue=langue)
+    if not phrase_orale:
+        phrase_orale = texte
+
+    # 2. Si Wolof : Synthèse native Meta MMS Wolof en priorité absolue
+    if langue == "wo":
+        mms_ogg = generer_note_vocale_mms_wolof(phrase_orale)
+        if mms_ogg:
+            return mms_ogg
+
     try:
         import edge_tts
     except ImportError:
         print("Erreur : edge-tts n'est pas installé")
         return None
 
-    # 1. Extraction d'une phrase orale naturelle (concise, 1 à 2 phrases max, sans tableaux ni puces)
-    phrase_orale = extraire_phrase_orale(texte, langue=langue)
-    if not phrase_orale:
-        phrase_orale = texte
-
-    # 2. Nettoyage et adaptation selon la langue
+    # 3. Adaptation selon la langue pour le moteur fallback
     texte_a_lire = adapter_texte_pour_oral(phrase_orale, langue=langue)
 
     if langue == "wo":
-        # Si la phrase n'est pas encore en Wolof, on la traduit ou on l'adapte
+        # Fallback si Meta MMS n'est pas disponible
         if not re.search(r'\b(jaay|diaye|jënd|diènde|dug|doug|jërejëf|jerejef|naka|xaalis|xaliss)\b', texte_a_lire, re.IGNORECASE):
             texte_a_lire = await traduire_texte_en_wolof_oral(texte_a_lire)
         texte_a_lire = adapter_phonetique_wolof(texte_a_lire)
         voix_candidates = ["fr-FR-RemyMultilingualNeural", "fr-FR-VivienneMultilingualNeural"]
-        print(f"[WOLOF PUR PARLÉ SANS ÉPELLATION] : « {texte_a_lire} »")
+        print(f"[WOLOF PUR PARLÉ FALLBACK] : « {texte_a_lire} »")
     elif langue == "en":
         if not re.search(r'\b(sale|sold|bought|recorded|payment|balance|thank|hello)\b', texte_a_lire, re.IGNORECASE):
             texte_a_lire = await traduire_texte_en_anglais(texte_a_lire)
