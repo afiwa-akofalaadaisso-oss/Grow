@@ -497,13 +497,56 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
             await communicate.save(filepath)
             if os.path.exists(filepath) and os.path.getsize(filepath) > 500:
                 integrer_logo_mp3(filepath)
-                print(f"[NOTE VOCALE GÉNÉRÉE ({langue.upper()}) avec {v}] : {filename}")
-                return filename
+                # Conversion en OGG OPUS (format officiel des Notes Vocales WhatsApp)
+                # Cela remplace définitivement l'icône casque jaune par la vraie note vocale avec logo de profil Grow
+                ogg_fn = convertir_mp3_en_ogg_opus(filepath)
+                print(f"[NOTE VOCALE OFFICIELLE GÉNÉRÉE ({langue.upper()})] : {ogg_fn}")
+                return ogg_fn
         except Exception as e_v:
             print(f"Tentative voix {v} échouée : {e_v}")
             continue
 
     return None
+
+
+def convertir_mp3_en_ogg_opus(mp3_path: str) -> str:
+    """
+    Convertit un MP3 en OGG OPUS (codec natif WhatsApp pour les vraies Notes Vocales).
+    Sur WhatsApp, les fichiers MP3 affichent une icône générique casque jaune,
+    alors que les fichiers OGG OPUS s'affichent comme de véritables Notes Vocales
+    avec le logo officiel Grow du profil et l'onde sonore verte.
+    """
+    ogg_path = mp3_path.rsplit(".", 1)[0] + ".ogg"
+    try:
+        import av
+
+        in_container = av.open(mp3_path)
+        in_stream = in_container.streams.audio[0]
+
+        out_container = av.open(ogg_path, "w", format="ogg")
+        out_stream = out_container.add_stream("libopus", rate=48000)
+        out_stream.layout = "mono"
+
+        resampler = av.AudioResampler(format="s16", layout="mono", rate=48000)
+
+        for frame in in_container.decode(in_stream):
+            frame.pts = None
+            for resampled in resampler.resample(frame):
+                for packet in out_stream.encode(resampled):
+                    out_container.mux(packet)
+
+        for packet in out_stream.encode():
+            out_container.mux(packet)
+
+        in_container.close()
+        out_container.close()
+
+        if os.path.exists(ogg_path) and os.path.getsize(ogg_path) > 500:
+            return os.path.basename(ogg_path)
+    except Exception as e:
+        print(f"Info conversion OGG OPUS : {e}")
+
+    return os.path.basename(mp3_path)
 
 
 def integrer_logo_mp3(filepath: str):

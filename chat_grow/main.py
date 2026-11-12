@@ -979,7 +979,7 @@ async def api_declencher_rituel_soir(payload: dict = Body(default={})):
     msg_rituel = generer_message_rituel_soir(nom, txs, treso_stats)
 
     if phone:
-        await send_whatsapp_message(phone, msg_rituel)
+        await send_whatsapp_text_and_audio(phone, msg_rituel, langue="fr")
 
     en_attente = [t for t in txs if t.get("compte_syscohada") in ["471100", "471"]]
 
@@ -2900,9 +2900,31 @@ async def send_whatsapp_audio(to_phone: str, audio_url: str):
     await asyncio.to_thread(_sync_send_audio)
 
 
+async def send_whatsapp_text_and_audio(to_phone: str, msg_text: str, langue: str = "fr"):
+    """
+    Envoie systématiquement le message texte ET la note vocale audio correspondante.
+    Permet à chaque commerçant de lire ou d'écouter les bilans et rappels programmés.
+    """
+    if not to_phone or not msg_text:
+        return
+
+    # 1. Envoi du message texte
+    await send_whatsapp_message(to_phone, msg_text)
+
+    # 2. Génération et envoi de la note vocale (format officiel OGG OPUS avec logo Grow)
+    try:
+        audio_fn = await generer_note_vocale_audio(msg_text, langue=langue)
+        if audio_fn:
+            base_u = get_public_base_url()
+            audio_url = f"{base_u}/static/audio/{audio_fn}"
+            await send_whatsapp_audio(to_phone, audio_url)
+            print(f"[VOCAL PROGRAMMÉ ENVOYÉ] vers {to_phone} : {audio_fn}")
+    except Exception as e_v:
+        print(f"Info envoi note vocale programmée : {e_v}")
+
 
 async def daily_ritual_check():
-    """DÃ©clenchement automatique du Grand Bilan Quotidien de clÃ´ture (par dÃ©faut 21h00 heure de Dakar ou heure choisie)."""
+    """Déclenchement automatique du Grand Bilan Quotidien de clôture (par défaut 21h00 heure de Dakar ou heure choisie)."""
     sp = get_supabase()
     if not sp:
         return
@@ -2911,21 +2933,22 @@ async def daily_ritual_check():
     try:
         res = sp.table("entreprises").select("*").execute()
         for ent in res.data or []:
-            # Heure par dÃ©faut Ã  21:00 heure de Dakar
+            # Heure par défaut à 21:00 heure de Dakar
             heure_conf = (ent.get("heure_rappel_quotidien") or "21:00")[:5]
             if heure_conf == now_hm:
                 phone = ent.get("telephone_whatsapp")
                 ent_id = ent.get("id")
                 nom = ent.get("nom_entreprise", "Entreprise")
+                lang = ent.get("langue_preferee") or "fr"
 
                 today_str = now_dakar.strftime("%Y-%m-%d")
                 txs = sp.table("transactions").select("*").eq("entreprise_id", ent_id).execute().data or []
                 
-                # Filtrer les transactions d'aujourd'hui uniquement pour l'activitÃ© du jour
+                # Filtrer les transactions d'aujourd'hui uniquement pour l'activité du jour
                 txs_du_jour = [t for t in txs if (t.get("date_operation") or t.get("created_at") or "").startswith(today_str)]
                 treso_stats = get_tresorerie_stats(sp, ent_id)
 
-                # Message de rituel consolidÃ© de 21h00
+                # Message de rituel consolidé de 21h00
                 msg = generer_message_rituel_soir(nom, txs_du_jour, treso_stats)
 
                 # Rappel quotidien NINEA si attestation papier manquante
@@ -2933,12 +2956,13 @@ async def daily_ritual_check():
                 if not donnees_onb.get("ninea_valide_par_preuve", False) and ent.get("ninea"):
                     msg += (
                         "\n\nRappel administratif Grow :\n"
-                        "Votre numÃ©ro NINEA est enregistrÃ© mais votre attestation papier n'a pas encore Ã©tÃ© transmise en photo. "
+                        "Votre numéro NINEA est enregistré mais votre attestation papier n'a pas encore été transmise en photo. "
                         "Veuillez prendre en photo votre document papier NINEA et l'envoyer dans cette discussion pour finaliser la certification officielle de votre dossier."
                     )
 
-                await send_whatsapp_message(phone, msg)
-                print(f"Grand Bilan de 21h00 (heure Dakar) envoyÃ© Ã  {nom} ({phone})")
+                # Envoi Texte + Note Vocale
+                await send_whatsapp_text_and_audio(phone, msg, langue=lang)
+                print(f"Grand Bilan de 21h00 (Texte + Vocal Dakar) envoyé à {nom} ({phone})")
     except Exception as e:
         print(f"Info daily_ritual_check : {e}")
 
@@ -2957,6 +2981,7 @@ async def flash_summary_3h_check():
             phone = ent.get("telephone_whatsapp")
             ent_id = ent.get("id")
             nom = ent.get("nom_entreprise", "Entreprise")
+            lang = ent.get("langue_preferee") or "fr"
 
             txs = sp.table("transactions").select("*").eq("entreprise_id", ent_id).execute().data or []
             txs_du_jour = [t for t in txs if (t.get("date_operation") or t.get("created_at") or "").startswith(today_str)]
@@ -2965,14 +2990,15 @@ async def flash_summary_3h_check():
             dash_url = f"{base_url}/dashboard?phone={phone}" if phone else ""
 
             msg = generer_point_flash_journee(nom, txs_du_jour, treso_stats, now_hm, dashboard_url=dash_url)
-            await send_whatsapp_message(phone, msg)
-            print(f"Point Flash {now_hm} (heure Dakar) envoyÃ© Ã  {nom} ({phone})")
+            # Envoi Texte + Note Vocale
+            await send_whatsapp_text_and_audio(phone, msg, langue=lang)
+            print(f"Point Flash {now_hm} (Texte + Vocal Dakar) envoyé à {nom} ({phone})")
     except Exception as e:
         print(f"Info flash_summary_3h_check : {e}")
 
 
 async def morning_greeting_check():
-    """Message matinal de 06h00 (heure de Dakar) : rÃ©sume les transactions de la nuit et refait le compte exact de dÃ©part."""
+    """Message matinal de 06h00 (heure de Dakar) : résume les transactions de la nuit et refait le compte exact de départ."""
     sp = get_supabase()
     if not sp:
         return
@@ -2985,6 +3011,7 @@ async def morning_greeting_check():
             phone = ent.get("telephone_whatsapp")
             ent_id = ent.get("id")
             nom = ent.get("nom_entreprise", "Entreprise")
+            lang = ent.get("langue_preferee") or "fr"
 
             txs = sp.table("transactions").select("*").eq("entreprise_id", ent_id).execute().data or []
             
@@ -2993,24 +3020,23 @@ async def morning_greeting_check():
             for t in txs:
                 c_at = t.get("created_at") or t.get("date_operation") or ""
                 if c_at.startswith(hier_str):
-                    # AprÃ¨s 21h00 hier soir
                     if "T21:" in c_at or "T22:" in c_at or "T23:" in c_at:
                         txs_nuit.append(t)
                 elif c_at.startswith(today_str):
-                    # Avant 06h00 ce matin
                     if any(f"T{h:02d}:" in c_at for h in range(0, 6)):
                         txs_nuit.append(t)
 
             treso_stats = get_tresorerie_stats(sp, ent_id)
             msg = generer_message_matin_6h(nom, txs_nuit, treso_stats)
-            await send_whatsapp_message(phone, msg)
-            print(f"Message matinal de 06h00 (heure Dakar) envoyÃ© Ã  {nom} ({phone})")
+            # Envoi Texte + Note Vocale
+            await send_whatsapp_text_and_audio(phone, msg, langue=lang)
+            print(f"Message matinal de 06h00 (Texte + Vocal Dakar) envoyé à {nom} ({phone})")
     except Exception as e:
         print(f"Info morning_greeting_check : {e}")
 
 
 async def check_and_send_dettes_reminders():
-    """Relance automatique des dettes et crÃ©ances tous les 3 jours."""
+    """Relance automatique des dettes et créances tous les 3 jours."""
     sp = get_supabase()
     if not sp:
         return
@@ -3028,25 +3054,26 @@ async def check_and_send_dettes_reminders():
             if dette_type == "DETTE_FOURNISSEUR":
                 msg = (
                     f"Rappel pour votre dette fournisseur :\n"
-                    f"Vous devez encore {restant:,.0f} FCFA Ã  {tiers}"
-                    + (f" (prÃ©vu pour le : {echeance})" if echeance else "") + ".\n\n"
+                    f"Vous devez encore {restant:,.0f} FCFA à {tiers}"
+                    + (f" (prévu pour le : {echeance})" if echeance else "") + ".\n\n"
                     f"Avez-vous fait un paiement total ou une avance aujourd'hui ?"
                 )
             else:
                 msg = (
                     f"Rappel pour l'argent qu'on vous doit :\n"
                     f"Votre client {tiers} vous doit encore {restant:,.0f} FCFA"
-                    + (f" (prÃ©vu pour le : {echeance})" if echeance else "") + ".\n\n"
-                    f"Ce client vous a-t-il versÃ© un paiement ou un acompte ?"
+                    + (f" (prévu pour le : {echeance})" if echeance else "") + ".\n\n"
+                    f"Ce client vous a-t-il versé un paiement ou un acompte ?"
                 )
-            await send_whatsapp_message(phone, msg)
+            # Envoi Texte + Note Vocale
+            await send_whatsapp_text_and_audio(phone, msg, langue="fr")
             sp.table("dettes_creances").update({"derniere_relance": datetime.now().strftime("%Y-%m-%d")}).eq("id", item["id"]).execute()
     except Exception as e:
         print(f"Info check_and_send_dettes_reminders : {e}")
 
 
 async def weekly_closure_check():
-    """Point hebdomadaire sur les impayÃ©s et dettes (Chaque dimanche Ã  18h00)."""
+    """Point hebdomadaire sur les impayés et dettes (Chaque dimanche à 18h00)."""
     sp = get_supabase()
     if not sp:
         return
@@ -3057,6 +3084,7 @@ async def weekly_closure_check():
             phone = ent.get("telephone_whatsapp")
             ent_id = ent.get("id")
             nom = ent.get("nom_entreprise", "Entreprise")
+            lang = ent.get("langue_preferee") or "fr"
 
             st = sp.table("etats_structurels").select("*").eq("entreprise_id", ent_id).eq("periode_mois", mois_courant).execute().data
             creances = int(st[0].get("creances_clients_fcfa") or 0) if st else 0
@@ -3064,23 +3092,24 @@ async def weekly_closure_check():
 
             msg = (
                 f"Bonjour {nom}.\n\n"
-                f"C'est le moment de faire le point de la semaine sur vos impayÃ©s :\n\n"
+                f"C'est le moment de faire le point de la semaine sur vos impayés :\n\n"
                 f"1. L'argent que vos clients vous doivent :\n"
-                f"â€¢ Montant total restant : {creances:,.0f} FCFA\n"
-                f"Est-ce que certains clients vous ont remboursÃ© tout ou une partie ce week-end ?\n\n"
-                f"2. L'argent que vous devez Ã  vos fournisseurs :\n"
-                f"â€¢ Montant total restant : {dettes:,.0f} FCFA\n"
-                f"Avez-vous payÃ© une facture ou versÃ© une avance cette semaine ?\n\n"
-                f"Envoyez vos mises Ã  jour pour que vos comptes restent toujours exacts."
+                f"• Montant total restant : {creances:,.0f} FCFA\n"
+                f"Est-ce que certains clients vous ont remboursé tout ou une partie ce week-end ?\n\n"
+                f"2. L'argent que vous devez à vos fournisseurs :\n"
+                f"• Montant total restant : {dettes:,.0f} FCFA\n"
+                f"Avez-vous payé une facture ou versé une avance cette semaine ?\n\n"
+                f"Envoyez vos mises à jour pour que vos comptes restent toujours exacts."
             )
-            await send_whatsapp_message(phone, msg)
-            print(f"Point hebdomadaire envoyÃ© Ã  {nom} ({phone})")
+            # Envoi Texte + Note Vocale
+            await send_whatsapp_text_and_audio(phone, msg, langue=lang)
+            print(f"Point hebdomadaire (Texte + Vocal) envoyé à {nom} ({phone})")
     except Exception as e:
         print(f"Info weekly_closure_check : {e}")
 
 
 async def monthly_closure_check():
-    """Point mensuel : stock, salaires et renouvellement abonnement (Chaque 28 du mois Ã  09h00)."""
+    """Point mensuel : stock, salaires et renouvellement abonnement (Chaque 28 du mois à 09h00)."""
     sp = get_supabase()
     if not sp:
         return
@@ -3089,22 +3118,24 @@ async def monthly_closure_check():
         for ent in res.data or []:
             phone = ent.get("telephone_whatsapp")
             nom = ent.get("nom_entreprise", "Entreprise")
+            lang = ent.get("langue_preferee") or "fr"
 
             msg = (
                 f"Bonjour {nom}.\n\n"
-                f"C'est la fin du mois, faisons le point pour clÃ´turer vos comptes :\n\n"
+                f"C'est la fin du mois, faisons le point pour clôturer vos comptes :\n\n"
                 f"1. Votre stock restant :\n"
                 f"Quelle est la valeur approximative de votre stock en boutique ou atelier ce soir ? Envoyez aussi quelques photos de vos rayons.\n\n"
                 f"2. Les salaires :\n"
-                f"Avez-vous payÃ© des salaires ou des commissions ce mois-ci ? Quels sont les montants ?\n\n"
+                f"Avez-vous payé des salaires ou des commissions ce mois-ci ? Quels sont les montants ?\n\n"
                 f"3. Votre bilan du mois :\n"
-                f"Votre rÃ©capitulatif du mois est en prÃ©paration pour votre comptable.\n\n"
+                f"Votre récapitulatif du mois est en préparation pour votre comptable.\n\n"
                 f"4. Renouvellement de votre abonnement Grow :\n"
-                f"Pour continuer Ã  suivre vos comptes automatiquement chaque jour, renouvelez votre abonnement mensuel sur ce lien sÃ©curisÃ© :\n"
+                f"Pour continuer à suivre vos comptes automatiquement chaque jour, renouvelez votre abonnement mensuel sur ce lien sécurisé :\n"
                 f"{get_public_base_url()}/abonnement"
             )
-            await send_whatsapp_message(phone, msg)
-            print(f"Message mensuel envoyÃ© Ã  {nom} ({phone})")
+            # Envoi Texte + Note Vocale
+            await send_whatsapp_text_and_audio(phone, msg, langue=lang)
+            print(f"Message mensuel (Texte + Vocal) envoyé à {nom} ({phone})")
     except Exception as e:
         print(f"Info monthly_closure_check : {e}")
 
