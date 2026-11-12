@@ -42,8 +42,15 @@ def parse_montant_fcfa(texte: str) -> int:
         return 0
 
     clean = normaliser_texte(texte).lower()
+
+    # 0. Élimination des quantités d'articles pour ne pas confondre quantité et montant (ex: '500 sacs', '10 cartons')
+    clean_sans_qte = re.sub(
+        r'\b\d+\s*(?:sacs?|sacu|kg|kilos?|colis|cartons?|caisses?|unit[ée]s?|pi[èe]ces?|bouteilles?|litres?|paquets?)\b',
+        '', clean, flags=re.IGNORECASE
+    )
+
     # Rapprocher les chiffres séparés par un espace ou point de millier (ex: 50 000 -> 50000, 150.000 -> 150000)
-    clean_nombres = re.sub(r'(?<=\d)[\s\.](?=\d{3}\b)', '', clean)
+    clean_nombres = re.sub(r'(?<=\d)[\s\.](?=\d{3}\b)', '', clean_sans_qte)
 
     # 1. Millions (ex: 2.5 millions, 1 million, 3m)
     mil_match = re.search(r'(\d+[\.,]?\d*)\s*(?:million|millions|m)\b', clean, re.IGNORECASE)
@@ -55,7 +62,7 @@ def parse_montant_fcfa(texte: str) -> int:
             pass
 
     # 2. Mille ou K (ex: 500mille, 500 mille, 500k, 25k)
-    mille_match = re.search(r'(\d+)\s*(?:mille|milles|k)\b', clean, re.IGNORECASE)
+    mille_match = re.search(r'(\d+)\s*(?:mille|milles|k)\b', clean_sans_qte, re.IGNORECASE)
     if mille_match:
         try:
             return int(mille_match.group(1)) * 1_000
@@ -71,24 +78,32 @@ def parse_montant_fcfa(texte: str) -> int:
     if "dix mille" in clean: return 10_000
     if "cinq mille" in clean: return 5_000
 
-    # 4. Montants suivis de FCFA, F, FRS, CFA ou précédés de montant/solde/prix/capital
-    motif_devise = re.search(r'(\d[\d\s\.]{2,10})\s*(?:f\b|fcfa\b|frs\b|cfa\b)', clean, re.IGNORECASE)
+    # 4. Montants explicites après verbe de coût/total en wolof ou français (def, muy def, fait, montant, coût)
+    motif_cout = re.search(r'(?:muy def|mu def|defal|def|fait|co[uû]te?|montant|somme|prix|fey|fay)\D*(\d[\d\s\.]{2,10})', clean, re.IGNORECASE)
+    if motif_cout:
+        digits = re.sub(r'[^\d]', '', motif_cout.group(1))
+        if digits:
+            return int(digits)
+
+    # 5. Montants suivis de FCFA, F, FRS, CFA
+    motif_devise = re.search(r'(\d[\d\s\.]{2,10})\s*(?:f\b|fcfa\b|frs\b|cfa\b)', clean_sans_qte, re.IGNORECASE)
     if motif_devise:
         digits = re.sub(r'[^\d]', '', motif_devise.group(1))
         if digits:
             return int(digits)
 
-    # 5. Détection après mot-clé explicite (capital, montant, prix, solde, caisse)
-    motif_cle = re.search(r'(?:capital|montant|prix|solde|caisse|coût|valeur)\D*(\d[\d\s\.]{2,10})', clean, re.IGNORECASE)
+    # 6. Détection après mot-clé explicite (capital, montant, prix, solde, caisse)
+    motif_cle = re.search(r'(?:capital|montant|prix|solde|caisse|coût|valeur)\D*(\d[\d\s\.]{2,10})', clean_sans_qte, re.IGNORECASE)
     if motif_cle:
         digits = re.sub(r'[^\d]', '', motif_cle.group(1))
         if digits:
             return int(digits)
 
-    # 6. Fallback chiffres isolés dans texte normalisé
+    # 7. Fallback chiffres isolés dans texte nettoyé des quantités (on prend le plus grand nombre)
     tous_chiffres = re.findall(r'\b\d{3,9}\b', clean_nombres)
     if tous_chiffres:
-        return int(tous_chiffres[0])
+        nums = [int(c) for c in tous_chiffres]
+        return max(nums)
 
     return 0
 
