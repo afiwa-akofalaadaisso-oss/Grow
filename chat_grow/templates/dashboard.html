@@ -29,14 +29,14 @@
         }
 
         .fintech-hero-card {
-            background: linear-gradient(145deg, #1f2222 0%, #2a2e2d 100%) !important;
+            background: linear-gradient(155deg, #182224 0%, #111618 100%) !important;
             border-radius: 24px !important;
-            padding: 22px 20px 20px 20px !important;
+            padding: 18px 18px 18px 18px !important;
             color: #ffffff !important;
-            box-shadow: 0 16px 40px rgba(34, 34, 34, 0.22) !important;
+            box-shadow: 0 12px 32px rgba(17, 22, 24, 0.25) !important;
             position: relative !important;
             overflow: hidden !important;
-            border: 1px solid rgba(160, 217, 210, 0.2) !important;
+            border: 1px solid rgba(160, 217, 210, 0.22) !important;
         }
 
         .fintech-hero-card::before {
@@ -47,24 +47,16 @@
             width: 140px;
             height: 140px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(160, 217, 210, 0.22) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(160, 217, 210, 0.18) 0%, transparent 70%);
             pointer-events: none;
         }
 
         .fintech-top-meta {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-            gap: 14px;
-        }
-
-        .fintech-enterprise-container {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            align-items: center;
+            margin-bottom: 14px;
+            gap: 12px;
         }
 
         .fintech-enterprise-pill {
@@ -76,20 +68,18 @@
             padding: 6px 12px;
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            max-width: 100%;
+            max-width: 200px;
             width: fit-content;
         }
 
-        .fintech-enterprise-pill img {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: #222222;
+        .fintech-enterprise-pill i {
+            color: #a0d9d2;
+            font-size: 13px;
             flex-shrink: 0;
         }
 
         .fintech-enterprise-name {
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 700;
             color: #ffffff;
             white-space: nowrap;
@@ -99,39 +89,19 @@
             line-height: 1.2;
         }
 
-        .fintech-ninea-wrap {
-            display: flex;
-            align-items: center;
-        }
-
-        .fintech-ninea-chip {
-            font-size: 10.5px;
-            color: #a0d9d2;
-            font-weight: 700;
-            background: rgba(160, 217, 210, 0.12);
-            border: 1px solid rgba(160, 217, 210, 0.25);
-            padding: 3px 9px;
-            border-radius: 8px;
-            letter-spacing: 0.3px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
         .fintech-top-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex-shrink: 0;
-            padding-top: 2px;
         }
 
         .fintech-eye-btn {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.14);
             color: #e2e8f0;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -147,31 +117,103 @@
             transform: scale(1.05);
         }
 
+        .fintech-card-body-split {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: flex-end !important;
+            gap: 14px !important;
+        }
+
+        .fintech-body-left {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-end !important;
+            flex: 1 !important;
+            min-width: 0 !important;
+        }
+
+        .fintech-ninea-chip {
+            font-size: 11px;
+            color: #a0d9d2;
+            font-weight: 700;
+            background: rgba(160, 217, 210, 0.12);
+            border: 1px solid rgba(160, 217, 210, 0.25);
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 8px;
+            width: fit-content;
+        }
+
         .fintech-balance-row {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            margin: 14px 0 6px 0;
+            gap: 6px;
+            margin: 0;
         }
 
         .fintech-balance-big {
-            font-size: 38px;
+            font-size: 32px;
             font-weight: 900;
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
             color: #ffffff;
             line-height: 1;
         }
 
         .fintech-currency-symbol {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             color: var(--grow-mint);
         }
 
-        .fintech-top-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .fintech-body-right {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 7px !important;
+            flex-shrink: 0 !important;
+            min-width: 125px !important;
+        }
+
+        .hero-nav-pill {
+            background: #ffffff !important;
+            color: #0a2540 !important;
+            border-radius: 12px !important;
+            padding: 7px 14px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            border: none !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) !important;
+            cursor: pointer !important;
+            text-align: left !important;
+            width: 100% !important;
+            transition: transform 0.12s ease, background 0.12s ease !important;
+        }
+
+        .hero-nav-pill:active {
+            transform: scale(0.97) !important;
+            background: #f1f5f9 !important;
+        }
+
+        .hero-nav-pill.active {
+            background: #f0fdf4 !important;
+            color: #0e7647 !important;
+        }
+
+        .hero-nav-pill i {
+            color: #475569 !important;
+            font-size: 13px !important;
+            width: 16px !important;
+            text-align: center !important;
+        }
+
+        .hero-nav-pill.active i {
+            color: #0e7647 !important;
         }
 
         .modal-qr-box {
@@ -2953,73 +2995,112 @@
                 border-radius: 8px !important;
             }
 
-            /* --- BARRE D'ACTION ÉPURÉE (RECHERCHE EN HAUT, PUIS CHIPS DÉFILANTS) --- */
+            /* --- BARRE D'ACTION ÉPURÉE MODÈLE STITCH (1: FILTRES, 2: RECHERCHE, 3: DATES) --- */
             .journal-action-row {
                 flex-direction: column !important;
                 align-items: stretch !important;
-                gap: 8px !important;
+                gap: 10px !important;
                 padding: 0 !important;
                 border-radius: 0 !important;
                 background: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
-                margin-bottom: 6px !important;
-            }
-
-            .journal-search-wrap {
-                order: 1 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                min-width: 0 !important;
-            }
-
-            .journal-search-input {
-                width: 100% !important;
-                background: #ffffff !important;
-                border: 1px solid #e2e8f0 !important;
-                border-radius: 14px !important;
-                font-size: 13px !important;
-                padding: 10px 38px 10px 38px !important;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+                margin-top: 14px !important;
+                margin-bottom: 8px !important;
             }
 
             .status-filter-pills {
-                order: 2 !important;
+                order: 1 !important;
                 width: 100% !important;
                 display: flex !important;
-                gap: 6px !important;
-                overflow-x: auto !important;
-                -webkit-overflow-scrolling: touch !important;
-                scrollbar-width: none !important;
-                padding-bottom: 2px !important;
+                align-items: center !important;
+                gap: 8px !important;
+                overflow-x: visible !important;
+                padding-bottom: 0 !important;
             }
 
-            .status-filter-pills::-webkit-scrollbar {
-                display: none !important;
+            .stitch-slider-btn {
+                width: 38px !important;
+                height: 38px !important;
+                border-radius: 12px !important;
+                background: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                color: #475569 !important;
+                font-size: 14px !important;
+                cursor: pointer !important;
+                flex-shrink: 0 !important;
+                transition: all 0.15s ease !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+            }
+
+            .stitch-slider-btn.active, .stitch-slider-btn:hover {
+                border-color: #0e7647 !important;
+                color: #0e7647 !important;
+                background: #f0fdf4 !important;
             }
 
             .status-pill {
-                flex-shrink: 0 !important;
-                padding: 6px 12px !important;
-                font-size: 11.5px !important;
-                min-height: 32px !important;
+                flex: 1 !important;
+                min-height: 38px !important;
+                padding: 7px 12px !important;
+                font-size: 12px !important;
+                font-weight: 700 !important;
                 border-radius: 20px !important;
                 background: #ffffff !important;
                 border: 1px solid #e2e8f0 !important;
-                box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
+                color: #1e293b !important;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 6px !important;
+                cursor: pointer !important;
+                transition: all 0.15s ease !important;
             }
+
+            .status-pill.active {
+                border-color: #0e7647 !important;
+                background: #f0fdf4 !important;
+                color: #0e7647 !important;
+            }
+
+            .status-pill-count {
+                background: #f1f5f9 !important;
+                color: #475569 !important;
+                font-size: 11px !important;
+                font-weight: 800 !important;
+                padding: 1px 7px !important;
+                border-radius: 10px !important;
+            }
+
+            .status-pill.active .status-pill-count {
+                background: #dcfce7 !important;
+                color: #166534 !important;
             }
 
             .journal-search-wrap {
+                order: 2 !important;
                 width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                position: relative !important;
+                margin: 0 !important;
             }
 
             .journal-search-input {
                 width: 100% !important;
-                font-size: 16px !important; /* Empêche l'auto-zoom intrusif sur iOS Safari */
-                padding: 10px 14px 10px 38px !important;
+                background: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 12px !important;
+                font-size: 13px !important;
+                padding: 11px 38px 11px 38px !important;
                 min-height: 42px !important;
-                border-radius: 10px !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+                color: #1e293b !important;
+                outline: none !important;
             }
 
             .search-kbd-hint {
@@ -3628,51 +3709,54 @@
             .qa-icon-circle.purple { background: #f3e8ff !important; color: #9333ea !important; }
             .qa-icon-circle.slate { background: #f1f5f9 !important; color: #475569 !important; }
 
-            /* LISTE DE TRANSACTIONS NATIVE MOBILE STYLE WAVE / FINTECH HAUT DE GAMME */
+            /* LISTE DE TRANSACTIONS NATIVE MOBILE MODÈLE STITCH (CARTE UNIQUE AVEC SÉPARATEURS) */
             .mobile-tx-cards-list {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 8px !important;
+                gap: 0 !important;
                 width: 100% !important;
-                background: transparent !important;
-                border-radius: 0 !important;
+                background: #ffffff !important;
+                border-radius: 20px !important;
                 padding: 0 !important;
-                box-shadow: none !important;
-                margin-top: 6px !important;
-                border: none !important;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+                margin-top: 8px !important;
+                margin-bottom: 24px !important;
+                border: 1px solid #edf2f7 !important;
+                overflow: hidden !important;
             }
 
             .mobile-tx-card {
                 background: #ffffff !important;
-                border: 1px solid #f1f5f9 !important;
-                border-radius: 16px !important;
-                padding: 12px 14px !important;
+                border: none !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+                border-radius: 0 !important;
+                padding: 14px 16px !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: space-between !important;
                 gap: 12px !important;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+                box-shadow: none !important;
                 cursor: pointer !important;
-                transition: transform 0.12s ease, background 0.12s ease !important;
+                transition: background 0.12s ease !important;
             }
 
             .mobile-tx-card:last-child {
-                border-bottom: 1px solid #f1f5f9 !important;
+                border-bottom: none !important;
             }
 
             .mobile-tx-card:active {
                 background: #f8fafc !important;
-                transform: scale(0.99) !important;
+                transform: none !important;
             }
 
             .tx-card-avatar {
-                width: 40px !important;
-                height: 40px !important;
+                width: 44px !important;
+                height: 44px !important;
                 border-radius: 12px !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
-                font-size: 16px !important;
+                font-size: 18px !important;
                 flex-shrink: 0 !important;
             }
 
@@ -4323,27 +4407,35 @@
         body.force-mobile-view .mobile-tx-cards-list {
             display: flex !important;
             flex-direction: column !important;
-            gap: 8px !important;
+            gap: 0 !important;
             width: 100% !important;
-            background: transparent !important;
-            border-radius: 0 !important;
+            background: #ffffff !important;
+            border-radius: 20px !important;
             padding: 0 !important;
-            box-shadow: none !important;
-            margin-top: 6px !important;
-            border: none !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+            margin-top: 8px !important;
+            margin-bottom: 24px !important;
+            border: 1px solid #edf2f7 !important;
+            overflow: hidden !important;
         }
 
         body.force-mobile-view .mobile-tx-card {
             background: #ffffff !important;
-            border: 1px solid #f1f5f9 !important;
-            border-radius: 16px !important;
-            padding: 12px 14px !important;
+            border: none !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            border-radius: 0 !important;
+            padding: 14px 16px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             gap: 12px !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+            box-shadow: none !important;
             cursor: pointer !important;
+            transition: background 0.12s ease !important;
+        }
+
+        body.force-mobile-view .mobile-tx-card:last-child {
+            border-bottom: none !important;
         }
 
         body.force-mobile-view .mobile-tx-card:active {
@@ -4351,13 +4443,13 @@
         }
 
         body.force-mobile-view .tx-card-avatar {
-            width: 40px !important;
-            height: 40px !important;
+            width: 44px !important;
+            height: 44px !important;
             border-radius: 12px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            font-size: 16px !important;
+            font-size: 18px !important;
             flex-shrink: 0 !important;
         }
 
@@ -4459,51 +4551,107 @@
         body.force-mobile-view .journal-action-row {
             flex-direction: column !important;
             align-items: stretch !important;
-            gap: 8px !important;
+            gap: 10px !important;
             padding: 0 !important;
             border-radius: 0 !important;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            margin-bottom: 6px !important;
+            margin-top: 14px !important;
+            margin-bottom: 8px !important;
+        }
+
+        body.force-mobile-view .status-filter-pills {
+            order: 1 !important;
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            overflow-x: visible !important;
+            padding-bottom: 0 !important;
+        }
+
+        body.force-mobile-view .stitch-slider-btn {
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 12px !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #475569 !important;
+            font-size: 14px !important;
+            cursor: pointer !important;
+            flex-shrink: 0 !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+        }
+
+        body.force-mobile-view .stitch-slider-btn.active, 
+        body.force-mobile-view .stitch-slider-btn:hover {
+            border-color: #0e7647 !important;
+            color: #0e7647 !important;
+            background: #f0fdf4 !important;
+        }
+
+        body.force-mobile-view .status-pill {
+            flex: 1 !important;
+            min-height: 38px !important;
+            padding: 7px 12px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            border-radius: 20px !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #1e293b !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            cursor: pointer !important;
+        }
+
+        body.force-mobile-view .status-pill.active {
+            border-color: #0e7647 !important;
+            background: #f0fdf4 !important;
+            color: #0e7647 !important;
+        }
+
+        body.force-mobile-view .status-pill-count {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            font-size: 11px !important;
+            font-weight: 800 !important;
+            padding: 1px 7px !important;
+            border-radius: 10px !important;
+        }
+
+        body.force-mobile-view .status-pill.active .status-pill-count {
+            background: #dcfce7 !important;
+            color: #166534 !important;
         }
 
         body.force-mobile-view .journal-search-wrap {
-            order: 1 !important;
+            order: 2 !important;
             width: 100% !important;
             max-width: 100% !important;
             min-width: 0 !important;
+            position: relative !important;
+            margin: 0 !important;
         }
 
         body.force-mobile-view .journal-search-input {
             width: 100% !important;
             background: #ffffff !important;
             border: 1px solid #e2e8f0 !important;
-            border-radius: 14px !important;
+            border-radius: 12px !important;
             font-size: 13px !important;
-            padding: 10px 38px 10px 38px !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
-        }
-
-        body.force-mobile-view .status-filter-pills {
-            order: 2 !important;
-            width: 100% !important;
-            display: flex !important;
-            gap: 6px !important;
-            overflow-x: auto !important;
-            scrollbar-width: none !important;
-            padding-bottom: 2px !important;
-        }
-
-        body.force-mobile-view .status-pill {
-            flex-shrink: 0 !important;
-            padding: 6px 12px !important;
-            font-size: 11.5px !important;
-            min-height: 32px !important;
-            border-radius: 20px !important;
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
+            padding: 11px 38px 11px 38px !important;
+            min-height: 42px !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+            color: #1e293b !important;
+            outline: none !important;
         }
 
         body.force-mobile-view .proof-nav-toolbar {
@@ -5078,46 +5226,63 @@
         <!-- RÉSUMÉ FINANCIER & NAVIGATION GROW PERMANENTS (ACCUEIL, PRÊTS, GROW)     -->
         <!-- ========================================================================= -->
         <div class="mobile-financial-header">
-            <!-- CARTE FINTECH HAUT DE GAMME : Solde, Masquage, Nom PME & QR Card -->
+            <!-- CARTE FINTECH HAUT DE GAMME : Solde, Masquage, Nom PME & Navigation Latérale Intégrée (Modèle Stitch) -->
             <div class="fintech-hero-card">
                 <div class="fintech-top-meta">
-                    <div class="fintech-enterprise-container">
-                        <div class="fintech-enterprise-pill">
-                            <img src="/static/images/grow_logo.png" alt="Grow Logo">
-                            <span class="fintech-enterprise-name" id="mobileEnterpriseName">Le Nom De Mon Entreprise Est Cglt</span>
-                        </div>
-                        <div class="fintech-ninea-wrap">
-                            <span class="fintech-ninea-chip" id="mobileNineaChip"><i class="fa-solid fa-certificate"></i> NINEA: 00802996</span>
-                        </div>
+                    <div class="fintech-enterprise-pill" title="Le Nom De Mon Entreprise Est Cglt">
+                        <i class="fa-solid fa-landmark-dome" style="color: #a0d9d2; font-size: 12px;"></i>
+                        <span class="fintech-enterprise-name" id="mobileEnterpriseName">Le Nom De Mon Entreprise Est Cglt</span>
                     </div>
                     <div class="fintech-top-actions">
                         <button type="button" class="fintech-eye-btn" onclick="ouvrirModalQRAccesGrow()" title="QR Code d'accès Grow">
-                            <i class="fa-solid fa-qrcode" style="color: var(--grow-mint);"></i>
+                            <i class="fa-solid fa-shapes" style="color: #a0d9d2; font-size: 13px;"></i>
                         </button>
                         <button type="button" class="fintech-eye-btn" onclick="toggleBalanceVisibility()" title="Masquer / Afficher le solde" id="btnToggleBalance">
-                            <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                            <i class="fa-regular fa-eye" id="eyeIcon" style="font-size: 13px;"></i>
                         </button>
                     </div>
                 </div>
 
-                <div class="fintech-balance-row">
-                    <div class="fintech-balance-big" id="mobileSoldeNet">0</div>
-                    <div class="fintech-currency-symbol">F</div>
+                <div class="fintech-card-body-split">
+                    <!-- Colonne Gauche : NINEA & Grand Solde Net -->
+                    <div class="fintech-body-left">
+                        <div class="fintech-ninea-chip" id="mobileNineaChip">
+                            <i class="fa-solid fa-sparkles"></i> NINEA: 00802996
+                        </div>
+                        <div class="fintech-balance-row">
+                            <span class="fintech-balance-big" id="mobileSoldeNet">0</span>
+                            <span class="fintech-currency-symbol">F</span>
+                        </div>
+                    </div>
+
+                    <!-- Colonne Droite : 3 Boutons Pilules Blanches Stylisées (Prêts, Abonnement, Grow) -->
+                    <div class="fintech-body-right">
+                        <button type="button" class="hero-nav-pill" id="bHeroPrets" onclick="switchVerticalTab('prets');" title="Financements et prêts bancaires">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                            <span>Prêts</span>
+                        </button>
+                        <button type="button" class="hero-nav-pill" id="bHeroAbonnement" onclick="allerVersAbonnement();" title="Mon abonnement Grow">
+                            <i class="fa-regular fa-credit-card"></i>
+                            <span>Abonnement</span>
+                        </button>
+                        <button type="button" class="hero-nav-pill" id="bHeroAbout" onclick="switchVerticalTab('about');" title="Tout savoir sur Grow">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span>Grow</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- BARRE DE NAVIGATION PRINCIPALE GROW (PRÊTS / ABONNEMENT / GROW) -->
-            <nav class="grow-nav-dock" id="dashboardNavDock">
+            <!-- DOCK MASQUÉ (Car les 3 boutons sont maintenant intégrés directement sur la carte) -->
+            <nav class="grow-nav-dock" id="dashboardNavDock" style="display: none !important;">
                 <button type="button" class="bottom-nav-item" id="bNavPrets" onclick="switchVerticalTab('prets');" title="Financements et prêts bancaires">
                     <i class="fa-solid fa-hand-holding-dollar"></i>
                     <span>Prêts</span>
                 </button>
-
                 <button type="button" class="bottom-nav-item" id="bNavAbonnement" onclick="allerVersAbonnement()" title="Mon abonnement Grow">
                     <i class="fa-solid fa-credit-card"></i>
                     <span>Abonnement</span>
                 </button>
-
                 <button type="button" class="bottom-nav-item" id="bNavAbout" onclick="switchVerticalTab('about');" title="Tout savoir sur Grow">
                     <i class="fa-solid fa-circle-info"></i>
                     <span>Grow</span>
@@ -5239,20 +5404,21 @@
                 <!-- Barre d'outils intelligente : Filtre par Statut & Recherche instantanée -->
                 <div class="journal-action-row">
                     <div class="status-filter-pills" id="statusFilterGroup">
-                        <button type="button" class="status-pill active" id="btnStatusAll"
-                            onclick="filterByStatus('all', this)">
-                            Toutes <span class="status-pill-count" id="countAll">0</span>
+                        <button type="button" class="stitch-slider-btn active" id="btnStatusAll"
+                            onclick="filterByStatus('all', this)" title="Toutes les écritures">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span class="status-pill-count" id="countAll" style="display: none;">0</span>
                         </button>
                         <button type="button" class="status-pill" id="btnStatusCertified"
                             onclick="filterByStatus('certified', this)"
                             title="Écritures vérifiées : Justificatif conforme (Wave ou facture) ET compte SYSCOHADA vrai et validé">
-                            <i class="fa-solid fa-circle-check" style="color: #16a34a;"></i> Vérifiées <span
+                            <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> <span>Vérifiées</span> <span
                                 class="status-pill-count" id="countCertified">0</span>
                         </button>
                         <button type="button" class="status-pill" id="btnStatusPending"
                             onclick="filterByStatus('pending', this)"
                             title="Écritures à traiter (Reçu papier en attente ou compte d'attente à qualifier)">
-                            <i class="fa-solid fa-clock" style="color: #d97706;"></i> En attente <span
+                            <i class="fa-solid fa-clock" style="color: #f59e0b;"></i> <span>En attente</span> <span
                                 class="status-pill-count" id="countPending">0</span>
                         </button>
                     </div>
@@ -6742,18 +6908,23 @@
             if (viewAbout) viewAbout.style.setProperty('display', 'none', 'important');
 
             // 2. Réinitialiser l'état actif sur tous les boutons de navigation
-            document.querySelectorAll('.bottom-nav-item').forEach(b => {
+            document.querySelectorAll('.bottom-nav-item, .hero-nav-pill').forEach(b => {
                 b.classList.remove('active');
             });
             if (bTopAccueil) bTopAccueil.classList.remove('active');
 
             // 3. Activer la vue et le bouton ciblés
+            const bHeroPrets = document.getElementById('bHeroPrets');
+            const bHeroAbout = document.getElementById('bHeroAbout');
+
             if (tabName === 'prets' || tabName === 'pret') {
                 if (viewPrets) viewPrets.style.setProperty('display', 'block', 'important');
                 if (bNavPrets) bNavPrets.classList.add('active');
+                if (bHeroPrets) bHeroPrets.classList.add('active');
             } else if (tabName === 'about' || tabName === 'grow') {
                 if (viewAbout) viewAbout.style.setProperty('display', 'block', 'important');
                 if (bNavAbout) bNavAbout.classList.add('active');
+                if (bHeroAbout) bHeroAbout.classList.add('active');
             } else {
                 if (viewJournal) viewJournal.style.setProperty('display', 'block', 'important');
                 if (bTopAccueil) bTopAccueil.classList.add('active');
@@ -7260,7 +7431,7 @@
         function filterByStatus(status, btn) {
             currentFilterStatus = status;
             currentPage = 1;
-            document.querySelectorAll('.status-pill').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.status-pill, .stitch-slider-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
             applyAllFiltersAndRender();
         }
