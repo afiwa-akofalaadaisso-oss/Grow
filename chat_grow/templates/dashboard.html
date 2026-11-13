@@ -3963,6 +3963,315 @@
             #calendarPopover { z-index: 3000 !important; }
         }
 
+        /* ========================================================================= */
+        /* MODE ACCÈS SMARTPHONE DEPUIS L'ORDINATEUR (PERMANENT OU VIA ?mode=mobile) */
+        /* ========================================================================= */
+        .desktop-device-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-bottom: 1px solid #1e293b;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-device-bar {
+                display: none !important;
+            }
+            .btn-toggle-device-view {
+                display: none !important;
+            }
+        }
+
+        .device-bar-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .device-bar-label {
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .device-switch-pills {
+            display: flex;
+            background: #1e293b;
+            padding: 3px;
+            border-radius: 999px;
+            gap: 4px;
+        }
+
+        .btn-device-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-device-pill.active {
+            background: #0e7647;
+            color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-device-pill:not(.active):hover {
+            color: #ffffff;
+        }
+
+        .btn-toggle-device-view {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #0a2540;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-toggle-device-view:hover {
+            background: #0a2540;
+            color: #a0d9d2;
+            border-color: #0a2540;
+        }
+
+        .btn-toggle-device-view i {
+            color: #0e7647;
+        }
+        .btn-toggle-device-view:hover i {
+            color: #a0d9d2;
+        }
+
+        /* QUAND LE MODE SMARTPHONE EST ACTIVÉ SUR PC */
+        body.force-mobile-view {
+            background: #0b1329 !important;
+            padding: 0 10px 40px 10px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            min-height: 100vh !important;
+        }
+
+        body.force-mobile-view .desktop-device-bar {
+            position: sticky !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4) !important;
+        }
+
+        body.force-mobile-view .app-container {
+            width: 100% !important;
+            max-width: 440px !important;
+            margin: 20px auto 20px auto !important;
+            background: #f8fafc !important;
+            border-radius: 40px !important;
+            border: 8px solid #1e293b !important;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+            overflow: hidden !important;
+            position: relative !important;
+            min-height: 840px !important;
+        }
+
+        body.force-mobile-view .sidebar {
+            display: none !important;
+        }
+
+        body.force-mobile-view .main-wrapper {
+            width: 100% !important;
+            margin-left: 0 !important;
+            padding: 0 !important;
+        }
+
+        body.force-mobile-view .dashboard-main-content {
+            padding: 12px 14px 24px 14px !important;
+            width: 100% !important;
+        }
+
+        body.force-mobile-view .journal-card-filters,
+        body.force-mobile-view .journal-subtitle-bar,
+        body.force-mobile-view .btn-webhook-assistant-nav,
+        body.force-mobile-view .table-wrapper,
+        body.force-mobile-view .mobile-table-hint {
+            display: none !important;
+        }
+
+        body.force-mobile-view .mobile-financial-header {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+        }
+
+        body.force-mobile-view .mobile-tx-cards-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0 !important;
+            width: 100% !important;
+            background: #ffffff !important;
+            border-radius: 16px !important;
+            padding: 4px 14px !important;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+            margin-top: 14px !important;
+            border: 1px solid #f1f5f9 !important;
+        }
+
+        body.force-mobile-view .mobile-tx-card {
+            background: #ffffff !important;
+            border: none !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            border-radius: 0 !important;
+            padding: 16px 2px !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            justify-content: space-between !important;
+            gap: 16px !important;
+            box-shadow: none !important;
+            cursor: pointer !important;
+        }
+
+        body.force-mobile-view .mobile-tx-card:last-child {
+            border-bottom: none !important;
+        }
+
+        body.force-mobile-view .wave-tx-left {
+            flex: 1 !important;
+            min-width: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 4px !important;
+        }
+
+        body.force-mobile-view .wave-tx-title {
+            font-size: 15px !important;
+            font-weight: 700 !important;
+            color: #0a2540 !important;
+            line-height: 1.35 !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            margin: 0 !important;
+        }
+
+        body.force-mobile-view .wave-tx-date {
+            font-size: 12px !important;
+            color: #64748b !important;
+            font-weight: 500 !important;
+        }
+
+        body.force-mobile-view .wave-tx-right {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            gap: 6px !important;
+            flex-shrink: 0 !important;
+        }
+
+        body.force-mobile-view .wave-tx-amount {
+            font-size: 16px !important;
+            font-weight: 800 !important;
+            color: #222222 !important;
+            white-space: nowrap !important;
+        }
+
+        body.force-mobile-view .wave-tx-proof-pill {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            padding: 3px 8px !important;
+            border-radius: 6px !important;
+            font-size: 10.5px !important;
+            font-weight: 700 !important;
+        }
+
+        body.force-mobile-view .proof-nav-toolbar {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            margin: 10px 0 12px 0 !important;
+        }
+
+        body.force-mobile-view .proof-nav-date-btn {
+            flex: 1 !important;
+            min-width: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 12px !important;
+            padding: 10px 12px !important;
+            font-size: 12.5px !important;
+            font-weight: 700 !important;
+            color: #0a2540 !important;
+            cursor: pointer !important;
+            font-family: inherit !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+        }
+
+        body.force-mobile-view .proof-nav-lines {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 12px !important;
+            padding: 4px 6px 4px 10px !important;
+            font-size: 11.5px !important;
+            font-weight: 700 !important;
+            color: #64748b !important;
+            flex-shrink: 0 !important;
+        }
+
+        body.force-mobile-view .proof-nav-lines select {
+            border: none !important;
+            background: #0a2540 !important;
+            color: #ffffff !important;
+            font-weight: 800 !important;
+            font-size: 12px !important;
+            border-radius: 8px !important;
+            padding: 6px 8px !important;
+            font-family: inherit !important;
+            outline: none !important;
+            cursor: pointer !important;
+        }
+
+        body.force-mobile-view .proof-nav-more {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 14px 0 6px 0 !important;
+        }
+
+        body.force-mobile-view .grow-nav-dock {
+            display: flex !important;
+        }
+
         /* BARRE DE NAVIGATION DOCK GROW CONFORME IMAGE 2 (REMPLACE COMMUTATEUR TABLEUR) */
         .grow-nav-dock {
             display: flex;
@@ -4410,6 +4719,23 @@
 <body>
 
     <!-- ========================================================================= -->
+    <!-- BANDEAU DE COMMUTATION VUE BUREAU / SMARTPHONE SUR ORDINATEUR            -->
+    <!-- ========================================================================= -->
+    <div class="desktop-device-bar" id="desktopDeviceBar">
+        <div class="device-bar-content">
+            <span class="device-bar-label"><i class="fa-solid fa-sliders"></i> Affichage écran :</span>
+            <div class="device-switch-pills">
+                <button type="button" class="btn-device-pill active" id="btnModeDesktop" onclick="setDeviceView('desktop')" title="Affichage complet bureau avec grand écran">
+                    <i class="fa-solid fa-laptop"></i> Vue Ordinateur
+                </button>
+                <button type="button" class="btn-device-pill" id="btnModeMobile" onclick="setDeviceView('mobile')" title="Affichage smartphone natif avec le flux et cartes Wave">
+                    <i class="fa-solid fa-mobile-screen"></i> Vue Smartphone 📱
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
     <!-- BARRE DE NAVIGATION SUPÉRIEURE (MENU HORIZONTAL GROW | ONECCA) -->
     <!-- ========================================================================= -->
     <header class="top-navbar">
@@ -4432,7 +4758,11 @@
         </div>
 
         <div class="nav-right">
-            
+            <!-- BOUTON RAPIDE BASCULE VUE SMARTPHONE / BUREAU -->
+            <button type="button" class="btn-toggle-device-view" id="btnToggleDeviceView" onclick="toggleDeviceView()" title="Basculer vers la vue Smartphone ou Bureau">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <span id="deviceViewBtnLabel">Vue Smartphone</span>
+            </button>
 
             <button class="bell-btn" title="1 nouvelle alerte comptable">
                 <i class="fa-regular fa-bell"></i>
@@ -7854,10 +8184,64 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             alert("Exportation officielle du Grand Livre & Journal SYSCOHADA (Norme ONECCA)...\nTéléchargement du relevé certifié en cours.");
         }
 
+        // --- GESTION DU MODE D'AFFICHAGE SMARTPHONE SUR ORDINATEUR ---
+        function setDeviceView(mode) {
+            const body = document.body;
+            const btnDesk = document.getElementById('btnModeDesktop');
+            const btnMob = document.getElementById('btnModeMobile');
+            const lbl = document.getElementById('deviceViewBtnLabel');
+
+            if (mode === 'mobile') {
+                body.classList.add('force-mobile-view');
+                if (btnDesk) btnDesk.classList.remove('active');
+                if (btnMob) btnMob.classList.add('active');
+                if (lbl) lbl.textContent = 'Vue Bureau 💻';
+                localStorage.setItem('grow_view_mode', 'mobile');
+                try {
+                    const u = new URL(window.location);
+                    u.searchParams.set('mode', 'mobile');
+                    history.replaceState(null, null, u);
+                } catch (e) {}
+            } else {
+                body.classList.remove('force-mobile-view');
+                if (btnDesk) btnDesk.classList.add('active');
+                if (btnMob) btnMob.classList.remove('active');
+                if (lbl) lbl.textContent = 'Vue Smartphone 📱';
+                localStorage.setItem('grow_view_mode', 'desktop');
+                try {
+                    const u = new URL(window.location);
+                    u.searchParams.delete('mode');
+                    history.replaceState(null, null, u);
+                } catch (e) {}
+            }
+
+            if (typeof applyAllFiltersAndRender === 'function') {
+                applyAllFiltersAndRender();
+            }
+        }
+
+        function toggleDeviceView() {
+            if (document.body.classList.contains('force-mobile-view')) {
+                setDeviceView('desktop');
+            } else {
+                setDeviceView('mobile');
+            }
+        }
+
         // Lancement au chargement de la page
         document.addEventListener('DOMContentLoaded', () => {
             renderCalendar();
             initDatesAndPeriods();
+
+            // Initialisation de la vue Bureau / Smartphone sur ordinateur
+            const urlMode = new URLSearchParams(window.location.search).get('mode');
+            const savedMode = localStorage.getItem('grow_view_mode');
+            if (urlMode === 'mobile' || urlMode === 'smartphone' || (!urlMode && savedMode === 'mobile')) {
+                setDeviceView('mobile');
+            } else {
+                setDeviceView('desktop');
+            }
+
             loadDashboardData();
 
             // Par défaut, TOUJOURS afficher l'onglet Accueil (Journal des écritures & preuves)
