@@ -7158,8 +7158,11 @@
 
 <body class="bg-slate-50 text-slate-900 antialiased min-h-screen">
 
+    <!-- BACKDROP OVERLAY MOBILE -->
+    <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
+
     <!-- SIDEBAR BLANCHE ÉPURÉE -->
-    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200/90 shadow-sm flex flex-col justify-between overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
+    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200/90 shadow-sm flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out">
         <div class="flex flex-col">
             <!-- Header Marque avec le vrai logo GROW -->
             <div class="h-16 px-5 flex items-center justify-between border-b border-slate-100 bg-white">
@@ -7170,8 +7173,8 @@
                         <span class="text-[10px] text-slate-400 font-medium mt-0.5">SYSCOHADA Pro</span>
                     </div>
                 </div>
-                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-50 transition-colors" title="Fermer le menu">
-                    <span class="material-symbols-outlined text-[19px]">close</span>
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" title="Réduire le menu (Ctrl+B)">
+                    <span class="material-symbols-outlined text-[19px]">dock_to_left</span>
                 </button>
             </div>
 
@@ -7263,12 +7266,12 @@
     </aside>
 
     <!-- WRAPPER PRINCIPAL DÉBLOQUÉ POUR SCROLLER NATURELLEMENT -->
-    <div class="md:pl-64 min-h-screen flex flex-col bg-slate-50">
+    <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col bg-slate-50 transition-all duration-200 ease-in-out">
 
         <!-- HEADER SUPÉRIEUR ÉPURÉ -->
         <header class="h-14 bg-white border-b border-slate-200/90 px-6 flex items-center justify-between sticky top-0 z-40">
             <div class="flex items-center gap-3">
-                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-600 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+                <button onclick="toggleSidebar()" class="text-slate-500 hover:text-slate-800 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" title="Afficher / Masquer le menu (Ctrl+B)">
                     <span class="material-symbols-outlined text-[20px]">menu</span>
                 </button>
                 <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
@@ -11924,7 +11927,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 setTimeout(ouvrirModalWebhookAssistant, 400);
             }
         });
-    </script>
+    
 
         function handleSearchInput(query) {
             if (!allTransactions) return;
@@ -11965,11 +11968,40 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
         }
 
-        function toggleMobileSidebar() {
+        let isSidebarOpen = true;
+
+        function toggleSidebar() {
             const aside = document.getElementById('comptableSidebar');
-            if (aside) {
-                aside.classList.toggle('-translate-x-full');
+            const mainWrap = document.getElementById('mainContentWrapper');
+            const backdrop = document.getElementById('sidebarBackdrop');
+
+            if (window.innerWidth < 768) {
+                if (!aside) return;
+                const isClosed = aside.classList.contains('-translate-x-full');
+                if (isClosed) {
+                    aside.classList.remove('-translate-x-full');
+                    if (backdrop) backdrop.classList.remove('hidden');
+                } else {
+                    aside.classList.add('-translate-x-full');
+                    if (backdrop) backdrop.classList.add('hidden');
+                }
+            } else {
+                isSidebarOpen = !isSidebarOpen;
+                if (!aside || !mainWrap) return;
+                if (isSidebarOpen) {
+                    aside.classList.remove('-translate-x-full');
+                    mainWrap.classList.remove('md:pl-0');
+                    mainWrap.classList.add('md:pl-64');
+                } else {
+                    aside.classList.add('-translate-x-full');
+                    mainWrap.classList.remove('md:pl-64');
+                    mainWrap.classList.add('md:pl-0');
+                }
             }
+        }
+
+        function toggleMobileSidebar() {
+            toggleSidebar();
         }
 
         function ouvrirModalVisaOnecca() {
@@ -12023,9 +12055,17 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 const inp = document.getElementById('table-search-input');
                 if (inp) inp.focus();
             }
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+                e.preventDefault();
+                toggleSidebar();
+            }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
+            if (window.innerWidth < 768) {
+                const aside = document.getElementById('comptableSidebar');
+                if (aside) aside.classList.add('-translate-x-full');
+            }
             const selectAll = document.getElementById('select-all-rows');
             if (selectAll) {
                 selectAll.addEventListener('change', function() {
@@ -12036,6 +12076,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
         });
 
+</script>
 
     <!-- SCRIPT 1 -->
     <script>
