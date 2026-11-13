@@ -4,10 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plaque Présentoir Comptoir • GROW</title>
+    <title>Plaque Présentoir Comptoir • Discutez avec Grow sur WhatsApp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap');
+
+        :root {
+            --grow-dark: #191e24;
+            --grow-mint: #a0d9d2;
+            --wa-green: #25D366;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+        }
 
         * {
             box-sizing: border-box;
@@ -17,194 +24,312 @@
 
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #f8fafc;
-            color: #0f172a;
+            background: #0b1222;
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px 16px;
+            padding: 32px 16px;
         }
 
+        /* BARRE D'ACTIONS SUPÉRIEURE (MODERNE SENMARKETING) */
         .action-bar {
             display: flex;
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
         }
 
         .btn-action {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 11px 18px;
-            border-radius: 8px;
-            font-size: 13.5px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-size: 13px;
             font-weight: 700;
             text-decoration: none;
             cursor: pointer;
-            transition: all 0.15s ease;
-            border: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+            font-family: inherit;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
         }
 
         .btn-download {
-            background: #0e7647;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(14, 118, 71, 0.25);
+            background: var(--grow-mint);
+            color: #0b1222;
+            box-shadow: 0 4px 14px rgba(160, 217, 210, 0.3);
         }
         .btn-download:hover {
-            background: #0b5e38;
+            background: #88c9c1;
+            box-shadow: 0 6px 20px rgba(160, 217, 210, 0.45);
         }
 
         .btn-print {
-            background: #0f172a;
+            background: rgba(255, 255, 255, 0.1);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
         }
         .btn-print:hover {
-            background: #1e293b;
+            background: rgba(255, 255, 255, 0.18);
+            border-color: var(--grow-mint);
         }
 
         .btn-wa {
-            background: #ffffff;
-            color: #0e7647;
-            border: 1.5px solid #0e7647;
+            background: var(--wa-green);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
         }
         .btn-wa:hover {
-            background: #f0fdf4;
+            background: #20bd5a;
         }
 
         .btn-back {
-            background: #ffffff;
-            color: #475569;
-            border: 1px solid #cbd5e1;
+            background: transparent;
+            color: #94a3b8;
+            border-color: rgba(255, 255, 255, 0.12);
         }
         .btn-back:hover {
-            background: #f1f5f9;
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        /* CARTE DE COMPTOIR SOBRE ET PROFESSIONNELLE */
-        .print-card {
+        /* ========================================================================= */
+        /* CARTE DE COMPTOIR DESIGNER (INSPIRÉE DE L'ŒUVRE ORIGINALE DU DESIGNER)     */
+        /* ========================================================================= */
+        .designer-poster-wrapper {
+            position: relative;
             width: 100%;
-            max-width: 420px;
-            background: #ffffff;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.18);
-            border: 1px solid #e2e8f0;
+            max-width: 440px;
+        }
+
+        .designer-card {
+            background: #1e2329;
+            background: radial-gradient(circle at 50% 0%, #262c35 0%, #171b20 100%);
+            border-radius: 28px;
+            padding: 38px 28px 32px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
             display: flex;
             flex-direction: column;
-            position: relative;
-        }
-
-        .card-header {
-            background: #0f172a;
-            color: #ffffff;
-            padding: 28px 24px 22px;
+            align-items: center;
             text-align: center;
             position: relative;
-            border-bottom: 4px solid #0e7647;
+            overflow: hidden;
         }
 
-        .stand-hole {
-            width: 14px;
-            height: 14px;
+        /* Formes d'arrière-plan abstraites stylisées (signature du designer) */
+        .designer-card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: -60px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 0 auto 16px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: radial-gradient(circle, rgba(160, 217, 210, 0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        .brand-container {
+        .designer-card::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(37, 211, 102, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* TITRE D'EN-TÊTE ÉPURÉ LOWERCASE */
+        .designer-headline {
+            margin-bottom: 26px;
+            z-index: 1;
+        }
+
+        .line-discutez {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 7px;
+            flex-wrap: wrap;
         }
 
-        .brand-logo-img {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid #0e7647;
-            object-fit: cover;
-            background: #ffffff;
-        }
-
-        .brand-name {
-            font-size: 22px;
+        .brand-grow-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            color: var(--grow-mint);
             font-weight: 900;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-            line-height: 1;
         }
 
-        .brand-sub {
-            font-size: 10.5px;
-            font-weight: 700;
-            color: #34d399;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+        .brand-grow-pill i {
+            font-size: 18px;
+            transform: translateY(-2px);
+        }
+
+        .line-wa {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
             margin-top: 3px;
         }
 
-        .card-body {
-            padding: 28px 24px 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #ffffff;
-            text-align: center;
+        .wa-green-pill {
+            color: var(--wa-green);
+            font-weight: 900;
         }
 
-        .qr-frame {
+        /* CADRE BLANC DU QR CODE (HAUTE DÉFINITION) */
+        .qr-card-white {
             background: #ffffff;
-            padding: 14px;
-            border-radius: 18px;
-            border: 2px solid #e2e8f0;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
-            margin-bottom: 20px;
+            border-radius: 26px;
+            padding: 20px;
+            width: 100%;
+            max-width: 330px;
+            aspect-ratio: 1 / 1;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+            z-index: 1;
+            margin-bottom: 22px;
         }
 
-        .qr-image {
-            width: 250px;
-            height: 250px;
-            border-radius: 10px;
-            display: block;
+        .qr-card-white img {
+            width: 100%;
+            height: 100%;
             object-fit: contain;
+            display: block;
+            border-radius: 12px;
         }
 
-        .card-footer {
-            background: #0f172a;
-            color: #cbd5e1;
-            padding: 12px 24px;
+        /* Icône viseur de scan dans le coin inférieur droit (détail du designer) */
+        .scan-viewfinder-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.06);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-size: 11px;
-            border-top: 1px solid #1e293b;
+            justify-content: center;
+            color: #475569;
+            font-size: 14px;
+            pointer-events: none;
+            border: 1px solid rgba(15, 23, 42, 0.08);
         }
 
+        /* INFORMATIONS DE CONTACT COMPTOIR */
+        .designer-footer-meta {
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .phone-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+
+        .phone-chip i {
+            color: var(--wa-green);
+        }
+
+        .instructions-text {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.45;
+            max-width: 340px;
+        }
+
+        .instructions-wolof {
+            font-size: 11px;
+            color: var(--grow-mint);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* TABS VUE CSS VS VISUEL OFFICIEL DU DESIGNER */
+        .view-switch-pills {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 4px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .view-pill-btn {
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: transparent;
+            color: #94a3b8;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+
+        .view-pill-btn.active {
+            background: var(--grow-mint);
+            color: #0b1222;
+        }
+
+        /* IMPRESSION PAPIER (A5 / A6) */
         @media print {
             body {
                 background: #ffffff !important;
                 padding: 0 !important;
+                color: #000000 !important;
             }
 
-            .action-bar, .no-print {
+            .action-bar, .no-print, .view-switch-pills {
                 display: none !important;
             }
 
-            .print-card {
+            .designer-card {
+                background: #181d24 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
                 box-shadow: none !important;
-                border: 1.5px solid #0f172a !important;
                 margin: 0 auto !important;
+                max-width: 148mm !important; /* Format A5 standard */
+                border-radius: 18px !important;
             }
         }
     </style>
@@ -212,79 +337,104 @@
 
 <body>
 
-    <!-- Barre d'actions rapides (Téléchargement & Impression) -->
+    <!-- Barre d'actions rapides -->
     <div class="action-bar no-print">
-        <a href="/telecharger-carte" download="Plaque_Comptoir_Grow.png" class="btn-action btn-download" title="Télécharger l'image HD prête à imprimer">
-            <i class="fa-solid fa-download"></i> Télécharger la Carte (HD PNG)
+        <a href="/telecharger-carte" download="Plaque_Comptoir_Grow.png" class="btn-action btn-download" title="Télécharger l'image HD officielle">
+            <i class="fa-solid fa-download"></i> Télécharger Carte HD (PNG)
         </a>
         <button onclick="window.print()" class="btn-action btn-print" title="Lancer l'impression directe">
-            <i class="fa-solid fa-print"></i> Imprimer (A5 / A6)
+            <i class="fa-solid fa-print"></i> Imprimer Plaque (A5 / A6)
         </button>
-        <a href="https://wa.me/15551657593?text=Bonjour" target="_blank" class="btn-action btn-wa" title="Tester le lien WhatsApp">
+        <a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank" class="btn-action btn-wa" title="Ouvrir WhatsApp direct">
             <i class="fa-brands fa-whatsapp"></i> Tester sur WhatsApp
         </a>
-        <a href="/dashboard" class="btn-action btn-back" title="Revenir au tableau de bord">
+        <a href="/dashboard?phone=221788773827" class="btn-action btn-back" title="Revenir au tableau de bord">
             <i class="fa-solid fa-arrow-left"></i> Dashboard
         </a>
     </div>
 
-    <!-- CARTE PRÉSENTOIR DE COMPTOIR GROW (PALETTE : VERT & BLEU MARINE) -->
-    <div class="print-card">
+    <!-- Sélecteur de prévisualisation (Interactif) -->
+    <div class="view-switch-pills no-print">
+        <button type="button" class="view-pill-btn active" id="btnViewCard" onclick="switchPreview('card')">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Carte Vectorielle
+        </button>
+        <button type="button" class="view-pill-btn" id="btnViewArtwork" onclick="switchPreview('artwork')">
+            <i class="fa-solid fa-image"></i> Visuel Original du Designer
+        </button>
+    </div>
 
-        <!-- En-tête Bleu Marine sobre -->
-        <div class="card-header">
+    <!-- CONTENEUR DU PRÉSENTOIR DE COMPTOIR -->
+    <div class="designer-poster-wrapper">
+
+        <!-- 1. CARTE COMPTOIR STYLISÉE MODERNE -->
+        <div class="designer-card" id="previewCard">
             
-            <!-- Découpe chevalet plexiglas -->
-            <div class="stand-hole"></div>
-
-            <!-- Logo Grow officiel & Titre -->
-            <div class="brand-container">
-                <img src="/static/logo_grow.jpg" alt="Logo Grow" class="brand-logo-img" />
-                <div style="text-align: left;">
-                    <div class="brand-name">GROW</div>
-                    <div class="brand-sub">PRÉ-COMPTABILITÉ PME</div>
+            <div class="designer-headline">
+                <div class="line-discutez">
+                    <span>discutez avec</span>
+                    <span class="brand-grow-pill">grow <i class="fa-solid fa-seedling"></i></span>
+                </div>
+                <div class="line-wa">
+                    <span>sur</span>
+                    <span class="wa-green-pill">whatsapp</span>
                 </div>
             </div>
 
-            <!-- Titre clair et direct -->
-            <h1 style="font-size: 19px; font-weight: 800; letter-spacing: -0.2px; margin-bottom: 4px; color: #ffffff;">
-                Scannez pour démarrer sur WhatsApp
-            </h1>
-            <p style="color: #94a3b8; font-size: 12px; font-weight: 500;">
-                Enregistrez vos ventes et vos dépenses en direct
-            </p>
-        </div>
-
-        <!-- Corps épuré avec QR Code -->
-        <div class="card-body">
-            
-            <!-- Cadre épuré blanc autour du QR Code -->
-            <div class="qr-frame">
-                <img src="/static/qr_code_whatsapp.png" alt="Code QR WhatsApp Grow" class="qr-image" />
+            <!-- Cadre blanc épuré du QR Code -->
+            <div class="qr-card-white">
+                <img src="/static/qr_code_whatsapp.png" alt="Code QR WhatsApp Grow" id="qrImgMain" />
+                <div class="scan-viewfinder-badge">
+                    <i class="fa-solid fa-expand"></i>
+                </div>
             </div>
 
-            <!-- Instructions sobres en Français et Wolof -->
-            <div>
-                <div style="color: #0f172a; font-size: 13.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    <i class="fa-solid fa-camera" style="color: #0e7647;"></i> Ouvrez votre appareil photo et scannez le code
+            <!-- Métadonnées & Instructions de scan -->
+            <div class="designer-footer-meta">
+                <div class="phone-chip">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>+221 78 877 38 27</span>
                 </div>
-                <div style="color: #64748b; font-size: 11.5px; margin-top: 3px; font-weight: 600;">
-                    Yomb na, gaaw na ci WhatsApp
+                <div class="instructions-text">
+                    Scannez avec votre appareil photo ou votre application WhatsApp
+                </div>
+                <div class="instructions-wolof">
+                    Yomb na &bull; Gaaw na &bull; Vocaux &amp; Photos de reçus acceptés
                 </div>
             </div>
         </div>
 
-        <!-- Pied de page officiel SYSCOHADA SMT -->
-        <div class="card-footer" style="justify-content: center; gap: 8px;">
-            <i class="fa-solid fa-shield-halved" style="color: #10b981;"></i>
-            <span style="font-weight: 700; color: #ffffff;">Norme SYSCOHADA SMT • Sénégal</span>
+        <!-- 2. AFFICHE ORIGINALE DU DESIGNER (MASQUÉE PAR DÉFAUT) -->
+        <div class="designer-card" id="previewArtwork" style="display: none; padding: 12px; background: #000000;">
+            <img src="/static/designer_grow_qr_card.jpg" alt="Affiche Officielle Designer Grow" style="width: 100%; height: auto; border-radius: 20px; display: block;" />
         </div>
+
     </div>
 
     <!-- Note d'aide sous la carte -->
-    <div class="no-print" style="margin-top: 18px; text-align: center; font-size: 11.5px; color: #64748b; max-width: 420px; line-height: 1.45;">
-        💡 <strong>Présentoir de Caisse :</strong> Cliquez sur <em>« Télécharger la Carte (HD PNG) »</em> pour obtenir le fichier haute définition ou utilisez <em>« Imprimer »</em> pour l'éditer en format A5 / A6.
+    <div class="no-print" style="margin-top: 22px; text-align: center; font-size: 12px; color: #64748b; max-width: 440px; line-height: 1.5;">
+        ✨ <strong>Présentoir de Caisse PME :</strong> Imprimez cette affiche en format A5 ou A6 pour l'exposer sur votre comptoir. Vos clients et employés peuvent ainsi envoyer leurs transactions vocalement en direct.
     </div>
+
+    <script>
+        function switchPreview(mode) {
+            const c = document.getElementById('previewCard');
+            const a = document.getElementById('previewArtwork');
+            const bC = document.getElementById('btnViewCard');
+            const bA = document.getElementById('btnViewArtwork');
+
+            if (mode === 'artwork') {
+                if (c) c.style.display = 'none';
+                if (a) a.style.display = 'block';
+                if (bC) bC.classList.remove('active');
+                if (bA) bA.classList.add('active');
+            } else {
+                if (c) c.style.display = 'flex';
+                if (a) a.style.display = 'none';
+                if (bC) bC.classList.add('active');
+                if (bA) bA.classList.remove('active');
+            }
+        }
+    </script>
 
 </body>
 
