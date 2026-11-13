@@ -3874,6 +3874,95 @@
             text-align: right;
         }
 
+        /* BARRE NAVIGATION PREUVES : CALENDRIER + NOMBRE DE LIGNES (SMARTPHONE) */
+        .proof-nav-toolbar { display: none; }
+        .proof-nav-more { display: none; }
+        @media (max-width: 768px) {
+            .proof-nav-toolbar {
+                display: flex !important;
+                align-items: center;
+                gap: 8px;
+                margin: 10px 0 12px 0;
+            }
+            .proof-nav-date-btn {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 10px 12px;
+                font-size: 12.5px;
+                font-weight: 700;
+                color: #0a2540;
+                cursor: pointer;
+                font-family: inherit;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            }
+            .proof-nav-date-btn i:first-child { color: #0e7647; font-size: 14px; }
+            .proof-nav-date-btn span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .proof-nav-reset-btn {
+                width: 38px; height: 38px; flex-shrink: 0;
+                border-radius: 12px;
+                border: 1px solid #e2e8f0;
+                background: #ffffff;
+                color: #222222;
+                align-items: center; justify-content: center;
+                cursor: pointer;
+            }
+            .proof-nav-lines {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 4px 6px 4px 10px;
+                font-size: 11.5px;
+                font-weight: 700;
+                color: #64748b;
+                flex-shrink: 0;
+            }
+            .proof-nav-lines select {
+                border: none;
+                background: #0a2540;
+                color: #ffffff;
+                font-weight: 800;
+                font-size: 12px;
+                border-radius: 8px;
+                padding: 6px 8px;
+                font-family: inherit;
+                outline: none;
+                cursor: pointer;
+            }
+            .proof-nav-more {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+                padding: 14px 0 6px 0;
+            }
+            .proof-nav-more span {
+                font-size: 11.5px;
+                color: #64748b;
+                font-weight: 600;
+            }
+            .proof-nav-more button {
+                background: #222222;
+                color: #a0d9d2;
+                border: 1.5px solid #a0d9d2;
+                border-radius: 999px;
+                padding: 9px 20px;
+                font-size: 12.5px;
+                font-weight: 800;
+                cursor: pointer;
+                font-family: inherit;
+                display: flex; align-items: center; gap: 6px;
+            }
+            #calendarPopover { z-index: 3000 !important; }
+        }
+
         /* BARRE DE NAVIGATION DOCK GROW CONFORME IMAGE 2 (REMPLACE COMMUTATEUR TABLEUR) */
         .grow-nav-dock {
             display: flex;
@@ -4594,8 +4683,34 @@
                     <i class="fa-solid fa-arrows-left-right"></i>
                     <span>Glissez horizontalement pour voir Débit, Crédit &amp; Preuves</span>
                 </div>
+                <!-- BARRE MOBILE : PÉRIODE (CALENDRIER) + NOMBRE DE LIGNES -->
+                <div class="proof-nav-toolbar" id="proofNavToolbar">
+                    <button type="button" class="proof-nav-date-btn" onclick="toggleCalendarPopover(event)">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <span id="proofNavDateLabel">Toutes les dates</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: auto; opacity: .7;"></i>
+                    </button>
+                    <button type="button" class="proof-nav-reset-btn" id="proofNavResetBtn" onclick="resetDateFilter()" title="Toutes les dates" style="display:none;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="proof-nav-lines">
+                        <span>Afficher</span>
+                        <select id="proofNavLinesSelect" onchange="selectCustomPageSize(this.value)">
+                            <option value="10">10</option>
+                            <option value="15" selected>15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="0">Tout</option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- Liste native de cartes transactions pour smartphone -->
                 <div class="mobile-tx-cards-list" id="mobileCardsList"></div>
+                <div class="proof-nav-more" id="proofNavMore" style="display:none;">
+                    <span id="proofNavMoreInfo">15 sur 40 preuves</span>
+                    <button type="button" onclick="afficherPlusDePreuves()">Afficher plus <i class="fa-solid fa-chevron-down"></i></button>
+                </div>
 
                 <div class="table-wrapper">
                     <table class="full-journal-table" id="transactionsTable">
@@ -6390,10 +6505,37 @@
             // 4. Mise à jour des Totaux (Débit, Crédit, Solde Net) pour la sélection active
             updateTotalsForFilteredList(list);
 
-            // 5. Affichage continu sous forme de ligne déroulante (Style Wave)
+            // 5. Affichage limité au nombre de lignes choisi (0 = tout)
             const totalItems = list.length;
-            renderTransactionsList(list, totalItems);
-            renderPaginationBar(totalItems, 0, totalItems, 1);
+            const visibleCount = (pageSize > 0) ? Math.min(pageSize * currentPage, totalItems) : totalItems;
+            renderTransactionsList(list.slice(0, visibleCount), totalItems);
+            renderPaginationBar(totalItems, 0, visibleCount, 1);
+            const more = document.getElementById('proofNavMore');
+            const moreInfo = document.getElementById('proofNavMoreInfo');
+            if (more) more.style.display = (visibleCount < totalItems) ? 'flex' : 'none';
+            if (moreInfo) moreInfo.textContent = `${visibleCount} sur ${totalItems} preuves`;
+            updateProofNavDateLabel();
+        }
+
+        function afficherPlusDePreuves() {
+            currentPage += 1;
+            applyAllFiltersAndRender();
+        }
+
+        function updateProofNavDateLabel() {
+            const lbl = document.getElementById('proofNavDateLabel');
+            const rst = document.getElementById('proofNavResetBtn');
+            if (!lbl) return;
+            const fmt = s => { const [y, m, d] = s.split('-'); return `${d}/${m}/${y}`; };
+            let txt = 'Toutes les dates', active = false;
+            if (currentFilterPeriod === 'custom' && calStartDate && calEndDate) {
+                txt = calStartDate === calEndDate ? `Le ${fmt(calStartDate)}` : `Du ${fmt(calStartDate)} au ${fmt(calEndDate)}`;
+                active = true;
+            } else if (currentFilterPeriod === 'semaine') {
+                txt = 'Cette semaine'; active = true;
+            }
+            lbl.textContent = txt;
+            if (rst) rst.style.display = active ? 'flex' : 'none';
         }
 
         function updateTotalsForFilteredList(list) {
@@ -6530,8 +6672,11 @@
         }
 
         function selectCustomPageSize(size) {
-            pageSize = parseInt(size, 10) || 15;
+            pageSize = parseInt(size, 10);
+            if (isNaN(pageSize) || pageSize < 0) pageSize = 15;
             currentPage = 1;
+            const sel = document.getElementById('proofNavLinesSelect');
+            if (sel && sel.value !== String(pageSize)) sel.value = String(pageSize);
 
             const lbl = document.getElementById('customSelectedSizeLabel');
             if (lbl) lbl.textContent = `${pageSize} lignes`;
@@ -7072,6 +7217,10 @@
             if (event) event.stopPropagation();
             const pop = document.getElementById('calendarPopover');
             if (pop) {
+                // Sur smartphone, le bloc filtres desktop est masqué : on détache le calendrier vers <body>
+                if (window.innerWidth <= 768 && pop.parentElement !== document.body) {
+                    document.body.appendChild(pop);
+                }
                 pop.classList.toggle('show');
                 if (pop.classList.contains('show')) {
                     renderCalendar();
