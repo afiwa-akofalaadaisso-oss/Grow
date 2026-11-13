@@ -3650,7 +3650,11 @@
         /* STYLES FINTECH NATIVE MOBILE (EXPÉRIENCE SMARTPHONE SANS DÉBORDEMENT)      */
         /* ========================================================================= */
         .mobile-financial-header {
-            display: none;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 14px !important;
+            margin-bottom: 22px !important;
+            width: 100% !important;
         }
         .mobile-quick-actions {
             display: none;
@@ -5214,6 +5218,91 @@
             border-radius: 20px !important;
             overflow: hidden !important;
             box-shadow: 0 25px 50px rgba(0,0,0,0.3) !important;
+        }
+
+    
+        /* ========================================================================= */
+        /* STYLES SPÉCIFIQUES GRAND ÉCRAN (BUREAU / ORDINATEUR)                     */
+        /* ========================================================================= */
+        @media (min-width: 769px) {
+            body:not(.force-mobile-view) .mobile-financial-header {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 14px !important;
+                margin-bottom: 24px !important;
+                width: 100% !important;
+            }
+
+            body:not(.force-mobile-view) .fintech-hero-card {
+                padding: 24px 32px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                flex-direction: row !important;
+                gap: 24px !important;
+            }
+
+            body:not(.force-mobile-view) .fintech-top-meta {
+                margin-bottom: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 16px !important;
+                order: 1 !important;
+            }
+
+            body:not(.force-mobile-view) .fintech-card-main-content {
+                margin-top: 0 !important;
+                display: flex !important;
+                flex-direction: row-reverse !important;
+                align-items: center !important;
+                gap: 24px !important;
+                order: 2 !important;
+            }
+
+            body:not(.force-mobile-view) .fintech-balance-big {
+                font-size: 34px !important;
+            }
+
+            body:not(.force-mobile-view) .grow-menu-bar {
+                max-width: 600px !important;
+                margin: 4px 0 16px 0 !important;
+            }
+
+            body:not(.force-mobile-view) .grow-flows-container {
+                margin: 0 0 18px 0 !important;
+            }
+
+            /* Sur ordinateur : STRICTEMENT le grand tableau comptable, cartes smartphone masquées */
+            body:not(.force-mobile-view) .mobile-tx-cards-list {
+                display: none !important;
+            }
+
+            body:not(.force-mobile-view) .proof-nav-toolbar {
+                display: none !important;
+            }
+
+            body:not(.force-mobile-view) .proof-nav-more {
+                display: none !important;
+            }
+
+            body:not(.force-mobile-view) .mobile-table-hint {
+                display: none !important;
+            }
+
+            body:not(.force-mobile-view) .table-wrapper {
+                display: block !important;
+                width: 100% !important;
+                border-radius: 16px !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+            }
+
+            body:not(.force-mobile-view) .journal-subtitle-bar {
+                display: flex !important;
+            }
+
+            body:not(.force-mobile-view) .journal-card-filters {
+                display: flex !important;
+            }
         }
 
     </style>
@@ -7591,6 +7680,11 @@
 
         // --- COMMUTATEUR FORMAT TABLEUR & LISTE MOBILE ---
         let currentMobileView = 'cards';
+
+        function isUserOnMobile() {
+            return document.body.classList.contains('force-mobile-view') || (window.innerWidth <= 768);
+        }
+
         function setMobileView(view) {
             currentMobileView = view;
             const cardsList = document.getElementById('mobileCardsList');
@@ -7598,6 +7692,26 @@
             const tableHint = document.querySelector('.mobile-table-hint');
             const btnCards = document.getElementById('btnViewCards');
             const btnTable = document.getElementById('btnViewTable');
+            const proofNav = document.getElementById('proofNavToolbar');
+            const proofMore = document.getElementById('proofNavMore');
+
+            const onMobile = isUserOnMobile();
+
+            // SUR ORDINATEUR (GRAND ÉCRAN SANS MODE SMARTPHONE FORCÉ) :
+            if (!onMobile) {
+                if (cardsList) cardsList.style.setProperty('display', 'none', 'important');
+                if (tableWrap) {
+                    tableWrap.style.setProperty('display', 'block', 'important');
+                    tableWrap.style.setProperty('width', '100%', 'important');
+                }
+                if (tableHint) tableHint.style.setProperty('display', 'none', 'important');
+                if (proofNav) proofNav.style.setProperty('display', 'none', 'important');
+                if (proofMore) proofMore.style.setProperty('display', 'none', 'important');
+                return;
+            }
+
+            // SUR SMARTPHONE (OU MODE SMARTPHONE ACTIF) :
+            if (proofNav) proofNav.style.setProperty('display', 'flex', 'important');
 
             if (view === 'table') {
                 if (cardsList) cardsList.style.setProperty('display', 'none', 'important');
@@ -7620,13 +7734,7 @@
                 }
             } else {
                 if (cardsList) cardsList.style.setProperty('display', 'flex', 'important');
-                if (tableWrap) {
-                    if (window.innerWidth <= 768) {
-                        tableWrap.style.setProperty('display', 'none', 'important');
-                    } else {
-                        tableWrap.style.removeProperty('display');
-                    }
-                }
+                if (tableWrap) tableWrap.style.setProperty('display', 'none', 'important');
                 if (tableHint) tableHint.style.setProperty('display', 'none', 'important');
                 if (btnTable) {
                     btnTable.classList.remove('active');
