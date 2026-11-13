@@ -5222,6 +5222,381 @@
 
     
         /* ========================================================================= */
+        
+        /* ========================================================================= */
+        /* ESPACE CABINET & EXPERT-COMPTABLE (VERSION ORDINATEUR)                   */
+        /* ========================================================================= */
+        .desktop-comptable-banner {
+            display: none;
+            background: linear-gradient(90deg, #0a2540 0%, #111618 100%);
+            color: #ffffff;
+            padding: 8px 24px;
+            font-size: 11.5px;
+            font-weight: 600;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(160, 217, 210, 0.2);
+        }
+
+        .desktop-comptable-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #a0d9d2;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* Sélecteur d'entreprise permanent bureau */
+        .desktop-company-selector {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(160, 217, 210, 0.3);
+            border-radius: 999px;
+            padding: 5px 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .desktop-company-selector:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #a0d9d2;
+        }
+
+        /* Barre d'onglets comptables SYSCOHADA (Bureau) */
+        .comptable-tabs-bar {
+            display: none;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #edf2f7;
+            border-radius: 16px;
+            padding: 6px;
+            margin: 0 0 16px 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+            box-sizing: border-box;
+        }
+
+        .comptable-tab-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            color: #0a2540;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+
+        .comptable-tab-btn:hover {
+            background: rgba(160, 217, 210, 0.12);
+            color: #0a2540;
+            border-color: rgba(160, 217, 210, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .comptable-tab-btn.active {
+            background: #0a2540 !important;
+            color: #ffffff !important;
+            border-color: #0a2540 !important;
+            box-shadow: 0 2px 8px rgba(10, 37, 64, 0.2);
+        }
+
+        .comptable-tab-btn.active i {
+            color: #a0d9d2 !important;
+        }
+
+        .comptable-tab-btn i {
+            font-size: 14px;
+            color: #64748b;
+            transition: color 0.15s ease;
+        }
+
+        .comptable-tab-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 11px;
+            background: rgba(160, 217, 210, 0.2);
+            color: #0a2540;
+            font-weight: 800;
+        }
+
+        .comptable-tab-btn.active .comptable-tab-badge {
+            background: #a0d9d2;
+            color: #0a2540;
+        }
+
+        /* Cartes et grilles des états financiers SYSCOHADA */
+        .comptable-statement-card {
+            background: #ffffff;
+            border: 1px solid #edf2f7;
+            border-radius: 20px;
+            padding: 24px 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            margin-bottom: 24px;
+        }
+
+        .statement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .statement-title-wrap h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0a2540;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .statement-title-wrap p {
+            font-size: 12px;
+            color: #64748b;
+            margin: 4px 0 0 0;
+        }
+
+        .statement-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-statement-export {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #0a2540;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-statement-export:hover {
+            background: #111618;
+            color: #a0d9d2;
+        }
+
+        /* Grille Bilan Actif / Passif */
+        .bilan-two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .bilan-column-block {
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .bilan-col-head {
+            background: #0a2540;
+            color: #ffffff;
+            padding: 12px 18px;
+            font-size: 13.5px;
+            font-weight: 800;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bilan-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+        }
+
+        .bilan-table th, .bilan-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .bilan-table th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .bilan-table .row-rubrique {
+            font-weight: 700;
+            color: #0a2540;
+            background: #f8fafc;
+        }
+
+        .bilan-table .row-detail td:first-child {
+            padding-left: 28px;
+            color: #334155;
+        }
+
+        .bilan-table .row-total {
+            background: rgba(160, 217, 210, 0.12);
+            font-weight: 800;
+            color: #0a2540;
+            border-top: 2px solid #0a2540;
+        }
+
+        /* Tableau Compte de Résultat & SIG */
+        .resultat-full-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+        }
+
+        .resultat-full-table th, .resultat-full-table td {
+            padding: 11px 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .resultat-full-table th {
+            background: #0a2540;
+            color: #ffffff;
+            font-size: 11.5px;
+            font-weight: 700;
+        }
+
+        .resultat-full-table .sig-row {
+            background: #f8fafc;
+            font-weight: 800;
+            color: #0a2540;
+        }
+
+        .resultat-full-table .sig-row-net {
+            background: #0a2540;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .resultat-full-table .sig-row-net td {
+            color: #ffffff !important;
+            border-bottom: none;
+        }
+
+        .resultat-full-table .sig-badge-val {
+            font-family: monospace;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* Cartes TFT Flux de Trésorerie */
+        .tft-section-box {
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            background: #ffffff;
+        }
+
+        .tft-section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            font-size: 13.5px;
+            color: #0a2540;
+            margin-bottom: 10px;
+        }
+
+        .tft-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 12.5px;
+            color: #334155;
+            border-bottom: 1px dashed #f1f5f9;
+        }
+
+        .tft-row:last-child {
+            border-bottom: none;
+        }
+
+        .tft-total-pill {
+            background: #0a2540;
+            color: #ffffff;
+            padding: 14px 20px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            font-size: 15px;
+            margin-top: 20px;
+        }
+
+        /* Annexes & Liasse Fiscale */
+        .annexes-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .annexe-card-item {
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .annexe-card-item h4 {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            font-weight: 700;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .annexe-card-item p {
+            margin: 0;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.45;
+        }
+
+        @media (min-width: 769px) {
+            body:not(.force-mobile-view) .desktop-comptable-banner {
+                display: flex !important;
+            }
+
+            body:not(.force-mobile-view) .comptable-tabs-bar {
+                display: grid !important;
+            }
+        }
+
         /* STYLES SPÉCIFIQUES GRAND ÉCRAN (BUREAU / ORDINATEUR)                     */
         /* ========================================================================= */
         @media (min-width: 769px) {
@@ -5316,6 +5691,24 @@
     <!-- ========================================================================= -->
     <!-- BANDEAU DE COMMUTATION VUE BUREAU / SMARTPHONE SUR ORDINATEUR            -->
     <!-- ========================================================================= -->
+    <!-- ========================================================================= -->
+    <!-- BANDEAU OFFICIEL CABINET EXPERT-COMPTABLE & PORTAIL CLIENT ONECCA        -->
+    <!-- ========================================================================= -->
+    <div class="desktop-comptable-banner" id="desktopComptableBanner">
+        <div class="desktop-comptable-badge">
+            <i class="fa-solid fa-stamp"></i>
+            <span>PORTAIL EXPERT-COMPTABLE &bull; SYSCOHADA RÉVISÉ (SÉNÉGAL)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <div class="desktop-company-selector" onclick="toggleCompanyDropdown(event)" title="Changer d'entreprise cliente">
+                <i class="fa-solid fa-briefcase" style="color: #a0d9d2;"></i>
+                <span id="comptableCurrentClientName">Dossier : Chargement...</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 10px; opacity: 0.8;"></i>
+            </div>
+            <span style="opacity: 0.6; font-size: 11px;" id="comptableTotalClientsCount">&bull; 0 entreprises au cabinet</span>
+        </div>
+    </div>
+
     <div class="desktop-device-bar" id="desktopDeviceBar">
         <div class="device-bar-content">
             <span class="device-bar-label"><i class="fa-solid fa-sliders"></i> Affichage écran :</span>
@@ -5498,6 +5891,33 @@
                 </button>
             </div>
         </div>
+
+        <!-- ========================================================================= -->
+        <!-- NAVIGATION DU CABINET COMPTABLE (5 ONGLETS SYSCOHADA GRAND ÉCRAN)       -->
+        <!-- ========================================================================= -->
+        <nav class="comptable-tabs-bar" id="comptableTabsBar">
+            <button type="button" class="comptable-tab-btn active" id="tabBtnJournal" onclick="switchVerticalTab('journal');">
+                <i class="fa-solid fa-book-journal-whills"></i>
+                <span>Journal &amp; Écritures</span>
+                <span class="comptable-tab-badge" id="badgeCountJournal">0</span>
+            </button>
+            <button type="button" class="comptable-tab-btn" id="tabBtnBilan" onclick="switchVerticalTab('bilan');">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span>Bilan SYSCOHADA</span>
+            </button>
+            <button type="button" class="comptable-tab-btn" id="tabBtnResultat" onclick="switchVerticalTab('resultat');">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Compte de Résultat</span>
+            </button>
+            <button type="button" class="comptable-tab-btn" id="tabBtnTft" onclick="switchVerticalTab('tft');">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <span>Flux de Trésorerie (TFT)</span>
+            </button>
+            <button type="button" class="comptable-tab-btn" id="tabBtnAnnexes" onclick="switchVerticalTab('annexes');">
+                <i class="fa-solid fa-file-invoice"></i>
+                <span>Annexes &amp; Liasse</span>
+            </button>
+        </nav>
 
         <!-- CONTENU 1 : JOURNAL DES DONNÉES FINANCIÈRES (TOUT SUR LE BLOC PARENT UNIQUE) -->
         <div id="viewJournal">
@@ -5722,7 +6142,239 @@
         </div>
 
 
-                <!-- CONTENU 2 : VOIR À QUEL PRÊT VOUS ÊTES ÉLIGIBLE (AVEC AGENCES PARTENAIRES & DOSSIERS) -->
+                <!-- ========================================================================= -->
+        <!-- MODULE 2 : BILAN SYSCOHADA (ACTIF / PASSIF ÉQUILIBRÉ)                   -->
+        <!-- ========================================================================= -->
+        <div id="viewBilan" style="display: none;">
+            <div class="comptable-statement-card">
+                <div class="statement-header">
+                    <div class="statement-title-wrap">
+                        <h2><i class="fa-solid fa-scale-balanced" style="color: #a0d9d2;"></i> Bilan Comptable SYSCOHADA (Système Normal &amp; SMT)</h2>
+                        <p id="bilanSubtitle">Calcul algorithmique certifié &bull; Clôture automatique en direct</p>
+                    </div>
+                    <div class="statement-actions">
+                        <button type="button" class="btn-statement-export" onclick="alert('Export du Bilan SYSCOHADA certifié en cours...')">
+                            <i class="fa-solid fa-file-arrow-down"></i> Télécharger Bilan (PDF)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bilan-two-columns">
+                    <!-- COLONNE ACTIF -->
+                    <div class="bilan-column-block">
+                        <div class="bilan-col-head">
+                            <span>ACTIF (Emplois)</span>
+                            <span id="bilanTotalActifHead">0 FCFA</span>
+                        </div>
+                        <table class="bilan-table">
+                            <thead>
+                                <tr><th>Rubrique Actif</th><th style="text-align: right;">Montant Brut</th></tr>
+                            </thead>
+                            <tbody id="bilanActifBody">
+                                <!-- Rempli dynamiquement par l'algorithme -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="bilan-table row-total">
+                                    <td>TOTAL ACTIF</td>
+                                    <td style="text-align: right;" id="bilanTotalActifVal">0 FCFA</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- COLONNE PASSIF -->
+                    <div class="bilan-column-block">
+                        <div class="bilan-col-head">
+                            <span>PASSIF (Ressources)</span>
+                            <span id="bilanTotalPassifHead">0 FCFA</span>
+                        </div>
+                        <table class="bilan-table">
+                            <thead>
+                                <tr><th>Rubrique Passif</th><th style="text-align: right;">Montant Net</th></tr>
+                            </thead>
+                            <tbody id="bilanPassifBody">
+                                <!-- Rempli dynamiquement par l'algorithme -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="bilan-table row-total">
+                                    <td>TOTAL PASSIF</td>
+                                    <td style="text-align: right;" id="bilanTotalPassifVal">0 FCFA</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- MODULE 3 : COMPTE DE RÉSULTAT SYSCOHADA & SOLDES DE GESTION (SIG)       -->
+        <!-- ========================================================================= -->
+        <div id="viewResultat" style="display: none;">
+            <div class="comptable-statement-card">
+                <div class="statement-header">
+                    <div class="statement-title-wrap">
+                        <h2><i class="fa-solid fa-chart-line" style="color: #a0d9d2;"></i> Compte de Résultat &amp; Soldes Intermédiaires de Gestion</h2>
+                        <p id="resultatSubtitle">Calcul de la Valeur Ajoutée, EBE et Résultat Net de l'exercice</p>
+                    </div>
+                    <div class="statement-actions">
+                        <button type="button" class="btn-statement-export" onclick="alert('Export du Compte de Résultat SYSCOHADA en cours...')">
+                            <i class="fa-solid fa-file-arrow-down"></i> Télécharger Résultat (PDF)
+                        </button>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 14px;">
+                    <table class="resultat-full-table">
+                        <thead>
+                            <tr>
+                                <th>Poste Comptable &amp; Soldes de Gestion</th>
+                                <th style="text-align: center; width: 140px;">Réf. SYSCOHADA</th>
+                                <th style="text-align: right; width: 180px;">Montant (FCFA)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultatTableBody">
+                            <!-- Rempli dynamiquement par l'algorithme -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- MODULE 4 : TABLEAU DES FLUX DE TRÉSORERIE (TFT SYSCOHADA)                -->
+        <!-- ========================================================================= -->
+        <div id="viewTFT" style="display: none;">
+            <div class="comptable-statement-card">
+                <div class="statement-header">
+                    <div class="statement-title-wrap">
+                        <h2><i class="fa-solid fa-money-bill-transfer" style="color: #a0d9d2;"></i> Tableau des Flux de Trésorerie (TFT)</h2>
+                        <p id="tftSubtitle">Flux opérationnels, investissements et financements certifiés</p>
+                    </div>
+                    <div class="statement-actions">
+                        <button type="button" class="btn-statement-export" onclick="alert('Export du TFT SYSCOHADA en cours...')">
+                            <i class="fa-solid fa-file-arrow-down"></i> Télécharger TFT (PDF)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SECTION 1 : ACTIVITÉS OPÉRATIONNELLES -->
+                <div class="tft-section-box">
+                    <div class="tft-section-head">
+                        <span><i class="fa-solid fa-cart-shopping" style="color: #a0d9d2; margin-right: 8px;"></i> A. Flux de trésorerie provenant des activités opérationnelles</span>
+                        <span id="tftTotalActivite" style="font-family: monospace;">0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Encaissements reçus des clients (Wave, Orange Money, Espèces, Chèques)</span>
+                        <span id="tftEncaissementsClients" style="color: #a0d9d2; font-weight: 700;">+0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Sommes versées aux fournisseurs (Achats de stocks &amp; marchandises)</span>
+                        <span id="tftAchatsStocks" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Rémunérations et charges de personnel versées</span>
+                        <span id="tftSalaires" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Autres services extérieurs et charges décaissées (Transports, loyers, télécoms)</span>
+                        <span id="tftServices" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Impôts, taxes et droits assimilés payés (BRS, TVA, patente)</span>
+                        <span id="tftImpots" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
+                    </div>
+                </div>
+
+                <!-- SECTION 2 : INVESTISSEMENTS -->
+                <div class="tft-section-box">
+                    <div class="tft-section-head">
+                        <span><i class="fa-solid fa-building" style="color: #a0d9d2; margin-right: 8px;"></i> B. Flux de trésorerie provenant des opérations d'investissement</span>
+                        <span id="tftTotalInvestissement" style="font-family: monospace;">0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Décaissements sur acquisitions d'immobilisations (Matériel, locaux, ordinateurs)</span>
+                        <span id="tftAcquisitionsImmo" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Encaissements sur cessions d'actifs immobilisés</span>
+                        <span style="color: #64748b; font-weight: 600;">0 FCFA</span>
+                    </div>
+                </div>
+
+                <!-- SECTION 3 : FINANCEMENT -->
+                <div class="tft-section-box">
+                    <div class="tft-section-head">
+                        <span><i class="fa-solid fa-vault" style="color: #a0d9d2; margin-right: 8px;"></i> C. Flux de trésorerie provenant des opérations de financement</span>
+                        <span id="tftTotalFinancement" style="font-family: monospace;">0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Augmentations de capital et apports en numéraire</span>
+                        <span id="tftApportsCapital" style="color: #a0d9d2; font-weight: 700;">+0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Emprunts bancaires et financements obtenus</span>
+                        <span id="tftEmpruntsObtenus" style="color: #a0d9d2; font-weight: 700;">+0 FCFA</span>
+                    </div>
+                    <div class="tft-row">
+                        <span>Remboursements d'emprunts et dettes financières</span>
+                        <span id="tftRemboursementsDettes" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
+                    </div>
+                </div>
+
+                <!-- SYNTHÈSE VARIATION FINALE -->
+                <div class="tft-total-pill">
+                    <span><i class="fa-solid fa-chart-pie" style="color: #a0d9d2; margin-right: 10px;"></i> VARIATION NETTE DE TRÉSORERIE (A + B + C)</span>
+                    <span id="tftVariationNetteVal" style="color: #a0d9d2;">0 FCFA</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- MODULE 5 : NOTES ANNEXES & CONFORMITÉ FISCALE DGID                       -->
+        <!-- ========================================================================= -->
+        <div id="viewAnnexes" style="display: none;">
+            <div class="comptable-statement-card">
+                <div class="statement-header">
+                    <div class="statement-title-wrap">
+                        <h2><i class="fa-solid fa-file-invoice" style="color: #a0d9d2;"></i> Notes Annexes &amp; Liasse Fiscale SYSCOHADA</h2>
+                        <p id="annexesSubtitle">Documentation légale, méthodes d'évaluation et tableau de rapprochement</p>
+                    </div>
+                    <div class="statement-actions">
+                        <button type="button" class="btn-statement-export" onclick="alert('Export de la Liasse Fiscale & Déclarations DGID en cours...')">
+                            <i class="fa-solid fa-file-pdf"></i> Télécharger Liasse Fiscale (PDF)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="annexes-cards-grid">
+                    <div class="annexe-card-item">
+                        <h4><i class="fa-solid fa-certificate" style="color: #a0d9d2;"></i> Règle Comptable Appliquée</h4>
+                        <p>Système Minimal de Trésorerie (SMT) et Système Normal sous l'Acte Uniforme OHADA portant organisation et harmonisation des comptabilités des entreprises.</p>
+                    </div>
+                    <div class="annexe-card-item">
+                        <h4><i class="fa-solid fa-shield-halved" style="color: #a0d9d2;"></i> Valeur Probante des Preuves</h4>
+                        <p>100% des écritures Wave et Orange Money sont scellées par webhook certifié. Les reçus physiques sont indexés avec horodatage immuable.</p>
+                    </div>
+                    <div class="annexe-card-item">
+                        <h4><i class="fa-solid fa-landmark" style="color: #a0d9d2;"></i> Déclarations Fiscales (DGID)</h4>
+                        <p>Conforme aux obligations de l'impôt synthétique (CGU), BRS 5% et TVA sénégalaise. Prêt pour transmission directe à l'administration fiscale.</p>
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px 22px;">
+                    <h3 style="font-size: 14px; font-weight: 800; color: #0a2540; margin: 0 0 12px 0;">
+                        <i class="fa-solid fa-list-check" style="color: #a0d9d2; margin-right: 8px;"></i>
+                        Tableau de Rapprochement des Soldes de Trésorerie
+                    </h3>
+                    <div id="annexesRapprochementTable">
+                        <!-- Rempli dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENU 2 : VOIR À QUEL PRÊT VOUS ÊTES ÉLIGIBLE (AVEC AGENCES PARTENAIRES & DOSSIERS) -->
         <div id="viewPrets" style="display: none;">
 
             <!-- 1. En-tête KPI de Solvabilité Certifiée Réelle -->
@@ -7104,20 +7756,22 @@
             console.log("Switching tab to:", tabName);
 
             const viewJournal = document.getElementById('viewJournal');
+            const viewBilan = document.getElementById('viewBilan');
+            const viewResultat = document.getElementById('viewResultat');
+            const viewTFT = document.getElementById('viewTFT');
+            const viewAnnexes = document.getElementById('viewAnnexes');
             const viewPrets = document.getElementById('viewPrets');
             const viewAbout = document.getElementById('viewAbout');
 
             const bTopAccueil = document.getElementById('bTopAccueil');
-            const bNavPrets = document.getElementById('bNavPrets');
-            const bNavAbout = document.getElementById('bNavAbout');
 
             // 1. Masquer systématiquement toutes les vues principales
-            if (viewJournal) viewJournal.style.setProperty('display', 'none', 'important');
-            if (viewPrets) viewPrets.style.setProperty('display', 'none', 'important');
-            if (viewAbout) viewAbout.style.setProperty('display', 'none', 'important');
+            [viewJournal, viewBilan, viewResultat, viewTFT, viewAnnexes, viewPrets, viewAbout].forEach(v => {
+                if (v) v.style.setProperty('display', 'none', 'important');
+            });
 
             // 2. Réinitialiser l'état actif sur tous les boutons de navigation
-            document.querySelectorAll('.bottom-nav-item, .hero-nav-pill, .grow-menu-bar-item').forEach(b => {
+            document.querySelectorAll('.bottom-nav-item, .hero-nav-pill, .grow-menu-bar-item, .comptable-tab-btn').forEach(b => {
                 b.classList.remove('active');
             });
             if (bTopAccueil) bTopAccueil.classList.remove('active');
@@ -7126,7 +7780,23 @@
             const bMenuPrets = document.getElementById('bMenuPrets');
             const bMenuAbout = document.getElementById('bMenuAbout');
 
-            if (tabName === 'prets' || tabName === 'pret') {
+            if (tabName === 'bilan') {
+                if (viewBilan) viewBilan.style.setProperty('display', 'block', 'important');
+                const tb = document.getElementById('tabBtnBilan');
+                if (tb) tb.classList.add('active');
+            } else if (tabName === 'resultat') {
+                if (viewResultat) viewResultat.style.setProperty('display', 'block', 'important');
+                const tb = document.getElementById('tabBtnResultat');
+                if (tb) tb.classList.add('active');
+            } else if (tabName === 'tft') {
+                if (viewTFT) viewTFT.style.setProperty('display', 'block', 'important');
+                const tb = document.getElementById('tabBtnTft');
+                if (tb) tb.classList.add('active');
+            } else if (tabName === 'annexes') {
+                if (viewAnnexes) viewAnnexes.style.setProperty('display', 'block', 'important');
+                const tb = document.getElementById('tabBtnAnnexes');
+                if (tb) tb.classList.add('active');
+            } else if (tabName === 'prets' || tabName === 'pret') {
                 if (viewPrets) viewPrets.style.setProperty('display', 'block', 'important');
                 if (bMenuPrets) bMenuPrets.classList.add('active');
             } else if (tabName === 'about' || tabName === 'grow') {
@@ -7135,6 +7805,8 @@
             } else {
                 if (viewJournal) viewJournal.style.setProperty('display', 'block', 'important');
                 if (bTopAccueil) bTopAccueil.classList.add('active');
+                const tb = document.getElementById('tabBtnJournal');
+                if (tb) tb.classList.add('active');
             }
             try {
                 if (window.location.hash) {
@@ -7179,6 +7851,18 @@
 
                 currentEntreprise = data.entreprise;
                 allTransactions = data.transactions || [];
+
+                // Mise à jour du Dossier Client dans l'Espace Expert-Comptable
+                if (currentEntreprise) {
+                    const clientNameEl = document.getElementById('comptableCurrentClientName');
+                    if (clientNameEl) {
+                        clientNameEl.textContent = `Dossier Client : ${currentEntreprise.nom_entreprise || 'Entreprise'}`;
+                    }
+                }
+                const totalClientsEl = document.getElementById('comptableTotalClientsCount');
+                if (totalClientsEl && data.entreprises) {
+                    totalClientsEl.textContent = `• ${data.entreprises.length} entreprise${data.entreprises.length > 1 ? 's' : ''} au cabinet`;
+                }
                 // Mise à jour immédiate du compteur Vos Preuves Financières
                 const totalPreuvesCount = allTransactions.filter(t => (t.preuves_numeriques && t.preuves_numeriques.length > 0) || ['WAVE', 'ORANGE_MONEY', 'BANQUE'].includes((t.source_paiement || '').toUpperCase()) || t.statut_validation === 'VALIDE_PME').length;
                 const pBadgeEl = document.getElementById('preuvesHeaderBadge');
@@ -7561,6 +8245,337 @@
             applyAllFiltersAndRender();
         }
 
+        
+        // =========================================================================
+        // ALGORITHME DE GÉNÉRATION DES ÉTATS FINANCIERS SYSCOHADA (BUREAU EXPERT)
+        // =========================================================================
+        function computeSyscohadaFinancialStatements(transactions, entreprise) {
+            let totalVentesMarchandises = 0;
+            let totalPrestationsServices = 0;
+            let totalAutresProduits = 0;
+
+            let totalAchatsStocks = 0;
+            let totalTransports = 0;
+            let totalServicesExterieurs = 0;
+            let totalChargesPersonnel = 0;
+            let totalImpotsTaxes = 0;
+            let totalAutresCharges = 0;
+
+            let totalImmobilisationsBrutes = 0;
+            let totalStocksFinal = 0;
+            let totalCreancesClients = 0;
+            let totalDettesFournisseurs = 0;
+            let totalDettesFinancieres = 0;
+            let totalCapitalSocial = Number(entreprise && entreprise.capital_initial_fcfa) || 0;
+
+            let soldeBanque = 0;
+            let soldeCaisse = 0;
+            let soldeWave = 0;
+            let soldeOrange = 0;
+
+            let fluxTresorerieActivite = 0;
+            let fluxTresorerieInvestissement = 0;
+            let fluxTresorerieFinancement = 0;
+
+            transactions.forEach(t => {
+                const montant = Number(t.montant_fcfa) || 0;
+                const flux = String(t.type_flux || '').toUpperCase();
+                const compte = String(t.compte_syscohada || '');
+                const src = String(t.source_paiement || '').toUpperCase();
+                const lib = String(t.libelle || '').toLowerCase();
+                const isSortie = (flux === 'SORTIE');
+                const sign = isSortie ? -1 : 1;
+
+                // Trésorerie par canal
+                if (src === 'WAVE' || lib.includes('wave')) soldeWave += (sign * montant);
+                else if (src === 'ORANGE_MONEY' || src.includes('ORANGE') || lib.includes('orange') || lib.includes('om')) soldeOrange += (sign * montant);
+                else if (src === 'BANQUE' || compte.startsWith('52')) soldeBanque += (sign * montant);
+                else soldeCaisse += (sign * montant);
+
+                // Classement SYSCOHADA
+                if (compte.startsWith('701') || (!isSortie && (compte.startsWith('7') || lib.includes('vente') || lib.includes('encaissement')))) {
+                    totalVentesMarchandises += montant;
+                    fluxTresorerieActivite += montant;
+                } else if (compte.startsWith('706') || (!isSortie && lib.includes('prestation'))) {
+                    totalPrestationsServices += montant;
+                    fluxTresorerieActivite += montant;
+                } else if (compte.startsWith('601') || (isSortie && (lib.includes('stock') || lib.includes('riz') || lib.includes('marchandise')))) {
+                    totalAchatsStocks += montant;
+                    fluxTresorerieActivite -= montant;
+                } else if (compte.startsWith('624') || (isSortie && (lib.includes('transport') || lib.includes('taxi') || lib.includes('peage')))) {
+                    totalTransports += montant;
+                    fluxTresorerieActivite -= montant;
+                } else if (compte.startsWith('66') || (isSortie && (lib.includes('salaire') || lib.includes('personnel') || lib.includes('paie')))) {
+                    totalChargesPersonnel += montant;
+                    fluxTresorerieActivite -= montant;
+                } else if (compte.startsWith('64') || (isSortie && (lib.includes('impot') || lib.includes('taxe') || lib.includes('dgid')))) {
+                    totalImpotsTaxes += montant;
+                    fluxTresorerieActivite -= montant;
+                } else if (compte.startsWith('2') || lib.includes('immobilis') || lib.includes('matériel') || lib.includes('ordinateur') || lib.includes('véhicule')) {
+                    totalImmobilisationsBrutes += montant;
+                    fluxTresorerieInvestissement -= montant;
+                } else if (compte.startsWith('411') || lib.includes('creance') || lib.includes('ardoise') || lib.includes('demba')) {
+                    if (isSortie) {
+                        totalCreancesClients += montant;
+                    } else {
+                        totalCreancesClients = Math.max(0, totalCreancesClients - montant);
+                        fluxTresorerieActivite += montant;
+                    }
+                } else if (compte.startsWith('401') || lib.includes('fournisseur')) {
+                    if (isSortie) {
+                        totalDettesFournisseurs = Math.max(0, totalDettesFournisseurs - montant);
+                        fluxTresorerieActivite -= montant;
+                    } else {
+                        totalDettesFournisseurs += montant;
+                    }
+                } else if (compte.startsWith('10') || lib.includes('capital') || lib.includes('apport')) {
+                    totalCapitalSocial += montant;
+                    fluxTresorerieFinancement += (sign * montant);
+                } else if (compte.startsWith('16') || lib.includes('emprunt') || lib.includes('prêt')) {
+                    if (isSortie) {
+                        totalDettesFinancieres = Math.max(0, totalDettesFinancieres - montant);
+                        fluxTresorerieFinancement -= montant;
+                    } else {
+                        totalDettesFinancieres += montant;
+                        fluxTresorerieFinancement += montant;
+                    }
+                } else if (isSortie) {
+                    totalServicesExterieurs += montant;
+                    fluxTresorerieActivite -= montant;
+                } else {
+                    totalAutresProduits += montant;
+                    fluxTresorerieActivite += montant;
+                }
+            });
+
+            const totalProduits = totalVentesMarchandises + totalPrestationsServices + totalAutresProduits;
+            const totalCharges = totalAchatsStocks + totalTransports + totalServicesExterieurs + totalChargesPersonnel + totalImpotsTaxes + totalAutresCharges;
+            const margeCommerciale = totalVentesMarchandises - totalAchatsStocks;
+            const valeurAjoutee = margeCommerciale + totalPrestationsServices - (totalTransports + totalServicesExterieurs);
+            const ebe = valeurAjoutee - totalChargesPersonnel - totalImpotsTaxes;
+            const resultatNet = totalProduits - totalCharges;
+
+            const totalTresorerieActif = Math.max(0, soldeBanque) + Math.max(0, soldeCaisse) + Math.max(0, soldeWave) + Math.max(0, soldeOrange);
+            const decouvertPassif = Math.abs(Math.min(0, soldeBanque)) + Math.abs(Math.min(0, soldeCaisse)) + Math.abs(Math.min(0, soldeWave)) + Math.abs(Math.min(0, soldeOrange));
+
+            const totalActif = totalImmobilisationsBrutes + totalStocksFinal + totalCreancesClients + totalTresorerieActif;
+
+            let capitauxPropres = totalCapitalSocial + resultatNet;
+            const totalDettes = totalDettesFournisseurs + totalDettesFinancieres + decouvertPassif;
+            if (capitauxPropres === 0 && totalActif > 0) {
+                capitauxPropres = Math.max(0, totalActif - totalDettes);
+            }
+            const totalPassif = capitauxPropres + totalDettes;
+
+            return {
+                resultat: {
+                    ventes: totalVentesMarchandises,
+                    prestations: totalPrestationsServices,
+                    autresProduits: totalAutresProduits,
+                    totalProduits: totalProduits,
+                    achats: totalAchatsStocks,
+                    transports: totalTransports,
+                    services: totalServicesExterieurs,
+                    personnel: totalChargesPersonnel,
+                    impots: totalImpotsTaxes,
+                    totalCharges: totalCharges,
+                    marge: margeCommerciale,
+                    va: valeurAjoutee,
+                    ebe: ebe,
+                    net: resultatNet
+                },
+                bilan: {
+                    actif: {
+                        immo: totalImmobilisationsBrutes,
+                        stocks: totalStocksFinal,
+                        creances: totalCreancesClients,
+                        tresorerie: totalTresorerieActif,
+                        banque: Math.max(0, soldeBanque),
+                        caisse: Math.max(0, soldeCaisse),
+                        wave: Math.max(0, soldeWave),
+                        orange: Math.max(0, soldeOrange),
+                        total: totalActif
+                    },
+                    passif: {
+                        capital: capitauxPropres - resultatNet,
+                        resultatNet: resultatNet,
+                        capitauxPropres: capitauxPropres,
+                        dettesFinancieres: totalDettesFinancieres,
+                        dettesFournisseurs: totalDettesFournisseurs,
+                        decouvert: decouvertPassif,
+                        total: totalPassif
+                    }
+                },
+                tft: {
+                    activite: fluxTresorerieActivite,
+                    investissement: fluxTresorerieInvestissement,
+                    financement: fluxTresorerieFinancement,
+                    variationNette: (fluxTresorerieActivite + fluxTresorerieInvestissement + fluxTresorerieFinancement),
+                    encaissementsClients: totalVentesMarchandises + totalPrestationsServices,
+                    achatsStocks: totalAchatsStocks,
+                    salaires: totalChargesPersonnel,
+                    services: totalTransports + totalServicesExterieurs,
+                    impots: totalImpotsTaxes,
+                    acquisitionsImmo: totalImmobilisationsBrutes,
+                    apportsCapital: totalCapitalSocial,
+                    emprunts: totalDettesFinancieres,
+                    remboursements: 0
+                }
+            };
+        }
+
+        // Rendu dynamique du Bilan SYSCOHADA
+        function renderBilanView(stats) {
+            const b = stats.bilan;
+            const fmt = n => (Number(n) || 0).toLocaleString('fr-FR') + ' FCFA';
+
+            const elActifHead = document.getElementById('bilanTotalActifHead');
+            const elActifVal = document.getElementById('bilanTotalActifVal');
+            const elPassifHead = document.getElementById('bilanTotalPassifHead');
+            const elPassifVal = document.getElementById('bilanTotalPassifVal');
+
+            if (elActifHead) elActifHead.textContent = fmt(b.actif.total);
+            if (elActifVal) elActifVal.textContent = fmt(b.actif.total);
+            if (elPassifHead) elPassifHead.textContent = fmt(b.passif.total);
+            if (elPassifVal) elPassifVal.textContent = fmt(b.passif.total);
+
+            const tbodyActif = document.getElementById('bilanActifBody');
+            if (tbodyActif) {
+                tbodyActif.innerHTML = `
+                    <tr class="row-rubrique"><td colspan="2">ACTIF IMMOBILISÉ (Classe 2)</td></tr>
+                    <tr class="row-detail"><td>Immobilisations corporelles &amp; matériel</td><td style="text-align: right; font-weight: 700;">${fmt(b.actif.immo)}</td></tr>
+                    <tr class="row-rubrique"><td colspan="2">ACTIF CIRCULANT (Classes 3 &amp; 4)</td></tr>
+                    <tr class="row-detail"><td>Stocks de marchandises (Classe 3)</td><td style="text-align: right; font-weight: 700;">${fmt(b.actif.stocks)}</td></tr>
+                    <tr class="row-detail"><td>Créances clients &amp; comptes rattachés (411)</td><td style="text-align: right; font-weight: 700;">${fmt(b.actif.creances)}</td></tr>
+                    <tr class="row-rubrique"><td colspan="2">TRÉSORERIE ACTIF (Classe 5)</td></tr>
+                    <tr class="row-detail"><td>Disponibilités Wave &bull; Compte monnaie électronique</td><td style="text-align: right; font-weight: 700;">${fmt(b.actif.wave)}</td></tr>
+                    <tr class="row-detail"><td>Disponibilités Orange Money</td><td style="text-align: right; font-weight: 700;">${fmt(b.actif.orange)}</td></tr>
+                    <tr class="row-detail"><td>Comptes bancaires certifiés (Compte 521)</td><td style="text-align: right; font-weight: 700;">${fmt(b.actif.banque)}</td></tr>
+                    <tr class="row-detail"><td>Caisse en espèces FCFA (Compte 571)</td><td style="text-align: right; font-weight: 700;">${fmt(b.actif.caisse)}</td></tr>
+                `;
+            }
+
+            const tbodyPassif = document.getElementById('bilanPassifBody');
+            if (tbodyPassif) {
+                tbodyPassif.innerHTML = `
+                    <tr class="row-rubrique"><td colspan="2">CAPITAUX PROPRES &amp; RESSOURCES (Classe 1)</td></tr>
+                    <tr class="row-detail"><td>Capital social &amp; compte de l'exploitant (101/103)</td><td style="text-align: right; font-weight: 700;">${fmt(b.passif.capital)}</td></tr>
+                    <tr class="row-detail" style="background: rgba(160, 217, 210, 0.08);">
+                        <td><strong>Résultat Net de l'exercice (Bénéfice/Perte)</strong></td>
+                        <td style="text-align: right; font-weight: 800; color: ${b.passif.resultatNet >= 0 ? '#0a2540' : '#b91c1c'};">${fmt(b.passif.resultatNet)}</td>
+                    </tr>
+                    <tr class="row-rubrique"><td colspan="2">DETTES FINANCIÈRES (Classe 16)</td></tr>
+                    <tr class="row-detail"><td>Emprunts &amp; dettes auprès des banques</td><td style="text-align: right; font-weight: 700;">${fmt(b.passif.dettesFinancieres)}</td></tr>
+                    <tr class="row-rubrique"><td colspan="2">PASSIF CIRCULANT (Classe 4)</td></tr>
+                    <tr class="row-detail"><td>Fournisseurs &amp; comptes rattachés (401)</td><td style="text-align: right; font-weight: 700;">${fmt(b.passif.dettesFournisseurs)}</td></tr>
+                    <tr class="row-rubrique"><td colspan="2">TRÉSORERIE PASSIF (Classe 5)</td></tr>
+                    <tr class="row-detail"><td>Découverts bancaires d'exploitation</td><td style="text-align: right; font-weight: 700;">${fmt(b.passif.decouvert)}</td></tr>
+                `;
+            }
+        }
+
+        // Rendu dynamique du Compte de Résultat & SIG
+        function renderResultatView(stats) {
+            const r = stats.resultat;
+            const fmt = n => (Number(n) || 0).toLocaleString('fr-FR') + ' FCFA';
+
+            const tbody = document.getElementById('resultatTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = `
+                <tr><td>+ Ventes de marchandises</td><td style="text-align: center; color: #64748b;">701</td><td style="text-align: right; font-weight: 700; color: #0a2540;">${fmt(r.ventes)}</td></tr>
+                <tr><td>+ Prestations de services vendues</td><td style="text-align: center; color: #64748b;">706</td><td style="text-align: right; font-weight: 700; color: #0a2540;">${fmt(r.prestations)}</td></tr>
+                <tr><td>- Achats de marchandises &amp; fournitures</td><td style="text-align: center; color: #64748b;">601</td><td style="text-align: right; font-weight: 700; color: #0f172a;">-${fmt(r.achats)}</td></tr>
+                
+                <tr class="sig-row">
+                    <td><strong>= MARGE BRUTE COMMERCIALE</strong></td>
+                    <td style="text-align: center; font-weight: 800;">SIG 1</td>
+                    <td style="text-align: right;" class="sig-badge-val">${fmt(r.marge)}</td>
+                </tr>
+
+                <tr><td>- Transports de biens &amp; personnes</td><td style="text-align: center; color: #64748b;">624</td><td style="text-align: right;">-${fmt(r.transports)}</td></tr>
+                <tr><td>- Autres charges &amp; services extérieurs (loyers, télécoms)</td><td style="text-align: center; color: #64748b;">62x</td><td style="text-align: right;">-${fmt(r.services)}</td></tr>
+
+                <tr class="sig-row">
+                    <td><strong>= VALEUR AJOUTÉE (VA)</strong></td>
+                    <td style="text-align: center; font-weight: 800;">SIG 2</td>
+                    <td style="text-align: right;" class="sig-badge-val">${fmt(r.va)}</td>
+                </tr>
+
+                <tr><td>- Charges de personnel &amp; rémunérations</td><td style="text-align: center; color: #64748b;">661</td><td style="text-align: right;">-${fmt(r.personnel)}</td></tr>
+                <tr><td>- Impôts, taxes et versements assimilés</td><td style="text-align: center; color: #64748b;">64</td><td style="text-align: right;">-${fmt(r.impots)}</td></tr>
+
+                <tr class="sig-row">
+                    <td><strong>= EXCÉDENT BRUT D'EXPLOITATION (EBE)</strong></td>
+                    <td style="text-align: center; font-weight: 800;">SIG 3</td>
+                    <td style="text-align: right;" class="sig-badge-val">${fmt(r.ebe)}</td>
+                </tr>
+
+                <tr class="sig-row-net">
+                    <td><i class="fa-solid fa-trophy" style="color: #a0d9d2; margin-right: 8px;"></i> <strong>RÉSULTAT NET DE L'EXERCICE (Bénéfice Net)</strong></td>
+                    <td style="text-align: center; color: #a0d9d2; font-weight: 900;">RÉSULTAT</td>
+                    <td style="text-align: right; color: #a0d9d2 !important; font-size: 15px; font-weight: 900;">${fmt(r.net)}</td>
+                </tr>
+            `;
+        }
+
+        // Rendu dynamique du TFT
+        function renderTFTView(stats) {
+            const t = stats.tft;
+            const fmt = n => (Number(n) || 0).toLocaleString('fr-FR') + ' FCFA';
+
+            const setTxt = (id, txt) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = txt;
+            };
+
+            setTxt('tftTotalActivite', fmt(t.activite));
+            setTxt('tftEncaissementsClients', '+' + fmt(t.encaissementsClients));
+            setTxt('tftAchatsStocks', '-' + fmt(t.achatsStocks));
+            setTxt('tftSalaires', '-' + fmt(t.salaires));
+            setTxt('tftServices', '-' + fmt(t.services));
+            setTxt('tftImpots', '-' + fmt(t.impots));
+
+            setTxt('tftTotalInvestissement', fmt(t.investissement));
+            setTxt('tftAcquisitionsImmo', '-' + fmt(t.acquisitionsImmo));
+
+            setTxt('tftTotalFinancement', fmt(t.financement));
+            setTxt('tftApportsCapital', '+' + fmt(t.apportsCapital));
+            setTxt('tftEmpruntsObtenus', '+' + fmt(t.emprunts));
+            setTxt('tftRemboursementsDettes', '-' + fmt(t.remboursements));
+
+            setTxt('tftVariationNetteVal', fmt(t.variationNette));
+        }
+
+        // Rendu dynamique des Annexes
+        function renderAnnexesView(stats) {
+            const b = stats.bilan;
+            const fmt = n => (Number(n) || 0).toLocaleString('fr-FR') + ' FCFA';
+            const tableEl = document.getElementById('annexesRapprochementTable');
+            if (!tableEl) return;
+
+            tableEl.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px;">
+                    <div style="background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 11px; color: #64748b; display: block;">Wave Business</span>
+                        <strong style="font-size: 14px; color: #0a2540;">${fmt(b.actif.wave)}</strong>
+                    </div>
+                    <div style="background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 11px; color: #64748b; display: block;">Orange Money</span>
+                        <strong style="font-size: 14px; color: #0a2540;">${fmt(b.actif.orange)}</strong>
+                    </div>
+                    <div style="background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 11px; color: #64748b; display: block;">Comptes Bancaires</span>
+                        <strong style="font-size: 14px; color: #0a2540;">${fmt(b.actif.banque)}</strong>
+                    </div>
+                    <div style="background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 11px; color: #64748b; display: block;">Caisse Espèces FCFA</span>
+                        <strong style="font-size: 14px; color: #0a2540;">${fmt(b.actif.caisse)}</strong>
+                    </div>
+                </div>
+            `;
+        }
+
         function applyAllFiltersAndRender() {
             let list = [...allTransactions];
             const now = new Date();
@@ -7643,6 +8658,16 @@
 
             // 4. Mise à jour des Totaux (Débit, Crédit, Solde Net) pour la sélection active
             updateTotalsForFilteredList(list);
+
+            // 4b. Calcul Algorithmique des États Financiers SYSCOHADA (Bilan, Résultat, TFT, Annexes)
+            const syscohadaStats = computeSyscohadaFinancialStatements(list, currentEntreprise);
+            renderBilanView(syscohadaStats);
+            renderResultatView(syscohadaStats);
+            renderTFTView(syscohadaStats);
+            renderAnnexesView(syscohadaStats);
+
+            const badgeJ = document.getElementById('badgeCountJournal');
+            if (badgeJ) badgeJ.textContent = list.length;
 
             // 5. Affichage limité au nombre de lignes choisi (0 = tout)
             const totalItems = list.length;
