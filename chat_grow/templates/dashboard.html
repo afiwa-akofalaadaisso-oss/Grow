@@ -3428,6 +3428,223 @@
             background: #0a2540 !important;
             color: #ffffff !important;
         }
+    
+        /* MODALE NOUVELLE TRANSACTION (VENTE / DÉPENSE) TACTILE */
+        .modal-quick-tx-box {
+            max-width: 480px !important;
+            width: 92% !important;
+            border-radius: 20px !important;
+            overflow: hidden !important;
+            background: #ffffff !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35) !important;
+        }
+
+        .quick-tx-type-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            gap: 6px;
+        }
+
+        .quick-tx-tab-btn {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #64748b;
+            background: transparent;
+        }
+
+        .quick-tx-tab-btn.active.credit {
+            background: #15803d;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(21, 128, 61, 0.3);
+        }
+
+        .quick-tx-tab-btn.active.debit {
+            background: #dc2626;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+        }
+
+        .form-group-mobile {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .form-group-mobile label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 6px;
+        }
+
+        .form-control-mobile {
+            width: 100%;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 11px 14px;
+            font-size: 15px;
+            color: #0f172a;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .form-control-mobile:focus {
+            border-color: #0a2540;
+        }
+
+        .btn-submit-tx {
+            width: 100%;
+            background: #0a2540;
+            color: #ffffff;
+            border: none;
+            padding: 13px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit-tx:hover {
+            background: #1e293b;
+        }
+
+        /* MODALE DÉTAIL D'UNE TRANSACTION AU CLIC SUR LA CARTE */
+        .modal-tx-detail-box {
+            max-width: 440px !important;
+            width: 90% !important;
+            border-radius: 20px !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+        }
+        
+        .tx-detail-header-band {
+            padding: 20px 20px 16px 20px;
+            color: #ffffff;
+            text-align: center;
+        }
+        .tx-detail-header-band.credit { background: linear-gradient(135deg, #15803d, #166534); }
+        .tx-detail-header-band.debit { background: linear-gradient(135deg, #b91c1c, #991b1b); }
+
+        .tx-detail-content-body {
+            padding: 20px;
+            background: #ffffff;
+        }
+
+        .tx-detail-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+        }
+
+        .tx-detail-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .tx-detail-label {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .tx-detail-val {
+            color: #0f172a;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        /* Bottom Sheet Bar sur Smartphone */
+        .mobile-bottom-nav {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 72px !important; /* Laisse la place pour la bottom bar */
+            }
+
+            .mobile-bottom-nav {
+                display: flex !important;
+                position: fixed !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                height: 64px !important;
+                background: #ffffff !important;
+                border-top: 1px solid #e2e8f0 !important;
+                z-index: 1050 !important;
+                align-items: center !important;
+                justify-content: space-around !important;
+                box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
+                padding: 0 10px !important;
+            }
+
+            .bottom-nav-item {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                color: #64748b !important;
+                text-decoration: none !important;
+                font-size: 10.5px !important;
+                font-weight: 700 !important;
+                gap: 4px !important;
+                flex: 1 !important;
+                background: none !important;
+                border: none !important;
+                cursor: pointer !important;
+                transition: color 0.15s !important;
+            }
+
+            .bottom-nav-item.active {
+                color: #0a2540 !important;
+            }
+
+            .bottom-nav-item i {
+                font-size: 18px !important;
+            }
+
+            .bottom-nav-center-btn {
+                width: 48px !important;
+                height: 48px !important;
+                border-radius: 50% !important;
+                background: #222222 !important;
+                color: #a0d9d2 !important;
+                border: 2px solid #a0d9d2 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 20px !important;
+                box-shadow: 0 4px 14px rgba(34, 34, 34, 0.4) !important;
+                margin-top: -18px !important;
+                cursor: pointer !important;
+                transition: transform 0.2s !important;
+            }
+
+            .bottom-nav-center-btn:active {
+                transform: scale(0.92) !important;
+            }
+        }
+
     </style>
 
 
@@ -5382,6 +5599,7 @@
                 if (mobileCardsContainer) {
                     const card = document.createElement('div');
                     card.className = 'mobile-tx-card';
+                    card.onclick = () => openTxDetailModal(t);
 
                     let iconType = 'credit';
                     let iconClass = 'fa-solid fa-arrow-down';
@@ -5902,6 +6120,176 @@
             }
         }
 
+        
+        // =========================================================================
+        // FONCTIONNALITÉS COMPLÈTES VERSION MOBILE (VENTES, DÉPENSES, DÉTAILS)
+        // =========================================================================
+        let currentQuickTxType = 'ENTREE';
+
+        function ouvrirModalQuickTx(type = 'ENTREE') {
+            setQuickTxType(type);
+            const m = document.getElementById('modalQuickTx');
+            if (m) m.style.display = 'flex';
+            setTimeout(() => {
+                const input = document.getElementById('quickTxMontant');
+                if (input) input.focus();
+            }, 100);
+        }
+
+        function closeModalQuickTx() {
+            const m = document.getElementById('modalQuickTx');
+            if (m) m.style.display = 'none';
+        }
+
+        function setQuickTxType(type) {
+            currentQuickTxType = type;
+            const btnCredit = document.getElementById('btnTabCredit');
+            const btnDebit = document.getElementById('btnTabDebit');
+            const title = document.getElementById('quickTxModalTitle');
+            const btnSubmit = document.getElementById('btnSubmitTxText');
+
+            if (type === 'ENTREE') {
+                if (btnCredit) btnCredit.className = 'quick-tx-tab-btn active credit';
+                if (btnDebit) btnDebit.className = 'quick-tx-tab-btn debit';
+                if (title) title.textContent = 'Enregistrer une Vente (Recette)';
+                if (btnSubmit) {
+                    btnSubmit.innerHTML = '<i class="fa-solid fa-check"></i> Valider l\'encaissement';
+                    btnSubmit.style.background = '#15803d';
+                }
+            } else {
+                if (btnCredit) btnCredit.className = 'quick-tx-tab-btn credit';
+                if (btnDebit) btnDebit.className = 'quick-tx-tab-btn active debit';
+                if (title) title.textContent = 'Enregistrer une Dépense (Sortie)';
+                if (btnSubmit) {
+                    btnSubmit.innerHTML = '<i class="fa-solid fa-check"></i> Valider la dépense';
+                    btnSubmit.style.background = '#dc2626';
+                }
+            }
+        }
+
+        async function submitQuickTx(e) {
+            e.preventDefault();
+            const montant = parseInt(document.getElementById('quickTxMontant').value, 10);
+            const libelle = document.getElementById('quickTxLibelle').value.trim();
+            const source = document.getElementById('quickTxSource').value;
+
+            if (!montant || montant <= 0 || !libelle) {
+                alert('Veuillez renseigner un montant et un libellé valides.');
+                return;
+            }
+
+            const entId = currentEntreprise ? currentEntreprise.id : null;
+            if (!entId) {
+                alert('Veuillez patienter pendant la connexion à votre entreprise.');
+                return;
+            }
+
+            const compteSyscohada = (currentQuickTxType === 'ENTREE') ? '701' : '601';
+
+            try {
+                const btnSubmit = document.getElementById('btnSubmitTxText');
+                if (btnSubmit) {
+                    btnSubmit.disabled = true;
+                    btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
+                }
+
+                // Insertion directe dans Supabase via l'API locale
+                const payload = {
+                    entreprise_id: entId,
+                    montant_fcfa: montant,
+                    libelle: libelle,
+                    type_flux: currentQuickTxType,
+                    source_paiement: source,
+                    compte_syscohada: compteSyscohada,
+                    statut_validation: 'VALIDE_PME',
+                    est_professionnel: true
+                };
+
+                const res = await fetch('/api/enregistrer-transaction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                closeModalQuickTx();
+                // Nettoyage du formulaire
+                document.getElementById('quickTxMontant').value = '';
+                document.getElementById('quickTxLibelle').value = '';
+
+                // Rechargement immédiat des données
+                await loadDashboardData();
+
+                alert(`Succès ! Votre opération de ${montant.toLocaleString('fr-FR')} FCFA a été enregistrée et imputée au compte SYSCOHADA ${compteSyscohada}.`);
+            } catch (err) {
+                console.error('Erreur enregistrement rapide:', err);
+                alert('Erreur lors de l\'enregistrement : ' + err.message);
+            } finally {
+                const btnSubmit = document.getElementById('btnSubmitTxText');
+                if (btnSubmit) btnSubmit.disabled = false;
+            }
+        }
+
+        // Modale Détail Transaction au Clic sur carte mobile
+        function openTxDetailModal(tx) {
+            if (!tx) return;
+            const m = document.getElementById('modalTxDetail');
+            const h = document.getElementById('txDetailHeader');
+            const badge = document.getElementById('txDetailTypeBadge');
+            const amountBig = document.getElementById('txDetailAmountBig');
+            const dateTop = document.getElementById('txDetailDateTop');
+            const lib = document.getElementById('txDetailLibelle');
+            const compte = document.getElementById('txDetailCompte');
+            const src = document.getElementById('txDetailSource');
+            const ref = document.getElementById('txDetailRef');
+            const btnPreuve = document.getElementById('btnVoirPreuveDetail');
+
+            const isEntree = (tx.type_flux === 'ENTREE');
+            const montant = Number(tx.montant_fcfa) || 0;
+
+            if (h) h.className = 'tx-detail-header-band ' + (isEntree ? 'credit' : 'debit');
+            if (badge) badge.textContent = isEntree ? 'Recette / Vente' : 'Dépense / Achat';
+            if (amountBig) amountBig.textContent = (isEntree ? '+' : '-') + montant.toLocaleString('fr-FR') + ' FCFA';
+            if (dateTop) dateTop.textContent = tx.created_at ? tx.created_at.substring(0, 16).replace('T', ' à ') : 'Aujourd\'hui';
+            if (lib) lib.textContent = tx.libelle || 'Opération';
+            if (compte) compte.textContent = `Compte ${tx.compte_syscohada || '471100'}`;
+            if (src) src.textContent = tx.source_paiement || 'ESPECES';
+            if (ref) ref.textContent = tx.reference_externe || ('TX-' + (tx.id ? tx.id.substring(0, 8).toUpperCase() : 'AUTO'));
+
+            if (btnPreuve) {
+                btnPreuve.onclick = () => {
+                    closeModalTxDetail();
+                    const srcP = (tx.source_paiement || '').toUpperCase();
+                    if (srcP === 'WAVE' || srcP === 'ORANGE_MONEY') {
+                        openWaveProofModal(tx.reference_externe, tx.libelle, montant.toLocaleString('fr-FR') + ' FCFA', tx.date_operation, srcP === 'WAVE' ? 'Wave' : 'Orange Money');
+                    } else {
+                        const url = (tx.preuves_numeriques && tx.preuves_numeriques[0]) ? tx.preuves_numeriques[0].url_stockage : '/static/justificatif-achat-riz.png';
+                        openProofModalDirect(url, tx.libelle);
+                    }
+                };
+            }
+
+            if (m) m.style.display = 'flex';
+        }
+
+        function closeModalTxDetail() {
+            const m = document.getElementById('modalTxDetail');
+            if (m) m.style.display = 'none';
+        }
+
+        function setActiveBottomNav(btn) {
+            document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+        }
+
+        // Remplacement de quickActionTrigger pour ouvrir la vraie modale de saisie
+        function quickActionTrigger(action) {
+            if (action === 'recette') {
+                ouvrirModalQuickTx('ENTREE');
+            } else if (action === 'depense') {
+                ouvrirModalQuickTx('SORTIE');
+            }
+        }
+
         function exporterJournalPDF() {
             alert("Exportation officielle du Grand Livre & Journal SYSCOHADA (Norme ONECCA)...
 Téléchargement du relevé certifié en cours.");
@@ -5919,6 +6307,133 @@ Téléchargement du relevé certifié en cours.");
             }
         });
     </script>
+
+    <!-- ========================================================================= -->
+    <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (SMARTPHONE & PC)           -->
+    <!-- ========================================================================= -->
+    <div id="modalQuickTx" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalQuickTx()">
+        <div class="modal-box modal-quick-tx-box" onclick="event.stopPropagation()">
+            <div class="modal-top" style="background: #0a2540; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-calculator" style="color: #a0d9d2;"></i>
+                    <strong style="font-size: 14px;" id="quickTxModalTitle">Ajouter une Opération Comptable</strong>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeModalQuickTx()" style="background: none; border: none; color: #ffffff; font-size: 18px; cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-content" style="padding: 20px;">
+                <div class="quick-tx-type-tabs">
+                    <button type="button" class="quick-tx-tab-btn active credit" id="btnTabCredit" onclick="setQuickTxType('ENTREE')">
+                        <i class="fa-solid fa-arrow-down-left"></i> Vente / Entrée
+                    </button>
+                    <button type="button" class="quick-tx-tab-btn debit" id="btnTabDebit" onclick="setQuickTxType('SORTIE')">
+                        <i class="fa-solid fa-arrow-up-right"></i> Dépense / Sortie
+                    </button>
+                </div>
+
+                <form id="quickTxForm" onsubmit="submitQuickTx(event)">
+                    <div class="form-group-mobile">
+                        <label>Montant en Francs CFA (FCFA) *</label>
+                        <input type="number" id="quickTxMontant" class="form-control-mobile" placeholder="Ex: 25000" required min="1" step="1">
+                    </div>
+
+                    <div class="form-group-mobile">
+                        <label>Libellé de l'opération *</label>
+                        <input type="text" id="quickTxLibelle" class="form-control-mobile" placeholder="Ex: Vente tissus, Achat riz, Facture..." required>
+                    </div>
+
+                    <div class="form-group-mobile">
+                        <label>Mode de paiement / Trésorerie</label>
+                        <select id="quickTxSource" class="form-control-mobile">
+                            <option value="ESPECES">Caisse Espèces (Cash au comptoir)</option>
+                            <option value="WAVE">Compte Wave</option>
+                            <option value="ORANGE_MONEY">Orange Money</option>
+                            <option value="BANQUE">Compte Bancaire</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-submit-tx" id="btnSubmitTxText">
+                        <i class="fa-solid fa-check"></i> Enregistrer dans le Journal
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODALE DÉTAIL D'UNE TRANSACTION AU CLIC SUR LA CARTE MOBILE                -->
+    <!-- ========================================================================= -->
+    <div id="modalTxDetail" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalTxDetail()">
+        <div class="modal-box modal-tx-detail-box" onclick="event.stopPropagation()">
+            <div id="txDetailHeader" class="tx-detail-header-band credit">
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;" id="txDetailTypeBadge">Recette Validée</div>
+                <div style="font-size: 32px; font-weight: 900; margin: 6px 0;" id="txDetailAmountBig">0 FCFA</div>
+                <div style="font-size: 12px; opacity: 0.9;" id="txDetailDateTop">-</div>
+            </div>
+            <div class="tx-detail-content-body">
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Libellé :</span>
+                    <span class="tx-detail-val" id="txDetailLibelle">-</span>
+                </div>
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Compte SYSCOHADA :</span>
+                    <span class="tx-detail-val" id="txDetailCompte">-</span>
+                </div>
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Source de paiement :</span>
+                    <span class="tx-detail-val" id="txDetailSource">-</span>
+                </div>
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Référence :</span>
+                    <span class="tx-detail-val" id="txDetailRef" style="font-family: monospace;">-</span>
+                </div>
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Statut légal :</span>
+                    <span class="tx-detail-val" style="color: #0e7647;"><i class="fa-solid fa-shield-halved"></i> Conforme SYSCOHADA</span>
+                </div>
+
+                <div style="margin-top: 18px; display: flex; gap: 8px;">
+                    <button type="button" class="btn-submit-tx" style="background: #f1f5f9; color: #334155; margin-top: 0;" onclick="closeModalTxDetail()">
+                        Fermer
+                    </button>
+                    <button type="button" class="btn-submit-tx" style="background: #0a2540; color: #ffffff; margin-top: 0;" id="btnVoirPreuveDetail">
+                        <i class="fa-solid fa-eye"></i> Justificatif
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- BARRE DE NAVIGATION INFÉRIEURE MOBILE (BOTTOM SHEET BAR TYPE WAVE/OM)      -->
+    <!-- ========================================================================= -->
+    <nav class="mobile-bottom-nav">
+        <button type="button" class="bottom-nav-item active" id="bNavJournal" onclick="switchVerticalTab('journal'); setActiveBottomNav(this);">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </button>
+
+        <button type="button" class="bottom-nav-item" id="bNavPrets" onclick="switchVerticalTab('prets'); setActiveBottomNav(this);">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+            <span>Prêts</span>
+        </button>
+
+        <button type="button" class="bottom-nav-center-btn" onclick="ouvrirModalQuickTx('ENTREE')" title="Ajouter une vente ou dépense">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+
+        <button type="button" class="bottom-nav-item" id="bNavAbonnement" onclick="window.location.href='/abonnement'">
+            <i class="fa-solid fa-credit-card"></i>
+            <span>Abonnement</span>
+        </button>
+
+        <button type="button" class="bottom-nav-item" id="bNavAbout" onclick="switchVerticalTab('about'); setActiveBottomNav(this);">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Grow</span>
+        </button>
+    </nav>
+
 </body>
 
 </html>

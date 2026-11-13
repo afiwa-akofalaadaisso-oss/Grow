@@ -1049,6 +1049,43 @@ async def update_heure_rappel(payload: dict):
         return {"success": False, "error": str(e)}
 
 
+
+@app.post("/api/enregistrer-transaction")
+async def api_enregistrer_transaction(payload: dict = Body(...)):
+    """Enregistre une transaction manuelle (vente ou dépense) depuis le dashboard smartphone."""
+    sp = get_supabase()
+    if not sp:
+        return {"status": "error", "message": "Supabase indisponible"}
+
+    ent_id = payload.get("entreprise_id")
+    montant = payload.get("montant_fcfa", 0)
+    libelle = payload.get("libelle", "Opération")
+    type_flux = payload.get("type_flux", "ENTREE")
+    source = payload.get("source_paiement", "ESPECES")
+    compte = payload.get("compte_syscohada", "701" if type_flux == "ENTREE" else "601")
+
+    if not ent_id or montant <= 0:
+        return {"status": "error", "message": "Données invalides"}
+
+    tx_row = {
+        "entreprise_id": ent_id,
+        "libelle": libelle,
+        "compte_syscohada": compte,
+        "type_flux": type_flux,
+        "montant_fcfa": montant,
+        "source_paiement": source,
+        "statut_validation": "VALIDE_PME",
+        "est_professionnel": True
+    }
+
+    try:
+        res = sp.table("transactions").insert(tx_row).execute()
+        return {"status": "success", "data": res.data}
+    except Exception as e:
+        print(f"Erreur insertion transaction dashboard: {e}")
+        return {"status": "error", "message": str(e)}
+
+
 @app.get("/agence", response_class=HTMLResponse)
 async def serve_agence_dashboard():
     """Espace réservé à l'Expert-Comptable / Agence ONECCA."""
