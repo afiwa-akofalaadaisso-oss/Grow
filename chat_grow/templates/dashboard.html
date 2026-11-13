@@ -1,20 +1,33 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="h-full bg-slate-50">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="web_dashboard" name="shell-type">
     <title>GROW SYSCOHADA Pro • Portail Comptable &amp; Fiscal</title>
-    
-    <!-- Polices Officielles -->
+
+    <!-- Polices Officielles Ultra Modernes -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- CSS Rendu Icônes Material Symbols & Reset Scrollbar -->
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Configuration CSS Globale -->
     <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .font-brand {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
+
         .material-symbols-outlined {
             font-family: 'Material Symbols Outlined';
             font-weight: normal;
@@ -31,15 +44,28 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        @layer base {
-            html, body { margin:0; padding:0; }
-            body { overscroll-behavior:none; }
-            main > :first-child { margin-top:0 !important; }
-            main > :last-child { margin-bottom:0 !important; }
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            overscroll-behavior: none;
         }
-        ::-webkit-scrollbar { display:none; }
 
-        /* Styles complets préservés */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Styles complets existants préservés pour Bilan, Compte de Résultat et Modales */
         
         :root {
             --grow-dark: #0b1222;
@@ -7124,427 +7150,333 @@
 
 
     </style>
-
-    <!-- Tailwind Play CDN & Configuration Thème -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "on-error": "#ffffff",
-                        "inverse-primary": "#bec6e0",
-                        "on-tertiary-fixed": "#001f2a",
-                        "error": "#dc2626",
-                        "tertiary-fixed": "#e8ede4",
-                        "on-tertiary-container": "#0e4435",
-                        "outline-variant": "#e5dec9",
-                        "tertiary": "#122b23",
-                        "outline": "#a89f91",
-                        "on-surface": "#1c1d1a",
-                        "secondary-fixed": "#d1fae5",
-                        "on-secondary-fixed-variant": "#064e3b",
-                        "surface-container-high": "#ece6d9",
-                        "surface-tint": "#0f4c3a",
-                        "primary-container": "#0e231d",
-                        "secondary-container": "#e6f4ea",
-                        "on-tertiary": "#ffffff",
-                        "primary-fixed": "#d1fae5",
-                        "on-secondary": "#ffffff",
-                        "primary": "#0f4c3a",
-                        "inverse-surface": "#1f2421",
-                        "on-background": "#1c1d1a",
-                        "surface-container-low": "#fbf9f5",
-                        "on-primary-fixed-variant": "#133e31",
-                        "surface-variant": "#f3ede2",
-                        "surface-container-highest": "#e4ded2",
-                        "surface-container": "#ede7db",
-                        "error-container": "#fee2e2",
-                        "tertiary-container": "#122b23",
-                        "on-secondary-fixed": "#022c22",
-                        "tertiary-fixed-dim": "#c1d3c8",
-                        "surface": "#fbf9f5",
-                        "surface-container-lowest": "#ffffff",
-                        "on-tertiary-fixed-variant": "#0a3328",
-                        "on-surface-variant": "#68645c",
-                        "inverse-on-surface": "#f3ede2",
-                        "surface-dim": "#e4ded2",
-                        "on-primary-fixed": "#06231a",
-                        "secondary-fixed-dim": "#a7d7c5",
-                        "surface-bright": "#ffffff",
-                        "background": "#f7f5f0",
-                        "on-secondary-container": "#065f46",
-                        "on-error-container": "#991b1b",
-                        "on-primary-container": "#a3b899",
-                        "primary-fixed-dim": "#a7d7c5",
-                        "on-primary": "#ffffff",
-                        "secondary": "#0f4c3a"
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.25rem",
-                        lg: "0.5rem",
-                        xl: "0.75rem",
-                        full: "9999px"
-                    },
-                    spacing: {
-                        "gutter-lg": "1.5rem",
-                        "space-xs": "0.25rem",
-                        "space-md": "0.75rem",
-                        "margin-mobile": "1rem",
-                        "gutter": "1rem",
-                        "space-lg": "1.25rem",
-                        "space-xl": "2rem",
-                        "space-sm": "0.5rem",
-                        "margin": "1.5rem"
-                    },
-                    fontFamily: {
-                        "headline-xl": ["Plus Jakarta Sans"],
-                        "numeric-table": ["Inter"],
-                        "body-md": ["Inter"],
-                        "headline-md": ["Plus Jakarta Sans"],
-                        "label-code": ["Inter"],
-                        "headline-lg": ["Plus Jakarta Sans"],
-                        "body-sm": ["Inter"],
-                        "body-lg": ["Inter"],
-                        "title-md": ["Plus Jakarta Sans"],
-                        "label-badge": ["Inter"]
-                    },
-                    fontSize: {
-                        "headline-xl": ["32px", { lineHeight: "40px", fontWeight: "700" }],
-                        "numeric-table": ["13px", { lineHeight: "18px", fontWeight: "500" }],
-                        "body-md": ["13px", { lineHeight: "20px", fontWeight: "400" }],
-                        "headline-md": ["20px", { lineHeight: "28px", fontWeight: "600" }],
-                        "label-code": ["11px", { lineHeight: "14px", fontWeight: "600" }],
-                        "headline-lg": ["24px", { lineHeight: "32px", fontWeight: "700" }],
-                        "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
-                        "body-lg": ["15px", { lineHeight: "22px", fontWeight: "400" }],
-                        "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
-                        "label-badge": ["11px", { lineHeight: "14px", fontWeight: "500" }]
-                    }
-                }
-            }
-        };
-    </script>
 </head>
 
-<body class="bg-[#f7f5f0] font-body-md text-[#242522] antialiased min-h-screen">
-    <!-- ASIDE NAVIGATION VERTICALE (Responsive) -->
-    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-[#0e231d] border-r border-[#1a3830] shadow-2xl flex flex-col justify-between overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex">
+
+    <!-- SIDEBAR BLANCHE MODERNE (SaaS Minimaliste haute fidélité) -->
+    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200/90 shadow-sm flex flex-col justify-between overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out">
         <div class="flex flex-col">
-            <!-- Header Marque -->
-            <div class="h-16 px-space-lg flex items-center justify-between border-b border-[#18362e] bg-[#091a15]/90">
-                <div class="flex items-center gap-space-sm">
-                    <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 shadow-inner" style="background: linear-gradient(135deg, rgb(29, 195, 248), rgb(2, 132, 199));">
-                        <span class="material-symbols-outlined text-white text-[22px]">trending_up</span>
-                    </div>
+            <!-- Header Marque avec le vrai logo GROW -->
+            <div class="h-16 px-5 flex items-center justify-between border-b border-slate-100 bg-white">
+                <div class="flex items-center gap-3">
+                    <img src="/static/images/grow_logo.png" alt="Grow" class="w-8 h-8 rounded-lg object-contain shadow-xs">
                     <div class="flex flex-col">
-                        <span class="font-headline-md text-title-md text-[#f5f0e6] tracking-tight leading-none">GROW</span>
-                        <span class="font-label-code text-[10px] text-[#9cb3a8] uppercase tracking-wider mt-1">SYSCOHADA Pro</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-brand font-extrabold text-base text-slate-900 tracking-tight leading-none">GROW</span>
+                            <span class="text-[10px] font-bold text-[#0d9488] bg-[#e6f7f5] border border-[#a0d9d2]/60 px-1.5 py-0.2 rounded font-mono">SYSCOHADA</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-medium mt-0.5">Expert-Comptable Pro</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-1">
-                    <button onclick="ouvrirModalQRAccesGrow()" class="text-[#718f82] hover:text-[#6ee7b7] p-1.5 rounded transition-colors cursor-pointer" title="Afficher QR WhatsApp Client">
-                        <span class="material-symbols-outlined text-[18px]">qr_code_2</span>
+                    <button onclick="ouvrirModalQRAccesGrow()" class="text-slate-400 hover:text-[#0d9488] p-1.5 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer" title="Afficher QR WhatsApp Client">
+                        <span class="material-symbols-outlined text-[19px]">qr_code_2</span>
                     </button>
-                    <button onclick="toggleMobileSidebar()" class="md:hidden text-[#718f82] hover:text-[#f5f0e6] p-1.5 rounded transition-colors" title="Fermer le menu">
-                        <span class="material-symbols-outlined text-[18px]">close</span>
+                    <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-50 transition-colors" title="Fermer le menu">
+                        <span class="material-symbols-outlined text-[19px]">close</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Entité Active Card -->
-            <div class="p-space-md">
-                <div class="p-space-sm rounded-lg bg-[#0a1c17] border border-[#1d3d34] flex flex-col gap-1 shadow-inner">
+            <!-- Entité Active Card (Blanc & Slate subtil) -->
+            <div class="p-4 pb-2">
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200/80 flex flex-col gap-1.5 shadow-2xs">
                     <div class="flex items-center justify-between">
-                        <span class="font-label-code text-[10px] text-[#8ea89c] uppercase tracking-wider">Entité Active</span>
-                        <button class="font-label-badge text-label-badge text-[#6ee7b7] hover:text-[#a7f3d0] hover:underline flex items-center gap-0.5 transition-colors cursor-pointer" type="button" onclick="ouvrirModalMemoireIA()">Changer<span class="material-symbols-outlined text-[12px]">unfold_more</span></button>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Entité Active</span>
+                        <button class="text-[11px] font-semibold text-[#0d9488] hover:text-[#0f766e] hover:underline flex items-center gap-0.5 transition-colors cursor-pointer" type="button" onclick="ouvrirModalMemoireIA()">
+                            Changer
+                            <span class="material-symbols-outlined text-[12px]">unfold_more</span>
+                        </button>
                     </div>
-                    <div class="flex items-center justify-between mt-0.5">
-                        <div class="flex flex-col">
-                            <span class="font-body-md text-body-md font-semibold text-[#f5f0e6] truncate max-w-[170px]" id="sidebarEntityName">Le Nom De Mon Entreprise Est Cglt</span>
-                            <span class="font-label-code text-label-code text-[#8ea89c]" id="sidebarEntityNinea">NINEA : 00802996</span>
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col min-w-0 pr-2">
+                            <span class="font-semibold text-slate-900 text-[13px] truncate" id="sidebarEntityName">Le Nom De Mon Entreprise Est Cglt</span>
+                            <span class="text-[11px] text-slate-500 font-mono" id="sidebarEntityNinea">NINEA : 00802996</span>
                         </div>
-                        <span class="w-2 h-2 rounded-full bg-[#10b981] shadow-[0_0_8px_rgba(16,185,129,0.7)]" title="Registre certifié ONECCA"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] flex-shrink-0" title="Registre certifié ONECCA"></span>
                     </div>
-                    <div class="mt-2 relative">
-                        <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[#718f82] text-sm">search</span>
-                        <input class="w-full bg-[#061410] border border-[#1f4238] rounded-md pl-8 pr-2.5 py-1.5 text-xs text-[#f5f0e6] placeholder-[#718f82] focus:outline-none focus:border-[#34d399]" placeholder="Rechercher entreprise..." type="text" id="companySearchInput" oninput="filtrerEntreprisesSidebar(this.value)">
+                    <div class="mt-1 relative">
+                        <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                        <input class="w-full bg-white border border-slate-200 rounded-lg pl-8 pr-2.5 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0d9488] focus:ring-1 focus:ring-[#0d9488]" placeholder="Rechercher entreprise..." type="text" id="companySearchInput" oninput="filtrerEntreprisesSidebar(this.value)">
                     </div>
                 </div>
             </div>
 
-            <!-- Navigation Arborescente -->
-            <nav class="px-space-sm flex flex-col gap-1 pb-4">
-                <div class="px-space-sm pt-space-xs pb-1 font-label-code text-[10px] text-[#7d9b8e] uppercase tracking-wider font-bold">Comptabilité Générale</div>
+            <!-- Navigation Arborescente Élégante -->
+            <nav class="px-3 flex flex-col gap-1 py-2">
+                <div class="px-3 pt-2 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Comptabilité Générale</div>
                 
-                <a id="navItemDashboard" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg text-[#cbdad3] hover:bg-[#16352c] hover:text-white transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#85a396]">dashboard</span>
-                        <span class="font-body-md text-body-md">Tableau de bord</span>
+                <a id="navItemDashboard" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100/70 hover:text-slate-900 transition-colors cursor-pointer text-[13px] font-medium" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-slate-400">dashboard</span>
+                        <span>Tableau de bord</span>
                     </div>
                 </a>
                 
-                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg bg-[#14362b] text-[#6ee7b7] font-semibold border-l-2 border-[#10b981] shadow-sm transition-colors cursor-pointer active" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#34d399]">menu_book</span>
-                        <span class="font-body-md text-body-md text-white">Journal des Écritures</span>
+                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#e6f7f5] text-[#0d9488] font-bold border-l-4 border-[#0d9488] shadow-xs transition-colors cursor-pointer active text-[13px]" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-[#0d9488]">menu_book</span>
+                        <span>Journal des Écritures</span>
                     </div>
-                    <span class="px-1.5 py-0.5 rounded font-label-badge text-[10px] bg-[#07241c] border border-[#10b981]/40 text-[#6ee7b7] font-bold">SYS</span>
+                    <span class="px-1.5 py-0.5 rounded text-[10px] bg-white border border-[#a0d9d2] text-[#0d9488] font-bold font-mono">SYS</span>
                 </a>
                 
-                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg text-[#cbdad3] hover:bg-[#16352c] hover:text-white transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#85a396]">account_balance</span>
-                        <span class="font-body-md text-body-md">Bilan SYSCOHADA</span>
-                    </div>
-                </a>
-                
-                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg text-[#cbdad3] hover:bg-[#16352c] hover:text-white transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#85a396]">query_stats</span>
-                        <span class="font-body-md text-body-md">Compte de Résultat</span>
+                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100/70 hover:text-slate-900 transition-colors cursor-pointer text-[13px] font-medium" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-slate-400">account_balance</span>
+                        <span>Bilan SYSCOHADA</span>
                     </div>
                 </a>
                 
-                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg text-[#cbdad3] hover:bg-[#16352c] hover:text-white transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#85a396]">payments</span>
-                        <span class="font-body-md text-body-md">Flux de Trésorerie (TFT)</span>
+                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100/70 hover:text-slate-900 transition-colors cursor-pointer text-[13px] font-medium" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-slate-400">query_stats</span>
+                        <span>Compte de Résultat</span>
                     </div>
                 </a>
                 
-                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg text-[#cbdad3] hover:bg-[#16352c] hover:text-white transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#85a396]">description</span>
-                        <span class="font-body-md text-body-md">Notes &amp; Liasse DGID</span>
-                    </div>
-                    <span class="px-1.5 py-0.5 rounded font-label-badge text-[10px] bg-[#102d24] text-[#a7c5b9] border border-[#1b3d32]">36 Tab</span>
-                </a>
-                
-                <div class="px-space-sm pt-space-md pb-1 font-label-code text-[10px] text-[#7d9b8e] uppercase tracking-wider font-bold">Outils &amp; Fiscalité</div>
-                
-                <a id="navItemVisa" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg text-[#cbdad3] hover:bg-[#16352c] hover:text-white transition-colors cursor-pointer" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca()">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#85a396]">verified</span>
-                        <span class="font-body-md text-body-md">Visa &amp; Scellement ONECCA</span>
-                    </div>
-                    <span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
-                </a>
-                
-                <a id="navItemExport" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg text-[#cbdad3] hover:bg-[#16352c] hover:text-white transition-colors cursor-pointer" href="javascript:void(0)" onclick="telechargerFichierFEC()">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#85a396]">output</span>
-                        <span class="font-body-md text-body-md">Export FEC (DGID)</span>
+                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100/70 hover:text-slate-900 transition-colors cursor-pointer text-[13px] font-medium" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-slate-400">payments</span>
+                        <span>Flux de Trésorerie (TFT)</span>
                     </div>
                 </a>
                 
-                <a id="navItemPrint" class="sidebar-nav-item flex items-center justify-between px-space-sm py-2 rounded-lg text-slate-300 hover:bg-[#16352c] hover:text-white transition-colors cursor-pointer" href="javascript:void(0)" onclick="window.print()">
-                    <div class="flex items-center gap-space-sm">
-                        <span class="material-symbols-outlined text-[18px] text-[#85a396]">print</span>
-                        <span class="font-body-md text-body-md text-[#cbdad3]">Imprimer Dossier Complet</span>
+                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100/70 hover:text-slate-900 transition-colors cursor-pointer text-[13px] font-medium" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-slate-400">description</span>
+                        <span>Notes &amp; Liasse DGID</span>
+                    </div>
+                    <span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 border border-slate-200 font-mono">36 Tab</span>
+                </a>
+
+                <div class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Outils &amp; Fiscalité</div>
+                
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100/70 hover:text-slate-900 transition-colors cursor-pointer text-[13px] font-medium" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca(); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-slate-400">verified</span>
+                        <span>Visa &amp; Scellement ONECCA</span>
+                    </div>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                </a>
+                
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100/70 hover:text-slate-900 transition-colors cursor-pointer text-[13px] font-medium" href="javascript:void(0)" onclick="telechargerFichierFEC(); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-slate-400">output</span>
+                        <span>Export FEC (DGID)</span>
+                    </div>
+                </a>
+                
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100/70 hover:text-slate-900 transition-colors cursor-pointer text-[13px] font-medium" href="javascript:void(0)" onclick="window.print();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[19px] text-slate-400">print</span>
+                        <span>Imprimer Dossier Complet</span>
                     </div>
                 </a>
             </nav>
         </div>
 
-        <!-- Utilisateur Expert-Comptable -->
-        <div class="mt-auto p-4 border-t border-[#18362e] bg-[#091a15]/80">
-            <div class="p-3 rounded-lg bg-[#0e231d] border border-[#1e4237] flex items-center justify-between shadow-sm">
-                <div class="flex items-center gap-3">
-                    <div class="relative flex-shrink-0">
-                        <div class="w-9 h-9 rounded-full bg-[#173a30] border border-[#235043] flex items-center justify-center">
-                            <span class="material-symbols-outlined text-[#d8eae2] text-[18px]">person</span>
-                        </div>
-                        <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#10b981] border-2 border-[#0e231d]" title="En ligne"></span>
+        <!-- Footer Sidebar avec Profil de l'Expert-Comptable -->
+        <div class="p-3 border-t border-slate-100 bg-slate-50/50">
+            <div class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                        AF
                     </div>
                     <div class="flex flex-col min-w-0">
-                        <span class="font-body-sm text-[13px] font-semibold text-[#f5f0e6] leading-tight truncate">Amadou Fall, EC</span>
-                        <span class="font-label-code text-[11px] text-[#9cb3a8] truncate">Ordre ONECCA #482</span>
+                        <span class="text-xs font-semibold text-slate-900 truncate">Amadou Fall, EC</span>
+                        <span class="text-[10px] text-slate-400 font-mono">Ordre ONECCA #482</span>
                     </div>
                 </div>
-                <button class="text-[#8ea89c] hover:text-[#f5f0e6] p-1.5 rounded-lg hover:bg-[#16352c] transition-colors flex-shrink-0 cursor-pointer" type="button" onclick="ouvrirModalMemoireIA()">
+                <button class="text-slate-400 hover:text-slate-700 p-1 rounded hover:bg-slate-50" title="Options du compte">
                     <span class="material-symbols-outlined text-[18px]">more_vert</span>
                 </button>
             </div>
         </div>
     </aside>
 
-    <div class="md:pl-72">
-        <!-- HEADER FIXE HAUT -->
-        <header class="fixed top-0 left-0 md:left-72 right-0 h-16 bg-[#0e231d]/95 backdrop-blur-xl border-b border-[#1a3830] shadow-sm z-40 flex items-center justify-between px-gutter-lg">
-            <div class="flex items-center gap-space-md">
-                <button onclick="toggleMobileSidebar()" class="md:hidden text-[#cbdad3] hover:text-white p-1.5 rounded">
+    <!-- WRAPPER PRINCIPAL (md:pl-72 pour libérer la sidebar blanche) -->
+    <div class="flex-1 flex flex-col min-h-screen md:pl-72 w-full bg-slate-50">
+
+        <!-- HEADER SUPÉRIEUR BLANC -->
+        <header class="h-16 bg-white border-b border-slate-200/90 px-6 flex items-center justify-between sticky top-0 z-40 shadow-2xs">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-600 hover:text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition-colors" title="Ouvrir le menu">
                     <span class="material-symbols-outlined text-[22px]">menu</span>
                 </button>
-                <div class="flex items-center gap-space-xs font-body-sm text-body-sm text-[#9cb3a8]">
-                    <span>/</span><span class="text-[#9cb3a8]">Comptabilité</span><span>/</span><span class="text-[#6ee7b7] font-medium" id="headerBreadcrumbTitle">SYSCOHADA Révisé</span>
+                <div class="flex items-center gap-2 text-xs font-medium text-slate-400">
+                    <span>Comptabilité</span>
+                    <span>/</span>
+                    <span class="text-slate-800 font-semibold" id="headerBreadcrumbTitle">SYSCOHADA Révisé • Journal des Écritures</span>
                 </div>
             </div>
-            <div class="flex-1 max-w-md mx-space-xl">
-                <div class="relative flex items-center"></div>
-            </div>
-            <div class="flex items-center gap-space-sm">
-                <button class="p-2 rounded-lg text-[#cbdad3] hover:bg-[#173a30] hover:text-white relative transition-colors cursor-pointer" title="Notifications de scellement" type="button" onclick="ouvrirModalVisaOnecca()">
+
+            <div class="flex items-center gap-3">
+                <button class="relative p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-50 transition-colors" title="Notifications">
                     <span class="material-symbols-outlined text-[20px]">notifications</span>
-                    <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#b91c1c] ring-2 ring-[#0e231d]"></span>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500"></span>
                 </button>
-                <button class="px-space-md py-1.5 rounded-lg bg-[#0f4c3a] hover:bg-[#145e48] text-[#f5fbf7] border border-[#1b6b53] font-body-sm text-body-sm font-semibold flex items-center gap-1.5 transition-all shadow-sm cursor-pointer" type="button" onclick="ouvrirModalQuickTx('ENTREE')">
-                    <span class="material-symbols-outlined text-[18px]">add</span>
+                <button onclick="ouvrirModalSaisieRapide()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px]">add</span>
                     <span>Nouvelle écriture</span>
                 </button>
-                <div class="w-8 h-8 rounded-full bg-[#173a30] border border-[#245244] flex items-center justify-center cursor-pointer" onclick="ouvrirModalMemoireIA()">
-                    <span class="material-symbols-outlined text-[#6ee7b7] text-[18px]">person</span>
+                <div class="w-8 h-8 rounded-full bg-[#e6f7f5] text-[#0d9488] border border-[#a0d9d2] flex items-center justify-center font-bold text-xs" title="Profil connecté">
+                    EC
                 </div>
             </div>
         </header>
 
-        <!-- ESPACE DE TRAVAIL PRINCIPAL -->
-        <main class="w-full pt-16 bg-[#f7f5f0] min-h-screen px-gutter-lg pb-margin">
-            <div class="flex flex-col w-full pt-6">
+        <!-- CONTENU PRINCIPAL -->
+        <main class="flex-1 p-6 max-w-[1400px] w-full mx-auto">
 
-                <!-- 1. VUE JOURNAL DES ÉCRITURES (MAQUETTE EXACTE FOURNIE) -->
-                <div id="viewJournal">
-                    <!-- Section Ruban de Filtres & Recherche -->
-                    <section class="mb-4 bg-white p-3.5 rounded-2xl border border-[#e6e0d4] shadow-sm flex flex-col gap-3">
-                        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
-                            <!-- Barre de recherche avec raccourci Ctrl+K -->
-                            <div class="relative flex-1 max-w-2xl flex items-center">
-                                <span class="material-symbols-outlined absolute left-3.5 text-[#8c8273] text-[20px]">search</span>
-                                <input class="w-full pl-11 pr-20 py-2 rounded-xl bg-[#fbf9f5] border border-[#e5dec9] text-[#242522] placeholder:text-[#8c8273] focus:outline-none focus:border-[#0f4c3a] focus:bg-white text-[13px]" id="table-search-input" placeholder="Rechercher par libellé, montant, client ou compte SYSCOHADA..." type="text" oninput="handleSearchInput(this.value)">
-                                <div class="absolute right-3 flex items-center gap-1 text-[#6b6456] bg-[#eee8dc] px-2 py-0.5 rounded-lg border border-[#ded5c4] text-[11px] font-semibold select-none">
-                                    <span class="material-symbols-outlined text-[14px]">keyboard_command_key</span><span>K</span>
-                                </div>
-                            </div>
-                            <!-- Boutons d'actions rapides -->
-                            <div class="flex items-center gap-2 flex-wrap justify-end">
-                                <button class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#ffffff] hover:bg-[#f8f5ee] text-[#3e3b33] border border-[#e2dacf] text-[11px] font-medium transition-colors shadow-xs cursor-pointer" type="button" onclick="ouvrirModalQuickTx('ENTREE')">
-                                    <span class="material-symbols-outlined text-[15px] text-[#0f4c3a]">add</span><span>Filtre avancé</span>
-                                </button>
-                                <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#ffffff] hover:bg-[#f8f5ee] text-[#3e3b33] border border-[#e2dacf] text-[11px] font-medium shadow-xs transition-colors cursor-pointer" type="button">
-                                    <span class="material-symbols-outlined text-[16px] text-[#7d7465]">view_column</span><span>Colonnes (7)</span>
-                                </button>
-                                <button class="p-1.5 rounded-lg bg-[#ffffff] hover:bg-[#f8f5ee] text-[#7d7465] border border-[#e2dacf] shadow-xs transition-colors cursor-pointer" title="Actualiser" type="button" onclick="loadDashboardData()">
-                                    <span class="material-symbols-outlined text-[17px]">refresh</span>
-                                </button>
+            <!-- 1. VUE JOURNAL DES ÉCRITURES (STYLE ORDERS PREMIUM) -->
+            <div id="viewJournal">
+
+                <!-- Ruban Recherche & Filtres Ultra Net -->
+                <div class="mb-5 bg-white p-4 rounded-xl border border-slate-200/90 shadow-2xs flex flex-col gap-3">
+                    <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+                        <!-- Barre de recherche -->
+                        <div class="relative flex-1 max-w-xl">
+                            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                            <input class="w-full pl-10 pr-16 py-2 rounded-lg bg-slate-50/70 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0d9488] focus:bg-white focus:ring-1 focus:ring-[#0d9488] text-[13px] transition-all" id="table-search-input" placeholder="Rechercher par libellé, montant, client ou compte SYSCOHADA..." type="text" oninput="handleSearchInput(this.value)">
+                            <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200 text-[10px] font-mono select-none">
+                                ⌘K
                             </div>
                         </div>
 
-                        <!-- Ruban de Filtres Actifs (Pastilles avec bouton de suppression) -->
-                        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-[#f0eae0]" id="filterPillsStrip">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-[#918778] mr-1">Filtres actifs :</span>
-                            
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#edf6f2] text-[#0d4434] text-[11px] font-semibold border border-[#cbe6dc] cursor-pointer" id="pillStatus" onclick="toggleStatusFilter()">
-                                <span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>
-                                <span class="font-bold uppercase tracking-wider text-[10px] text-[#0f4c3a]">STATUT :</span>
-                                <span id="pillStatusLabel">Validé SYSCOHADA</span>
-                                <button aria-label="Supprimer" class="ml-1 text-[#0f4c3a] hover:text-[#06291e] font-bold" type="button" onclick="event.stopPropagation(); resetStatusFilter();">×</button>
-                            </span>
-                            
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#f6f2ea] text-[#4d483e] text-[11px] font-medium border border-[#e5dec9] cursor-pointer" id="pillCompte" onclick="toggleCompteFilter()">
-                                <span class="font-bold uppercase tracking-wider text-[10px] text-[#706757]">COMPTE :</span>
-                                <span id="pillCompteLabel">Classe 7 (Produits)</span>
-                                <button aria-label="Supprimer" class="ml-1 text-[#8f8474] hover:text-[#38342a] font-bold" type="button" onclick="event.stopPropagation(); resetCompteFilter();">×</button>
-                            </span>
-                            
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#f6f2ea] text-[#4d483e] text-[11px] font-medium border border-[#e5dec9] cursor-pointer" id="pillPeriod" onclick="togglePeriodFilter()">
-                                <span class="font-bold uppercase tracking-wider text-[10px] text-[#706757]">PÉRIODE :</span>
-                                <span id="pillPeriodLabel">Toutes les dates</span>
-                                <button aria-label="Supprimer" class="ml-1 text-[#8f8474] hover:text-[#38342a] font-bold" type="button" onclick="event.stopPropagation(); resetDateFilter();">×</button>
-                            </span>
-                            
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#f6f2ea] text-[#4d483e] text-[11px] font-medium border border-[#e5dec9] cursor-pointer" id="pillFlow" onclick="toggleFlowFilter()">
-                                <span class="font-bold uppercase tracking-wider text-[10px] text-[#706757]">FLUX :</span>
-                                <span id="pillFlowLabel">Tous les flux</span>
-                                <button aria-label="Supprimer" class="ml-1 text-[#8f8474] hover:text-[#38342a] font-bold" type="button" onclick="event.stopPropagation(); filterByFlow('all');">×</button>
-                            </span>
+                        <!-- Actions de Filtrage & Colonnes -->
+                        <div class="flex items-center gap-2">
+                            <button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer" onclick="togglePopoverFiltreAvance()">
+                                <span class="material-symbols-outlined text-[16px] text-slate-400">filter_list</span>
+                                <span>Filtre avancé</span>
+                            </button>
+                            <button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors" title="Configuration des colonnes">
+                                <span class="material-symbols-outlined text-[16px] text-slate-400">view_column</span>
+                                <span>Colonnes (7)</span>
+                            </button>
+                            <button class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer" onclick="loadDashboardData()" title="Rafraîchir les flux">
+                                <span class="material-symbols-outlined text-[16px]">refresh</span>
+                            </button>
                         </div>
-                    </section>
+                    </div>
 
-                    <!-- Matrice Comptable Haute Fidélité avec KPI Supérieur -->
-                    <section class="bg-white rounded-2xl border border-[#e6e0d4] shadow-sm overflow-hidden flex flex-col mb-8">
-                        <!-- Bandeau KPI Pré-Tableau -->
-                        <div class="bg-[#faf7f2] border-b border-[#e8e2d6] px-5 py-2.5 flex flex-wrap items-center justify-between gap-3">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-[#877d6d] text-[18px]">receipt_long</span>
-                                <span class="font-bold text-[12px] uppercase tracking-wider text-[#353229]">Livre-Journal Quotidien</span>
-                                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0d4434] bg-[#edf6f2] border border-[#cbe6dc] px-2 py-0.5 rounded-md ml-1">
-                                    <span class="material-symbols-outlined text-[13px] text-[#0f4c3a]">verified</span>
-                                    <span>Écritures</span>
-                                </span>
-                            </div>
-                            <div class="flex items-center gap-3 text-[13px]">
-                                <div class="flex items-center gap-2">
-                                    <span class="font-medium text-[#6e6657] text-[12px]">Total cumulé de la page :</span>
-                                    <span class="font-bold text-[#353229] font-numeric-table bg-white border border-[#e5dec9] px-2 py-0.5 rounded shadow-xs" id="cumulDebit">0 FCFA</span>
-                                </div>
-                                <div class="flex items-center gap-1.5 font-bold text-[#0f4c3a] font-numeric-table text-[14px] bg-[#edf6f2] border border-[#cbe6dc] px-2.5 py-0.5 rounded shadow-xs">
-                                    <span id="cumulCredit">20 088</span>
-                                    <span class="text-[11px] font-semibold text-[#145e48]">FCFA</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tableau Dense des Écritures -->
-                        <div class="overflow-x-auto w-full">
-                            <table class="w-full text-left border-collapse" id="transactionsTable">
-                                <thead>
-                                    <tr class="bg-[#fbf9f5] border-b border-[#e8e2d6] text-[#6b6252] text-[11px] font-bold uppercase tracking-wider select-none">
-                                        <th class="py-3 px-4 w-10 text-center border-r border-[#ece6d9]">
-                                            <input class="rounded border-[#cbbfab] text-[#0f4c3a] focus:ring-[#0f4c3a] w-4 h-4 cursor-pointer" id="select-all-rows" type="checkbox">
-                                        </th>
-                                        <th class="py-3 px-4 whitespace-nowrap border-r border-[#ece6d9]">Date &amp; Heure</th>
-                                        <th class="py-3 px-4 min-w-[280px] border-r border-[#ece6d9]">Libellé de l'opération</th>
-                                        <th class="py-3 px-4 text-center whitespace-nowrap border-r border-[#ece6d9]">Compte SYSCOHADA</th>
-                                        <th class="py-3 px-4 text-center whitespace-nowrap border-r border-[#ece6d9]">Débit (FCFA)</th>
-                                        <th class="py-3 px-4 text-right whitespace-nowrap border-r border-[#ece6d9]">Crédit (FCFA)</th>
-                                        <th class="py-3 px-5 text-center min-w-[120px] whitespace-nowrap">Justificatif</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-[#f2ece1] text-[#242522] text-[13px]" id="tableBody">
-                                    <!-- Lignes générées en direct par le JS -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Pied de Tableau & Pagination -->
-                        <div class="bg-[#faf7f2] border-t border-[#e8e2d6] px-5 py-3 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div class="text-[#7d7465] text-[12px]">
-                                Affichage de <strong class="text-[#242522]" id="pagStart">1</strong> à <strong class="text-[#242522]" id="pagEnd">8</strong> sur <strong class="text-[#242522]" id="pagTotal">8</strong> écritures
-                            </div>
-                            <div class="flex items-center gap-6 text-[#6b6252] text-[12px]">
-                                <div class="flex items-center gap-1.5">
-                                    <span>Lignes par page :</span>
-                                    <select class="bg-white border border-[#e5dec9] text-[#242522] text-[12px] rounded-md px-2 py-1 focus:outline-none shadow-xs cursor-pointer">
-                                        <option>15</option>
-                                        <option>25</option>
-                                        <option>50</option>
-                                        <option>100</option>
-                                    </select>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <button class="p-1 text-[#b5aa99] hover:text-[#353229] disabled:opacity-30 cursor-pointer" disabled="" type="button">
-                                        <span class="material-symbols-outlined text-[17px]">first_page</span>
-                                    </button>
-                                    <button class="p-1 text-[#b5aa99] hover:text-[#353229] disabled:opacity-30 cursor-pointer" disabled="" type="button">
-                                        <span class="material-symbols-outlined text-[17px]">chevron_left</span>
-                                    </button>
-                                    <span class="w-6 h-6 flex items-center justify-center rounded bg-[#0f4c3a] text-white font-bold text-[12px]">1</span>
-                                    <button class="p-1 text-[#b5aa99] hover:text-[#353229] disabled:opacity-30 cursor-pointer" disabled="" type="button">
-                                        <span class="material-symbols-outlined text-[17px]">chevron_right</span>
-                                    </button>
-                                    <button class="p-1 text-[#b5aa99] hover:text-[#353229] disabled:opacity-30 cursor-pointer" disabled="" type="button">
-                                        <span class="material-symbols-outlined text-[17px]">last_page</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    <!-- Filtres Actifs (Pills comme Stripe/Linear) -->
+                    <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100 text-xs">
+                        <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mr-1">Filtres :</span>
+                        
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#e6f7f5] text-[#0d9488] text-[11px] font-semibold border border-[#a0d9d2]/60 cursor-pointer shadow-2xs" id="pillStatus">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#0d9488]"></span>
+                            <span>Statut : Validé SYSCOHADA</span>
+                            <button aria-label="Supprimer" class="ml-1 hover:text-[#0f766e] font-bold text-xs" type="button" onclick="event.stopPropagation(); resetStatusFilter();">×</button>
+                        </span>
+                        
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 cursor-pointer" id="pillCompte" onclick="toggleCompteFilter()">
+                            <span class="font-semibold text-slate-500">Compte :</span>
+                            <span id="pillCompteLabel">Classe 7 (Produits)</span>
+                            <button aria-label="Supprimer" class="ml-1 text-slate-400 hover:text-slate-700 font-bold" type="button" onclick="event.stopPropagation(); resetCompteFilter();">×</button>
+                        </span>
+                        
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 cursor-pointer" id="pillPeriod" onclick="togglePeriodFilter()">
+                            <span class="font-semibold text-slate-500">Période :</span>
+                            <span id="pillPeriodLabel">Toutes les dates</span>
+                            <button aria-label="Supprimer" class="ml-1 text-slate-400 hover:text-slate-700 font-bold" type="button" onclick="event.stopPropagation(); resetDateFilter();">×</button>
+                        </span>
+                        
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[11px] font-medium border border-slate-200 cursor-pointer" id="pillFlow" onclick="toggleFlowFilter()">
+                            <span class="font-semibold text-slate-500">Flux :</span>
+                            <span id="pillFlowLabel">Tous les flux</span>
+                            <button aria-label="Supprimer" class="ml-1 text-slate-400 hover:text-slate-700 font-bold" type="button" onclick="event.stopPropagation(); filterByFlow('all');">×</button>
+                        </span>
+                    </div>
                 </div>
 
-                <!-- 2. VUES SECONDAIRES SYSCOHADA (Bilan, Compte de Résultat, TFT, Liasse DGID) -->
-                <div id="secondaryViewsContainer">
-                    <div id="viewBilan" style="display: none;">
+                <!-- TABLE CARD HAUTE DENSITÉ BLANCHE (Référence Image 5) -->
+                <div class="bg-white rounded-xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col mb-8">
+
+                    <!-- Bandeau supérieur du tableau avec Titre & Totaux -->
+                    <div class="px-5 py-3 border-b border-slate-200/80 bg-white flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="material-symbols-outlined text-slate-400 text-[20px]">receipt_long</span>
+                            <span class="font-bold text-[13.5px] text-slate-900">Livre-Journal Quotidien</span>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-[#0d9488] bg-[#e6f7f5] border border-[#a0d9d2]/60 px-2 py-0.5 rounded-md">
+                                <span class="material-symbols-outlined text-[13px]">verified</span>
+                                <span>Écritures Certifiées</span>
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs">
+                            <div class="flex items-center gap-1.5 text-slate-500">
+                                <span>Total cumulé :</span>
+                                <span class="font-mono font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded" id="cumulDebit">0 FCFA</span>
+                            </div>
+                            <div class="flex items-center gap-1 font-bold text-[#0d9488] font-mono text-[13px] bg-[#e6f7f5] border border-[#a0d9d2]/60 px-2.5 py-0.5 rounded shadow-2xs">
+                                <span id="cumulCredit">20 088</span>
+                                <span class="text-[10px] text-[#0f766e]">FCFA</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tableau Moderne -->
+                    <div class="overflow-x-auto w-full">
+                        <table class="w-full text-left border-collapse" id="transactionsTable">
+                            <thead>
+                                <tr class="bg-slate-50/75 border-b border-slate-200/80 text-slate-500 text-[11px] font-semibold uppercase tracking-wider select-none">
+                                    <th class="py-3 px-4 w-12 text-center border-r border-slate-100/80">
+                                        <input class="rounded border-slate-300 text-[#0d9488] focus:ring-[#0d9488] w-4 h-4 cursor-pointer" id="select-all-rows" type="checkbox">
+                                    </th>
+                                    <th class="py-3 px-4 whitespace-nowrap border-r border-slate-100/80">Date &amp; Heure</th>
+                                    <th class="py-3 px-4 border-r border-slate-100/80 min-w-[260px]">Libellé de l'opération</th>
+                                    <th class="py-3 px-4 text-center whitespace-nowrap border-r border-slate-100/80">Compte SYSCOHADA</th>
+                                    <th class="py-3 px-4 text-right whitespace-nowrap border-r border-slate-100/80">Débit (FCFA)</th>
+                                    <th class="py-3 px-4 text-right whitespace-nowrap border-r border-slate-100/80">Crédit (FCFA)</th>
+                                    <th class="py-3 px-4 text-center whitespace-nowrap border-r border-slate-100/80">Justificatif</th>
+                                    <th class="py-3 px-3 text-center w-12 whitespace-nowrap"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-[13px]" id="tableBody">
+                                <!-- Injecté dynamiquement par renderTransactionsList -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pied de tableau avec pagination propre -->
+                    <div class="bg-white border-t border-slate-200/80 px-5 py-3 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 select-none">
+                        <div class="flex items-center gap-1 font-medium">
+                            <span>Affichage de</span>
+                            <span class="font-semibold text-slate-900 font-mono" id="pagStart">1</span>
+                            <span>à</span>
+                            <span class="font-semibold text-slate-900 font-mono" id="pagEnd">8</span>
+                            <span>sur</span>
+                            <span class="font-semibold text-slate-900 font-mono" id="pagTotal">8</span>
+                            <span>écritures</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-1.5">
+                                <span>Lignes par page :</span>
+                                <select class="text-xs bg-slate-50 border border-slate-200 rounded px-2 py-1 text-slate-700 focus:outline-none focus:border-[#0d9488]" id="rowsPerPageSelect" onchange="changeRowsPerPage(this.value)">
+                                    <option value="15">15</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <button class="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none" disabled id="btnPrevPage">
+                                    <span class="material-symbols-outlined text-[14px]">chevron_left</span>
+                                </button>
+                                <span class="w-7 h-7 rounded bg-slate-900 text-white font-bold text-xs flex items-center justify-center font-mono">1</span>
+                                <button class="w-7 h-7 rounded border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none" disabled id="btnNextPage">
+                                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- VUES SECONDAIRES (Bilan, Compte de Résultat, TFT, Annexes) -->
+            <div id="viewBilan" style="display: none;">
             <div class="comptable-statement-card">
                 <div class="statement-header">
                     <div class="statement-title-wrap">
@@ -9140,13 +9072,11 @@
     
 
     
-                </div>
 
-            </div>
         </main>
     </div>
 
-    <!-- MODALES DE L'APPLICATION (Détail écriture, Preuve Wave, Visa ONECCA, QR WhatsApp) -->
+    <!-- MODALES EXISTANTES (Détail écriture, Saisie rapide, etc.) -->
     
 
     
@@ -9479,7 +9409,7 @@
 
     
 
-    <!-- UNIQUE SCRIPT DE LOGIQUE COMPTABLE (s0 patché, propre et sans doublons) -->
+    <!-- SCRIPT 0 (LOGIQUE COMPLÈTE PATCHÉE SANS CONFLITS) -->
     <script>
         let allTransactions = [];
         let currentEntreprise = null;
@@ -9558,8 +9488,8 @@
             });
 
             document.querySelectorAll('.sidebar-nav-item').forEach(b => {
-                b.classList.remove('bg-[#14362b]', 'text-[#6ee7b7]', 'font-semibold', 'border-l-2', 'border-[#10b981]', 'shadow-sm', 'active');
-                b.classList.add('text-[#cbdad3]');
+                b.classList.remove('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
+                b.classList.add('text-slate-600');
             });
 
             const breadTitle = document.getElementById('headerBreadcrumbTitle');
@@ -9568,48 +9498,52 @@
                 if (viewJournal) viewJournal.style.display = 'block';
                 const el = document.getElementById('navItemJournal');
                 if (el) {
-                    el.classList.add('bg-[#14362b]', 'text-[#6ee7b7]', 'font-semibold', 'border-l-2', 'border-[#10b981]', 'shadow-sm', 'active');
-                    el.classList.remove('text-[#cbdad3]');
+                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
+                    el.classList.remove('text-slate-600');
                 }
-                if (breadTitle) breadTitle.textContent = 'SYSCOHADA Révisé • Journal';
+                if (breadTitle) breadTitle.textContent = 'SYSCOHADA Révisé • Journal des Écritures';
             } else if (tabName === 'bilan') {
                 if (viewBilan) viewBilan.style.display = 'block';
                 const el = document.getElementById('navItemBilan');
                 if (el) {
-                    el.classList.add('bg-[#14362b]', 'text-[#6ee7b7]', 'font-semibold', 'border-l-2', 'border-[#10b981]', 'shadow-sm', 'active');
-                    el.classList.remove('text-[#cbdad3]');
+                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
+                    el.classList.remove('text-slate-600');
                 }
-                if (breadTitle) breadTitle.textContent = 'Bilan SYSCOHADA (Système Normal & SMT)';
+                if (breadTitle) breadTitle.textContent = 'SYSCOHADA Révisé • Bilan & Actif/Passif';
+                if (typeof updateBilanDisplay === 'function') updateBilanDisplay();
             } else if (tabName === 'resultat') {
                 if (viewResultat) viewResultat.style.display = 'block';
                 const el = document.getElementById('navItemResultat');
                 if (el) {
-                    el.classList.add('bg-[#14362b]', 'text-[#6ee7b7]', 'font-semibold', 'border-l-2', 'border-[#10b981]', 'shadow-sm', 'active');
-                    el.classList.remove('text-[#cbdad3]');
+                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
+                    el.classList.remove('text-slate-600');
                 }
-                if (breadTitle) breadTitle.textContent = 'Compte de Résultat & SIG';
+                if (breadTitle) breadTitle.textContent = 'SYSCOHADA Révisé • Compte de Résultat (SIG)';
+                if (typeof updateCompteResultatDisplay === 'function') updateCompteResultatDisplay();
             } else if (tabName === 'tft') {
                 if (viewTFT) viewTFT.style.display = 'block';
                 const el = document.getElementById('navItemTFT');
                 if (el) {
-                    el.classList.add('bg-[#14362b]', 'text-[#6ee7b7]', 'font-semibold', 'border-l-2', 'border-[#10b981]', 'shadow-sm', 'active');
-                    el.classList.remove('text-[#cbdad3]');
+                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
+                    el.classList.remove('text-slate-600');
                 }
-                if (breadTitle) breadTitle.textContent = 'Tableau des Flux de Trésorerie (TFT)';
+                if (breadTitle) breadTitle.textContent = 'SYSCOHADA Révisé • Tableau des Flux de Trésorerie';
+                if (typeof updateTFTDisplay === 'function') updateTFTDisplay();
             } else if (tabName === 'annexes') {
                 if (viewAnnexes) viewAnnexes.style.display = 'block';
                 const el = document.getElementById('navItemAnnexes');
                 if (el) {
-                    el.classList.add('bg-[#14362b]', 'text-[#6ee7b7]', 'font-semibold', 'border-l-2', 'border-[#10b981]', 'shadow-sm', 'active');
-                    el.classList.remove('text-[#cbdad3]');
+                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
+                    el.classList.remove('text-slate-600');
                 }
-                if (breadTitle) breadTitle.textContent = 'Notes Annexes & Liasse Fiscale DGID (36 Tableaux)';
+                if (breadTitle) breadTitle.textContent = 'SYSCOHADA Révisé • Notes Annexes & Liasse DGID';
+                if (typeof updateAnnexesDisplay === 'function') updateAnnexesDisplay();
             } else if (tabName === 'prets') {
                 if (viewPrets) viewPrets.style.display = 'block';
-                if (breadTitle) breadTitle.textContent = 'Financements & Crédits PME Partenaires';
+                if (breadTitle) breadTitle.textContent = 'SYSCOHADA Révisé • Rapprochement & Dossiers';
             } else if (tabName === 'about') {
                 if (viewAbout) viewAbout.style.display = 'block';
-                if (breadTitle) breadTitle.textContent = 'À Propos de Grow';
+                if (breadTitle) breadTitle.textContent = 'À Propos de GROW & Vision SYSCOHADA';
             }
         }
 
@@ -11065,8 +10999,8 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             if (!txList || txList.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7" class="py-12 text-center text-[#847a6b] font-medium bg-[#fbf9f5]/50">
-                            <span class="material-symbols-outlined text-[32px] block mb-2 text-[#cbbfab]">receipt_long</span>
+                        <td colspan="8" class="py-16 text-center text-slate-500 font-medium bg-slate-50/50">
+                            <span class="material-symbols-outlined text-[36px] block mb-2 text-slate-300">receipt_long</span>
                             Aucune écriture comptable trouvée pour cette sélection.
                         </td>
                     </tr>
@@ -11083,7 +11017,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             txList.forEach((t, idx) => {
                 const tr = document.createElement('tr');
                 const isAlt = (idx % 2 === 1);
-                tr.className = `hover:bg-[#f7f5ed] transition-colors group border-b border-[#f2ece1] ${isAlt ? 'bg-[#faf7f2]/40' : 'bg-white'} cursor-pointer`;
+                tr.className = `hover:bg-slate-50/80 transition-colors group border-b border-slate-100 ${isAlt ? 'bg-slate-50/30' : 'bg-white'} cursor-pointer`;
                 tr.onclick = () => openTxDetailModal(t);
 
                 const rawDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '13/11/2026');
@@ -11092,15 +11026,15 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     const p = rawDate.split('-');
                     if (p.length === 3) dateDisplay = `${p[2]}/${p[1]}/${p[0]}`;
                 }
-                let timeDisplay = 'à 15h12';
+                let timeDisplay = '15h12';
                 if (t.created_at && t.created_at.includes('T')) {
                     const timePart = t.created_at.split('T')[1].substring(0, 5);
-                    timeDisplay = `à ${timePart.replace(':', 'h')}`;
+                    timeDisplay = timePart.replace(':', 'h');
                 }
 
                 let fullLib = t.libelle || 'Encaissement Wave • Vente directe';
                 let title = fullLib;
-                let sub = 'CMD-2026-0980 • Vente directe QR';
+                let sub = 'CMD-2026-0980 • Vente directe';
 
                 if (fullLib.includes('•')) {
                     const parts = fullLib.split('•');
@@ -11114,63 +11048,73 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
                 const flux = (t.type_flux || '').toUpperCase();
                 const montant = Number(t.montant_fcfa) || 0;
-                let debitCell = '<span class="text-[#9c9282] font-medium">-</span>';
-                let creditCell = '<span class="text-[#9c9282] font-medium">-</span>';
+                let debitCell = '<span class="text-slate-300 font-normal">-</span>';
+                let creditCell = '<span class="text-slate-300 font-normal">-</span>';
 
-                if (flux === 'SORTIE') {
+                if (flux === 'SORTIE' || flux === 'DEBIT') {
                     totalDebit += montant;
-                    debitCell = `<span class="font-bold text-[#1c1d1a] font-numeric-table text-[14px]">${montant.toLocaleString('fr-FR')}</span>`;
+                    debitCell = `<span class="font-bold text-rose-600 font-mono tracking-tight text-[13px]">${montant.toLocaleString('fr-FR')}</span>`;
                 } else {
                     totalCredit += montant;
-                    creditCell = `<span class="font-bold text-[#1c1d1a] font-numeric-table text-[14px]">${montant.toLocaleString('fr-FR')}</span>`;
+                    creditCell = `<span class="font-bold text-slate-900 font-mono tracking-tight text-[13px]">${montant.toLocaleString('fr-FR')}</span>`;
                 }
 
                 const compteNum = t.compte_syscohada || '701';
+                let compteLabel = '701 • Ventes';
+                if (compteNum === '411') compteLabel = '411 • Créances Clients';
+                else if (compteNum === '521') compteLabel = '521 • Banques & Wave';
+                else if (compteNum === '601') compteLabel = '601 • Achats';
 
                 let logoUrl = WAVE_ICON_URL;
-                const srcP = (t.source_paiement || '').toUpperCase();
-                if (srcP === 'ORANGE_MONEY' || fullLib.toLowerCase().includes('orange')) {
-                    logoUrl = '/static/images/orange_money.png';
+                if ((t.operateur || '').toLowerCase().includes('orange')) {
+                    logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg';
                 }
 
                 tr.innerHTML = `
-                    <td class="py-3 px-4 text-center border-r border-[#f2ece1] bg-[#fbf9f5]/70" onclick="event.stopPropagation()">
-                        <input class="row-checkbox rounded border-[#cbbfab] text-[#0f4c3a] focus:ring-[#0f4c3a] w-4 h-4 cursor-pointer" type="checkbox">
+                    <td class="py-3.5 px-4 text-center border-r border-slate-100/80" onclick="event.stopPropagation()">
+                        <input class="row-checkbox rounded border-slate-300 text-[#0d9488] focus:ring-[#0d9488] w-4 h-4 cursor-pointer" type="checkbox">
                     </td>
-                    <td class="py-3 px-4 whitespace-nowrap font-medium text-[#1c1d1a] border-r border-[#f2ece1]">
-                        <span class="font-bold">${escapeHtml(dateDisplay)}</span> <span class="text-[#847a6b] font-normal">${escapeHtml(timeDisplay)}</span>
+                    <td class="py-3.5 px-4 whitespace-nowrap text-slate-600 border-r border-slate-100/80 text-[12.5px] font-medium">
+                        <span class="font-semibold text-slate-800">${escapeHtml(dateDisplay)}</span> <span class="text-slate-400 font-normal ml-1">${escapeHtml(timeDisplay)}</span>
                     </td>
-                    <td class="py-3 px-4 border-r border-[#f2ece1] max-w-[260px]">
+                    <td class="py-3.5 px-4 border-r border-slate-100/80 max-w-[320px]">
                         <div class="flex items-center gap-3">
-                            <img alt="Wave" class="w-6 h-6 rounded-md object-contain flex-shrink-0 shadow-xs" src="${logoUrl}" onerror="this.src='${WAVE_ICON_URL}'">
+                            <img alt="Wave" class="w-7 h-7 rounded-lg object-contain flex-shrink-0 shadow-xs border border-slate-100" src="${logoUrl}" onerror="this.src='${WAVE_ICON_URL}'">
                             <div class="flex flex-col min-w-0">
-                                <span class="font-semibold text-[#1c1d1a] truncate">${escapeHtml(title)}</span>
-                                <span class="text-[11px] text-[#847a6b] truncate">${escapeHtml(sub)}</span>
+                                <span class="font-semibold text-slate-900 text-[13px] leading-snug truncate">${escapeHtml(title)}</span>
+                                <span class="text-[11px] text-slate-400 truncate mt-0.5">${escapeHtml(sub)}</span>
                             </div>
                         </div>
                     </td>
-                    <td class="py-3 px-4 text-center border-r border-[#f2ece1]">
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 rounded bg-[#102921] text-[#fbf9f5] font-bold text-[12px] tracking-wide">${escapeHtml(compteNum)}</span>
+                    <td class="py-3.5 px-4 text-center border-r border-slate-100/80">
+                        <span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200/80 text-[11.5px] font-mono font-bold">
+                            ${escapeHtml(compteNum)}
+                        </span>
                     </td>
-                    <td class="py-3 px-4 text-center border-r border-[#f2ece1]">
+                    <td class="py-3.5 px-4 text-right border-r border-slate-100/80 whitespace-nowrap">
                         ${debitCell}
                     </td>
-                    <td class="py-3 px-4 text-right border-r border-[#f2ece1] bg-[#faf7f2]/50">
+                    <td class="py-3.5 px-4 text-right border-r border-slate-100/80 whitespace-nowrap">
                         ${creditCell}
                     </td>
-                    <td class="py-3 px-4 text-center" onclick="event.stopPropagation(); openTxDetailModal(allTransactions[${idx}] || t);">
-                        <div class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[#d5ede1] text-[#0a382b] shadow-xs cursor-pointer hover:bg-[#bde3ce] transition-colors" title="Preuve numérique certifiée">
-                            <span class="material-symbols-outlined text-[17px] font-bold">bolt</span>
-                        </div>
+                    <td class="py-3.5 px-4 text-center whitespace-nowrap" onclick="event.stopPropagation()">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#e6f7f5] text-[#0d9488] border border-[#a0d9d2]/60 hover:bg-[#d4f2ee] transition-colors shadow-2xs cursor-pointer" onclick="openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', 'Wave')" title="Cliquer pour afficher l'attestation certifiée Wave • BCEAO">
+                            <span class="material-symbols-outlined text-[13px]">bolt</span>
+                            <span>Certifié Wave</span>
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-3 text-center whitespace-nowrap" onclick="event.stopPropagation()">
+                        <button class="text-slate-400 hover:text-slate-700 p-1 rounded hover:bg-slate-100 transition-colors cursor-pointer" onclick="openTxDetailModal(t)" title="Consulter l'écriture détaillée">
+                            <span class="material-symbols-outlined text-[18px]">more_horiz</span>
+                        </button>
                     </td>
                 `;
-
                 tbody.appendChild(tr);
             });
 
             const cDeb = document.getElementById('cumulDebit');
             const cCred = document.getElementById('cumulCredit');
-            if (cDeb) cDeb.textContent = totalDebit > 0 ? (totalDebit.toLocaleString('fr-FR') + ' FCFA') : '0 FCFA';
+            if (cDeb) cDeb.textContent = totalDebit.toLocaleString('fr-FR') + ' FCFA';
             if (cCred) cCred.textContent = totalCredit.toLocaleString('fr-FR');
         }
 
@@ -12095,10 +12039,12 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 setTimeout(ouvrirModalWebhookAssistant, 400);
             }
         });
-    
+    </script>
+
         function handleSearchInput(query) {
-            currentSearchQuery = query || '';
-            const q = currentSearchQuery.toLowerCase().trim();
+            console.log("Searching transactions for:", query);
+            if (!allTransactions) return;
+            const q = (query || '').toLowerCase().trim();
             if (!q) {
                 renderTransactionsList(allTransactions);
                 return;
@@ -12107,19 +12053,35 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 const lib = (t.libelle || '').toLowerCase();
                 const m = String(t.montant_fcfa || '');
                 const c = (t.compte_syscohada || '').toLowerCase();
-                return lib.includes(q) || m.includes(q) || c.includes(q);
+                const op = (t.operateur || '').toLowerCase();
+                return lib.includes(q) || m.includes(q) || c.includes(q) || op.includes(q);
             });
-            renderTransactionsList(filtered);
+            renderTransactionsList(filtered, filtered.length);
         }
 
-        function toggleStatusFilter() {
-            filterByStatus(currentFilterStatus === 'valide' ? 'all' : 'valide');
-            const lbl = document.getElementById('pillStatusLabel');
-            if (lbl) lbl.textContent = currentFilterStatus === 'valide' ? 'Validé SYSCOHADA' : 'Tous statuts';
+        function ouvrirModalSaisieRapide() {
+            if (typeof ouvrirModalQuickTx === 'function') {
+                ouvrirModalQuickTx();
+            } else {
+                const m = document.getElementById('modalQuickTx');
+                if (m) m.style.display = 'flex';
+            }
+        }
+
+        function togglePopoverFiltreAvance() {
+            const val = prompt("Filtrer par montant, libellé, référence ou compte SYSCOHADA :");
+            if (val !== null && val.trim() !== '') {
+                handleSearchInput(val.trim());
+                const inp = document.getElementById('table-search-input');
+                if (inp) inp.value = val.trim();
+            } else if (val !== null) {
+                handleSearchInput('');
+                const inp = document.getElementById('table-search-input');
+                if (inp) inp.value = '';
+            }
         }
 
         function resetStatusFilter() {
-            filterByStatus('all');
             const p = document.getElementById('pillStatus');
             if (p) p.style.display = 'none';
         }
@@ -12237,9 +12199,8 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
         });
 
-</script>
 
-    <!-- SCRIPT PARTENAIRES & ABONNEMENT -->
+    <!-- SCRIPT 1 (PARTENAIRES & ABONNEMENTS) -->
     <script>
         function allerVersAbonnement() {
             const urlParams = new URLSearchParams(window.location.search);
