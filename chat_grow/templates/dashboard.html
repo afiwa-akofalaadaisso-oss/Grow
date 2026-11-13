@@ -132,6 +132,80 @@
             color: var(--grow-mint);
         }
 
+        /* Indicateurs de flux Entrées / Dépenses et Live Status */
+        .fintech-subflow-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 6px 0 14px 0;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            flex-wrap: wrap;
+        }
+
+        .fintech-subflow-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11.5px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .fintech-subflow-item .subflow-bullet {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .fintech-subflow-item .subflow-bullet.in {
+            background: #a0d9d2;
+            box-shadow: 0 0 6px rgba(160, 217, 210, 0.7);
+        }
+
+        .fintech-subflow-item .subflow-bullet.out {
+            background: #f87171;
+            box-shadow: 0 0 6px rgba(248, 113, 113, 0.5);
+        }
+
+        .fintech-subflow-item strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .fintech-subflow-divider {
+            width: 1px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .fintech-subflow-live {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10.5px;
+            color: #a0d9d2;
+            font-weight: 600;
+            background: rgba(160, 217, 210, 0.1);
+            padding: 2px 7px;
+            border-radius: 10px;
+        }
+
+        .live-pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #a0d9d2;
+            animation: livePulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes livePulseGlow {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 8px #a0d9d2; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
         .fintech-top-actions {
             display: flex;
             align-items: center;
@@ -2651,73 +2725,104 @@
                 -webkit-text-size-adjust: 100%;
             }
 
-            /* --- TOP NAVBAR MOBILE (2 NIVEAUX : LOGO/PROFIL PUIS ONGLETS DÉFILANTS) --- */
+            /* --- TOP NAVBAR MOBILE (1 SEUL NIVEAU : LOGO + PREUVES + ALERTE + AVATAR) --- */
             .top-navbar {
-                padding: 10px 14px 10px 14px !important;
-                flex-wrap: wrap !important;
+                padding: 10px 14px !important;
+                flex-wrap: nowrap !important;
                 position: sticky !important;
                 top: 0 !important;
                 z-index: 250 !important;
                 background: #ffffff !important;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+                gap: 8px !important;
+                align-items: center !important;
             }
 
             .nav-left {
-                flex: 1 1 auto !important;
+                flex: 0 0 auto !important;
                 gap: 8px !important;
             }
 
             .brand-logo img {
-                width: 32px !important;
-                height: 32px !important;
+                width: 30px !important;
+                height: 30px !important;
             }
 
             .brand-logo span {
-                font-size: 17px !important;
+                font-size: 16px !important;
+            }
+
+            .nav-center {
+                flex: 1 !important;
+                order: 2 !important;
+                display: flex !important;
+                justify-content: flex-end !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                width: auto !important;
+            }
+
+            .btn-preuves-financieres {
+                padding: 5px 10px !important;
+                font-size: 11px !important;
+                gap: 5px !important;
+                background: #222222 !important;
+                border-radius: 999px !important;
+                border: 1px solid rgba(160, 217, 210, 0.4) !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+            }
+
+            .btn-preuves-financieres .btn-preuves-text {
+                display: none !important;
+            }
+
+            .btn-preuves-financieres::after {
+                content: 'Preuves';
+                font-size: 11px;
+                font-weight: 700;
+                color: #ffffff;
+            }
+
+            .btn-preuves-financieres i {
+                color: #a0d9d2 !important;
+                font-size: 12px !important;
+            }
+
+            .preuves-counter-badge {
+                background: #a0d9d2 !important;
+                color: #0a2540 !important;
+                font-size: 10px !important;
+                font-weight: 800 !important;
+                padding: 1px 5px !important;
+                border-radius: 999px !important;
+            }
+
+            .btn-toggle-device-view {
+                display: none !important;
             }
 
             .nav-right {
                 flex: 0 0 auto !important;
-                gap: 12px !important;
+                order: 3 !important;
+                gap: 8px !important;
             }
 
             .bell-btn {
-                width: 36px !important;
-                height: 36px !important;
-                font-size: 14px !important;
+                width: 34px !important;
+                height: 34px !important;
+                font-size: 13px !important;
             }
 
             .avatar-switcher-btn {
-                padding: 3px 8px 3px 4px !important;
+                padding: 2px 6px 2px 3px !important;
             }
 
             .user-avatar {
-                width: 32px !important;
-                height: 32px !important;
-                font-size: 11.5px !important;
+                width: 30px !important;
+                height: 30px !important;
+                font-size: 11px !important;
             }
-
-            /* Onglets de navigation : Défilement horizontal tactile fluide */
-            .nav-center {
-                flex: 1 1 100% !important;
-                width: 100% !important;
-                order: 3 !important;
-                margin-top: 8px !important;
-                padding-top: 8px !important;
-                border-top: 1px solid #f1f5f9 !important;
-                justify-content: center !important;
-                display: flex !important;
-            }
-
-            .nav-center::-webkit-scrollbar {
-                display: none !important;
-            }
-
-            .nav-links {
-                display: flex !important;
-                gap: 8px !important;
-                width: 100% !important;
-                align-items: center !important;
                 flex-wrap: nowrap !important;
                 padding-bottom: 2px !important;
                 margin: 0 !important;
@@ -2903,17 +3008,38 @@
                 border-radius: 8px !important;
             }
 
-            /* --- BARRE D'ACTION (STATUT & RECHERCHE) --- */
+            /* --- BARRE D'ACTION ÉPURÉE (RECHERCHE EN HAUT, PUIS CHIPS DÉFILANTS) --- */
             .journal-action-row {
                 flex-direction: column !important;
                 align-items: stretch !important;
-                gap: 10px !important;
-                padding: 12px 10px !important;
-                border-radius: 12px !important;
+                gap: 8px !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                margin-bottom: 6px !important;
+            }
+
+            .journal-search-wrap {
+                order: 1 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            .journal-search-input {
+                width: 100% !important;
                 background: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 14px !important;
+                font-size: 13px !important;
+                padding: 10px 38px 10px 38px !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
             }
 
             .status-filter-pills {
+                order: 2 !important;
                 width: 100% !important;
                 display: flex !important;
                 gap: 6px !important;
@@ -2929,10 +3055,14 @@
 
             .status-pill {
                 flex-shrink: 0 !important;
-                padding: 7px 12px !important;
+                padding: 6px 12px !important;
                 font-size: 11.5px !important;
-                min-height: 36px !important;
+                min-height: 32px !important;
                 border-radius: 20px !important;
+                background: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
+            }
             }
 
             .journal-search-wrap {
@@ -3553,41 +3683,52 @@
             .qa-icon-circle.purple { background: #f3e8ff !important; color: #9333ea !important; }
             .qa-icon-circle.slate { background: #f1f5f9 !important; color: #475569 !important; }
 
-            /* LISTE DE TRANSACTIONS NATIVE MOBILE STYLE WAVE / ORANGE MONEY (IMAGE 2) */
+            /* LISTE DE TRANSACTIONS NATIVE MOBILE STYLE WAVE / FINTECH HAUT DE GAMME */
             .mobile-tx-cards-list {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 0 !important;
+                gap: 8px !important;
                 width: 100% !important;
-                background: #ffffff !important;
-                border-radius: 16px !important;
-                padding: 4px 14px !important;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
-                margin-top: 14px !important;
-                border: 1px solid #f1f5f9 !important;
+                background: transparent !important;
+                border-radius: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                margin-top: 6px !important;
+                border: none !important;
             }
 
             .mobile-tx-card {
                 background: #ffffff !important;
-                border: none !important;
-                border-bottom: 1px solid #f1f5f9 !important;
-                border-radius: 0 !important;
-                padding: 16px 2px !important;
+                border: 1px solid #f1f5f9 !important;
+                border-radius: 16px !important;
+                padding: 12px 14px !important;
                 display: flex !important;
-                align-items: flex-start !important;
+                align-items: center !important;
                 justify-content: space-between !important;
-                gap: 16px !important;
-                box-shadow: none !important;
+                gap: 12px !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
                 cursor: pointer !important;
-                transition: background 0.15s ease !important;
+                transition: transform 0.12s ease, background 0.12s ease !important;
             }
 
             .mobile-tx-card:last-child {
-                border-bottom: none !important;
+                border-bottom: 1px solid #f1f5f9 !important;
             }
 
             .mobile-tx-card:active {
                 background: #f8fafc !important;
+                transform: scale(0.99) !important;
+            }
+
+            .tx-card-avatar {
+                width: 40px !important;
+                height: 40px !important;
+                border-radius: 12px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 16px !important;
+                flex-shrink: 0 !important;
             }
 
             .wave-tx-left {
@@ -3595,39 +3736,95 @@
                 min-width: 0 !important;
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 4px !important;
+                gap: 3px !important;
             }
 
             .wave-tx-title {
-                font-size: 15px !important;
+                font-size: 14.5px !important;
                 font-weight: 700 !important;
                 color: #0a2540 !important; /* Bleu de Nuit officiel Grow */
-                line-height: 1.35 !important;
-                white-space: normal !important;
-                word-break: break-word !important;
+                line-height: 1.3 !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
                 margin: 0 !important;
             }
 
+            .wave-tx-subline {
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                flex-wrap: wrap !important;
+            }
+
             .wave-tx-date {
-                font-size: 12px !important;
+                font-size: 11.5px !important;
                 color: #64748b !important;
                 font-weight: 500 !important;
                 margin: 0 !important;
             }
 
+            .wave-tx-proof-chip {
+                font-size: 10px !important;
+                font-weight: 700 !important;
+                padding: 1px 6px !important;
+                border-radius: 6px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 3px !important;
+            }
+
+            .wave-tx-proof-chip.verified {
+                background: #ecfdf5 !important;
+                color: #059669 !important;
+            }
+
+            .wave-tx-proof-chip.pending {
+                background: #fffbeb !important;
+                color: #b45309 !important;
+            }
+
             .wave-tx-right {
                 text-align: right !important;
                 flex-shrink: 0 !important;
-                padding-top: 1px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: flex-end !important;
+                gap: 2px !important;
             }
 
             .wave-tx-amount {
-                font-size: 16px !important;
+                font-size: 15.5px !important;
                 font-weight: 800 !important;
-                color: #222222 !important; /* Noir Intense officiel Grow */
+                letter-spacing: -0.3px !important;
                 white-space: nowrap !important;
                 margin: 0 !important;
-                letter-spacing: -0.3px !important;
+            }
+
+            .wave-tx-amount.credit {
+                color: #0e7647 !important; /* Vert Grow recettes */
+            }
+
+            .wave-tx-amount.debit {
+                color: #0f172a !important; /* Noir Intense dépenses */
+            }
+
+            .wave-tx-compte-chip {
+                font-size: 10px !important;
+                font-weight: 700 !important;
+                color: #64748b !important;
+                background: #f1f5f9 !important;
+                padding: 1px 6px !important;
+                border-radius: 4px !important;
+                display: inline-block !important;
+                font-family: monospace !important;
+            }
+
+            .wave-tx-arrow {
+                color: #cbd5e1 !important;
+                font-size: 11px !important;
+                display: flex !important;
+                align-items: center !important;
             }
 
 
@@ -4119,6 +4316,52 @@
             display: none !important;
         }
 
+        body.force-mobile-view .top-navbar {
+            padding: 10px 14px !important;
+            flex-wrap: nowrap !important;
+            gap: 8px !important;
+            align-items: center !important;
+        }
+
+        body.force-mobile-view .nav-left {
+            flex: 0 0 auto !important;
+        }
+
+        body.force-mobile-view .nav-center {
+            flex: 1 !important;
+            order: 2 !important;
+            display: flex !important;
+            justify-content: flex-end !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            width: auto !important;
+        }
+
+        body.force-mobile-view .btn-preuves-financieres {
+            padding: 5px 10px !important;
+            font-size: 11px !important;
+            gap: 5px !important;
+            background: #222222 !important;
+            border-radius: 999px !important;
+            border: 1px solid rgba(160, 217, 210, 0.4) !important;
+        }
+
+        body.force-mobile-view .btn-preuves-financieres .btn-preuves-text {
+            display: none !important;
+        }
+
+        body.force-mobile-view .btn-preuves-financieres::after {
+            content: 'Preuves';
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        body.force-mobile-view .btn-toggle-device-view {
+            display: none !important;
+        }
+
         body.force-mobile-view .mobile-financial-header {
             display: flex !important;
             flex-direction: column !important;
@@ -4129,32 +4372,42 @@
         body.force-mobile-view .mobile-tx-cards-list {
             display: flex !important;
             flex-direction: column !important;
-            gap: 0 !important;
+            gap: 8px !important;
             width: 100% !important;
-            background: #ffffff !important;
-            border-radius: 16px !important;
-            padding: 4px 14px !important;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
-            margin-top: 14px !important;
-            border: 1px solid #f1f5f9 !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            margin-top: 6px !important;
+            border: none !important;
         }
 
         body.force-mobile-view .mobile-tx-card {
             background: #ffffff !important;
-            border: none !important;
-            border-bottom: 1px solid #f1f5f9 !important;
-            border-radius: 0 !important;
-            padding: 16px 2px !important;
+            border: 1px solid #f1f5f9 !important;
+            border-radius: 16px !important;
+            padding: 12px 14px !important;
             display: flex !important;
-            align-items: flex-start !important;
+            align-items: center !important;
             justify-content: space-between !important;
-            gap: 16px !important;
-            box-shadow: none !important;
+            gap: 12px !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
             cursor: pointer !important;
         }
 
-        body.force-mobile-view .mobile-tx-card:last-child {
-            border-bottom: none !important;
+        body.force-mobile-view .mobile-tx-card:active {
+            background: #f8fafc !important;
+        }
+
+        body.force-mobile-view .tx-card-avatar {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 16px !important;
+            flex-shrink: 0 !important;
         }
 
         body.force-mobile-view .wave-tx-left {
@@ -4162,50 +4415,144 @@
             min-width: 0 !important;
             display: flex !important;
             flex-direction: column !important;
-            gap: 4px !important;
+            gap: 3px !important;
         }
 
         body.force-mobile-view .wave-tx-title {
-            font-size: 15px !important;
+            font-size: 14.5px !important;
             font-weight: 700 !important;
             color: #0a2540 !important;
-            line-height: 1.35 !important;
-            white-space: normal !important;
-            word-break: break-word !important;
+            line-height: 1.3 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
             margin: 0 !important;
         }
 
+        body.force-mobile-view .wave-tx-subline {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            flex-wrap: wrap !important;
+        }
+
         body.force-mobile-view .wave-tx-date {
-            font-size: 12px !important;
+            font-size: 11.5px !important;
             color: #64748b !important;
             font-weight: 500 !important;
         }
 
+        body.force-mobile-view .wave-tx-proof-chip {
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            padding: 1px 6px !important;
+            border-radius: 6px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 3px !important;
+        }
+
+        body.force-mobile-view .wave-tx-proof-chip.verified {
+            background: #ecfdf5 !important;
+            color: #059669 !important;
+        }
+
+        body.force-mobile-view .wave-tx-proof-chip.pending {
+            background: #fffbeb !important;
+            color: #b45309 !important;
+        }
+
         body.force-mobile-view .wave-tx-right {
+            text-align: right !important;
+            flex-shrink: 0 !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: flex-end !important;
-            gap: 6px !important;
-            flex-shrink: 0 !important;
+            gap: 2px !important;
         }
 
         body.force-mobile-view .wave-tx-amount {
-            font-size: 16px !important;
+            font-size: 15.5px !important;
             font-weight: 800 !important;
-            color: #222222 !important;
+            letter-spacing: -0.3px !important;
             white-space: nowrap !important;
+            margin: 0 !important;
         }
 
-        body.force-mobile-view .wave-tx-proof-pill {
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 4px !important;
-            background: #f1f5f9 !important;
-            color: #475569 !important;
-            padding: 3px 8px !important;
-            border-radius: 6px !important;
-            font-size: 10.5px !important;
+        body.force-mobile-view .wave-tx-amount.credit {
+            color: #0e7647 !important;
+        }
+
+        body.force-mobile-view .wave-tx-amount.debit {
+            color: #0f172a !important;
+        }
+
+        body.force-mobile-view .wave-tx-compte-chip {
+            font-size: 10px !important;
             font-weight: 700 !important;
+            color: #64748b !important;
+            background: #f1f5f9 !important;
+            padding: 1px 6px !important;
+            border-radius: 4px !important;
+            display: inline-block !important;
+            font-family: monospace !important;
+        }
+
+        body.force-mobile-view .wave-tx-arrow {
+            color: #cbd5e1 !important;
+            font-size: 11px !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        body.force-mobile-view .journal-action-row {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            margin-bottom: 6px !important;
+        }
+
+        body.force-mobile-view .journal-search-wrap {
+            order: 1 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+        }
+
+        body.force-mobile-view .journal-search-input {
+            width: 100% !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 14px !important;
+            font-size: 13px !important;
+            padding: 10px 38px 10px 38px !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+        }
+
+        body.force-mobile-view .status-filter-pills {
+            order: 2 !important;
+            width: 100% !important;
+            display: flex !important;
+            gap: 6px !important;
+            overflow-x: auto !important;
+            scrollbar-width: none !important;
+            padding-bottom: 2px !important;
+        }
+
+        body.force-mobile-view .status-pill {
+            flex-shrink: 0 !important;
+            padding: 6px 12px !important;
+            font-size: 11.5px !important;
+            min-height: 32px !important;
+            border-radius: 20px !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
         }
 
         body.force-mobile-view .proof-nav-toolbar {
@@ -4822,6 +5169,25 @@
                 <div class="fintech-balance-row">
                     <div class="fintech-balance-big" id="mobileSoldeNet">0</div>
                     <div class="fintech-currency-symbol">F</div>
+                </div>
+
+                <!-- MINI SYNTHÈSE DES FLUX CASHFLOW -->
+                <div class="fintech-subflow-row">
+                    <div class="fintech-subflow-item in" title="Total des recettes encaissées">
+                        <span class="subflow-bullet in"></span>
+                        <span class="subflow-label">Entrées :</span>
+                        <strong class="subflow-val" id="mobileTotalCredit">+0 F</strong>
+                    </div>
+                    <div class="fintech-subflow-divider"></div>
+                    <div class="fintech-subflow-item out" title="Total des dépenses payées">
+                        <span class="subflow-bullet out"></span>
+                        <span class="subflow-label">Dépenses :</span>
+                        <strong class="subflow-val" id="mobileTotalDebit">-0 F</strong>
+                    </div>
+                    <div class="fintech-subflow-live">
+                        <span class="live-pulse-dot"></span>
+                        <span>En direct</span>
+                    </div>
                 </div>
 
                 <!-- BOUTON QR D'ACCÈS À GROW -->
@@ -6911,7 +7277,7 @@
                 mSolde.style.color = '#ffffff';
             }
             if (mCredit) mCredit.textContent = '+' + totalCredit.toLocaleString('fr-FR') + ' F';
-            if (mDebit) mDebit.textContent = '-' + totalDebit.toLocaleString('fr-FR') + ' F';
+            if (mDebit) mDebit.textContent = (totalDebit > 0 ? '-' : '') + totalDebit.toLocaleString('fr-FR') + ' F';
 
             const countEl = document.getElementById('journalCountSummary');
             if (countEl) {
@@ -7088,6 +7454,76 @@
             const val = Math.abs(parseInt(montant, 10) || 0);
             const formatted = val.toLocaleString('fr-FR').replace(/\s/g, '.');
             return `${isSortie ? '-' : ''}${formatted}F`;
+        }
+
+        // Nettoyage intelligent et qualification humaine des libellés fintech
+        function formatCleanTxDisplay(t) {
+            const raw = String(t.libelle || '').trim();
+            const src = String(t.source_paiement || '').toUpperCase();
+            const flux = String(t.type_flux || '').toUpperCase();
+            const isSortie = (flux === 'SORTIE');
+
+            // 1. Détection de l'icône, teintes fintech et canal
+            let iconClass = isSortie ? 'fa-solid fa-arrow-up-right' : 'fa-solid fa-arrow-down-left';
+            let iconBg = isSortie ? '#fef2f2' : '#ecfdf5';
+            let iconColor = isSortie ? '#dc2626' : '#059669';
+            let canal = 'Espèces';
+
+            if (src === 'WAVE' || raw.toLowerCase().includes('wave')) {
+                iconClass = 'fa-solid fa-bolt-lightning';
+                iconBg = '#e0f2fe';
+                iconColor = '#0284c7';
+                canal = 'Wave';
+            } else if (src === 'ORANGE_MONEY' || raw.toLowerCase().includes('orange')) {
+                iconClass = 'fa-solid fa-mobile-screen-button';
+                iconBg = '#ffedd5';
+                iconColor = '#ea580c';
+                canal = 'Orange Money';
+            } else if (src === 'BANQUE' || raw.toLowerCase().includes('virement')) {
+                iconClass = 'fa-solid fa-building-columns';
+                iconBg = '#f0fdf4';
+                iconColor = '#16a34a';
+                canal = 'Banque';
+            }
+
+            // 2. Nettoyage intelligent du libellé pour affichage humain
+            let title = raw;
+            let refTag = '';
+
+            // Détection de structures webhook type "(Commande_Test_2 - Réf: ev_test_...)"
+            const parenMatch = title.match(/\(([^)]+)\)/);
+            if (parenMatch) {
+                let inside = parenMatch[1];
+                const refMatch = inside.match(/Réf:\s*([^\s-]+)/i);
+                if (refMatch) {
+                    refTag = refMatch[1];
+                }
+                inside = inside.replace(/-\s*Réf:[^)]*/i, '').trim();
+                inside = inside.replace(/_/g, ' ').trim();
+                if (inside) {
+                    title = `${canal === 'Wave' ? 'Encaissement Wave' : 'Opération'} • ${inside}`;
+                }
+            } else {
+                // Supprimer les montants répétés dans le titre (ex: "- 5,000 FCFA")
+                title = title.replace(/-\s*[\d\s,.]+\s*(FCFA|F)/gi, '').trim();
+                title = title.replace(/_/g, ' ');
+            }
+
+            // Supprimer suffixes techniques
+            title = title.replace(/\s*-\s*Réf:.*$/i, '').trim();
+
+            if (!title || title.length < 3) {
+                title = isSortie ? 'Dépense d\'exploitation' : 'Encaissement client';
+            }
+
+            return {
+                title: title,
+                iconClass: iconClass,
+                iconBg: iconBg,
+                iconColor: iconColor,
+                canal: canal,
+                refTag: refTag || (t.reference_externe ? t.reference_externe.substring(0, 16) : '')
+            };
         }
 
         // Formatage pour date & heure général
@@ -7316,23 +7752,47 @@
                 `;
                 tbody.appendChild(tr);
 
-                // --- RENDU LISTE TRANSACTION STYLE WAVE / ORANGE MONEY (MINIMALISTE & ÉLÉGANT - IMAGE 2) ---
+                // --- RENDU LISTE TRANSACTION HAUT DE GAMME FINTECH (STYLE WAVE SÉNÉGAL) ---
                 if (mobileCardsContainer) {
                     const card = document.createElement('div');
                     card.className = 'mobile-tx-card';
                     card.onclick = () => openTxDetailModal(t);
 
                     const isSortie = (flux === 'SORTIE');
-                    const waveAmountStr = formatWaveAmount(montant, isSortie);
-                    const waveDateStr = formatWaveStyleDate(t.date_operation || t.created_at);
+                    const isVrai = isCompteVrai(t) && hasPreuveValide(t);
+                    const formattedMontant = Number(t.montant_fcfa || 0).toLocaleString('fr-FR');
+                    const waveAmountStr = `${isSortie ? '-' : '+'}${formattedMontant} F`;
+
+                    // Heure précise depuis created_at si date_operation n'a pas d'heure
+                    let dateToUse = t.created_at || t.date_operation;
+                    if (t.created_at && t.date_operation && !t.date_operation.includes('T')) {
+                        dateToUse = t.created_at;
+                    }
+                    const waveDateStr = formatWaveStyleDate(dateToUse);
+
+                    const fMeta = formatCleanTxDisplay(t);
+                    const compteNum = escapeHtml(t.compte_syscohada || (isSortie ? '601' : '701'));
 
                     card.innerHTML = `
+                        <div class="tx-card-avatar" style="background: ${fMeta.iconBg}; color: ${fMeta.iconColor};">
+                            <i class="${fMeta.iconClass}"></i>
+                        </div>
                         <div class="wave-tx-left">
-                            <div class="wave-tx-title">${escapeHtml(t.libelle || 'Opération')}</div>
-                            <div class="wave-tx-date">${escapeHtml(waveDateStr)}</div>
+                            <div class="wave-tx-title" title="${escapeHtml(t.libelle || '')}">${escapeHtml(fMeta.title)}</div>
+                            <div class="wave-tx-subline">
+                                <span class="wave-tx-date">${escapeHtml(waveDateStr)}</span>
+                                <span class="wave-tx-proof-chip ${isVrai ? 'verified' : 'pending'}">
+                                    <i class="fa-solid ${isVrai ? 'fa-circle-check' : 'fa-clock'}"></i>
+                                    ${isVrai ? 'Scellée' : 'À valider'}
+                                </span>
+                            </div>
                         </div>
                         <div class="wave-tx-right">
-                            <div class="wave-tx-amount">${waveAmountStr}</div>
+                            <div class="wave-tx-amount ${isSortie ? 'debit' : 'credit'}">${waveAmountStr}</div>
+                            <div class="wave-tx-compte-chip" title="Compte SYSCOHADA ${compteNum}">${compteNum}</div>
+                        </div>
+                        <div class="wave-tx-arrow">
+                            <i class="fa-solid fa-chevron-right"></i>
                         </div>
                     `;
                     mobileCardsContainer.appendChild(card);
@@ -7559,8 +8019,8 @@
             if (event) event.stopPropagation();
             const pop = document.getElementById('calendarPopover');
             if (pop) {
-                // Sur smartphone, le bloc filtres desktop est masqué : on détache le calendrier vers <body>
-                if (window.innerWidth <= 768 && pop.parentElement !== document.body) {
+                // Sur smartphone ou en mode mobile simulé, détacher le calendrier vers <body>
+                if ((window.innerWidth <= 768 || document.body.classList.contains('force-mobile-view')) && pop.parentElement !== document.body) {
                     document.body.appendChild(pop);
                 }
                 pop.classList.toggle('show');
@@ -8128,7 +8588,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
             if (h) h.className = 'tx-detail-header-band ' + (isEntree ? 'credit' : 'debit');
             if (badge) badge.textContent = isEntree ? 'Recette / Vente' : 'Dépense / Achat';
-            if (amountBig) amountBig.textContent = (isEntree ? '+' : '-') + montant.toLocaleString('fr-FR') + ' FCFA';
+            if (amountBig) amountBig.textContent = (isEntree ? '+' : '-') + montant.toLocaleString('fr-FR') + ' F';
             if (dateTop) dateTop.textContent = tx.created_at ? tx.created_at.substring(0, 16).replace('T', ' à ') : 'Aujourd\'hui';
             if (lib) lib.textContent = tx.libelle || 'Opération';
             if (compte) compte.textContent = `Compte ${tx.compte_syscohada || '471100'}`;
