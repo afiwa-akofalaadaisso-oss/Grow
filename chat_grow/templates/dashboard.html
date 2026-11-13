@@ -6127,8 +6127,9 @@
         }
 
 
+        
         /* ========================================================================= */
-        /* ARCHITECTURE BARRE DE MENU VERTICALE (SIDEBAR DESKTOP SYSCOHADA)          */
+        /* ARCHITECTURE BARRE DE MENU VERTICALE (SIDEBAR BLANCHE PREMIUM GROW)       */
         /* ========================================================================= */
         .comptable-layout-wrapper {
             display: block;
@@ -6153,7 +6154,7 @@
                 background: #f8fafc !important;
             }
 
-            /* BARRE DE MENU VERTICALE FIXE À GAUCHE (PLEINE HAUTEUR, ZERO ESPACE BLANC) */
+            /* BARRE DE MENU VERTICALE BLANCHE (SENMARKETING STYLE, PLEINE HAUTEUR) */
             body:not(.force-mobile-view) .comptable-vertical-sidebar {
                 display: flex !important;
                 flex-direction: column !important;
@@ -6161,21 +6162,22 @@
                 min-width: 280px !important;
                 max-width: 280px !important;
                 height: 100% !important;
-                background: linear-gradient(180deg, #0b1222 0%, #060d1a 100%) !important;
-                border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+                background: #ffffff !important;
+                border-right: 1.5px solid #e2e8f0 !important;
                 overflow-y: auto !important;
-                padding: 20px 14px 28px !important;
+                padding: 22px 14px 28px !important;
                 z-index: 200 !important;
                 flex-shrink: 0 !important;
+                box-shadow: 2px 0 16px rgba(11, 18, 34, 0.03) !important;
                 scrollbar-width: thin !important;
-                scrollbar-color: rgba(160, 217, 210, 0.2) transparent !important;
+                scrollbar-color: #cbd5e1 transparent !important;
             }
 
             body:not(.force-mobile-view) .comptable-vertical-sidebar::-webkit-scrollbar {
                 width: 4px;
             }
             body:not(.force-mobile-view) .comptable-vertical-sidebar::-webkit-scrollbar-thumb {
-                background: rgba(160, 217, 210, 0.2);
+                background: #cbd5e1;
                 border-radius: 4px;
             }
 
@@ -6203,26 +6205,16 @@
                 display: none !important;
             }
 
-            /* Cockpit allégé et compact au-dessus du tableau */
             body:not(.force-mobile-view) .comptable-cockpit-card {
-                padding: 18px 22px !important;
-                margin-bottom: 20px !important;
-                border-radius: 16px !important;
-            }
-            body:not(.force-mobile-view) .cockpit-top-bar {
-                padding-bottom: 14px !important;
-                margin-bottom: 14px !important;
-            }
-            body:not(.force-mobile-view) .cockpit-kpi-grid {
-                gap: 12px !important;
+                display: none !important;
             }
         }
 
-        /* ÉLÉMENTS DE LA SIDEBAR VERTICALE */
+        /* ÉLÉMENTS DE LA SIDEBAR BLANCHE */
         .sidebar-header-box {
             margin-bottom: 20px;
             padding-bottom: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid #f1f5f9;
         }
 
         .sidebar-brand-row {
@@ -6243,7 +6235,7 @@
         .sidebar-brand-title {
             font-size: 16px;
             font-weight: 900;
-            color: #ffffff;
+            color: #0b1222;
             letter-spacing: 0.5px;
             line-height: 1;
         }
@@ -6251,7 +6243,7 @@
         .sidebar-brand-sub {
             font-size: 9.5px;
             font-weight: 800;
-            color: #a0d9d2;
+            color: #0d9488;
             letter-spacing: 0.5px;
             text-transform: uppercase;
             margin-top: 3px;
@@ -6261,26 +6253,24 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #a0d9d2;
-            box-shadow: 0 0 10px #a0d9d2;
+            background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
             animation: pulseDot 2s infinite ease-in-out;
-        }
-        @keyframes pulseDot {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.6; }
         }
 
         .sidebar-client-dossier {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
             padding: 10px 12px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .sidebar-client-dossier:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(160, 217, 210, 0.3);
+            background: #ffffff;
+            border-color: #a0d9d2;
+            box-shadow: 0 4px 14px rgba(11, 18, 34, 0.05);
+            transform: translateY(-1px);
         }
 
         .sidebar-client-tag {
@@ -6295,7 +6285,7 @@
         .sidebar-client-name {
             font-size: 13px;
             font-weight: 800;
-            color: #ffffff;
+            color: #0b1222;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -6310,13 +6300,14 @@
         }
 
         .sidebar-client-ninea {
-            color: #94a3b8;
+            color: #64748b;
             font-family: monospace;
             font-size: 10.5px;
+            font-weight: 600;
         }
 
         .sidebar-client-switch {
-            color: #a0d9d2;
+            color: #0d9488;
             font-weight: 700;
             font-size: 10.5px;
             display: inline-flex;
@@ -6339,34 +6330,36 @@
             padding-left: 6px;
         }
 
-        /* BOUTONS NAVIGATION PRINCIPALE */
+        /* BOUTONS NAVIGATION PRINCIPALE (THÈME BLANC) */
         .sidebar-nav-btn {
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px 12px;
-            border-radius: 10px;
+            border-radius: 12px;
             background: transparent;
-            border: none;
-            color: #cbd5e1;
+            border: 1px solid transparent;
+            color: #334155;
             font-size: 12.5px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.15s ease;
-            margin-bottom: 3px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-bottom: 4px;
             font-family: inherit;
             text-align: left;
         }
         .sidebar-nav-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: #ffffff;
+            background: #f1f5f9;
+            color: #0b1222;
+            transform: translateX(2px);
         }
         .sidebar-nav-btn.active {
             background: #a0d9d2;
             color: #0b1222;
             font-weight: 800;
-            box-shadow: 0 4px 14px rgba(160, 217, 210, 0.35);
+            box-shadow: 0 4px 14px rgba(160, 217, 210, 0.45);
+            border-color: #a0d9d2;
         }
         .sidebar-nav-btn.active i {
             color: #0b1222 !important;
@@ -6379,40 +6372,50 @@
         .nav-btn-left i {
             font-size: 14px;
             width: 18px;
-            color: #a0d9d2;
+            color: #64748b;
+            transition: color 0.15s ease;
+        }
+        .sidebar-nav-btn:hover .nav-btn-left i {
+            color: #0b1222;
         }
 
         .sidebar-count-badge {
-            background: rgba(255, 255, 255, 0.12);
-            color: #ffffff;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
             font-size: 10px;
             font-weight: 800;
             padding: 2px 7px;
             border-radius: 999px;
+            transition: all 0.15s ease;
         }
         .sidebar-nav-btn.active .sidebar-count-badge {
             background: #0b1222;
             color: #ffffff;
+            border-color: #0b1222;
         }
 
         .sidebar-status-pill {
             font-size: 9.5px;
             font-weight: 800;
-            padding: 2px 6px;
+            padding: 2px 7px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
         }
         .sidebar-status-pill.mint {
-            background: rgba(160, 217, 210, 0.2);
-            color: #a0d9d2;
+            background: rgba(160, 217, 210, 0.25);
+            color: #0b1222;
+            border-color: #a0d9d2;
         }
         .sidebar-nav-btn.active .sidebar-status-pill.mint {
             background: #0b1222;
             color: #a0d9d2;
+            border-color: #0b1222;
         }
 
-        /* LISTE DES 11 FLUX DANS LA SIDEBAR */
+        /* LISTE DES 11 FLUX DANS LA SIDEBAR (THÈME BLANC) */
         .sidebar-flows-list {
             display: flex;
             flex-direction: column;
@@ -6427,8 +6430,8 @@
             padding: 6px 10px;
             border-radius: 8px;
             background: transparent;
-            border: none;
-            color: #94a3b8;
+            border: 1px solid transparent;
+            color: #475569;
             font-size: 11.5px;
             font-weight: 600;
             cursor: pointer;
@@ -6437,13 +6440,13 @@
             text-align: left;
         }
         .sidebar-flow-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
+            background: #f8fafc;
+            color: #0b1222;
         }
         .sidebar-flow-btn.active {
-            background: rgba(160, 217, 210, 0.12);
-            border: 1px solid rgba(160, 217, 210, 0.35);
-            color: #a0d9d2;
+            background: rgba(160, 217, 210, 0.2);
+            border-color: #a0d9d2;
+            color: #0b1222;
             font-weight: 800;
         }
         .flow-btn-left {
@@ -6461,73 +6464,75 @@
             font-size: 10px;
             font-weight: 800;
             color: #64748b;
-            padding: 1px 5px;
+            padding: 1px 6px;
             border-radius: 4px;
-            background: rgba(255, 255, 255, 0.04);
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
         }
         .sidebar-flow-btn.active .flow-count-tag {
             background: #a0d9d2;
             color: #0b1222;
+            border-color: #a0d9d2;
         }
 
-        /* ACTIONS ET OUTILS CABINET */
+        /* ACTIONS ET OUTILS CABINET (THÈME BLANC) */
         .sidebar-actions-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
         }
         .sidebar-action-btn {
             width: 100%;
             display: flex;
             align-items: center;
             gap: 9px;
-            padding: 8px 11px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            color: #cbd5e1;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #334155;
             font-size: 11.5px;
             font-weight: 700;
             text-decoration: none;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             font-family: inherit;
             text-align: left;
         }
         .sidebar-action-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #ffffff;
-            border-color: rgba(160, 217, 210, 0.3);
+            background: #f8fafc;
+            border-color: #a0d9d2;
+            color: #0b1222;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(11, 18, 34, 0.05);
         }
         .sidebar-action-btn.primary {
-            background: rgba(160, 217, 210, 0.15);
-            color: #a0d9d2;
-            border-color: rgba(160, 217, 210, 0.35);
+            background: #0b1222;
+            color: #ffffff;
+            border-color: #0b1222;
+            box-shadow: 0 4px 12px rgba(11, 18, 34, 0.18);
         }
         .sidebar-action-btn.primary:hover {
-            background: #a0d9d2;
-            color: #0b1222;
+            background: #060d1a;
+            border-color: #a0d9d2;
         }
         .sidebar-action-btn.primary i {
             color: #a0d9d2;
-        }
-        .sidebar-action-btn.primary:hover i {
-            color: #0b1222;
         }
 
         /* PIED DE SIDEBAR (SOLDE ET ASSISTANT WHATSAPP) */
         .sidebar-footer-box {
             margin-top: auto;
             padding-top: 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid #f1f5f9;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
         .sidebar-solde-card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
             padding: 10px 14px;
         }
         .solde-card-label {
@@ -6540,7 +6545,7 @@
         .solde-card-value {
             font-size: 17px;
             font-weight: 900;
-            color: #a0d9d2;
+            color: #0b1222;
             margin-top: 2px;
         }
 
