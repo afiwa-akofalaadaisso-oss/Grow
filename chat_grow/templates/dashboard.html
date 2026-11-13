@@ -6139,20 +6139,28 @@
                 // 2. Remplir les Prêts et KPIs
                 if (data.prets) {
                     const cap = data.prets.capacite_emprunt || 0;
-                    document.getElementById('kpiCapacite').textContent = formatFCFA(cap);
+                    const elCap = document.getElementById('kpiCapacite');
+                    if (elCap) elCap.textContent = formatFCFA(cap);
+
                     const badge = document.getElementById('sidePretBadge');
                     if (badge) badge.textContent = formatCompactFCFA(cap);
-                    document.getElementById('kpiScore').textContent = data.prets.score || 70;
-                    document.getElementById('kpiMensualite').textContent = formatFCFA(data.prets.mensualite_max);
+
+                    const elScore = document.getElementById('kpiScore');
+                    if (elScore) elScore.textContent = data.prets.score || 70;
+
+                    const elMens = document.getElementById('kpiMensualite');
+                    if (elMens) elMens.textContent = formatFCFA(data.prets.mensualite_max);
 
                     const solde = data.totals ? data.totals.solde : 0;
-                    document.getElementById('kpiMensualiteSub').textContent = `Plafonné à 33% de votre marge nette (${formatFCFA(solde)})`;
+                    const elMensSub = document.getElementById('kpiMensualiteSub');
+                    if (elMensSub) elMensSub.textContent = `Plafonné à 33% de votre marge nette (${formatFCFA(solde)})`;
 
                     // Taux de preuve
                     const totalTx = allTransactions.length;
                     const withProof = allTransactions.filter(t => (t.preuves_numeriques && t.preuves_numeriques.length > 0) || t.statut_validation === 'VALIDE_PME').length;
                     const pct = totalTx > 0 ? Math.round((withProof / totalTx) * 100) : 100;
-                    document.getElementById('kpiTauxPreuve').textContent = pct + '%';
+                    const elTaux = document.getElementById('kpiTauxPreuve');
+                    if (elTaux) elTaux.textContent = pct + '%';
                 }
 
                 // 3. Remplir le Menu Déroulant Filtre d'Entreprises sur l'Avatar
