@@ -5704,7 +5704,6 @@
         </div>
         <div style="display: flex; align-items: center; gap: 14px;">
             <span style="color: #a0d9d2; font-size: 11.5px; font-weight: 700;" id="comptableTotalClientsCount">&bull; 0 entreprises au cabinet</span>
-            <span style="opacity: 0.6; font-size: 11px;">&bull; Conforme ONECCA & DGID</span>
         </div>
     </div>
 
@@ -5732,20 +5731,14 @@
                 <span>Accueil</span>
             </button>
 
-            <!-- Filtre / Sélecteur d'Entreprise et Dossier Client (REMPLACE VUE SMARTPHONE) -->
-            <div style="position: relative; display: flex; align-items: center; gap: 10px;">
-                <!-- SÉLECTEUR DOSSIER CLIENT (IMAGE 2) -->
+            <!-- Filtre / Sélecteur d'Entreprise et Dossier Client -->
+            <div style="position: relative; display: flex; align-items: center;">
+                <!-- SÉLECTEUR DOSSIER CLIENT -->
                 <div class="nav-dossier-selector" id="navDossierSelector" onclick="toggleCompanyDropdown(event)" title="Changer d'entreprise cliente">
                     <i class="fa-solid fa-briefcase"></i>
                     <span id="comptableCurrentClientName" class="comptable-client-name-text">Dossier Client : Chargement...</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
-
-                <button type="button" class="avatar-switcher-btn" id="avatarSwitcherBtn"
-                    onclick="toggleCompanyDropdown(event)" title="Filtrer ou changer d'entreprise">
-                    <div class="user-avatar" id="userAvatar">--</div>
-                    <i class="fa-solid fa-chevron-down avatar-chevron"></i>
-                </button>
 
                 <!-- Menu Déroulant Élégant Filtre Entreprises -->
                 <div id="companySwitcherDropdown" class="company-dropdown-popover" onclick="event.stopPropagation()">
