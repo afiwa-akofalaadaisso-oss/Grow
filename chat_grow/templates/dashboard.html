@@ -4366,33 +4366,54 @@
             color: #ffffff;
         }
 
-        .btn-toggle-device-view {
-            display: flex;
+        .nav-dossier-selector {
+            display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
+            gap: 10px;
+            background: #0a2540;
+            color: #ffffff;
+            border: 1.5px solid rgba(160, 217, 210, 0.45);
             border-radius: 999px;
-            padding: 6px 14px;
-            font-size: 11.5px;
+            padding: 6px 16px;
+            font-size: 12.5px;
             font-weight: 700;
-            color: #0a2540;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(10, 37, 64, 0.15);
             font-family: inherit;
+            white-space: nowrap;
         }
 
-        .btn-toggle-device-view:hover {
-            background: #0a2540;
-            color: #a0d9d2;
-            border-color: #0a2540;
+        .nav-dossier-selector:hover {
+            background: #111618;
+            border-color: #a0d9d2;
+            box-shadow: 0 4px 12px rgba(10, 37, 64, 0.25);
+            transform: translateY(-1px);
         }
 
-        .btn-toggle-device-view i {
+        .nav-dossier-selector i.fa-briefcase {
             color: #a0d9d2;
+            font-size: 13px;
         }
-        .btn-toggle-device-view:hover i {
+
+        .nav-dossier-selector i.fa-chevron-down {
             color: #a0d9d2;
+            font-size: 10px;
+            opacity: 0.85;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-dossier-selector.active i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 640px) {
+            .nav-dossier-selector span {
+                max-width: 140px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         }
 
         /* QUAND LE MODE SMARTPHONE EST ACTIVÉ SUR PC */
@@ -5692,12 +5713,8 @@
             <span>PORTAIL EXPERT-COMPTABLE &bull; SYSCOHADA RÉVISÉ (SÉNÉGAL)</span>
         </div>
         <div style="display: flex; align-items: center; gap: 14px;">
-            <div class="desktop-company-selector" onclick="toggleCompanyDropdown(event)" title="Changer d'entreprise cliente">
-                <i class="fa-solid fa-briefcase" style="color: #a0d9d2;"></i>
-                <span id="comptableCurrentClientName">Dossier : Chargement...</span>
-                <i class="fa-solid fa-chevron-down" style="font-size: 10px; opacity: 0.8;"></i>
-            </div>
-            <span style="opacity: 0.6; font-size: 11px;" id="comptableTotalClientsCount">&bull; 0 entreprises au cabinet</span>
+            <span style="color: #a0d9d2; font-size: 11.5px; font-weight: 700;" id="comptableTotalClientsCount">&bull; 0 entreprises au cabinet</span>
+            <span style="opacity: 0.6; font-size: 11px;">&bull; Conforme ONECCA & DGID</span>
         </div>
     </div>
 
@@ -5719,20 +5736,21 @@
         <span id="preuvesHeaderBadge" style="display: none;">0</span>
 
         <div class="nav-right">
-            <!-- BOUTON RAPIDE BASCULE VUE SMARTPHONE / BUREAU -->
-            <button type="button" class="btn-toggle-device-view" id="btnToggleDeviceView" onclick="toggleDeviceView()" title="Basculer vers la vue Smartphone ou Bureau">
-                <i class="fa-solid fa-mobile-screen-button"></i>
-                <span id="deviceViewBtnLabel">Vue Smartphone</span>
-            </button>
-
             <!-- BOUTON ACCUEIL EN HAUT À LA PLACE DE LA NOTIFICATION (GÉRÉE SUR WHATSAPP) -->
             <button type="button" class="btn-top-accueil active" id="bTopAccueil" onclick="switchVerticalTab('journal');" title="Tableau de bord financier (Accueil)">
                 <i class="fa-solid fa-house"></i>
                 <span>Accueil</span>
             </button>
 
-            <!-- Filtre / Sélecteur d'Entreprise sur l'Avatar GD -->
-            <div style="position: relative;">
+            <!-- Filtre / Sélecteur d'Entreprise et Dossier Client (REMPLACE VUE SMARTPHONE) -->
+            <div style="position: relative; display: flex; align-items: center; gap: 10px;">
+                <!-- SÉLECTEUR DOSSIER CLIENT (IMAGE 2) -->
+                <div class="nav-dossier-selector" id="navDossierSelector" onclick="toggleCompanyDropdown(event)" title="Changer d'entreprise cliente">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span id="comptableCurrentClientName" class="comptable-client-name-text">Dossier Client : Chargement...</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
                 <button type="button" class="avatar-switcher-btn" id="avatarSwitcherBtn"
                     onclick="toggleCompanyDropdown(event)" title="Filtrer ou changer d'entreprise">
                     <div class="user-avatar" id="userAvatar">--</div>
@@ -7702,29 +7720,34 @@
             return name.substring(0, 2).toUpperCase();
         }
 
-        // Gestion du Menu Déroulant Filtre d'Entreprises sur l'Avatar
+        // Gestion du Menu Déroulant Filtre d'Entreprises sur l'Avatar et le Sélecteur Dossier Client
         function toggleCompanyDropdown(event) {
             if (event) event.stopPropagation();
             const d = document.getElementById('companySwitcherDropdown');
             const btn = document.getElementById('avatarSwitcherBtn');
+            const pill = document.getElementById('navDossierSelector');
             if (d) {
                 const isOpen = d.classList.toggle('show');
                 if (btn) btn.classList.toggle('active', isOpen);
+                if (pill) pill.classList.toggle('active', isOpen);
             }
         }
 
         function closeCompanyDropdown() {
             const d = document.getElementById('companySwitcherDropdown');
             const btn = document.getElementById('avatarSwitcherBtn');
+            const pill = document.getElementById('navDossierSelector');
             if (d) d.classList.remove('show');
             if (btn) btn.classList.remove('active');
+            if (pill) pill.classList.remove('active');
         }
 
         document.addEventListener('click', (e) => {
             const d = document.getElementById('companySwitcherDropdown');
             const btn = document.getElementById('avatarSwitcherBtn');
+            const pill = document.getElementById('navDossierSelector');
             if (d && d.classList.contains('show')) {
-                if (!d.contains(e.target) && btn && !btn.contains(e.target)) {
+                if (!d.contains(e.target) && (!btn || !btn.contains(e.target)) && (!pill || !pill.contains(e.target))) {
                     closeCompanyDropdown();
                 }
             }
