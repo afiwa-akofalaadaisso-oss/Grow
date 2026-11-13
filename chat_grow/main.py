@@ -1,4 +1,4 @@
-import os
+﻿import os
 import json
 import base64
 import hashlib
@@ -56,11 +56,11 @@ from expert_assistant import (
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-# Fuseau horaire officiel du SÃ©nÃ©gal (Dakar / GMT)
+# Fuseau horaire officiel du Sénégal (Dakar / GMT)
 TZ_DAKAR = zoneinfo.ZoneInfo("Africa/Dakar")
 
 def get_now_dakar() -> datetime:
-    """Retourne la date et l'heure courante exacte au SÃ©nÃ©gal (fuseau Africa/Dakar / GMT)."""
+    """Retourne la date et l'heure courante exacte au Sénégal (fuseau Africa/Dakar / GMT)."""
     return datetime.now(TZ_DAKAR)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -117,7 +117,7 @@ def get_public_base_url() -> str:
 
 
 def is_paiement_keyword(text: str) -> bool:
-    """DÃ©tecte de faÃ§on robuste toute affirmation de paiement d'abonnement (accents, apostrophes courbes, fautes)."""
+    """Détecte de façon robuste toute affirmation de paiement d'abonnement (accents, apostrophes courbes, fautes)."""
     if not text:
         return False
     import unicodedata
@@ -128,25 +128,27 @@ def is_paiement_keyword(text: str) -> bool:
         "j'ai paye", "jai paye", "j'ai payer", "jai payer", "je viens de payer",
         "c'est paye", "c'est payer", "deja paye", "deja payer",
         "paiement effectue", "paiement confirme", "abonnement paye",
-        "j'ai regle", "jai regle", "voici mon recu de paiement", "recu de paiement", "recu paiement"
+        "j'ai regle", "jai regle", "voici mon recu de paiement", "recu de paiement", "recu paiement",
+        "fey naa", "feynaa", "fey na", "feyna", "dama fey", "fey nako",
+        "i paid", "i have paid", "already paid", "payment done", "just paid"
     ]
     if any(p in norm for p in phrases):
         return True
 
-    if norm in ["paye", "payer", "paiement", "c'est bon", "c'est fait", "abonne"]:
+    if norm in ["paye", "payer", "paiement", "c'est bon", "c'est fait", "abonne", "fey", "paid"]:
         return True
 
     return False
 
 
 def is_entreprise_deja_configuree(sender_phone: str) -> bool:
-    """VÃ©rifie si le numÃ©ro possÃ¨de dÃ©jÃ  une entreprise entiÃ¨rement configurÃ©e (les 5 Ã©tapes d'onboarding achevÃ©es)."""
-    # 1. VÃ©rification dans l'Ã©tat onboarding local
+    """Vérifie si le numéro possède déjà une entreprise entièrement configurée (les 5 étapes d'onboarding achevées)."""
+    # 1. Vérification dans l'état onboarding local
     state = get_onboarding_state(sender_phone)
     if state.get("etape") == "TERMINE" or state.get("statut") == "COMPLET":
         return True
 
-    # 2. VÃ©rification dans Supabase
+    # 2. Vérification dans Supabase
     try:
         sp = get_supabase()
         if sp:
@@ -157,60 +159,62 @@ def is_entreprise_deja_configuree(sender_phone: str) -> bool:
                     if ent.get("etape_onboarding") == "COMPLET":
                         return True
     except Exception as e:
-        print(f"Info vÃ©rification entreprise existante : {e}")
+        print(f"Info vérification entreprise existante : {e}")
 
     return False
 
 
 def get_instructions_journee_message(base_url: str, sender_phone: str, nom_entreprise: str = "Votre Entreprise") -> str:
-    """Message matinal et consignes opÃ©rationnelles : la vraie bataille quotidienne commence ici."""
+    """Message matinal et consignes opérationnelles : la vraie bataille quotidienne commence ici."""
     return (
         f"Bonjour {nom_entreprise}.\n\n"
-        "Une nouvelle journÃ©e d'activitÃ© commence et la vraie bataille quotidienne pour vos finances dÃ©marre maintenant !\n\n"
-        "Grow est dÃ©sormais en premiÃ¨re ligne Ã  vos cÃ´tÃ©s sur WhatsApp pour intercepter, vÃ©rifier et certifier toutes vos opÃ©rations en temps rÃ©el :\n\n"
+        "Une nouvelle journée d'activité commence et la vraie bataille quotidienne pour vos finances démarre maintenant !\n\n"
+        "Grow est désormais en première ligne à vos côtés sur WhatsApp pour intercepter, vérifier et certifier toutes vos opérations en temps réel :\n\n"
         "1. VENTES & PAIEMENTS OPERATEURS (WAVE, ORANGE MONEY, FREE) :\n"
-        "â€¢ Vos encaissements reÃ§us sur vos comptes marchands ou via SMS de transfert sont enregistrÃ©s et imputÃ©s au journal financier sans aucune intervention de votre part.\n"
-        "â€¢ Si vous recevez un SMS d'un opÃ©rateur sur votre tÃ©lÃ©phone, transfÃ©rez ou collez le message ici dans le chat : Grow extrait instantanÃ©ment le montant, le client et la rÃ©fÃ©rence officielle.\n\n"
+        "• Vos encaissements reçus sur vos comptes marchands ou via SMS de transfert sont enregistrés et imputés au journal financier sans aucune intervention de votre part.\n"
+        "• Si vous recevez un SMS d'un opérateur sur votre téléphone, transférez ou collez le message ici dans le chat : Grow extrait instantanément le montant, le client et la référence officielle.\n\n"
         "2. VENTES EN CASH (ESPECES) :\n"
-        "â€¢ DÃ¨s que vous encaissez du cash au comptoir, envoyez simplement un court message ou une note vocale (exemple : Â« Vente marchandise 35 000 cash Â»). Vos comptes sont mis Ã  jour Ã  la seconde.\n\n"
+        "• Dès que vous encaissez du cash au comptoir, envoyez simplement un court message ou une note vocale (exemple : « Vente marchandise 35 000 cash »). Vos comptes sont mis à jour à la seconde.\n\n"
         "3. REGLE D'OR SUR LES DEPENSES & ACHATS EN CASH :\n"
-        "Chaque sortie d'argent en espÃ¨ces (achats de marchandises, carburant, taxis, factures Senelec / Sen'Eau, loyer, repas, fournitures) doit OBLIGATOIREMENT Ãªtre accompagnÃ©e de sa piÃ¨ce justificative :\n"
-        "â€¢ Prenez immÃ©diatement la photo du reÃ§u, de la facture, du ticket de caisse ou mÃªme du stock achetÃ© avant de ranger le produit.\n"
-        "â€¢ ATTENTION : Sans piÃ¨ce justificative, Grow refusera de valider la dÃ©pense. C'est vous qui perdez car elle ne sera pas dÃ©ductible de votre bÃ©nÃ©fice imposable auprÃ¨s des impÃ´ts (DGID) et votre trÃ©sorerie sera faussÃ©e !\n\n"
+        "Chaque sortie d'argent en espèces (achats de marchandises, carburant, taxis, factures Senelec / Sen'Eau, loyer, repas, fournitures) doit OBLIGATOIREMENT être accompagnée de sa pièce justificative :\n"
+        "• Prenez immédiatement la photo du reçu, de la facture, du ticket de caisse ou même du stock acheté avant de ranger le produit.\n"
+        "• ATTENTION : Sans pièce justificative, Grow refusera de valider la dépense. C'est vous qui perdez car elle ne sera pas déductible de votre bénéfice imposable auprès des impôts (DGID) et votre trésorerie sera faussée !\n\n"
         "4. SUIVI DES DETTES & CREANCES :\n"
-        "â€¢ Si un client prend Ã  crÃ©dit : Ã©crivez simplement Â« Moussa a pris des habits pour 25 000, il paiera mardi Â».\n"
-        "â€¢ Si vous devez Ã  un fournisseur : Ã©crivez Â« J'ai pris 100 000 de tissu chez Fallou, dette Ã  rÃ©gler sous 15 jours Â».\n"
-        "â€¢ Grow assure les relances automatiques pour vous faire encaisser votre argent.\n\n"
+        "• Si un client prend à crédit : écrivez simplement « Moussa a pris des habits pour 25 000, il paiera mardi ».\n"
+        "• Si vous devez à un fournisseur : écrivez « J'ai pris 100 000 de tissu chez Fallou, dette à régler sous 15 jours ».\n"
+        "• Grow assure les relances automatiques pour vous faire encaisser votre argent.\n\n"
         "5. LE RITUEL DU SOIR (20H00) :\n"
-        "Chaque soir Ã  20h00, Grow dresse le bilan complet de votre journÃ©e (total des ventes, marge nette certifiÃ©e, solde de caisse et rÃ©conciliation bancaire).\n\n"
-        "Votre tableau de bord financier personnel est accessible 24h/24 en direct sur ce lien sÃ©curisÃ© :\n"
+        "Chaque soir à 20h00, Grow dresse le bilan complet de votre journée (total des ventes, marge nette certifiée, solde de caisse et réconciliation bancaire).\n\n"
+        "Votre tableau de bord financier personnel est accessible 24h/24 en direct sur ce lien sécurisé :\n"
         f"{base_url}/dashboard?phone={sender_phone}\n\n"
-        "Le front est ouvert : transfÃ©rez votre premiÃ¨re notification d'opÃ©rateur, notez votre premiÃ¨re vente ou envoyez la photo de votre premier reÃ§u !"
+        "Le front est ouvert : transférez votre première notification d'opérateur, notez votre première vente ou envoyez la photo de votre premier reçu !"
     )
 
 
 def remove_all_emojis(text: str) -> str:
-    """Supprime absolument tous les emojis et symboles speciaux."""
+    """Supprime absolument tous les emojis et symboles speciaux (sauf les puces de choix de langue 1️⃣ 2️⃣ 3️⃣)."""
+    preserved = text.replace("1️⃣", "__LANG_1__").replace("2️⃣", "__LANG_2__").replace("3️⃣", "__LANG_3__")
     emoji_pattern = re.compile(
         "["
         "\U00010000-\U0010FFFF"
         "\u2600-\u26FF"
         "\u2700-\u27BF"
         "\uFE00-\uFE0F"
+        "\u20E3"
         "]+", flags=re.UNICODE
     )
-    cleaned = emoji_pattern.sub("", text)
-    for char in ["ðŸ‘‰", "âœ…", "â›”", "ðŸ”’", "ðŸ’°", "ðŸ“¸", "ðŸ¢", "ðŸ‘¥", "ðŸ’³", "ðŸ—ï¸", "ðŸ”¢", "ðŸ¦", "ðŸ“‚", "ðŸ“„", "ðŸŽ‰", "ðŸ’¸", "ðŸ“Š", "ðŸ§¾", "ðŸ“¦", "ðŸŽ«", "ðŸ“²", "ðŸ‘‹", "ðŸ™", "ðŸ‡¸ðŸ‡³", "ðŸ’ª", "ðŸ¤”", "ðŸ˜Š", "ðŸ“…", "â°"]:
+    cleaned = emoji_pattern.sub("", preserved)
+    for char in ["👉", "✅", "⛔", "🔒", "💰", "📸", "🏢", "👥", "💳", "🏗️", "🔢", "🏦", "📂", "📄", "🎉", "💸", "📊", "🧾", "📦", "🎫", "📲", "👋", "🙏", "🇸🇳", "💪", "🤔", "😊", "📅", "⏰"]:
         cleaned = cleaned.replace(char, "")
+    cleaned = cleaned.replace("__LANG_1__", "1️⃣").replace("__LANG_2__", "2️⃣").replace("__LANG_3__", "3️⃣")
     return cleaned.strip()
 
 
 def format_grow_message(body_text: str) -> str:
     """Structure Grow : Pas d'emoji, corps clair et sobre, pied de page assistance."""
     clean_body = remove_all_emojis(body_text)
-    # Suppression absolue de tout sÃ©parateur tirets ou barres
-    clean_body = re.sub(r'[-=â”_]{2,}', '', clean_body)
-
+    # Suppression absolue de tout séparateur tirets ou barres
+    clean_body = re.sub(r'[-=─━_]{2,}', '', clean_body)
     footer = "Pour toute assistance, contactez le service Grow au 78 877 38 27."
 
     return f"{clean_body.strip()}\n\n{footer}"
@@ -278,7 +282,7 @@ def get_onboarding_state(phone: str) -> dict:
     states = load_onboarding_states()
 
     if clean_p not in states:
-        # 1. VÃ©rification dans Supabase si l'entreprise a dÃ©jÃ  commencÃ© son onboarding
+        # 1. Vérification dans Supabase si l'entreprise a déjà commencé son onboarding
         sp = get_supabase()
         loaded_from_db = False
         if sp:
@@ -290,6 +294,7 @@ def get_onboarding_state(phone: str) -> dict:
                     est_termine = (ent.get("etape_onboarding") == "COMPLET")
                     states[clean_p] = {
                         "etape": "TERMINE" if est_termine else (donnees.get("etape") or "DEMANDE_NINEA"),
+                        "langue_preferee": donnees.get("langue_preferee", "fr"),
                         "ninea": ent.get("ninea"),
                         "nom_entreprise": ent.get("nom_entreprise"),
                         "nom_personne_physique": donnees.get("nom_personne_physique"),
@@ -349,7 +354,7 @@ def update_onboarding_state(phone: str, key: str, value):
     states[clean_p][key] = value
     save_onboarding_states(states)
 
-    # Synchronisation immÃ©diate avec Supabase
+    # Synchronisation immédiate avec Supabase
     sp = get_supabase()
     if sp:
         try:
@@ -373,7 +378,7 @@ def update_onboarding_state(phone: str, key: str, value):
 
 
 def get_or_create_entreprise(sp, sender_phone: str) -> dict:
-    """RÃ©cupÃ¨re ou crÃ©e automatiquement l'entreprise liÃ©e Ã  ce numÃ©ro WhatsApp."""
+    """Récupère ou crée automatiquement l'entreprise liée à ce numéro WhatsApp."""
     if not sp or not sender_phone:
         return {}
     try:
@@ -404,11 +409,11 @@ async def verify_webhook(
 ):
     """Validation initiale du webhook par Meta."""
     if hub_mode == "subscribe" and hub_verify_token == VERIFY_TOKEN:
-        print("Webhook validÃ© avec succÃ¨s par Meta !")
+        print("Webhook validé avec succès par Meta !")
         return PlainTextResponse(content=hub_challenge)
     return {
         "status": "online",
-        "message": "Grow MVP WhatsApp avec Onboarding NINEA & IA SYSCOHADA est 100% opÃ©rationnel ðŸš€"
+        "message": "Grow MVP WhatsApp avec Onboarding NINEA & IA SYSCOHADA est 100% opérationnel 🚀"
     }
 
 
@@ -426,32 +431,32 @@ async def serve_dashboard():
 @app.get("/carte-comptoir")
 @app.get("/qr")
 async def serve_carte_comptoir():
-    """Plaque prÃ©sentoir de comptoir officielle Grow pour impression A5/A6."""
+    """Plaque présentoir de comptoir officielle Grow pour impression A5/A6."""
     html_path = os.path.join(TEMPLATES_DIR, "carte_comptoir.html")
     if os.path.exists(html_path):
         with open(html_path, "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
-    return HTMLResponse(content="<h1>PrÃ©sentoir comptoir en cours de gÃ©nÃ©ration</h1>", status_code=200)
+    return HTMLResponse(content="<h1>Présentoir comptoir en cours de génération</h1>", status_code=200)
 
 
 @app.get("/telecharger-carte")
 async def telecharger_carte():
-    """TÃ©lÃ©charger directement l'image haute dÃ©finition de la plaque prÃ©sentoir Grow."""
+    """Télécharger directement l'image haute définition de la plaque présentoir Grow."""
     img_path = os.path.join(STATIC_DIR, "plaque_comptoir_grow.png")
     if os.path.exists(img_path):
         return FileResponse(img_path, media_type="image/png", filename="Plaque_Comptoir_Grow.png")
-    return HTMLResponse("Image non trouvÃ©e", status_code=404)
+    return HTMLResponse("Image non trouvée", status_code=404)
 
 
 @app.get("/api/dashboard-data")
 async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
-    """Fournit les donnÃ©es rÃ©elles et isolÃ©es d'une entreprise et ses transactions depuis Supabase."""
+    """Fournit les données réelles et isolées d'une entreprise et ses transactions depuis Supabase."""
     sp = get_supabase()
     if not sp:
-        return {"error": "Base de donnÃ©es non disponible", "entreprises": [], "entreprise": None, "transactions": []}
+        return {"error": "Base de données non disponible", "entreprises": [], "entreprise": None, "transactions": []}
 
     try:
-        # RÃ©cupÃ©rer la liste des entreprises enregistrÃ©es
+        # Récupérer la liste des entreprises enregistrées
         all_ents = sp.table("entreprises").select("id, nom_entreprise, telephone_whatsapp, ninea, secteur_activite, adresse_siege, capital_initial_fcfa, donnees_onboarding").order("date_inscription", desc=True).execute().data or []
 
         target_ent = None
@@ -475,7 +480,7 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 if res.data:
                     target_ent = res.data[0]
 
-        # Si un numÃ©ro a Ã©tÃ© expressÃ©ment demandÃ© mais qu'il n'est pas encore en base :
+        # Si un numéro a été expressément demandé mais qu'il n'est pas encore en base :
         if not target_ent and phone:
             target_ent = {
                 "id": f"new_{clean_phone}",
@@ -483,7 +488,7 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 "telephone_whatsapp": clean_phone,
                 "ninea": "En cours d'enregistrement",
                 "secteur_activite": "Commerce & Services",
-                "adresse_siege": "Dakar, SÃ©nÃ©gal"
+                "adresse_siege": "Dakar, Sénégal"
             }
             all_ents = [target_ent]
         elif not target_ent and all_ents:
@@ -496,7 +501,7 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                     "nom_entreprise": "En attente du 1er client WhatsApp",
                     "telephone_whatsapp": "Connectez un compte WhatsApp",
                     "ninea": None,
-                    "adresse_siege": "Dakar, SÃ©nÃ©gal"
+                    "adresse_siege": "Dakar, Sénégal"
                 },
                 "entreprises": [],
                 "transactions": [],
@@ -511,7 +516,7 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
 
         ent_id = target_ent.get("id")
 
-        # RÃ©cupÃ©rer uniquement les transactions rÃ©elles de cette entreprise si l'ID est un UUID valide
+        # Récupérer uniquement les transactions réelles de cette entreprise si l'ID est un UUID valide
         raw_txs = []
         if ent_id and not str(ent_id).startswith("new_"):
             try:
@@ -521,7 +526,7 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 print(f"Info tx query: {tx_err}")
                 raw_txs = []
 
-        # Calculer les montants rÃ©els
+        # Calculer les montants réels
         total_debit = 0
         total_credit = 0
         for t in raw_txs:
@@ -534,17 +539,17 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
 
         solde_net = total_credit - total_debit
 
-        # RÃ¨gle prudentielle BCEAO : 33% du cash-flow net pour le remboursement mensuel
+        # Règle prudentielle BCEAO : 33% du cash-flow net pour le remboursement mensuel
         mensualite_max = max(0, int(solde_net * 0.33)) if solde_net > 0 else 0
         capacite_emprunt = mensualite_max * 24 if mensualite_max > 0 else (2500000 if raw_txs else 0)
 
-        # Calcul du score financier rÃ©el (les paiements dÃ©matÃ©rialisÃ©s Wave, OM, Banque sont certifiÃ©s d'office)
+        # Calcul du score financier réel (les paiements dématérialisés Wave, OM, Banque sont certifiés d'office)
         tx_with_proof = sum(1 for t in raw_txs if (t.get("preuves_numeriques") and len(t["preuves_numeriques"]) > 0) or t.get("statut_validation") == "VALIDE_PME" or (t.get("source_paiement") or "").upper() in ["WAVE", "ORANGE_MONEY", "BANQUE"])
         taux_preuve = (tx_with_proof / len(raw_txs)) if raw_txs else 1.0
         score_base = 50 + (30 if solde_net > 0 else 10) + int(20 * taux_preuve)
         score_financier = min(98, max(50, score_base)) if raw_txs else 70
 
-        # Isolation stricte : si un tÃ©lÃ©phone ou un ID est spÃ©cifiÃ©, la liste ne contient QUE cette entreprise
+        # Isolation stricte : si un téléphone ou un ID est spécifié, la liste ne contient QUE cette entreprise
         if phone or entreprise_id:
             all_ents = [target_ent] if target_ent else []
 
@@ -604,24 +609,24 @@ def get_webhook_guide_message(base_url: str, sender_phone: str) -> str:
     clean_p = str(sender_phone).replace("+", "").replace(" ", "").strip()
     return (
         "ASSISTANT DE CONFIGURATION WEBHOOK & PAIEMENTS AUTOMATIQUES\n\n"
-        "Grow intercepte et enregistre automatiquement chacun de vos encaissements Wave ou Orange Money dans votre comptabilitÃ© SYSCOHADA, sans aucune saisie manuelle de votre part.\n\n"
+        "Grow intercepte et enregistre automatiquement chacun de vos encaissements Wave ou Orange Money dans votre comptabilité SYSCOHADA, sans aucune saisie manuelle de votre part.\n\n"
         "3 SOLUTIONS POUR CONNECTER VOS PAIEMENTS :\n\n"
         "1. Wave Business (Portail Marchand officiel PME) :\n"
-        "â€¢ Connectez-vous sur votre espace : business.wave.com\n"
-        "â€¢ Allez dans ParamÃ¨tres DÃ©veloppeur > Webhooks > Ajouter un webhook\n"
-        "â€¢ Collez votre URL personnelle Grow :\n"
+        "• Connectez-vous sur votre espace : business.wave.com\n"
+        "• Allez dans Paramètres Développeur > Webhooks > Ajouter un webhook\n"
+        "• Collez votre URL personnelle Grow :\n"
         f"{base_url}/webhook/wave?phone={clean_p}\n"
-        "â€¢ Cochez les Ã©vÃ©nements d'encaissement et enregistrez.\n\n"
-        "2. Passerelle Relais SMS Android (IdÃ©al compte Wave Personnel / Orange Money) :\n"
-        "â€¢ Installez l'application gratuite Â« SMS Forwarder Â» sur le smartphone Android du magasin.\n"
-        "â€¢ CrÃ©ez une rÃ¨gle de transfert automatique vers votre URL Grow :\n"
+        "• Cochez les événements d'encaissement et enregistrez.\n\n"
+        "2. Passerelle Relais SMS Android (Idéal compte Wave Personnel / Orange Money) :\n"
+        "• Installez l'application gratuite « SMS Forwarder » sur le smartphone Android du magasin.\n"
+        "• Créez une règle de transfert automatique vers votre URL Grow :\n"
         f"{base_url}/api/sms-gateway?phone={clean_p}\n"
-        "â€¢ DÃ¨s qu'un SMS de vente est reÃ§u, il est relayÃ© silencieusement sans action de l'employÃ©.\n\n"
-        "3. Capture d'Ã©cran WhatsApp (ZÃ©ro configuration technique) :\n"
-        "â€¢ Prenez une capture d'Ã©cran du reÃ§u ou de la notification push Wave et envoyez-la moi directement ici.\n\n"
-        "TESTER VOTRE LIAISON IMMÃ‰DIATEMENT :\n"
-        "Pour tester votre connexion en direct avec une simulation certifiÃ©e de 1 000 FCFA, rÃ©pondez simplement Â« TESTER WEBHOOK Â».\n\n"
-        "Guide interactif pas Ã  pas et testeur en 1 clic disponibles sur votre tableau de bord :\n"
+        "• Dès qu'un SMS de vente est reçu, il est relayé silencieusement sans action de l'employé.\n\n"
+        "3. Capture d'écran WhatsApp (Zéro configuration technique) :\n"
+        "• Prenez une capture d'écran du reçu ou de la notification push Wave et envoyez-la moi directement ici.\n\n"
+        "TESTER VOTRE LIAISON IMMÉDIATEMENT :\n"
+        "Pour tester votre connexion en direct avec une simulation certifiée de 1 000 FCFA, répondez simplement « TESTER WEBHOOK ».\n\n"
+        "Guide interactif pas à pas et testeur en 1 clic disponibles sur votre tableau de bord :\n"
         f"{base_url}/dashboard?phone={clean_p}&open_webhook=1"
     )
 
@@ -635,7 +640,7 @@ async def executer_simulation_test_webhook(clean_phone: str, provider: str = "WA
     if sp and ent_id and not str(ent_id).startswith("new_"):
         row = {
             "entreprise_id": ent_id,
-            "libelle": f"Test Connexion RÃ©ussi - Encaissement Wave ({amount:,.0f} FCFA)",
+            "libelle": f"Test Connexion Réussi - Encaissement Wave ({amount:,.0f} FCFA)",
             "compte_syscohada": compte,
             "type_flux": "ENTREE",
             "est_professionnel": True,
@@ -650,22 +655,22 @@ async def executer_simulation_test_webhook(clean_phone: str, provider: str = "WA
 
     base_url = get_public_base_url()
     msg_test = (
-        "TEST DE CONNEXION WEBHOOK RÃ‰USSI\n\n"
-        "RÃ‰SUMÃ‰ DU TEST EN DIRECT :\n"
-        f"â€¢ Canal vÃ©rifiÃ© : Webhook OpÃ©rateur {provider}\n"
-        f"â€¢ Montant test : {amount:,.0f} FCFA\n"
-        f"â€¢ RÃ©fÃ©rence test : {tx_id}\n"
-        "â€¢ Imputation : Compte SYSCOHADA 701 (Vente de marchandises)\n"
-        f"â€¢ TrÃ©sorerie crÃ©ditÃ©e : Compte SYSCOHADA 521 ({provider})\n"
-        "â€¢ Statut : Liaison 100% opÃ©rationnelle et certifiÃ©e\n\n"
-        "Vos vÃ©ritables encaissements clients seront dÃ©sormais interceptÃ©s et rÃ©conciliÃ©s automatiquement sans intervention manuelle :\n"
+        "TEST DE CONNEXION WEBHOOK RÉUSSI\n\n"
+        "RÉSUMÉ DU TEST EN DIRECT :\n"
+        f"• Canal vérifié : Webhook Opérateur {provider}\n"
+        f"• Montant test : {amount:,.0f} FCFA\n"
+        f"• Référence test : {tx_id}\n"
+        "• Imputation : Compte SYSCOHADA 701 (Vente de marchandises)\n"
+        f"• Trésorerie créditée : Compte SYSCOHADA 521 ({provider})\n"
+        "• Statut : Liaison 100% opérationnelle et certifiée\n\n"
+        "Vos véritables encaissements clients seront désormais interceptés et réconciliés automatiquement sans intervention manuelle :\n"
         f"{base_url}/dashboard?phone={clean_phone}"
     )
     await send_whatsapp_message(clean_phone, msg_test)
 
     return {
         "status": "success",
-        "message": "Liaison Webhook validÃ©e avec succÃ¨s. Ã‰criture enregistrÃ©e et confirmation WhatsApp envoyÃ©e.",
+        "message": "Liaison Webhook validée avec succès. Écriture enregistrée et confirmation WhatsApp envoyée.",
         "tx_id": tx_id,
         "provider": provider,
         "amount": amount,
@@ -674,7 +679,7 @@ async def executer_simulation_test_webhook(clean_phone: str, provider: str = "WA
 
 @app.post("/api/test-webhook")
 async def api_test_webhook(request: Request):
-    """Point d'accÃ¨s de test et diagnostic webhook pour le tableau de bord Grow."""
+    """Point d'accès de test et diagnostic webhook pour le tableau de bord Grow."""
     try:
         data = await request.json()
         phone = data.get("phone")
@@ -682,7 +687,7 @@ async def api_test_webhook(request: Request):
         amount = int(data.get("amount") or 1000)
 
         if not phone:
-            return {"status": "error", "message": "NumÃ©ro de tÃ©lÃ©phone requis"}
+            return {"status": "error", "message": "Numéro de téléphone requis"}
 
         clean_p = str(phone).replace("+", "").replace(" ", "").strip()
         res = await executer_simulation_test_webhook(clean_p, provider, amount)
@@ -697,21 +702,21 @@ async def api_test_webhook(request: Request):
 @app.post("/webhook/wave")
 async def webhook_wave_direct(request: Request):
     """
-    Webhook OpÃ©rateur Wave & Wave Business Merchant :
-    ReÃ§oit les notifications d'encaissement (QR code comptoir, checkout ou transfert) en direct depuis Wave.
-    Le commerÃ§ant PME n'a absolument RIEN Ã  copier-coller : Grow intercepte le flux et notifie le gÃ©rant sur WhatsApp.
+    Webhook Opérateur Wave & Wave Business Merchant :
+    Reçoit les notifications d'encaissement (QR code comptoir, checkout ou transfert) en direct depuis Wave.
+    Le commerçant PME n'a absolument RIEN à copier-coller : Grow intercepte le flux et notifie le gérant sur WhatsApp.
     """
     try:
         payload = await request.json()
-        print("\n[NOTIFICATION OPÃ‰RATEUR WAVE REÃ‡UE] :", payload)
+        print("\n[NOTIFICATION OPÉRATEUR WAVE REÇUE] :", payload)
 
-        # Support du format Wave standard (data imbriquÃ©) et du format direct
+        # Support du format Wave standard (data imbriqué) et du format direct
         data_obj = payload.get("data") if isinstance(payload.get("data"), dict) else payload
 
         tx_id = payload.get("id") or data_obj.get("id") or data_obj.get("transaction_id") or f"WV-{int(datetime.now().timestamp())}"
         amount = int(float(data_obj.get("amount") or data_obj.get("montant") or payload.get("amount") or 0))
 
-        # RÃ©solution du compte marchand Wave (NumÃ©ro de compte M_sn_... ou tÃ©lÃ©phone)
+        # Résolution du compte marchand Wave (Numéro de compte M_sn_... ou téléphone)
         wave_account_id = (
             data_obj.get("account_id")
             or data_obj.get("merchant_id")
@@ -731,7 +736,7 @@ async def webhook_wave_direct(request: Request):
             or request.query_params.get("phone")
         )
 
-        # Si Wave fournit l'identifiant marchand (ex: M_sn_YgEkibrMRghV) sans tÃ©lÃ©phone
+        # Si Wave fournit l'identifiant marchand (ex: M_sn_YgEkibrMRghV) sans téléphone
         if not phone and wave_account_id:
             if wave_account_id == "M_sn_YgEkibrMRghV":
                 phone = "221788773827"
@@ -762,7 +767,7 @@ async def webhook_wave_direct(request: Request):
         if not sp:
             return {"status": "error", "reason": "Database connection missing"}
 
-        # Identifier ou initialiser automatiquement l'entreprise liÃ©e au numÃ©ro de tÃ©lÃ©phone
+        # Identifier ou initialiser automatiquement l'entreprise liée au numéro de téléphone
         clean_phone = str(phone).replace("+", "").replace(" ", "").strip()
         res_ent = sp.table("entreprises").select("*").ilike("telephone_whatsapp", f"%{clean_phone}%").limit(1).execute()
         if res_ent and res_ent.data:
@@ -775,7 +780,7 @@ async def webhook_wave_direct(request: Request):
 
         type_flux = "ENTREE" if direction in ["CREDIT", "IN", "ENTREE", "RECEIVED"] else "SORTIE"
 
-        # Classification Intelligente Automatique (Encaissement CA, MÃ©moire Fournisseurs, Services Nationaux)
+        # Classification Intelligente Automatique (Encaissement CA, Mémoire Fournisseurs, Services Nationaux)
         classification = classifier_operation_automatiquement(
             direction=direction,
             montant=amount,
@@ -788,14 +793,14 @@ async def webhook_wave_direct(request: Request):
         libelle_final = classification["libelle"]
         methode = classification["methode_resolution"]
 
-        # Garantir un libellÃ© unique, distinct et dÃ©taillÃ© pour chaque encaissement Wave
+        # Garantir un libellé unique, distinct et détaillé pour chaque encaissement Wave
         ref_aff = tx_id if tx_id else f"WV-{amount}"
         if not libelle_final or "Encaissement Wave" in libelle_final:
-            libelle_final = f"Encaissement Wave - {amount:,.0f} FCFA ({tiers_nom} - RÃ©f: {ref_aff})"
+            libelle_final = f"Encaissement Wave - {amount:,.0f} FCFA ({tiers_nom} - Réf: {ref_aff})"
         elif f"{amount:,.0f}" not in libelle_final:
-            libelle_final = f"{libelle_final} ({amount:,.0f} FCFA - RÃ©f: {ref_aff})"
+            libelle_final = f"{libelle_final} ({amount:,.0f} FCFA - Réf: {ref_aff})"
 
-        # Insertion directe dans le journal prÃ©-comptable SYSCOHADA
+        # Insertion directe dans le journal pré-comptable SYSCOHADA
         tx_row = {
             "entreprise_id": ent_id,
             "libelle": libelle_final,
@@ -814,12 +819,12 @@ async def webhook_wave_direct(request: Request):
             tx_row.pop("reference_externe", None)
             sp.table("transactions").insert(tx_row).execute()
 
-        print(f"[GROW WEBHOOK AUTONOME] TX {tx_id} traitÃ©e via {methode} -> Compte {compte_syscohada} ({statut_val})")
+        print(f"[GROW WEBHOOK AUTONOME] TX {tx_id} traitée via {methode} -> Compte {compte_syscohada} ({statut_val})")
 
-        # Ingestion silencieuse en arriÃ¨re-plan : l'Ã©criture comptable est enregistrÃ©e discrÃ¨tement
-        # en base de donnÃ©es et actualise le tableau de bord en direct sans spammer le commerÃ§ant.
-        # Le commerÃ§ant reÃ§oit un bilan consolidÃ© lors des points flash toutes les 3 heures (09h, 12h, 15h, 18h, 21h).
-        print(f"[GROW WAVE INGESTION SILENCIEUSE] Encaissement de {amount:,.0f} FCFA ({tx_id}) dÃ©posÃ© discrÃ¨tement en base et sur le dashboard pour {clean_phone or wave_account_id}. ZÃ©ro message WhatsApp individuel.")
+        # Ingestion silencieuse en arrière-plan : l'écriture comptable est enregistrée discrètement
+        # en base de données et actualise le tableau de bord en direct sans spammer le commerçant.
+        # Le commerçant reçoit un bilan consolidé lors des points flash toutes les 3 heures (09h, 12h, 15h, 18h, 21h).
+        print(f"[GROW WAVE INGESTION SILENCIEUSE] Encaissement de {amount:,.0f} FCFA ({tx_id}) déposé discrètement en base et sur le dashboard pour {clean_phone or wave_account_id}. Zéro message WhatsApp individuel.")
 
         return {
             "status": "success",
@@ -840,9 +845,9 @@ async def webhook_wave_direct(request: Request):
 async def api_sms_gateway(request: Request):
     """
     Passerelle Relais SMS Android Grow :
-    ReÃ§oit automatiquement en arriÃ¨re-plan chaque SMS bancaire/opÃ©rateur (Wave, OM, Free)
-    reÃ§u sur le tÃ©lÃ©phone Android du commerÃ§ant et l'impute directement en comptabilitÃ© SYSCOHADA.
-    Le commerÃ§ant n'a absolument rien Ã  toucher : l'appli Android renvoie le SMS dÃ¨s rÃ©ception.
+    Reçoit automatiquement en arrière-plan chaque SMS bancaire/opérateur (Wave, OM, Free)
+    reçu sur le téléphone Android du commerçant et l'impute directement en comptabilité SYSCOHADA.
+    Le commerçant n'a absolument rien à toucher : l'appli Android renvoie le SMS dès réception.
     """
     try:
         content_type = request.headers.get("content-type", "")
@@ -852,7 +857,7 @@ async def api_sms_gateway(request: Request):
             form = await request.form()
             payload = dict(form)
 
-        print("\n[RELAIS SMS ANDROID REÃ‡U] :", payload)
+        print("\n[RELAIS SMS ANDROID REÇU] :", payload)
 
         sms_text = (
             payload.get("text")
@@ -862,7 +867,7 @@ async def api_sms_gateway(request: Request):
             or payload.get("sms")
             or ""
         )
-        sender_op = payload.get("from") or payload.get("sender") or "OpÃ©rateur"
+        sender_op = payload.get("from") or payload.get("sender") or "Opérateur"
         merchant_phone = (
             payload.get("phone")
             or payload.get("merchant_phone")
@@ -890,15 +895,15 @@ async def api_sms_gateway(request: Request):
         ent = res_ent.data[0]
         donnees_onb = ent.get("donnees_onboarding") or {}
         if ent.get("etape_onboarding") != "COMPLET" and not donnees_onb.get("ninea_valide_par_preuve", False):
-            print(f"[RELAIS SMS] IgnorÃ© : L'entreprise {ent.get('nom_entreprise')} n'a pas encore validÃ© son onboarding officiel.")
+            print(f"[RELAIS SMS] Ignoré : L'entreprise {ent.get('nom_entreprise')} n'a pas encore validé son onboarding officiel.")
             return {"status": "ignored", "reason": "Enterprise onboarding not completed"}
 
         ent_id = ent.get("id")
 
-        # Analyse locale dÃ©terministe du SMS opÃ©rateur (Wave / Orange Money / Free)
+        # Analyse locale déterministe du SMS opérateur (Wave / Orange Money / Free)
         sms_op = parse_operator_sms_local(sms_text)
         if not sms_op or sms_op.get("montant_fcfa", 0) <= 0:
-            print(f"[RELAIS SMS] IgnorÃ© : Le SMS reÃ§u n'est pas une transaction financiÃ¨re valide.")
+            print(f"[RELAIS SMS] Ignoré : Le SMS reçu n'est pas une transaction financière valide.")
             return {"status": "ignored", "reason": "Not a recognized financial operator transaction"}
 
         montant = sms_op.get("montant_fcfa", 0)
@@ -909,7 +914,7 @@ async def api_sms_gateway(request: Request):
         tiers_phone = sms_op.get("tiers_phone") or ""
         ref_externe = sms_op.get("reference_externe") or f"SMS-{int(datetime.now().timestamp())}"
         solde_nouveau = sms_op.get("solde_nouveau_fcfa") or 0
-        libelle_complet = f"{sms_op.get('libelle')} (RÃ©f: {ref_externe})"
+        libelle_complet = f"{sms_op.get('libelle')} (Réf: {ref_externe})"
 
         # Insertion dans Supabase
         tx_row = {
@@ -929,25 +934,25 @@ async def api_sms_gateway(request: Request):
             tx_row.pop("reference_externe", None)
             sp.table("transactions").insert(tx_row).execute()
 
-        print(f"[RELAIS SMS SUCCÃˆS] EnregistrÃ© : {montant:,.0f} FCFA ({operateur}) pour {clean_phone}")
+        print(f"[RELAIS SMS SUCCÈS] Enregistré : {montant:,.0f} FCFA ({operateur}) pour {clean_phone}")
 
-        # Notification instantanÃ©e sur WhatsApp au commerÃ§ant
+        # Notification instantanée sur WhatsApp au commerçant
         base_url = get_public_base_url()
-        solde_txt = f"â€¢ Nouveau solde {operateur} : {solde_nouveau:,.0f} FCFA\n" if solde_nouveau > 0 else ""
-        type_desc = "Encaissement (Vente)" if type_flux == "ENTREE" else "DÃ©caissement (DÃ©pense)"
+        solde_txt = f"• Nouveau solde {operateur} : {solde_nouveau:,.0f} FCFA\n" if solde_nouveau > 0 else ""
+        type_desc = "Encaissement (Vente)" if type_flux == "ENTREE" else "Décaissement (Dépense)"
 
         msg_notif = (
-            f"ENCAISSEMENT AUTOMATIQUE DÃ‰TECTÃ‰ ({operateur})\n\n"
-            "RÃ‰SUMÃ‰ DE L'ENREGISTREMENT :\n"
-            f"â€¢ Source : Relais SMS automatique en arriÃ¨re-plan\n"
-            f"â€¢ Nature : {type_desc}\n"
-            f"â€¢ Montant : {montant:,.0f} FCFA\n"
-            f"â€¢ Tiers : {tiers_nom}" + (f" ({tiers_phone})" if tiers_phone else "") + "\n"
-            f"â€¢ RÃ©fÃ©rence officielle : {ref_externe}\n"
+            f"ENCAISSEMENT AUTOMATIQUE DÉTECTÉ ({operateur})\n\n"
+            "RÉSUMÉ DE L'ENREGISTREMENT :\n"
+            f"• Source : Relais SMS automatique en arrière-plan\n"
+            f"• Nature : {type_desc}\n"
+            f"• Montant : {montant:,.0f} FCFA\n"
+            f"• Tiers : {tiers_nom}" + (f" ({tiers_phone})" if tiers_phone else "") + "\n"
+            f"• Référence officielle : {ref_externe}\n"
             f"{solde_txt}"
-            f"â€¢ Imputation : Compte SYSCOHADA {compte_syscohada}\n"
-            "â€¢ Statut : EnregistrÃ© automatiquement sans aucune intervention\n\n"
-            "Votre journal financier est Ã  jour en direct :\n"
+            f"• Imputation : Compte SYSCOHADA {compte_syscohada}\n"
+            "• Statut : Enregistré automatiquement sans aucune intervention\n\n"
+            "Votre journal financier est à jour en direct :\n"
             f"{base_url}/dashboard?phone={clean_phone}"
         )
         await send_whatsapp_message(clean_phone, msg_notif)
@@ -968,7 +973,7 @@ async def api_sms_gateway(request: Request):
 
 @app.get("/api/memoire-fournisseurs")
 async def api_memoire_fournisseurs(entreprise_id: str = Query(None)):
-    """Retourne la mÃ©moire des tiers et fournisseurs dÃ©jÃ  appris pour cette entreprise."""
+    """Retourne la mémoire des tiers et fournisseurs déjà appris pour cette entreprise."""
     if not entreprise_id:
         entreprise_id = "c3144ff0-013e-498f-9fdb-a2127c95f68f"
     memoire = get_memoire_fournisseurs(entreprise_id)
@@ -981,10 +986,10 @@ async def api_memoire_fournisseurs(entreprise_id: str = Query(None)):
 
 @app.post("/api/declencher-rituel-soir")
 async def api_declencher_rituel_soir(payload: dict = Body(default={})):
-    """DÃ©clenche immÃ©diatement le Rituel ConsolidÃ© du Soir (Batching) pour une PME."""
+    """Déclenche immédiatement le Rituel Consolidé du Soir (Batching) pour une PME."""
     sp = get_supabase()
     if not sp:
-        return {"status": "error", "message": "Base de donnÃ©es non disponible"}
+        return {"status": "error", "message": "Base de données non disponible"}
 
     ent_id = payload.get("entreprise_id") or "c3144ff0-013e-498f-9fdb-a2127c95f68f"
     res_ent = sp.table("entreprises").select("*").eq("id", ent_id).execute()
@@ -992,14 +997,14 @@ async def api_declencher_rituel_soir(payload: dict = Body(default={})):
         res_ent = sp.table("entreprises").select("*").limit(1).execute()
 
     if not res_ent.data:
-        return {"status": "error", "message": "Aucune entreprise trouvÃ©e"}
+        return {"status": "error", "message": "Aucune entreprise trouvée"}
 
     ent = res_ent.data[0]
     ent_id = ent.get("id")
     nom = ent.get("nom_entreprise", "Votre PME")
     phone = ent.get("telephone_whatsapp")
 
-    # RÃ©cupÃ©rer les transactions
+    # Récupérer les transactions
     today_str = datetime.now().strftime("%Y-%m-%d")
     txs = sp.table("transactions").select("*").eq("entreprise_id", ent_id).execute().data or []
     
@@ -1024,29 +1029,29 @@ async def api_declencher_rituel_soir(payload: dict = Body(default={})):
 
 @app.post("/api/update-heure-rappel")
 async def update_heure_rappel(payload: dict):
-    """Met Ã  jour l'heure de rappel du rituel de clÃ´ture du soir (0 crÃ©dit consommÃ©)."""
+    """Met à jour l'heure de rappel du rituel de clôture du soir (0 crédit consommé)."""
     sp = get_supabase()
     if not sp:
-        return {"success": False, "error": "Supabase non connectÃ©"}
+        return {"success": False, "error": "Supabase non connecté"}
     
     ent_id = payload.get("entreprise_id")
     nouvelle_heure = payload.get("heure")  # Format "HH:MM"
     
     if not ent_id or not nouvelle_heure:
-        return {"success": False, "error": "DonnÃ©es incomplÃ¨tes (entreprise_id et heure requis)"}
+        return {"success": False, "error": "Données incomplètes (entreprise_id et heure requis)"}
     
     try:
         # Nettoyage et formatage HH:MM:00
         clean_heure = nouvelle_heure.strip()[:5] + ":00"
         res = sp.table("entreprises").update({"heure_rappel_quotidien": clean_heure}).eq("id", ent_id).execute()
-        return {"success": True, "heure": clean_heure[:5], "message": f"Heure de rappel programmÃ©e Ã  {clean_heure[:5]} avec succÃ¨s"}
+        return {"success": True, "heure": clean_heure[:5], "message": f"Heure de rappel programmée à {clean_heure[:5]} avec succès"}
     except Exception as e:
         return {"success": False, "error": str(e)}
 
 
 @app.get("/agence", response_class=HTMLResponse)
 async def serve_agence_dashboard():
-    """Espace rÃ©servÃ© Ã  l'Expert-Comptable / Agence ONECCA."""
+    """Espace réservé à l'Expert-Comptable / Agence ONECCA."""
     html_path = os.path.join(TEMPLATES_DIR, "agence.html")
     if os.path.exists(html_path):
         with open(html_path, "r", encoding="utf-8") as f:
@@ -1062,7 +1067,7 @@ async def serve_abonnement():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abonnement Grow &bull; PrÃ©-comptabilitÃ© PME</title>
+    <title>Abonnement Grow &bull; Pré-comptabilité PME</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -1071,11 +1076,11 @@ async def serve_abonnement():
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-2xl text-center space-y-6">
         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 mx-auto flex items-center justify-center text-3xl shadow-lg">
-            ðŸ¤²ðŸŒ±
+            🤲🌱
         </div>
         <div>
             <h1 class="text-2xl font-black text-white">Abonnement Grow PME</h1>
-            <p class="text-xs text-slate-400 mt-1">Certification financiÃ¨re et prÃ©-comptabilitÃ© SYSCOHADA SMT</p>
+            <p class="text-xs text-slate-400 mt-1">Certification financière et pré-comptabilité SYSCOHADA SMT</p>
         </div>
         <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700 text-left space-y-3">
             <div class="flex justify-between items-baseline">
@@ -1084,9 +1089,9 @@ async def serve_abonnement():
             </div>
             <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800">
                 <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Assistant WhatsApp 24h/7j</li>
-                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> RelevÃ©s automatiques Wave, OM &amp; Caisse</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Relevés automatiques Wave, OM &amp; Caisse</li>
                 <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Dossiers financiers pour Banques &amp; ONECCA</li>
-                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Archivage certifiÃ© des reÃ§us et factures</li>
+                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Archivage certifié des reçus et factures</li>
             </ul>
         </div>
         <div class="space-y-3">
@@ -1097,11 +1102,11 @@ async def serve_abonnement():
                 <i class="fa-solid fa-phone"></i> Payer avec Orange Money
             </button>
         </div>
-        <p class="text-[11px] text-slate-500">AprÃ¨s paiement, renvoyez Â« J'ai payÃ© Â» sur WhatsApp pour activer vos 5 Ã©tapes d'onboarding.</p>
+        <p class="text-[11px] text-slate-500">Après paiement, renvoyez « J'ai payé » sur WhatsApp pour activer vos 5 étapes d'onboarding.</p>
     </div>
     <script>
         function simulerPaiement(op) {
-            alert('Simulation : Paiement via ' + op + ' rÃ©ussi !\\n\\nVous pouvez maintenant retourner sur WhatsApp et envoyer Â« J\\'ai payÃ© Â» pour commencer vos 5 Ã©tapes.');
+            alert('Simulation : Paiement via ' + op + ' réussi !\\n\\nVous pouvez maintenant retourner sur WhatsApp et envoyer « J\\'ai payé » pour commencer vos 5 étapes.');
             window.location.href = '/dashboard';
         }
     </script>
@@ -1112,7 +1117,7 @@ async def serve_abonnement():
 @app.post("/")
 @app.post("/webhook")
 async def receive_message(request: Request):
-    """RÃ©ception et traitement en direct des messages WhatsApp."""
+    """Réception et traitement en direct des messages WhatsApp."""
     data = await request.json()
     print("\n[NOUVEAU MESSAGE WEBHOOK] :", data)
 
@@ -1146,17 +1151,17 @@ async def receive_message(request: Request):
                 reply_text = await handle_incoming_message(sender_phone, user_text, None, contact_name)
                 await send_whatsapp_message(sender_phone, reply_text)
 
-            # 2. IMAGE (NINEA, ReÃ§u papier, capture Wave)
+            # 2. IMAGE (NINEA, Reçu papier, capture Wave)
             elif msg_type == "image":
                 image_info = message.get("image", {})
                 media_id = image_info.get("id")
                 caption = image_info.get("caption", "")
-                print(f"Image reÃ§ue de {sender_phone} (ID: {media_id})")
+                print(f"Image reçue de {sender_phone} (ID: {media_id})")
 
                 reply_text = await handle_incoming_message(sender_phone, caption, ("PHOTO", media_id), contact_name)
                 await send_whatsapp_message(sender_phone, reply_text)
 
-            # 3. DOCUMENT (PDF NINEA ou RelevÃ©)
+            # 3. DOCUMENT (PDF NINEA ou Relevé)
             elif msg_type == "document":
                 doc_info = message.get("document", {})
                 media_id = doc_info.get("id")
@@ -1238,33 +1243,33 @@ async def receive_message(request: Request):
 
 
 async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple, contact_name: str = None) -> str:
-    """Aiguille entre le premier message exclusif de bienvenue, le tunnel d'Onboarding en 5 Ã©tapes, la vÃ©rification d'abonnement et le fonctionnement normal de l'IA."""
+    """Aiguille entre le premier message exclusif de bienvenue, le tunnel d'Onboarding en 5 étapes, la vérification d'abonnement et le fonctionnement normal de l'IA."""
     # 0. TRANSCRIPTION DES NOTES VOCALES WHATSAPP VIA OPENAI WHISPER
     if media_tuple and media_tuple[0] == "AUDIO":
         media_type, media_id = media_tuple
         media_bytes, mime_type = await download_meta_media(media_id)
         if not media_bytes:
-            return "Je n'ai pas pu tÃ©lÃ©charger votre note vocale. Veuillez rÃ©essayer de me l'envoyer."
+            return "Je n'ai pas pu télécharger votre note vocale. Veuillez réessayer de me l'envoyer."
 
         texte_transcrit = await transcrire_note_vocale(media_bytes, mime_type)
         if not texte_transcrit:
             api_key = os.getenv("OPENAI_API_KEY")
             if not api_key:
                 return (
-                    "Note vocale bien reÃ§ue.\n\n"
-                    "Pour activer la transcription vocale automatique, veuillez renseigner votre clÃ© OPENAI_API_KEY dans votre fichier .env.\n\n"
-                    "En attendant, vous pouvez Ã©crire votre message ou votre opÃ©ration directement sous forme de texte."
+                    "Note vocale bien reçue.\n\n"
+                    "Pour activer la transcription vocale automatique, veuillez renseigner votre clé OPENAI_API_KEY dans votre fichier .env.\n\n"
+                    "En attendant, vous pouvez écrire votre message ou votre opération directement sous forme de texte."
                 )
             return (
-                "Je n'ai pas rÃ©ussi Ã  entendre clairement votre note vocale. "
-                "Pourriez-vous renvoyer un message vocal plus clair ou Ã©crire votre opÃ©ration sous forme de texte ?"
+                "Je n'ai pas réussi à entendre clairement votre note vocale. "
+                "Pourriez-vous renvoyer un message vocal plus clair ou écrire votre opération sous forme de texte ?"
             )
 
-        print(f"[NOTE VOCALE DE {sender_phone}] Transcrite : Â« {texte_transcrit} Â»")
+        print(f"[NOTE VOCALE DE {sender_phone}] Transcrite : « {texte_transcrit} »")
         # Traitement direct du texte transcrit
         reponse_interne = await handle_incoming_message(sender_phone, texte_transcrit, None, contact_name)
         return (
-            f"Note vocale comprise : Â« {texte_transcrit} Â»\n\n"
+            f"Note vocale comprise : « {texte_transcrit} »\n\n"
             f"{reponse_interne}"
         )
 
@@ -1274,15 +1279,15 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         base_url = get_public_base_url()
         res_test = await executer_simulation_test_webhook(clean_p, provider="WAVE", amount=1000)
         return (
-            "TEST DE CONNEXION WEBHOOK RÃ‰USSI\n\n"
-            "RÃ‰SUMÃ‰ DU TEST EN DIRECT :\n"
-            "â€¢ Canal vÃ©rifiÃ© : Webhook OpÃ©rateur Wave\n"
-            "â€¢ Montant test : 1 000 FCFA\n"
-            f"â€¢ RÃ©fÃ©rence test : {res_test.get('tx_id')}\n"
-            "â€¢ Imputation : Compte SYSCOHADA 701 (Vente de marchandises)\n"
-            "â€¢ TrÃ©sorerie crÃ©ditÃ©e : Compte SYSCOHADA 521 (Monnaie Ã©lectronique Wave)\n"
-            "â€¢ Statut : 100% OpÃ©rationnel et certifiÃ©\n\n"
-            "Votre liaison automatique est validÃ©e. Vos vÃ©ritables encaissements clients seront dÃ©sormais rÃ©conciliÃ©s automatiquement sans intervention manuelle :\n"
+            "TEST DE CONNEXION WEBHOOK RÉUSSI\n\n"
+            "RÉSUMÉ DU TEST EN DIRECT :\n"
+            "• Canal vérifié : Webhook Opérateur Wave\n"
+            "• Montant test : 1 000 FCFA\n"
+            f"• Référence test : {res_test.get('tx_id')}\n"
+            "• Imputation : Compte SYSCOHADA 701 (Vente de marchandises)\n"
+            "• Trésorerie créditée : Compte SYSCOHADA 521 (Monnaie électronique Wave)\n"
+            "• Statut : 100% Opérationnel et certifié\n\n"
+            "Votre liaison automatique est validée. Vos véritables encaissements clients seront désormais réconciliés automatiquement sans intervention manuelle :\n"
             f"{base_url}/dashboard?phone={clean_p}"
         )
 
@@ -1294,7 +1299,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     statut = onboarding.get("statut", "EN_ATTENTE_ABONNEMENT")
     base_url = get_public_base_url()
 
-    # Si l'utilisateur a dÃ©jÃ  son abonnement actif ou est en cours d'onboarding ou complet,
+    # Si l'utilisateur a déjà son abonnement actif ou est en cours d'onboarding ou complet,
     # il ne doit JAMAIS recevoir le message de bienvenue ou d'attente d'abonnement !
     if onboarding.get("abonnement_valide") or statut in ["EN_COURS", "COMPLET"]:
         premier_contact = True
@@ -1342,7 +1347,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
                 f"{base_url}/abonnement?phone={sender_phone}\n\n"
                 "Once paid, simply reply \"I paid\" or send your payment receipt to start configuration."
             )
-        else:  # Par defaut 2 / Francais
+        elif raw in ["2", "francais", "français", "fr"]:
             lang = "fr"
             update_onboarding_state(sender_phone, "langue_preferee", "fr")
             update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_ABONNEMENT")
@@ -1356,61 +1361,106 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
                 f"{base_url}/abonnement?phone={sender_phone}\n\n"
                 "Dès que votre paiement est effectué, écrivez simplement « J'ai payé » ou envoyez votre reçu de paiement ici pour lancer la configuration de votre entreprise."
             )
+        else:
+            return (
+                "Dalal ak jàmm ci Grow ! / Bienvenue sur Grow ! / Welcome to Grow !\n\n"
+                "Tànnal sa làkk ngir nu tàmbli / Choisissez votre langue pour démarrer :\n\n"
+                "1️⃣ Wolof\n"
+                "2️⃣ Français\n"
+                "3️⃣ English\n\n"
+                "Bindal 1, 2 walla 3 / Répondez par 1, 2 ou 3."
+            )
 
     statut = onboarding.get("statut", "EN_ATTENTE_ABONNEMENT")
 
-    # 2. VÃ‰RIFICATION DU PAIEMENT / Â« J'AI PAYÃ‰ Â» (PrioritÃ© absolue dÃ¨s que le client affirme avoir payÃ©)
+    # 2. VÉRIFICATION DU PAIEMENT / « J'AI PAYÉ » (Priorité absolue dès que le client affirme avoir payé)
     if is_paiement_keyword(user_text):
         update_onboarding_state(sender_phone, "abonnement_valide", True)
 
-        # CAS A : Si ce numÃ©ro a DÃ‰JÃ€ une entreprise configurÃ©e
+        # CAS A : Si ce numéro a DÉJÀ une entreprise configurée
         if is_entreprise_deja_configuree(sender_phone):
             update_onboarding_state(sender_phone, "statut", "COMPLET")
             update_onboarding_state(sender_phone, "etape", "TERMINE")
             instructions = get_instructions_journee_message(base_url, sender_phone)
             return (
-                "Merci, votre paiement est bien confirmÃ© ! Votre abonnement Grow est actif.\n\n"
-                f"Votre entreprise est dÃ©jÃ  configurÃ©e.\n\n{instructions}"
+                "Merci, votre paiement est bien confirmé ! Votre abonnement Grow est actif.\n\n"
+                f"Votre entreprise est déjà configurée.\n\n{instructions}"
             )
 
-        # CAS B : Si ce numÃ©ro N'A PAS ENCORE configurÃ© son entreprise
-        # On valide le paiement et on lance la configuration en 5 Ã©tapes (1 question Ã  la fois)
+        # CAS B : Si ce numéro N'A PAS ENCORE configuré son entreprise
+        # On valide le paiement et on lance la configuration en 5 étapes (1 question à la fois)
         update_onboarding_state(sender_phone, "statut", "EN_COURS")
         update_onboarding_state(sender_phone, "etape", "DEMANDE_NINEA")
+        lang_pref = onboarding.get("langue_preferee") or "fr"
+        if lang_pref == "wo":
+            return (
+                "Jërejëf, sa fey dug na ! Sa abonnement Grow ubbi na.\n\n"
+                "Léegi dañuy configurar sa boutique ci 5 étapes. Ngir sàrti SYSCOHADA, dafa laaj preuve (foto) ci étape bu nekk.\n\n"
+                "Étape 1/5 : Yónneel foto walla PDF sa papier attestation NINEA.\n\n"
+                "Grow dafa koy xool ngir certifier Turu entreprise bi, NINEA bi, RCCM bi ak Capital social bi bala ñuy dem ci étape bi ci topp."
+            )
+        elif lang_pref == "en":
+            return (
+                "Thank you, your payment is confirmed! Your Grow subscription is now active.\n\n"
+                "We will now configure your business in 5 steps. An official supporting document is required to validate each step.\n\n"
+                "Step 1/5: Please send a photo or PDF of your official NINEA certificate.\n\n"
+                "Grow will analyze this document to certify your Business Name, NINEA, Legal Form, Trade Register (RCCM), and Share Capital before moving to the next step."
+            )
         return (
-            "Merci, votre paiement est bien confirmÃ© ! Votre abonnement Grow est actif.\n\n"
-            "Nous allons maintenant configurer votre entreprise en 5 Ã©tapes. ConformÃ©ment aux rÃ¨gles Grow, la piÃ¨ce justificative est obligatoire pour valider chaque Ã©tape.\n\n"
-            "Ã‰tape 1/5 : Envoyez-moi la photo ou le document PDF de votre attestation papier NINEA.\n\n"
-            "Grow doit analyser cette piÃ¨ce officielle pour certifier le Nom, le NINEA, la Forme juridique, le Registre de Commerce (RCCM) et le Capital social de votre entreprise avant de passer Ã  l'Ã©tape suivante."
+            "Merci, votre paiement est bien confirmé ! Votre abonnement Grow est actif.\n\n"
+            "Nous allons maintenant configurer votre entreprise en 5 étapes. Conformément aux règles Grow, la pièce justificative est obligatoire pour valider chaque étape.\n\n"
+            "Étape 1/5 : Envoyez-moi la photo ou le document PDF de votre attestation papier NINEA.\n\n"
+            "Grow doit analyser cette pièce officielle pour certifier le Nom, le NINEA, la Forme juridique, le Registre de Commerce (RCCM) et le Capital social de votre entreprise avant de passer à l'étape suivante."
         )
 
-    # 3. SI L'ABONNEMENT N'EST PAS ENCORE VALIDÃ‰ (Tant qu'il n'y a pas eu Â« J'ai payÃ© Â»)
+    # 3. SI L'ABONNEMENT N'EST PAS ENCORE VALIDÉ (Tant qu'il n'y a pas eu « J'ai payé »)
     state = get_onboarding_state(sender_phone)
     if not state.get("abonnement_valide", False) and statut not in ["EN_COURS", "COMPLET"]:
+        # Exception : si le client envoie directement son attestation NINEA en photo/PDF, on active et on passe à l'étape 1
+        if media_tuple and media_tuple[0] in ["PHOTO", "DOCUMENT"]:
+            update_onboarding_state(sender_phone, "abonnement_valide", True)
+            update_onboarding_state(sender_phone, "statut", "EN_COURS")
+            update_onboarding_state(sender_phone, "etape", "DEMANDE_NINEA")
+            onboarding = get_onboarding_state(sender_phone)
+            return await process_onboarding_step(sender_phone, user_text, media_tuple, onboarding, contact_name)
+
+        lang_pref = state.get("langue_preferee") or "fr"
+        if lang_pref == "wo":
+            return (
+                "Sa abonnement ubbiwaatoul. Ngir ubbi sa compte ak configurar sa boutique, feyal sa abonnement Grow ci lii :\n"
+                f"{base_url}/abonnement?phone={sender_phone}\n\n"
+                "Boo feyee ba noppi, bindal rekk « Fey naa » walla nga yónnee foto reçu bi fii."
+            )
+        elif lang_pref == "en":
+            return (
+                "Your subscription is not active yet. To activate your account and configure your business, please subscribe here:\n"
+                f"{base_url}/abonnement?phone={sender_phone}\n\n"
+                "If you have already paid, simply reply \"I paid\" or send your payment receipt here."
+            )
         return (
-            "Votre abonnement n'est pas encore actif. Pour activer votre compte et configurer votre entreprise, veuillez d'abord souscrire Ã  votre abonnement Grow sur ce lien :\n"
+            "Votre abonnement n'est pas encore actif. Pour activer votre compte et configurer votre entreprise, veuillez d'abord souscrire à votre abonnement Grow sur ce lien :\n"
             f"{base_url}/abonnement?phone={sender_phone}\n\n"
-            "Si vous avez dÃ©jÃ  payÃ©, Ã©crivez simplement Â« J'ai payÃ© Â» ou envoyez votre reÃ§u de paiement ici."
+            "Si vous avez déjà payé, écrivez simplement « J'ai payé » ou envoyez votre reçu de paiement ici."
         )
 
-    # 4. Si l'onboarding n'est pas encore terminÃ©, on traite l'onboarding (Ã‰tapes 1 Ã  5)
+    # 4. Si l'onboarding n'est pas encore terminé, on traite l'onboarding (Étapes 1 à 5)
     if statut != "COMPLET":
         return await process_onboarding_step(sender_phone, user_text, media_tuple, onboarding, contact_name)
 
-    # 5. Si l'onboarding est COMPLET, traitement des opÃ©rations
+    # 5. Si l'onboarding est COMPLET, traitement des opérations
     if media_tuple:
         media_type, media_id = media_tuple
         return await process_media_with_ai(sender_phone, media_id, "PHOTO_RECU", user_text)
     else:
-        # A. PrioritÃ© absolue au GRAND EXTRACTEUR LOCAL (0 crÃ©dit d'API, 100% gratuit et instantanÃ©)
+        # A. Priorité absolue au GRAND EXTRACTEUR LOCAL (0 crédit d'API, 100% gratuit et instantané)
         if user_text:
-            # 1) DÃ©tection SMS OpÃ©rateur (Wave / Orange Money / Free)
+            # 1) Détection SMS Opérateur (Wave / Orange Money / Free)
             sms_op = parse_operator_sms_local(user_text)
             if sms_op and sms_op.get("montant_fcfa", 0) > 0:
                 sp = get_supabase()
                 ent = get_or_create_entreprise(sp, sender_phone) if sp else {}
                 ent_id = ent.get("id")
-                lib_complet = f"{sms_op.get('libelle')} (RÃ©f: {sms_op.get('reference_externe')})"
+                lib_complet = f"{sms_op.get('libelle')} (Réf: {sms_op.get('reference_externe')})"
                 if sp and ent_id:
                     try:
                         sp.table("transactions").insert({
@@ -1426,21 +1476,21 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
                     except Exception as e_tx:
                         print(f"Info enregistrement transaction SMS local : {e_tx}")
 
-                solde_txt = f"\nâ€¢ Nouveau solde opÃ©rateur : {sms_op.get('solde_nouveau_fcfa'):,.0f} FCFA" if sms_op.get('solde_nouveau_fcfa') else ""
+                solde_txt = f"\n• Nouveau solde opérateur : {sms_op.get('solde_nouveau_fcfa'):,.0f} FCFA" if sms_op.get('solde_nouveau_fcfa') else ""
                 return (
                     f"Notification {sms_op.get('operateur')} interceptee et enregistree avec succes.\n\n"
                     f"RESUME DE L'ENREGISTREMENT :\n"
-                    f"â€¢ Nature : {sms_op.get('type_flux')}\n"
-                    f"â€¢ Montant : {sms_op.get('montant_fcfa'):,.0f} FCFA\n"
-                    f"â€¢ Source : {sms_op.get('operateur')}\n"
-                    f"â€¢ Compte SYSCOHADA : {sms_op.get('compte_syscohada')} ({sms_op.get('libelle')})\n"
-                    f"â€¢ Beneficiaire / Emetteur : {sms_op.get('tiers_nom')}\n"
-                    f"â€¢ Reference : {sms_op.get('reference_externe')}"
+                    f"• Nature : {sms_op.get('type_flux')}\n"
+                    f"• Montant : {sms_op.get('montant_fcfa'):,.0f} FCFA\n"
+                    f"• Source : {sms_op.get('operateur')}\n"
+                    f"• Compte SYSCOHADA : {sms_op.get('compte_syscohada')} ({sms_op.get('libelle')})\n"
+                    f"• Beneficiaire / Emetteur : {sms_op.get('tiers_nom')}\n"
+                    f"• Reference : {sms_op.get('reference_externe')}"
                     f"{solde_txt}\n\n"
                     "Statut : Ecriture certifiee dans votre journal financier."
                 )
 
-            # 2) DÃ©tection OpÃ©ration FinanciÃ¨re Courante Locale (Ventes, Carburant, Loyer, Stock, etc.)
+            # 2) Détection Opération Financière Courante Locale (Ventes, Carburant, Loyer, Stock, etc.)
             op_loc = parse_operation_financiere_locale(user_text)
             if op_loc and op_loc.get("montant_fcfa", 0) > 0:
                 lang_user = detecter_langue_texte(user_text)
@@ -1533,71 +1583,96 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
 
 
 def extraire_ninea_nom_capital_local(text: str, sender_phone: str = "", contact_name: str = "") -> tuple[str, str, int]:
-    """Extrait NINEA, Nom et Capital via le Grand Extracteur Local (0 crÃ©dit Anthropic, 100% gratuit)."""
+    """Extrait NINEA, Nom et Capital via le Grand Extracteur Local (0 crédit Anthropic, 100% gratuit)."""
     identite = extract_business_identity_local(text, sender_phone, contact_name)
     return identite.get("ninea"), identite.get("nom_entreprise"), identite.get("capital_social_fcfa", 0)
 
 
 async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple, onboarding: dict, contact_name: str = None) -> str:
-    """Machine Ã  Ã©tats stricte pour l'onboarding obligatoire de l'entreprise supervisÃ©e par Anthropic Claude."""
+    """Machine à états stricte pour l'onboarding obligatoire de l'entreprise supervisée par Anthropic Claude."""
     etape = onboarding.get("etape", "DEMANDE_NINEA")
     load_dotenv(override=True)
     api_key = os.getenv("ANTHROPIC_API_KEY")
     client = anthropic.Anthropic(api_key=api_key) if api_key else None
 
-    # 0. BLOCAGE STRICT : AUCUNE TRANSACTION NE PEUT ÃŠTRE ENREGISTRÃ‰E AVANT LA CRÃ‰ATION COMPLÃˆTE DE L'ENTREPRISE
+    # 0. BLOCAGE STRICT : AUCUNE TRANSACTION NE PEUT ÊTRE ENREGISTRÉE AVANT LA CRÉATION COMPLÈTE DE L'ENTREPRISE
     if user_text:
         sms_op = parse_operator_sms_local(user_text)
         is_sms = bool(sms_op and sms_op.get("montant_fcfa", 0) > 0)
         op_fin = parse_operation_financiere_locale(user_text)
         is_op = bool(op_fin and op_fin.get("montant_fcfa", 0) > 0)
         has_amount = bool(parse_montant_fcfa(user_text) > 0)
-        is_tx_kw = bool(re.search(r'\b(vente|vendu|achat|achetÃ©|depense|dÃ©pense|dette|crÃ©ance|creance|facture|senelec|sen eau|loyer)\b', user_text.lower()))
+        is_tx_kw = bool(re.search(r'\b(vente|vendu|achat|acheté|depense|dépense|dette|créance|creance|facture|senelec|sen eau|loyer)\b', user_text.lower()))
         
-        # Uniquement si c'est une VRAIE transaction financiÃ¨re avec un flux ou un SMS opÃ©rateur
+        # Uniquement si c'est une VRAIE transaction financière avec un flux ou un SMS opérateur
         if (is_sms or (is_op and etape not in ["DEMANDE_OPERATEURS", "DEMANDE_IMMOBILISATIONS", "DEMANDE_TRESORERIE_INITIALE"]) or (has_amount and is_tx_kw and etape not in ["DEMANDE_IMMOBILISATIONS", "DEMANDE_TRESORERIE_INITIALE"])):
             return (
-                "Action refusÃ©e : Votre entreprise n'est pas encore enregistrÃ©e sur Grow.\n\n"
-                "ConformÃ©ment aux normes prÃ©-comptables SYSCOHADA, aucun flux financier (vente, dÃ©pense ou SMS de paiement) ne peut Ãªtre imputÃ© tant que votre entreprise n'est pas officiellement crÃ©Ã©e et certifiÃ©e.\n\n"
-                "Veuillez d'abord finaliser les 5 Ã©tapes d'onboarding pour activer l'enregistrement de vos opÃ©rations."
+                "Action refusée : Votre entreprise n'est pas encore enregistrée sur Grow.\n\n"
+                "Conformément aux normes pré-comptables SYSCOHADA, aucun flux financier (vente, dépense ou SMS de paiement) ne peut être imputé tant que votre entreprise n'est pas officiellement créée et certifiée.\n\n"
+                "Veuillez d'abord finaliser les 5 étapes d'onboarding pour activer l'enregistrement de vos opérations."
             )
 
-    # Ã‰TAPE 1.1 : DEMANDE DU NOM COMMERCIAL DE L'ENTREPRISE (si l'attestation porte le nom de la personne physique)
+    # ÉTAPE 1.1 : DEMANDE DU NOM COMMERCIAL DE L'ENTREPRISE (si l'attestation porte le nom de la personne physique)
+    lang_pref = onboarding.get("langue_preferee") or "fr"
     if etape == "DEMANDE_NOM_COMMERCIAL":
         txt_nom = (user_text or "").strip()
-        is_greeting = bool(re.match(r'^(bonjour|salut|coucou|bonsoir|merci|ok|d[\'â€™]accord)$', txt_nom.lower()))
+        is_greeting = bool(re.match(r'^(bonjour|salut|coucou|bonsoir|merci|ok|d[\'’]accord|salam|nanga def|waw|waaw)$', txt_nom.lower()))
         if len(txt_nom) >= 2 and not is_greeting:
             # Enregistrement du vrai nom commercial
             update_onboarding_state(sender_phone, "nom_entreprise", txt_nom.title())
             update_onboarding_state(sender_phone, "etape", "DEMANDE_EQUIPE")
             
-            # Mise Ã  jour Supabase
+            # Mise à jour Supabase
             sp = get_supabase()
             if sp:
                 try:
                     clean_phone = str(sender_phone).replace("+", "").replace(" ", "").strip()
                     sp.table("entreprises").update({"nom_entreprise": txt_nom.title()}).ilike("telephone_whatsapp", f"%{clean_phone}%").execute()
                 except Exception as e_nom:
-                    print(f"Info mise Ã  jour nom commercial Supabase : {e_nom}")
+                    print(f"Info mise à jour nom commercial Supabase : {e_nom}")
 
+            if lang_pref == "wo":
+                return (
+                    f"Jërejëf ! Turu sa boutique bind nañu ko : « {txt_nom.title()} ».\n\n"
+                    "RÉSUMÉ CI SA TEERE :\n"
+                    f"• Turu boutique bi : {txt_nom.title()}\n"
+                    f"• Boroom : {onboarding.get('nom_personne_physique', 'Titulaire')}\n"
+                    f"• NINEA certifié : {onboarding.get('ninea')}\n"
+                    f"• Capital social : {int(onboarding.get('capital') or 1000000):,.0f} FCFA\n\n"
+                    "Étape 2/5 : Ñaata nit ñooy liggéey ci sa boutique (liggéeykat, apprentis walla associés) ?"
+                )
+            elif lang_pref == "en":
+                return (
+                    f"Trade name recorded successfully: \"{txt_nom.title()}\".\n\n"
+                    "REGISTRATION SUMMARY:\n"
+                    f"• Business trade name: {txt_nom.title()}\n"
+                    f"• Owner / Manager: {onboarding.get('nom_personne_physique', 'Owner')}\n"
+                    f"• Certified NINEA: {onboarding.get('ninea')}\n"
+                    f"• Certified Share Capital: {int(onboarding.get('capital') or 1000000):,.0f} FCFA\n\n"
+                    "Step 2/5: How many people work in your business (employees, apprentices, or partners)?"
+                )
             return (
-                f"Raison sociale enregistrÃ©e avec succÃ¨s : Â« {txt_nom.title()} Â».\n\n"
-                "RÃ‰SUMÃ‰ DE L'ENREGISTREMENT :\n"
-                f"â€¢ Nom commercial de l'entreprise : {txt_nom.title()}\n"
-                f"â€¢ GÃ©rant(e) / Exploitant(e) : {onboarding.get('nom_personne_physique', 'Titulaire')}\n"
-                f"â€¢ NumÃ©ro NINEA certifiÃ© : {onboarding.get('ninea')}\n"
-                f"â€¢ Capital social certifiÃ© : {int(onboarding.get('capital') or 1000000):,.0f} FCFA\n\n"
-                "Ã‰tape 2/5 : Combien de personnes travaillent au sein de votre structure (salariÃ©s dÃ©clarÃ©s, apprentis ou associÃ©s) ?"
+                f"Raison sociale enregistrée avec succès : « {txt_nom.title()} ».\n\n"
+                "RÉSUMÉ DE L'ENREGISTREMENT :\n"
+                f"• Nom commercial de l'entreprise : {txt_nom.title()}\n"
+                f"• Gérant(e) / Exploitant(e) : {onboarding.get('nom_personne_physique', 'Titulaire')}\n"
+                f"• Numéro NINEA certifié : {onboarding.get('ninea')}\n"
+                f"• Capital social certifié : {int(onboarding.get('capital') or 1000000):,.0f} FCFA\n\n"
+                "Étape 2/5 : Combien de personnes travaillent au sein de votre structure (salariés déclarés, apprentis ou associés) ?"
             )
         else:
             rep_claude = await superviser_conversation_claude(sender_phone, user_text, onboarding)
             if rep_claude:
                 return rep_claude
+            if lang_pref == "wo":
+                return "Wax ma lan mooy turu sa boutique walla sa entreprise (ci misaal : « Boutique Keur Fatou » walla « Ets Diallo ») :"
+            elif lang_pref == "en":
+                return "Please tell me the trade name of your business or shop (for example: \"Boutique Keur Fatou\" or \"Dakar Fashion Store\"):"
             return (
-                "Veuillez m'indiquer le nom de votre entreprise, boutique ou atelier (par exemple : Â« Boutique Keur Fatou Â», Â« Ets Diallo & FrÃ¨res Â» ou Â« Dakar Fashion Store Â») :"
+                "Veuillez m'indiquer le nom de votre entreprise, boutique ou atelier (par exemple : « Boutique Keur Fatou », « Ets Diallo & Frères » ou « Dakar Fashion Store ») :"
             )
 
-    # Ã‰TAPE 1 : NOM DE L'ENTREPRISE, CAPITAL SOCIAL ET ATTESTATION NINEA
+    # ÉTAPE 1 : NOM DE L'ENTREPRISE, CAPITAL SOCIAL ET ATTESTATION NINEA
     if etape == "DEMANDE_NINEA":
         piece_fournie = False
         extracted = {}
@@ -1624,18 +1699,18 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 if client:
                     b64 = base64.b64encode(media_bytes).decode("utf-8")
                     prompt_ninea = """
-Analyse cette photo ou document d'attestation officielle NINEA (SÃ©nÃ©gal).
+Analyse cette photo ou document d'attestation officielle NINEA (Sénégal).
 Extrais au format JSON strict les champs officiels suivants :
 {
   "is_ninea_document": true,
   "nom_entreprise": "Nom commercial ou Raison sociale officielle",
   "forme_juridique": "Forme juridique (ex: Entreprise Individuelle, SARL, SAS, SUARL, GIE)",
-  "activite_principale": "ActivitÃ© principale dÃ©clarÃ©e ou objet social",
-  "registre_commerce": "NumÃ©ro RCCM (ex: SN-DKR-...)",
-  "ninea": "NumÃ©ro NINEA officiel (7 Ã  10 caractÃ¨res)",
-  "capital_social_fcfa": montant numÃ©rique entier du capital (0 si non spÃ©cifiÃ©),
-  "date_creation": "date de crÃ©ation ou immatriculation",
-  "ville": "commune ou ville du siÃ¨ge"
+  "activite_principale": "Activité principale déclarée ou objet social",
+  "registre_commerce": "Numéro RCCM (ex: SN-DKR-...)",
+  "ninea": "Numéro NINEA officiel (7 à 10 caractères)",
+  "capital_social_fcfa": montant numérique entier du capital (0 si non spécifié),
+  "date_creation": "date de création ou immatriculation",
+  "ville": "commune ou ville du siège"
 }
 Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie {"is_ninea_document": false}.
 """
@@ -1659,7 +1734,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                     except Exception as e_ai:
                         print(f"Erreur extraction Claude attestation NINEA: {e_ai}")
 
-        # 2. Extraction locale dÃ©terministe depuis le texte (0 crÃ©dit Anthropic)
+        # 2. Extraction locale déterministe depuis le texte (0 crédit Anthropic)
         loc_ninea, loc_nom, loc_capital = extraire_ninea_nom_capital_local(user_text, sender_phone, contact_name)
 
         ninea = extracted.get("ninea") or loc_ninea
@@ -1669,20 +1744,20 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
         activite_principale = extracted.get("activite_principale")
         registre_commerce = extracted.get("registre_commerce")
 
-        # 3. Validation stricte de l'Ã‰tape 1 sur PIÃˆCE JUSTIFICATIVE OBLIGATOIRE :
+        # 3. Validation stricte de l'Étape 1 sur PIÈCE JUSTIFICATIVE OBLIGATOIRE :
         if piece_fournie:
             cap_final = capital if (capital and capital > 0) else 100000
 
-            # DÃ©tection : Si c'est une Entreprise Individuelle et que le nom ressemble Ã  une personne (ex: FATOU THIAM)
-            # ou si l'enseigne commerciale n'est pas spÃ©cifiÃ©e, la dÃ©nomination est le nom du propriÃ©taire, pas de l'entreprise !
+            # Détection : Si c'est une Entreprise Individuelle et que le nom ressemble à une personne (ex: FATOU THIAM)
+            # ou si l'enseigne commerciale n'est pas spécifiée, la dénomination est le nom du propriétaire, pas de l'entreprise !
             est_personne_physique = False
             if forme_juridique and "INDIVIDUELLE" in forme_juridique.upper():
                 est_personne_physique = True
-            elif nom and not any(kw in nom.lower() for kw in ["boutique", "ets", "sociÃ©tÃ©", "societe", "sarl", "suarl", "gie", "store", "shop", "atelier", "service", "commerce"]):
+            elif nom and not any(kw in nom.lower() for kw in ["boutique", "ets", "société", "societe", "sarl", "suarl", "gie", "store", "shop", "atelier", "service", "commerce"]):
                 if len(nom.split()) in [2, 3]:
                     est_personne_physique = True
 
-            # Sauvegarde des donnÃ©es certifiÃ©es
+            # Sauvegarde des données certifiées
             update_onboarding_state(sender_phone, "capital", cap_final)
             if ninea: update_onboarding_state(sender_phone, "ninea", ninea)
             if forme_juridique: update_onboarding_state(sender_phone, "forme_juridique", forme_juridique)
@@ -1690,20 +1765,20 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
             if registre_commerce: update_onboarding_state(sender_phone, "registre_commerce", registre_commerce)
             update_onboarding_state(sender_phone, "ninea_valide_par_preuve", True)
 
-            forme_txt = f"â€¢ Forme juridique : {forme_juridique}\n" if forme_juridique else ""
-            act_txt = f"â€¢ ActivitÃ© principale : {activite_principale}\n" if activite_principale else ""
-            rc_txt = f"â€¢ Registre du Commerce (RCCM) : {registre_commerce}\n" if registre_commerce else ""
-            ninea_txt = f"â€¢ NumÃ©ro NINEA officiel : {ninea}\n" if ninea else ""
-            cap_txt = f"â€¢ Capital social certifiÃ© : {cap_final:,.0f} FCFA\n" if cap_final else ""
+            forme_txt = f"• Forme juridique : {forme_juridique}\n" if forme_juridique else ""
+            act_txt = f"• Activité principale : {activite_principale}\n" if activite_principale else ""
+            rc_txt = f"• Registre du Commerce (RCCM) : {registre_commerce}\n" if registre_commerce else ""
+            ninea_txt = f"• Numéro NINEA officiel : {ninea}\n" if ninea else ""
+            cap_txt = f"• Capital social certifié : {cap_final:,.0f} FCFA\n" if cap_final else ""
 
-            # CAS A : L'attestation porte le nom de la personne physique (DÃ©nomination : FATOU THIAM)
-            # On stocke le nom du titulaire, mais ON DEMANDE IMMÃ‰DIATEMENT LE NOM COMMERCIAL DE L'ENTREPRISE !
+            # CAS A : L'attestation porte le nom de la personne physique (Dénomination : FATOU THIAM)
+            # On stocke le nom du titulaire, mais ON DEMANDE IMMÉDIATEMENT LE NOM COMMERCIAL DE L'ENTREPRISE !
             if est_personne_physique:
                 nom_personne = nom or "Titulaire de l'attestation"
                 update_onboarding_state(sender_phone, "nom_personne_physique", nom_personne)
                 update_onboarding_state(sender_phone, "etape", "DEMANDE_NOM_COMMERCIAL")
 
-                # Enregistrement prÃ©alable dans Supabase
+                # Enregistrement préalable dans Supabase
                 sp = get_supabase()
                 if sp:
                     try:
@@ -1715,6 +1790,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                             "ninea": ninea,
                             "secteur_activite": activite_principale or "Commerce & Services",
                             "donnees_onboarding": {
+                                "langue_preferee": onboarding.get("langue_preferee", "fr"),
                                 "ninea_valide_par_preuve": True,
                                 "nom_personne_physique": nom_personne,
                                 "forme_juridique": forme_juridique,
@@ -1729,28 +1805,42 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                             ent_payload["telephone_whatsapp"] = clean_phone
                             sp.table("entreprises").insert(ent_payload).execute()
                     except Exception as e:
-                        print(f"Info Supabase Ã‰tape 1 A : {e}")
+                        print(f"Info Supabase Étape 1 A : {e}")
 
+                if lang_pref == "wo":
+                    return (
+                        "Sa papier NINEA officiel jot nañu ko te certifier nañu ko bu baax.\n\n"
+                        "RÉSUMÉ INFORMATIONS LÉGALES :\n"
+                        f"• Boroom : {nom_personne}\n"
+                        f"{forme_txt}"
+                        f"{act_txt}"
+                        f"{rc_txt}"
+                        f"{ninea_txt}"
+                        f"{cap_txt}"
+                        "• Statut : Conforme certifié (Ci pièce officielle)\n\n"
+                        f"Important : « {nom_personne} » mooy turu boroom bi (personne physique).\n"
+                        "Lan mooy turu sa boutique walla sa entreprise (ci misaal : « Boutique Keur Fatou », « Ets Diallo » walla « Dakar Fashion Store ») ?"
+                    )
                 return (
-                    "Attestation NINEA officielle reÃ§ue et certifiÃ©e avec succÃ¨s.\n\n"
-                    "RÃ‰SUMÃ‰ DES INFORMATIONS LÃ‰GALES :\n"
-                    f"â€¢ DÃ©nomination du titulaire : {nom_personne}\n"
+                    "Attestation NINEA officielle reçue et certifiée avec succès.\n\n"
+                    "RÉSUMÉ DES INFORMATIONS LÉGALES :\n"
+                    f"• Dénomination du titulaire : {nom_personne}\n"
                     f"{forme_txt}"
                     f"{act_txt}"
                     f"{rc_txt}"
                     f"{ninea_txt}"
                     f"{cap_txt}"
-                    "â€¢ Statut : Conforme certifiÃ© (Sur piÃ¨ce officielle)\n\n"
-                    f"Important : Â« {nom_personne} Â» est le nom de la personne physique (l'exploitant).\n"
-                    "Quel est le nom commercial ou l'enseigne de votre entreprise / boutique (par exemple : Â« Boutique Keur Fatou Â», Â« Ets Diallo Â» ou Â« Dakar Fashion Store Â») ?"
+                    "• Statut : Conforme certifié (Sur pièce officielle)\n\n"
+                    f"Important : « {nom_personne} » est le nom de la personne physique (l'exploitant).\n"
+                    "Quel est le nom commercial ou l'enseigne de votre entreprise / boutique (par exemple : « Boutique Keur Fatou », « Ets Diallo » ou « Dakar Fashion Store ») ?"
                 )
 
-            # CAS B : L'attestation porte dÃ©jÃ  une raison sociale de sociÃ©tÃ© commerciale (ex: SARL TERANGA)
-            nom_final = nom or "Entreprise CertifiÃ©e"
+            # CAS B : L'attestation porte déjà une raison sociale de société commerciale (ex: SARL TERANGA)
+            nom_final = nom or "Entreprise Certifiée"
             update_onboarding_state(sender_phone, "nom_entreprise", nom_final)
             update_onboarding_state(sender_phone, "etape", "DEMANDE_EQUIPE")
 
-            # Enregistrement ou mise Ã  jour de l'entreprise dans Supabase
+            # Enregistrement ou mise à jour de l'entreprise dans Supabase
             sp = get_supabase()
             if sp:
                 try:
@@ -1760,6 +1850,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                         "nom_entreprise": nom_final,
                         "capital_initial_fcfa": cap_final,
                         "donnees_onboarding": {
+                            "langue_preferee": onboarding.get("langue_preferee", "fr"),
                             "ninea_valide_par_preuve": True,
                             "forme_juridique": forme_juridique,
                             "registre_commerce": registre_commerce,
@@ -1780,42 +1871,42 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                             ent_payload["secteur_activite"] = "Commerce & Services"
                         sp.table("entreprises").insert(ent_payload).execute()
                 except Exception as e:
-                    print(f"Info enregistrement Supabase Ã‰tape 1 : {e}")
+                    print(f"Info enregistrement Supabase Étape 1 : {e}")
 
             return (
-                "Attestation NINEA officielle reÃ§ue et certifiÃ©e avec succÃ¨s.\n\n"
-                f"â€¢ Raison sociale : {nom_final}\n"
+                "Attestation NINEA officielle reçue et certifiée avec succès.\n\n"
+                f"• Raison sociale : {nom_final}\n"
                 f"{forme_txt}"
                 f"{act_txt}"
                 f"{rc_txt}"
                 f"{ninea_txt}"
                 f"{cap_txt}"
-                "â€¢ Statut du dossier : Conforme certifiÃ© (Document officiel validÃ©)\n\n"
-                "Ã‰tape 2/5 : Combien de personnes travaillent au sein de votre structure (salariÃ©s dÃ©clarÃ©s, apprentis ou associÃ©s) ?"
+                "• Statut du dossier : Conforme certifié (Document officiel validé)\n\n"
+                "Étape 2/5 : Combien de personnes travaillent au sein de votre structure (salariés déclarés, apprentis ou associés) ?"
             )
         else:
-            # Si le client a envoyÃ© du texte au lieu de la photo :
+            # Si le client a envoyé du texte au lieu de la photo :
             # Superviser avec Claude
             rep_claude = await superviser_conversation_claude(sender_phone, user_text, onboarding)
             if rep_claude:
                 return rep_claude
 
             return (
-                "Pour valider l'Ã‰tape 1/5, l'envoi de votre piÃ¨ce justificative est obligatoire.\n\n"
+                "Pour valider l'Étape 1/5, l'envoi de votre pièce justificative est obligatoire.\n\n"
                 "Veuillez prendre en photo et m'envoyer votre attestation papier NINEA (ou le document officiel PDF).\n\n"
-                "Grow doit impÃ©rativement vÃ©rifier cette piÃ¨ce officielle pour certifier le Nom, le NINEA, la Forme juridique, le Registre de Commerce (RCCM) et le Capital social de votre entreprise avant de pouvoir passer Ã  l'Ã©tape suivante."
+                "Grow doit impérativement vérifier cette pièce officielle pour certifier le Nom, le NINEA, la Forme juridique, le Registre de Commerce (RCCM) et le Capital social de votre entreprise avant de pouvoir passer à l'étape suivante."
             )
 
-    # Ã‰TAPE 2 : NOMBRE D'EMPLOYÃ‰S (Validation stricte locale - 0 crÃ©dit API)
+    # ÉTAPE 2 : NOMBRE D'EMPLOYÉS (Validation stricte locale - 0 crédit API)
     elif etape == "DEMANDE_EQUIPE":
         txt_lower = user_text.lower().strip() if user_text else ""
         has_number = bool(re.search(r'\b\d+\b', txt_lower))
-        has_keywords = bool(re.search(r'\b(seul|seule|personne|personnes|salariÃ©|salariÃ©s|salarie|salaries|employÃ©|employÃ©s|employe|employes|associÃ©|associÃ©s|associe|associes|apprenti|apprentis|aucun|aucune|zÃ©ro|zero|moi|travaille|un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix)\b', txt_lower))
+        has_keywords = bool(re.search(r'\b(seul|seule|personne|personnes|salarié|salariés|salarie|salaries|employé|employés|employe|employes|associé|associés|associe|associes|apprenti|apprentis|aucun|aucune|zéro|zero|moi|travaille|un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|man|rek|rekk|benn|ñaar|naar|ñett|nett|ñent|nent|juróom|juroom|kenn|tus|dara|nit|liggéeykat|liggeeykat)\b', txt_lower))
 
         if has_number or has_keywords:
-            # Reformulation claire du nombre d'employÃ©s
+            # Reformulation claire du nombre d'employés
             equipe_val = user_text.strip()
-            if equipe_val in ["1", "un"]:
+            if equipe_val.lower() in ["1", "un", "benn", "man rek", "man rekk", "moi seul", "moi seule"]:
                 equipe_desc = "1 personne (l'exploitant)"
             elif equipe_val.isdigit():
                 equipe_desc = f"{equipe_val} personnes"
@@ -1825,7 +1916,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
             update_onboarding_state(sender_phone, "nombre_employes", equipe_desc)
             update_onboarding_state(sender_phone, "etape", "DEMANDE_OPERATEURS")
 
-            # Mise Ã  jour Supabase
+            # Mise à jour Supabase
             sp = get_supabase()
             if sp:
                 try:
@@ -1843,27 +1934,36 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                 except Exception as e_eq:
                     print(f"Info enregistrement equipe Supabase: {e_eq}")
 
+            if lang_pref == "wo":
+                return (
+                    "Liggéeykat yi bind nañu leen bu baax.\n\n"
+                    "RÉSUMÉ CI SA TEERE :\n"
+                    f"• Équipe bi : {equipe_desc}\n\n"
+                    "Étape 3/5 : Ban moyen de paiement ngay jëfandikoo bés bu nekk ngir sa jaay ak sa dépense ? (Ci misaal : Wave, Orange Money, Xalis / Cash, Compte Bancaire)."
+                )
             return (
-                "Effectif enregistrÃ© avec succÃ¨s.\n\n"
-                "RÃ‰SUMÃ‰ DE L'ENREGISTREMENT :\n"
-                f"â€¢ Taille de la structure : {equipe_desc}\n\n"
-                "Ã‰tape 3/5 : Quels moyens de paiement utilisez-vous au quotidien pour vos encaissements et vos dÃ©penses ? (Exemples : Wave, Orange Money, Caisse EspÃ¨ces, Compte Bancaire)."
+                "Effectif enregistré avec succès.\n\n"
+                "RÉSUMÉ DE L'ENREGISTREMENT :\n"
+                f"• Taille de la structure : {equipe_desc}\n\n"
+                "Étape 3/5 : Quels moyens de paiement utilisez-vous au quotidien pour vos encaissements et vos dépenses ? (Exemples : Wave, Orange Money, Caisse Espèces, Compte Bancaire)."
             )
         else:
             rep_claude = await superviser_conversation_claude(sender_phone, user_text, onboarding)
             if rep_claude:
                 return rep_claude
+            if lang_pref == "wo":
+                return "Ngir valider Étape 2/5, wax ma ñaata nit ñooy liggéey ci sa boutique (ci misaal : 'man rekk', '1 nit', '3 liggéeykat')."
             return (
-                "Pour valider l'Ã‰tape 2/5, veuillez m'indiquer le nombre de personnes qui travaillent au sein de votre structure (par exemple : 'moi seul', '1 personne', '3 employÃ©s', ou 'aucun salariÃ©')."
+                "Pour valider l'Étape 2/5, veuillez m'indiquer le nombre de personnes qui travaillent au sein de votre structure (par exemple : 'moi seul', '1 personne', '3 employés', ou 'aucun salarié')."
             )
 
-    # Ã‰TAPE 3 : OPÃ‰RATEURS DE PAIEMENT
+    # ÉTAPE 3 : OPÉRATEURS DE PAIEMENT
     elif etape == "DEMANDE_OPERATEURS":
         txt_lower = user_text.lower().strip() if user_text else ""
-        has_ops = bool(re.search(r'\b(wave|orange|om|espece|especes|cash|banque|bancaire|caisse|free|wari|compte|cheque|virement|ecobank|cbao|boa|sgbs|orabank|uba|bicis|tous|tout)\b', txt_lower))
+        has_ops = bool(re.search(r'\b(wave|orange|om|espece|especes|cash|xalis|xaalis|loxo|banque|bancaire|caisse|free|wari|compte|cheque|virement|ecobank|cbao|boa|sgbs|orabank|uba|bicis|tous|tout|yëpp|yepp)\b', txt_lower))
 
         if has_ops:
-            # DÃ©tection prÃ©cise et mÃ©morisation dÃ©finitive des opÃ©rateurs choisis
+            # Détection précise et mémorisation définitive des opérateurs choisis
             ops_detectes = []
             if "wave" in txt_lower:
                 ops_detectes.append("Wave")
@@ -1873,69 +1973,87 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                 ops_detectes.append("Free Money")
             if any(b in txt_lower for b in ["banque", "bancaire", "cbao", "ecobank", "boa", "compte"]):
                 ops_detectes.append("Compte Bancaire")
-            if any(c in txt_lower for c in ["espece", "especes", "cash", "caisse"]):
-                ops_detectes.append("Caisse EspÃ¨ces")
+            if any(c in txt_lower for c in ["espece", "especes", "cash", "caisse", "xalis", "xaalis", "loxo"]):
+                ops_detectes.append("Caisse Espèces")
 
             if not ops_detectes:
-                ops_detectes = ["Wave", "Caisse EspÃ¨ces"]
+                ops_detectes = ["Wave", "Caisse Espèces"]
 
             ops_str = ", ".join(ops_detectes)
             update_onboarding_state(sender_phone, "operateurs", ops_str)
             update_onboarding_state(sender_phone, "liste_operateurs_cles", ops_detectes)
             update_onboarding_state(sender_phone, "etape", "DEMANDE_IMMOBILISATIONS")
 
+            if lang_pref == "wo":
+                return (
+                    "Sa moyens de paiement bind nañu leen bu baax.\n\n"
+                    "RÉSUMÉ CI SA TEERE :\n"
+                    f"• Opérateurs yi : {ops_str}\n\n"
+                    "Étape 4/5 : Yan matériel walla équipement nga am ci sa boutique (auto, machine, frigo, congélateur, ordinateur, table) ak ñaata lañu jar (valeur estimée) ? (Bindal 'Amuma' walla 'Aucun' su fekkee amoo ko)."
+                )
             return (
-                "Moyens de paiement enregistrÃ©s avec succÃ¨s.\n\n"
-                "RÃ‰SUMÃ‰ DE L'ENREGISTREMENT :\n"
-                f"â€¢ OpÃ©rateurs connectÃ©s : {ops_str}\n\n"
-                "Ã‰tape 4/5 : Quels Ã©quipements ou matÃ©riels possÃ¨de votre entreprise (vÃ©hicule, machine, congÃ©lateur, ordinateurs, agencement) et quelle est leur valeur estimÃ©e ? (Ã‰crivez 'Aucun' si vous n'en avez pas)."
+                "Moyens de paiement enregistrés avec succès.\n\n"
+                "RÉSUMÉ DE L'ENREGISTREMENT :\n"
+                f"• Opérateurs connectés : {ops_str}\n\n"
+                "Étape 4/5 : Quels équipements ou matériels possède votre entreprise (véhicule, machine, congélateur, ordinateurs, agencement) et quelle est leur valeur estimée ? (Écrivez 'Aucun' si vous n'en avez pas)."
             )
         else:
-            # Superviser avec Claude : gÃ¨re "Choisi", questions ou hÃ©sitations
+            # Superviser avec Claude : gère "Choisi", questions ou hésitations
             rep_claude = await superviser_conversation_claude(sender_phone, user_text, onboarding)
             if rep_claude:
                 return rep_claude
+            if lang_pref == "wo":
+                return "Ngir valider Étape 3/5, wax ma ban moyen de paiement ngay jëfandikoo bés bu nekk (ci misaal : 'Wave ak Xalis', 'Orange Money', walla 'Banque')."
             return (
-                "Pour valider l'Ã‰tape 3/5, veuillez prÃ©ciser les moyens de paiement que vous utilisez au quotidien (par exemple : 'Wave et EspÃ¨ces', 'Orange Money', ou 'Compte bancaire')."
+                "Pour valider l'Étape 3/5, veuillez préciser les moyens de paiement que vous utilisez au quotidien (par exemple : 'Wave et Espèces', 'Orange Money', ou 'Compte bancaire')."
             )
 
-    # Ã‰TAPE 4 : IMMOBILISATIONS & Ã‰QUIPEMENTS (Validation stricte avec piÃ¨ce justificative obligatoire)
+    # ÉTAPE 4 : IMMOBILISATIONS & ÉQUIPEMENTS (Validation stricte avec pièce justificative obligatoire)
     elif etape == "DEMANDE_IMMOBILISATIONS":
         txt_lower = user_text.lower().strip() if user_text else ""
-        is_greeting_only = bool(re.match(r'^(bonjour|salut|coucou|bonsoir|merci|ok|d[\'â€™]accord)$', txt_lower))
+        is_greeting_only = bool(re.match(r'^(bonjour|salut|coucou|bonsoir|merci|ok|d[\'’]accord|salam|waw|waaw)$', txt_lower))
 
-        # Cas particulier : le commerÃ§ant dÃ©clare formellement n'avoir AUCUN Ã©quipement
-        declare_aucun = bool(re.search(r'\b(aucun|aucune|rien|zero|zÃ©ro|pas d[\'â€™]Ã©quipement|pas de materiel)\b', txt_lower))
+        # Cas particulier : le commerçant déclare formellement n'avoir AUCUN équipement
+        declare_aucun = bool(re.search(r'\b(aucun|aucune|rien|zero|zéro|pas d[\'’]équipement|pas de materiel|amuma|amoul|amul|tus|dara)\b', txt_lower))
         if declare_aucun and not is_greeting_only:
-            update_onboarding_state(sender_phone, "immobilisations", "Aucun matÃ©riel d'exploitation")
+            update_onboarding_state(sender_phone, "immobilisations", "Aucun matériel d'exploitation")
             update_onboarding_state(sender_phone, "valeur_equipements_fcfa", 0)
             update_onboarding_state(sender_phone, "equipements_photo_validee", True)
             update_onboarding_state(sender_phone, "etape", "DEMANDE_TRESORERIE_INITIALE")
 
-            ops_configures = onboarding.get("liste_operateurs_cles") or ["Wave", "Caisse EspÃ¨ces"]
+            ops_configures = onboarding.get("liste_operateurs_cles") or ["Wave", "Caisse Espèces"]
             ops_invitation = " et ".join(ops_configures)
 
+            if lang_pref == "wo":
+                return (
+                    "Sa déclaration matériel bind nañu ko.\n\n"
+                    "RÉSUMÉ CI SA TEERE :\n"
+                    "• Matériel : Aucun matériel d'exploitation\n"
+                    "• Valeur : 0 FCFA\n\n"
+                    f"Étape 5/5 : Ñaata xalis moo nekk leegi ci sa compte ({ops_invitation}) ?\n\n"
+                    f"Yónneel capture d'écran solde bi ({ops_invitation}) walla foto sa caisse xalis."
+                )
             return (
-                "DÃ©claration d'Ã©quipements enregistrÃ©e avec succÃ¨s.\n\n"
-                "RÃ‰SUMÃ‰ DE L'ENREGISTREMENT :\n"
-                "â€¢ Ã‰quipements dÃ©clarÃ©s : Aucun matÃ©riel d'exploitation\n"
-                "â€¢ Valeur estimÃ©e : 0 FCFA\n\n"
-                f"Ã‰tape 5/5 : Quel est le montant exact disponible sur vos comptes ({ops_invitation}) en cet instant ?\n\n"
-                f"Envoyez la capture d'Ã©cran du solde de vos comptes ({ops_invitation}) ou la photo de votre caisse espÃ¨ces."
+                "Déclaration d'équipements enregistrée avec succès.\n\n"
+                "RÉSUMÉ DE L'ENREGISTREMENT :\n"
+                "• Équipements déclarés : Aucun matériel d'exploitation\n"
+                "• Valeur estimée : 0 FCFA\n\n"
+                f"Étape 5/5 : Quel est le montant exact disponible sur vos comptes ({ops_invitation}) en cet instant ?\n\n"
+                f"Envoyez la capture d'écran du solde de vos comptes ({ops_invitation}) ou la photo de votre caisse espèces."
             )
 
-        # 1. Analyse de la valeur estimÃ©e (en FCFA) et dÃ©tection des Ã©quipements
+        # 1. Analyse de la valeur estimée (en FCFA) et détection des équipements
         valeur_estimee = parse_montant_fcfa(user_text) if user_text else 0
         photo_fournie = bool(media_tuple and media_tuple[0] in ["PHOTO", "DOCUMENT"])
 
         immo_sauvegardee = onboarding.get("immobilisations")
 
-        has_equip_mention = bool(re.search(r'\b(congÃ©lateur|congelateur|armoire|ordinateur|vÃ©hicule|vehicule|voiture|moto|machine|chambre froide|Ã©tagÃ¨re|etagere|comptoir|climatiseur|meuble|bureau|four|balance|table|imprimante|agencement)\b', txt_lower))
+        has_equip_mention = bool(re.search(r'\b(congélateur|congelateur|armoire|ordinateur|véhicule|vehicule|voiture|moto|machine|chambre froide|étagère|etagere|comptoir|climatiseur|meuble|bureau|four|balance|table|imprimante|agencement)\b', txt_lower))
         if has_equip_mention or (user_text and not is_greeting_only and len(txt_lower) >= 3 and valeur_estimee == 0):
             update_onboarding_state(sender_phone, "immobilisations", user_text)
             immo_sauvegardee = user_text
 
-        # 2. Si la photo a Ã©tÃ© envoyÃ©e
+        # 2. Si la photo a été envoyée
         if media_tuple:
             m_type, m_id = media_tuple
             m_bytes, m_mime = await download_meta_media(m_id)
@@ -1953,7 +2071,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                             file_options={"content-type": m_mime, "upsert": "true"}
                         )
                     except Exception as e_up:
-                        print(f"Info upload Ã©quipement Storage : {e_up}")
+                        print(f"Info upload équipement Storage : {e_up}")
 
         if valeur_estimee > 0:
             update_onboarding_state(sender_phone, "valeur_equipements_fcfa", valeur_estimee)
@@ -1961,39 +2079,39 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
         val_enregistree = onboarding.get("valeur_equipements_fcfa") or (valeur_estimee if valeur_estimee > 0 else 0)
         has_photo = photo_fournie or onboarding.get("equipements_photo_validee", False)
 
-        # Si l'utilisateur n'a rien mentionnÃ© et a posÃ© une question :
+        # Si l'utilisateur n'a rien mentionné et a posé une question :
         if not immo_sauvegardee and not has_equip_mention and not photo_fournie and valeur_estimee == 0:
             rep_claude = await superviser_conversation_claude(sender_phone, user_text, onboarding)
             if rep_claude:
                 return rep_claude
 
-        # CONDITION STRICTE : Les deux Ã©lÃ©ments (valeur en FCFA + photo) sont indispensables
+        # CONDITION STRICTE : Les deux éléments (valeur en FCFA + photo) sont indispensables
         if val_enregistree == 0 or not has_photo:
             if val_enregistree == 0 and not has_photo:
-                details = f" : Â« {immo_sauvegardee} Â»" if immo_sauvegardee else ""
+                details = f" : « {immo_sauvegardee} »" if immo_sauvegardee else ""
                 return (
-                    f"Grow a bien notÃ© vos Ã©quipements{details}.\n\n"
-                    "Cependant, votre rÃ©ponse est incomplÃ¨te pour valider l'Ã‰tape 4/5. Deux Ã©lÃ©ments indispensables manquent :\n"
-                    "1. La valeur estimÃ©e globale en FCFA de ces matÃ©riels (par exemple : Â« Valeur estimÃ©e : 850 000 FCFA Â»).\n"
-                    "2. La photo justificative de vos Ã©quipements en boutique/atelier (ou la photo de votre facture d'achat).\n\n"
-                    "Sans la valeur estimÃ©e et la photo justificative, Grow refuse de valider l'Ã©tape car vos actifs doivent Ãªtre certifiÃ©s au bilan SYSCOHADA (Compte 24) !"
+                    f"Grow a bien noté vos équipements{details}.\n\n"
+                    "Cependant, votre réponse est incomplète pour valider l'Étape 4/5. Deux éléments indispensables manquent :\n"
+                    "1. La valeur estimée globale en FCFA de ces matériels (par exemple : « Valeur estimée : 850 000 FCFA »).\n"
+                    "2. La photo justificative de vos équipements en boutique/atelier (ou la photo de votre facture d'achat).\n\n"
+                    "Sans la valeur estimée et la photo justificative, Grow refuse de valider l'étape car vos actifs doivent être certifiés au bilan SYSCOHADA (Compte 24) !"
                 )
             elif val_enregistree > 0 and not has_photo:
                 return (
-                    f"Grow a bien enregistrÃ© la liste et la valeur de vos Ã©quipements :\n\n"
-                    f"â€¢ MatÃ©riels dÃ©clarÃ©s : {immo_sauvegardee or 'Ã‰quipements dÃ©clarÃ©s'}\n"
-                    f"â€¢ Valeur estimÃ©e : {val_enregistree:,.0f} FCFA\n\n"
-                    "PIÃˆCE JUSTIFICATIVE OBLIGATOIRE :\n"
-                    "Veuillez maintenant m'envoyer la photo de vos Ã©quipements en boutique/atelier (ou la photo de votre facture d'achat).\n\n"
-                    "Grow exige cette preuve visuelle pour certifier vos actifs immobilisÃ©s (Compte SYSCOHADA 24) avant de passer Ã  l'Ã©tape suivante."
+                    f"Grow a bien enregistré la liste et la valeur de vos équipements :\n\n"
+                    f"• Matériels déclarés : {immo_sauvegardee or 'Équipements déclarés'}\n"
+                    f"• Valeur estimée : {val_enregistree:,.0f} FCFA\n\n"
+                    "PIÈCE JUSTIFICATIVE OBLIGATOIRE :\n"
+                    "Veuillez maintenant m'envoyer la photo de vos équipements en boutique/atelier (ou la photo de votre facture d'achat).\n\n"
+                    "Grow exige cette preuve visuelle pour certifier vos actifs immobilisés (Compte SYSCOHADA 24) avant de passer à l'étape suivante."
                 )
             elif val_enregistree == 0 and has_photo:
                 return (
-                    "Photo des Ã©quipements bien reÃ§ue et archivÃ©e avec succÃ¨s.\n\n"
-                    "Pour certifier vos immobilisations au bilan (Compte 24), quelle est la valeur estimÃ©e globale en FCFA de ces Ã©quipements ?"
+                    "Photo des équipements bien reçue et archivée avec succès.\n\n"
+                    "Pour certifier vos immobilisations au bilan (Compte 24), quelle est la valeur estimée globale en FCFA de ces équipements ?"
                 )
 
-        # VALIDATION OFFICIELLE DE L'Ã‰TAPE 4 (MatÃ©riels + Valeur + Photo rÃ©unis)
+        # VALIDATION OFFICIELLE DE L'ÉTAPE 4 (Matériels + Valeur + Photo réunis)
         update_onboarding_state(sender_phone, "equipements_photo_validee", True)
         update_onboarding_state(sender_phone, "etape", "DEMANDE_TRESORERIE_INITIALE")
         val_finale = val_enregistree
@@ -2015,29 +2133,29 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                         }
                     }).eq("id", ent_id).execute()
             except Exception as e_im:
-                print(f"Info sauvegarde Supabase Ã‰quipements : {e_im}")
+                print(f"Info sauvegarde Supabase Équipements : {e_im}")
 
-        ops_configures = onboarding.get("liste_operateurs_cles") or ["Wave", "Caisse EspÃ¨ces"]
+        ops_configures = onboarding.get("liste_operateurs_cles") or ["Wave", "Caisse Espèces"]
         ops_invitation = " et ".join(ops_configures)
 
         return (
-            "Ã‰quipements et immobilisations certifiÃ©s avec succÃ¨s sur piÃ¨ce justificative.\n\n"
-            "RÃ‰SUMÃ‰ DE L'ENREGISTREMENT :\n"
-            f"â€¢ MatÃ©riels dÃ©clarÃ©s : {immo_sauvegardee}\n"
-            f"â€¢ Valeur d'actif certifiÃ©e : {val_finale:,.0f} FCFA\n"
-            "â€¢ Imputation : Compte SYSCOHADA 24 (MatÃ©riels et Mobiliers)\n"
-            "â€¢ Preuve probatoire : Photo vÃ©rifiÃ©e et archivÃ©e\n\n"
-            f"Ã‰tape 5/5 : Quel est le montant exact disponible sur votre compte {ops_invitation} en cet instant ?\n\n"
-            f"Envoyez la capture d'Ã©cran du solde de vos comptes ({ops_invitation}) ou la photo de votre caisse espÃ¨ces."
+            "Équipements et immobilisations certifiés avec succès sur pièce justificative.\n\n"
+            "RÉSUMÉ DE L'ENREGISTREMENT :\n"
+            f"• Matériels déclarés : {immo_sauvegardee}\n"
+            f"• Valeur d'actif certifiée : {val_finale:,.0f} FCFA\n"
+            "• Imputation : Compte SYSCOHADA 24 (Matériels et Mobiliers)\n"
+            "• Preuve probatoire : Photo vérifiée et archivée\n\n"
+            f"Étape 5/5 : Quel est le montant exact disponible sur votre compte {ops_invitation} en cet instant ?\n\n"
+            f"Envoyez la capture d'écran du solde de vos comptes ({ops_invitation}) ou la photo de votre caisse espèces."
         )
 
-    # Ã‰TAPE 5 : TRÃ‰SORERIE Ã€ L'INSTANT T AVEC PREUVE CAPTURE
+    # ÉTAPE 5 : TRÉSORERIE À L'INSTANT T AVEC PREUVE CAPTURE
     elif etape == "DEMANDE_TRESORERIE_INITIALE":
         solde_t0 = 0
         photo_url = None
         sha_hash = None
 
-        # Si une capture d'Ã©cran du solde Wave/OM est envoyÃ©e
+        # Si une capture d'écran du solde Wave/OM est envoyée
         if media_tuple:
             m_type, m_id = media_tuple
             m_bytes, m_mime = await download_meta_media(m_id)
@@ -2066,7 +2184,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                             "role": "user",
                             "content": [
                                 {"type": "image", "source": {"type": "base64", "media_type": m_mime, "data": b64}},
-                                {"type": "text", "text": "Extrais en JSON strict le solde affichÃ© sur cette capture d'Ã©cran Wave/Orange Money/Banque : {solde_fcfa: int, operateur: str}. Si illisible: {solde_fcfa: 0, operateur: 'WAVE'}."}
+                                {"type": "text", "text": "Extrais en JSON strict le solde affiché sur cette capture d'écran Wave/Orange Money/Banque : {solde_fcfa: int, operateur: str}. Si illisible: {solde_fcfa: 0, operateur: 'WAVE'}."}
                             ]
                         }]
                     )
@@ -2080,14 +2198,14 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                     except Exception:
                         pass
 
-        # RÃ©cupÃ©ration des opÃ©rateurs configurÃ©s Ã  l'Ã©tape 3
-        ops_configures = onboarding.get("liste_operateurs_cles") or ["Wave", "Caisse EspÃ¨ces"]
+        # Récupération des opérateurs configurés à l'étape 3
+        ops_configures = onboarding.get("liste_operateurs_cles") or ["Wave", "Caisse Espèces"]
         ops_prompt_txt = " et ".join(ops_configures)
 
-        # Exigence stricte de la piÃ¨ce justificative pour l'Ã‰tape 5 :
+        # Exigence stricte de la pièce justificative pour l'Étape 5 :
         if not media_tuple:
-            # Exception : le commerÃ§ant dÃ©clare explicitement 0 ou aucun solde disponible
-            if user_text and re.search(r'\b(zero|zÃ©ro|aucun|rien|0)\b', user_text.lower()):
+            # Exception : le commerçant déclare explicitement 0 ou aucun solde disponible
+            if user_text and re.search(r'\b(zero|zéro|aucun|rien|0)\b', user_text.lower()):
                 solde_t0 = 0
             else:
                 rep_claude = await superviser_conversation_claude(sender_phone, user_text, onboarding)
@@ -2095,12 +2213,12 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                     return rep_claude
 
                 return (
-                    f"Pour valider l'Ã‰tape 5/5, la piÃ¨ce justificative est obligatoire pour vos comptes ({ops_prompt_txt}).\n\n"
-                    f"Veuillez m'envoyer la capture d'Ã©cran de votre solde pour {ops_prompt_txt} (ou la photo de votre caisse espÃ¨ces).\n\n"
-                    "Grow refuse d'avancer sans ce justificatif visuel probant car votre trÃ©sorerie de dÃ©part doit Ãªtre formellement certifiÃ©e !"
+                    f"Pour valider l'Étape 5/5, la pièce justificative est obligatoire pour vos comptes ({ops_prompt_txt}).\n\n"
+                    f"Veuillez m'envoyer la capture d'écran de votre solde pour {ops_prompt_txt} (ou la photo de votre caisse espèces).\n\n"
+                    "Grow refuse d'avancer sans ce justificatif visuel probant car votre trésorerie de départ doit être formellement certifiée !"
                 )
 
-        # Analyse et rÃ©partition des soldes multi-opÃ©rateurs
+        # Analyse et répartition des soldes multi-opérateurs
         soldes_dict = parse_soldes_multi_operateurs(user_text, default_solde=solde_t0, default_op="WAVE")
         if not soldes_dict and solde_t0 > 0:
             soldes_dict = {"WAVE": solde_t0}
@@ -2119,17 +2237,17 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
         activite_principale = state.get("activite_principale")
         registre_commerce = state.get("registre_commerce")
         equipe = state.get("nombre_employes", "1 personne")
-        ops = state.get("operateurs", "Wave, EspÃ¨ces")
-        immos = state.get("immobilisations", "MatÃ©riel d'exploitation")
+        ops = state.get("operateurs", "Wave, Espèces")
+        immos = state.get("immobilisations", "Matériel d'exploitation")
 
-        # Enregistrer la transaction de trÃ©sorerie d'ouverture pour CHAQUE opÃ©rateur dans Supabase
+        # Enregistrer la transaction de trésorerie d'ouverture pour CHAQUE opérateur dans Supabase
         sp = get_supabase()
         if sp:
             try:
                 ent = get_or_create_entreprise(sp, sender_phone)
                 ent_id = ent.get("id")
                 if ent_id:
-                    # Mettre Ã  jour l'Ã©tape d'onboarding Ã  COMPLET dans Supabase
+                    # Mettre à jour l'étape d'onboarding à COMPLET dans Supabase
                     sp.table("entreprises").update({
                         "etape_onboarding": "COMPLET",
                         "donnees_onboarding": {
@@ -2142,7 +2260,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                         }
                     }).eq("id", ent_id).execute()
 
-                    # InsÃ©rer une Ã©criture pour chaque opÃ©rateur
+                    # Insérer une écriture pour chaque opérateur
                     compte_map = {
                         "WAVE": "521",
                         "ORANGE_MONEY": "521",
@@ -2153,7 +2271,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                         if op_amount > 0:
                             tx_init = sp.table("transactions").insert({
                                 "entreprise_id": ent_id,
-                                "libelle": f"TrÃ©sorerie d'ouverture Ã  l'instant T ({op_name})",
+                                "libelle": f"Trésorerie d'ouverture à l'instant T ({op_name})",
                                 "compte_syscohada": compte_map.get(op_name, "521"),
                                 "type_flux": "ENTREE",
                                 "est_professionnel": True,
@@ -2169,70 +2287,70 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                                     "type_preuve": "PHOTO_RECU",
                                     "url_stockage_s3": photo_url or "preuves/solde_t0",
                                     "hash_sha256": sha_hash,
-                                    "texte_extrait_ia": f"Solde initial certifiÃ© {op_name} : {op_amount:,.0f} FCFA"
+                                    "texte_extrait_ia": f"Solde initial certifié {op_name} : {op_amount:,.0f} FCFA"
                                 }).execute()
             except Exception as e:
-                print(f"Info crÃ©ation transactions initiales T0 multi-opÃ©rateurs : {e}")
+                print(f"Info création transactions initiales T0 multi-opérateurs : {e}")
 
-        short_h = f"{sha_hash[:10]}..." if sha_hash else "CertifiÃ© dÃ©claratif"
+        short_h = f"{sha_hash[:10]}..." if sha_hash else "Certifié déclaratif"
 
-        # Formatage du dÃ©tail multi-opÃ©rateurs
+        # Formatage du détail multi-opérateurs
         labels_ops = {
             "WAVE": "Compte Wave",
             "ORANGE_MONEY": "Compte Orange Money",
-            "ESPECES": "Caisse EspÃ¨ces",
+            "ESPECES": "Caisse Espèces",
             "BANQUE": "Compte Bancaire"
         }
         lignes_soldes = []
         for op_k, op_val in soldes_dict.items():
-            lignes_soldes.append(f"  â€¢ {labels_ops.get(op_k, op_k)} : {op_val:,.0f} FCFA")
+            lignes_soldes.append(f"  • {labels_ops.get(op_k, op_k)} : {op_val:,.0f} FCFA")
 
-        detail_soldes_txt = "\n".join(lignes_soldes) if lignes_soldes else f"  â€¢ TrÃ©sorerie : {total_t0:,.0f} FCFA"
+        detail_soldes_txt = "\n".join(lignes_soldes) if lignes_soldes else f"  • Trésorerie : {total_t0:,.0f} FCFA"
 
-        forme_txt = f"â€¢ Forme juridique : {forme_juridique}\n" if forme_juridique else ""
-        act_txt = f"â€¢ ActivitÃ© principale : {activite_principale}\n" if activite_principale else ""
-        rc_txt = f"â€¢ Registre du Commerce (RCCM) : {registre_commerce}\n" if registre_commerce else ""
+        forme_txt = f"• Forme juridique : {forme_juridique}\n" if forme_juridique else ""
+        act_txt = f"• Activité principale : {activite_principale}\n" if activite_principale else ""
+        rc_txt = f"• Registre du Commerce (RCCM) : {registre_commerce}\n" if registre_commerce else ""
 
-        # CAS 1 : Si le client a DÃ‰JÃ€ PAYÃ‰ son abonnement -> ClÃ´ture officielle, rÃ©capitulatif des 5 Ã©tapes et instructions
+        # CAS 1 : Si le client a DÉJÀ PAYÉ son abonnement -> Clôture officielle, récapitulatif des 5 étapes et instructions
         if deja_abonne:
             update_onboarding_state(sender_phone, "statut", "COMPLET")
             update_onboarding_state(sender_phone, "etape", "TERMINE")
             instructions = get_instructions_journee_message(get_public_base_url(), sender_phone, nom)
             return (
-                f"FÃ©licitations ! Votre entreprise Â« {nom} Â» est dÃ©sormais officiellement crÃ©Ã©e et enregistrÃ©e sur Grow aux normes SYSCOHADA.\n\n"
-                "RÃ‰CAPITULATIF OFFICIEL DES 5 Ã‰TAPES D'OUVERTURE :\n\n"
-                "1. IDENTITÃ‰ DE L'ENTREPRISE (Ã‰tape 1/5) :\n"
-                f"â€¢ Raison sociale : {nom}\n"
-                f"â€¢ NumÃ©ro NINEA officiel : {ninea}\n"
+                f"Félicitations ! Votre entreprise « {nom} » est désormais officiellement créée et enregistrée sur Grow aux normes SYSCOHADA.\n\n"
+                "RÉCAPITULATIF OFFICIEL DES 5 ÉTAPES D'OUVERTURE :\n\n"
+                "1. IDENTITÉ DE L'ENTREPRISE (Étape 1/5) :\n"
+                f"• Raison sociale : {nom}\n"
+                f"• Numéro NINEA officiel : {ninea}\n"
                 f"{forme_txt}"
                 f"{rc_txt}"
                 f"{act_txt}"
-                f"â€¢ Capital social certifiÃ© : {capital:,.0f} FCFA\n"
-                "â€¢ Statut NINEA : Conforme certifiÃ© (Sur piÃ¨ce officielle)\n\n"
-                "2. STRUCTURE & EFFECTIF (Ã‰tape 2/5) :\n"
-                f"â€¢ Ã‰quipe dÃ©clarÃ©e : {equipe}\n\n"
-                "3. MOYENS DE PAIEMENT (Ã‰tape 3/5) :\n"
-                f"â€¢ OpÃ©rateurs connectÃ©s : {ops}\n\n"
-                "4. Ã‰QUIPEMENTS & IMMOBILISATIONS (Ã‰tape 4/5) :\n"
-                f"â€¢ MatÃ©riels dÃ©clarÃ©s : {immos}\n\n"
-                "5. BILAN D'OUVERTURE & TRÃ‰SORERIE T0 (Ã‰tape 5/5) :\n"
+                f"• Capital social certifié : {capital:,.0f} FCFA\n"
+                "• Statut NINEA : Conforme certifié (Sur pièce officielle)\n\n"
+                "2. STRUCTURE & EFFECTIF (Étape 2/5) :\n"
+                f"• Équipe déclarée : {equipe}\n\n"
+                "3. MOYENS DE PAIEMENT (Étape 3/5) :\n"
+                f"• Opérateurs connectés : {ops}\n\n"
+                "4. ÉQUIPEMENTS & IMMOBILISATIONS (Étape 4/5) :\n"
+                f"• Matériels déclarés : {immos}\n\n"
+                "5. BILAN D'OUVERTURE & TRÉSORERIE T0 (Étape 5/5) :\n"
                 f"{detail_soldes_txt}\n"
-                f"â€¢ Total TrÃ©sorerie certifiÃ©e : {total_t0:,.0f} FCFA\n"
-                f"â€¢ Empreinte probatoire numÃ©rique : {short_h}\n\n"
+                f"• Total Trésorerie certifiée : {total_t0:,.0f} FCFA\n"
+                f"• Empreinte probatoire numérique : {short_h}\n\n"
                 "VOTRE TABLEAU DE BORD FINANCIER EN DIRECT :\n"
-                "Vous pouvez dÃ¨s maintenant consulter l'intÃ©gralitÃ© de vos comptes et bilans financiers sur votre lien sÃ©curisÃ© :\n"
+                "Vous pouvez dès maintenant consulter l'intégralité de vos comptes et bilans financiers sur votre lien sécurisé :\n"
                 f"{get_public_base_url()}/dashboard?phone={sender_phone}\n"
-                "(Vous y retrouverez votre raison sociale, votre NINEA, votre capital certifiÃ©, vos Ã©quipements et vos soldes de trÃ©sorerie par opÃ©rateur mis Ã  jour en temps rÃ©el).\n\n"
+                "(Vous y retrouverez votre raison sociale, votre NINEA, votre capital certifié, vos équipements et vos soldes de trésorerie par opérateur mis à jour en temps réel).\n\n"
                 f"{instructions}"
             )
         else:
             return (
-                f"FÃ©licitations ! Les 5 Ã©tapes de configuration de votre entreprise Â« {nom} Â» sont entiÃ¨rement validÃ©es.\n\n"
-                "Pour activer la certification en continu de votre comptabilitÃ© et accÃ©der Ã  vos bilans SYSCOHADA, finalisez votre souscription sur ce lien sÃ©curisÃ© :\n"
+                f"Félicitations ! Les 5 étapes de configuration de votre entreprise « {nom} » sont entièrement validées.\n\n"
+                "Pour activer la certification en continu de votre comptabilité et accéder à vos bilans SYSCOHADA, finalisez votre souscription sur ce lien sécurisé :\n"
                 f"{get_public_base_url()}/abonnement?phone={sender_phone}"
             )
 
-        # Analyse et rÃ©partition des soldes multi-opÃ©rateurs
+        # Analyse et répartition des soldes multi-opérateurs
         soldes_dict = parse_soldes_multi_operateurs(user_text, default_solde=solde_t0, default_op="WAVE")
         if not soldes_dict and solde_t0 > 0:
             soldes_dict = {"WAVE": solde_t0}
@@ -2251,17 +2369,17 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
         activite_principale = state.get("activite_principale")
         registre_commerce = state.get("registre_commerce")
         equipe = state.get("nombre_employes", "1 personne")
-        ops = state.get("operateurs", "Wave, EspÃ¨ces")
-        immos = state.get("immobilisations", "MatÃ©riel d'exploitation")
+        ops = state.get("operateurs", "Wave, Espèces")
+        immos = state.get("immobilisations", "Matériel d'exploitation")
 
-        # Enregistrer la transaction de trÃ©sorerie d'ouverture pour CHAQUE opÃ©rateur dans Supabase
+        # Enregistrer la transaction de trésorerie d'ouverture pour CHAQUE opérateur dans Supabase
         sp = get_supabase()
         if sp:
             try:
                 ent = get_or_create_entreprise(sp, sender_phone)
                 ent_id = ent.get("id")
                 if ent_id:
-                    # Mettre Ã  jour l'Ã©tape d'onboarding Ã  COMPLET dans Supabase
+                    # Mettre à jour l'étape d'onboarding à COMPLET dans Supabase
                     sp.table("entreprises").update({
                         "etape_onboarding": "COMPLET",
                         "donnees_onboarding": {
@@ -2273,7 +2391,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                         }
                     }).eq("id", ent_id).execute()
 
-                    # InsÃ©rer une Ã©criture pour chaque opÃ©rateur
+                    # Insérer une écriture pour chaque opérateur
                     compte_map = {
                         "WAVE": "521",
                         "ORANGE_MONEY": "521",
@@ -2284,7 +2402,7 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                         if op_amount > 0:
                             tx_init = sp.table("transactions").insert({
                                 "entreprise_id": ent_id,
-                                "libelle": f"TrÃ©sorerie d'ouverture Ã  l'instant T ({op_name})",
+                                "libelle": f"Trésorerie d'ouverture à l'instant T ({op_name})",
                                 "compte_syscohada": compte_map.get(op_name, "521"),
                                 "type_flux": "ENTREE",
                                 "est_professionnel": True,
@@ -2300,94 +2418,94 @@ Si ce n'est pas une attestation NINEA ou si c'est totalement illisible, renvoie 
                                     "type_preuve": "PHOTO_RECU",
                                     "url_stockage_s3": photo_url or "preuves/solde_t0",
                                     "hash_sha256": sha_hash,
-                                    "texte_extrait_ia": f"Solde initial certifiÃ© {op_name} : {op_amount:,.0f} FCFA"
+                                    "texte_extrait_ia": f"Solde initial certifié {op_name} : {op_amount:,.0f} FCFA"
                                 }).execute()
             except Exception as e:
-                print(f"Info crÃ©ation transactions initiales T0 multi-opÃ©rateurs : {e}")
+                print(f"Info création transactions initiales T0 multi-opérateurs : {e}")
 
-        short_h = f"{sha_hash[:10]}..." if sha_hash else "CertifiÃ© dÃ©claratif"
+        short_h = f"{sha_hash[:10]}..." if sha_hash else "Certifié déclaratif"
 
-        # Formatage du dÃ©tail multi-opÃ©rateurs
+        # Formatage du détail multi-opérateurs
         labels_ops = {
             "WAVE": "Compte Wave",
             "ORANGE_MONEY": "Compte Orange Money",
-            "ESPECES": "Caisse EspÃ¨ces",
+            "ESPECES": "Caisse Espèces",
             "BANQUE": "Compte Bancaire"
         }
         lignes_soldes = []
         for op_k, op_val in soldes_dict.items():
-            lignes_soldes.append(f"  â€¢ {labels_ops.get(op_k, op_k)} : {op_val:,.0f} FCFA")
+            lignes_soldes.append(f"  • {labels_ops.get(op_k, op_k)} : {op_val:,.0f} FCFA")
 
-        detail_soldes_txt = "\n".join(lignes_soldes) if lignes_soldes else f"  â€¢ TrÃ©sorerie : {total_t0:,.0f} FCFA"
+        detail_soldes_txt = "\n".join(lignes_soldes) if lignes_soldes else f"  • Trésorerie : {total_t0:,.0f} FCFA"
 
-        forme_txt = f"â€¢ Forme juridique : {forme_juridique}\n" if forme_juridique else ""
-        act_txt = f"â€¢ ActivitÃ© principale : {activite_principale}\n" if activite_principale else ""
-        rc_txt = f"â€¢ Registre du Commerce (RCCM) : {registre_commerce}\n" if registre_commerce else ""
+        forme_txt = f"• Forme juridique : {forme_juridique}\n" if forme_juridique else ""
+        act_txt = f"• Activité principale : {activite_principale}\n" if activite_principale else ""
+        rc_txt = f"• Registre du Commerce (RCCM) : {registre_commerce}\n" if registre_commerce else ""
 
-        # CAS 1 : Si le client a DÃ‰JÃ€ PAYÃ‰ son abonnement -> ClÃ´ture officielle, rÃ©capitulatif des 5 Ã©tapes et instructions
+        # CAS 1 : Si le client a DÉJÀ PAYÉ son abonnement -> Clôture officielle, récapitulatif des 5 étapes et instructions
         if deja_abonne:
             update_onboarding_state(sender_phone, "statut", "COMPLET")
             update_onboarding_state(sender_phone, "etape", "TERMINE")
             instructions = get_instructions_journee_message(get_public_base_url(), sender_phone, nom)
             return (
-                f"FÃ©licitations ! Votre entreprise Â« {nom} Â» est dÃ©sormais officiellement crÃ©Ã©e et enregistrÃ©e sur Grow aux normes SYSCOHADA.\n\n"
-                "RÃ‰CAPITULATIF OFFICIEL DES 5 Ã‰TAPES D'OUVERTURE :\n\n"
-                "1. IDENTITÃ‰ DE L'ENTREPRISE (Ã‰tape 1/5) :\n"
-                f"â€¢ Raison sociale : {nom}\n"
-                f"â€¢ NumÃ©ro NINEA officiel : {ninea}\n"
+                f"Félicitations ! Votre entreprise « {nom} » est désormais officiellement créée et enregistrée sur Grow aux normes SYSCOHADA.\n\n"
+                "RÉCAPITULATIF OFFICIEL DES 5 ÉTAPES D'OUVERTURE :\n\n"
+                "1. IDENTITÉ DE L'ENTREPRISE (Étape 1/5) :\n"
+                f"• Raison sociale : {nom}\n"
+                f"• Numéro NINEA officiel : {ninea}\n"
                 f"{forme_txt}"
                 f"{rc_txt}"
                 f"{act_txt}"
-                f"â€¢ Capital social certifiÃ© : {capital:,.0f} FCFA\n"
-                "â€¢ Statut NINEA : Conforme certifiÃ© (Sur piÃ¨ce officielle)\n\n"
-                "2. STRUCTURE & EFFECTIF (Ã‰tape 2/5) :\n"
-                f"â€¢ Ã‰quipe dÃ©clarÃ©e : {equipe}\n\n"
-                "3. MOYENS DE PAIEMENT (Ã‰tape 3/5) :\n"
-                f"â€¢ OpÃ©rateurs connectÃ©s : {ops}\n\n"
-                "4. Ã‰QUIPEMENTS & IMMOBILISATIONS (Ã‰tape 4/5) :\n"
-                f"â€¢ MatÃ©riels dÃ©clarÃ©s : {immos}\n\n"
-                "5. BILAN D'OUVERTURE & TRÃ‰SORERIE T0 (Ã‰tape 5/5) :\n"
+                f"• Capital social certifié : {capital:,.0f} FCFA\n"
+                "• Statut NINEA : Conforme certifié (Sur pièce officielle)\n\n"
+                "2. STRUCTURE & EFFECTIF (Étape 2/5) :\n"
+                f"• Équipe déclarée : {equipe}\n\n"
+                "3. MOYENS DE PAIEMENT (Étape 3/5) :\n"
+                f"• Opérateurs connectés : {ops}\n\n"
+                "4. ÉQUIPEMENTS & IMMOBILISATIONS (Étape 4/5) :\n"
+                f"• Matériels déclarés : {immos}\n\n"
+                "5. BILAN D'OUVERTURE & TRÉSORERIE T0 (Étape 5/5) :\n"
                 f"{detail_soldes_txt}\n"
-                f"â€¢ Total TrÃ©sorerie certifiÃ©e : {total_t0:,.0f} FCFA\n"
-                f"â€¢ Empreinte probatoire numÃ©rique : {short_h}\n\n"
+                f"• Total Trésorerie certifiée : {total_t0:,.0f} FCFA\n"
+                f"• Empreinte probatoire numérique : {short_h}\n\n"
                 "VOTRE TABLEAU DE BORD FINANCIER EN DIRECT :\n"
-                "Vous pouvez dÃ¨s maintenant consulter l'intÃ©gralitÃ© de vos comptes et bilans financiers sur votre lien sÃ©curisÃ© :\n"
+                "Vous pouvez dès maintenant consulter l'intégralité de vos comptes et bilans financiers sur votre lien sécurisé :\n"
                 f"{get_public_base_url()}/dashboard?phone={sender_phone}\n"
-                "(Vous y retrouverez votre raison sociale, votre NINEA, votre capital certifiÃ©, vos Ã©quipements et vos soldes de trÃ©sorerie par opÃ©rateur mis Ã  jour en temps rÃ©el).\n\n"
+                "(Vous y retrouverez votre raison sociale, votre NINEA, votre capital certifié, vos équipements et vos soldes de trésorerie par opérateur mis à jour en temps réel).\n\n"
                 f"{instructions}"
             )
         else:
-            # CAS 2 : Si le client n'a pas encore payÃ© -> On lui demande de souscrire
+            # CAS 2 : Si le client n'a pas encore payé -> On lui demande de souscrire
             update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_ABONNEMENT")
             update_onboarding_state(sender_phone, "etape", "PAIEMENT_ABONNEMENT")
             return (
-                f"FÃ©licitations ! Votre entreprise Â« {nom} Â» a Ã©tÃ© configurÃ©e avec succÃ¨s sur Grow.\n\n"
-                "RÃ‰CAPITULATIF DES 5 Ã‰TAPES D'OUVERTURE :\n\n"
-                "1. IDENTITÃ‰ DE L'ENTREPRISE (Ã‰tape 1/5) :\n"
-                f"â€¢ Raison sociale : {nom}\n"
-                f"â€¢ NumÃ©ro NINEA : {ninea}\n"
-                f"â€¢ Capital social certifiÃ© : {capital:,.0f} FCFA\n\n"
-                "2. STRUCTURE & EFFECTIF (Ã‰tape 2/5) :\n"
-                f"â€¢ Ã‰quipe dÃ©clarÃ©e : {equipe}\n\n"
-                "3. MOYENS DE PAIEMENT (Ã‰tape 3/5) :\n"
-                f"â€¢ OpÃ©rateurs connectÃ©s : {ops}\n\n"
-                "4. Ã‰QUIPEMENTS & IMMOBILISATIONS (Ã‰tape 4/5) :\n"
-                f"â€¢ MatÃ©riels dÃ©clarÃ©s : {immos}\n\n"
-                "5. TRÃ‰SORERIE INITIALE T0 (Ã‰tape 5/5) :\n"
+                f"Félicitations ! Votre entreprise « {nom} » a été configurée avec succès sur Grow.\n\n"
+                "RÉCAPITULATIF DES 5 ÉTAPES D'OUVERTURE :\n\n"
+                "1. IDENTITÉ DE L'ENTREPRISE (Étape 1/5) :\n"
+                f"• Raison sociale : {nom}\n"
+                f"• Numéro NINEA : {ninea}\n"
+                f"• Capital social certifié : {capital:,.0f} FCFA\n\n"
+                "2. STRUCTURE & EFFECTIF (Étape 2/5) :\n"
+                f"• Équipe déclarée : {equipe}\n\n"
+                "3. MOYENS DE PAIEMENT (Étape 3/5) :\n"
+                f"• Opérateurs connectés : {ops}\n\n"
+                "4. ÉQUIPEMENTS & IMMOBILISATIONS (Étape 4/5) :\n"
+                f"• Matériels déclarés : {immos}\n\n"
+                "5. TRÉSORERIE INITIALE T0 (Étape 5/5) :\n"
                 f"{detail_soldes_txt}\n"
-                f"â€¢ Total TrÃ©sorerie : {total_t0:,.0f} FCFA\n\n"
-                "Votre tableau de bord financier personnel est prÃªt sur ce lien sÃ©curisÃ© :\n"
+                f"• Total Trésorerie : {total_t0:,.0f} FCFA\n\n"
+                "Votre tableau de bord financier personnel est prêt sur ce lien sécurisé :\n"
                 f"{get_public_base_url()}/dashboard?phone={sender_phone}\n\n"
-                "Pour activer le traitement automatique quotidien de vos opÃ©rations, veuillez finaliser votre abonnement Grow sur ce lien :\n"
+                "Pour activer le traitement automatique quotidien de vos opérations, veuillez finaliser votre abonnement Grow sur ce lien :\n"
                 f"{get_public_base_url()}/abonnement?phone={sender_phone}\n\n"
-                "Une fois le paiement effectuÃ©, Ã©crivez simplement Â« J'ai payÃ© Â» pour commencer !"
+                "Une fois le paiement effectué, écrivez simplement « J'ai payé » pour commencer !"
             )
 
-    return "Bonjour ! Pour continuer la crÃ©ation de votre entreprise, envoyez-moi votre NINEA."
+    return "Bonjour ! Pour continuer la création de votre entreprise, envoyez-moi votre NINEA."
 
 
 async def download_meta_media(media_id: str) -> tuple[bytes, str]:
-    """TÃ©lÃ©charge le fichier mÃ©dia depuis Meta Cloud API."""
+    """Télécharge le fichier média depuis Meta Cloud API."""
     load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
     if not token or not media_id:
@@ -2415,17 +2533,17 @@ async def download_meta_media(media_id: str) -> tuple[bytes, str]:
 
 
 async def process_media_with_ai(sender_phone: str, media_id: str, type_preuve: str, context_text: str) -> str:
-    """TÃ©lÃ©charge le mÃ©dia, calcule le hash SHA-256, l'archive dans Supabase Storage et l'analyse avec Claude."""
+    """Télécharge le média, calcule le hash SHA-256, l'archive dans Supabase Storage et l'analyse avec Claude."""
     sp = get_supabase()
     entreprise = get_or_create_entreprise(sp, sender_phone) if sp else {}
     entreprise_id = entreprise.get("id")
 
     media_bytes, mime_type = await download_meta_media(media_id)
     if not media_bytes:
-        return "âš ï¸ Je n'ai pas rÃ©ussi Ã  rÃ©cupÃ©rer votre fichier. Pouvez-vous me le renvoyer ?"
+        return "⚠️ Je n'ai pas réussi à récupérer votre fichier. Pouvez-vous me le renvoyer ?"
 
     sha256_hash = hashlib.sha256(media_bytes).hexdigest()
-    print(f"Empreinte SHA-256 calculÃ©e : {sha256_hash}")
+    print(f"Empreinte SHA-256 calculée : {sha256_hash}")
 
     url_stockage = f"preuves/{entreprise_id}/{media_id}.jpg"
     try:
@@ -2450,31 +2568,31 @@ async def process_media_with_ai(sender_phone: str, media_id: str, type_preuve: s
             b64_image = base64.b64encode(media_bytes).decode("utf-8")
 
             prompt = """
-Analyse cette image envoyÃ©e par un commerÃ§ant au SÃ©nÃ©gal.
-Elle peut Ãªtre :
-1) Une attestation officielle NINEA (Direction GÃ©nÃ©rale des ImpÃ´ts et des Domaines / APIX)
-2) Un reÃ§u, facture, ticket de caisse physique.
-3) Une capture d'Ã©cran de l'application Wave / Orange Money ou une CAPTURE D'Ã‰CRAN D'UNE NOTIFICATION PUSH Wave/OM (ex: banniÃ¨re de notification sur Ã©cran verrouillÃ© ou centre de notifications iPhone/Android avec icÃ´ne Wave pingouin, virement reÃ§u, remboursement ou paiement).
+Analyse cette image envoyée par un commerçant au Sénégal.
+Elle peut être :
+1) Une attestation officielle NINEA (Direction Générale des Impôts et des Domaines / APIX)
+2) Un reçu, facture, ticket de caisse physique.
+3) Une capture d'écran de l'application Wave / Orange Money ou une CAPTURE D'ÉCRAN D'UNE NOTIFICATION PUSH Wave/OM (ex: bannière de notification sur écran verrouillé ou centre de notifications iPhone/Android avec icône Wave pingouin, virement reçu, remboursement ou paiement).
 
 Extrais les informations sous forme de JSON strict :
 {
   "is_ninea_document": true si c'est une attestation NINEA officielle (sinon false),
   "nom_entreprise": "Nom commercial ou Raison sociale officielle" (si NINEA),
   "forme_juridique": "Forme juridique (ex: Entreprise Individuelle, SARL, SAS, SUARL, GIE)" (si NINEA),
-  "activite_principale": "ActivitÃ© principale dÃ©clarÃ©e ou objet social" (si NINEA),
-  "registre_commerce": "NumÃ©ro RCCM (ex: SN-DKR-...)" (si NINEA),
-  "ninea": "NumÃ©ro NINEA officiel (7 Ã  10 caractÃ¨res)" (si NINEA),
-  "capital_social_fcfa": montant numÃ©rique entier du capital (si NINEA, sinon 0),
+  "activite_principale": "Activité principale déclarée ou objet social" (si NINEA),
+  "registre_commerce": "Numéro RCCM (ex: SN-DKR-...)" (si NINEA),
+  "ninea": "Numéro NINEA officiel (7 à 10 caractères)" (si NINEA),
+  "capital_social_fcfa": montant numérique entier du capital (si NINEA, sinon 0),
 
-  "is_transaction": true si c'est un reÃ§u, facture ou notification de transaction financiÃ¨re (sinon false),
-  "type_flux": "SORTIE" (si dÃ©pense/achat) ou "ENTREE" (si vente, transfert reÃ§u ou remboursement),
-  "montant_fcfa": montant numÃ©rique entier en FCFA (ex: si Ã©crit 105F -> 105, si Ã©crit 25.000F -> 25000),
-  "libelle": "description de l'opÃ©ration (ex: Vente encaissÃ©e via Wave, Remboursement Wave, Achat)",
+  "is_transaction": true si c'est un reçu, facture ou notification de transaction financière (sinon false),
+  "type_flux": "SORTIE" (si dépense/achat) ou "ENTREE" (si vente, transfert reçu ou remboursement),
+  "montant_fcfa": montant numérique entier en FCFA (ex: si écrit 105F -> 105, si écrit 25.000F -> 25000),
+  "libelle": "description de l'opération (ex: Vente encaissée via Wave, Remboursement Wave, Achat)",
   "source_paiement": "WAVE" ou "ORANGE_MONEY" ou "ESPECES" ou "BANQUE",
-  "compte_syscohada": "code compte SYSCOHADA (ex: 701 pour vente/recette, 601 pour stock, 605 frais, 521 rÃ©gularisation)",
-  "texte_extrait": "rÃ©sumÃ© des textes clÃ©s lus"
+  "compte_syscohada": "code compte SYSCOHADA (ex: 701 pour vente/recette, 601 pour stock, 605 frais, 521 régularisation)",
+  "texte_extrait": "résumé des textes clés lus"
 }
-Si l'image n'est ni un document NINEA ni une transaction/notification financiÃ¨re lisible, renvoie is_transaction=false et is_ninea_document=false.
+Si l'image n'est ni un document NINEA ni une transaction/notification financière lisible, renvoie is_transaction=false et is_ninea_document=false.
 """
             res = client.messages.create(
                 model="claude-haiku-4-5-20251001",
@@ -2494,7 +2612,7 @@ Si l'image n'est ni un document NINEA ni une transaction/notification financiÃ�
             extracted_data = json.loads(raw.strip())
             ocr_texte = extracted_data.get("texte_extrait", context_text)
 
-            # Si l'image envoyÃ©e est une attestation NINEA officielle
+            # Si l'image envoyée est une attestation NINEA officielle
             if extracted_data.get("is_ninea_document"):
                 nom_n = extracted_data.get("nom_entreprise")
                 forme_n = extracted_data.get("forme_juridique")
@@ -2522,24 +2640,24 @@ Si l'image n'est ni un document NINEA ni une transaction/notification financiÃ�
                     if ninea_n: update_onboarding_state(sender_phone, "ninea", ninea_n)
                     if nom_n: update_onboarding_state(sender_phone, "nom_entreprise", nom_n)
                 except Exception as e_up:
-                    print(f"Erreur mise Ã  jour attestation NINEA : {e_up}")
+                    print(f"Erreur mise à jour attestation NINEA : {e_up}")
 
-                forme_t = f"â€¢ Forme juridique : {forme_n}\n" if forme_n else ""
-                act_t = f"â€¢ ActivitÃ© principale : {act_n}\n" if act_n else ""
-                rc_t = f"â€¢ Registre du Commerce (RCCM) : {rc_n}\n" if rc_n else ""
-                ninea_t = f"â€¢ NumÃ©ro NINEA officiel : {ninea_n}\n" if ninea_n else ""
-                cap_t = f"â€¢ Capital social certifiÃ© : {cap_n:,.0f} FCFA\n" if cap_n else ""
+                forme_t = f"• Forme juridique : {forme_n}\n" if forme_n else ""
+                act_t = f"• Activité principale : {act_n}\n" if act_n else ""
+                rc_t = f"• Registre du Commerce (RCCM) : {rc_n}\n" if rc_n else ""
+                ninea_t = f"• Numéro NINEA officiel : {ninea_n}\n" if ninea_n else ""
+                cap_t = f"• Capital social certifié : {cap_n:,.0f} FCFA\n" if cap_n else ""
 
                 return (
-                    "Attestation papier NINEA reÃ§ue et certifiÃ©e avec succÃ¨s.\n\n"
-                    f"â€¢ Raison sociale : {nom_n or entreprise.get('nom_entreprise', 'Votre Entreprise')}\n"
+                    "Attestation papier NINEA reçue et certifiée avec succès.\n\n"
+                    f"• Raison sociale : {nom_n or entreprise.get('nom_entreprise', 'Votre Entreprise')}\n"
                     f"{forme_t}"
                     f"{act_t}"
                     f"{rc_t}"
                     f"{ninea_t}"
                     f"{cap_t}"
-                    "â€¢ Statut du dossier : Conforme certifiÃ© (Document officiel validÃ©)\n\n"
-                    "Vos comptes, vos bilans comptables SYSCOHADA et vos dossiers de financement sont dÃ©sormais officiellement rattachÃ©s Ã  votre attestation NINEA."
+                    "• Statut du dossier : Conforme certifié (Document officiel validé)\n\n"
+                    "Vos comptes, vos bilans comptables SYSCOHADA et vos dossiers de financement sont désormais officiellement rattachés à votre attestation NINEA."
                 )
         except Exception as e:
             print(f"Erreur analyse Claude Vision : {e}")
@@ -2549,7 +2667,7 @@ Si l'image n'est ni un document NINEA ni une transaction/notification financiÃ�
         try:
             tx = sp.table("transactions").insert({
                 "entreprise_id": entreprise_id,
-                "libelle": extracted_data.get("libelle", "ReÃ§u validÃ©"),
+                "libelle": extracted_data.get("libelle", "Reçu validé"),
                 "compte_syscohada": str(extracted_data.get("compte_syscohada", "601")),
                 "type_flux": extracted_data.get("type_flux", "SORTIE"),
                 "est_professionnel": True,
@@ -2585,34 +2703,34 @@ Si l'image n'est ni un document NINEA ni une transaction/notification financiÃ�
             print(f"Erreur insertion preuve : {e}")
 
     montant = extracted_data.get("montant_fcfa", 0)
-    libelle = extracted_data.get("libelle", "PiÃ¨ce justificative")
+    libelle = extracted_data.get("libelle", "Pièce justificative")
     short_hash = sha256_hash[:10]
 
     if montant > 0:
         return (
             "Justificatif verifie et archive avec succes.\n\n"
             f"RESUME DE L'ENREGISTREMENT :\n"
-            f"â€¢ Nature : {libelle}\n"
-            f"â€¢ Montant : {montant:,.0f} FCFA\n"
-            f"â€¢ Compte SYSCOHADA : {extracted_data.get('compte_syscohada', '601')}\n"
-            f"â€¢ Preuve probatoire : Certifiee conforme (SHA-256 : {short_hash}...)\n\n"
+            f"• Nature : {libelle}\n"
+            f"• Montant : {montant:,.0f} FCFA\n"
+            f"• Compte SYSCOHADA : {extracted_data.get('compte_syscohada', '601')}\n"
+            f"• Preuve probatoire : Certifiee conforme (SHA-256 : {short_hash}...)\n\n"
             "Statut : L'operation est validee et imputee a votre journal comptable."
         )
     else:
         return (
             "Justificatif recu et securise dans votre coffre-fort numerique.\n\n"
-            f"â€¢ Empreinte probatoire : SHA-256 ({short_hash}...)\n\n"
-            "Pour finaliser l'enregistrement, precisez-moi simplement le montant et la nature de cette depense (ex: Â« 15 000 carburant Â»)."
+            f"• Empreinte probatoire : SHA-256 ({short_hash}...)\n\n"
+            "Pour finaliser l'enregistrement, precisez-moi simplement le montant et la nature de cette depense (ex: « 15 000 carburant »)."
         )
 
 
 async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
-    """Analyse le texte, traite les flux Wave en direct, les impayÃ©s, les stocks ou les heures de rappel."""
+    """Analyse le texte, traite les flux Wave en direct, les impayés, les stocks ou les heures de rappel."""
     load_dotenv(override=True)
     
     txt_clean = (user_text or "").strip().lower()
 
-    # 0. RÃ‰PONSE DIRECTE DU CLIENT Ã€ UNE QUESTION DE CLARIFICATION D'OPÃ‰RATEUR (1, 2, 3, 4)
+    # 0. RÉPONSE DIRECTE DU CLIENT À UNE QUESTION DE CLARIFICATION D'OPÉRATEUR (1, 2, 3, 4)
     sp = get_supabase()
     entreprise = get_or_create_entreprise(sp, sender_phone) if sp else {}
     entreprise_id = entreprise.get("id")
@@ -2625,7 +2743,7 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
     elif txt_clean in ["3", "3.", "transport", "carburant", "essence", "frais", "frais de transport"]:
         reponse_choix = ("605", "Autres achats et charges externes (Transport / Carburant)", "Transport / Carburant")
     elif txt_clean in ["4", "4.", "perso", "personnel", "retrait", "patron", "depense perso", "retrait personnel"]:
-        reponse_choix = ("108", "Compte de l'exploitant (PrÃ©lÃ¨vement personnel)", "Retrait personnel exploitant")
+        reponse_choix = ("108", "Compte de l'exploitant (Prélèvement personnel)", "Retrait personnel exploitant")
 
     if reponse_choix and sp and entreprise_id:
         try:
@@ -2633,7 +2751,7 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
             if pending.data and len(pending.data) > 0:
                 target_tx = pending.data[0]
                 nouveau_compte, libelle_compte, nature = reponse_choix
-                orig_lib = target_tx.get('libelle', 'OpÃ©ration')
+                orig_lib = target_tx.get('libelle', 'Opération')
                 nouveau_libelle = f"{orig_lib} ({nature})"
                 
                 sp.table("transactions").update({
@@ -2642,14 +2760,14 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
                     "statut_validation": "VALIDE_PME"
                 }).eq("id", target_tx["id"]).execute()
                 
-                # Auto-apprentissage dans la mÃ©moire Grow pour toujours
+                # Auto-apprentissage dans la mémoire Grow pour toujours
                 tiers_nom = None
                 if "-" in orig_lib:
                     tiers_nom = orig_lib.split("-")[-1].strip()
                 elif "pour" in orig_lib.lower():
                     tiers_nom = orig_lib.lower().split("pour")[-1].strip()
-                elif "Ã " in orig_lib.lower():
-                    tiers_nom = orig_lib.lower().split("Ã ")[-1].strip()
+                elif "à" in orig_lib.lower():
+                    tiers_nom = orig_lib.lower().split("à")[-1].strip()
                 
                 if tiers_nom and len(tiers_nom) > 2:
                     enregistrer_fournisseur_memoire(entreprise_id, tiers_nom, nouveau_compte, libelle_compte, nature)
@@ -2658,21 +2776,21 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
                 ref = target_tx.get("reference_externe") or f"TX-{target_tx['id'][:8]}"
                 
                 msg_confirmation = (
-                    f"Ã‰criture validÃ©e et certifiÃ©e.\n\n"
-                    f"L'opÃ©ration de {montant:,.0f} FCFA (RÃ©f: {ref}) est dÃ©sormais imputÃ©e au Compte SYSCOHADA {nouveau_compte} ({libelle_compte}).\n\n"
-                    f"Statut : VÃ©rifiÃ©e."
+                    f"Écriture validée et certifiée.\n\n"
+                    f"L'opération de {montant:,.0f} FCFA (Réf: {ref}) est désormais imputée au Compte SYSCOHADA {nouveau_compte} ({libelle_compte}).\n\n"
+                    f"Statut : Vérifiée."
                 )
                 if tiers_nom and len(tiers_nom) > 2:
-                    msg_confirmation += f"\n\nIntelligence Grow : le bÃ©nÃ©ficiaire Â« {tiers_nom} Â» est mÃ©morisÃ©. Vos futures transactions avec lui seront classÃ©es automatiquement."
+                    msg_confirmation += f"\n\nIntelligence Grow : le bénéficiaire « {tiers_nom} » est mémorisé. Vos futures transactions avec lui seront classées automatiquement."
                 return msg_confirmation
         except Exception as e:
-            print(f"Erreur rÃ©solution clarification : {e}")
+            print(f"Erreur résolution clarification : {e}")
 
     # ==========================================================================
-    # MOTEUR EXPERT MÃ‰TIER & MINI-CHATGPT SPÃ‰CIALISÃ‰ (0 CRÃ‰DIT API / 100% LOCAL)
+    # MOTEUR EXPERT MÉTIER & MINI-CHATGPT SPÉCIALISÉ (0 CRÉDIT API / 100% LOCAL)
     # ==========================================================================
 
-    # 1. Modification de l'heure du rituel quotidien (ex: 'change l'heure du rappel Ã  21h30')
+    # 1. Modification de l'heure du rituel quotidien (ex: 'change l'heure du rappel à 21h30')
     m_heure = re.search(r'(?:change|modifier|mets|rappel|rituel)\D*?(\d{1,2})[h:](\d{2})?', txt_clean)
     if m_heure and any(k in txt_clean for k in ["heure", "rappel", "rituel", "soir"]):
         h = int(m_heure.group(1))
@@ -2680,34 +2798,34 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
         heure_fmt = f"{h:02d}:{mn:02d}:00"
         try:
             sp.table("entreprises").update({"heure_rappel_quotidien": heure_fmt}).eq("id", entreprise_id).execute()
-            return f"L'heure de votre rituel de caisse quotidien est dÃ©sormais fixÃ©e Ã  {h:02d}h{mn:02d}. Chaque soir Ã  cette heure, Grow dressera le bilan de votre journÃ©e."
+            return f"L'heure de votre rituel de caisse quotidien est désormais fixée à {h:02d}h{mn:02d}. Chaque soir à cette heure, Grow dressera le bilan de votre journée."
         except Exception:
             pass
 
-    # 2. Salutations et prÃ©sentations gÃ©nÃ©rales (ponctuation nettoyÃ©e)
+    # 2. Salutations et présentations générales (ponctuation nettoyée)
     clean_no_punct = re.sub(r'[^\w\s]', '', txt_clean).strip()
     if clean_no_punct in ["bonjour", "salut", "bonsoir", "coucou", "qui es tu", "qui est tu", "cest quoi grow", "tu es qui", "aide", "help", "merci"]:
         return (
-            "Bonjour ! Je suis Grow, votre assistant prÃ©-comptable officiel sur WhatsApp certifiÃ© aux normes SYSCOHADA.\n\n"
+            "Bonjour ! Je suis Grow, votre assistant pré-comptable officiel sur WhatsApp certifié aux normes SYSCOHADA.\n\n"
             "Je vous accompagne au quotidien pour :\n"
-            "â€¢ Enregistrer automatiquement vos ventes Wave, Orange Money et espÃ¨ces\n"
-            "â€¢ RÃ©cupÃ©rer vos justificatifs de dÃ©penses et de stock avec preuves\n"
-            "â€¢ Suivre vos dettes fournisseurs et vos crÃ©ances clients\n"
-            "â€¢ Vous fournir chaque soir un bilan consolidÃ© prÃªt pour votre expert-comptable\n\n"
+            "• Enregistrer automatiquement vos ventes Wave, Orange Money et espèces\n"
+            "• Récupérer vos justificatifs de dépenses et de stock avec preuves\n"
+            "• Suivre vos dettes fournisseurs et vos créances clients\n"
+            "• Vous fournir chaque soir un bilan consolidé prêt pour votre expert-comptable\n\n"
             "Comment puis-je vous aider aujourd'hui ?"
         )
 
-    # 3. Base de connaissances thÃ©orique & juridique (SYSCOHADA, NINEA, Preuves, Agences, Rituel)
+    # 3. Base de connaissances théorique & juridique (SYSCOHADA, NINEA, Preuves, Agences, Rituel)
     ans_theorie = repondre_question_theorique_locale(user_text)
     if ans_theorie:
         return ans_theorie
 
-    # 4. Consultations financiÃ¨res en temps rÃ©el (Solde caisse/Wave, ventes du jour, dettes/crÃ©ances)
+    # 4. Consultations financières en temps réel (Solde caisse/Wave, ventes du jour, dettes/créances)
     ans_consult = executer_consultation_donnees_locale(user_text, entreprise_id, sp)
     if ans_consult:
         return ans_consult
 
-    # 5. Gestion en langage naturel des Dettes Fournisseurs & CrÃ©ances Clients
+    # 5. Gestion en langage naturel des Dettes Fournisseurs & Créances Clients
     ans_dette = gerer_dette_creance_locale(user_text, entreprise_id, sp)
     if ans_dette:
         return ans_dette
@@ -2715,7 +2833,7 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
     api_key = os.getenv("ANTHROPIC_API_KEY")
 
     if not api_key:
-        return f"Grow a bien notÃ© : '{user_text}'."
+        return f"Grow a bien noté : '{user_text}'."
 
     client = anthropic.Anthropic(api_key=api_key)
 
@@ -2735,7 +2853,7 @@ TRAITEMENT DES NOTIFICATIONS ET SMS D'OPERATEURS (Wave, Orange Money, Free Money
     - Si sortie pour carburant (Total, Shell, carburant) : Compte 605.
     - Si sortie pour loyer : Compte 622.
     - Si sortie pour fournisseur identifie ou marchandise : Compte 601 ou 401.
-    - Si le motif de la sortie d'argent est INCONNU ou FLOUTÃ‰ : Affecte provisoirement le compte d'attente 471100 et demande poliment clarification a l'utilisateur dans reponse_whatsapp (ex: 1 pour achat marchandise, 2 pour dette fournisseur, 3 pour transport, 4 pour retrait personnel).
+    - Si le motif de la sortie d'argent est INCONNU ou FLOUTÉ : Affecte provisoirement le compte d'attente 471100 et demande poliment clarification a l'utilisateur dans reponse_whatsapp (ex: 1 pour achat marchandise, 2 pour dette fournisseur, 3 pour transport, 4 pour retrait personnel).
 
 REGLES D'EXIGENCE DE PREUVES ET JUSTIFICATIFS :
 - Pour les transferts Wave et Orange Money : la preuve numerique est intrinseque via l'operateur, pas de recu papier requis.
@@ -2819,7 +2937,7 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
 
         intention = parsed.get("intention")
 
-        # 1. Mise Ã  jour de l'heure du rappel quotidien
+        # 1. Mise à jour de l'heure du rappel quotidien
         if intention == "MODIFIER_HEURE_RITUEL" and parsed.get("heure_rituel") and sp and entreprise_id:
             heure = parsed.get("heure_rituel")
             try:
@@ -2827,7 +2945,7 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
             except Exception:
                 pass
 
-        # 2. Gestion dÃ©taillÃ©e des Dettes et CrÃ©ances
+        # 2. Gestion détaillée des Dettes et Créances
         dette_info = parsed.get("dette_info") or {}
         dette_action = dette_info.get("action")
         dette_type = dette_info.get("type")
@@ -2841,7 +2959,7 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
                     sp.table("dettes_creances").insert({
                         "entreprise_id": entreprise_id,
                         "type": dette_type,
-                        "tiers_nom": tiers_nom or "Tiers non prÃ©cisÃ©",
+                        "tiers_nom": tiers_nom or "Tiers non précisé",
                         "montant_initial_fcfa": montant_dette,
                         "montant_restant_fcfa": montant_dette,
                         "date_echeance": date_echeance,
@@ -2872,12 +2990,12 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
             except Exception:
                 pass
 
-        # 3. Enregistrement d'une transaction de trÃ©sorerie (Wave, OM, EspÃ¨ces)
+        # 3. Enregistrement d'une transaction de trésorerie (Wave, OM, Espèces)
         tx_data = parsed.get("transaction") or {}
         if tx_data.get("is_transaction") and tx_data.get("montant_fcfa", 0) > 0 and sp and entreprise_id:
             src = (tx_data.get("source_paiement") or "WAVE").upper()
             cpt = str(tx_data.get("compte_syscohada", "701"))
-            # Si c'est Wave/OM avec compte qualifiÃ©, validÃ© d'office ; si espÃ¨ces sans reÃ§u ou compte 471, en attente
+            # Si c'est Wave/OM avec compte qualifié, validé d'office ; si espèces sans reçu ou compte 471, en attente
             if src in ["WAVE", "ORANGE_MONEY", "BANQUE"] and not cpt.startswith("471"):
                 statut_init = "VALIDE_PME"
             else:
@@ -2897,14 +3015,14 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
             }
             try:
                 inserted = sp.table("transactions").insert(tx_record).execute()
-                print(f"Transaction insÃ©rÃ©e : ID {inserted.data[0]['id']} ({statut_init})")
+                print(f"Transaction insérée : ID {inserted.data[0]['id']} ({statut_init})")
             except Exception as e:
-                # Si colonne reference_externe n'existe pas en base, insertion sans cette clÃ©
+                # Si colonne reference_externe n'existe pas en base, insertion sans cette clé
                 tx_record.pop("reference_externe", None)
                 inserted = sp.table("transactions").insert(tx_record).execute()
-                print(f"Transaction insÃ©rÃ©e (fallback) : ID {inserted.data[0]['id']} ({statut_init})")
+                print(f"Transaction insérée (fallback) : ID {inserted.data[0]['id']} ({statut_init})")
 
-        # 4. Enregistrement d'un Ã©tat structurel (Stock, Immobilisation)
+        # 4. Enregistrement d'un état structurel (Stock, Immobilisation)
         struct_data = parsed.get("structurel") or {}
         cat = struct_data.get("categorie")
         montant_struct = struct_data.get("montant_fcfa")
@@ -2933,24 +3051,24 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
 
                 wave, om, especes, total_dispo = get_tresorerie_stats(sp, entreprise_id)
                 synth_msg = (
-                    f"ArrÃªtÃ© de trÃ©sorerie journalier ({today_str}) :\n\n"
-                    f"DisponibilitÃ©s liquides Ã  cet instant :\n"
-                    f"â€¢ TrÃ©sorerie actuelle dans Wave : {wave:,.0f} FCFA\n"
-                    f"â€¢ TrÃ©sorerie actuelle dans Orange Money : {om:,.0f} FCFA\n"
-                    f"â€¢ TrÃ©sorerie actuelle en EspÃ¨ces : {especes:,.0f} FCFA\n"
-                    f"â€¢ Total des liquiditÃ©s disponibles : {total_dispo:,.0f} FCFA\n\n"
-                    f"Flux d'exploitation de la journÃ©e :\n"
-                    f"â€¢ Total des encaissements d'exploitation : {total_in:,.0f} FCFA\n"
-                    f"â€¢ Total des dÃ©caissements et charges : {total_out:,.0f} FCFA\n"
-                    f"â€¢ RÃ©sultat net d'exploitation estimÃ© : {marge:,.0f} FCFA\n\n"
-                    f"ContrÃ´le des piÃ¨ces probantes :\n"
+                    f"Arrêté de trésorerie journalier ({today_str}) :\n\n"
+                    f"Disponibilités liquides à cet instant :\n"
+                    f"• Trésorerie actuelle dans Wave : {wave:,.0f} FCFA\n"
+                    f"• Trésorerie actuelle dans Orange Money : {om:,.0f} FCFA\n"
+                    f"• Trésorerie actuelle en Espèces : {especes:,.0f} FCFA\n"
+                    f"• Total des liquidités disponibles : {total_dispo:,.0f} FCFA\n\n"
+                    f"Flux d'exploitation de la journée :\n"
+                    f"• Total des encaissements d'exploitation : {total_in:,.0f} FCFA\n"
+                    f"• Total des décaissements et charges : {total_out:,.0f} FCFA\n"
+                    f"• Résultat net d'exploitation estimé : {marge:,.0f} FCFA\n\n"
+                    f"Contrôle des pièces probantes :\n"
                 )
                 if manquants:
-                    synth_msg += f"Vigilance : vous avez {len(manquants)} dÃ©pense(s) en attente de reÃ§u fiscal ou facture. Veuillez photographier les justificatifs pour garantir la dÃ©ductibilitÃ© de la charge.\n\n"
+                    synth_msg += f"Vigilance : vous avez {len(manquants)} dépense(s) en attente de reçu fiscal ou facture. Veuillez photographier les justificatifs pour garantir la déductibilité de la charge.\n\n"
                 else:
-                    synth_msg += "ConformitÃ© certifiÃ©e : l'ensemble de vos flux du jour dispose de justificatifs probants.\n\n"
+                    synth_msg += "Conformité certifiée : l'ensemble de vos flux du jour dispose de justificatifs probants.\n\n"
 
-                synth_msg += "Avez-vous d'autres opÃ©rations en espÃ¨ces, par Wave ou via Orange Money Ã  consigner avant la clÃ´ture dÃ©finitive ?"
+                synth_msg += "Avez-vous d'autres opérations en espèces, par Wave ou via Orange Money à consigner avant la clôture définitive ?"
                 return synth_msg
             except Exception as e:
                 print(f"Info consultation inventaire : {e}")
@@ -2977,7 +3095,7 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
                 "Ces agences ont un acces direct et securise a vos journaux sur notre tableau de bord pour certifier vos bilans et appuyer vos dossiers de financement bancaire."
             )
 
-        # 7. Consultation des dettes et crÃ©ances
+        # 7. Consultation des dettes et créances
         if intention == "CONSULTATION_DETTES" and sp and entreprise_id:
             try:
                 res_d = sp.table("dettes_creances").select("*").eq("entreprise_id", entreprise_id).neq("statut", "SOLDE").execute().data or []
@@ -3001,11 +3119,11 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
             except Exception as e:
                 print(f"Info consultation dettes : {e}")
 
-        return parsed.get("reponse_whatsapp", "Message bien reÃ§u par Grow !")
+        return parsed.get("reponse_whatsapp", "Message bien reçu par Grow !")
 
     except Exception as e:
         print(f"Erreur process_text_with_ai : {e}")
-        return f"Grow a bien notÃ© votre message : '{user_text}'. Merci !"
+        return f"Grow a bien noté votre message : '{user_text}'. Merci !"
 
 
 async def send_whatsapp_message(to_phone: str, text: str):
@@ -3373,16 +3491,16 @@ async def monthly_closure_check():
 @app.on_event("startup")
 async def start_scheduler():
     """Demarrage du planificateur de taches de fond rigoureusement cale sur le fuseau Africa/Dakar (GMT)."""
-    # 1. VÃ©rification minute par minute pour le Grand Bilan du Soir (21h00 par dÃ©faut ou heure personnalisÃ©e)
+    # 1. Vérification minute par minute pour le Grand Bilan du Soir (21h00 par défaut ou heure personnalisée)
     scheduler.add_job(daily_ritual_check, "cron", minute="*", timezone=TZ_DAKAR)
     
-    # 2. Point Flash toutes les 3 heures pendant la journÃ©e (09h00, 12h00, 15h00, 18h00, 21h00 heure de Dakar)
+    # 2. Point Flash toutes les 3 heures pendant la journée (09h00, 12h00, 15h00, 18h00, 21h00 heure de Dakar)
     scheduler.add_job(flash_summary_3h_check, "cron", hour="09,12,15,18,21", minute="00", timezone=TZ_DAKAR)
 
-    # 3. Message matinal de 06h00 heure de Dakar (Bilan de la nuit et rÃ©initialisation des comptes de dÃ©part)
+    # 3. Message matinal de 06h00 heure de Dakar (Bilan de la nuit et réinitialisation des comptes de départ)
     scheduler.add_job(morning_greeting_check, "cron", hour="06", minute="00", timezone=TZ_DAKAR)
 
-    # 4. Relance automatique des dettes et crÃ©ances tous les 3 jours (Ã  10h00 heure de Dakar)
+    # 4. Relance automatique des dettes et créances tous les 3 jours (à 10h00 heure de Dakar)
     scheduler.add_job(check_and_send_dettes_reminders, "cron", hour="10", minute="00", timezone=TZ_DAKAR)
 
     # 5. Point hebdomadaire et mensuel
