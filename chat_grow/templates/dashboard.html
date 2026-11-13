@@ -7435,9 +7435,18 @@
             </div>
 
             <div class="flex items-center gap-2.5">
-                <button onclick="ouvrirModalSaisieRapide()" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer">
-                    <span class="material-symbols-outlined text-[15px]">add</span>
-                    <span>Nouvelle écriture</span>
+                <!-- Trésorerie Disponible en Direct (Couleur Grow #a0d9d2 / #0d9488) -->
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#e6f7f5] border border-[#a0d9d2] text-[#0d9488] shadow-xs cursor-default" title="Trésorerie disponible en direct (Banque / Wave / OM / Caisse)">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]"></span>
+                    </span>
+                    <span class="text-xs font-medium text-[#0f766e]">Trésorerie :</span>
+                    <span class="text-xs font-bold font-mono tracking-tight text-[#0d9488]" id="headerTresorerieMontant">20 088 FCFA</span>
+                </div>
+                <!-- Bouton discret ajout manuel -->
+                <button onclick="ouvrirModalSaisieRapide()" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer" title="Nouvelle écriture manuelle (+)">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
                 </button>
             </div>
         </header>
@@ -7516,7 +7525,7 @@
                     <!-- Bandeau Titre et Total -->
                     <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between bg-white">
                         <span class="font-bold text-xs text-slate-700 uppercase tracking-wider">Écritures récentes</span>
-                        <span class="text-xs font-bold text-[#0d9488] bg-[#e6f7f5] border border-[#a0d9d2]/60 px-2.5 py-0.5 rounded-md" id="cumulTotal">Total : 20 088 FCFA</span>
+                        <span class="text-xs font-bold text-[#0d9488] bg-[#e6f7f5] border border-[#a0d9d2]/60 px-2.5 py-0.5 rounded-md" id="cumulTotal">Trésorerie : 20 088 FCFA</span>
                     </div>
 
                     <!-- Tableau Ultra Lisible -->
@@ -11198,7 +11207,9 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             });
 
             const cTot = document.getElementById('cumulTotal');
-            if (cTot) cTot.textContent = 'Total : ' + totalCredit.toLocaleString('fr-FR') + ' FCFA';
+            if (cTot) cTot.textContent = 'Trésorerie : ' + totalCredit.toLocaleString('fr-FR') + ' FCFA';
+            const hTres = document.getElementById('headerTresorerieMontant');
+            if (hTres) hTres.textContent = totalCredit.toLocaleString('fr-FR') + ' FCFA';
         }
 
         function escapeHtml(str) {
