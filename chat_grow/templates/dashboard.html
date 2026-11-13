@@ -5456,6 +5456,16 @@
                     <span class="grow-flow-label">Espèces</span>
                     <span class="grow-flow-count" id="flowCountEspeces">0</span>
                 </button>
+                <button type="button" class="grow-flow-chip" data-flow="banque" onclick="filterByFlow('banque', this)" title="Flux Banque, Virements & Chèques (Compte 521 SYSCOHADA)">
+                    <img src="/static/images/flows/banque.png" alt="" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Banque</span>
+                    <span class="grow-flow-count" id="flowCountBanque">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="creance" onclick="filterByFlow('creance', this)" title="Flux Créances Clients & Crédits Accordés (Compte 411 SYSCOHADA)">
+                    <img src="/static/images/flows/creance.png" alt="" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Créances</span>
+                    <span class="grow-flow-count" id="flowCountCreance">0</span>
+                </button>
                 <button type="button" class="grow-flow-chip" data-flow="immobilisation" onclick="filterByFlow('immobilisation', this)" title="Flux Immobilisations (Classe 2 SYSCOHADA)">
                     <img src="/static/images/flows/immobilisation.jpg" alt="" class="grow-flow-chip-icon">
                     <span class="grow-flow-label">Immobilisation</span>
@@ -5470,6 +5480,16 @@
                     <img src="/static/images/flows/dette.png" alt="" class="grow-flow-chip-icon">
                     <span class="grow-flow-label">Dette</span>
                     <span class="grow-flow-count" id="flowCountDette">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="salaire" onclick="filterByFlow('salaire', this)" title="Flux Salaires, Personnel & Avances (Compte 661 SYSCOHADA)">
+                    <img src="/static/images/flows/salaire.png" alt="" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Salaires</span>
+                    <span class="grow-flow-count" id="flowCountSalaire">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="impot" onclick="filterByFlow('impot', this)" title="Flux Impôts, Taxes & DGID (Compte 64 SYSCOHADA)">
+                    <img src="/static/images/flows/impot.png" alt="" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Impôts</span>
+                    <span class="grow-flow-count" id="flowCountImpot">0</span>
                 </button>
                 <button type="button" class="grow-flow-chip" data-flow="capital" onclick="filterByFlow('capital', this)" title="Flux Capital & Apports (Classe 10 SYSCOHADA)">
                     <img src="/static/images/flows/capital.png" alt="" class="grow-flow-chip-icon">
@@ -7403,13 +7423,43 @@
         }
 
         
-        // --- DÉTECTION INTELLIGENTE DES 7 FLUX FINANCIERS SÉNÉGAL SYSCOHADA ---
+        // --- DÉTECTION INTELLIGENTE DES 11 FLUX FINANCIERS SÉNÉGAL SYSCOHADA ---
         function detectFlowMeta(t) {
             const raw = String(t.libelle || '').toLowerCase();
             const src = String(t.source_paiement || '').toUpperCase();
             const compte = String(t.compte_syscohada || '');
 
-            // 1. Immobilisation (Comptes classe 2: matériel, bâtiment, véhicule, etc.)
+            // 1. Créances Clients / Crédit accordé (Compte 411, 412, ardoise client)
+            if (compte.startsWith('411') || compte.startsWith('412') || raw.includes('creance') || raw.includes('créance') || raw.includes('ardoise') || raw.includes('client demba') || raw.includes('a credit') || raw.includes('à crédit')) {
+                return {
+                    key: 'creance',
+                    label: 'Créances',
+                    logoUrl: '/static/images/flows/creance.png',
+                    iconFallback: 'fa-solid fa-file-invoice-dollar'
+                };
+            }
+
+            // 2. Salaires & Personnel (Compte 661, 421, 422 paie, acomptes)
+            if (compte.startsWith('66') || compte.startsWith('42') || raw.includes('salaire') || raw.includes('paie') || raw.includes('personnel') || raw.includes('employe') || raw.includes('employé') || raw.includes('acompte')) {
+                return {
+                    key: 'salaire',
+                    label: 'Salaires',
+                    logoUrl: '/static/images/flows/salaire.png',
+                    iconFallback: 'fa-solid fa-users-gear'
+                };
+            }
+
+            // 3. Impôts & Taxes (Compte 64, 44, DGID, TVA, BRS, patente)
+            if (compte.startsWith('64') || compte.startsWith('44') || raw.includes('impot') || raw.includes('impôt') || raw.includes('taxe') || raw.includes('dgid') || raw.includes('tva') || raw.includes('brs') || raw.includes('patente')) {
+                return {
+                    key: 'impot',
+                    label: 'Impôts',
+                    logoUrl: '/static/images/flows/impot.png',
+                    iconFallback: 'fa-solid fa-scale-balanced'
+                };
+            }
+
+            // 4. Immobilisation (Comptes classe 2: matériel, bâtiment, véhicule, etc.)
             if (compte.startsWith('2') || raw.includes('immobilis') || raw.includes('matériel') || raw.includes('materiel') || raw.includes('bâtiment') || raw.includes('batiment') || raw.includes('véhicule') || raw.includes('vehicule') || raw.includes('ordinateur') || raw.includes('équipement') || raw.includes('equipement')) {
                 return {
                     key: 'immobilisation',
@@ -7419,7 +7469,7 @@
                 };
             }
 
-            // 2. Stock (Comptes classe 3 ou 601/602 achats stocks de marchandises)
+            // 5. Stock (Comptes classe 3 ou 601/602 achats stocks de marchandises)
             if (compte.startsWith('3') || compte.startsWith('601') || compte.startsWith('602') || raw.includes('stock') || raw.includes('marchandise') || raw.includes('inventaire') || raw.includes('achat de riz') || raw.includes('fourniture')) {
                 return {
                     key: 'stock',
@@ -7429,8 +7479,8 @@
                 };
             }
 
-            // 3. Dette / Emprunt / Fournisseurs (Comptes 16x emprunt, 401 fournisseur, 402, 404)
-            if (compte.startsWith('16') || compte.startsWith('401') || compte.startsWith('402') || compte.startsWith('404') || raw.includes('dette') || raw.includes('emprunt') || raw.includes('fournisseur') || raw.includes('remboursement')) {
+            // 6. Dette / Emprunt / Fournisseurs (Comptes 16x emprunt, 401 fournisseur, 402, 404)
+            if (compte.startsWith('16') || compte.startsWith('401') || compte.startsWith('402') || compte.startsWith('404') || raw.includes('dette') || raw.includes('emprunt') || raw.includes('fournisseur')) {
                 return {
                     key: 'dette',
                     label: 'Dette',
@@ -7439,7 +7489,7 @@
                 };
             }
 
-            // 4. Capital / Apports propres (Comptes classe 10: 101 capital, 103 exploitant)
+            // 7. Capital / Apports propres (Comptes classe 10: 101 capital, 103 exploitant)
             if (compte.startsWith('10') || compte.startsWith('11') || raw.includes('capital') || raw.includes('apport') || raw.includes('associé') || raw.includes('associe') || raw.includes('fonds propre')) {
                 return {
                     key: 'capital',
@@ -7449,7 +7499,17 @@
                 };
             }
 
-            // 5. Wave Sénégal
+            // 8. Banque / Virement / Chèque (Compte 521, CBAO, SGBS, Ecobank, BOA)
+            if (src === 'BANQUE' || src === 'VIREMENT' || (compte.startsWith('52') && !src.includes('WAVE') && !src.includes('ORANGE')) || raw.includes('banque') || raw.includes('virement') || raw.includes('chèque') || raw.includes('cheque') || raw.includes('cbao') || raw.includes('sgbs') || raw.includes('ecobank')) {
+                return {
+                    key: 'banque',
+                    label: 'Banque',
+                    logoUrl: '/static/images/flows/banque.png',
+                    iconFallback: 'fa-solid fa-building-columns'
+                };
+            }
+
+            // 9. Wave Sénégal
             if (src === 'WAVE' || raw.includes('wave')) {
                 return {
                     key: 'wave',
@@ -7459,7 +7519,7 @@
                 };
             }
 
-            // 6. Orange Money Sénégal
+            // 10. Orange Money Sénégal
             if (src === 'ORANGE_MONEY' || src.includes('ORANGE') || raw.includes('orange') || raw.includes('om')) {
                 return {
                     key: 'orange',
@@ -7469,7 +7529,7 @@
                 };
             }
 
-            // 7. Espèces FCFA (Caisse 571 ou cash)
+            // 11. Espèces FCFA (Caisse 571 ou cash)
             if (src === 'ESPECES' || compte.startsWith('57') || raw.includes('espece') || raw.includes('espèce') || raw.includes('cash') || raw.includes('caisse')) {
                 return {
                     key: 'especes',
@@ -7506,7 +7566,7 @@
             const now = new Date();
 
             // 0. Calcul des compteurs dynamiques des 7 Flux
-            const flowCounts = { all: allTransactions.length, wave: 0, orange: 0, especes: 0, immobilisation: 0, stock: 0, dette: 0, capital: 0 };
+            const flowCounts = { all: allTransactions.length, wave: 0, orange: 0, especes: 0, banque: 0, creance: 0, immobilisation: 0, stock: 0, dette: 0, salaire: 0, impot: 0, capital: 0 };
             allTransactions.forEach(t => {
                 const fm = detectFlowMeta(t);
                 if (flowCounts[fm.key] !== undefined) flowCounts[fm.key]++;
