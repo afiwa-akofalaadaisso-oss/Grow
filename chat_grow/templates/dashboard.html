@@ -7823,6 +7823,8 @@ Téléchargement du relevé certifié en cours.");
                 switchVerticalTab('about');
             } else if (activeTab === 'prets' || activeTab === 'pret') {
                 switchVerticalTab('prets');
+            } else if (activeTab === 'add') {
+                setTimeout(() => ouvrirModalQuickTx('ENTREE'), 300);
             }
             if (tabParam === 'about' || tabParam === 'grow') {
                 switchVerticalTab('about');
@@ -8073,7 +8075,7 @@ Téléchargement du relevé certifié en cours.");
             <i class="fa-solid fa-plus"></i>
         </button>
 
-        <button type="button" class="bottom-nav-item" id="bNavAbonnement" onclick="window.location.href='/abonnement'" title="Mon abonnement Grow">
+        <button type="button" class="bottom-nav-item" id="bNavAbonnement" onclick="const p = new URLSearchParams(window.location.search).get('phone') || (window.currentEntreprise ? window.currentEntreprise.telephone_whatsapp : '221788773827'); window.location.href='/abonnement?phone=' + encodeURIComponent(p);" title="Mon abonnement Grow">
             <i class="fa-solid fa-credit-card"></i>
             <span>Abonnement</span>
         </button>
