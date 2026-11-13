@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#222222">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Abonnement Grow • Pré-Comptabilité SYSCOHADA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --grow-dark: #222222;
             --grow-dark-card: #1f2222;
-            --grow-mint: #a0d9d2;
-            --grow-mint-hover: #8ecfc7;
+            --grow-mint: #38bdf8;
+            --grow-mint-hover: #0284c7;
             --grow-mint-glow: rgba(160, 217, 210, 0.25);
             --grow-surface: #ffffff;
             --grow-bg: #f8fafc;
@@ -23,7 +26,7 @@
             --wave-blue: #0284c7;
             --wave-blue-bg: #e0f2fe;
             --wave-border: rgba(2, 132, 199, 0.25);
-            --om-orange: #ea580c;
+            --om-orange: #0284c7;
             --om-orange-bg: #ffedd5;
             --om-border: rgba(234, 88, 12, 0.25);
         }
@@ -43,7 +46,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 0 84px 0; /* Espace pour la bottom bar */
+            padding: 0 0 84px 0;
+            /* Espace pour la bottom bar */
         }
 
         /* BARRE SUPÉRIEURE FLOTTANTE */
@@ -128,8 +132,8 @@
             gap: 5px;
             font-size: 11px;
             font-weight: 700;
-            color: #10b981;
-            background: #ecfdf5;
+            color: #0284c7;
+            background: #eff6ff;
             padding: 4px 9px;
             border-radius: 20px;
             border: 1px solid #a7f3d0;
@@ -161,7 +165,7 @@
             line-height: 1.45;
         }
 
-        /* CARTE FORFAIT PRESTIGE CHARTE GROW (NOIR #222222 + VERT MENTHE #a0d9d2) */
+        /* CARTE FORFAIT PRESTIGE CHARTE GROW (NOIR #222222 + VERT MENTHE #38bdf8) */
         .plan-card-prestige {
             background: linear-gradient(145deg, #1f2222 0%, #292d2d 100%);
             border: 1.5px solid rgba(160, 217, 210, 0.35);
@@ -414,7 +418,7 @@
 
         .reassurance-item i {
             font-size: 15px;
-            color: #0e7647;
+            color: #0284c7;
             background: rgba(160, 217, 210, 0.2);
             padding: 8px;
             border-radius: 10px;
@@ -517,7 +521,7 @@
         }
 
         .bottom-nav-item.active i {
-            color: #0e7647;
+            color: #0284c7;
             transform: scale(1.18) translateY(-1px);
             filter: drop-shadow(0 2px 6px rgba(160, 217, 210, 0.7));
         }
@@ -543,8 +547,8 @@
             height: 48px;
             border-radius: 50%;
             background: #222222;
-            color: #a0d9d2;
-            border: 2px solid #a0d9d2;
+            color: #38bdf8;
+            border: 2px solid #38bdf8;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -588,8 +592,15 @@
         }
 
         @keyframes popIn {
-            from { transform: scale(0.85); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.85);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .success-icon-circle {
@@ -597,7 +608,7 @@
             height: 60px;
             border-radius: 50%;
             background: rgba(160, 217, 210, 0.2);
-            color: #0e7647;
+            color: #0284c7;
             font-size: 26px;
             display: flex;
             align-items: center;
@@ -657,12 +668,14 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- TOP APP BAR -->
     <header class="top-app-bar">
         <div class="top-bar-left">
-            <button type="button" class="btn-back-round" onclick="retournerAuDashboard()" title="Retour au tableau de bord">
+            <button type="button" class="btn-back-round" onclick="retournerAuDashboard()"
+                title="Retour au tableau de bord">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
             <div class="brand-header-mini">
@@ -681,7 +694,8 @@
     <main class="abonnement-main">
         <div class="title-block">
             <h1>Abonnement Pré-Comptable</h1>
-            <p>Activez la certification financière SYSCOHADA de votre PME et l'ouverture de vos dossiers de crédits bancaires.</p>
+            <p>Activez la certification financière SYSCOHADA de votre PME et l'ouverture de vos dossiers de crédits
+                bancaires.</p>
         </div>
 
         <!-- CARTE FORFAIT PRESTIGE CHARTE GROW -->
@@ -776,7 +790,8 @@
 
         <!-- INSTRUCTIONS ONBOARDING & RETOUR -->
         <div class="onboarding-hint">
-            Après votre paiement, renvoyez simplement <strong>« Fey naa »</strong> (Wolof) ou <strong>« J'ai payé »</strong> sur WhatsApp pour démarrer immédiatement vos opérations.
+            Après votre paiement, renvoyez simplement <strong>« Fey naa »</strong> (Wolof) ou <strong>« J'ai payé
+                »</strong> sur WhatsApp pour démarrer immédiatement vos opérations.
         </div>
 
         <button type="button" class="btn-direct-dash" onclick="retournerAuDashboard()">
@@ -786,17 +801,20 @@
 
     <!-- BARRE DE NAVIGATION INFÉRIEURE MOBILE (IDENTIQUE DASHBOARD, ONGLET ABONNEMENT ACTIF) -->
     <nav class="mobile-bottom-nav">
-        <button type="button" class="bottom-nav-item" onclick="retournerAuDashboard()" title="Tableau de bord financier">
+        <button type="button" class="bottom-nav-item" onclick="retournerAuDashboard()"
+            title="Tableau de bord financier">
             <i class="fa-solid fa-house"></i>
             <span>Accueil</span>
         </button>
 
-        <button type="button" class="bottom-nav-item" onclick="allerVersDashboardOnglet('prets')" title="Financements et prêts bancaires">
+        <button type="button" class="bottom-nav-item" onclick="allerVersDashboardOnglet('prets')"
+            title="Financements et prêts bancaires">
             <i class="fa-solid fa-hand-holding-dollar"></i>
             <span>Prêts</span>
         </button>
 
-        <button type="button" class="bottom-nav-center-btn" onclick="allerVersDashboardOnglet('add')" title="Ajouter une vente ou dépense">
+        <button type="button" class="bottom-nav-center-btn" onclick="allerVersDashboardOnglet('add')"
+            title="Ajouter une vente ou dépense">
             <i class="fa-solid fa-plus"></i>
         </button>
 
@@ -805,7 +823,8 @@
             <span>Abonnement</span>
         </button>
 
-        <button type="button" class="bottom-nav-item" onclick="allerVersDashboardOnglet('about')" title="Tout savoir sur Grow">
+        <button type="button" class="bottom-nav-item" onclick="allerVersDashboardOnglet('about')"
+            title="Tout savoir sur Grow">
             <i class="fa-solid fa-circle-info"></i>
             <span>Grow</span>
         </button>
@@ -819,7 +838,8 @@
             </div>
             <h3 class="success-title" id="modalOpTitle">Paiement Validé avec Succès !</h3>
             <p class="success-desc" id="modalOpDesc">
-                Votre abonnement Grow PME de <strong>10 000 FCFA</strong> a été validé. Vos services pré-comptables SYSCOHADA sont désormais actifs.
+                Votre abonnement Grow PME de <strong>10 000 FCFA</strong> a été validé. Vos services pré-comptables
+                SYSCOHADA sont désormais actifs.
             </p>
 
             <a href="javascript:void(0)" onclick="allerVersWhatsApp()" class="btn-return-wa">
@@ -881,4 +901,5 @@
         }
     </script>
 </body>
+
 </html>
