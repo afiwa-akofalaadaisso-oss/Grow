@@ -5247,12 +5247,63 @@
             display: none;
             background: linear-gradient(90deg, #0a2540 0%, #111618 100%);
             color: #ffffff;
-            padding: 8px 24px;
+            padding: 8px 0;
             font-size: 11.5px;
             font-weight: 600;
-            justify-content: space-between;
+            border-bottom: 1px solid rgba(160, 217, 210, 0.25);
+            overflow: hidden;
+            position: relative;
+            white-space: nowrap;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .desktop-comptable-banner:hover .comptable-ticker-track {
+            animation-play-state: paused;
+        }
+
+        .comptable-ticker-track {
+            display: inline-flex;
+            width: max-content;
+            animation: comptableTickerScroll 32s linear infinite;
+        }
+
+        .comptable-ticker-content {
+            display: inline-flex;
             align-items: center;
-            border-bottom: 1px solid rgba(160, 217, 210, 0.2);
+            gap: 26px;
+            padding-right: 26px;
+            flex-shrink: 0;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+
+        .ticker-item i {
+            color: #a0d9d2;
+            font-size: 12px;
+        }
+
+        .ticker-sep {
+            color: #a0d9d2;
+            opacity: 0.6;
+            font-size: 12px;
+        }
+
+        @keyframes comptableTickerScroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         .desktop-comptable-badge {
@@ -5711,13 +5762,34 @@
     <!-- ========================================================================= -->
     <!-- BANDEAU OFFICIEL CABINET EXPERT-COMPTABLE & PORTAIL CLIENT ONECCA        -->
     <!-- ========================================================================= -->
-    <div class="desktop-comptable-banner" id="desktopComptableBanner">
-        <div class="desktop-comptable-badge">
-            <i class="fa-solid fa-stamp"></i>
-            <span>PORTAIL EXPERT-COMPTABLE &bull; SYSCOHADA RÉVISÉ (SÉNÉGAL)</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 14px;">
-            <span style="color: #a0d9d2; font-size: 11.5px; font-weight: 700;" id="comptableTotalClientsCount">&bull; 0 entreprises au cabinet</span>
+    <div class="desktop-comptable-banner" id="desktopComptableBanner" title="Défilement automatique • Survolez pour figer">
+        <div class="comptable-ticker-track">
+            <div class="comptable-ticker-content">
+                <span class="ticker-item"><i class="fa-solid fa-stamp"></i> PORTAIL EXPERT-COMPTABLE &bull; SYSCOHADA RÉVISÉ (SÉNÉGAL)</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item comptable-total-clients-count" id="comptableTotalClientsCount"><i class="fa-solid fa-building"></i> 1 entreprise au cabinet</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item"><i class="fa-solid fa-certificate"></i> Conforme ONECCA &bull; Direction Générale des Impôts et des Domaines (DGID)</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item"><i class="fa-solid fa-scale-balanced"></i> Bilan Comptable &bull; Compte de Résultat &bull; SIG &bull; TFT</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item"><i class="fa-solid fa-shield-halved"></i> Horodatage &amp; Scellement Numérique SHA-256</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item"><i class="fa-solid fa-bolt"></i> Traçabilité &bull; Wave &bull; Orange Money &bull; Banque &bull; Caisse</span>
+            </div>
+            <div class="comptable-ticker-content" aria-hidden="true">
+                <span class="ticker-item"><i class="fa-solid fa-stamp"></i> PORTAIL EXPERT-COMPTABLE &bull; SYSCOHADA RÉVISÉ (SÉNÉGAL)</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item comptable-total-clients-count"><i class="fa-solid fa-building"></i> 1 entreprise au cabinet</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item"><i class="fa-solid fa-certificate"></i> Conforme ONECCA &bull; Direction Générale des Impôts et des Domaines (DGID)</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item"><i class="fa-solid fa-scale-balanced"></i> Bilan Comptable &bull; Compte de Résultat &bull; SIG &bull; TFT</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item"><i class="fa-solid fa-shield-halved"></i> Horodatage &amp; Scellement Numérique SHA-256</span>
+                <span class="ticker-sep">&bull;</span>
+                <span class="ticker-item"><i class="fa-solid fa-bolt"></i> Traçabilité &bull; Wave &bull; Orange Money &bull; Banque &bull; Caisse</span>
+            </div>
         </div>
     </div>
 
@@ -7844,9 +7916,11 @@
                         clientNameEl.textContent = `Dossier Client : ${currentEntreprise.nom_entreprise || 'Entreprise'}`;
                     }
                 }
-                const totalClientsEl = document.getElementById('comptableTotalClientsCount');
-                if (totalClientsEl && data.entreprises) {
-                    totalClientsEl.textContent = `• ${data.entreprises.length} entreprise${data.entreprises.length > 1 ? 's' : ''} au cabinet`;
+                if (data.entreprises) {
+                    const totalCountHtml = `<i class="fa-solid fa-building"></i> ${data.entreprises.length} entreprise${data.entreprises.length > 1 ? 's' : ''} au cabinet`;
+                    document.querySelectorAll('.comptable-total-clients-count').forEach(el => {
+                        el.innerHTML = totalCountHtml;
+                    });
                 }
                 // Mise à jour immédiate du compteur Vos Preuves Financières
                 const totalPreuvesCount = allTransactions.filter(t => (t.preuves_numeriques && t.preuves_numeriques.length > 0) || ['WAVE', 'ORANGE_MONEY', 'BANQUE'].includes((t.source_paiement || '').toUpperCase()) || t.statut_validation === 'VALIDE_PME').length;
