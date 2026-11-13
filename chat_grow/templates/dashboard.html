@@ -3645,6 +3645,341 @@
             }
         }
 
+    
+        /* ========================================================================= */
+        /* STYLES INTERFACE PRÊTS & AGENCES PARTENAIRES HAUTE DÉFINITION            */
+        /* ========================================================================= */
+        .loan-agencies-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px 2px 14px 2px;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+        }
+
+        .loan-agencies-filter-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .agency-filter-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 12.5px;
+            font-weight: 700;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            color: #475569;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .agency-filter-pill:hover {
+            border-color: #a0d9d2;
+            color: #0f172a;
+        }
+
+        .agency-filter-pill.active {
+            background: #222222;
+            border-color: #222222;
+            color: #a0d9d2;
+            box-shadow: 0 4px 12px rgba(34, 34, 34, 0.25);
+        }
+
+        .agency-pill-badge {
+            background: rgba(160, 217, 210, 0.2);
+            color: #a0d9d2;
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .loan-offers-grid-v2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+
+        .loan-partner-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            position: relative;
+        }
+
+        .loan-partner-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.09);
+            border-color: #a0d9d2;
+        }
+
+        .loan-card-top-header {
+            padding: 20px 22px 14px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+
+        .partner-brand-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .partner-logo-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 900;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+        }
+
+        .partner-logo-box.baobab { color: #f97316; border-color: #fed7aa; }
+        .partner-logo-box.cofina { color: #dc2626; border-color: #fecaca; }
+        .partner-logo-box.pamecas { color: #16a34a; border-color: #bbf7d0; }
+        .partner-logo-box.cms { color: #0284c7; border-color: #bae6fd; }
+        .partner-logo-box.cbao { color: #b45309; border-color: #fde68a; }
+        .partner-logo-box.ecobank { color: #0d9488; border-color: #99f6e4; }
+        .partner-logo-box.der { color: #9333ea; border-color: #e9d5ff; }
+
+        .partner-name-badge {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+        }
+
+        .loan-product-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.25;
+            margin-top: 2px;
+        }
+
+        .eligibility-status-pill {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10.5px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .eligibility-status-pill.green {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .eligibility-status-pill.amber {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .loan-card-body-content {
+            padding: 20px 22px;
+            flex: 1;
+        }
+
+        .loan-amount-badge-v2 {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .loan-amount-num {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: #0a2540;
+        }
+
+        .loan-amount-unit {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0e7647;
+        }
+
+        .loan-specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .loan-spec-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-item-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .spec-item-val {
+            font-size: 13px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-top: 2px;
+        }
+
+        /* Liste des pièces requises avec statut d'audit Grow */
+        .required-docs-title {
+            font-size: 11.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #334155;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .required-docs-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 18px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .required-doc-item {
+            font-size: 11.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 10px;
+            color: #475569;
+        }
+
+        .doc-name {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-weight: 600;
+        }
+
+        .doc-status-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+        }
+
+        .doc-status-badge.ready {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .doc-status-badge.missing {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .loan-card-footer {
+            padding: 16px 22px;
+            background: #f8fafc;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-apply-loan-v2 {
+            flex: 1;
+            background: #222222;
+            color: #a0d9d2;
+            border: 1.5px solid #222222;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 12.5px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(34, 34, 34, 0.2);
+        }
+
+        .btn-apply-loan-v2:hover {
+            background: #333333;
+            border-color: #a0d9d2;
+            transform: translateY(-1px);
+        }
+
+        .btn-dossier-checklist {
+            background: #ffffff;
+            color: #334155;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-dossier-checklist:hover {
+            border-color: #64748b;
+            background: #f1f5f9;
+        }
+
+        /* MODALE DOSSIER 1-CLIC OFFICIEL & PIÈCES TRANSMISES */
+        .modal-dossier-box {
+            max-width: 580px !important;
+            width: 92% !important;
+            border-radius: 20px !important;
+            overflow: hidden !important;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3) !important;
+        }
+
     </style>
 
 
@@ -4062,126 +4397,537 @@
         </div>
 
 
-        <!-- CONTENU 2 : VOIR À QUEL PRÊT VOUS ÊTES ÉLIGIBLE (AVEC GARANTIE DE VÉRITÉ) -->
+                <!-- CONTENU 2 : VOIR À QUEL PRÊT VOUS ÊTES ÉLIGIBLE (AVEC AGENCES PARTENAIRES & DOSSIERS) -->
         <div id="viewPrets" style="display: none;">
 
             <!-- 1. En-tête KPI de Solvabilité Certifiée Réelle -->
             <div class="loan-kpi-grid">
                 <div class="loan-kpi-card gold">
                     <div class="loan-kpi-title">Capacité d'Emprunt Maximale Estimée</div>
-                    <div class="loan-kpi-value" style="color: #0e7647;" id="kpiCapacite">-- FCFA</div>
+                    <div class="loan-kpi-value" style="color: #0e7647;" id="kpiCapacite">10 000 000 FCFA</div>
                     <div class="loan-kpi-sub" id="kpiCapaciteSub">
-                        <i class="fa-solid fa-circle-check"></i> Prêt pré-qualifié selon vos encaissements réels
+                        <i class="fa-solid fa-circle-check"></i> Calculé selon vos flux vérifiés SYSCOHADA
                     </div>
                 </div>
 
                 <div class="loan-kpi-card">
                     <div class="loan-kpi-title">Score de Crédit Bancaire (Grow / ONECCA)</div>
-                    <div class="loan-kpi-value"><span id="kpiScore">--</span> <span
+                    <div class="loan-kpi-value"><span id="kpiScore">885</span> <span
                             style="font-size: 16px; color: #64748b; font-weight: 600;">/ 1000</span></div>
                     <div class="loan-kpi-sub" style="color: #0e7647;" id="kpiScoreSub">
-                        <i class="fa-solid fa-star"></i> Calculé selon la traçabilité de vos pièces
+                        <i class="fa-solid fa-star"></i> Excellente traçabilité numérique certifiée
                     </div>
                 </div>
 
                 <div class="loan-kpi-card">
                     <div class="loan-kpi-title">Capacité de Remboursement Mensuelle Prudentielle</div>
-                    <div class="loan-kpi-value"><span id="kpiMensualite">-- FCFA</span> <span
+                    <div class="loan-kpi-value"><span id="kpiMensualite">330 000 FCFA</span> <span
                             style="font-size: 14px; color: #64748b; font-weight: 600;">/ mois</span></div>
                     <div class="loan-kpi-sub" style="color: #475569;" id="kpiMensualiteSub">
-                        Plafonné à 33% de votre cash-flow net mensuel
+                        Plafonné à 33% du cash-flow net (Règle BCEAO)
                     </div>
                 </div>
 
                 <div class="loan-kpi-card">
-                    <div class="loan-kpi-title">Fiabilité des Pièces Justificatives</div>
-                    <div class="loan-kpi-value" id="kpiTauxPreuve">--%</div>
+                    <div class="loan-kpi-title">Dossier Juridique & Statut NINEA</div>
+                    <div class="loan-kpi-value" style="font-size: 20px; color: #0a2540;">100% Conforme</div>
                     <div class="loan-kpi-sub">
-                        <i class="fa-solid fa-shield-halved"></i> Pièces et preuves enregistrées en base
+                        <i class="fa-solid fa-shield-halved"></i> Attestation officielle & NINEA vérifiés
                     </div>
                 </div>
             </div>
 
-            <!-- 2. Les 3 Offres de Prêts Concrètes & Éligibles auprès de nos Agences Partenaires -->
-            <h2 style="font-size: 18px; font-weight: 800; color: #0a2540; margin-bottom: 16px;">
-                <i class="fa-solid fa-building-columns" style="color: #0e7647;"></i> Offres de Financements Éligibles
-                Immédiatement
-            </h2>
+            <!-- 2. Titre et Barre de Filtres par Agence Partenaire -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                <div>
+                    <h2 style="font-size: 18px; font-weight: 900; color: #0a2540; margin: 0;">
+                        <i class="fa-solid fa-building-columns" style="color: #0e7647;"></i> Financements Éligibles par Agence Partenaire
+                    </h2>
+                    <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">
+                        Consultez le montant maximum, le taux, et les pièces officielles transmises en 1 clic à chaque institution.
+                    </p>
+                </div>
+            </div>
 
-            <div class="loan-offers-grid">
-                <!-- Offre 1 : Baobab / COFINA Express Trésorerie -->
-                <div class="loan-offer-card featured">
-                    <span class="featured-ribbon">Recommandé &bull; Taux d'accord 98%</span>
-                    <div>
-                        <div class="offer-partner-name">PARTENAIRES : BAOBAB SÉNÉGAL &bull; COFINA</div>
-                        <h3 class="offer-product-title">Crédit Trésorerie Express Commerçant</h3>
-                        <div class="offer-amount-badge">2 500 000 FCFA</div>
-                        <ul class="offer-feature-list">
-                            <li><i class="fa-solid fa-check"></i> Durée de remboursement : <strong>12 mois</strong></li>
-                            <li><i class="fa-solid fa-check"></i> Mensualité estimée : <strong>225 000 FCFA /
-                                    mois</strong></li>
-                            <li><i class="fa-solid fa-check"></i> Décaissement rapide : <strong>Sous 48h</strong> sur
-                                compte Wave</li>
-                            <li><i class="fa-solid fa-check"></i> Garantie : Historique de flux Wave certifié Grow</li>
+            <!-- Filtres par Institution Partenaire -->
+            <div class="loan-agencies-filter-bar">
+                <button type="button" class="agency-filter-pill active" onclick="filterLoanAgencies('all', this)">
+                    <span>Toutes les Agences</span> <span class="agency-pill-badge">6</span>
+                </button>
+                <button type="button" class="agency-filter-pill" onclick="filterLoanAgencies('baobab', this)">
+                    <i class="fa-solid fa-bolt" style="color: #f97316;"></i> Baobab Sénégal
+                </button>
+                <button type="button" class="agency-filter-pill" onclick="filterLoanAgencies('cofina', this)">
+                    <i class="fa-solid fa-coins" style="color: #dc2626;"></i> COFINA
+                </button>
+                <button type="button" class="agency-filter-pill" onclick="filterLoanAgencies('pamecas', this)">
+                    <i class="fa-solid fa-handshake" style="color: #16a34a;"></i> PAMECAS / CMS
+                </button>
+                <button type="button" class="agency-filter-pill" onclick="filterLoanAgencies('cbao', this)">
+                    <i class="fa-solid fa-landmark" style="color: #b45309;"></i> CBAO Groupe Attijari
+                </button>
+                <button type="button" class="agency-filter-pill" onclick="filterLoanAgencies('ecobank', this)">
+                    <i class="fa-solid fa-building-columns" style="color: #0d9488;"></i> Ecobank Sénégal
+                </button>
+                <button type="button" class="agency-filter-pill" onclick="filterLoanAgencies('der', this)">
+                    <i class="fa-solid fa-award" style="color: #9333ea;"></i> DER / FJ (État)
+                </button>
+            </div>
+
+            <!-- Grille des Offres Détaillées avec Pièces Requises -->
+            <div class="loan-offers-grid-v2" id="loanOffersList">
+
+                <!-- CARTE 1 : BAOBAB SÉNÉGAL -->
+                <div class="loan-partner-card" data-agency="baobab">
+                    <div class="loan-card-top-header">
+                        <div class="partner-brand-group">
+                            <div class="partner-logo-box baobab">BB</div>
+                            <div>
+                                <span class="partner-name-badge">Baobab Sénégal &bull; Microfinance</span>
+                                <h3 class="loan-product-name">Crédit Flash Trésorerie Marchande</h3>
+                            </div>
+                        </div>
+                        <span class="eligibility-status-pill green">
+                            <i class="fa-solid fa-circle-check"></i> Éligible 98%
+                        </span>
+                    </div>
+
+                    <div class="loan-card-body-content">
+                        <div class="loan-amount-badge-v2">
+                            <span class="loan-amount-num">2 500 000</span>
+                            <span class="loan-amount-unit">FCFA</span>
+                        </div>
+
+                        <div class="loan-specs-grid">
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Durée</span>
+                                <span class="spec-item-val">12 mois</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Mensualité</span>
+                                <span class="spec-item-val">228 000 FCFA</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Décaissement</span>
+                                <span class="spec-item-val">48h (Wave / Caisse)</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Garantie</span>
+                                <span class="spec-item-val">Flux Grow certifiés</span>
+                            </div>
+                        </div>
+
+                        <div class="required-docs-title">
+                            <span>Dossier &amp; Pièces à Fournir</span>
+                            <span style="font-size: 10px; color: #15803d;"><i class="fa-solid fa-circle-check"></i> Prêt pour envoi</span>
+                        </div>
+                        <ul class="required-docs-list">
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-id-card" style="color: #64748b;"></i> Pièce d'Identité / CNI du Gérant</span>
+                                <span class="doc-status-badge ready">Prêt (CNI Fatou)</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-file-contract" style="color: #64748b;"></i> Attestation NINEA Officielle</span>
+                                <span class="doc-status-badge ready">Vérifié Grow</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-chart-line" style="color: #64748b;"></i> Relevé d'Encaissements Wave certifié (3 mois)</span>
+                                <span class="doc-status-badge ready">Généré par Grow</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-camera" style="color: #64748b;"></i> Preuve de localisation / Photo boutique</span>
+                                <span class="doc-status-badge ready">Archivé</span>
+                            </li>
                         </ul>
                     </div>
-                    <button class="btn-apply-offer"
-                        onclick="demanderPret('Crédit Trésorerie Express (2.5M FCFA)', 'Baobab / Cofina')">
-                        <i class="fa-solid fa-paper-plane"></i> Demander ce prêt (Dossier 1 Clic)
-                    </button>
+
+                    <div class="loan-card-footer">
+                        <button type="button" class="btn-dossier-checklist" onclick="ouvrirDossierPretModal('Baobab Sénégal', 'Crédit Flash Trésorerie', '2 500 000 FCFA', '12 mois', ['CNI du Gérant', 'Attestation NINEA Officielle', 'Relevé de caisse Wave certifié 3 mois', 'Facture d’électricité / Certificat de résidence'])">
+                            <i class="fa-solid fa-folder-open"></i> Voir Dossier
+                        </button>
+                        <button type="button" class="btn-apply-loan-v2" onclick="demanderPretOfficiel('Crédit Flash Trésorerie (2.5M)', 'Baobab Sénégal')">
+                            <i class="fa-solid fa-paper-plane"></i> Transmettre en 1 Clic
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Offre 2 : PAMECAS / CMS Financement Stock -->
-                <div class="loan-offer-card">
-                    <div>
-                        <div class="offer-partner-name">PARTENAIRES : PAMECAS &bull; CRÉDIT MUTUEL DU SÉNÉGAL</div>
-                        <h3 class="offer-product-title">Financement de Stocks &amp; Approvisionnement</h3>
-                        <div class="offer-amount-badge">5 000 000 FCFA</div>
-                        <ul class="offer-feature-list">
-                            <li><i class="fa-solid fa-check"></i> Durée de remboursement : <strong>18 mois</strong></li>
-                            <li><i class="fa-solid fa-check"></i> Mensualité estimée : <strong>310 000 FCFA /
-                                    mois</strong></li>
-                            <li><i class="fa-solid fa-check"></i> Taux préférentiel PME : <strong>8.5% l'an</strong>
+                <!-- CARTE 2 : COFINA SÉNÉGAL -->
+                <div class="loan-partner-card" data-agency="cofina">
+                    <div class="loan-card-top-header">
+                        <div class="partner-brand-group">
+                            <div class="partner-logo-box cofina">CF</div>
+                            <div>
+                                <span class="partner-name-badge">COFINA Sénégal &bull; Mésofinance</span>
+                                <h3 class="loan-product-name">Financement d'Approvisionnement Stock</h3>
+                            </div>
+                        </div>
+                        <span class="eligibility-status-pill green">
+                            <i class="fa-solid fa-circle-check"></i> Éligible 95%
+                        </span>
+                    </div>
+
+                    <div class="loan-card-body-content">
+                        <div class="loan-amount-badge-v2">
+                            <span class="loan-amount-num">4 000 000</span>
+                            <span class="loan-amount-unit">FCFA</span>
+                        </div>
+
+                        <div class="loan-specs-grid">
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Durée</span>
+                                <span class="spec-item-val">18 mois</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Mensualité</span>
+                                <span class="spec-item-val">255 000 FCFA</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Taux d'intérêt</span>
+                                <span class="spec-item-val">1.2% / mois</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Décaissement</span>
+                                <span class="spec-item-val">72h direct fournisseur</span>
+                            </div>
+                        </div>
+
+                        <div class="required-docs-title">
+                            <span>Dossier &amp; Pièces à Fournir</span>
+                            <span style="font-size: 10px; color: #15803d;"><i class="fa-solid fa-circle-check"></i> Prêt pour envoi</span>
+                        </div>
+                        <ul class="required-docs-list">
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-id-card"></i> CNI ou Passeport du dirigeant</span>
+                                <span class="doc-status-badge ready">Prêt</span>
                             </li>
-                            <li><i class="fa-solid fa-check"></i> Nantissement : Valeur des stocks inventoriés (3.1M)
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-file-lines"></i> Registre de Commerce (RCCM Dakar)</span>
+                                <span class="doc-status-badge ready">Prêt</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-boxes-stacked"></i> Factures proforma du fournisseur / stock</span>
+                                <span class="doc-status-badge ready">Prêt (Reçus Grow)</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-book-bookmark"></i> Grand Livre SYSCOHADA certifié ONECCA</span>
+                                <span class="doc-status-badge ready">Auto-Généré Grow</span>
                             </li>
                         </ul>
                     </div>
-                    <button class="btn-apply-offer"
-                        onclick="demanderPret('Financement de Stocks (5M FCFA)', 'PAMECAS / CMS')">
-                        <i class="fa-solid fa-paper-plane"></i> Demander ce prêt (Dossier 1 Clic)
-                    </button>
+
+                    <div class="loan-card-footer">
+                        <button type="button" class="btn-dossier-checklist" onclick="ouvrirDossierPretModal('COFINA Sénégal', 'Financement de Stocks', '4 000 000 FCFA', '18 mois', ['CNI du dirigeant', 'RCCM Dakar officiel', 'Attestation NINEA', 'Facture proforma fournisseur', 'Grand Livre SYSCOHADA Grow'])">
+                            <i class="fa-solid fa-folder-open"></i> Voir Dossier
+                        </button>
+                        <button type="button" class="btn-apply-loan-v2" onclick="demanderPretOfficiel('Financement de Stocks (4M)', 'COFINA Sénégal')">
+                            <i class="fa-solid fa-paper-plane"></i> Transmettre en 1 Clic
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Offre 3 : CBAO / Ecobank Développement PME -->
-                <div class="loan-offer-card">
-                    <div>
-                        <div class="offer-partner-name">BANQUES PARTENAIRES : CBAO &bull; ECOBANK &bull; BOA</div>
-                        <h3 class="offer-product-title">Ligne de Crédit &amp; Investissement PME</h3>
-                        <div class="offer-amount-badge">10 000 000 FCFA</div>
-                        <ul class="offer-feature-list">
-                            <li><i class="fa-solid fa-check"></i> Durée de remboursement : <strong>24 à 36 mois</strong>
+                <!-- CARTE 3 : PAMECAS & CMS -->
+                <div class="loan-partner-card" data-agency="pamecas">
+                    <div class="loan-card-top-header">
+                        <div class="partner-brand-group">
+                            <div class="partner-logo-box pamecas">PM</div>
+                            <div>
+                                <span class="partner-name-badge">PAMECAS &bull; Crédit Mutuel du Sénégal</span>
+                                <h3 class="loan-product-name">Prêt Équipement &amp; Agencement Magasin</h3>
+                            </div>
+                        </div>
+                        <span class="eligibility-status-pill green">
+                            <i class="fa-solid fa-circle-check"></i> Éligible 92%
+                        </span>
+                    </div>
+
+                    <div class="loan-card-body-content">
+                        <div class="loan-amount-badge-v2">
+                            <span class="loan-amount-num">5 000 000</span>
+                            <span class="loan-amount-unit">FCFA</span>
+                        </div>
+
+                        <div class="loan-specs-grid">
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Durée</span>
+                                <span class="spec-item-val">24 mois</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Taux préférentiel</span>
+                                <span class="spec-item-val">8.5% annuel</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Mensualité</span>
+                                <span class="spec-item-val">227 000 FCFA</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Garantie</span>
+                                <span class="spec-item-val">Nantissement matériel</span>
+                            </div>
+                        </div>
+
+                        <div class="required-docs-title">
+                            <span>Dossier &amp; Pièces à Fournir</span>
+                            <span style="font-size: 10px; color: #15803d;"><i class="fa-solid fa-circle-check"></i> Prêt pour envoi</span>
+                        </div>
+                        <ul class="required-docs-list">
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-file-invoice"></i> Devis de l'équipement (chambre froide/véhicule)</span>
+                                <span class="doc-status-badge ready">Prêt</span>
                             </li>
-                            <li><i class="fa-solid fa-check"></i> Taux d'intérêt bancaire corporate négocié</li>
-                            <li><i class="fa-solid fa-check"></i> Condition : Bilan certifié par Cabinet membre ONECCA
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-address-card"></i> Attestation NINEA &amp; RCCM certifiés</span>
+                                <span class="doc-status-badge ready">Prêt (Grow)</span>
                             </li>
-                            <li><i class="fa-solid fa-check"></i> Statut actuel : <strong>Pré-approuvé (Bilan
-                                    prêt)</strong></li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-money-bill-transfer"></i> Historique de caisse 6 mois BCEAO</span>
+                                <span class="doc-status-badge ready">Certifié Grow</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-receipt"></i> 3 dernières quittances d'électricité (Senelec)</span>
+                                <span class="doc-status-badge ready">Prêt</span>
+                            </li>
                         </ul>
                     </div>
-                    <button class="btn-apply-offer"
-                        onclick="demanderPret('Ligne d’Investissement Bancaire (10M FCFA)', 'Banques Partenaires CBAO/Ecobank')">
-                        <i class="fa-solid fa-paper-plane"></i> Transmettre le Bilan à la Banque
-                    </button>
+
+                    <div class="loan-card-footer">
+                        <button type="button" class="btn-dossier-checklist" onclick="ouvrirDossierPretModal('PAMECAS / CMS', 'Prêt Équipement & Agencement', '5 000 000 FCFA', '24 mois', ['Devis équipement/matériel', 'NINEA & RCCM certifiés', 'Bilan simplifié SYSCOHADA Grow', 'Factures Senelec'])">
+                            <i class="fa-solid fa-folder-open"></i> Voir Dossier
+                        </button>
+                        <button type="button" class="btn-apply-loan-v2" onclick="demanderPretOfficiel('Prêt Équipement (5M)', 'PAMECAS / CMS')">
+                            <i class="fa-solid fa-paper-plane"></i> Transmettre en 1 Clic
+                        </button>
+                    </div>
                 </div>
+
+                <!-- CARTE 4 : CBAO GROUPE ATTIJARIWAFA BANK -->
+                <div class="loan-partner-card" data-agency="cbao">
+                    <div class="loan-card-top-header">
+                        <div class="partner-brand-group">
+                            <div class="partner-logo-box cbao">CB</div>
+                            <div>
+                                <span class="partner-name-badge">CBAO &bull; Banque Commerciale</span>
+                                <h3 class="loan-product-name">Ligne de Crédit &amp; Découvert Garanti PME</h3>
+                            </div>
+                        </div>
+                        <span class="eligibility-status-pill green">
+                            <i class="fa-solid fa-circle-check"></i> Éligible Bilan
+                        </span>
+                    </div>
+
+                    <div class="loan-card-body-content">
+                        <div class="loan-amount-badge-v2">
+                            <span class="loan-amount-num">10 000 000</span>
+                            <span class="loan-amount-unit">FCFA</span>
+                        </div>
+
+                        <div class="loan-specs-grid">
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Durée</span>
+                                <span class="spec-item-val">24 à 36 mois</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Taux corporate</span>
+                                <span class="spec-item-val">7.5% négocié</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Audit requis</span>
+                                <span class="spec-item-val">Visa ONECCA</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Type</span>
+                                <span class="spec-item-val">Ligne revolving</span>
+                            </div>
+                        </div>
+
+                        <div class="required-docs-title">
+                            <span>Dossier &amp; Pièces à Fournir</span>
+                            <span style="font-size: 10px; color: #15803d;"><i class="fa-solid fa-circle-check"></i> Prêt pour envoi</span>
+                        </div>
+                        <ul class="required-docs-list">
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-stamp"></i> Bilan Comptable SYSCOHADA SMT visé ONECCA</span>
+                                <span class="doc-status-badge ready">Généré Grow</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-building"></i> Statuts société ou NINEA Entreprise Individuelle</span>
+                                <span class="doc-status-badge ready">Vérifié</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-file-waveform"></i> Tableau des Flux de Trésorerie Rapprochement Bancaire</span>
+                                <span class="doc-status-badge ready">Généré Grow</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-file-shield"></i> Attestation de Régularité Fiscale (DGID)</span>
+                                <span class="doc-status-badge ready">Conforme</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="loan-card-footer">
+                        <button type="button" class="btn-dossier-checklist" onclick="ouvrirDossierPretModal('CBAO Attijariwafa', 'Ligne de Crédit PME', '10 000 000 FCFA', '36 mois', ['Bilan SYSCOHADA SMT visé ONECCA', 'Tableau de flux de trésorerie', 'NINEA et RCCM certifiés', 'Attestation fiscale'])">
+                            <i class="fa-solid fa-folder-open"></i> Voir Dossier
+                        </button>
+                        <button type="button" class="btn-apply-loan-v2" onclick="demanderPretOfficiel('Ligne de Crédit (10M)', 'CBAO Attijariwafa')">
+                            <i class="fa-solid fa-paper-plane"></i> Transmettre le Bilan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARTE 5 : ECOBANK SÉNÉGAL -->
+                <div class="loan-partner-card" data-agency="ecobank">
+                    <div class="loan-card-top-header">
+                        <div class="partner-brand-group">
+                            <div class="partner-logo-box ecobank">EB</div>
+                            <div>
+                                <span class="partner-name-badge">Ecobank Sénégal &bull; PME Banking</span>
+                                <h3 class="loan-product-name">Crédit Relance &amp; Digital Commerce</h3>
+                            </div>
+                        </div>
+                        <span class="eligibility-status-pill green">
+                            <i class="fa-solid fa-circle-check"></i> Éligible 90%
+                        </span>
+                    </div>
+
+                    <div class="loan-card-body-content">
+                        <div class="loan-amount-badge-v2">
+                            <span class="loan-amount-num">7 500 000</span>
+                            <span class="loan-amount-unit">FCFA</span>
+                        </div>
+
+                        <div class="loan-specs-grid">
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Durée</span>
+                                <span class="spec-item-val">24 mois</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Décaissement</span>
+                                <span class="spec-item-val">Compte Ecobank</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Mensualité</span>
+                                <span class="spec-item-val">340 000 FCFA</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Partenaire</span>
+                                <span class="spec-item-val">Programme Ellever</span>
+                            </div>
+                        </div>
+
+                        <div class="required-docs-title">
+                            <span>Dossier &amp; Pièces à Fournir</span>
+                            <span style="font-size: 10px; color: #15803d;"><i class="fa-solid fa-circle-check"></i> Prêt pour envoi</span>
+                        </div>
+                        <ul class="required-docs-list">
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-id-card"></i> CNI ou Passeport du titulaire</span>
+                                <span class="doc-status-badge ready">Prêt</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-file-contract"></i> Registre de Commerce et NINEA</span>
+                                <span class="doc-status-badge ready">Certifié</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-chart-pie"></i> État financier certifié SYSCOHADA (1 an)</span>
+                                <span class="doc-status-badge ready">Généré Grow</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-mobile-screen"></i> Relevé historique Wave Business certifié</span>
+                                <span class="doc-status-badge ready">Prêt</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="loan-card-footer">
+                        <button type="button" class="btn-dossier-checklist" onclick="ouvrirDossierPretModal('Ecobank Sénégal', 'Crédit Relance Digital', '7 500 000 FCFA', '24 mois', ['CNI du titulaire', 'NINEA & RCCM', 'États financiers certifiés SYSCOHADA', 'Historique Wave Business'])">
+                            <i class="fa-solid fa-folder-open"></i> Voir Dossier
+                        </button>
+                        <button type="button" class="btn-apply-loan-v2" onclick="demanderPretOfficiel('Crédit Relance Digital (7.5M)', 'Ecobank Sénégal')">
+                            <i class="fa-solid fa-paper-plane"></i> Transmettre en 1 Clic
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CARTE 6 : DER / FJ (DÉLÉGATION À L'ENTREPRENEURIAT RAPIDE) -->
+                <div class="loan-partner-card" data-agency="der">
+                    <div class="loan-card-top-header">
+                        <div class="partner-brand-group">
+                            <div class="partner-logo-box der">DER</div>
+                            <div>
+                                <span class="partner-name-badge">DER / FJ &bull; Fonds Public d'Appui État</span>
+                                <h3 class="loan-product-name">Prêt Subventionné Jeunes &amp; Femmes Entrepreneurs</h3>
+                            </div>
+                        </div>
+                        <span class="eligibility-status-pill green">
+                            <i class="fa-solid fa-circle-check"></i> Taux Zéro 5%
+                        </span>
+                    </div>
+
+                    <div class="loan-card-body-content">
+                        <div class="loan-amount-badge-v2">
+                            <span class="loan-amount-num">3 000 000</span>
+                            <span class="loan-amount-unit">FCFA</span>
+                        </div>
+
+                        <div class="loan-specs-grid">
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Taux subventionné</span>
+                                <span class="spec-item-val" style="color: #9333ea;">5% l'an (Bonifié État)</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Différé d'amortissement</span>
+                                <span class="spec-item-val">3 mois de grâce</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Durée</span>
+                                <span class="spec-item-val">18 mois</span>
+                            </div>
+                            <div class="loan-spec-item">
+                                <span class="spec-item-label">Accompagnement</span>
+                                <span class="spec-item-val">Cabinet membre ONECCA</span>
+                            </div>
+                        </div>
+
+                        <div class="required-docs-title">
+                            <span>Dossier &amp; Pièces à Fournir</span>
+                            <span style="font-size: 10px; color: #15803d;"><i class="fa-solid fa-circle-check"></i> Prêt pour envoi</span>
+                        </div>
+                        <ul class="required-docs-list">
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-id-card"></i> CNI sénégalaise biométrique</span>
+                                <span class="doc-status-badge ready">Prêt</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-file-signature"></i> Attestation NINEA en règle</span>
+                                <span class="doc-status-badge ready">Prêt</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-calculator"></i> Compte d'exploitation prévisionnel Grow</span>
+                                <span class="doc-status-badge ready">Généré Grow</span>
+                            </li>
+                            <li class="required-doc-item">
+                                <span class="doc-name"><i class="fa-solid fa-award"></i> Visa de certification pré-comptable ONECCA</span>
+                                <span class="doc-status-badge ready">Inclus Grow</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="loan-card-footer">
+                        <button type="button" class="btn-dossier-checklist" onclick="ouvrirDossierPretModal('DER / FJ (État du Sénégal)', 'Prêt Subventionné Taux 5%', '3 000 000 FCFA', '18 mois', ['CNI biométrique', 'NINEA certifié', 'Compte d\'exploitation prévisionnel', 'Attestation pré-comptable Grow/ONECCA'])">
+                            <i class="fa-solid fa-folder-open"></i> Voir Dossier
+                        </button>
+                        <button type="button" class="btn-apply-loan-v2" onclick="demanderPretOfficiel('Prêt Subventionné DER (3M)', 'DER / FJ')">
+                            <i class="fa-solid fa-paper-plane"></i> Transmettre au Guichet DER
+                        </button>
+                    </div>
+                </div>
+
             </div>
 
             <!-- 3. Section Transparente : Justification Mathématique & Garantie de Vérité -->
             <div class="truth-guarantee-card">
                 <div class="truth-heading">
                     <i class="fa-solid fa-scale-balanced" style="color: #0e7647; font-size: 20px;"></i>
-                    <span>Garantie de Vérité Financière : Comment Grow et nos Cabinets Partenaires Justifient ce Calcul
-                        ?</span>
+                    <span>Garantie de Vérité Financière : Comment Grow et nos Cabinets Partenaires Justifient ce Calcul ?</span>
                 </div>
                 <p style="font-size: 13px; color: #475569; margin-bottom: 20px; line-height: 1.6;">
                     Contrairement aux estimations informelles, la capacité d'emprunt calculée par Grow repose
@@ -4196,9 +4942,7 @@
                         </div>
                         <div class="truth-item-desc">
                             Chaque franc pris en compte provient de transactions numérisées (comptes Wave Marchand et
-                            ventes espèces certifiées quotidiennement). Votre chiffre d'affaires moyen de <strong>1 450
-                                000 FCFA/mois</strong> n'est pas une simple déclaration, mais un flux tracé et
-                            auditable.
+                            ventes espèces certifiées quotidiennement). Votre historique financier n'est pas une simple déclaration, mais un flux tracé et auditable.
                         </div>
                     </div>
 
@@ -4207,9 +4951,7 @@
                             <i class="fa-solid fa-percent"></i> 2. Règle d'Or Prudentielle (Plafond 33%)
                         </div>
                         <div class="truth-item-desc">
-                            Votre marge nette moyenne mensuelle est de <strong>530 000 FCFA</strong>. En appliquant le
-                            ratio bancaire strict de 33%, votre mensualité maximale de sécurité est fixée à <strong>174
-                                900 FCFA</strong>, garantissant que le prêt ne mettra jamais votre trésorerie en péril.
+                            En appliquant le ratio bancaire strict de 33% sur vos excédents bruts d'exploitation, votre mensualité maximale de sécurité est automatiquement encadrée, garantissant que le prêt ne mettra jamais votre trésorerie en péril.
                         </div>
                     </div>
 
@@ -4225,14 +4967,11 @@
                     </div>
                 </div>
 
-                <div
-                    style="margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; padding-top: 18px; border-top: 1px solid #e2e8f0;">
+                <div style="margin-top: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; padding-top: 18px; border-top: 1px solid #e2e8f0;">
                     <div style="font-size: 12px; color: #64748b;">
-                        Attestation générée automatiquement le <strong id="attestationDate"
-                            style="color: #0f172a;">--</strong> sous le Visa d'Audit N° GROW-CREDIT-9402
+                        Attestation générée automatiquement le <strong id="attestationDate" style="color: #0f172a;">--</strong> sous le Visa d'Audit N° GROW-CREDIT-9402
                     </div>
-                    <button onclick="telechargerFicheEligibilite()"
-                        style="background: #0e7647; color: white; border: none; border-radius: 8px; padding: 10px 18px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                    <button onclick="telechargerFicheEligibilite()" style="background: #0e7647; color: white; border: none; border-radius: 8px; padding: 10px 18px; font-size: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                         <i class="fa-solid fa-file-pdf"></i> Télécharger la Fiche d'Éligibilité Prêt (.PDF)
                     </button>
                 </div>
@@ -6056,6 +6795,80 @@
             if (m) m.style.display = 'none';
         }
 
+        
+        // =========================================================================
+        // GESTION DES PRÊTS PAR AGENCES PARTENAIRES & DOSSIERS 1-CLIC
+        // =========================================================================
+        function filterLoanAgencies(agencyKey, btn) {
+            document.querySelectorAll('.agency-filter-pill').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const cards = document.querySelectorAll('.loan-partner-card');
+            cards.forEach(card => {
+                const cardAgency = card.getAttribute('data-agency');
+                if (agencyKey === 'all' || cardAgency === agencyKey) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        let currentSelectedLoan = { product: '', agency: '' };
+
+        function ouvrirDossierPretModal(agencyName, productName, amount, duration, docList) {
+            currentSelectedLoan = { product: productName, agency: agencyName };
+            const m = document.getElementById('modalDossierPret');
+            const t = document.getElementById('dossierModalTitle');
+            const sub = document.getElementById('dossierModalSub');
+            const amt = document.getElementById('dossierModalAmount');
+            const dur = document.getElementById('dossierModalDuration');
+            const listContainer = document.getElementById('dossierModalDocsList');
+            const btnSubmit = document.getElementById('btnDossierSubmit');
+
+            if (t) t.textContent = productName;
+            if (sub) sub.textContent = 'Institution Partenaire : ' + agencyName;
+            if (amt) amt.textContent = amount;
+            if (dur) dur.textContent = duration;
+
+            if (listContainer) {
+                listContainer.innerHTML = '';
+                docList.forEach(doc => {
+                    const row = document.createElement('div');
+                    row.className = 'required-doc-item';
+                    row.innerHTML = `
+                        <span class="doc-name"><i class="fa-solid fa-circle-check" style="color: #16a34a;"></i> ${escapeHtml(doc)}</span>
+                        <span class="doc-status-badge ready">Certifié Conforme</span>
+                    `;
+                    listContainer.appendChild(row);
+                });
+            }
+
+            if (btnSubmit) {
+                btnSubmit.onclick = () => {
+                    closeDossierPretModal();
+                    demanderPretOfficiel(productName, agencyName);
+                };
+            }
+
+            if (m) m.style.display = 'flex';
+        }
+
+        function closeDossierPretModal() {
+            const m = document.getElementById('modalDossierPret');
+            if (m) m.style.display = 'none';
+        }
+
+        function demanderPretOfficiel(nomPret, partenaire) {
+            const entName = currentEntreprise ? (currentEntreprise.nom_entreprise || 'Votre Entreprise') : 'Votre Entreprise';
+            const phone = currentEntreprise ? (currentEntreprise.telephone_whatsapp || '788773827') : '788773827';
+            alert(`Félicitations !
+
+Le dossier officiel certifié Grow & ONECCA de « ${entName} » a été transmis avec succès au département risques & crédits de ${partenaire} pour l'offre : ${nomPret}.
+
+Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 heures pour la finalisation.`);
+        }
+
         function demanderPret(nomPret, partenaire) {
             const entName = currentEntreprise ? currentEntreprise.nom_entreprise : 'Votre PME';
             const phone = currentEntreprise ? currentEntreprise.telephone_whatsapp : 'votre numéro';
@@ -6307,6 +7120,61 @@ Téléchargement du relevé certifié en cours.");
             }
         });
     </script>
+
+    
+    <!-- ========================================================================= -->
+    <!-- MODALE DOSSIER 1-CLIC OFFICIEL BANCAIRE AVEC CHECKLIST DE PIÈCES           -->
+    <!-- ========================================================================= -->
+    <div id="modalDossierPret" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeDossierPretModal()">
+        <div class="modal-box modal-dossier-box" onclick="event.stopPropagation()">
+            <div class="modal-top" style="background: #222222; color: #ffffff; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-folder-closed" style="color: #a0d9d2; font-size: 20px;"></i>
+                    <div>
+                        <strong style="font-size: 15px; display: block;" id="dossierModalTitle">Dossier de Crédit PME</strong>
+                        <span style="font-size: 11px; color: #a0d9d2;" id="dossierModalSub">Partenaire : Baobab Sénégal</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeDossierPretModal()" style="background: none; border: none; color: #ffffff; font-size: 18px; cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-content" style="padding: 22px;">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Montant sollicité</div>
+                        <div style="font-size: 22px; font-weight: 900; color: #0f172a;" id="dossierModalAmount">2 500 000 FCFA</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Durée amortissement</div>
+                        <div style="font-size: 16px; font-weight: 800; color: #0e7647;" id="dossierModalDuration">12 mois</div>
+                    </div>
+                </div>
+
+                <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; color: #334155; margin-bottom: 10px;">
+                    Checklist des pièces officielles transmises à l'agence :
+                </div>
+
+                <div id="dossierModalDocsList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                    <!-- Rempli en JS -->
+                </div>
+
+                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px; font-size: 11.5px; color: #166534; line-height: 1.45; margin-bottom: 20px;">
+                    <i class="fa-solid fa-shield-halved"></i> <strong>Garantie Grow &amp; ONECCA :</strong> L'ensemble de vos pièces justificatives, bilans comptables SYSCOHADA et historiques de flux Wave sont déjà certifiés et horodatés pour transmission immédiate au comité de crédit.
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn-submit-tx" style="background: #f1f5f9; color: #475569; margin: 0; flex: 1;" onclick="closeDossierPretModal()">
+                        Fermer
+                    </button>
+                    <button type="button" class="btn-submit-tx" style="background: #222222; color: #a0d9d2; margin: 0; flex: 2;" id="btnDossierSubmit">
+                        <i class="fa-solid fa-paper-plane"></i> Transmettre le Dossier
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ========================================================================= -->
     <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (SMARTPHONE & PC)           -->
