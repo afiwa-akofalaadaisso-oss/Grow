@@ -1245,20 +1245,9 @@
             pointer-events: none;
         }
 
-        /* Barre de Pagination Moderne */
+        /* Barre de Pagination Désactivée (Flux continu déroulant type Wave) */
         .pagination-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            padding: 10px 14px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-            font-size: 11.5px;
-            color: #64748b;
+            display: none !important;
         }
 
         .pagination-info {
@@ -4663,48 +4652,8 @@
                     </table>
                 </div>
 
-                <!-- Barre de Pagination Compacte & Fluide -->
-                <div class="pagination-container" id="paginationBar">
-                    <div class="pagination-info" id="paginationInfo">
-                        Affichage <strong>0 sur 0</strong> écriture
-                    </div>
-
-                    <div class="pagination-controls">
-                        <button type="button" class="pagination-btn" id="btnPrevPage" onclick="changePage(-1)" disabled>
-                            <i class="fa-solid fa-chevron-left"></i> Précédent
-                        </button>
-                        <div class="pagination-controls" id="pagePills"></div>
-                        <button type="button" class="pagination-btn" id="btnNextPage" onclick="changePage(1)" disabled>
-                            Suivant <i class="fa-solid fa-chevron-right"></i>
-                        </button>
-                    </div>
-
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 11px; color: #64748b; font-weight: 600;">Afficher :</span>
-                        <div class="custom-select-container" id="pageSizeSelectContainer">
-                            <button type="button" class="custom-select-trigger"
-                                onclick="toggleCustomPageSizeDropdown(event)">
-                                <span id="customSelectedSizeLabel">15 lignes</span>
-                                <i class="fa-solid fa-chevron-down chevron-icon"></i>
-                            </button>
-                            <div class="custom-select-dropdown" id="pageSizeDropdownMenu">
-                                <div class="custom-select-option selected" data-value="15"
-                                    onclick="selectCustomPageSize(15)">
-                                    <span>15 lignes</span> <i class="fa-solid fa-check check-icon"></i>
-                                </div>
-                                <div class="custom-select-option" data-value="25" onclick="selectCustomPageSize(25)">
-                                    <span>25 lignes</span> <i class="fa-solid fa-check check-icon"></i>
-                                </div>
-                                <div class="custom-select-option" data-value="50" onclick="selectCustomPageSize(50)">
-                                    <span>50 lignes</span> <i class="fa-solid fa-check check-icon"></i>
-                                </div>
-                                <div class="custom-select-option" data-value="100" onclick="selectCustomPageSize(100)">
-                                    <span>100 lignes</span> <i class="fa-solid fa-check check-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Flux continu déroulant type Wave (sans boutons précédent/suivant) -->
+                <div class="pagination-container" id="paginationBar" style="display: none !important;"></div>
             </div>
 
         </div>
@@ -6455,19 +6404,10 @@
             // 4. Mise à jour des Totaux (Débit, Crédit, Solde Net) pour la sélection active
             updateTotalsForFilteredList(list);
 
-            // 5. Pagination
+            // 5. Affichage continu sous forme de ligne déroulante (Style Wave)
             const totalItems = list.length;
-            const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-            if (currentPage > totalPages) currentPage = totalPages;
-            if (currentPage < 1) currentPage = 1;
-
-            const startIndex = (currentPage - 1) * pageSize;
-            const endIndex = Math.min(startIndex + pageSize, totalItems);
-            const pageItems = list.slice(startIndex, endIndex);
-
-            // 6. Rendu du tableau et de la barre de pagination
-            renderTransactionsList(pageItems, totalItems);
-            renderPaginationBar(totalItems, startIndex, endIndex, totalPages);
+            renderTransactionsList(list, totalItems);
+            renderPaginationBar(totalItems, 0, totalItems, 1);
         }
 
         function updateTotalsForFilteredList(list) {
@@ -6631,38 +6571,7 @@
 
         function renderPaginationBar(totalItems, startIndex, endIndex, totalPages) {
             const bar = document.getElementById('paginationBar');
-            if (!bar) return;
-            if (totalItems === 0) {
-                bar.style.display = 'none';
-                return;
-            }
-            bar.style.display = 'flex';
-
-            const info = document.getElementById('paginationInfo');
-            if (info) {
-                info.style.display = 'none';
-                info.innerHTML = '';
-            }
-
-            const btnPrev = document.getElementById('btnPrevPage');
-            const btnNext = document.getElementById('btnNextPage');
-            if (btnPrev) btnPrev.disabled = (currentPage <= 1);
-            if (btnNext) btnNext.disabled = (currentPage >= totalPages);
-
-            const pillsWrap = document.getElementById('pagePills');
-            if (pillsWrap) {
-                pillsWrap.innerHTML = '';
-                const startP = Math.max(1, currentPage - 2);
-                const endP = Math.min(totalPages, startP + 4);
-                for (let p = startP; p <= endP; p++) {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = `pagination-page-pill ${p === currentPage ? 'active' : ''}`;
-                    btn.textContent = p;
-                    btn.onclick = () => { currentPage = p; applyAllFiltersAndRender(); };
-                    pillsWrap.appendChild(btn);
-                }
-            }
+            if (bar) bar.style.display = 'none';
         }
 
         
