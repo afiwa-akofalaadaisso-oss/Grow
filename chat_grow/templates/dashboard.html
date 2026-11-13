@@ -275,9 +275,16 @@
             width: 100% !important;
             height: 100% !important;
             object-fit: contain !important;
-            padding: 3px !important;
+            padding: 2px !important;
             box-sizing: border-box !important;
             border-radius: 10px !important;
+            display: block !important;
+        }
+
+        .flow-avatar-img[src*="wave"],
+        .flow-avatar-img[src*="orange"] {
+            object-fit: cover !important;
+            padding: 0 !important;
         }
 
         /* BARRE DE MENU GROW DÉDIÉE (PRÊTS, ABONNEMENT, GROW) */
@@ -8026,7 +8033,7 @@
                     <td class="td-date">${dateFullDisplay}</td>
                     <td class="td-libelle">
                         <div class="table-libelle-cell">
-                            <img src="${flowMeta.logoUrl}" alt="" class="table-flow-logo" onerror="this.style.display=\'none\';">
+                            <img src="${flowMeta.logoUrl}" alt="" class="table-flow-logo" onerror="this.style.display='none';">
                             <span class="table-libelle-text" title="${escapeHtml(t.libelle || '')}">${escapeHtml(fMeta.title)}</span>
                         </div>
                     </td>
@@ -8059,7 +8066,7 @@
 
                     card.innerHTML = `
                         <div class="tx-card-avatar flow-avatar-wrapper" title="${escapeHtml(flowMeta.label)}">
-                            <img src="${flowMeta.logoUrl}" alt="" class="flow-avatar-img" onerror="this.onerror=null; this.parentElement.innerHTML=\'<i class=\"${flowMeta.iconFallback}\" style=\"color: #a0d9d2;\"></i>\';">
+                            <img src="${flowMeta.logoUrl}" alt="" class="flow-avatar-img" onerror="this.style.display='none';">
                         </div>
                         <div class="wave-tx-left">
                             <div class="wave-tx-title" title="${escapeHtml(t.libelle || '')}">${escapeHtml(fMeta.title)}</div>
