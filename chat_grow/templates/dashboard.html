@@ -132,69 +132,56 @@
             color: var(--grow-mint);
         }
 
-        .fintech-qr-badge-card {
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 14px;
+        .fintech-top-actions {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            color: #0f172a;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 10px;
+            gap: 8px;
         }
 
-        .fintech-qr-badge-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        .qr-thumb-box {
+        .fintech-hero-footer {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: flex-start;
+            margin-top: 14px;
         }
 
-        .qr-icon-square {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            display: flex;
+        .btn-qr-acces-grow {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(160, 217, 210, 0.35);
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 700;
+            padding: 9px 18px;
+            border-radius: 30px;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: #222222;
+            gap: 8px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
         }
 
-        .qr-text-block .qr-main-label {
-            font-size: 13px;
-            font-weight: 800;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .qr-text-block .qr-sub-label {
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 1px;
-        }
-
-        .qr-scanner-btn-pill {
-            background: var(--grow-dark);
+        .btn-qr-acces-grow i {
             color: var(--grow-mint);
-            font-size: 11.5px;
-            font-weight: 800;
-            padding: 7px 14px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-size: 15px;
+        }
+
+        .btn-qr-acces-grow:hover,
+        .btn-qr-acces-grow:active {
+            background: rgba(160, 217, 210, 0.2);
+            border-color: var(--grow-mint);
+            transform: scale(0.97);
+        }
+
+        .modal-qr-box {
+            max-width: 380px !important;
+            width: 90% !important;
+            border-radius: 24px !important;
+            overflow: hidden !important;
+            background: #ffffff !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4) !important;
+            border: 1.5px solid var(--grow-mint) !important;
         }
 
         /* Grille des services / Opérations instantanées (8 boutons style Wave / OM) */
@@ -4458,9 +4445,14 @@
                                 <span class="fintech-enterprise-name" id="mobileEnterpriseName">Boutique Fatou Thiam</span>
                                 <span class="fintech-ninea-chip" id="mobileNineaChip">NINEA Certifié</span>
                             </div>
-                            <button type="button" class="fintech-eye-btn" onclick="toggleBalanceVisibility()" title="Masquer / Afficher le solde" id="btnToggleBalance">
-                                <i class="fa-regular fa-eye" id="eyeIcon"></i>
-                            </button>
+                            <div class="fintech-top-actions">
+                                <button type="button" class="fintech-eye-btn" onclick="ouvrirModalQRAccesGrow()" title="QR Code d'accès Grow">
+                                    <i class="fa-solid fa-qrcode" style="color: var(--grow-mint);"></i>
+                                </button>
+                                <button type="button" class="fintech-eye-btn" onclick="toggleBalanceVisibility()" title="Masquer / Afficher le solde" id="btnToggleBalance">
+                                    <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="fintech-balance-row">
@@ -4468,25 +4460,13 @@
                             <div class="fintech-currency-symbol">F</div>
                         </div>
 
-                        <!-- CARTE SCANNER QR CODE DIRECT (Style Wave & Orange Money) -->
-                        <a href="/carte-comptoir" target="_blank" class="fintech-qr-badge-card" title="Scanner ou afficher la Plaque QR Comptoir Grow">
-                            <div class="qr-thumb-box">
-                                <div class="qr-icon-square">
-                                    <i class="fa-solid fa-qrcode"></i>
-                                </div>
-                                <div class="qr-text-block">
-                                    <div class="qr-main-label">
-                                        <span>Plaque QR Comptoir</span>
-                                        <i class="fa-solid fa-circle-check" style="color: #0e7647; font-size: 11px;"></i>
-                                    </div>
-                                    <div class="qr-sub-label">Encaissez instantanément vos clients</div>
-                                </div>
-                            </div>
-                            <div class="qr-scanner-btn-pill">
-                                <i class="fa-solid fa-camera"></i>
-                                <span>Scanner</span>
-                            </div>
-                        </a>
+                        <!-- BOUTON QR D'ACCÈS À GROW -->
+                        <div class="fintech-hero-footer">
+                            <button type="button" class="btn-qr-acces-grow" onclick="ouvrirModalQRAccesGrow()" title="Afficher mon QR Code d'accès à Grow">
+                                <i class="fa-solid fa-qrcode"></i>
+                                <span>QR d'accès à Grow</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- COMMUTATEUR VUE CARTES / VUE TABLEUR -->
@@ -7790,6 +7770,16 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (m) m.style.display = 'none';
         }
 
+        function ouvrirModalQRAccesGrow() {
+            const m = document.getElementById('modalQRAccesGrow');
+            if (m) m.style.display = 'flex';
+        }
+
+        function closeModalQRAccesGrow() {
+            const m = document.getElementById('modalQRAccesGrow');
+            if (m) m.style.display = 'none';
+        }
+
         function setActiveBottomNav(btn) {
             document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
@@ -8052,6 +8042,48 @@ Téléchargement du relevé certifié en cours.");
                     <button type="button" class="btn-submit-tx" style="background: #0a2540; color: #ffffff; margin-top: 0;" id="btnVoirPreuveDetail">
                         <i class="fa-solid fa-eye"></i> Justificatif
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODALE DU CODE QR D'ACCÈS INSTANTANÉ À GROW                              -->
+    <!-- ========================================================================= -->
+    <div id="modalQRAccesGrow" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 3000;" onclick="closeModalQRAccesGrow()">
+        <div class="modal-box modal-qr-box" onclick="event.stopPropagation()">
+            <div style="background: #222222; color: #ffffff; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--grow-mint);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(160, 217, 210, 0.2); color: var(--grow-mint); display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 900; color: #ffffff;">QR d'Accès à Grow</div>
+                        <div style="font-size: 11px; color: var(--grow-mint);">Assistant Pré-Comptable WhatsApp</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModalQRAccesGrow()" style="background: none; border: none; font-size: 22px; color: #cbd5e1; cursor: pointer; line-height: 1;">&times;</button>
+            </div>
+
+            <div style="padding: 22px 18px; text-align: center; background: #ffffff;">
+                <div style="background: #f8fafc; padding: 16px; border-radius: 20px; border: 2px solid #e2e8f0; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.06); margin-bottom: 14px;">
+                    <img src="/static/qr_code_whatsapp.png" alt="Code QR WhatsApp Grow" style="width: 200px; height: 200px; border-radius: 12px; display: block;" />
+                </div>
+
+                <div style="font-size: 13.5px; font-weight: 800; color: #0f172a; margin-bottom: 4px;">
+                    WhatsApp Grow : <span style="color: #0e7647;">+221 78 877 38 27</span>
+                </div>
+                <div style="font-size: 11.5px; color: #64748b; line-height: 1.45; margin-bottom: 18px;">
+                    Ouvrez votre appareil photo ou WhatsApp pour démarrer vos enregistrements SYSCOHADA (Wolof ou Français).
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank" style="background: #25D366; color: #ffffff; text-decoration: none; padding: 13px; border-radius: 12px; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 17px;"></i> Ouvrir directement sur WhatsApp
+                    </a>
+                    <a href="/carte-comptoir" target="_blank" style="background: #222222; color: var(--grow-mint); text-decoration: none; padding: 11px; border-radius: 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-print"></i> Plaque Présentoir Comptoir (A5/A6)
+                    </a>
                 </div>
             </div>
         </div>
