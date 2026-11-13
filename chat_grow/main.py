@@ -2831,6 +2831,25 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
         except Exception:
             pass
 
+    # 1.5 COMMANDE SPÉCIALE !GROW, GROW OU À PROPOS
+    if txt_clean in ["!grow", "grow", "!a propos", "a propos", "qui sommes nous", "!info", "!infos", "c'est quoi grow", "cest quoi grow"] or txt_clean.startswith("!grow"):
+        base_url = os.getenv("PUBLIC_BASE_URL", "http://127.0.0.1:8000")
+        clean_s = sender_phone.replace("+", "").replace(" ", "").strip()
+        link_about = f"{base_url}/dashboard?phone={clean_s}&tab=about"
+        return (
+            "GROW - COPILOTE FINANCIER & PRÉ-COMPTABLE SYSCOHADA\n\n"
+            "Grow est le premier copilote financier intelligent d'Afrique de l'Ouest conçu pour les commerçants, artisans et PME du Sénégal.\n\n"
+            "NOTRE FONCTIONNEMENT EN 5 ÉTAPES :\n"
+            "1. Interception 24h/24 : Transférez vos notifications Wave, Orange Money ou notez vos ventes en espèces.\n"
+            "2. Norme SYSCOHADA SMT : Classement automatique dans le plan comptable officiel (Ventes 701, Achats 601, Loyers/Senelec 62, Trésorerie 521/571).\n"
+            "3. La Règle des Espèces : Toute dépense cash exige une photo justificative pour être déductible et certifiée.\n"
+            "4. Le Rituel de 20h00 : Bilan WhatsApp automatique de votre journée d'activité chaque soir.\n"
+            "5. Prêts Bancaires en 1 Clic : Ratios BCEAO calculés en continu et transmission directe aux banques partenaires (Baobab, Cofina, Pamecas, CBAO, Ecobank, DER).\n\n"
+            "CONSULTER LA PRÉSENTATION COMPLÈTE & LE TABLEAU DE BORD :\n"
+            f"{link_about}\n\n"
+            "Assistance Grow Dakar : 78 877 38 27 (6j/7)."
+        )
+
     # 2. Salutations et présentations générales (ponctuation nettoyée)
     clean_no_punct = re.sub(r'[^\w\s]', '', txt_clean).strip()
     if clean_no_punct in ["bonjour", "salut", "bonsoir", "coucou", "qui es tu", "qui est tu", "cest quoi grow", "tu es qui", "aide", "help", "merci"]:

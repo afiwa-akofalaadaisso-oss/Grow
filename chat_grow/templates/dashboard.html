@@ -2057,177 +2057,472 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* STYLES VUE TOUT SAVOIR SUR NOUS (GROW) */
+        /* ========================================================================= */
+        /* STYLES VUE TOUT SAVOIR SUR NOUS (GROW - SECTION OFFICIELLE FINTECH)      */
+        /* PALETTE : NOIR INTENSE #222222 | MENTHE/CYAN #a0d9d2 | SURFACES #2a2a2a  */
+        /* ========================================================================= */
         .about-hero-card {
-            background: linear-gradient(135deg, #0a2540 0%, #0e7647 100%);
-            border-radius: 16px;
-            padding: 36px 40px;
+            background: linear-gradient(135deg, #1f2222 0%, #252a29 50%, #171a1a 100%);
+            border: 1px solid rgba(160, 217, 210, 0.28);
+            border-radius: 20px;
+            padding: 38px 42px;
             color: #ffffff;
-            margin-bottom: 28px;
-            box-shadow: 0 4px 20px rgba(10, 37, 64, 0.12);
+            margin-bottom: 30px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35), 0 0 25px rgba(160, 217, 210, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero-card::after {
+            content: '';
+            position: absolute;
+            right: -60px;
+            top: -60px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(160, 217, 210, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .about-brand-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .about-brand-logo {
+            width: 62px;
+            height: 62px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 2px solid #a0d9d2;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+            background: #222222;
         }
 
         .about-hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            gap: 8px;
+            background: rgba(160, 217, 210, 0.14);
+            color: #a0d9d2;
+            border: 1px solid rgba(160, 217, 210, 0.35);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
-            margin-bottom: 14px;
         }
 
         .about-hero-title {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -0.4px;
-            margin-bottom: 12px;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 14px;
             line-height: 1.3;
+            color: #ffffff;
+        }
+
+        .about-hero-title span {
+            color: #a0d9d2;
         }
 
         .about-hero-desc {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #e2e8f0;
-            max-width: 820px;
-            margin: 0;
+            font-size: 14.5px;
+            line-height: 1.65;
+            color: #cbd5e1;
+            max-width: 860px;
+            margin: 0 0 24px 0;
         }
 
+        .about-badges-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .about-pill-item {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(160, 217, 210, 0.2);
+            color: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .about-pill-item i {
+            color: #a0d9d2;
+        }
+
+        /* Titres de section */
         .about-section-title {
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 18px;
+            font-weight: 900;
             color: #0f172a;
             letter-spacing: -0.3px;
-            margin-bottom: 16px;
+            margin: 36px 0 16px 0;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
+        .about-section-title i {
+            color: #a0d9d2;
+            background: #222222;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        /* Cartes d'étapes (Comment ça marche) */
         .about-steps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            margin-bottom: 28px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
         }
 
         .about-step-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 22px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             position: relative;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .step-icon-bubble {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #0e7647;
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 14px;
+        .about-step-card:hover {
+            border-color: #a0d9d2;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        .step-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .step-number-bubble {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: #222222;
+            color: #a0d9d2;
+            border: 1.5px solid #a0d9d2;
+            font-weight: 900;
+            font-size: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .step-tag {
+            font-size: 10.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .step-tag.highlight {
+            background: rgba(160, 217, 210, 0.2);
+            color: #0b5c54;
         }
 
         .about-step-card h3 {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 800;
             color: #0f172a;
             margin-bottom: 8px;
+            line-height: 1.35;
         }
 
         .about-step-card p {
-            font-size: 12.5px;
+            font-size: 13px;
             color: #64748b;
-            line-height: 1.5;
-            margin: 0;
+            line-height: 1.55;
+            margin: 0 0 14px 0;
         }
 
-        .about-features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 28px;
-        }
-
-        .about-feature-box {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 18px;
-            display: flex;
-            gap: 14px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-        }
-
-        .feature-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: #f0fdf4;
+        .step-footer-detail {
+            font-size: 11.5px;
+            font-weight: 700;
             color: #0e7647;
-            font-size: 16px;
+            background: #f0fdf4;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid #dcfce7;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Carte Règle d'Or des Espèces */
+        .about-golden-rule-card {
+            background: linear-gradient(135deg, #1c2221 0%, #262e2c 100%);
+            border: 2px solid #a0d9d2;
+            border-radius: 18px;
+            padding: 28px 32px;
+            color: #ffffff;
+            margin-bottom: 34px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            display: flex;
+            gap: 22px;
+            align-items: flex-start;
+        }
+
+        .golden-rule-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(160, 217, 210, 0.2);
+            color: #a0d9d2;
+            border: 1px solid #a0d9d2;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 24px;
             flex-shrink: 0;
         }
 
-        .about-feature-box h4 {
+        .golden-rule-body h3 {
+            font-size: 17px;
+            font-weight: 900;
+            color: #a0d9d2;
+            margin-bottom: 8px;
+        }
+
+        .golden-rule-body p {
             font-size: 13.5px;
+            line-height: 1.6;
+            color: #e2e8f0;
+            margin: 0 0 12px 0;
+        }
+
+        .golden-rule-body .rule-reasons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .rule-reason-box {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .rule-reason-box strong {
+            color: #ffffff;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* Outils Grow */
+        .about-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .about-tool-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .tool-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #222222;
+            color: #a0d9d2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .about-tool-card h4 {
+            font-size: 14.5px;
             font-weight: 800;
             color: #0f172a;
             margin-bottom: 4px;
         }
 
-        .about-feature-box p {
-            font-size: 12px;
+        .about-tool-card p {
+            font-size: 12.5px;
             color: #64748b;
             line-height: 1.45;
             margin: 0;
         }
 
-        .about-contact-banner {
-            background: #ffffff;
-            border: 1.5px solid #bbf7d0;
-            border-radius: 14px;
-            padding: 20px 24px;
+        /* Bannière Tarification Unique 10 000 FCFA */
+        .about-pricing-banner {
+            background: #222222;
+            border: 1.5px solid #a0d9d2;
+            border-radius: 18px;
+            padding: 28px 32px;
+            color: #ffffff;
+            margin-bottom: 34px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .pricing-left h3 {
+            font-size: 18px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .pricing-left p {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            margin: 0;
+        }
+
+        .pricing-badge-price {
+            background: rgba(160, 217, 210, 0.15);
+            border: 1px solid #a0d9d2;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .pricing-badge-price .amount {
+            font-size: 24px;
+            font-weight: 900;
+            color: #a0d9d2;
+            line-height: 1;
+        }
+
+        .pricing-badge-price .period {
+            font-size: 11.5px;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* FAQ Grid */
+        .about-faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 16px;
+            margin-bottom: 34px;
+        }
+
+        .faq-item-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .faq-question {
+            font-size: 14px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .faq-question i {
+            color: #a0d9d2;
+            background: #222222;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .faq-answer {
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        /* Bannière contact WhatsApp */
+        .about-contact-banner {
+            background: linear-gradient(135deg, #1f2222 0%, #292d2c 100%);
+            border: 1.5px solid rgba(160, 217, 210, 0.35);
+            border-radius: 16px;
+            padding: 26px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .btn-whatsapp-support {
-            background: #0e7647;
-            color: #ffffff;
+            background: #a0d9d2;
+            color: #111111;
             text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.15s;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(160, 217, 210, 0.35);
+            transition: all 0.2s ease;
         }
 
         .btn-whatsapp-support:hover {
-            background: #095332;
-            transform: translateY(-1px);
+            background: #ffffff;
+            color: #111111;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(160, 217, 210, 0.5);
         }
-    
+        
         /* ========================================================================= */
         /* RESPONSIVE DESIGN AVANCÉ POUR SMARTPHONES ET TABLETTES (GROW FINTECH)     */
         /* CONFORME IPHONE & ANDROID - EXPÉRIENCE TACTILE NATIVE SANS DÉBORDEMENT     */
@@ -4981,96 +5276,312 @@
 
         <!-- CONTENU 3 : TOUT SAVOIR SUR NOUS (GROW) -->
         <div id="viewAbout" style="display: none;">
+            
+            <!-- HERO BRAND CARD GROW -->
             <div class="about-hero-card">
-                <div class="about-hero-badge">
-                    <i class="fa-solid fa-leaf"></i> À Propos de Grow
+                <div class="about-brand-row">
+                    <img src="/static/images/grow_logo.png" alt="Logo Grow" class="about-brand-logo">
+                    <div>
+                        <div class="about-hero-badge">
+                            <i class="fa-solid fa-certificate"></i> Copilote Financier &amp; Pré-Comptable Certifié
+                        </div>
+                        <div style="font-size: 13px; color: #a0d9d2; font-weight: 700; margin-top: 4px;">Standard SYSCOHADA SMT &bull; Dakar, Sénégal &bull; UEMOA</div>
+                    </div>
                 </div>
-                <h1 class="about-hero-title">Le copilote pré-comptable &amp; financier intelligent des PME africaines
+
+                <h1 class="about-hero-title">
+                    Tout ce qu'il faut savoir sur <span>Grow</span>
                 </h1>
+                
                 <p class="about-hero-desc">
-                    Grow simplifie la gestion financière de votre entreprise en transformant vos reçus et transactions
-                    WhatsApp en une comptabilité certifiée conforme au standard ouest-africain <strong>SYSCOHADA
-                        SMT</strong>, tout en vous ouvrant un accès privilégié aux financements bancaires.
+                    Grow est le premier copilote financier et pré-comptable intelligent conçu sur mesure pour les commerçants, artisans et PME du Sénégal et d'Afrique de l'Ouest. En transformant chaque vente, reçu de caisse ou paiement mobile en écritures comptables normalisées, Grow vous affranchit du papier, sécurise votre trésorerie et vous ouvre directement les portes du crédit bancaire.
                 </p>
+
+                <div class="about-badges-bar">
+                    <div class="about-pill-item"><i class="fa-solid fa-scale-balanced"></i> Norme SYSCOHADA SMT (OHADA)</div>
+                    <div class="about-pill-item"><i class="fa-solid fa-chart-pie"></i> Ratio Prudentiel BCEAO (33%)</div>
+                    <div class="about-pill-item"><i class="fa-solid fa-fingerprint"></i> Piste d'Audit &amp; Preuves Horodatées</div>
+                    <div class="about-pill-item"><i class="fa-solid fa-building-columns"></i> 6 Institutions Partenaires Agréées</div>
+                    <div class="about-pill-item"><i class="fa-solid fa-shield-halved"></i> Données Cloisonnées &amp; Cryptées</div>
+                </div>
             </div>
 
-            <!-- Grille des 3 étapes : Comment ça marche -->
+            <!-- SECTION : NOTRE MISSION & NOTRE RAISON D'ÊTRE -->
             <div class="about-section-title">
-                <i class="fa-solid fa-wand-magic-sparkles" style="color: #0e7647;"></i> Comment fonctionne Grow au
-                quotidien ?
+                <i class="fa-solid fa-bullseye"></i> Notre Mission : Propulser l'Économie Réelle
+            </div>
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px 28px; margin-bottom: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                <div style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 8px;">Pourquoi Grow existe ?</div>
+                <p style="font-size: 13.5px; color: #64748b; line-height: 1.6; margin-bottom: 14px;">
+                    En Afrique de l'Ouest, plus de 85% des commerçants génèrent un chiffre d'affaires florissant mais restent invisibles aux yeux du système financier traditionnel. Faute de temps, de budget pour un cabinet comptable ou d'outils adaptés, les factures s'égarent, la trésorerie manque de lisibilité, et plus de 95% des demandes de prêts bancaires sont rejetées par manque d'états financiers certifiés.
+                </p>
+                <div style="font-size: 13.5px; color: #0f172a; font-weight: 700; line-height: 1.6; background: rgba(160, 217, 210, 0.15); border-left: 4px solid #a0d9d2; padding: 12px 16px; border-radius: 0 10px 10px 0;">
+                    La Promesse Grow : Offrir à chaque entrepreneur la rigueur d'un directeur financier et la puissance d'un cabinet comptable agréé, accessible directement depuis son WhatsApp quotidien sans aucune formule complexe à mémoriser.
+                </div>
+            </div>
+
+            <!-- SECTION : LE FONCTIONNEMENT DE BOUT EN BOUT (5 ÉTAPES CLÉS) -->
+            <div class="about-section-title">
+                <i class="fa-solid fa-arrows-spin"></i> Comment fonctionne Grow ? Le Cycle Complet en 5 Étapes
             </div>
             <div class="about-steps-grid">
+                
+                <!-- Étape 1 -->
                 <div class="about-step-card">
-                    <div class="step-icon-bubble">1</div>
-                    <h3>Envoyez sur WhatsApp</h3>
-                    <p>Prenez en photo une facture, un reçu d'achat ou transférez une notification de paiement Wave ou
-                        Orange Money directement à votre assistant Grow sur WhatsApp.</p>
+                    <div>
+                        <div class="step-header-row">
+                            <div class="step-number-bubble">1</div>
+                            <span class="step-tag highlight">Interception 24h/24</span>
+                        </div>
+                        <h3>Encaissez &amp; Envoyez sans effort</h3>
+                        <p>
+                            Dès qu'une transaction survient dans votre boutique, transmettez-la instantanément à Grow :<br>
+                            &bull; <strong>Wave &amp; Orange Money :</strong> Transférez le SMS reçu ou la notification opérateur.<br>
+                            &bull; <strong>Ventes Cash :</strong> Tapez le montant en message texte ou via le bouton (+) du tableau de bord.<br>
+                            &bull; <strong>Notes Vocales :</strong> Parlez en Wolof (« Dama jaay 25 000 ci Wave »), Français ou Anglais.<br>
+                            &bull; <strong>Plaque QR :</strong> Vos clients scannent et règlent au comptoir.
+                        </p>
+                    </div>
+                    <div class="step-footer-detail">
+                        <i class="fa-solid fa-bolt"></i> Zéro ressaisie &bull; Détection IA instantanée
+                    </div>
                 </div>
+
+                <!-- Étape 2 -->
                 <div class="about-step-card">
-                    <div class="step-icon-bubble">2</div>
-                    <h3>Classification SYSCOHADA IA</h3>
-                    <p>Notre IA analyse et ventile instantanément l'opération dans le plan comptable officiel (charges
-                        601, ventes 701, dettes 401, banques 521) avec traçabilité intégrale.</p>
+                    <div>
+                        <div class="step-header-row">
+                            <div class="step-number-bubble">2</div>
+                            <span class="step-tag">SYSCOHADA SMT</span>
+                        </div>
+                        <h3>Imputation Comptable Automatique</h3>
+                        <p>
+                            Notre moteur d'intelligence artificielle analyse la nature de chaque flux et l'impute rigoureusement dans le plan comptable officiel :<br>
+                            &bull; <strong>Ventes :</strong> Compte 701 (Ventes de marchandises)<br>
+                            &bull; <strong>Achats stocks :</strong> Compte 601 (Marchandises)<br>
+                            &bull; <strong>Transports &amp; Logistique :</strong> Compte 61<br>
+                            &bull; <strong>Loyers &amp; Senelec :</strong> Comptes 62 &amp; 63<br>
+                            &bull; <strong>Banque &amp; Caisse :</strong> Comptes 521 (Wave/OM) et 571 (Espèces).
+                        </p>
+                    </div>
+                    <div class="step-footer-detail">
+                        <i class="fa-solid fa-check-double"></i> Conforme aux exigences ONECCA &amp; DGID
+                    </div>
                 </div>
+
+                <!-- Étape 3 -->
                 <div class="about-step-card">
-                    <div class="step-icon-bubble">3</div>
-                    <h3>Déblocage de Prêts Bancaires</h3>
-                    <p>Vos ratios prudentiels BCEAO sont calculés automatiquement. Téléchargez vos attestations
-                        certifiées et soumettez vos dossiers de crédit en 1 clic auprès de nos banques partenaires.</p>
+                    <div>
+                        <div class="step-header-row">
+                            <div class="step-number-bubble">3</div>
+                            <span class="step-tag highlight">Règle des Espèces</span>
+                        </div>
+                        <h3>Preuves &amp; Justificatifs Visuels</h3>
+                        <p>
+                            Pour toute sortie de caisse en argent liquide, prenez en photo le reçu, le ticket ou la décharge signée.<br>
+                            Grow numérise, extrait le texte par OCR et horodate la pièce dans un coffre-fort numérique sécurisé (empreinte SHA-256). Vos dépenses deviennent officiellement déductibles.
+                        </p>
+                    </div>
+                    <div class="step-footer-detail">
+                        <i class="fa-solid fa-shield"></i> Piste d'audit légale infalsifiable
+                    </div>
+                </div>
+
+                <!-- Étape 4 -->
+                <div class="about-step-card">
+                    <div>
+                        <div class="step-header-row">
+                            <div class="step-number-bubble">4</div>
+                            <span class="step-tag">Clôture 20h00</span>
+                        </div>
+                        <h3>Le Rituel Consolidé du Soir</h3>
+                        <p>
+                            Chaque soir à 20h00 précises (heure de Dakar), Grow dresse le bilan d'activité de votre journée et vous l'envoie sur WhatsApp :<br>
+                            &bull; Total exact des encaissements encaissés<br>
+                            &bull; Total des décaissements et achats de stock<br>
+                            &bull; Marge brute d'exploitation estimée<br>
+                            &bull; Solde net réel disponible (Caisse + Wave + OM)<br>
+                            &bull; Rappel des créances clients à relancer.
+                        </p>
+                    </div>
+                    <div class="step-footer-detail">
+                        <i class="fa-solid fa-clock"></i> Visibilité financière totale chaque soir
+                    </div>
+                </div>
+
+                <!-- Étape 5 -->
+                <div class="about-step-card">
+                    <div>
+                        <div class="step-header-row">
+                            <div class="step-number-bubble">5</div>
+                            <span class="step-tag highlight">Financement PME</span>
+                        </div>
+                        <h3>Scoring BCEAO &amp; Prêts Bancaires</h3>
+                        <p>
+                            Grâce à votre historique de transactions certifiées, Grow calcule en temps réel votre capacité d'endettement selon la directive prudentielle BCEAO (mensualité = 33% maximum de votre bénéfice net moyen).<br>
+                            Téléchargez votre attestation officielle et soumettez votre dossier en 1 Clic à nos agences partenaires pour débloquer jusqu'à 10 000 000 FCFA.
+                        </p>
+                    </div>
+                    <div class="step-footer-detail">
+                        <i class="fa-solid fa-hand-holding-dollar"></i> Baobab, Cofina, Pamecas, CBAO, Ecobank, DER
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CARTE SPÉCIALE : LA RÈGLE D'OR DES ESPÈCES -->
+            <div class="about-golden-rule-card">
+                <div class="golden-rule-icon">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="golden-rule-body">
+                    <h3>La Règle d'Or de Grow : Zéro Dépense Cash Sans Justificatif</h3>
+                    <p>
+                        Pourquoi Grow exige-t-il systématiquement une photo de ticket, de facturette ou de décharge manuscrite pour toute dépense payée en espèces ?
+                    </p>
+                    <div class="rule-reasons">
+                        <div class="rule-reason-box">
+                            <strong>1. Déductibilité Fiscale</strong>
+                            En droit fiscal sénégalais (DGID), toute charge déclarée sans pièce probante est rejetée. Sans reçu, votre bénéfice imposable est surévalué et vous payez trop d'impôts.
+                        </div>
+                        <div class="rule-reason-box">
+                            <strong>2. Crédibilité Bancaire</strong>
+                            Les comités d'octroi de crédit des banques rejettent catégoriquement les entreprises dont les sorties de fonds en espèces ne sont pas documentées.
+                        </div>
+                        <div class="rule-reason-box">
+                            <strong>3. Protection Anti-Fraude</strong>
+                            La numérisation avec horodatage SHA-256 certifie que la dépense a bien eu lieu pour l'intérêt de la boutique et protège le propriétaire contre les écarts de caisse.
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Grille des piliers de confiance Grow -->
-            <div class="about-section-title" style="margin-top: 32px;">
-                <i class="fa-solid fa-shield-halved" style="color: #0e7647;"></i> Nos Engagements de Fiabilité
+            <!-- SECTION : LA BOÎTE À OUTILS DU COMMERÇANT GROW -->
+            <div class="about-section-title">
+                <i class="fa-solid fa-toolbox"></i> L'Écosystème d'Outils Inclus avec Grow
             </div>
-            <div class="about-features-grid">
-                <div class="about-feature-box">
-                    <div class="feature-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+            <div class="about-tools-grid">
+                
+                <div class="about-tool-card">
+                    <div class="tool-icon">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
                     <div>
-                        <h4>Standard SYSCOHADA SMT</h4>
-                        <p>Format de données normalisé, prêt à être transmis et validé directement par votre
-                            expert-comptable ou cabinet agréé ONECCA.</p>
+                        <h4>Assistant WhatsApp 24/7</h4>
+                        <p>Accessible au <strong>+221 78 877 38 27</strong>. Analyse instantanément texte, photos de reçus et messages vocaux en wolof ou français.</p>
                     </div>
                 </div>
-                <div class="about-feature-box">
-                    <div class="feature-icon"><i class="fa-solid fa-lock"></i></div>
+
+                <div class="about-tool-card">
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
                     <div>
-                        <h4>Confidentialité &amp; Sécurité Bancaire</h4>
-                        <p>Toutes vos pièces comptables et justificatifs sont stockés sur un cloud sécurisé avec
-                            isolation stricte des données par entreprise.</p>
+                        <h4>Plaque QR Comptoir</h4>
+                        <p>Présentoir de comptoir personnalisé avec votre QR code Wave/OM pour encaisser en magasin tout en automatisant le journal de caisse.</p>
                     </div>
                 </div>
-                <div class="about-feature-box">
-                    <div class="feature-icon"><i class="fa-solid fa-building-columns"></i></div>
+
+                <div class="about-tool-card">
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
                     <div>
-                        <h4>Réseau de Partenaires Financiers</h4>
-                        <p>Accords avec des institutions de microfinance et banques régionales (Baobab, Cofina, Wave)
-                            pour accélérer vos demandes d'emprunt.</p>
+                        <h4>Tableau de Bord Smartphone &amp; Web</h4>
+                        <p>Interface haute définition responsive, solde avec masque de confidentialité, graphiques financiers et exports PDF certifiés ONECCA.</p>
                     </div>
                 </div>
-                <div class="about-feature-box">
-                    <div class="feature-icon"><i class="fa-solid fa-comments"></i></div>
-                    <div>
-                        <h4>Assistance &amp; Équipe Locale</h4>
-                        <p>Basée à Dakar, notre équipe est disponible 6j/7 pour vous accompagner dans votre transition
-                            numérique et votre gestion financière.</p>
+
+                <div class="about-tool-card">
+                    <div class="tool-icon">
+                        <i class="fa-solid fa-address-book"></i>
                     </div>
+                    <div>
+                        <h4>Carnet Dettes &amp; Créances</h4>
+                        <p>Suivi transparent des avances fournisseurs et des crédits accordés aux clients avec rappels automatisés programmés.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- BANNIÈRE TARIFICATION CLAIRE & SANS ENGAGEMENT -->
+            <div class="about-pricing-banner">
+                <div class="pricing-left">
+                    <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(160, 217, 210, 0.15); color: #a0d9d2; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px;">
+                        <i class="fa-solid fa-tag"></i> Forfait Tout-En-Un
+                    </div>
+                    <h3>Un Tarif Transparent, Unique et Sans Engagement</h3>
+                    <p>Zéro frais de mise en service. Zéro commission sur vos ventes. Accès illimité à l'ensemble des services Grow.</p>
+                    <div style="margin-top: 10px; display: flex; gap: 12px; align-items: center; font-size: 12px; color: #a0d9d2;">
+                        <span><i class="fa-solid fa-check"></i> Paiement Wave disponible</span>
+                        <span><i class="fa-solid fa-check"></i> Paiement Orange Money disponible</span>
+                    </div>
+                </div>
+                <div class="pricing-badge-price">
+                    <div class="amount">10 000 F</div>
+                    <div class="period">CFA / Mois</div>
+                    <a href="/abonnement" style="display: inline-block; margin-top: 8px; background: #a0d9d2; color: #111111; text-decoration: none; font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 6px;">Activer ou Renouveler</a>
                 </div>
             </div>
 
-            <!-- Bannière contact WhatsApp -->
+            <!-- SECTION : FOIRE AUX QUESTIONS (FAQ) -->
+            <div class="about-section-title">
+                <i class="fa-solid fa-circle-question"></i> Questions Fréquemment Posées (FAQ)
+            </div>
+            <div class="about-faq-grid">
+                
+                <div class="faq-item-card">
+                    <div class="faq-question">
+                        <i class="fa-solid fa-q"></i> Faut-il avoir des connaissances en comptabilité pour utiliser Grow ?
+                    </div>
+                    <p class="faq-answer">
+                        Absolument pas ! Grow a été spécialement pensé pour les commerçants du terrain. Vous communiquez en langage naturel ou par photos comme avec un collègue, et l'intelligence artificielle se charge d'imputer selon les normes comptables SYSCOHADA.
+                    </p>
+                </div>
+
+                <div class="faq-item-card">
+                    <div class="faq-question">
+                        <i class="fa-solid fa-q"></i> Comment Grow réconcilie-t-il les paiements Wave et Orange Money ?
+                    </div>
+                    <p class="faq-answer">
+                        Lorsque vous recevez un SMS ou une notification de paiement, transférez-le directement sur WhatsApp. Grow extrait la référence unique de transaction, l'expéditeur et le montant exact, et vérifie qu'aucun doublon n'est enregistré.
+                    </p>
+                </div>
+
+                <div class="faq-item-card">
+                    <div class="faq-question">
+                        <i class="fa-solid fa-q"></i> Mes données financières et reçus sont-ils en sécurité ?
+                    </div>
+                    <p class="faq-answer">
+                        Oui. Vos données sont hébergées sur un cloud souverain hautement sécurisé avec isolation stricte par entreprise. Chaque pièce comptable est scellée avec une empreinte cryptographique SHA-256 et vos données ne sont jamais partagées à des tiers sans votre accord.
+                    </p>
+                </div>
+
+                <div class="faq-item-card">
+                    <div class="faq-question">
+                        <i class="fa-solid fa-q"></i> Comment demander un crédit auprès des banques partenaires ?
+                    </div>
+                    <p class="faq-answer">
+                        Dès que vous cumulez au moins 30 jours d'écritures certifiées sur Grow, rendez-vous dans l'onglet « Prêts » de votre tableau de bord. Choisissez l'institution financière de votre choix (Baobab, Cofina, Pamecas, CBAO...) et cliquez sur « Transmettre mon Dossier en 1 Clic ».
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- BANNIÈRE CONTACT & ASSISTANCE DAKAR -->
             <div class="about-contact-banner">
                 <div>
-                    <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Une question ou
-                        besoin d'assistance ?</h3>
-                    <p style="font-size: 13px; color: #64748b; margin: 0;">Notre équipe d'assistance dédiée est à votre
-                        écoute sur WhatsApp.</p>
+                    <div style="font-size: 11px; font-weight: 800; color: #a0d9d2; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+                        <i class="fa-solid fa-headset"></i> Support &amp; Accompagnement Dédié
+                    </div>
+                    <h3 style="font-size: 17px; font-weight: 900; color: #ffffff; margin-bottom: 4px;">Une question, une suggestion ou besoin d'assistance ?</h3>
+                    <p style="font-size: 13px; color: #cbd5e1; margin: 0;">Notre équipe basée à Dakar est à votre écoute sur WhatsApp du Lundi au Samedi de 08h00 à 20h00.</p>
                 </div>
-                <a href="https://wa.me/221788773827" target="_blank" class="btn-whatsapp-support">
-                    <i class="fa-brands fa-whatsapp"></i> Échanger avec un conseiller Grow
+                <a href="https://wa.me/221788773827?text=Bonjour%20Grow,%20j'aimerais%20en%20savoir%20plus%20sur%20vos%20services" target="_blank" class="btn-whatsapp-support">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Échanger avec un conseiller Grow
                 </a>
             </div>
+
         </div>
 
     </main>
@@ -5558,7 +6069,7 @@
             }
         });
 
-        // Bascule entre Journal, Prêts et Tout Savoir Sur Nous via le menu horizontal
+        // Bascule entre Journal, Prêts et Tout Savoir Sur Nous via le menu horizontal et la barre mobile
         function switchVerticalTab(tabName) {
             const navJournal = document.getElementById('navLinkJournal');
             const navPrets = document.getElementById('navLinkPrets');
@@ -5568,20 +6079,29 @@
             const viewPrets = document.getElementById('viewPrets');
             const viewAbout = document.getElementById('viewAbout');
 
+            const bNavJournal = document.getElementById('bNavJournal');
+            const bNavPrets = document.getElementById('bNavPrets');
+            const bNavAbout = document.getElementById('bNavAbout');
+
             // Réinitialiser les états actifs
             [navJournal, navPrets, navAbout].forEach(n => { if (n) n.classList.remove('active'); });
             [viewJournal, viewPrets, viewAbout].forEach(v => { if (v) v.style.display = 'none'; });
+            [bNavJournal, bNavPrets, bNavAbout].forEach(b => { if (b) b.classList.remove('active'); });
 
             if (tabName === 'prets') {
                 if (navPrets) navPrets.classList.add('active');
+                if (bNavPrets) bNavPrets.classList.add('active');
                 if (viewPrets) viewPrets.style.display = 'block';
-            } else if (tabName === 'about') {
+            } else if (tabName === 'about' || tabName === 'grow') {
                 if (navAbout) navAbout.classList.add('active');
+                if (bNavAbout) bNavAbout.classList.add('active');
                 if (viewAbout) viewAbout.style.display = 'block';
             } else {
                 if (navJournal) navJournal.classList.add('active');
+                if (bNavJournal) bNavJournal.classList.add('active');
                 if (viewJournal) viewJournal.style.display = 'block';
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Chargement initial des données depuis Supabase
@@ -7113,6 +7633,14 @@ Téléchargement du relevé certifié en cours.");
             renderCalendar();
             initDatesAndPeriods();
             loadDashboardData();
+
+            // Prise en charge des onglets directs (?tab=about, ?tab=grow, ?tab=prets)
+            const tabParam = (new URLSearchParams(window.location.search).get('tab') || '').toLowerCase();
+            if (tabParam === 'about' || tabParam === 'grow') {
+                switchVerticalTab('about');
+            } else if (tabParam === 'prets') {
+                switchVerticalTab('prets');
+            }
 
             // Ouverture automatique de l'assistant webhook si demandé par lien WhatsApp
             if (new URLSearchParams(window.location.search).get('open_webhook') === '1') {
