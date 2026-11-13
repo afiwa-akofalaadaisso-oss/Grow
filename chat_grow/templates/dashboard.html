@@ -117,19 +117,11 @@
             transform: scale(1.05);
         }
 
-        .fintech-card-body-split {
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: flex-end !important;
-            gap: 14px !important;
-        }
-
-        .fintech-body-left {
+        .fintech-card-main-content {
             display: flex !important;
             flex-direction: column !important;
-            justify-content: flex-end !important;
-            flex: 1 !important;
-            min-width: 0 !important;
+            gap: 8px !important;
+            margin-top: 6px !important;
         }
 
         .fintech-ninea-chip {
@@ -144,19 +136,19 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             width: fit-content;
         }
 
         .fintech-balance-row {
             display: flex;
             align-items: baseline;
-            gap: 6px;
+            gap: 8px;
             margin: 0;
         }
 
         .fintech-balance-big {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 900;
             letter-spacing: -0.5px;
             color: #ffffff;
@@ -164,55 +156,68 @@
         }
 
         .fintech-currency-symbol {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             color: var(--grow-mint);
         }
 
-        .fintech-body-right {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 7px !important;
-            flex-shrink: 0 !important;
-            min-width: 125px !important;
+        /* BARRE DE MENU GROW DÉDIÉE (PRÊTS, ABONNEMENT, GROW) */
+        .grow-menu-bar {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 8px !important;
+            width: 100% !important;
+            background: #ffffff !important;
+            border-radius: 18px !important;
+            padding: 8px !important;
+            border: 1px solid #edf2f7 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+            margin: 12px 0 16px 0 !important;
+            box-sizing: border-box !important;
         }
 
-        .hero-nav-pill {
-            background: #ffffff !important;
-            color: #0a2540 !important;
-            border-radius: 12px !important;
-            padding: 7px 14px !important;
-            font-size: 12px !important;
-            font-weight: 700 !important;
-            border: none !important;
+        .grow-menu-bar-item {
             display: flex !important;
             align-items: center !important;
+            justify-content: center !important;
             gap: 8px !important;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) !important;
+            background: #f8fafc !important;
+            border: 1px solid #f1f5f9 !important;
+            border-radius: 12px !important;
+            padding: 10px 8px !important;
+            color: #0a2540 !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
             cursor: pointer !important;
-            text-align: left !important;
-            width: 100% !important;
-            transition: transform 0.12s ease, background 0.12s ease !important;
+            transition: all 0.15s ease !important;
+            text-decoration: none !important;
+            font-family: inherit !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
         }
 
-        .hero-nav-pill:active {
-            transform: scale(0.97) !important;
-            background: #f1f5f9 !important;
+        .grow-menu-bar-item i {
+            font-size: 14px !important;
+            color: #475569 !important;
+            transition: color 0.15s ease !important;
         }
 
-        .hero-nav-pill.active {
+        .grow-menu-bar-item:hover,
+        .grow-menu-bar-item:active {
             background: #f0fdf4 !important;
+            border-color: #bbf7d0 !important;
+            color: #0e7647 !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .grow-menu-bar-item:hover i,
+        .grow-menu-bar-item:active i,
+        .grow-menu-bar-item.active i {
             color: #0e7647 !important;
         }
 
-        .hero-nav-pill i {
-            color: #475569 !important;
-            font-size: 13px !important;
-            width: 16px !important;
-            text-align: center !important;
-        }
-
-        .hero-nav-pill.active i {
+        .grow-menu-bar-item.active {
+            background: #f0fdf4 !important;
+            border-color: #0e7647 !important;
             color: #0e7647 !important;
         }
 
@@ -5167,7 +5172,7 @@
         <!-- RÉSUMÉ FINANCIER & NAVIGATION GROW PERMANENTS (ACCUEIL, PRÊTS, GROW)     -->
         <!-- ========================================================================= -->
         <div class="mobile-financial-header">
-            <!-- CARTE FINTECH HAUT DE GAMME : Solde, Masquage, Nom PME & Navigation Latérale Intégrée (Modèle Stitch) -->
+            <!-- CARTE FINTECH HAUT DE GAMME : Solde, Masquage, Nom PME & NINEA (Carte Épurée) -->
             <div class="fintech-hero-card">
                 <div class="fintech-top-meta">
                     <div class="fintech-enterprise-pill" title="Le Nom De Mon Entreprise Est Cglt">
@@ -5184,47 +5189,28 @@
                     </div>
                 </div>
 
-                <div class="fintech-card-body-split">
-                    <!-- Colonne Gauche : NINEA & Grand Solde Net -->
-                    <div class="fintech-body-left">
-                        <div class="fintech-ninea-chip" id="mobileNineaChip">
-                            <i class="fa-solid fa-sparkles"></i> NINEA: 00802996
-                        </div>
-                        <div class="fintech-balance-row">
-                            <span class="fintech-balance-big" id="mobileSoldeNet">0</span>
-                            <span class="fintech-currency-symbol">F</span>
-                        </div>
+                <div class="fintech-card-main-content">
+                    <div class="fintech-ninea-chip" id="mobileNineaChip">
+                        <i class="fa-solid fa-sparkles"></i> NINEA: 00802996
                     </div>
-
-                    <!-- Colonne Droite : 3 Boutons Pilules Blanches Stylisées (Prêts, Abonnement, Grow) -->
-                    <div class="fintech-body-right">
-                        <button type="button" class="hero-nav-pill" id="bHeroPrets" onclick="switchVerticalTab('prets');" title="Financements et prêts bancaires">
-                            <i class="fa-solid fa-hand-holding-dollar"></i>
-                            <span>Prêts</span>
-                        </button>
-                        <button type="button" class="hero-nav-pill" id="bHeroAbonnement" onclick="allerVersAbonnement();" title="Mon abonnement Grow">
-                            <i class="fa-regular fa-credit-card"></i>
-                            <span>Abonnement</span>
-                        </button>
-                        <button type="button" class="hero-nav-pill" id="bHeroAbout" onclick="switchVerticalTab('about');" title="Tout savoir sur Grow">
-                            <i class="fa-solid fa-circle-info"></i>
-                            <span>Grow</span>
-                        </button>
+                    <div class="fintech-balance-row">
+                        <span class="fintech-balance-big" id="mobileSoldeNet">0</span>
+                        <span class="fintech-currency-symbol">F</span>
                     </div>
                 </div>
             </div>
 
-            <!-- DOCK MASQUÉ (Car les 3 boutons sont maintenant intégrés directement sur la carte) -->
-            <nav class="grow-nav-dock" id="dashboardNavDock" style="display: none !important;">
-                <button type="button" class="bottom-nav-item" id="bNavPrets" onclick="switchVerticalTab('prets');" title="Financements et prêts bancaires">
+            <!-- NOUVELLE BARRE DE MENU DÉDIÉE : PRÊTS, ABONNEMENT, GROW -->
+            <nav class="grow-menu-bar" id="growMenuBar">
+                <button type="button" class="grow-menu-bar-item" id="bMenuPrets" onclick="switchVerticalTab('prets');" title="Financements et prêts bancaires">
                     <i class="fa-solid fa-hand-holding-dollar"></i>
                     <span>Prêts</span>
                 </button>
-                <button type="button" class="bottom-nav-item" id="bNavAbonnement" onclick="allerVersAbonnement()" title="Mon abonnement Grow">
-                    <i class="fa-solid fa-credit-card"></i>
+                <button type="button" class="grow-menu-bar-item" id="bMenuAbonnement" onclick="allerVersAbonnement();" title="Mon abonnement Grow">
+                    <i class="fa-regular fa-credit-card"></i>
                     <span>Abonnement</span>
                 </button>
-                <button type="button" class="bottom-nav-item" id="bNavAbout" onclick="switchVerticalTab('about');" title="Tout savoir sur Grow">
+                <button type="button" class="grow-menu-bar-item" id="bMenuAbout" onclick="switchVerticalTab('about');" title="Tout savoir sur Grow">
                     <i class="fa-solid fa-circle-info"></i>
                     <span>Grow</span>
                 </button>
@@ -6849,23 +6835,21 @@
             if (viewAbout) viewAbout.style.setProperty('display', 'none', 'important');
 
             // 2. Réinitialiser l'état actif sur tous les boutons de navigation
-            document.querySelectorAll('.bottom-nav-item, .hero-nav-pill').forEach(b => {
+            document.querySelectorAll('.bottom-nav-item, .hero-nav-pill, .grow-menu-bar-item').forEach(b => {
                 b.classList.remove('active');
             });
             if (bTopAccueil) bTopAccueil.classList.remove('active');
 
             // 3. Activer la vue et le bouton ciblés
-            const bHeroPrets = document.getElementById('bHeroPrets');
-            const bHeroAbout = document.getElementById('bHeroAbout');
+            const bMenuPrets = document.getElementById('bMenuPrets');
+            const bMenuAbout = document.getElementById('bMenuAbout');
 
             if (tabName === 'prets' || tabName === 'pret') {
                 if (viewPrets) viewPrets.style.setProperty('display', 'block', 'important');
-                if (bNavPrets) bNavPrets.classList.add('active');
-                if (bHeroPrets) bHeroPrets.classList.add('active');
+                if (bMenuPrets) bMenuPrets.classList.add('active');
             } else if (tabName === 'about' || tabName === 'grow') {
                 if (viewAbout) viewAbout.style.setProperty('display', 'block', 'important');
-                if (bNavAbout) bNavAbout.classList.add('active');
-                if (bHeroAbout) bHeroAbout.classList.add('active');
+                if (bMenuAbout) bMenuAbout.classList.add('active');
             } else {
                 if (viewJournal) viewJournal.style.setProperty('display', 'block', 'important');
                 if (bTopAccueil) bTopAccueil.classList.add('active');
