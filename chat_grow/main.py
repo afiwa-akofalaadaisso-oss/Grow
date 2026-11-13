@@ -1,4 +1,4 @@
-﻿import os
+import os
 import json
 import base64
 import hashlib
@@ -697,26 +697,16 @@ async def api_test_webhook(request: Request):
         return {"status": "error", "message": str(e)}
 
 
-@app.post("/api/webhook/wave-direct")
-@app.post("/webhook/wave-merchant")
-@app.post("/webhook/wave")
-async def webhook_wave_direct(request: Request):
-    """
-    Webhook Opérateur Wave & Wave Business Merchant :
-    Reçoit les notifications d'encaissement (QR code comptoir, checkout ou transfert) en direct depuis Wave.
-    Le commerçant PME n'a absolument RIEN à copier-coller : Grow intercepte le flux et notifie le gérant sur WhatsApp.
-    """
+async def process_payment_notification(payload: dict, query_params: dict = None) -> dict:
+    """Traite et enregistre tout encaissement ou paiement (Wave, OM, n8n, checkout) dans Supabase."""
+    if query_params is None:
+        query_params = {}
     try:
-        payload = await request.json()
-        print("\n[NOTIFICATION OPÉRATEUR WAVE REÇUE] :", payload)
-
-        # Support du format Wave standard (data imbriqué) et du format direct
         data_obj = payload.get("data") if isinstance(payload.get("data"), dict) else payload
 
         tx_id = payload.get("id") or data_obj.get("id") or data_obj.get("transaction_id") or f"WV-{int(datetime.now().timestamp())}"
         amount = int(float(data_obj.get("amount") or data_obj.get("montant") or payload.get("amount") or 0))
 
-        # Résolution du compte marchand Wave (Numéro de compte M_sn_... ou téléphone)
         wave_account_id = (
             data_obj.get("account_id")
             or data_obj.get("merchant_id")
@@ -724,7 +714,7 @@ async def webhook_wave_direct(request: Request):
             or payload.get("account_id")
             or payload.get("merchant_id")
             or payload.get("business_id")
-            or request.query_params.get("merchant_id")
+            or query_params.get("merchant_id")
         )
 
         phone = (
@@ -733,10 +723,12 @@ async def webhook_wave_direct(request: Request):
             or payload.get("client_phone")
             or payload.get("telephone")
             or payload.get("sender_phone")
-            or request.query_params.get("phone")
+            or data_obj.get("phone")
+            or payload.get("phone")
+            or query_params.get("phone")
+            or "221788773827"
         )
 
-        # Si Wave fournit l'identifiant marchand (ex: M_sn_YgEkibrMRghV) sans téléphone
         if not phone and wave_account_id:
             if wave_account_id == "M_sn_YgEkibrMRghV":
                 phone = "221788773827"
@@ -760,14 +752,13 @@ async def webhook_wave_direct(request: Request):
         direction = (data_obj.get("direction") or payload.get("direction") or "CREDIT").upper()
         description = data_obj.get("description") or payload.get("description") or f"Encaissement Wave Marchand - {tiers_nom}"
 
-        if not phone or amount <= 0:
+        if amount <= 0:
             return {"status": "ignored", "reason": "Missing merchant phone or invalid amount"}
 
         sp = get_supabase()
         if not sp:
             return {"status": "error", "reason": "Database connection missing"}
 
-        # Identifier ou initialiser automatiquement l'entreprise liée au numéro de téléphone
         clean_phone = str(phone).replace("+", "").replace(" ", "").strip()
         res_ent = sp.table("entreprises").select("*").ilike("telephone_whatsapp", f"%{clean_phone}%").limit(1).execute()
         if res_ent and res_ent.data:
@@ -780,7 +771,6 @@ async def webhook_wave_direct(request: Request):
 
         type_flux = "ENTREE" if direction in ["CREDIT", "IN", "ENTREE", "RECEIVED"] else "SORTIE"
 
-        # Classification Intelligente Automatique (Encaissement CA, Mémoire Fournisseurs, Services Nationaux)
         classification = classifier_operation_automatiquement(
             direction=direction,
             montant=amount,
@@ -793,14 +783,12 @@ async def webhook_wave_direct(request: Request):
         libelle_final = classification["libelle"]
         methode = classification["methode_resolution"]
 
-        # Garantir un libellé unique, distinct et détaillé pour chaque encaissement Wave
         ref_aff = tx_id if tx_id else f"WV-{amount}"
         if not libelle_final or "Encaissement Wave" in libelle_final:
             libelle_final = f"Encaissement Wave - {amount:,.0f} FCFA ({tiers_nom} - Réf: {ref_aff})"
         elif f"{amount:,.0f}" not in libelle_final:
             libelle_final = f"{libelle_final} ({amount:,.0f} FCFA - Réf: {ref_aff})"
 
-        # Insertion directe dans le journal pré-comptable SYSCOHADA
         tx_row = {
             "entreprise_id": ent_id,
             "libelle": libelle_final,
@@ -819,13 +807,7 @@ async def webhook_wave_direct(request: Request):
             tx_row.pop("reference_externe", None)
             sp.table("transactions").insert(tx_row).execute()
 
-        print(f"[GROW WEBHOOK AUTONOME] TX {tx_id} traitée via {methode} -> Compte {compte_syscohada} ({statut_val})")
-
-        # Ingestion silencieuse en arrière-plan : l'écriture comptable est enregistrée discrètement
-        # en base de données et actualise le tableau de bord en direct sans spammer le commerçant.
-        # Le commerçant reçoit un bilan consolidé lors des points flash toutes les 3 heures (09h, 12h, 15h, 18h, 21h).
-        print(f"[GROW WAVE INGESTION SILENCIEUSE] Encaissement de {amount:,.0f} FCFA ({tx_id}) déposé discrètement en base et sur le dashboard pour {clean_phone or wave_account_id}. Zéro message WhatsApp individuel.")
-
+        print(f"[GROW WEBHOOK AUTONOME] TX {tx_id} traitée via {methode} -> Compte {compte_syscohada} ({statut_val}) pour {clean_phone}")
         return {
             "status": "success",
             "tx_id": tx_id,
@@ -835,6 +817,24 @@ async def webhook_wave_direct(request: Request):
             "statut": statut_val
         }
 
+    except Exception as e:
+        print(f"Erreur process_payment_notification: {e}")
+        return {"status": "error", "message": str(e)}
+
+
+@app.post("/api/webhook/wave-direct")
+@app.post("/webhook/wave-merchant")
+@app.post("/webhook/wave")
+async def webhook_wave_direct(request: Request):
+    """
+    Webhook Opérateur Wave & Wave Business Merchant :
+    Reçoit les notifications d'encaissement (QR code comptoir, checkout ou transfert) en direct depuis Wave.
+    Le commerçant PME n'a absolument RIEN à copier-coller : Grow intercepte le flux et notifie le gérant sur WhatsApp.
+    """
+    try:
+        payload = await request.json()
+        print("\n[NOTIFICATION OPÉRATEUR WAVE REÇUE] :", payload)
+        return await process_payment_notification(payload, dict(request.query_params))
     except Exception as e:
         print(f"Erreur webhook_wave_direct: {e}")
         return {"status": "error", "message": str(e)}
@@ -1146,9 +1146,20 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
 @app.post("/")
 @app.post("/webhook")
 async def receive_message(request: Request):
-    """Réception et traitement en direct des messages WhatsApp."""
+    """Réception et traitement en direct des messages WhatsApp et des webhooks de paiement (Wave, n8n)."""
     data = await request.json()
     print("\n[NOUVEAU MESSAGE WEBHOOK] :", data)
+
+    # 0. Aiguillage automatique : si c'est un webhook de paiement (Wave, OM, n8n)
+    is_payment = (
+        any(k in data for k in ["amount", "montant", "client_name", "merchant_phone", "reference", "compte_debit", "currency"])
+        or str(data.get("type", "")).startswith("payment")
+        or str(data.get("id", "")).startswith("ev_")
+        or (isinstance(data.get("data"), dict) and any(k in data["data"] for k in ["amount", "montant"]))
+    )
+    if is_payment:
+        print("[AIGUILLAGE WEBHOOK] Payload de paiement détecté sur /webhook -> Enregistrement comptable automatique.")
+        return await process_payment_notification(data, dict(request.query_params))
 
     try:
         value = {}
