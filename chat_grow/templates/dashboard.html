@@ -161,6 +161,96 @@
             color: var(--grow-mint);
         }
 
+        /* BANDEAU HORIZONTAL DES FLUX FINANCIERS SÉNÉGAL (7 FLUX OFFICIELS + TOUS) */
+        .grow-flows-container {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            padding: 4px 2px 10px 2px !important;
+            margin: 6px 0 14px 0 !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+
+        .grow-flows-container::-webkit-scrollbar {
+            display: none !important;
+        }
+
+        .grow-flow-chip {
+            flex-shrink: 0 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            padding: 7px 12px !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 20px !important;
+            color: #0a2540 !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.15s ease !important;
+            font-family: inherit !important;
+            user-select: none !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+        }
+
+        .grow-flow-chip:hover {
+            border-color: #a0d9d2 !important;
+            background: #f8fafc !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .grow-flow-chip.active {
+            background: #0a2540 !important;
+            color: #ffffff !important;
+            border-color: #0a2540 !important;
+            box-shadow: 0 2px 8px rgba(10, 37, 64, 0.18) !important;
+        }
+
+        .grow-flow-chip-icon {
+            width: 20px !important;
+            height: 20px !important;
+            object-fit: contain !important;
+            border-radius: 4px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .grow-flow-count {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            padding: 1px 6px !important;
+            border-radius: 10px !important;
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            line-height: 1.2 !important;
+        }
+
+        .grow-flow-chip.active .grow-flow-count {
+            background: #a0d9d2 !important;
+            color: #0a2540 !important;
+        }
+
+        .flow-avatar-wrapper {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        .flow-avatar-img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important;
+            padding: 3px !important;
+            box-sizing: border-box !important;
+            border-radius: 10px !important;
+        }
+
         /* BARRE DE MENU GROW DÉDIÉE (PRÊTS, ABONNEMENT, GROW) */
         .grow-menu-bar {
             display: grid !important;
@@ -5219,6 +5309,49 @@
                     <span>Grow</span>
                 </button>
             </nav>
+
+            <!-- BANDEAU HORIZONTAL DES FLUX FINANCIERS SÉNÉGAL (WAVE, ORANGE, ESPÈCES, IMMO, STOCK, DETTE, CAPITAL) -->
+            <div class="grow-flows-container" id="growFlowsContainer">
+                <button type="button" class="grow-flow-chip active" data-flow="all" onclick="filterByFlow('all', this)" title="Toutes les opérations">
+                    <span class="grow-flow-label">Tous</span>
+                    <span class="grow-flow-count" id="flowCountAll">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="wave" onclick="filterByFlow('wave', this)" title="Flux Wave Sénégal">
+                    <img src="/static/images/flows/wave.png" alt="Wave" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Wave</span>
+                    <span class="grow-flow-count" id="flowCountWave">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="orange" onclick="filterByFlow('orange', this)" title="Flux Orange Money Sénégal">
+                    <img src="/static/images/flows/orange.png" alt="Orange Money" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Orange</span>
+                    <span class="grow-flow-count" id="flowCountOrange">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="especes" onclick="filterByFlow('especes', this)" title="Flux Espèces FCFA (Caisse)">
+                    <img src="/static/images/flows/especes.png" alt="Espèces FCFA" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Espèces</span>
+                    <span class="grow-flow-count" id="flowCountEspeces">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="immobilisation" onclick="filterByFlow('immobilisation', this)" title="Flux Immobilisations (Classe 2 SYSCOHADA)">
+                    <img src="/static/images/flows/immobilisation.jpg" alt="Immobilisation" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Immobilisation</span>
+                    <span class="grow-flow-count" id="flowCountImmobilisation">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="stock" onclick="filterByFlow('stock', this)" title="Flux Stocks & Marchandises (Classe 3 SYSCOHADA)">
+                    <img src="/static/images/flows/stock.png" alt="Stock" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Stock</span>
+                    <span class="grow-flow-count" id="flowCountStock">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="dette" onclick="filterByFlow('dette', this)" title="Flux Dettes & Emprunts (Fournisseurs / Banques)">
+                    <img src="/static/images/flows/dette.png" alt="Dette" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Dette</span>
+                    <span class="grow-flow-count" id="flowCountDette">0</span>
+                </button>
+                <button type="button" class="grow-flow-chip" data-flow="capital" onclick="filterByFlow('capital', this)" title="Flux Capital & Apports (Classe 10 SYSCOHADA)">
+                    <img src="/static/images/flows/capital.png" alt="Capital" class="grow-flow-chip-icon">
+                    <span class="grow-flow-label">Capital</span>
+                    <span class="grow-flow-count" id="flowCountCapital">0</span>
+                </button>
+            </div>
         </div>
 
         <!-- CONTENU 1 : JOURNAL DES DONNÉES FINANCIÈRES (TOUT SUR LE BLOC PARENT UNIQUE) -->
@@ -7144,9 +7277,125 @@
             });
         }
 
+        
+        // --- DÉTECTION INTELLIGENTE DES 7 FLUX FINANCIERS SÉNÉGAL SYSCOHADA ---
+        function detectFlowMeta(t) {
+            const raw = String(t.libelle || '').toLowerCase();
+            const src = String(t.source_paiement || '').toUpperCase();
+            const compte = String(t.compte_syscohada || '');
+
+            // 1. Immobilisation (Comptes classe 2: matériel, bâtiment, véhicule, etc.)
+            if (compte.startsWith('2') || raw.includes('immobilis') || raw.includes('matériel') || raw.includes('materiel') || raw.includes('bâtiment') || raw.includes('batiment') || raw.includes('véhicule') || raw.includes('vehicule') || raw.includes('ordinateur') || raw.includes('équipement') || raw.includes('equipement')) {
+                return {
+                    key: 'immobilisation',
+                    label: 'Immobilisation',
+                    logoUrl: '/static/images/flows/immobilisation.jpg',
+                    iconFallback: 'fa-solid fa-building'
+                };
+            }
+
+            // 2. Stock (Comptes classe 3 ou 601/602 achats stocks de marchandises)
+            if (compte.startsWith('3') || compte.startsWith('601') || compte.startsWith('602') || raw.includes('stock') || raw.includes('marchandise') || raw.includes('inventaire') || raw.includes('achat de riz') || raw.includes('fourniture')) {
+                return {
+                    key: 'stock',
+                    label: 'Stock',
+                    logoUrl: '/static/images/flows/stock.png',
+                    iconFallback: 'fa-solid fa-boxes-stacked'
+                };
+            }
+
+            // 3. Dette / Emprunt / Fournisseurs (Comptes 16x emprunt, 401 fournisseur, 402, 404)
+            if (compte.startsWith('16') || compte.startsWith('401') || compte.startsWith('402') || compte.startsWith('404') || raw.includes('dette') || raw.includes('emprunt') || raw.includes('fournisseur') || raw.includes('remboursement')) {
+                return {
+                    key: 'dette',
+                    label: 'Dette',
+                    logoUrl: '/static/images/flows/dette.png',
+                    iconFallback: 'fa-solid fa-hand-holding-dollar'
+                };
+            }
+
+            // 4. Capital / Apports propres (Comptes classe 10: 101 capital, 103 exploitant)
+            if (compte.startsWith('10') || compte.startsWith('11') || raw.includes('capital') || raw.includes('apport') || raw.includes('associé') || raw.includes('associe') || raw.includes('fonds propre')) {
+                return {
+                    key: 'capital',
+                    label: 'Capital',
+                    logoUrl: '/static/images/flows/capital.png',
+                    iconFallback: 'fa-solid fa-vault'
+                };
+            }
+
+            // 5. Wave Sénégal
+            if (src === 'WAVE' || raw.includes('wave')) {
+                return {
+                    key: 'wave',
+                    label: 'Wave',
+                    logoUrl: '/static/images/flows/wave.png',
+                    iconFallback: 'fa-solid fa-bolt'
+                };
+            }
+
+            // 6. Orange Money Sénégal
+            if (src === 'ORANGE_MONEY' || src.includes('ORANGE') || raw.includes('orange') || raw.includes('om')) {
+                return {
+                    key: 'orange',
+                    label: 'Orange Money',
+                    logoUrl: '/static/images/flows/orange.png',
+                    iconFallback: 'fa-solid fa-mobile-screen-button'
+                };
+            }
+
+            // 7. Espèces FCFA (Caisse 571 ou cash)
+            if (src === 'ESPECES' || compte.startsWith('57') || raw.includes('espece') || raw.includes('espèce') || raw.includes('cash') || raw.includes('caisse')) {
+                return {
+                    key: 'especes',
+                    label: 'Espèces FCFA',
+                    logoUrl: '/static/images/flows/especes.png',
+                    iconFallback: 'fa-solid fa-money-bill-wave'
+                };
+            }
+
+            // Repli par défaut
+            if (src === 'WAVE') {
+                return { key: 'wave', label: 'Wave', logoUrl: '/static/images/flows/wave.png', iconFallback: 'fa-solid fa-bolt' };
+            }
+            return { key: 'especes', label: 'Espèces FCFA', logoUrl: '/static/images/flows/especes.png', iconFallback: 'fa-solid fa-money-bill-wave' };
+        }
+
+        let currentFilterFlow = 'all';
+
+        function filterByFlow(flowKey, btn) {
+            currentFilterFlow = flowKey;
+            currentPage = 1;
+            document.querySelectorAll('.grow-flow-chip').forEach(b => b.classList.remove('active'));
+            if (btn) {
+                btn.classList.add('active');
+            } else {
+                const target = document.querySelector(`.grow-flow-chip[data-flow="${flowKey}"]`);
+                if (target) target.classList.add('active');
+            }
+            applyAllFiltersAndRender();
+        }
+
         function applyAllFiltersAndRender() {
             let list = [...allTransactions];
             const now = new Date();
+
+            // 0. Calcul des compteurs dynamiques des 7 Flux
+            const flowCounts = { all: allTransactions.length, wave: 0, orange: 0, especes: 0, immobilisation: 0, stock: 0, dette: 0, capital: 0 };
+            allTransactions.forEach(t => {
+                const fm = detectFlowMeta(t);
+                if (flowCounts[fm.key] !== undefined) flowCounts[fm.key]++;
+            });
+            for (const [k, v] of Object.entries(flowCounts)) {
+                const countId = 'flowCount' + k.charAt(0).toUpperCase() + k.slice(1);
+                const el = document.getElementById(countId);
+                if (el) el.textContent = v;
+            }
+
+            // Filtrage par Flux actif (Wave, Orange, Espèces, Immo, Stock, Dette, Capital)
+            if (currentFilterFlow !== 'all') {
+                list = list.filter(t => detectFlowMeta(t).key === currentFilterFlow);
+            }
 
             // 1. Filtrage par Période Temporelle
             if (currentFilterPeriod === 'semaine') {
@@ -7743,7 +7992,10 @@
 
                 tr.innerHTML = `
                     <td class="td-date">${dateFullDisplay}</td>
-                    <td class="td-libelle">${escapeHtml(t.libelle || 'Opération')}</td>
+                    <td class="td-libelle">
+                        <img src="${detectFlowMeta(t).logoUrl}" alt="${escapeHtml(detectFlowMeta(t).label)}" title="${escapeHtml(detectFlowMeta(t).label)}" style="width: 20px; height: 20px; object-fit: contain; vertical-align: middle; margin-right: 8px; border-radius: 4px;" onerror="this.style.display=\'none\';">
+                        ${escapeHtml(t.libelle || 'Opération')}
+                    </td>
                     <td class="td-compte">${compteBadgeHtml}</td>
                     <td class="td-debit" ${flux === 'SORTIE' ? '' : 'style="color: #94a3b8;"'}>${debitText}</td>
                     <td class="td-credit" ${flux === 'ENTREE' ? '' : 'style="color: #94a3b8;"'}>${creditText}</td>
@@ -7773,8 +8025,8 @@
                     const compteNum = escapeHtml(t.compte_syscohada || (isSortie ? '601' : '701'));
 
                     card.innerHTML = `
-                        <div class="tx-card-avatar" style="background: ${fMeta.iconBg}; color: ${fMeta.iconColor};">
-                            <i class="${fMeta.iconClass}"></i>
+                        <div class="tx-card-avatar flow-avatar-wrapper" title="${escapeHtml(detectFlowMeta(t).label)}">
+                            <img src="${detectFlowMeta(t).logoUrl}" alt="${escapeHtml(detectFlowMeta(t).label)}" class="flow-avatar-img" onerror="this.onerror=null; this.parentElement.innerHTML=\'<i class=\"${detectFlowMeta(t).iconFallback}\" style=\"color: #a0d9d2;\"></i>\';">
                         </div>
                         <div class="wave-tx-left">
                             <div class="wave-tx-title" title="${escapeHtml(t.libelle || '')}">${escapeHtml(fMeta.title)}</div>
