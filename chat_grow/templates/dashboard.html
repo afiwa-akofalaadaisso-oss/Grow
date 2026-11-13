@@ -54,8 +54,17 @@
         .fintech-top-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            gap: 14px;
+        }
+
+        .fintech-enterprise-container {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .fintech-enterprise-pill {
@@ -64,51 +73,78 @@
             gap: 8px;
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(8px);
-            padding: 5px 12px;
+            padding: 6px 12px;
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.12);
+            max-width: 100%;
+            width: fit-content;
         }
 
         .fintech-enterprise-pill img {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             background: #222222;
+            flex-shrink: 0;
         }
 
         .fintech-enterprise-name {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             letter-spacing: -0.2px;
+            line-height: 1.2;
+        }
+
+        .fintech-ninea-wrap {
+            display: flex;
+            align-items: center;
         }
 
         .fintech-ninea-chip {
-            font-size: 10px;
-            color: var(--grow-mint);
-            font-weight: 600;
+            font-size: 10.5px;
+            color: #a0d9d2;
+            font-weight: 700;
             background: rgba(160, 217, 210, 0.12);
-            padding: 2px 7px;
-            border-radius: 12px;
+            border: 1px solid rgba(160, 217, 210, 0.25);
+            padding: 3px 9px;
+            border-radius: 8px;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .fintech-top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            padding-top: 2px;
         }
 
         .fintech-eye-btn {
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.14);
             color: #e2e8f0;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .fintech-eye-btn:hover {
             background: rgba(255, 255, 255, 0.18);
             color: #ffffff;
+            transform: scale(1.05);
         }
 
         .fintech-balance-row {
@@ -5077,10 +5113,14 @@
             <!-- CARTE FINTECH HAUT DE GAMME : Solde, Masquage, Nom PME & QR Card -->
             <div class="fintech-hero-card">
                 <div class="fintech-top-meta">
-                    <div class="fintech-enterprise-pill">
-                        <img src="/static/images/grow_logo.png" alt="Grow Logo">
-                        <span class="fintech-enterprise-name" id="mobileEnterpriseName">Le Nom De Mon Entreprise Est Cglt</span>
-                        <span class="fintech-ninea-chip" id="mobileNineaChip">NINEA: 00802996</span>
+                    <div class="fintech-enterprise-container">
+                        <div class="fintech-enterprise-pill">
+                            <img src="/static/images/grow_logo.png" alt="Grow Logo">
+                            <span class="fintech-enterprise-name" id="mobileEnterpriseName">Le Nom De Mon Entreprise Est Cglt</span>
+                        </div>
+                        <div class="fintech-ninea-wrap">
+                            <span class="fintech-ninea-chip" id="mobileNineaChip"><i class="fa-solid fa-certificate"></i> NINEA: 00802996</span>
+                        </div>
                     </div>
                     <div class="fintech-top-actions">
                         <button type="button" class="fintech-eye-btn" onclick="ouvrirModalQRAccesGrow()" title="QR Code d'accès Grow">
@@ -6831,7 +6871,7 @@
                     if (elMobileNom) elMobileNom.textContent = entNom;
                     const elMobileNinea = document.getElementById('mobileNineaChip');
                     if (elMobileNinea && currentEntreprise.ninea) {
-                        elMobileNinea.textContent = `NINEA: ${currentEntreprise.ninea}`;
+                        elMobileNinea.innerHTML = `<i class="fa-solid fa-certificate"></i> NINEA: ${currentEntreprise.ninea}`;
                     }
 
                     const initials = getInitials(entNom);
