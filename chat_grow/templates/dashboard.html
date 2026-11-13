@@ -289,17 +289,7 @@
 
         /* BARRE DE MENU GROW DÉDIÉE (PRÊTS, ABONNEMENT, GROW) */
         .grow-menu-bar {
-            display: grid !important;
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 8px !important;
-            width: 100% !important;
-            background: #ffffff !important;
-            border-radius: 18px !important;
-            padding: 8px !important;
-            border: 1px solid #edf2f7 !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
-            margin: 12px 0 16px 0 !important;
-            box-sizing: border-box !important;
+            display: none !important;
         }
 
         .grow-menu-bar-item {
@@ -5809,21 +5799,7 @@
                 </div>
             </div>
 
-            <!-- NOUVELLE BARRE DE MENU DÉDIÉE : PRÊTS, ABONNEMENT, GROW -->
-            <nav class="grow-menu-bar" id="growMenuBar">
-                <button type="button" class="grow-menu-bar-item" id="bMenuPrets" onclick="switchVerticalTab('prets');" title="Financements et prêts bancaires">
-                    <i class="fa-solid fa-hand-holding-dollar"></i>
-                    <span>Prêts</span>
-                </button>
-                <button type="button" class="grow-menu-bar-item" id="bMenuAbonnement" onclick="allerVersAbonnement();" title="Mon abonnement Grow">
-                    <i class="fa-regular fa-credit-card"></i>
-                    <span>Abonnement</span>
-                </button>
-                <button type="button" class="grow-menu-bar-item" id="bMenuAbout" onclick="switchVerticalTab('about');" title="Tout savoir sur Grow">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>Grow</span>
-                </button>
-            </nav>
+
 
             <!-- BANDEAU HORIZONTAL DES FLUX FINANCIERS SÉNÉGAL (WAVE, ORANGE, ESPÈCES, IMMO, STOCK, DETTE, CAPITAL) -->
             <div class="grow-flows-container" id="growFlowsContainer">
