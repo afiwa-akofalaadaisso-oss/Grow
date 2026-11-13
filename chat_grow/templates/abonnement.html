@@ -14,21 +14,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --grow-dark: #222222;
-            --grow-dark-card: #1f2222;
+            --grow-dark: #0b1222;
+            --grow-dark-card: #111a2e;
+            --grow-dark-gradient: linear-gradient(135deg, #0b1222 0%, #060d1a 100%);
             --grow-mint: #a0d9d2;
-            --grow-mint-hover: #a0d9d2;
+            --grow-mint-hover: #8ecfc7;
             --grow-mint-glow: rgba(160, 217, 210, 0.25);
             --grow-surface: #ffffff;
             --grow-bg: #f8fafc;
-            --grow-text-primary: #0f172a;
+            --grow-border: #e2e8f0;
+            --grow-text-primary: #0b1222;
             --grow-text-muted: #64748b;
+            --shadow-soft: 0 1px 3px rgba(11, 18, 34, 0.04), 0 12px 24px -6px rgba(11, 18, 34, 0.06);
+            --shadow-lift: 0 2px 4px rgba(11, 18, 34, 0.05), 0 20px 36px -12px rgba(11, 18, 34, 0.09);
             --wave-blue: #a0d9d2;
             --wave-blue-bg: rgba(160, 217, 210, 0.18);
-            --wave-border: rgba(2, 132, 199, 0.25);
+            --wave-border: rgba(160, 217, 210, 0.35);
             --om-orange: #a0d9d2;
-            --om-orange-bg: #ffedd5;
-            --om-border: rgba(234, 88, 12, 0.25);
+            --om-orange-bg: rgba(160, 217, 210, 0.12);
+            --om-border: rgba(160, 217, 210, 0.35);
         }
 
         * {
@@ -165,14 +169,14 @@
             line-height: 1.45;
         }
 
-        /* CARTE FORFAIT PRESTIGE CHARTE GROW (NOIR #222222 + VERT MENTHE #a0d9d2) */
+        /* CARTE FORFAIT PRESTIGE CHARTE GROW (NOIR #0b1222 + BLEU MENTHE #a0d9d2) */
         .plan-card-prestige {
-            background: linear-gradient(145deg, #1f2222 0%, #292d2d 100%);
+            background: linear-gradient(135deg, #0b1222 0%, #060d1a 100%);
             border: 1.5px solid rgba(160, 217, 210, 0.35);
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 22px 20px;
             margin-bottom: 22px;
-            box-shadow: 0 16px 36px rgba(34, 34, 34, 0.16);
+            box-shadow: 0 16px 36px -10px rgba(11, 18, 34, 0.35), 0 0 0 1px rgba(160, 217, 210, 0.2);
             position: relative;
             overflow: hidden;
             color: #ffffff;
