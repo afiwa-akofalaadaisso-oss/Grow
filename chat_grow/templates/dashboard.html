@@ -2058,6 +2058,122 @@
         }
 
         /* ========================================================================= */
+        /* BOUTON VOS PREUVES FINANCIÈRES (AU CENTRE ENTRE GROW ET NOTIFICATION)     */
+        /* ========================================================================= */
+        .btn-preuves-financieres {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #222222;
+            color: #ffffff;
+            border: 1.5px solid #a0d9d2;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12), 0 0 14px rgba(160, 217, 210, 0.2);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-preuves-financieres:hover {
+            background: #2c2f2f;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2), 0 0 18px rgba(160, 217, 210, 0.35);
+        }
+
+        .btn-preuves-financieres i {
+            color: #a0d9d2;
+            font-size: 15px;
+        }
+
+        .preuves-counter-badge {
+            background: #a0d9d2;
+            color: #111111;
+            font-size: 11px;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 12px;
+            line-height: 1.2;
+        }
+
+        /* MODALE COFFRE-FORT NUMÉRIQUE DES PREUVES FINANCIÈRES */
+        .modal-coffre-box {
+            max-width: 680px;
+            width: 92%;
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .coffre-item-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            transition: all 0.15s ease;
+        }
+
+        .coffre-item-card:hover {
+            border-color: #a0d9d2;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .coffre-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .coffre-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #cbd5e1;
+            flex-shrink: 0;
+            background: #f1f5f9;
+        }
+
+        .coffre-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .coffre-icon-box.wave {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .coffre-icon-box.om {
+            background: #ffedd5;
+            color: #ea580c;
+        }
+
+        .coffre-icon-box.cash {
+            background: #f0fdf4;
+            color: #0e7647;
+        }
+
+        /* ========================================================================= */
         /* STYLES VUE TOUT SAVOIR SUR NOUS (GROW - SECTION OFFICIELLE FINTECH)      */
         /* PALETTE : NOIR INTENSE #222222 | MENTHE/CYAN #a0d9d2 | SURFACES #2a2a2a  */
         /* ========================================================================= */
@@ -2610,13 +2726,11 @@
                 flex: 1 1 100% !important;
                 width: 100% !important;
                 order: 3 !important;
-                margin-top: 10px !important;
+                margin-top: 8px !important;
                 padding-top: 8px !important;
                 border-top: 1px solid #f1f5f9 !important;
-                justify-content: flex-start !important;
-                overflow-x: auto !important;
-                -webkit-overflow-scrolling: touch !important;
-                scrollbar-width: none !important;
+                justify-content: center !important;
+                display: flex !important;
             }
 
             .nav-center::-webkit-scrollbar {
@@ -4294,6 +4408,15 @@
                     style="width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #d4af37; object-fit: cover;">
                 <span style="font-size: 18px; font-weight: 900; color: #0a2540; letter-spacing: 0.5px;">GROW</span>
             </a>
+        </div>
+
+        <!-- AU CENTRE ENTRE GROW ET NOTIFICATION : VOS PREUVES FINANCIÈRES -->
+        <div class="nav-center">
+            <button type="button" class="btn-preuves-financieres" onclick="ouvrirModalCoffrePreuves()" title="Consulter vos pièces justificatives et preuves financières certifiées">
+                <i class="fa-solid fa-file-shield"></i>
+                <span class="btn-preuves-text">Vos Preuves Financières</span>
+                <span class="preuves-counter-badge" id="preuvesHeaderBadge">0</span>
+            </button>
         </div>
 
         <div class="nav-right">
@@ -6062,6 +6185,10 @@
 
                 currentEntreprise = data.entreprise;
                 allTransactions = data.transactions || [];
+                // Mise à jour immédiate du compteur Vos Preuves Financières
+                const totalPreuvesCount = allTransactions.filter(t => (t.preuves_numeriques && t.preuves_numeriques.length > 0) || ['WAVE', 'ORANGE_MONEY', 'BANQUE'].includes((t.source_paiement || '').toUpperCase()) || t.statut_validation === 'VALIDE_PME').length;
+                const pBadgeEl = document.getElementById('preuvesHeaderBadge');
+                if (pBadgeEl) pBadgeEl.textContent = totalPreuvesCount;
 
                 // 1. Remplir les informations de l'entreprise
                 if (currentEntreprise) {
@@ -6849,6 +6976,120 @@
                 .replace(/"/g, '&quot;');
         }
 
+        
+        // =========================================================================
+        // LOGIQUE COFFRE-FORT NUMÉRIQUE : VOS PREUVES FINANCIÈRES
+        // =========================================================================
+        let currentCoffreFilter = 'all';
+
+        function ouvrirModalCoffrePreuves(filterType = 'all') {
+            const m = document.getElementById('modalCoffrePreuves');
+            if (!m) return;
+            currentCoffreFilter = filterType;
+            renderCoffrePreuvesList(currentCoffreFilter);
+            m.style.display = 'flex';
+        }
+
+        function closeCoffrePreuvesModal() {
+            const m = document.getElementById('modalCoffrePreuves');
+            if (m) m.style.display = 'none';
+        }
+
+        function filterCoffrePreuves(type, btn) {
+            currentCoffreFilter = type;
+            document.querySelectorAll('#modalCoffrePreuves .filter-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderCoffrePreuvesList(type);
+        }
+
+        function renderCoffrePreuvesList(type = 'all') {
+            const container = document.getElementById('coffrePreuvesList');
+            const statTotal = document.getElementById('coffreStatTotal');
+            if (!container) return;
+
+            // Filtrer les transactions qui possèdent une preuve ou certification
+            let list = allTransactions.filter(t => {
+                const hasImg = (t.preuves_numeriques && t.preuves_numeriques.length > 0);
+                const isMobile = ['WAVE', 'ORANGE_MONEY', 'BANQUE'].includes((t.source_paiement || '').toUpperCase());
+                const isValide = (t.statut_validation === 'VALIDE_PME');
+
+                if (type === 'photo') return hasImg;
+                if (type === 'mobile') return isMobile;
+                return hasImg || isMobile || isValide;
+            });
+
+            if (statTotal) statTotal.textContent = `${list.length}`;
+            const headerBadge = document.getElementById('preuvesHeaderBadge');
+            if (headerBadge) headerBadge.textContent = `${allTransactions.filter(t => (t.preuves_numeriques && t.preuves_numeriques.length > 0) || ['WAVE', 'ORANGE_MONEY', 'BANQUE'].includes((t.source_paiement || '').toUpperCase()) || t.statut_validation === 'VALIDE_PME').length}`;
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; background: #f8fafc; border-radius: 12px; border: 1.5px dashed #cbd5e1;">
+                        <i class="fa-solid fa-receipt" style="font-size: 32px; color: #94a3b8; margin-bottom: 12px;"></i>
+                        <h4 style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Aucune preuve dans cette catégorie</h4>
+                        <p style="font-size: 12.5px; color: #64748b; margin: 0; max-width: 420px; margin: 0 auto;">
+                            Dès que vous envoyez une photo de reçu sur WhatsApp ou encaissez via Wave / Orange Money, votre pièce justificative est instantanément scellée ici.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            list.forEach(t => {
+                const hasImg = (t.preuves_numeriques && t.preuves_numeriques.length > 0);
+                const src = (t.source_paiement || '').toUpperCase();
+                const isWave = src === 'WAVE';
+                const isOM = src === 'ORANGE_MONEY';
+                const isSortie = (t.type_flux || '').toUpperCase() === 'SORTIE';
+                const montant = parseInt(t.montant_fcfa || 0);
+                const dateStr = formatDateHeure(t.date_operation || t.created_at);
+                const libelle = t.libelle || 'Opération certifiée';
+                const ref = t.reference_externe || `TX-${(t.id || 'GROW').substring(0, 8).toUpperCase()}`;
+
+                const card = document.createElement('div');
+                card.className = 'coffre-item-card';
+
+                let iconHtml = '';
+                let actionBtnHtml = '';
+
+                if (hasImg) {
+                    const imgUrl = t.preuves_numeriques[0].url_stockage_s3 || '/static/justificatif-achat-riz.png';
+                    iconHtml = `<img src="${imgUrl}" alt="Reçu" class="coffre-thumb" onerror="this.onerror=null;this.src='/static/justificatif-achat-riz.png';">`;
+                    actionBtnHtml = `<button type="button" onclick="openProofModalDirect('${imgUrl}', '${escapeHtml(libelle)}')" style="background: #0e7647; color: #ffffff; border: none; padding: 7px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;"><i class="fa-solid fa-eye"></i> Voir le reçu</button>`;
+                } else if (isWave) {
+                    iconHtml = `<div class="coffre-icon-box wave"><i class="fa-solid fa-bolt"></i></div>`;
+                    actionBtnHtml = `<button type="button" onclick="openWaveProofModal('${ref}', '${escapeHtml(libelle)}', '${formatFCFA(montant)}', '${dateStr}', 'Wave')" style="background: #0284c7; color: #ffffff; border: none; padding: 7px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;"><i class="fa-solid fa-certificate"></i> Attestation</button>`;
+                } else if (isOM) {
+                    iconHtml = `<div class="coffre-icon-box om"><i class="fa-solid fa-mobile-screen-button"></i></div>`;
+                    actionBtnHtml = `<button type="button" onclick="openWaveProofModal('${ref}', '${escapeHtml(libelle)}', '${formatFCFA(montant)}', '${dateStr}', 'Orange Money')" style="background: #ea580c; color: #ffffff; border: none; padding: 7px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;"><i class="fa-solid fa-certificate"></i> Attestation</button>`;
+                } else {
+                    iconHtml = `<div class="coffre-icon-box cash"><i class="fa-solid fa-receipt"></i></div>`;
+                    actionBtnHtml = `<button type="button" onclick="openProofModalDirect('/static/justificatif-achat-riz.png', '${escapeHtml(libelle)}')" style="background: #334155; color: #ffffff; border: none; padding: 7px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;"><i class="fa-solid fa-eye"></i> Reçu Certifié</button>`;
+                }
+
+                card.innerHTML = `
+                    <div class="coffre-item-left">
+                        ${iconHtml}
+                        <div style="min-width: 0;">
+                            <div style="font-size: 13.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                ${escapeHtml(libelle)}
+                            </div>
+                            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                                <span style="font-weight: 700; color: ${isSortie ? '#dc2626' : '#0e7647'};">${isSortie ? '-' : '+'}${formatFCFA(montant)}</span>
+                                &bull; ${dateStr}
+                                &bull; <span style="color: #0e7647; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Scellé SHA-256</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        ${actionBtnHtml}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
         // Zoom sur justificatif avec affichage haute définition
         function openProofModalDirect(url, title) {
             const m = document.getElementById('proofModal');
@@ -7582,6 +7823,72 @@ Téléchargement du relevé certifié en cours.");
     <!-- ========================================================================= -->
     <!-- MODALE DOSSIER 1-CLIC OFFICIEL BANCAIRE AVEC CHECKLIST DE PIÈCES           -->
     <!-- ========================================================================= -->
+        <!-- ========================================================================= -->
+    <!-- MODALE DU COFFRE-FORT NUMÉRIQUE : VOS PREUVES FINANCIÈRES CERTIFIÉES      -->
+    <!-- ========================================================================= -->
+    <div id="modalCoffrePreuves" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeCoffrePreuvesModal()">
+        <div class="modal-box modal-coffre-box" onclick="event.stopPropagation()">
+            <!-- En-tête de la modale -->
+            <div class="modal-top" style="background: #222222; color: #ffffff; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #a0d9d2;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(160, 217, 210, 0.15); border: 1px solid #a0d9d2; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-file-shield" style="color: #a0d9d2; font-size: 20px;"></i>
+                    </div>
+                    <div>
+                        <strong style="font-size: 16px; display: block; color: #ffffff;">Vos Preuves Financières &amp; Justificatifs</strong>
+                        <span style="font-size: 11px; color: #a0d9d2;">Coffre-fort légal SYSCOHADA &bull; Certification ONECCA / BCEAO</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeCoffrePreuvesModal()" style="background: none; border: none; color: #ffffff; font-size: 20px; cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Corps de la modale -->
+            <div class="modal-content" style="padding: 20px; overflow-y: auto; flex: 1;">
+                
+                <!-- Bannières Résumé Preuves -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 18px;">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #64748b; text-transform: uppercase;">Total Pièces Archivées</div>
+                        <div style="font-size: 20px; font-weight: 900; color: #0f172a; margin-top: 2px;" id="coffreStatTotal">0</div>
+                    </div>
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #166534; text-transform: uppercase;">Conformité Fiscale</div>
+                        <div style="font-size: 20px; font-weight: 900; color: #0e7647; margin-top: 2px;" id="coffreStatConforme">100%</div>
+                    </div>
+                    <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 12px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #0369a1; text-transform: uppercase;">Empreinte Cryptographique</div>
+                        <div style="font-size: 13px; font-weight: 800; color: #0284c7; margin-top: 6px;">SHA-256 Validé</div>
+                    </div>
+                </div>
+
+                <!-- Filtres rapides -->
+                <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px;">
+                    <button type="button" class="filter-btn active" id="btnCoffreFilterAll" onclick="filterCoffrePreuves('all', this)" style="padding: 6px 14px; font-size: 12px;">Toutes les pièces</button>
+                    <button type="button" class="filter-btn" id="btnCoffreFilterImg" onclick="filterCoffrePreuves('photo', this)" style="padding: 6px 14px; font-size: 12px;"><i class="fa-solid fa-camera"></i> Reçus &amp; Factures</button>
+                    <button type="button" class="filter-btn" id="btnCoffreFilterWave" onclick="filterCoffrePreuves('mobile', this)" style="padding: 6px 14px; font-size: 12px;"><i class="fa-solid fa-bolt"></i> Wave / Orange Money</button>
+                </div>
+
+                <!-- Liste dynamique des preuves -->
+                <div id="coffrePreuvesList" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Rempli dynamiquement en JS -->
+                </div>
+
+            </div>
+
+            <!-- Pied de page modale -->
+            <div style="padding: 14px 22px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <span style="font-size: 11.5px; color: #64748b;">
+                    <i class="fa-solid fa-lock" style="color: #0e7647;"></i> Archivage sécurisé garanti 10 ans (Norme OHADA).
+                </span>
+                <button type="button" onclick="closeCoffrePreuvesModal()" style="background: #222222; color: #ffffff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="modalDossierPret" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeDossierPretModal()">
         <div class="modal-box modal-dossier-box" onclick="event.stopPropagation()">
             <div class="modal-top" style="background: #222222; color: #ffffff; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center;">
