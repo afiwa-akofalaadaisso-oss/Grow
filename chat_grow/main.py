@@ -1126,6 +1126,14 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
             res_ent = sp.table("entreprises").select("*").ilike("telephone_whatsapp", f"%{clean_p}%").limit(1).execute()
             if res_ent.data:
                 ent_id = res_ent.data[0]["id"]
+                # Anti-doublon : un seul débit d'abonnement par mois (évite les clics répétés)
+                debut_mois = datetime.now().strftime("%Y-%m-01")
+                deja = sp.table("transactions").select("id").eq("entreprise_id", ent_id) \
+                    .ilike("libelle", "Paiement abonnement mensuel Grow%") \
+                    .gte("created_at", debut_mois).limit(1).execute()
+                if deja.data:
+                    return {"status": "success", "phone": clean_p, "operateur": operateur,
+                            "montant": montant, "deja_enregistre": True}
                 sp.table("transactions").insert({
                     "entreprise_id": ent_id,
                     "libelle": f"Paiement abonnement mensuel Grow ({operateur})",

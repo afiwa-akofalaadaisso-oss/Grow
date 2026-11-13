@@ -4467,74 +4467,75 @@
     <!-- ========================================================================= -->
     <main class="dashboard-main-content">
 
+        <!-- ========================================================================= -->
+        <!-- RÉSUMÉ FINANCIER & NAVIGATION GROW PERMANENTS (ACCUEIL, PRÊTS, GROW)     -->
+        <!-- ========================================================================= -->
+        <div class="mobile-financial-header">
+            <!-- CARTE FINTECH HAUT DE GAMME : Solde, Masquage, Nom PME & QR Card -->
+            <div class="fintech-hero-card">
+                <div class="fintech-top-meta">
+                    <div class="fintech-enterprise-pill">
+                        <img src="/static/images/grow_logo.png" alt="Grow Logo">
+                        <span class="fintech-enterprise-name" id="mobileEnterpriseName">Le Nom De Mon Entreprise Est Cglt</span>
+                        <span class="fintech-ninea-chip" id="mobileNineaChip">NINEA: 00802996</span>
+                    </div>
+                    <div class="fintech-top-actions">
+                        <button type="button" class="fintech-eye-btn" onclick="ouvrirModalQRAccesGrow()" title="QR Code d'accès Grow">
+                            <i class="fa-solid fa-qrcode" style="color: var(--grow-mint);"></i>
+                        </button>
+                        <button type="button" class="fintech-eye-btn" onclick="toggleBalanceVisibility()" title="Masquer / Afficher le solde" id="btnToggleBalance">
+                            <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="fintech-balance-row">
+                    <div class="fintech-balance-big" id="mobileSoldeNet">0</div>
+                    <div class="fintech-currency-symbol">F</div>
+                </div>
+
+                <!-- BOUTON QR D'ACCÈS À GROW -->
+                <div class="fintech-hero-footer">
+                    <button type="button" class="btn-qr-acces-grow" onclick="ouvrirModalQRAccesGrow()" title="Afficher mon QR Code d'accès à Grow">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span>QR d'accès à Grow</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- BARRE DE NAVIGATION PRINCIPALE GROW (ACCUEIL / PRÊTS / + / ABONNEMENT / GROW) -->
+            <nav class="grow-nav-dock" id="dashboardNavDock">
+                <button type="button" class="bottom-nav-item active" id="bNavJournal" onclick="switchVerticalTab('journal');" title="Tableau de bord financier">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Accueil</span>
+                </button>
+
+                <button type="button" class="bottom-nav-item" id="bNavPrets" onclick="switchVerticalTab('prets');" title="Financements et prêts bancaires">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <span>Prêts</span>
+                </button>
+
+                <button type="button" class="bottom-nav-center-btn" onclick="ouvrirModalQuickTx('ENTREE')" title="Ajouter une vente ou dépense">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+
+                <button type="button" class="bottom-nav-item" id="bNavAbonnement" onclick="allerVersAbonnement()" title="Mon abonnement Grow">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span>Abonnement</span>
+                </button>
+
+                <button type="button" class="bottom-nav-item" id="bNavAbout" onclick="switchVerticalTab('about');" title="Tout savoir sur Grow">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Grow</span>
+                </button>
+            </nav>
+        </div>
+
         <!-- CONTENU 1 : JOURNAL DES DONNÉES FINANCIÈRES (TOUT SUR LE BLOC PARENT UNIQUE) -->
         <div id="viewJournal">
 
             <!-- Bloc Parent Unique Intégré -->
             <div class="journal-full-card">
-                <!-- ========================================================================= -->
-                <!-- RÉSUMÉ FINANCIER & ACTIONS RAPIDES MOBILE (EXPÉRIENCE SMARTPHONE NATIVE)   -->
-                <!-- ========================================================================= -->
-                <div class="mobile-financial-header">
-                    <!-- CARTE FINTECH HAUT DE GAMME : Solde, Masquage, Nom PME & QR Card -->
-                    <div class="fintech-hero-card">
-                        <div class="fintech-top-meta">
-                            <div class="fintech-enterprise-pill">
-                                <img src="/static/images/grow_logo.png" alt="Grow Logo">
-                                <span class="fintech-enterprise-name" id="mobileEnterpriseName">Boutique Fatou Thiam</span>
-                                <span class="fintech-ninea-chip" id="mobileNineaChip">NINEA Certifié</span>
-                            </div>
-                            <div class="fintech-top-actions">
-                                <button type="button" class="fintech-eye-btn" onclick="ouvrirModalQRAccesGrow()" title="QR Code d'accès Grow">
-                                    <i class="fa-solid fa-qrcode" style="color: var(--grow-mint);"></i>
-                                </button>
-                                <button type="button" class="fintech-eye-btn" onclick="toggleBalanceVisibility()" title="Masquer / Afficher le solde" id="btnToggleBalance">
-                                    <i class="fa-regular fa-eye" id="eyeIcon"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="fintech-balance-row">
-                            <div class="fintech-balance-big" id="mobileSoldeNet">0</div>
-                            <div class="fintech-currency-symbol">F</div>
-                        </div>
-
-                        <!-- BOUTON QR D'ACCÈS À GROW -->
-                        <div class="fintech-hero-footer">
-                            <button type="button" class="btn-qr-acces-grow" onclick="ouvrirModalQRAccesGrow()" title="Afficher mon QR Code d'accès à Grow">
-                                <i class="fa-solid fa-qrcode"></i>
-                                <span>QR d'accès à Grow</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- BARRE DE NAVIGATION PRINCIPALE GROW (REMPLACE LE COMMUTATEUR CONFORME IMAGE 2 FOURNIE) -->
-                    <nav class="grow-nav-dock" id="dashboardNavDock">
-                        <button type="button" class="bottom-nav-item active" id="bNavJournal" onclick="switchVerticalTab('journal');" title="Tableau de bord financier">
-                            <i class="fa-solid fa-house"></i>
-                            <span>Accueil</span>
-                        </button>
-
-                        <button type="button" class="bottom-nav-item" id="bNavPrets" onclick="switchVerticalTab('prets');" title="Financements et prêts bancaires">
-                            <i class="fa-solid fa-hand-holding-dollar"></i>
-                            <span>Prêts</span>
-                        </button>
-
-                        <button type="button" class="bottom-nav-center-btn" onclick="ouvrirModalQuickTx('ENTREE')" title="Ajouter une vente ou dépense">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-
-                        <button type="button" class="bottom-nav-item" id="bNavAbonnement" onclick="allerVersAbonnement()" title="Mon abonnement Grow">
-                            <i class="fa-solid fa-credit-card"></i>
-                            <span>Abonnement</span>
-                        </button>
-
-                        <button type="button" class="bottom-nav-item" id="bNavAbout" onclick="switchVerticalTab('about');" title="Tout savoir sur Grow">
-                            <i class="fa-solid fa-circle-info"></i>
-                            <span>Grow</span>
-                        </button>
-                    </nav>
-                </div>
                 <!-- Barre d'outils de filtres temporels dynamiques & Export -->
                 <div class="journal-card-filters">
                     <div class="filter-buttons-group">
@@ -6155,16 +6156,18 @@
             if (tabName === 'prets' || tabName === 'pret') {
                 if (viewPrets) viewPrets.style.setProperty('display', 'block', 'important');
                 if (bNavPrets) bNavPrets.classList.add('active');
-                try { window.location.hash = 'prets'; } catch (e) {}
             } else if (tabName === 'about' || tabName === 'grow') {
                 if (viewAbout) viewAbout.style.setProperty('display', 'block', 'important');
                 if (bNavAbout) bNavAbout.classList.add('active');
-                try { window.location.hash = 'about'; } catch (e) {}
             } else {
                 if (viewJournal) viewJournal.style.setProperty('display', 'block', 'important');
                 if (bNavJournal) bNavJournal.classList.add('active');
-                try { window.location.hash = 'journal'; } catch (e) {}
             }
+            try {
+                if (window.location.hash) {
+                    history.replaceState(null, null, window.location.pathname + window.location.search);
+                }
+            } catch (e) {}
 
             // 4. Remonter au sommet de la page de façon fluide
             try {
@@ -6220,6 +6223,13 @@
                     if (elNom) elNom.textContent = entNom;
                     const elDet = document.getElementById('headerCompanyDetails');
                     if (elDet) elDet.textContent = `${entVille} ${entNinea}${entCap}`;
+
+                    const elMobileNom = document.getElementById('mobileEnterpriseName');
+                    if (elMobileNom) elMobileNom.textContent = entNom;
+                    const elMobileNinea = document.getElementById('mobileNineaChip');
+                    if (elMobileNinea && currentEntreprise.ninea) {
+                        elMobileNinea.textContent = `NINEA: ${currentEntreprise.ninea}`;
+                    }
 
                     const initials = getInitials(entNom);
                     const uAvatar = document.getElementById('userAvatar');
@@ -6565,11 +6575,13 @@
             const mCredit = document.getElementById('mobileTotalCredit');
             const mDebit = document.getElementById('mobileTotalDebit');
             if (mSolde) {
-                mSolde.textContent = `${soldeNet >= 0 ? '+' : ''}${soldeNet.toLocaleString('fr-FR')} FCFA`;
+                // Le symbole « F » est déjà affiché à côté du montant : pas de « + » ni de « FCFA »
+                realSoldeNetFormatted = `${soldeNet < 0 ? '-' : ''}${Math.abs(soldeNet).toLocaleString('fr-FR')}`;
+                mSolde.textContent = (typeof isBalanceHidden !== 'undefined' && isBalanceHidden) ? '••••••' : realSoldeNetFormatted;
                 mSolde.style.color = '#ffffff';
             }
-            if (mCredit) mCredit.textContent = '+' + totalCredit.toLocaleString('fr-FR') + ' FCFA';
-            if (mDebit) mDebit.textContent = '-' + totalDebit.toLocaleString('fr-FR') + ' FCFA';
+            if (mCredit) mCredit.textContent = '+' + totalCredit.toLocaleString('fr-FR') + ' F';
+            if (mDebit) mDebit.textContent = '-' + totalDebit.toLocaleString('fr-FR') + ' F';
 
             const countEl = document.getElementById('journalCountSummary');
             if (countEl) {
@@ -7848,21 +7860,17 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             initDatesAndPeriods();
             loadDashboardData();
 
-            // Prise en charge des onglets directs (?tab=about, ?tab=grow, ?tab=prets)
+            // Par défaut, TOUJOURS afficher l'onglet Accueil (Journal des écritures & preuves)
             const tabParam = (new URLSearchParams(window.location.search).get('tab') || '').toLowerCase();
-            const hashParam = (window.location.hash || '').replace('#', '').toLowerCase();
-            const activeTab = tabParam || hashParam;
-            if (activeTab === 'about' || activeTab === 'grow') {
-                switchVerticalTab('about');
-            } else if (activeTab === 'prets' || activeTab === 'pret') {
-                switchVerticalTab('prets');
-            } else if (activeTab === 'add') {
-                setTimeout(() => ouvrirModalQuickTx('ENTREE'), 300);
-            }
             if (tabParam === 'about' || tabParam === 'grow') {
                 switchVerticalTab('about');
-            } else if (tabParam === 'prets') {
+            } else if (tabParam === 'prets' || tabParam === 'pret') {
                 switchVerticalTab('prets');
+            } else if (tabParam === 'add') {
+                switchVerticalTab('journal');
+                setTimeout(() => ouvrirModalQuickTx('ENTREE'), 300);
+            } else {
+                switchVerticalTab('journal');
             }
 
             // Ouverture automatique de l'assistant webhook si demandé par lien WhatsApp
