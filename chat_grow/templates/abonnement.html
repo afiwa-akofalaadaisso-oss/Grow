@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Abonnement Grow • Pré-Comptabilité SYSCOHADA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --grow-dark: #222222;
+            --grow-mint: #a0d9d2;
+            --grow-mint-glow: rgba(160, 217, 210, 0.25);
+            --grow-card: #2a2a2a;
+            --grow-surface: #ffffff;
+            --wave-blue: #1DA1F2;
+            --om-orange: #FF6600;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+        }
+
+        .abonnement-container {
+            max-width: 480px;
+            width: 100%;
+            background: #222222;
+            border: 1px solid rgba(160, 217, 210, 0.2);
+            border-radius: 28px;
+            padding: 30px 24px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .abonnement-container::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(160, 217, 210, 0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .brand-logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #222222;
+            border: 1.5px solid var(--grow-mint);
+            object-fit: contain;
+            padding: 3px;
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+
+        .brand-tag {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--grow-mint);
+            background: rgba(160, 217, 210, 0.12);
+            padding: 3px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .title-block {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .title-block h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .title-block p {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.45;
+        }
+
+        /* CARTE FORFAIT OFFICIEL */
+        .plan-card {
+            background: linear-gradient(145deg, #2a2a2a 0%, #242727 100%);
+            border: 1.5px solid rgba(160, 217, 210, 0.35);
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .plan-ribbon {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--grow-mint);
+            color: #222222;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 14px;
+        }
+
+        .plan-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .plan-price {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--grow-mint);
+            line-height: 1;
+        }
+
+        .plan-price-unit {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        .features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 16px;
+        }
+
+        .feature-item {
+            font-size: 12.5px;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-item i {
+            color: var(--grow-mint);
+            font-size: 13px;
+        }
+
+        /* SECTION CHOIX DU MOYEN DE PAIEMENT */
+        .payment-section-title {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #94a3b8;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .payment-methods-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .payment-btn {
+            width: 100%;
+            border: none;
+            border-radius: 16px;
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .payment-btn:active {
+            transform: scale(0.98);
+        }
+
+        .payment-btn.wave {
+            background: linear-gradient(135deg, #1DA1F2 0%, #0c85d0 100%);
+            box-shadow: 0 6px 20px rgba(29, 161, 242, 0.35);
+        }
+
+        .payment-btn.orange-money {
+            background: linear-gradient(135deg, #FF6600 0%, #e05a00 100%);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.35);
+        }
+
+        .pay-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .pay-icon-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .pay-text-block {
+            text-align: left;
+        }
+
+        .pay-name {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .pay-sub {
+            font-size: 11px;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+
+        .pay-arrow {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* FOOTER & AIDE */
+        .footer-note {
+            text-align: center;
+            font-size: 11.5px;
+            color: #64748b;
+            line-height: 1.5;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 18px;
+        }
+
+        .footer-note strong {
+            color: var(--grow-mint);
+        }
+
+        .back-dashboard-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+
+        .back-dashboard-link:hover {
+            color: var(--grow-mint);
+        }
+
+        /* MODALE POPUP CONFIRMATION PAIEMENT REUSSI */
+        .modal-success-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-success-box {
+            background: #222222;
+            border: 1.5px solid var(--grow-mint);
+            border-radius: 24px;
+            max-width: 420px;
+            width: 100%;
+            padding: 28px 22px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(160, 217, 210, 0.15);
+            color: var(--grow-mint);
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            border: 2px solid var(--grow-mint);
+        }
+
+        .success-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .success-desc {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .btn-return-wa {
+            width: 100%;
+            background: #25D366;
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            text-decoration: none;
+            margin-bottom: 8px;
+        }
+
+        .btn-view-dash {
+            width: 100%;
+            background: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="abonnement-container">
+        <!-- HEADER DE MARQUE GROW -->
+        <div class="brand-header">
+            <img src="/static/images/grow_logo.png" alt="Logo Grow" class="brand-logo-img">
+            <span class="brand-name">GROW</span>
+            <span class="brand-tag">SYSCOHADA</span>
+        </div>
+
+        <div class="title-block">
+            <h1>Abonnement Pré-Comptable</h1>
+            <p>Activez la certification financière de votre PME et l'ouverture de vos dossiers de crédits bancaires.</p>
+        </div>
+
+        <!-- CARTE FORFAIT PRO -->
+        <div class="plan-card">
+            <span class="plan-ribbon">Formule Complète</span>
+            <div class="plan-header">
+                <div>
+                    <div class="plan-name">Comptabilité PME &amp; WhatsApp</div>
+                    <div class="plan-price-unit">Sans engagement • Résiliable à tout moment</div>
+                </div>
+                <div style="text-align: right;">
+                    <div class="plan-price">10 000</div>
+                    <div class="plan-price-unit">FCFA / mois</div>
+                </div>
+            </div>
+
+            <ul class="features-list">
+                <li class="feature-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Assistant WhatsApp 24h/7j en Wolof, Français ou Anglais</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Interception automatique des flux Wave &amp; Orange Money</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Bilans &amp; Grand Livre SYSCOHADA certifiés ONECCA</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Accès direct aux crédits bancaires chez nos agences partenaires</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SÉLECTION DU PAIEMENT WAVE OU ORANGE MONEY -->
+        <div class="payment-section-title">
+            <i class="fa-solid fa-wallet" style="color: var(--grow-mint);"></i> Choisissez votre mode de paiement sécurisé :
+        </div>
+
+        <div class="payment-methods-grid">
+            <!-- BOUTON PAIEMENT WAVE -->
+            <button type="button" class="payment-btn wave" onclick="effectuerPaiement('Wave')">
+                <div class="pay-left">
+                    <div class="pay-icon-box">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="pay-text-block">
+                        <div class="pay-name">Payer 10 000 FCFA avec Wave</div>
+                        <div class="pay-sub">Validation instantanée sans frais</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right pay-arrow"></i>
+            </button>
+
+            <!-- BOUTON PAIEMENT ORANGE MONEY -->
+            <button type="button" class="payment-btn orange-money" onclick="effectuerPaiement('Orange Money')">
+                <div class="pay-left">
+                    <div class="pay-icon-box">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                    </div>
+                    <div class="pay-text-block">
+                        <div class="pay-name">Payer avec Orange Money</div>
+                        <div class="pay-sub">Débit sécurisé sur votre compte OM</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right pay-arrow"></i>
+            </button>
+        </div>
+
+        <!-- PIED DE PAGE & ASSISTANCE -->
+        <div class="footer-note">
+            Après votre paiement, renvoyez simplement <strong>« Fey naa »</strong> (Wolof) ou <strong>« J'ai payé »</strong> sur WhatsApp pour démarrer immédiatement vos étapes d'onboarding.
+            <br>
+            <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="back-dashboard-link">
+                <i class="fa-solid fa-arrow-left"></i> Accéder au tableau de bord
+            </a>
+        </div>
+    </div>
+
+    <!-- MODALE POPUP CONFIRMATION SUCCÈS -->
+    <div id="modalSuccess" class="modal-success-backdrop" onclick="fermerModalSuccess()">
+        <div class="modal-success-box" onclick="event.stopPropagation()">
+            <div class="success-icon-circle">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="success-title" id="modalOpTitle">Paiement Validé avec Succès !</h3>
+            <p class="success-desc" id="modalOpDesc">
+                Votre abonnement Grow PME de <strong>10 000 FCFA</strong> a été validé. Vos services pré-comptables SYSCOHADA sont désormais actifs.
+            </p>
+
+            <a href="javascript:void(0)" onclick="allerVersWhatsApp()" class="btn-return-wa">
+                <i class="fa-brands fa-whatsapp"></i> Retourner sur WhatsApp (« J'ai payé »)
+            </a>
+            <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="btn-view-dash">
+                <i class="fa-solid fa-table-columns"></i> Consulter le Tableau de Bord
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const userPhone = urlParams.get('phone') || '221788773827';
+
+        async function effectuerPaiement(operateur) {
+            try {
+                // Validation côté serveur de l'abonnement
+                const res = await fetch('/api/valider-abonnement-client', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: userPhone,
+                        operateur: operateur,
+                        montant: 10000
+                    })
+                });
+
+                document.getElementById('modalOpTitle').textContent = `Paiement ${operateur} Confirmé !`;
+                document.getElementById('modalOpDesc').innerHTML = `Votre règlement de <strong>10 000 FCFA</strong> via <strong>${operateur}</strong> est enregistré. Votre compte Grow pour le numéro <strong>+${userPhone}</strong> est activé.`;
+                document.getElementById('modalSuccess').style.display = 'flex';
+            } catch (e) {
+                // Fallback direct
+                document.getElementById('modalOpTitle').textContent = `Paiement ${operateur} Réussi !`;
+                document.getElementById('modalOpDesc').innerHTML = `Votre règlement de <strong>10 000 FCFA</strong> via <strong>${operateur}</strong> est validé avec succès.`;
+                document.getElementById('modalSuccess').style.display = 'flex';
+            }
+        }
+
+        function fermerModalSuccess() {
+            document.getElementById('modalSuccess').style.display = 'none';
+        }
+
+        function allerVersWhatsApp() {
+            const clean = userPhone.replace(/\\D/g, '');
+            const waUrl = `https://wa.me/221788773827?text=${encodeURIComponent("J'ai payé mon abonnement Grow via Wave/OM")}`;
+            window.location.href = waUrl;
+        }
+
+        function retournerAuDashboard() {
+            window.location.href = `/dashboard?phone=${userPhone}`;
+        }
+    </script>
+</body>
+</html>

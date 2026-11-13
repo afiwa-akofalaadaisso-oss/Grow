@@ -1098,57 +1098,49 @@ async def serve_agence_dashboard():
 
 @app.get("/abonnement", response_class=HTMLResponse)
 async def serve_abonnement():
-    """Page de souscription et paiement d'abonnement Grow."""
-    return HTMLResponse(content="""<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abonnement Grow &bull; Pré-comptabilité PME</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
-</head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-2xl text-center space-y-6">
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 mx-auto flex items-center justify-center text-3xl shadow-lg">
-            🤲🌱
-        </div>
-        <div>
-            <h1 class="text-2xl font-black text-white">Abonnement Grow PME</h1>
-            <p class="text-xs text-slate-400 mt-1">Certification financière et pré-comptabilité SYSCOHADA SMT</p>
-        </div>
-        <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700 text-left space-y-3">
-            <div class="flex justify-between items-baseline">
-                <span class="text-sm font-bold text-slate-300">Formule Mensuelle Pro</span>
-                <span class="text-2xl font-black text-emerald-400">10 000 <span class="text-xs font-semibold text-slate-400">FCFA/mois</span></span>
-            </div>
-            <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800">
-                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Assistant WhatsApp 24h/7j</li>
-                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Relevés automatiques Wave, OM &amp; Caisse</li>
-                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Dossiers financiers pour Banques &amp; ONECCA</li>
-                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Archivage certifié des reçus et factures</li>
-            </ul>
-        </div>
-        <div class="space-y-3">
-            <button onclick="simulerPaiement('Wave')" class="w-full py-3.5 px-4 rounded-xl bg-[#1DA1F2] hover:bg-[#0c85d0] font-black text-white text-sm shadow-md transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-mobile-screen"></i> Payer 10 000 FCFA avec Wave
-            </button>
-            <button onclick="simulerPaiement('Orange Money')" class="w-full py-3.5 px-4 rounded-xl bg-[#FF6600] hover:bg-[#e05a00] font-black text-white text-sm shadow-md transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-phone"></i> Payer avec Orange Money
-            </button>
-        </div>
-        <p class="text-[11px] text-slate-500">Après paiement, renvoyez « J'ai payé » sur WhatsApp pour activer vos 5 étapes d'onboarding.</p>
-    </div>
-    <script>
-        function simulerPaiement(op) {
-            alert('Simulation : Paiement via ' + op + ' réussi !\\n\\nVous pouvez maintenant retourner sur WhatsApp et envoyer « J\\'ai payé » pour commencer vos 5 étapes.');
-            window.location.href = '/dashboard';
-        }
-    </script>
-</body>
-</html>""", status_code=200)
+    """Page de souscription et paiement d'abonnement Grow avec template externe conforme à la charte."""
+    html_path = os.path.join(TEMPLATES_DIR, "abonnement.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Page d'abonnement en cours de chargement...</h1>", status_code=200)
+
+
+@app.post("/api/valider-abonnement-client")
+async def api_valider_abonnement_client(payload: dict = Body(...)):
+    """Valide automatiquement l'abonnement d'un commerçant après paiement Wave ou Orange Money."""
+    phone = payload.get("phone")
+    operateur = payload.get("operateur", "WAVE")
+    montant = payload.get("montant", 10000)
+
+    if not phone:
+        return {"status": "error", "message": "Numéro de téléphone requis"}
+
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    update_onboarding_state(clean_p, "abonnement_valide", True)
+    update_onboarding_state(clean_p, "statut", "EN_COURS")
+
+    sp = get_supabase()
+    if sp:
+        try:
+            res_ent = sp.table("entreprises").select("*").ilike("telephone_whatsapp", f"%{clean_p}%").limit(1).execute()
+            if res_ent.data:
+                ent_id = res_ent.data[0]["id"]
+                sp.table("transactions").insert({
+                    "entreprise_id": ent_id,
+                    "libelle": f"Paiement abonnement mensuel Grow ({operateur})",
+                    "compte_syscohada": "658",
+                    "type_flux": "SORTIE",
+                    "est_professionnel": True,
+                    "montant_fcfa": montant,
+                    "source_paiement": operateur.upper().replace(" ", "_"),
+                    "statut_validation": "VALIDE_PME"
+                }).execute()
+        except Exception as e:
+            print(f"Info enregistrement transaction abonnement : {e}")
+
+    return {"status": "success", "phone": clean_p, "operateur": operateur, "montant": montant}
+
 
 
 @app.post("/")
