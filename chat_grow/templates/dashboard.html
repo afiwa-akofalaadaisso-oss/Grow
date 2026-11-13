@@ -3612,131 +3612,83 @@
                 box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
             }
 
-            /* Cartes de Transactions Mobiles */
+            /* LISTE DE TRANSACTIONS NATIVE MOBILE STYLE WAVE / ORANGE MONEY (IMAGE 2) */
             .mobile-tx-cards-list {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 10px !important;
+                gap: 0 !important;
                 width: 100% !important;
+                background: #ffffff !important;
+                border-radius: 16px !important;
+                padding: 4px 14px !important;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+                margin-top: 14px !important;
+                border: 1px solid #f1f5f9 !important;
             }
 
             .mobile-tx-card {
                 background: #ffffff !important;
-                border: 1px solid #e2e8f0 !important;
-                border-radius: 14px !important;
-                padding: 12px 14px !important;
+                border: none !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+                border-radius: 0 !important;
+                padding: 16px 2px !important;
                 display: flex !important;
-                align-items: center !important;
-                gap: 12px !important;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+                align-items: flex-start !important;
+                justify-content: space-between !important;
+                gap: 16px !important;
+                box-shadow: none !important;
                 cursor: pointer !important;
-                transition: all 0.15s !important;
+                transition: background 0.15s ease !important;
+            }
+
+            .mobile-tx-card:last-child {
+                border-bottom: none !important;
             }
 
             .mobile-tx-card:active {
                 background: #f8fafc !important;
-                transform: scale(0.99) !important;
             }
 
-            .mobile-tx-icon-bubble {
-                width: 40px !important;
-                height: 40px !important;
-                border-radius: 12px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                font-size: 16px !important;
-                flex-shrink: 0 !important;
-            }
-
-            .mobile-tx-icon-bubble.wave {
-                background: #e0f2fe !important;
-                color: #0284c7 !important;
-                border: 1px solid #bae6fd !important;
-            }
-
-            .mobile-tx-icon-bubble.om {
-                background: #ffedd5 !important;
-                color: #ea580c !important;
-                border: 1px solid #fed7aa !important;
-            }
-
-            .mobile-tx-icon-bubble.bank {
-                background: #dcfce7 !important;
-                color: #16a34a !important;
-                border: 1px solid #bbf7d0 !important;
-            }
-
-            .mobile-tx-icon-bubble.credit {
-                background: #dcfce7 !important;
-                color: #16a34a !important;
-            }
-
-            .mobile-tx-icon-bubble.debit {
-                background: #f1f5f9 !important;
-                color: #475569 !important;
-            }
-
-            .mobile-tx-main {
+            .wave-tx-left {
                 flex: 1 !important;
                 min-width: 0 !important;
-                overflow: hidden !important;
-            }
-
-            .mobile-tx-libelle {
-                font-size: 13px !important;
-                font-weight: 700 !important;
-                color: #0f172a !important;
-                white-space: nowrap !important;
-                overflow: hidden !important;
-                text-overflow: ellipsis !important;
-                margin-bottom: 3px !important;
-            }
-
-            .mobile-tx-meta {
                 display: flex !important;
-                align-items: center !important;
-                gap: 6px !important;
-                font-size: 11px !important;
-                color: #64748b !important;
-                flex-wrap: wrap !important;
+                flex-direction: column !important;
+                gap: 4px !important;
             }
 
-            .mobile-tx-amount-col {
+            .wave-tx-title {
+                font-size: 15px !important;
+                font-weight: 700 !important;
+                color: #1d237b !important;
+                line-height: 1.35 !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                margin: 0 !important;
+            }
+
+            .wave-tx-date {
+                font-size: 12.5px !important;
+                color: #64748b !important;
+                font-weight: 400 !important;
+                margin: 0 !important;
+            }
+
+            .wave-tx-right {
                 text-align: right !important;
                 flex-shrink: 0 !important;
+                padding-top: 1px !important;
             }
 
-            .mobile-tx-amount {
-                font-size: 14px !important;
+            .wave-tx-amount {
+                font-size: 15.5px !important;
                 font-weight: 800 !important;
+                color: #1d237b !important;
                 white-space: nowrap !important;
+                margin: 0 !important;
+                letter-spacing: -0.2px !important;
             }
 
-            .mobile-tx-amount.credit {
-                color: #0e7647 !important;
-            }
-
-            .mobile-tx-amount.debit {
-                color: #0f172a !important;
-            }
-
-            .mobile-tx-amount .currency {
-                font-size: 10px !important;
-                font-weight: 600 !important;
-                color: #64748b !important;
-            }
-
-            .mobile-proof-pill {
-                display: inline-flex !important;
-                align-items: center !important;
-                gap: 4px !important;
-                font-size: 9.5px !important;
-                font-weight: 700 !important;
-                padding: 2px 6px !important;
-                border-radius: 10px !important;
-                margin-top: 3px !important;
-            }
 
             .mobile-proof-pill.wave {
                 background: #e0f2fe !important;
@@ -6689,6 +6641,54 @@
             }
         }
 
+        
+        // Formatage des dates style Wave / Orange Money : « 13 novembre 2026 à 12:43 »
+        function formatWaveStyleDate(rawDateStr) {
+            if (!rawDateStr) return 'Date inconnue';
+            try {
+                const moisNoms = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+                const d = new Date(rawDateStr);
+                if (!isNaN(d.getTime())) {
+                    const j = d.getDate();
+                    const m = moisNoms[d.getMonth()];
+                    const a = d.getFullYear();
+                    const hh = String(d.getHours()).padStart(2, '0');
+                    const mm = String(d.getMinutes()).padStart(2, '0');
+                    return `${j} ${m} ${a} à ${hh}:${mm}`;
+                }
+                if (typeof rawDateStr === 'string' && rawDateStr.includes('-')) {
+                    const datePart = rawDateStr.split('T')[0];
+                    const parts = datePart.split('-');
+                    if (parts.length === 3) {
+                        const mIdx = parseInt(parts[1], 10) - 1;
+                        const j = parseInt(parts[2], 10);
+                        const a = parts[0];
+                        let timeStr = '';
+                        if (rawDateStr.includes('T')) {
+                            const timePart = rawDateStr.split('T')[1].substring(0, 5);
+                            timeStr = ` à ${timePart}`;
+                        }
+                        return `${j} ${moisNoms[mIdx] || ''} ${a}${timeStr}`;
+                    }
+                }
+                return rawDateStr;
+            } catch (e) {
+                return rawDateStr;
+            }
+        }
+
+        // Formatage des montants style Wave : « 2.000F », « -1.600F », « 50F »
+        function formatWaveAmount(montant, isSortie) {
+            const val = Math.abs(parseInt(montant, 10) || 0);
+            const formatted = val.toLocaleString('fr-FR').replace(/\s/g, '.');
+            return `${isSortie ? '-' : ''}${formatted}F`;
+        }
+
+        // Formatage pour date & heure général
+        function formatDateHeure(rawDateStr) {
+            return formatWaveStyleDate(rawDateStr);
+        }
+
         // Rendu HTML des transactions
         function renderTransactionsList(txList, totalFilteredCount) {
             const tbody = document.getElementById('tableBody');
@@ -6910,56 +6910,23 @@
                 `;
                 tbody.appendChild(tr);
 
-                // --- RENDU CARTE MOBILE TACTILE (0 DÉBORDEMENT SMARTPHONE) ---
+                // --- RENDU LISTE TRANSACTION STYLE WAVE / ORANGE MONEY (MINIMALISTE & ÉLÉGANT - IMAGE 2) ---
                 if (mobileCardsContainer) {
                     const card = document.createElement('div');
                     card.className = 'mobile-tx-card';
                     card.onclick = () => openTxDetailModal(t);
 
-                    let iconType = 'credit';
-                    let iconClass = 'fa-solid fa-arrow-down';
-                    if (srcPaiement === 'WAVE') {
-                        iconType = 'wave';
-                        iconClass = 'fa-solid fa-bolt';
-                    } else if (srcPaiement === 'ORANGE_MONEY') {
-                        iconType = 'om';
-                        iconClass = 'fa-solid fa-mobile-screen';
-                    } else if (srcPaiement === 'BANQUE') {
-                        iconType = 'bank';
-                        iconClass = 'fa-solid fa-building-columns';
-                    } else if (flux === 'SORTIE') {
-                        iconType = 'debit';
-                        iconClass = 'fa-solid fa-arrow-up';
-                    }
-
-                    let badgeProofMobile = '';
-                    if (srcPaiement === 'WAVE') {
-                        const waveRef = t.reference_externe || ('WV-' + (t.id ? t.id.substring(0, 8).toUpperCase() : '892147'));
-                        badgeProofMobile = `<span class="mobile-proof-pill wave" onclick="event.stopPropagation(); openWaveProofModalDirect('${escapeHtml(waveRef)}', '${escapeHtml(t.libelle || 'Opération Wave')}', '${montantAffiche} FCFA', '${dateDisplay}', 'Wave')"><i class="fa-solid fa-circle-check"></i> Wave</span>`;
-                    } else if (srcPaiement === 'ORANGE_MONEY') {
-                        const omRef = t.reference_externe || ('OM-' + (t.id ? t.id.substring(0, 8).toUpperCase() : '441028'));
-                        badgeProofMobile = `<span class="mobile-proof-pill om" onclick="event.stopPropagation(); openWaveProofModalDirect('${escapeHtml(omRef)}', '${escapeHtml(t.libelle || 'Opération OM')}', '${montantAffiche} FCFA', '${dateDisplay}', 'Orange Money')"><i class="fa-solid fa-circle-check"></i> OM</span>`;
-                    } else if (proofs.length > 0 && proofs[0].url_stockage) {
-                        badgeProofMobile = `<span class="mobile-proof-pill img" onclick="event.stopPropagation(); openProofModalDirect('${proofs[0].url_stockage}', '${escapeHtml(t.libelle || 'Reçu')}')"><i class="fa-solid fa-camera"></i> Reçu</span>`;
-                    } else if (t.statut_validation === 'VALIDE_PME') {
-                        badgeProofMobile = `<span class="mobile-proof-pill img" onclick="event.stopPropagation(); openProofModalDirect('/static/justificatif-achat-riz.png', '${escapeHtml(t.libelle || 'Pièce validée')}')"><i class="fa-solid fa-file-check"></i> Validé</span>`;
-                    } else {
-                        badgeProofMobile = `<span class="mobile-proof-pill cash"><i class="fa-solid fa-clock"></i> En attente</span>`;
-                    }
+                    const isSortie = (flux === 'SORTIE');
+                    const waveAmountStr = formatWaveAmount(montant, isSortie);
+                    const waveDateStr = formatWaveStyleDate(t.date_operation || t.created_at);
 
                     card.innerHTML = `
-                        <div class="mobile-tx-main">
-                            <div class="mobile-tx-libelle" title="${escapeHtml(t.libelle || 'Opération')}">${escapeHtml(t.libelle || 'Opération')}</div>
-                            <div class="mobile-tx-meta">
-                                <span class="mobile-tx-date"><i class="fa-regular fa-clock"></i> ${dateFullDisplay}</span>
-                                <span class="mobile-tx-compte">${compteBadgeHtml}</span>
-                            </div>
+                        <div class="wave-tx-left">
+                            <div class="wave-tx-title">${escapeHtml(t.libelle || 'Opération')}</div>
+                            <div class="wave-tx-date">${escapeHtml(waveDateStr)}</div>
                         </div>
-                        <div class="mobile-tx-amount-col">
-                            <div class="mobile-tx-amount" style="color: #0f172a !important; font-weight: 800; font-size: 14px;">
-                                ${flux === 'ENTREE' ? '+' : '-'}${montantAffiche} <span class="currency" style="color: #64748b; font-size: 10px; font-weight: 600;">FCFA</span>
-                            </div>
-                            <div>${badgeProofMobile}</div>
+                        <div class="wave-tx-right">
+                            <div class="wave-tx-amount">${waveAmountStr}</div>
                         </div>
                     `;
                     mobileCardsContainer.appendChild(card);
