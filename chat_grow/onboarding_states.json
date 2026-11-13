@@ -1,51 +1,31 @@
 {
-  "221764093183": {
-    "etape": "TERMINE",
-    "ninea": null,
-    "nom_entreprise": null,
-    "capital": null,
-    "date_creation": null,
-    "adresse_siege": null,
-    "nombre_employes": null,
-    "operateurs": null,
-    "immobilisations": null,
-    "statut": "COMPLET",
-    "premier_contact_effectue": true,
-    "abonnement_valide": true
-  },
-  "221770009911": {
-    "etape": "TERMINE",
-    "ninea": null,
-    "nom_entreprise": null,
-    "capital": null,
-    "date_creation": null,
-    "adresse_siege": null,
-    "nombre_employes": null,
-    "operateurs": null,
-    "immobilisations": null,
-    "statut": "COMPLET"
-  },
   "221788773827": {
     "etape": "TERMINE",
-    "nom_personne_physique": "FATOU THIAM",
-    "nom_entreprise": "FATOU THIAM",
+    "langue_preferee": "fr",
     "ninea": "00802996",
+    "nom_entreprise": "Le Nom De Mon Entreprise Est Cglt",
+    "nom_personne_physique": "FATOU THIAM",
     "capital": 1000000,
-    "nombre_employes": "2 personnes",
-    "operateurs": "Wave, Orange Money",
+    "date_creation": null,
+    "adresse_siege": null,
+    "nombre_employes": "Je la seule",
+    "operateurs": "Wave",
     "liste_operateurs_cles": [
-      "Wave",
-      "Orange Money"
+      "Wave"
     ],
-    "immobilisations": "Aucun matériel d'exploitation",
-    "valeur_equipements_fcfa": 0,
+    "immobilisations": "Étagère",
+    "valeur_equipements_fcfa": 150000,
     "equipements_photo_validee": true,
-    "statut": "COMPLET",
+    "statut": "EN_COURS",
     "abonnement_valide": true,
     "premier_contact_effectue": true,
-    "solde_initial_t0": 988,
+    "forme_juridique": "ENTREPRISE INDIVIDUELLE",
+    "activite_principale": "AUTRES COMMERCES DE DETAIL HORS MAGASIN",
+    "registre_commerce": "SN-DKR 2017 A 3123",
+    "ninea_valide_par_preuve": true,
+    "solde_initial_t0": 1088,
     "soldes_multi_operateurs": {
-      "WAVE": 988
+      "WAVE": 1088
     }
   }
 }

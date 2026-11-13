@@ -4305,15 +4305,7 @@
         /* MODE ACCÈS SMARTPHONE DEPUIS L'ORDINATEUR (PERMANENT OU VIA ?mode=mobile) */
         /* ========================================================================= */
         .desktop-device-bar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #0f172a;
-            color: #ffffff;
-            padding: 8px 16px;
-            border-bottom: 1px solid #1e293b;
-            width: 100%;
-            z-index: 1000;
+            display: none !important;
         }
 
         @media (max-width: 768px) {
@@ -5709,19 +5701,6 @@
         </div>
     </div>
 
-    <div class="desktop-device-bar" id="desktopDeviceBar">
-        <div class="device-bar-content">
-            <span class="device-bar-label"><i class="fa-solid fa-sliders"></i> Affichage écran :</span>
-            <div class="device-switch-pills">
-                <button type="button" class="btn-device-pill active" id="btnModeDesktop" onclick="setDeviceView('desktop')" title="Affichage complet bureau avec grand écran">
-                    <i class="fa-solid fa-laptop"></i> Vue Ordinateur
-                </button>
-                <button type="button" class="btn-device-pill" id="btnModeMobile" onclick="setDeviceView('mobile')" title="Affichage smartphone natif avec le flux et cartes Wave">
-                    <i class="fa-solid fa-mobile-screen"></i> Vue Smartphone 📱
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- ========================================================================= -->
     <!-- BARRE DE NAVIGATION SUPÉRIEURE (MENU HORIZONTAL GROW | ONECCA) -->
