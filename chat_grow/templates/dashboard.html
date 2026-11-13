@@ -11,6 +11,275 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        :root {
+            --grow-dark: #222222;
+            --grow-dark-card: #2a2a2a;
+            --grow-mint: #a0d9d2;
+            --grow-mint-hover: #8ecfc7;
+            --grow-mint-glow: rgba(160, 217, 210, 0.25);
+            --grow-surface: #ffffff;
+            --grow-bg: #f8fafc;
+            --grow-text-primary: #1e293b;
+            --grow-text-muted: #64748b;
+        }
+
+        /* Thème Moderne Grow Fintech Card */
+        .mobile-financial-header {
+            margin-bottom: 22px !important;
+        }
+
+        .fintech-hero-card {
+            background: linear-gradient(145deg, #1f2222 0%, #2a2e2d 100%) !important;
+            border-radius: 24px !important;
+            padding: 22px 20px 20px 20px !important;
+            color: #ffffff !important;
+            box-shadow: 0 16px 40px rgba(34, 34, 34, 0.22) !important;
+            position: relative !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(160, 217, 210, 0.2) !important;
+        }
+
+        .fintech-hero-card::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(160, 217, 210, 0.22) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .fintech-top-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .fintech-enterprise-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            padding: 5px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .fintech-enterprise-pill img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #222222;
+        }
+
+        .fintech-enterprise-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.2px;
+        }
+
+        .fintech-ninea-chip {
+            font-size: 10px;
+            color: var(--grow-mint);
+            font-weight: 600;
+            background: rgba(160, 217, 210, 0.12);
+            padding: 2px 7px;
+            border-radius: 12px;
+        }
+
+        .fintech-eye-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fintech-eye-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+        }
+
+        .fintech-balance-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin: 10px 0 16px 0;
+        }
+
+        .fintech-balance-big {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .fintech-currency-symbol {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--grow-mint);
+        }
+
+        .fintech-qr-badge-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #0f172a;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .fintech-qr-badge-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .qr-thumb-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-icon-square {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #222222;
+        }
+
+        .qr-text-block .qr-main-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .qr-text-block .qr-sub-label {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 1px;
+        }
+
+        .qr-scanner-btn-pill {
+            background: var(--grow-dark);
+            color: var(--grow-mint);
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 7px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Grille des services / Opérations instantanées (8 boutons style Wave / OM) */
+        .fintech-services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px 10px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            padding: 20px 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .fintech-service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 4px;
+            transition: transform 0.15s;
+        }
+
+        .fintech-service-item:active {
+            transform: scale(0.94);
+        }
+
+        .service-icon-bubble {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .service-icon-bubble.mint {
+            background: #e6f7f5;
+            color: #0d9488;
+        }
+        .service-icon-bubble.dark {
+            background: #222222;
+            color: #a0d9d2;
+        }
+        .service-icon-bubble.blue {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+        .service-icon-bubble.orange {
+            background: #ffedd5;
+            color: #ea580c;
+        }
+        .service-icon-bubble.purple {
+            background: #f3e8ff;
+            color: #9333ea;
+        }
+        .service-icon-bubble.rose {
+            background: #ffe4e6;
+            color: #e11d48;
+        }
+        .service-icon-bubble.amber {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .service-icon-bubble.slate {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .service-label {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #334155;
+            text-align: center;
+            letter-spacing: -0.2px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -3174,7 +3443,7 @@
         <div class="nav-left">
             <a href="/dashboard" class="brand-logo" title="Tableau de Bord Grow"
                 style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                <img src="/static/logo_grow.jpg" alt="Logo Grow"
+                <img src="/static/images/grow_logo.png" alt="Logo Grow"
                     style="width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #d4af37; object-fit: cover;">
                 <span style="font-size: 18px; font-weight: 900; color: #0a2540; letter-spacing: 0.5px;">GROW</span>
             </a>
@@ -3237,51 +3506,108 @@
                 <!-- RÉSUMÉ FINANCIER & ACTIONS RAPIDES MOBILE (EXPÉRIENCE SMARTPHONE NATIVE)   -->
                 <!-- ========================================================================= -->
                 <div class="mobile-financial-header">
-                    <div class="mobile-balance-card">
-                        <div class="balance-card-label">
-                            <span>Solde Net de Trésorerie</span>
-                            <span class="balance-badge"><i class="fa-solid fa-shield-halved"></i> Certifié SYSCOHADA</span>
-                        </div>
-                        <div class="balance-amount" id="mobileSoldeNet">- FCFA</div>
-                        <div class="balance-enterprise" id="mobileEnterpriseName">Chargement de votre PME...</div>
-                    </div>
-
-                    <div class="mobile-kpi-row">
-                        <div class="mobile-kpi-pill credit">
-                            <div class="kpi-pill-icon"><i class="fa-solid fa-arrow-down"></i></div>
-                            <div class="kpi-pill-data">
-                                <span class="kpi-pill-label">Total Recettes</span>
-                                <span class="kpi-pill-val" id="mobileTotalCredit">- FCFA</span>
+                    <!-- CARTE FINTECH HAUT DE GAMME : Solde, Masquage, Nom PME & QR Card -->
+                    <div class="fintech-hero-card">
+                        <div class="fintech-top-meta">
+                            <div class="fintech-enterprise-pill">
+                                <img src="/static/images/grow_logo.png" alt="Grow Logo">
+                                <span class="fintech-enterprise-name" id="mobileEnterpriseName">Boutique Fatou Thiam</span>
+                                <span class="fintech-ninea-chip" id="mobileNineaChip">NINEA Certifié</span>
                             </div>
+                            <button type="button" class="fintech-eye-btn" onclick="toggleBalanceVisibility()" title="Masquer / Afficher le solde" id="btnToggleBalance">
+                                <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                            </button>
                         </div>
-                        <div class="mobile-kpi-pill debit">
-                            <div class="kpi-pill-icon"><i class="fa-solid fa-arrow-up"></i></div>
-                            <div class="kpi-pill-data">
-                                <span class="kpi-pill-label">Total Dépenses</span>
-                                <span class="kpi-pill-val" id="mobileTotalDebit">- FCFA</span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="mobile-quick-actions">
-                        
-                        <a href="/carte-comptoir" target="_blank" class="quick-action-btn">
-                            <div class="qa-icon-circle green"><i class="fa-solid fa-qrcode"></i></div>
-                            <span>Plaque QR</span>
+                        <div class="fintech-balance-row">
+                            <div class="fintech-balance-big" id="mobileSoldeNet">0</div>
+                            <div class="fintech-currency-symbol">F</div>
+                        </div>
+
+                        <!-- CARTE SCANNER QR CODE DIRECT (Style Wave & Orange Money) -->
+                        <a href="/carte-comptoir" target="_blank" class="fintech-qr-badge-card" title="Scanner ou afficher la Plaque QR Comptoir Grow">
+                            <div class="qr-thumb-box">
+                                <div class="qr-icon-square">
+                                    <i class="fa-solid fa-qrcode"></i>
+                                </div>
+                                <div class="qr-text-block">
+                                    <div class="qr-main-label">
+                                        <span>Plaque QR Comptoir</span>
+                                        <i class="fa-solid fa-circle-check" style="color: #0e7647; font-size: 11px;"></i>
+                                    </div>
+                                    <div class="qr-sub-label">Encaissez instantanément vos clients</div>
+                                </div>
+                            </div>
+                            <div class="qr-scanner-btn-pill">
+                                <i class="fa-solid fa-camera"></i>
+                                <span>Scanner</span>
+                            </div>
                         </a>
-                        <button type="button" class="quick-action-btn" onclick="ouvrirModalMemoireIA()">
-                            <div class="qa-icon-circle purple"><i class="fa-solid fa-brain"></i></div>
-                            <span>Mémoire IA</span>
-                        </button>
-                        <button type="button" class="quick-action-btn" onclick="alert('Exportation du journal certifié en cours...')">
-                            <div class="qa-icon-circle slate"><i class="fa-solid fa-file-pdf"></i></div>
-                            <span>Exporter</span>
-                        </button>
                     </div>
 
+                    <!-- GRILLE DES SERVICES RAPIDES (8 BOUTONS RONDS WAVE / OM STYLE) -->
+                    <div class="fintech-services-grid">
+                        <a href="javascript:void(0)" onclick="quickActionTrigger('recette')" class="fintech-service-item">
+                            <div class="service-icon-bubble mint">
+                                <i class="fa-solid fa-arrow-down-left"></i>
+                            </div>
+                            <span class="service-label">Vente Cash</span>
+                        </a>
+
+                        <a href="javascript:void(0)" onclick="quickActionTrigger('depense')" class="fintech-service-item">
+                            <div class="service-icon-bubble dark">
+                                <i class="fa-solid fa-arrow-up-right"></i>
+                            </div>
+                            <span class="service-label">Dépense</span>
+                        </a>
+
+                        <a href="javascript:void(0)" onclick="switchVerticalTab('prets')" class="fintech-service-item">
+                            <div class="service-icon-bubble blue">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                            </div>
+                            <span class="service-label">Crédit PME</span>
+                        </a>
+
+                        <a href="javascript:void(0)" onclick="ouvrirModalMemoireIA()" class="fintech-service-item">
+                            <div class="service-icon-bubble purple">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <span class="service-label">Mémoire IA</span>
+                        </a>
+
+                        <a href="javascript:void(0)" onclick="ouvrirModalWebhookAssistant()" class="fintech-service-item">
+                            <div class="service-icon-bubble orange">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <span class="service-label">Wave / OM</span>
+                        </a>
+
+                        <a href="/carte-comptoir" target="_blank" class="fintech-service-item">
+                            <div class="service-icon-bubble rose">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <span class="service-label">Plaque QR</span>
+                        </a>
+
+                        <a href="javascript:void(0)" onclick="testerRituelSoir()" class="fintech-service-item">
+                            <div class="service-icon-bubble amber">
+                                <i class="fa-solid fa-moon"></i>
+                            </div>
+                            <span class="service-label">Rituel 20h</span>
+                        </a>
+
+                        <a href="javascript:void(0)" onclick="exporterJournalPDF()" class="fintech-service-item">
+                            <div class="service-icon-bubble slate">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <span class="service-label">Export PDF</span>
+                        </a>
+                    </div>
+
+                    <!-- COMMUTATEUR VUE CARTES / VUE TABLEUR -->
                     <div class="mobile-view-toggle">
                         <button type="button" class="view-toggle-btn active" id="btnViewCards" onclick="setMobileView('cards')">
-                            <i class="fa-solid fa-list-ul"></i> Liste Mobile
+                            <i class="fa-solid fa-list-ul"></i> Journal Flux Détectés
                         </button>
                         <button type="button" class="view-toggle-btn" id="btnViewTable" onclick="setMobileView('table')">
                             <i class="fa-solid fa-table-columns"></i> Format Tableur
@@ -5543,6 +5869,43 @@
                 document.activeElement.blur();
             }
         });
+
+        
+        // Gestion du masquage / affichage du solde (façon Wave & Orange Money)
+        let isBalanceHidden = false;
+        let realSoldeNetFormatted = "0";
+
+        function toggleBalanceVisibility() {
+            isBalanceHidden = !isBalanceHidden;
+            const el = document.getElementById('mobileSoldeNet');
+            const icon = document.getElementById('eyeIcon');
+            if (!el) return;
+
+            if (isBalanceHidden) {
+                el.textContent = "••••••";
+                if (icon) icon.className = "fa-solid fa-eye-slash";
+            } else {
+                el.textContent = realSoldeNetFormatted;
+                if (icon) icon.className = "fa-regular fa-eye";
+            }
+        }
+
+        function quickActionTrigger(action) {
+            if (action === 'recette') {
+                const tel = currentEntreprise ? (currentEntreprise.telephone_whatsapp || '788773827') : '788773827';
+                const waUrl = "https://wa.me/221" + tel.replace(/\D/g, '') + "?text=" + encodeURIComponent("Vente de 15 000 FCFA reçue en espèces");
+                window.open(waUrl, '_blank');
+            } else if (action === 'depense') {
+                const tel = currentEntreprise ? (currentEntreprise.telephone_whatsapp || '788773827') : '788773827';
+                const waUrl = "https://wa.me/221" + tel.replace(/\D/g, '') + "?text=" + encodeURIComponent("Dépense achat marchandises 25 000 FCFA");
+                window.open(waUrl, '_blank');
+            }
+        }
+
+        function exporterJournalPDF() {
+            alert("Exportation officielle du Grand Livre & Journal SYSCOHADA (Norme ONECCA)...
+Téléchargement du relevé certifié en cours.");
+        }
 
         // Lancement au chargement de la page
         document.addEventListener('DOMContentLoaded', () => {
