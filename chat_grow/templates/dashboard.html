@@ -10346,53 +10346,111 @@
     <!-- ========================================================================= -->
     <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (SMARTPHONE & PC)           -->
     <!-- ========================================================================= -->
-    <div id="modalQuickTx" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalQuickTx()">
-        <div class="modal-box modal-quick-tx-box" onclick="event.stopPropagation()">
-            <div class="modal-top" style="background: #0a2540; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-calculator" style="color: #a0d9d2;"></i>
-                    <strong style="font-size: 14px;" id="quickTxModalTitle">Ajouter une Opération Comptable</strong>
+    <!-- ========================================================================= -->
+    <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (FINTECH PREMIUM GROW)      -->
+    <!-- ========================================================================= -->
+    <div id="modalQuickTx" class="modal-backdrop fixed inset-0 z-[2600] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" style="display: none;" onclick="closeModalQuickTx()">
+        <div class="relative w-full max-w-[460px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
+            <!-- En-tête Sombre Fintech (#1c1c1c) assorti à la palette Grow -->
+            <div class="px-5 py-3.5 flex items-center justify-between border-b border-[#2c2c2c] bg-[#1c1c1c] text-white select-none">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-[#262626] border border-[#a0d9d2]/40 flex items-center justify-center text-[#a0d9d2] shadow-xs">
+                        <span class="material-symbols-outlined notranslate text-[19px]" translate="no">add_circle</span>
+                    </div>
+                    <div>
+                        <h3 class="text-[13.5px] font-bold text-white flex items-center gap-1.5 leading-tight">
+                            <span id="quickTxModalTitle">Enregistrer une Vente (Recette)</span>
+                            <span class="text-[9.5px] font-black uppercase tracking-wider text-[#14362b] bg-[#a0d9d2] px-2 py-0.5 rounded-full">SYSCOHADA</span>
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Saisie immédiate au journal comptable</p>
+                    </div>
                 </div>
-                <button type="button" class="modal-close-btn" onclick="closeModalQuickTx()" style="background: none; border: none; color: #ffffff; font-size: 18px; cursor: pointer;">
-                    <i class="fa-solid fa-xmark"></i>
+                <button type="button" onclick="closeModalQuickTx()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer" title="Fermer">
+                    <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
                 </button>
             </div>
-            <div class="modal-content" style="padding: 20px;">
-                <div class="quick-tx-type-tabs">
-                    <button type="button" class="quick-tx-tab-btn active credit" id="btnTabCredit" onclick="setQuickTxType('ENTREE')">
-                        <i class="fa-solid fa-arrow-down-left"></i> Vente / Entrée
-                    </button>
-                    <button type="button" class="quick-tx-tab-btn debit" id="btnTabDebit" onclick="setQuickTxType('SORTIE')">
-                        <i class="fa-solid fa-arrow-up-right"></i> Dépense / Sortie
-                    </button>
+
+            <!-- Contenu du Formulaire -->
+            <form id="quickTxForm" onsubmit="submitQuickTx(event)" class="p-5 space-y-4 text-xs">
+                
+                <!-- 1. Sélecteur Segmenté : Vente / Entrée vs Dépense / Sortie -->
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Nature de l'écriture *</label>
+                    <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-xl gap-1">
+                        <button type="button" id="btnTabCredit" onclick="setQuickTxType('ENTREE')" class="py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer bg-white text-[#14362b] shadow-xs border border-emerald-100">
+                            <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_downward</span>
+                            <span>Vente / Recette (+ Crédit)</span>
+                        </button>
+                        <button type="button" id="btnTabDebit" onclick="setQuickTxType('SORTIE')" class="py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent">
+                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_upward</span>
+                            <span>Dépense / Achat (- Débit)</span>
+                        </button>
+                    </div>
                 </div>
 
-                <form id="quickTxForm" onsubmit="submitQuickTx(event)">
-                    <div class="form-group-mobile">
-                        <label>Montant en Francs CFA (FCFA) *</label>
-                        <input type="number" id="quickTxMontant" class="form-control-mobile" placeholder="Ex: 25000" required min="1" step="1">
+                <!-- 2. Montant en grand format Fintech -->
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Montant en FCFA *</label>
+                    <div class="relative">
+                        <input type="number" id="quickTxMontant" required min="1" step="1" placeholder="0" class="w-full pl-4 pr-16 py-2.5 text-xl font-bold font-mono tracking-tight text-slate-900 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all placeholder:text-slate-300">
+                        <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 font-mono select-none">FCFA</span>
                     </div>
+                </div>
 
-                    <div class="form-group-mobile">
-                        <label>Libellé de l'opération *</label>
-                        <input type="text" id="quickTxLibelle" class="form-control-mobile" placeholder="Ex: Vente tissus, Achat riz, Facture..." required>
+                <!-- 3. Libellé de l'opération -->
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Libellé de l'opération *</label>
+                    <input type="text" id="quickTxLibelle" required placeholder="Ex: Vente tissus Wax, Facture client Teranga..." class="w-full px-3.5 py-2.5 text-xs text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all placeholder:text-slate-400 font-medium">
+                </div>
+
+                <!-- 4. Compte SYSCOHADA (Possibilité de choisir ou personnaliser le compte) -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500">Compte SYSCOHADA *</label>
+                        <span class="text-[10.5px] font-semibold text-[#168078]" id="quickTxCompteLabelHint">Compte Produit (Classe 7)</span>
                     </div>
+                    <select id="quickTxCompte" onchange="onQuickTxCompteChange(this.value)" class="w-full px-3 py-2.5 text-xs text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all font-medium cursor-pointer">
+                        <option value="701">701 - Ventes de marchandises</option>
+                        <option value="706">706 - Services vendus / Prestations</option>
+                        <option value="707">707 - Produits accessoires</option>
+                        <option value="411">411 - Clients (Règlement de créance)</option>
+                        <option value="754">754 - Produits financiers & Divers</option>
+                        <option value="771">771 - Subventions et Dons</option>
+                        <option value="CUSTOM">✏️ + Saisir un autre compte...</option>
+                    </select>
+                    
+                    <!-- Champ personnalisé pour autre compte -->
+                    <div id="quickTxCustomCompteWrapper" class="mt-2" style="display: none;">
+                        <input type="text" id="quickTxCustomCompte" placeholder="Numéro du compte (ex: 706, 622, 638...)" class="w-full px-3.5 py-2 text-xs font-mono font-bold text-slate-800 bg-white border border-[#a0d9d2] rounded-xl focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all placeholder:font-sans placeholder:font-normal placeholder:text-slate-400">
+                        <p class="text-[10px] text-slate-400 mt-1">Saisissez le numéro à 3 ou 4 chiffres du plan comptable SYSCOHADA révisé.</p>
+                    </div>
+                </div>
 
-                    <div class="form-group-mobile">
-                        <label>Mode de paiement / Trésorerie</label>
-                        <select id="quickTxSource" class="form-control-mobile">
-                            <option value="ESPECES">Caisse Espèces (Cash au comptoir)</option>
-                            <option value="WAVE">Compte Wave</option>
-                            <option value="ORANGE_MONEY">Orange Money</option>
-                            <option value="BANQUE">Compte Bancaire</option>
+                <!-- 5. Mode de règlement / Trésorerie & Date -->
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Trésorerie / Règlement</label>
+                        <select id="quickTxSource" class="w-full px-3 py-2.5 text-xs text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all font-medium cursor-pointer">
+                            <option value="WAVE">Wave (521)</option>
+                            <option value="ORANGE_MONEY">Orange Money (521)</option>
+                            <option value="ESPECES" selected>Caisse Espèces (571)</option>
+                            <option value="BANQUE">Compte Bancaire (521)</option>
                         </select>
                     </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Date d'opération</label>
+                        <input type="date" id="quickTxDate" class="w-full px-3 py-2 text-xs text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all font-medium">
+                    </div>
+                </div>
 
-                    <button type="submit" class="btn-submit-tx" id="btnSubmitTxText">
-                        <i class="fa-solid fa-check"></i> Enregistrer dans le Journal
+                <!-- 6. Bouton d'action principal -->
+                <div class="pt-2">
+                    <button type="submit" id="btnSubmitTxText" class="w-full py-3 px-4 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+                        <span class="material-symbols-outlined notranslate text-[18px] font-bold" translate="no">check</span>
+                        <span id="btnSubmitTxLabel">Valider l'encaissement</span>
                     </button>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -13604,11 +13662,93 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         // =========================================================================
         let currentQuickTxType = 'ENTREE';
 
+        const QUICK_COMPTES_ENTREE = [
+            { code: '701', libelle: '701 - Ventes de marchandises' },
+            { code: '706', libelle: '706 - Services vendus / Prestations' },
+            { code: '707', libelle: '707 - Produits accessoires' },
+            { code: '411', libelle: '411 - Clients (Règlement de créance)' },
+            { code: '754', libelle: '754 - Produits financiers & Divers' },
+            { code: '771', libelle: '771 - Subventions et Dons' },
+            { code: 'CUSTOM', libelle: '✏️ + Saisir un autre compte...' }
+        ];
+
+        const QUICK_COMPTES_SORTIE = [
+            { code: '601', libelle: '601 - Achats de marchandises' },
+            { code: '605', libelle: '605 - Autres achats (Fournitures, Matériel)' },
+            { code: '624', libelle: '624 - Transports & Déplacements (Yango, Taxis)' },
+            { code: '608', libelle: '608 - Électricité, Eau & Énergie (Senelec, SDE)' },
+            { code: '628', libelle: '628 - Télécoms & Internet (Orange, Wave, Free)' },
+            { code: '632', libelle: '632 - Rémunérations & Salaires du personnel' },
+            { code: '641', libelle: '641 - Impôts, Taxes & Droits (Vignette, BRS)' },
+            { code: '661', libelle: '661 - Frais bancaires & Commissions transfert' },
+            { code: '401', libelle: '401 - Fournisseurs (Règlement de dette)' },
+            { code: 'CUSTOM', libelle: '✏️ + Saisir un autre compte...' }
+        ];
+
+        function updateQuickTxComptesList(type, selectedCompte = null) {
+            const select = document.getElementById('quickTxCompte');
+            const hint = document.getElementById('quickTxCompteLabelHint');
+            const customWrap = document.getElementById('quickTxCustomCompteWrapper');
+            if (!select) return;
+
+            const list = (type === 'ENTREE') ? QUICK_COMPTES_ENTREE : QUICK_COMPTES_SORTIE;
+            if (hint) {
+                hint.textContent = (type === 'ENTREE') ? 'Compte Produit (Classe 7)' : 'Compte Charge (Classe 6)';
+                hint.className = (type === 'ENTREE') ? 'text-[10.5px] font-semibold text-[#168078]' : 'text-[10.5px] font-semibold text-rose-700';
+            }
+
+            select.innerHTML = '';
+            list.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.code;
+                opt.textContent = item.libelle;
+                select.appendChild(opt);
+            });
+
+            if (selectedCompte) {
+                const match = list.some(x => x.code === selectedCompte);
+                if (match) {
+                    select.value = selectedCompte;
+                    if (customWrap) customWrap.style.display = 'none';
+                } else {
+                    select.value = 'CUSTOM';
+                    if (customWrap) {
+                        customWrap.style.display = 'block';
+                        const customInput = document.getElementById('quickTxCustomCompte');
+                        if (customInput) customInput.value = selectedCompte;
+                    }
+                }
+            } else {
+                select.value = (type === 'ENTREE') ? '701' : '601';
+                if (customWrap) customWrap.style.display = 'none';
+            }
+        }
+
+        function onQuickTxCompteChange(val) {
+            const customWrap = document.getElementById('quickTxCustomCompteWrapper');
+            const customInput = document.getElementById('quickTxCustomCompte');
+            if (val === 'CUSTOM') {
+                if (customWrap) customWrap.style.display = 'block';
+                if (customInput) customInput.focus();
+            } else {
+                if (customWrap) customWrap.style.display = 'none';
+                if (customInput) customInput.value = '';
+            }
+        }
+
         function ouvrirModalSaisieRapide() { ouvrirModalQuickTx('ENTREE'); }
         function ouvrirModalQuickTx(type = 'ENTREE') {
-            setQuickTxType(type);
             const m = document.getElementById('modalQuickTx');
             if (m) m.style.display = 'flex';
+
+            // Initialiser la date du jour par défaut
+            const dateInput = document.getElementById('quickTxDate');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = new Date().toISOString().substring(0, 10);
+            }
+
+            setQuickTxType(type);
+
             setTimeout(() => {
                 const input = document.getElementById('quickTxMontant');
                 if (input) input.focus();
@@ -13626,24 +13766,35 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const btnDebit = document.getElementById('btnTabDebit');
             const title = document.getElementById('quickTxModalTitle');
             const btnSubmit = document.getElementById('btnSubmitTxText');
+            const btnSubmitLabel = document.getElementById('btnSubmitTxLabel');
 
             if (type === 'ENTREE') {
-                if (btnCredit) btnCredit.className = 'quick-tx-tab-btn active credit';
-                if (btnDebit) btnDebit.className = 'quick-tx-tab-btn debit';
+                if (btnCredit) {
+                    btnCredit.className = 'py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer bg-white text-[#14362b] shadow-xs border border-emerald-100';
+                }
+                if (btnDebit) {
+                    btnDebit.className = 'py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent';
+                }
                 if (title) title.textContent = 'Enregistrer une Vente (Recette)';
                 if (btnSubmit) {
-                    btnSubmit.innerHTML = '<i class="fa-solid fa-check"></i> Valider l\'encaissement';
-                    btnSubmit.style.background = '#a0d9d2';
+                    btnSubmit.className = 'w-full py-3 px-4 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer';
                 }
+                if (btnSubmitLabel) btnSubmitLabel.textContent = "Valider l'encaissement";
             } else {
-                if (btnCredit) btnCredit.className = 'quick-tx-tab-btn credit';
-                if (btnDebit) btnDebit.className = 'quick-tx-tab-btn active debit';
+                if (btnCredit) {
+                    btnCredit.className = 'py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent';
+                }
+                if (btnDebit) {
+                    btnDebit.className = 'py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer bg-white text-rose-800 shadow-xs border border-rose-100';
+                }
                 if (title) title.textContent = 'Enregistrer une Dépense (Sortie)';
                 if (btnSubmit) {
-                    btnSubmit.innerHTML = '<i class="fa-solid fa-check"></i> Valider la dépense';
-                    btnSubmit.style.background = '#0f172a';
+                    btnSubmit.className = 'w-full py-3 px-4 rounded-xl bg-[#1c1c1c] hover:bg-black active:bg-neutral-900 text-[#a0d9d2] border border-[#a0d9d2]/40 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer';
                 }
+                if (btnSubmitLabel) btnSubmitLabel.textContent = "Valider la dépense";
             }
+
+            updateQuickTxComptesList(type);
         }
 
         async function submitQuickTx(e) {
@@ -13651,35 +13802,50 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const montant = parseInt(document.getElementById('quickTxMontant').value, 10);
             const libelle = document.getElementById('quickTxLibelle').value.trim();
             const source = document.getElementById('quickTxSource').value;
+            const dateOp = document.getElementById('quickTxDate') ? document.getElementById('quickTxDate').value : '';
+
+            // Gestion du compte SYSCOHADA (sélectionné ou personnalisé)
+            let compte = document.getElementById('quickTxCompte') ? document.getElementById('quickTxCompte').value : '';
+            if (compte === 'CUSTOM') {
+                const customVal = document.getElementById('quickTxCustomCompte') ? document.getElementById('quickTxCustomCompte').value.trim() : '';
+                if (!customVal) {
+                    showGrowToast('Veuillez saisir le numéro de compte SYSCOHADA personnalisé', 'error');
+                    const cInput = document.getElementById('quickTxCustomCompte');
+                    if (cInput) cInput.focus();
+                    return;
+                }
+                compte = customVal;
+            }
 
             if (!montant || montant <= 0 || !libelle) {
-                alert('Veuillez renseigner un montant et un libellé valides.');
+                showGrowToast('Veuillez renseigner un montant et un libellé valides', 'error');
                 return;
             }
 
-            const entId = currentEntreprise ? currentEntreprise.id : null;
+            const entId = currentEntreprise ? currentEntreprise.id : (localStorage.getItem('grow_active_id') || null);
             if (!entId) {
-                alert('Veuillez patienter pendant la connexion à votre entreprise.');
+                showGrowToast('Veuillez patienter pendant la connexion à votre entreprise', 'error');
                 return;
             }
 
-            const compteSyscohada = (currentQuickTxType === 'ENTREE') ? '701' : '601';
+            const btnSubmit = document.getElementById('btnSubmitTxText');
+            const oldHtml = btnSubmit ? btnSubmit.innerHTML : '';
 
             try {
-                const btnSubmit = document.getElementById('btnSubmitTxText');
                 if (btnSubmit) {
                     btnSubmit.disabled = true;
-                    btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
+                    btnSubmit.innerHTML = '<span class="material-symbols-outlined notranslate text-[18px] grow-spinning" translate="no">refresh</span><span>Enregistrement...</span>';
                 }
 
-                // Insertion directe dans Supabase via l'API locale
+                // Insertion directe dans Supabase via l\'API locale
                 const payload = {
                     entreprise_id: entId,
                     montant_fcfa: montant,
                     libelle: libelle,
                     type_flux: currentQuickTxType,
                     source_paiement: source,
-                    compte_syscohada: compteSyscohada,
+                    compte_syscohada: compte,
+                    date_operation: dateOp || new Date().toISOString().substring(0, 10),
                     statut_validation: 'VALIDE_PME',
                     est_professionnel: true
                 };
@@ -13689,26 +13855,34 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                const resJson = await res.json();
+                if (resJson.status === 'error') {
+                    throw new Error(resJson.message || "Erreur d'enregistrement");
+                }
 
                 closeModalQuickTx();
                 // Nettoyage du formulaire
                 document.getElementById('quickTxMontant').value = '';
                 document.getElementById('quickTxLibelle').value = '';
+                if (document.getElementById('quickTxCustomCompte')) document.getElementById('quickTxCustomCompte').value = '';
+
+                // Notification Toast Élégante
+                showGrowToast(`✓ Écriture enregistrée • ${montant.toLocaleString('fr-FR')} FCFA (Compte ${compte})`, 'new_tx');
 
                 // Rechargement immédiat des données
                 await loadDashboardData();
 
-                alert(`Succès ! Votre opération de ${montant.toLocaleString('fr-FR')} FCFA a été enregistrée et imputée au compte SYSCOHADA ${compteSyscohada}.`);
             } catch (err) {
                 console.error('Erreur enregistrement rapide:', err);
-                alert('Erreur lors de l\'enregistrement : ' + err.message);
+                showGrowToast('Erreur : ' + err.message, 'error');
             } finally {
-                const btnSubmit = document.getElementById('btnSubmitTxText');
-                if (btnSubmit) btnSubmit.disabled = false;
+                if (btnSubmit) {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = oldHtml;
+                }
             }
         }
 
-        // Modale Détail Transaction au Clic sur carte mobile
         function openTxDetailModal(tx) {
             if (!tx) return;
             const m = document.getElementById('modalTxDetail');
@@ -14508,56 +14682,6 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
     <!-- ========================================================================= -->
     <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (SMARTPHONE & PC)           -->
     <!-- ========================================================================= -->
-    <div id="modalQuickTx" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalQuickTx()">
-        <div class="modal-box modal-quick-tx-box" onclick="event.stopPropagation()">
-            <div class="modal-top" style="background: #0a2540; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-calculator" style="color: #a0d9d2;"></i>
-                    <strong style="font-size: 14px;" id="quickTxModalTitle">Ajouter une Opération Comptable</strong>
-                </div>
-                <button type="button" class="modal-close-btn" onclick="closeModalQuickTx()" style="background: none; border: none; color: #ffffff; font-size: 18px; cursor: pointer;">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="modal-content" style="padding: 20px;">
-                <div class="quick-tx-type-tabs">
-                    <button type="button" class="quick-tx-tab-btn active credit" id="btnTabCredit" onclick="setQuickTxType('ENTREE')">
-                        <i class="fa-solid fa-arrow-down-left"></i> Vente / Entrée
-                    </button>
-                    <button type="button" class="quick-tx-tab-btn debit" id="btnTabDebit" onclick="setQuickTxType('SORTIE')">
-                        <i class="fa-solid fa-arrow-up-right"></i> Dépense / Sortie
-                    </button>
-                </div>
-
-                <form id="quickTxForm" onsubmit="submitQuickTx(event)">
-                    <div class="form-group-mobile">
-                        <label>Montant en Francs CFA (FCFA) *</label>
-                        <input type="number" id="quickTxMontant" class="form-control-mobile" placeholder="Ex: 25000" required min="1" step="1">
-                    </div>
-
-                    <div class="form-group-mobile">
-                        <label>Libellé de l'opération *</label>
-                        <input type="text" id="quickTxLibelle" class="form-control-mobile" placeholder="Ex: Vente tissus, Achat riz, Facture..." required>
-                    </div>
-
-                    <div class="form-group-mobile">
-                        <label>Mode de paiement / Trésorerie</label>
-                        <select id="quickTxSource" class="form-control-mobile">
-                            <option value="ESPECES">Caisse Espèces (Cash au comptoir)</option>
-                            <option value="WAVE">Compte Wave</option>
-                            <option value="ORANGE_MONEY">Orange Money</option>
-                            <option value="BANQUE">Compte Bancaire</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn-submit-tx" id="btnSubmitTxText">
-                        <i class="fa-solid fa-check"></i> Enregistrer dans le Journal
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- ========================================================================= -->
     <!-- MODALE DÉTAIL D'UNE TRANSACTION AU CLIC SUR LA CARTE MOBILE                -->
     <!-- ========================================================================= -->

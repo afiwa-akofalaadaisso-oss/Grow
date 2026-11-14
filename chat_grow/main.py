@@ -1087,6 +1087,9 @@ async def api_enregistrer_transaction(payload: dict = Body(...)):
         "statut_validation": "VALIDE_PME",
         "est_professionnel": True
     }
+    date_op = payload.get("date_operation")
+    if date_op:
+        tx_row["date_operation"] = str(date_op).strip()
 
     try:
         res = sp.table("transactions").insert(tx_row).execute()
