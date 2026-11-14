@@ -10,7 +10,7 @@ import zoneinfo
 import httpx
 import anthropic
 from fastapi import FastAPI, Request, HTTPException, Query, Body
-from fastapi.responses import PlainTextResponse, HTMLResponse, FileResponse
+from fastapi.responses import PlainTextResponse, HTMLResponse, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 
@@ -403,14 +403,17 @@ def get_or_create_entreprise(sp, sender_phone: str) -> dict:
 @app.get("/")
 @app.get("/webhook")
 async def verify_webhook(
+    request: Request,
     hub_mode: str = Query(None, alias="hub.mode"),
     hub_challenge: str = Query(None, alias="hub.challenge"),
     hub_verify_token: str = Query(None, alias="hub.verify_token"),
 ):
-    """Validation initiale du webhook par Meta."""
+    """Validation initiale du webhook par Meta ou redirection vers le portail comptable."""
     if hub_mode == "subscribe" and hub_verify_token == VERIFY_TOKEN:
         print("Webhook validé avec succès par Meta !")
         return PlainTextResponse(content=hub_challenge)
+    if request.url.path == "/":
+        return RedirectResponse(url="/dashboard?portal=1", status_code=302)
     return {
         "status": "online",
         "message": "Grow MVP WhatsApp avec Onboarding NINEA & IA SYSCOHADA est 100% opérationnel 🚀"

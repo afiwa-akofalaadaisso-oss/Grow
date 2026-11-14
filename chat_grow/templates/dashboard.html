@@ -7331,10 +7331,149 @@
         }
 
 
+
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (STYLE GOOGLE & BRANDING GROW AWA) --- */
+        #viewPortalComptable {
+            position: fixed;
+            inset: 0;
+            z-index: 1500;
+            background-color: #141414;
+            overflow-y: auto;
+            display: none;
+        }
+        .portal-pattern-layer {
+            position: absolute;
+            inset: 0;
+            background-image: url('/static/grow_logo_transparent.png');
+            background-repeat: repeat;
+            background-size: 130px 130px;
+            opacity: 0.045;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .portal-ambient-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 36%, rgba(160, 217, 210, 0.14) 0%, rgba(20, 20, 20, 0.96) 72%);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .portal-search-input::placeholder {
+            color: #94a3b8;
+            opacity: 0.85;
+        }
+
     </style>
 </head>
 
 <body class="bg-white text-slate-900 antialiased min-h-screen">
+
+    <!-- ========================================================================= -->
+    <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE GOOGLE RECHERCHE & AWA BRANDING)  -->
+    <!-- ========================================================================= -->
+    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex-col justify-between overflow-y-auto" style="display: none; background-color: #141414;">
+        <!-- Pattern filigrane logo Grow répété en fond (Inspiré Image 2 AWA) -->
+        <div class="portal-pattern-layer"></div>
+        <div class="portal-ambient-glow"></div>
+
+        <!-- Header minimaliste du Portail -->
+        <header class="relative z-10 w-full px-5 md:px-8 py-4 flex items-center justify-between border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <img src="/static/grow_logo_transparent.png" alt="Grow" class="w-8 h-8 object-contain">
+                <div class="flex items-center gap-2">
+                    <span class="text-white font-extrabold text-sm tracking-wider uppercase">GROW</span>
+                    <span class="px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-[#1c1c1c] text-[#a0d9d2] border border-[#a0d9d2]/40">CABINET</span>
+                </div>
+                <span class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold bg-[#222222] text-slate-300 border border-[#333333]">
+                    <i class="fa-solid fa-shield-halved text-[#a0d9d2] text-[10px]"></i> Espace Ordre des Experts-Comptables (ONECCA)
+                </span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="quitterPortailVersDossier()" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-semibold transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-[17px] text-[#a0d9d2]">arrow_forward</span>
+                    <span id="portalActiveDossierBtnText">Accéder au dossier en cours</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Zone Centrale : Grand Logo Grow + Texte Typewriter + Barre de Recherche Entreprise -->
+        <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-8 text-center max-w-3xl mx-auto w-full">
+            <!-- Grand Logo Grow avec aura menthe douce -->
+            <div class="relative group cursor-pointer mb-6" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
+                <div class="absolute -inset-6 bg-[#a0d9d2]/15 rounded-full blur-2xl group-hover:bg-[#a0d9d2]/25 transition-all"></div>
+                <img src="/static/grow_logo_transparent.png" alt="Grow Logo" class="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain drop-shadow-2xl mx-auto transform group-hover:scale-105 transition-transform duration-300">
+            </div>
+
+            <!-- Texte Animé Machine à Écrire (Typewriter) -->
+            <div class="min-h-[48px] md:min-h-[64px] flex items-center justify-center mb-2">
+                <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight flex items-center justify-center">
+                    <span id="portalTypewriterText" class="text-white"></span>
+                    <span class="inline-block w-1 md:w-1.5 h-7 md:h-11 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
+                </h1>
+            </div>
+
+            <!-- Sous-titre officiel -->
+            <p class="text-[11px] sm:text-xs md:text-[13px] font-bold tracking-[0.2em] text-[#a0d9d2] uppercase mb-8 max-w-xl">
+                Accédez aux dossiers comptables de vos PME clientes en temps réel • SYSCOHADA
+            </p>
+
+            <!-- Barre de Recherche Entreprise (Emplacement « Découvrir nos formules » / Google style) -->
+            <div class="relative w-full max-w-2xl text-left" id="portalSearchWrapper">
+                <div class="relative flex items-center w-full bg-[#1c1c1c] border-2 border-[#a0d9d2]/80 hover:border-[#a0d9d2] focus-within:border-[#a0d9d2] focus-within:ring-4 focus-within:ring-[#a0d9d2]/20 rounded-full px-5 py-3.5 shadow-2xl transition-all">
+                    <span class="material-symbols-outlined text-[#a0d9d2] text-[22px] mr-3 flex-shrink-0">search</span>
+                    <input type="text" id="portalCompanySearchInput" 
+                           class="portal-search-input w-full bg-transparent text-white placeholder:text-slate-400 text-sm md:text-base font-medium focus:outline-none"
+                           placeholder="Rechercher une entreprise cliente (ex: CGLT, Dakar Import, NINEA...)"
+                           autocomplete="off"
+                           oninput="handlePortalCompanySearch(this.value)"
+                           onkeydown="handlePortalSearchKeydown(event)"
+                           onfocus="showPortalDropdown()">
+                    <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-white p-1 mr-1 transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">close</span>
+                    </button>
+                    <button type="button" onclick="submitPortalSearch()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#a0d9d2] hover:bg-white text-[#1c1c1c] font-bold text-xs md:text-sm shadow-md transition-all cursor-pointer flex-shrink-0">
+                        <span>Ouvrir</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </button>
+                </div>
+
+                <!-- Menu Déroulant Instantané des Entreprises du Cabinet -->
+                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2 bg-[#1c1c1c] border border-white/10 rounded-2xl shadow-2xl divide-y divide-white/5 overflow-hidden z-50 max-h-80 overflow-y-auto" style="display: none;">
+                    <!-- Injecté dynamiquement par JavaScript -->
+                </div>
+            </div>
+
+            <!-- Badges d'accès direct aux dossiers PME (au lieu des raccourcis Google) -->
+            <div class="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-xl">
+                <span class="text-xs text-slate-400 font-medium mr-1">Dossiers récents :</span>
+                <button type="button" onclick="selectCompanyFromPortal('af3f08b5-1c4a-4812-8e2d-23b7944f7b27', '221788773827')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-[#a0d9d2] text-slate-300 hover:text-[#1c1c1c] border border-white/10 text-xs font-semibold transition-all cursor-pointer">
+                    <span class="w-2 h-2 rounded-full bg-[#a0d9d2]"></span>
+                    <span>CGLT (NINEA: 00802996)</span>
+                </button>
+                <button type="button" onclick="selectCompanyFromPortal('ent-demo-1', '221770001122')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-[#a0d9d2] text-slate-300 hover:text-[#1c1c1c] border border-white/10 text-xs font-semibold transition-all cursor-pointer">
+                    <span>Dakar Import</span>
+                </button>
+                <button type="button" onclick="selectCompanyFromPortal('ent-demo-2', '221762223344')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-[#a0d9d2] text-slate-300 hover:text-[#1c1c1c] border border-white/10 text-xs font-semibold transition-all cursor-pointer">
+                    <span>Diallo & Frères</span>
+                </button>
+                <button type="button" onclick="selectCompanyFromPortal('ent-demo-3', '221781112233')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 hover:bg-[#a0d9d2] text-slate-300 hover:text-[#1c1c1c] border border-white/10 text-xs font-semibold transition-all cursor-pointer">
+                    <span>Boutique Almadies</span>
+                </button>
+            </div>
+        </main>
+
+        <!-- Footer minimaliste -->
+        <footer class="relative z-10 w-full px-6 py-4 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 border-t border-white/5">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#a0d9d2] animate-ping"></span>
+                <span>Cabinet connecté • 16 écritures synchronisées en direct</span>
+            </div>
+            <div class="mt-2 sm:mt-0 font-medium text-slate-400">
+                Plateforme Certifiée SYSCOHADA Révisé • Dakar, Sénégal
+            </div>
+        </footer>
+    </div>
+
 
     <!-- BACKDROP OVERLAY MOBILE -->
     <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
@@ -7517,6 +7656,13 @@
             </div>
 
             <div class="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
+                
+                <!-- Bouton Portail Cabinet / Changer de dossier -->
+                <button type="button" onclick="openPortalView()" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1c1c1c] text-[#a0d9d2] hover:bg-[#2c2c2c] border border-black/40 text-xs font-semibold shadow-2xs transition-colors cursor-pointer" title="Revenir au Portail Cabinet / Changer d'entreprise cliente">
+                    <span class="material-symbols-outlined text-[16px]">domain</span>
+                    <span>Portail Cabinet</span>
+                </button>
+
                 <!-- Trésorerie Disponible en Direct (Fond noir, sans bouton vert, montant menthe Grow) -->
                 <div class="flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 rounded-lg bg-[#1c1c1c] text-white shadow-sm border border-black/30 cursor-default whitespace-nowrap flex-shrink-0" title="Trésorerie disponible en direct (Banque / Wave / OM / Caisse)">
                     <span class="text-xs font-medium text-slate-300 hidden md:inline">Trésorerie :</span>
@@ -12868,6 +13014,208 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             } else {
                 setDeviceView('desktop');
             }
+
+            // Affichage automatique du Portail Cabinet sur Ordinateur si demandé ou si aucun client en URL
+            const urlParamsPortal = new URLSearchParams(window.location.search);
+            const isPortalReq = urlParamsPortal.get('portal') === '1' || urlParamsPortal.get('mode') === 'portal';
+            const hasClientInUrl = Boolean(urlParamsPortal.get('phone') || urlParamsPortal.get('id'));
+            if (isPortalReq || (!hasClientInUrl && window.innerWidth >= 768)) {
+                openPortalView();
+            }
+
+            
+        // =========================================================================
+        // LOGIQUE DU PORTAIL ACCUEIL EXPERT-COMPTABLE
+        // =========================================================================
+        let portalTypewriterInterval = null;
+        const portalTextToType = "Portail Grow pour comptables";
+
+        function initPortalTypewriter() {
+            const el = document.getElementById('portalTypewriterText');
+            if (!el) return;
+            el.textContent = "";
+            if (portalTypewriterInterval) clearInterval(portalTypewriterInterval);
+            
+            let i = 0;
+            portalTypewriterInterval = setInterval(() => {
+                if (i < portalTextToType.length) {
+                    el.textContent += portalTextToType.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(portalTypewriterInterval);
+                }
+            }, 65);
+        }
+
+        function openPortalView() {
+            const portal = document.getElementById('viewPortalComptable');
+            if (!portal) return;
+            portal.style.display = 'flex';
+            initPortalTypewriter();
+            renderPortalCompanyResults('');
+            
+            const btnTxt = document.getElementById('portalActiveDossierBtnText');
+            if (btnTxt && currentEntreprise) {
+                const cNom = currentEntreprise.nom_entreprise || currentEntreprise.nom || 'CGLT';
+                btnTxt.textContent = `Dossier actif : ${getCleanCompanyName(cNom)}`;
+            }
+            
+            const inp = document.getElementById('portalCompanySearchInput');
+            if (inp) {
+                inp.value = '';
+                setTimeout(() => inp.focus(), 150);
+            }
+        }
+
+        function quitterPortailVersDossier() {
+            const portal = document.getElementById('viewPortalComptable');
+            if (!portal) return;
+            portal.style.display = 'none';
+        }
+
+        function selectCompanyFromPortal(entId, phone) {
+            quitterPortailVersDossier();
+            
+            const url = new URL(window.location.href);
+            url.searchParams.delete('portal');
+            if (entId) url.searchParams.set('id', entId);
+            if (phone) url.searchParams.set('phone', phone);
+            window.history.pushState({}, '', url);
+            
+            loadDashboardData(entId, phone);
+        }
+
+        function handlePortalCompanySearch(query) {
+            const clearBtn = document.getElementById('portalClearSearchBtn');
+            if (clearBtn) clearBtn.style.display = query ? 'block' : 'none';
+            renderPortalCompanyResults(query);
+        }
+
+        function showPortalDropdown() {
+            const inp = document.getElementById('portalCompanySearchInput');
+            renderPortalCompanyResults(inp ? inp.value : '');
+            const dd = document.getElementById('portalSearchResultsDropdown');
+            if (dd) dd.style.display = 'block';
+        }
+
+        function clearPortalSearch() {
+            const inp = document.getElementById('portalCompanySearchInput');
+            if (inp) {
+                inp.value = '';
+                inp.focus();
+            }
+            const clearBtn = document.getElementById('portalClearSearchBtn');
+            if (clearBtn) clearBtn.style.display = 'none';
+            renderPortalCompanyResults('');
+        }
+
+        function renderPortalCompanyResults(queryRaw) {
+            const dd = document.getElementById('portalSearchResultsDropdown');
+            if (!dd) return;
+            
+            const query = (queryRaw || '').toLowerCase().trim();
+            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : [
+                { id: 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27', nom_entreprise: 'CGLT', ninea: '00802996', telephone_whatsapp: '221788773827' },
+                { id: 'ent-demo-1', nom_entreprise: 'Dakar Import', ninea: '00802996-2G3', telephone_whatsapp: '221770001122' },
+                { id: 'ent-demo-2', nom_entreprise: 'Diallo & Frères', ninea: '00754128-1A2', telephone_whatsapp: '221762223344' },
+                { id: 'ent-demo-3', nom_entreprise: 'Boutique Almadies', ninea: '00912440-3K9', telephone_whatsapp: '221781112233' }
+            ];
+            
+            const filtered = list.filter(e => {
+                if (!query) return true;
+                const nom = (e.nom_entreprise || e.nom || '').toLowerCase();
+                const nin = (e.ninea || '').toLowerCase();
+                const tel = (e.telephone_whatsapp || '').toLowerCase();
+                return nom.includes(query) || nin.includes(query) || tel.includes(query);
+            });
+            
+            if (filtered.length === 0) {
+                dd.innerHTML = `
+                    <div class="p-4 text-center text-slate-400 text-xs">
+                        Aucune entreprise ne correspond à « <span class="text-white font-semibold">${escapeHtml(queryRaw)}</span> ».<br>
+                        <span class="text-[11px] text-slate-500 mt-1 block">Essayez par nom (ex: CGLT), NINEA ou numéro WhatsApp.</span>
+                    </div>
+                `;
+                dd.style.display = 'block';
+                return;
+            }
+            
+            dd.innerHTML = filtered.map(e => {
+                const nom = getCleanCompanyName(e.nom_entreprise || e.nom || 'Entreprise');
+                const inits = getCompanyInitials(nom);
+                const isCurrent = currentEntreprise && (e.id === currentEntreprise.id || e.telephone_whatsapp === currentEntreprise.telephone_whatsapp);
+                return `
+                    <div onclick="selectCompanyFromPortal('${e.id}', '${e.telephone_whatsapp || ''}')" 
+                         class="p-3.5 flex items-center justify-between hover:bg-white/10 active:bg-white/15 transition-colors cursor-pointer select-none">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-[#2a2a2a] text-[#a0d9d2] border border-[#3a3a3a] flex items-center justify-center font-bold text-xs flex-shrink-0">
+                                ${escapeHtml(inits)}
+                            </div>
+                            <div class="min-w-0">
+                                <div class="text-white font-bold text-sm truncate flex items-center gap-2">
+                                    <span>${escapeHtml(nom)}</span>
+                                    ${isCurrent ? '<span class="px-2 py-0.2 rounded-full bg-[#a0d9d2]/20 text-[#a0d9d2] border border-[#a0d9d2]/40 text-[10px] font-semibold">Dossier actif</span>' : ''}
+                                </div>
+                                <div class="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
+                                    <span>NINEA: <span class="font-mono text-slate-300">${escapeHtml(e.ninea || '00802996')}</span></span>
+                                    <span>•</span>
+                                    <span class="font-mono text-slate-400">${escapeHtml(e.telephone_whatsapp || 'Compte PME')}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs font-semibold text-[#a0d9d2]">
+                            <span class="hidden sm:inline">Accéder au dossier</span>
+                            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            dd.style.display = 'block';
+        }
+
+        function handlePortalSearchKeydown(evt) {
+            if (evt.key === 'Enter') {
+                submitPortalSearch();
+            } else if (evt.key === 'Escape') {
+                const dd = document.getElementById('portalSearchResultsDropdown');
+                if (dd) dd.style.display = 'none';
+            }
+        }
+
+        function submitPortalSearch() {
+            const inp = document.getElementById('portalCompanySearchInput');
+            const query = (inp ? inp.value : '').toLowerCase().trim();
+            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : [
+                { id: 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27', nom_entreprise: 'CGLT', telephone_whatsapp: '221788773827' }
+            ];
+            
+            if (!query) {
+                selectCompanyFromPortal(list[0].id, list[0].telephone_whatsapp);
+                return;
+            }
+            
+            const match = list.find(e => {
+                const nom = (e.nom_entreprise || e.nom || '').toLowerCase();
+                const nin = (e.ninea || '').toLowerCase();
+                const tel = (e.telephone_whatsapp || '').toLowerCase();
+                return nom.includes(query) || nin.includes(query) || tel.includes(query);
+            });
+            
+            if (match) {
+                selectCompanyFromPortal(match.id, match.telephone_whatsapp);
+            } else {
+                selectCompanyFromPortal(list[0].id, list[0].telephone_whatsapp);
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const wrap = document.getElementById('portalSearchWrapper');
+            const dd = document.getElementById('portalSearchResultsDropdown');
+            if (wrap && dd && !wrap.contains(e.target)) {
+                dd.style.display = 'none';
+            }
+        });
 
             loadDashboardData();
 
