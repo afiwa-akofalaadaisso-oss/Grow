@@ -7487,7 +7487,7 @@
         <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#f2f1ed] border-r border-[#e2e1dd] shadow-sm flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out -translate-x-full md:translate-x-0 select-none">
         <div class="flex flex-col">
             <!-- Header Marque GROW / SYSCOHADA PRO -->
-            <div class="h-16 px-5 flex items-center justify-between border-b border-slate-200/80 bg-white">
+            <div class="h-16 px-5 flex items-center justify-between border-b border-[#dedcd6] bg-[#f2f1ed]">
                 <div class="flex items-center gap-2.5 cursor-pointer" onclick="openPortalView()" title="Aller à l'accueil du cabinet">
                     <img src="/static/grow_logo_teal.png" alt="GROW Logo" class="w-8 h-8 object-contain">
                     <div class="flex flex-col">
@@ -7545,7 +7545,7 @@
         </div>
 
         <!-- Profil M. Sissoko Expert-Comptable (Exact Référence Image Stitch) -->
-        <div class="p-3 border-t border-slate-200/80 bg-white flex items-center justify-between">
+        <div class="p-3 border-t border-[#dedcd6] bg-[#f2f1ed] flex items-center justify-between">
             <div class="flex items-center gap-2.5 min-w-0">
                 <div class="w-8 h-8 rounded-full bg-[#168078] text-white flex items-center justify-center font-bold text-xs shadow-2xs flex-shrink-0">
                     <span class="material-symbols-outlined notranslate text-[18px]" translate="no">person</span>
@@ -7628,7 +7628,7 @@
                     <!-- Champ Recherche avec ⌘K et bouton rond flèche -->
                     <div class="relative w-full lg:max-w-md">
                         <span class="material-symbols-outlined notranslate absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px] pointer-events-none" translate="no">search</span>
-                        <input class="w-full pl-10 pr-20 py-2.5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" id="table-search-input" placeholder="Rechercher par flux ou opération (Wave, Caisse, Orange, virement...)" type="text" oninput="handleSearchInput(this.value)">
+                        <input class="w-full pl-10 pr-20 py-2.5 rounded-2xl bg-[#faf9f6] border border-[#dedcd6] hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" id="table-search-input" placeholder="Rechercher par flux ou opération (Wave, Caisse, Orange, virement...)" type="text" oninput="handleSearchInput(this.value)">
                         <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
                             <div class="hidden sm:flex text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200/80 pointer-events-none select-none">
                                 ⌘K
@@ -7642,7 +7642,7 @@
                     <div class="flex flex-wrap items-center gap-2">
                         <!-- Sélecteur de Calendrier & Période -->
                         <div class="relative flex-1 sm:flex-initial">
-                            <button type="button" class="w-full inline-flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer" onclick="toggleCalendarPopover(event)" id="datePickerBtn" title="Filtrer par date ou période">
+                            <button type="button" class="w-full inline-flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-2xl border border-[#dedcd6] bg-[#faf9f6] hover:bg-[#eae8e3] text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer" onclick="toggleCalendarPopover(event)" id="datePickerBtn" title="Filtrer par date ou période">
                                 <span class="flex items-center gap-1.5 truncate">
                                     <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">calendar_today</span>
                                     <span id="datePickerBtnLabel" class="truncate">Toutes les dates</span>
@@ -7683,18 +7683,18 @@
                         </div>
 
                         <!-- Bouton Filtres Avancés -->
-                        <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="togglePopoverFiltreAvance()">
+                        <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-[#dedcd6] bg-[#faf9f6] hover:bg-[#eae8e3] text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="togglePopoverFiltreAvance()">
                             <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">tune</span>
                             <span>Filtres <span class="px-1.5 py-0.2 rounded-full bg-slate-100 text-[10px] text-slate-600 font-bold ml-0.5">2</span></span>
                         </button>
 
                         <!-- Rafraîchir -->
-                        <button class="p-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-all shadow-2xs cursor-pointer flex-shrink-0 flex items-center justify-center" onclick="loadDashboardData()" title="Rafraîchir les écritures">
+                        <button class="p-2.5 rounded-2xl border border-[#dedcd6] bg-[#faf9f6] hover:bg-[#eae8e3] text-slate-600 hover:text-slate-900 transition-all shadow-2xs cursor-pointer flex-shrink-0 flex items-center justify-center" onclick="loadDashboardData()" title="Rafraîchir les écritures">
                             <span class="material-symbols-outlined notranslate text-[17px]" translate="no">refresh</span>
                         </button>
 
                         <!-- Export FEC -->
-                        <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="telechargerFichierFEC()" title="Exporter le Fichier des Écritures Comptables">
+                        <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-[#dedcd6] bg-[#faf9f6] hover:bg-[#eae8e3] text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="telechargerFichierFEC()" title="Exporter le Fichier des Écritures Comptables">
                             <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">download</span>
                             <span>Export FEC</span>
                         </button>
@@ -7704,7 +7704,7 @@
                 <!-- BARRE DE RECHERCHE DÉDIÉE : COMPTE DE CLASSE SYSCOHADA -->
                 <div class="mb-5 relative w-full" id="compteClasseSearchContainer">
                     <span class="material-symbols-outlined notranslate absolute left-3.5 top-1/2 -translate-y-1/2 text-[#168078] text-[18px] pointer-events-none" translate="no">tag</span>
-                    <input class="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" 
+                    <input class="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-[#faf9f6] border border-[#dedcd6] hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" 
                            id="compte-classe-search-input" 
                            placeholder="Rechercher par compte de classe (ex: 701, Classe 7, 601, 661, 521, 411...)" 
                            type="text" 
@@ -7715,10 +7715,10 @@
                 </div>
 
                 <!-- CARTE PRINCIPALE BLANCHE : TABLEAU DE BORD DU JOURNAL (Style Exact Référence Stitch) -->
-                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden mb-6">
+                <div class="bg-[#f7f6f2] rounded-2xl border border-[#dedcd6] shadow-xs overflow-hidden mb-6">
 
                     <!-- Bandeau En-tête de la Carte avec Résumé Crédit / Débit -->
-                    <div class="px-4 py-3 flex items-center justify-between border-b border-slate-100 bg-slate-50/50">
+                    <div class="px-4 py-3 flex items-center justify-between border-b border-[#dedcd6] bg-[#ebe9e4]">
                         <div class="flex items-center gap-2.5">
                             <input class="rounded border-slate-300 text-[#168078] focus:ring-[#168078] w-4 h-4 cursor-pointer" id="select-all-rows" type="checkbox">
                             <span class="font-bold text-xs text-slate-800 uppercase tracking-wider">ÉCRITURES RÉCENTES</span>
@@ -7742,7 +7742,7 @@
                     <div class="hidden md:block overflow-x-auto w-full">
                         <table class="w-full text-left border-collapse" id="transactionsTable">
                             <thead>
-                                <tr class="border-b border-slate-100 bg-slate-50/70 text-slate-400 text-[11px] font-bold uppercase tracking-wider select-none">
+                                <tr class="border-b border-[#dedcd6] bg-[#ebe9e4]/70 text-slate-500 text-[11px] font-bold uppercase tracking-wider select-none">
                                     <th class="py-3 px-3.5 w-10 text-center"></th>
                                     <th class="py-3 px-3.5 whitespace-nowrap w-36">DATE &amp; RÉF.</th>
                                     <th class="py-3 px-4">OPÉRATION &amp; TIERS</th>
@@ -7751,7 +7751,7 @@
                                     <th class="py-3 px-4 text-right whitespace-nowrap w-32">CRÉDIT</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 text-xs" id="tableBody">
+                            <tbody class="divide-y divide-[#dedcd6] text-xs bg-[#f7f6f2]" id="tableBody">
                                 <!-- Lignes injectées dynamiquement -->
                             </tbody>
                         </table>
@@ -12018,7 +12018,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
             txList.forEach((t, idx) => {
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50/80 transition-colors border-b border-slate-100 cursor-pointer';
+                tr.className = 'hover:bg-[#eae8e3] transition-colors border-b border-[#dedcd6] cursor-pointer bg-[#f7f6f2]';
                 tr.onclick = () => openTxDetailModal(t);
 
                 const rawDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '13/11/2026');
@@ -12132,7 +12132,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     </td>
                     <td class="py-3.5 px-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-white border border-slate-200/80 p-1.5 flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:border-[#168078]/40 transition-colors">
+                            <div class="w-9 h-9 rounded-xl bg-[#faf9f6] border border-[#dedcd6] p-1.5 flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:border-[#168078]/40 transition-colors">
                                 <img src="${flowLogo}" alt="${flowMeta.label}" class="w-6 h-6 object-contain rounded-md" onerror="this.onerror=null; this.src='${WAVE_ICON_URL}';">
                             </div>
                             <div class="flex flex-col min-w-0">
@@ -12142,7 +12142,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                         </div>
                     </td>
                     <td class="py-3.5 px-3.5 whitespace-nowrap w-52">
-                        <span class="px-2.5 py-1 rounded-lg bg-slate-100/90 border border-slate-200/70 text-[11px] font-medium text-slate-700 inline-flex items-center gap-1.5 shadow-2xs">
+                        <span class="px-2.5 py-1 rounded-lg bg-[#ebe9e4] border border-[#dedcd6] text-[11px] font-medium text-slate-700 inline-flex items-center gap-1.5 shadow-2xs">
                             <span class="font-bold text-[#168078] font-mono">${escapeHtml(compteNum)}</span>
                             <span class="truncate">${escapeHtml(compteLabel)}</span>
                         </span>
