@@ -7427,6 +7427,15 @@
 
     
         /* MODE PLEINE LARGEUR FACTOO : AUCUN MENU LATÉRAL */
+        main,
+        #viewJournal,
+        #mainContentWrapper {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            padding-left: 0 !important;
+        }
         #comptableSidebar,
         #btnOpenSidebar,
         #sidebarBackdrop {
@@ -7589,7 +7598,7 @@
         </header>
 
         <!-- CONTENU PRINCIPAL AÉRÉ -->
-        <main class="flex-1 p-3 md:p-6 max-w-6xl w-full mx-auto pb-28 md:pb-20">
+        <main class="flex-1 w-full p-0 pb-16 min-h-[calc(100vh-52px)]">
 
             <!-- 1. VUE JOURNAL DES ÉCRITURES -->
             <div id="viewJournal">
