@@ -7538,8 +7538,9 @@
                                     </th>
                                     <th class="py-2.5 px-3.5 whitespace-nowrap w-28">Date</th>
                                     <th class="py-2.5 px-3.5">Opération</th>
-                                    <th class="py-2.5 px-3.5 text-center whitespace-nowrap w-24">Compte</th>
-                                    <th class="py-2.5 px-3.5 text-right whitespace-nowrap w-36">Montant</th>
+                                    <th class="py-2.5 px-3.5 text-center whitespace-nowrap w-20">Compte</th>
+                                    <th class="py-2.5 px-3.5 text-right whitespace-nowrap w-28">Débit (FCFA)</th>
+                                    <th class="py-2.5 px-3.5 text-right whitespace-nowrap w-28">Crédit (FCFA)</th>
                                     <th class="py-2.5 px-3.5 text-center whitespace-nowrap w-24">Preuve</th>
                                     <th class="py-2.5 px-2 text-center w-10"></th>
                                 </tr>
@@ -11179,7 +11180,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             if (!txList || txList.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7" class="py-16 text-center text-slate-400 font-medium bg-slate-50/50">
+                        <td colspan="8" class="py-16 text-center text-slate-400 font-medium bg-slate-50/50">
                             <span class="material-symbols-outlined text-[32px] block mb-2 text-slate-300">receipt_long</span>
                             Aucune écriture trouvée.
                         </td>
@@ -11237,16 +11238,17 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     sub = 'Wave Business';
                 }
 
-                const flux = (t.type_flux || '').toUpperCase();
+                const flux = (t.type_flux || t.sens || '').toUpperCase();
                 const montant = Number(t.montant_fcfa) || 0;
-                let montantDisplay = '';
+                let debitDisplay = '<span class="text-slate-300 font-normal">-</span>';
+                let creditDisplay = '<span class="text-slate-300 font-normal">-</span>';
 
                 if (flux === 'SORTIE' || flux === 'DEBIT') {
                     totalDebit += montant;
-                    montantDisplay = `<span class="font-bold text-rose-600 font-mono tracking-tight text-[13px]">- ${montant.toLocaleString('fr-FR')} FCFA</span>`;
+                    debitDisplay = `<span class="font-bold text-rose-600 font-mono tracking-tight text-[13px]">${montant.toLocaleString('fr-FR')}</span>`;
                 } else {
                     totalCredit += montant;
-                    montantDisplay = `<span class="font-bold text-slate-900 font-mono tracking-tight text-[13px]">+ ${montant.toLocaleString('fr-FR')} FCFA</span>`;
+                    creditDisplay = `<span class="font-bold text-slate-900 font-mono tracking-tight text-[13px]">${montant.toLocaleString('fr-FR')}</span>`;
                 }
 
                 const compteNum = t.compte_syscohada || '701';
@@ -11277,8 +11279,11 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                             ${escapeHtml(compteNum)}
                         </span>
                     </td>
-                    <td class="py-3 px-3.5 text-right whitespace-nowrap w-36">
-                        ${montantDisplay}
+                    <td class="py-3 px-3.5 text-right whitespace-nowrap w-28 font-mono text-[13px]">
+                        ${debitDisplay}
+                    </td>
+                    <td class="py-3 px-3.5 text-right whitespace-nowrap w-28 font-mono text-[13px]">
+                        ${creditDisplay}
                     </td>
                     <td class="py-3 px-3.5 text-center whitespace-nowrap w-24" onclick="event.stopPropagation()">
                         <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#e6f7f5] text-[#0d9488] border border-[#a0d9d2]/60 hover:bg-[#d4f2ee] transition-colors cursor-pointer" onclick="openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', 'Wave')" title="Preuve Wave certifiée">
