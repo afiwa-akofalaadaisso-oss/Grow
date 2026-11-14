@@ -7700,8 +7700,8 @@
 
             <!-- Droite : Menu 3 traits contenant Changer de dossier, Profil Expert-Comptable, Recherche & États Financiers -->
             <div class="relative">
-                <button type="button" id="factooMenuTraitsBtn" onclick="toggleFactooTraitsMenu(event)" class="factoo-menu-trigger px-3 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 active:bg-slate-900 text-white border border-slate-700/70 transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm select-none group" title="Menu général">
-                    <svg class="w-5 h-5 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <button type="button" id="factooMenuTraitsBtnTop" onclick="toggleFactooTraitsMenu(event)" class="factoo-menu-trigger p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 transition-all cursor-pointer flex items-center justify-center shadow-2xs select-none group" title="Menu général">
+                    <svg class="w-5 h-5 text-slate-700 group-hover:text-slate-900 group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -7849,10 +7849,10 @@
                             <span class="material-symbols-outlined notranslate text-[18px]" translate="no">more_vert</span>
                         </button>
 
-                        <!-- BOUTON 3 TRAITS PRINCIPAL DANS LA BARRE D'ACTION AVEC POPOVER INTÉGRÉ -->
+                        <!-- BOUTON 3 TRAITS PRINCIPAL DANS LA BARRE D'ACTION AVEC POPOVER INTÉGRÉ (Fond blanc) -->
                         <div class="relative">
-                            <button type="button" id="factooMenuTraitsBtn" onclick="toggleFactooTraitsMenu(event)" class="factoo-menu-trigger px-3 py-2 rounded-lg bg-[#168078] hover:bg-[#0f4d47] active:bg-[#082a27] text-white border border-[#168078] transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm select-none group" title="Menu, Recherche & États Financiers">
-                                <svg class="w-5 h-5 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <button type="button" id="factooMenuTraitsBtn" onclick="toggleFactooTraitsMenu(event)" class="factoo-menu-trigger p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 transition-all cursor-pointer flex items-center justify-center shadow-2xs select-none group" title="Menu, Recherche & États Financiers">
+                                <svg class="w-5 h-5 text-slate-700 group-hover:text-slate-900 group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                                     <line x1="3" y1="6" x2="21" y2="6"></line>
                                     <line x1="3" y1="12" x2="21" y2="12"></line>
                                     <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -8039,7 +8039,7 @@
 
                     <!-- Bouton 4 traits : Menu Bilan, Résultat, TAFIRE, Annexe -->
                     <div class="relative">
-                        <button type="button" id="factooMenuTraitsBtn" onclick="toggleFactooTraitsMenu(event)" class="px-3 py-2 rounded-lg bg-white/20 hover:bg-white/35 active:bg-white/45 text-white border border-white/35 transition-all cursor-pointer flex items-center justify-center shadow-xs backdrop-blur-xs group" title="Menu des états financiers (Bilan, Résultat, TAFIRE, Annexe)">
+                        <button type="button" id="factooMenuTraitsBtn4" onclick="toggleFactooTraitsMenu(event)" class="px-3 py-2 rounded-lg bg-white/20 hover:bg-white/35 active:bg-white/45 text-white border border-white/35 transition-all cursor-pointer flex items-center justify-center shadow-xs backdrop-blur-xs group" title="Menu des états financiers (Bilan, Résultat, TAFIRE, Annexe)">
                             <svg class="w-5 h-5 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
                                 <line x1="3" y1="5" x2="21" y2="5"></line>
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
@@ -8049,7 +8049,7 @@
                         </button>
 
                         <!-- Popover Menu des 4 traits (Bilan, Résultat, TAFIRE, Annexe) -->
-                        <div id="factooTraitsMenuPopover" class="hidden absolute right-0 top-full mt-2 w-64 bg-[#081514] border border-[#168078]/60 rounded-xl shadow-2xl p-2 z-[2500] text-xs select-none backdrop-blur-md" onclick="event.stopPropagation()">
+                        <div id="factooTraitsMenuPopover4" class="hidden absolute right-0 top-full mt-2 w-64 bg-[#081514] border border-[#168078]/60 rounded-xl shadow-2xl p-2 z-[2500] text-xs select-none backdrop-blur-md" onclick="event.stopPropagation()">
                             <div class="px-3 py-2 text-[10.5px] font-bold uppercase tracking-wider text-[#a0d9d2] border-b border-slate-700/60 mb-1 flex items-center justify-between">
                                 <span>États Financiers</span>
                                 <span class="w-2 h-2 rounded-full bg-[#a0d9d2] animate-pulse"></span>
