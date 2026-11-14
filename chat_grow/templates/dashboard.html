@@ -7332,15 +7332,15 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET NOIR PUR & HAUTE VISIBILITÉ MENTHE) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET NOIR PROFOND & CONTRASTE LUMIÈRE) --- */
         #viewPortalComptable {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
             z-index: 1500;
-            /* Fond Noir Profond Absolu avec dégradé subtil haut-de-gamme */
-            background: radial-gradient(circle at 50% 30%, #161616 0%, #0d0d0d 55%, #050505 100%) !important;
+            /* Fond Noir Absolu Profond pour faire ressortir intensément la lumière */
+            background: radial-gradient(circle at 50% 30%, #0c0c0c 0%, #060606 50%, #000000 100%) !important;
             overflow: hidden !important; /* Page 100% fixe : aucun défilement ni saut */
             display: flex;
             align-items: center;
@@ -7352,15 +7352,15 @@
             background-image: url('/static/grow_logo_transparent.png');
             background-repeat: repeat;
             background-size: 150px 150px;
-            opacity: 0.038; /* Filigrane noir texturé discret et luxueux */
+            opacity: 0.035; /* Filigrane noir très subtil pour préserver le noir profond */
             pointer-events: none;
             z-index: 1;
         }
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            /* Cercle de luminosité vibrant autour du logo central */
-            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.48) 0%, rgba(20, 184, 166, 0.26) 24%, rgba(13, 148, 136, 0.08) 48%, transparent 70%);
+            /* Cercle de luminosité vibrant et concentré qui ressort fortement sur le fond noir */
+            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.65) 0%, rgba(20, 184, 166, 0.35) 18%, rgba(13, 148, 136, 0.10) 36%, transparent 58%);
             pointer-events: none;
             z-index: 2;
         }
