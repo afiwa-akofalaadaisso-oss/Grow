@@ -11521,10 +11521,24 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     timeDisplay = t.created_at.split('T')[1].substring(0, 5);
                 }
 
-                // Titres courts et limpides
-                let fullLib = t.libelle || 'Encaissement Wave';
-                let title = 'Vente directe';
-                let sub = 'Wave';
+                // Titres courts et limpides adaptés aux différents flux
+                let fullLib = t.libelle || 'Opération';
+                const flux = (t.type_flux || t.sens || '').toUpperCase();
+                const isSortie = (flux === 'SORTIE' || flux === 'DEBIT');
+                const srcPaiement = (t.source_paiement || t.operateur || '').toUpperCase();
+
+                let title = fullLib;
+                let sub = 'Wave Business';
+
+                if (srcPaiement.includes('ORANGE')) {
+                    sub = 'Orange Money';
+                } else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE')) {
+                    sub = 'Caisse Espèces';
+                } else if (srcPaiement.includes('BANQUE') || srcPaiement.includes('CBAO')) {
+                    sub = 'Virement CBAO';
+                } else {
+                    sub = 'Wave Business';
+                }
 
                 if (fullLib.toLowerCase().includes('demba')) {
                     title = 'Remboursement Demba';
@@ -11534,36 +11548,30 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     sub = 'Trésorerie';
                 } else if (fullLib.toLowerCase().includes('test_2') || fullLib.includes('0982')) {
                     title = 'Commande #0982';
-                    sub = 'Wave Business';
                 } else if (fullLib.toLowerCase().includes('test_1') || fullLib.includes('0981')) {
                     title = 'Commande #0981';
-                    sub = 'Wave Business';
                 } else if (fullLib.toLowerCase().includes('test_0') || fullLib.includes('0980')) {
                     title = 'Commande #0980';
-                    sub = 'Wave Business';
-                } else if (fullLib.toLowerCase().includes('facture')) {
-                    title = 'Facture client';
-                    sub = 'Règlement Wave';
                 } else {
                     title = fullLib.split('•')[0].split('-')[0].trim();
-                    if (title.length > 25) title = title.substring(0, 25) + '...';
-                    sub = 'Wave Business';
+                    if (title.length > 32) title = title.substring(0, 32) + '...';
                 }
 
-                const flux = (t.type_flux || t.sens || '').toUpperCase();
                 const montant = Number(t.montant_fcfa) || 0;
                 let photoUrl = '/static/mock_wave_photo.png';
                 if (t.preuves_numeriques && t.preuves_numeriques.length > 0) {
-                    photoUrl = t.preuves_numeriques[0].url || t.preuves_numeriques[0];
-                } else if (idx % 3 === 1) {
-                    photoUrl = '/static/mock_receipt_photo.png';
-                } else if (idx % 3 === 2) {
+                    photoUrl = t.preuves_numeriques[0].url || t.preuves_numeriques[0].url_stockage_s3 || t.preuves_numeriques[0];
+                } else if (fullLib.toLowerCase().includes('riz')) {
                     photoUrl = '/static/justificatif-achat-riz.png';
+                } else if (idx % 2 === 1) {
+                    photoUrl = '/static/mock_receipt_photo.png';
+                } else {
+                    photoUrl = '/static/mock_wave_photo.png';
                 }
                 let debitDisplay = '<span class="text-slate-300 font-normal">-</span>';
                 let creditDisplay = '<span class="text-slate-300 font-normal">-</span>';
 
-                if (flux === 'SORTIE' || flux === 'DEBIT') {
+                if (isSortie) {
                     totalDebit += montant;
                     debitDisplay = `<span class="font-bold text-rose-600 font-mono tracking-tight text-[13px]">${montant.toLocaleString('fr-FR')}</span>`;
                 } else {
@@ -11571,11 +11579,15 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     creditDisplay = `<span class="font-bold text-slate-900 font-mono tracking-tight text-[13px]">${montant.toLocaleString('fr-FR')}</span>`;
                 }
 
-                const compteNum = t.compte_syscohada || '701';
+                const compteNum = t.compte_syscohada || (isSortie ? '601' : '701');
 
                 let logoUrl = WAVE_ICON_URL;
-                if ((t.operateur || '').toLowerCase().includes('orange')) {
+                if (srcPaiement.includes('ORANGE')) {
                     logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg';
+                } else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE')) {
+                    logoUrl = 'https://cdn-icons-png.flaticon.com/512/2488/2488749.png';
+                } else if (srcPaiement.includes('BANQUE') || srcPaiement.includes('CBAO')) {
+                    logoUrl = 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png';
                 }
 
                 tr.innerHTML = `
@@ -11625,10 +11637,11 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 tbody.appendChild(tr);
             });
 
+            const netTresorerie = totalCredit - totalDebit;
             const cTot = document.getElementById('cumulTotal');
-            if (cTot) cTot.textContent = 'Trésorerie : ' + totalCredit.toLocaleString('fr-FR') + ' FCFA';
+            if (cTot) cTot.textContent = 'Trésorerie : ' + netTresorerie.toLocaleString('fr-FR') + ' FCFA';
             const hTres = document.getElementById('headerTresorerieMontant');
-            if (hTres) hTres.textContent = totalCredit.toLocaleString('fr-FR') + ' FCFA';
+            if (hTres) hTres.textContent = netTresorerie.toLocaleString('fr-FR') + ' FCFA';
 
 
         }
