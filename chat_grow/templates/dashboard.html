@@ -131,7 +131,27 @@
             transition: all 0.12s;
         }
 
-                @keyframes growSpin {
+                        /* Barre de recherche accordéon animée */
+        #expandableSearchBox {
+            width: 38px;
+            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s;
+        }
+        #expandableSearchBox.is-expanded {
+            width: 220px;
+            border-color: #a0d9d2 !important;
+            box-shadow: 0 0 0 3px rgba(160, 217, 210, 0.25) !important;
+        }
+        @media (min-width: 640px) {
+            #expandableSearchBox.is-expanded {
+                width: 280px;
+            }
+        }
+        #expandableSearchBox.is-expanded #expandableSearchInput {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        @keyframes growSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
@@ -7845,9 +7865,16 @@
                             <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">add</span>
                             <span>Ajouter une écriture</span>
                         </button>
-                        <button type="button" onclick="telechargerFichierFEC()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer" title="Export FEC / Options">
-                            <span class="material-symbols-outlined notranslate text-[18px]" translate="no">more_vert</span>
-                        </button>
+                        <!-- BARRE DE RECHERCHE ACCORDÉON (Loupe seule au départ, s'agrandit au clic en poussant les autres) -->
+                        <div id="expandableSearchBox" class="relative flex items-center h-[38px] bg-white border border-slate-200 rounded-lg shadow-2xs overflow-hidden group select-none">
+                            <button type="button" id="expandableSearchTriggerBtn" onclick="toggleExpandableSearch(event)" class="w-[38px] h-[38px] flex-shrink-0 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors cursor-pointer select-none" title="Rechercher une opération">
+                                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">search</span>
+                            </button>
+                            <input type="text" id="expandableSearchInput" oninput="onExpandableSearchInput(this.value)" onkeydown="onExpandableSearchKeyDown(event)" placeholder="Rechercher une opération..." class="w-full h-full pr-7 pl-1 text-xs font-medium text-slate-800 placeholder:text-slate-400 bg-transparent border-none focus:outline-none transition-opacity duration-200 opacity-0 pointer-events-none">
+                            <button type="button" id="expandableSearchClearBtn" onclick="clearExpandableSearch(event)" class="absolute right-2 w-5 h-5 rounded-md hover:bg-slate-100 text-slate-400 hover:text-slate-700 items-center justify-center transition-colors cursor-pointer hidden" title="Effacer la recherche">
+                                <span class="material-symbols-outlined notranslate text-[15px]" translate="no">close</span>
+                            </button>
+                        </div>
 
                         <!-- BOUTON 3 TRAITS PRINCIPAL DANS LA BARRE D'ACTION AVEC POPOVER INTÉGRÉ (Fond blanc) -->
                         <div class="relative">
@@ -14987,6 +15014,93 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
             switchVerticalTab(tabName);
         }
+
+        function toggleExpandableSearch(e) {
+            if (e) e.stopPropagation();
+            const box = document.getElementById('expandableSearchBox');
+            const input = document.getElementById('expandableSearchInput');
+            if (!box || !input) return;
+
+            if (box.classList.contains('is-expanded')) {
+                if (!input.value.trim()) {
+                    collapseExpandableSearch();
+                } else {
+                    input.focus();
+                }
+            } else {
+                expandSearchBox();
+            }
+        }
+
+        function expandSearchBox() {
+            const box = document.getElementById('expandableSearchBox');
+            const input = document.getElementById('expandableSearchInput');
+            if (!box || !input) return;
+            box.classList.add('is-expanded');
+            setTimeout(() => {
+                input.focus();
+            }, 120);
+        }
+
+        function collapseExpandableSearch() {
+            const box = document.getElementById('expandableSearchBox');
+            const input = document.getElementById('expandableSearchInput');
+            const clearBtn = document.getElementById('expandableSearchClearBtn');
+            if (!box) return;
+            box.classList.remove('is-expanded');
+            if (clearBtn) {
+                clearBtn.classList.add('hidden');
+                clearBtn.classList.remove('flex');
+            }
+            if (input) {
+                input.value = '';
+                input.blur();
+            }
+            handleSearchInput('');
+        }
+
+        function onExpandableSearchInput(val) {
+            const clearBtn = document.getElementById('expandableSearchClearBtn');
+            if (clearBtn) {
+                if (val.trim()) {
+                    clearBtn.classList.remove('hidden');
+                    clearBtn.classList.add('flex');
+                } else {
+                    clearBtn.classList.add('hidden');
+                    clearBtn.classList.remove('flex');
+                }
+            }
+            handleSearchInput(val);
+            const menuSearch = document.getElementById('menu-search-input');
+            if (menuSearch) menuSearch.value = val;
+        }
+
+        function clearExpandableSearch(e) {
+            if (e) e.stopPropagation();
+            const input = document.getElementById('expandableSearchInput');
+            if (input) input.value = '';
+            onExpandableSearchInput('');
+            collapseExpandableSearch();
+        }
+
+        function onExpandableSearchKeyDown(e) {
+            if (e.key === 'Escape') {
+                clearExpandableSearch(e);
+            }
+        }
+
+        // Fermer la barre accordéon au clic extérieur si vide
+        document.addEventListener('click', function(e) {
+            const box = document.getElementById('expandableSearchBox');
+            if (box && box.classList.contains('is-expanded')) {
+                if (!e.target.closest('#expandableSearchBox')) {
+                    const input = document.getElementById('expandableSearchInput');
+                    if (input && !input.value.trim()) {
+                        collapseExpandableSearch();
+                    }
+                }
+            }
+        });
 
         function handleMenuSearch(val) {
             const inputTable = document.getElementById('table-search-input');
