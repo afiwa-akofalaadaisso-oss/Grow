@@ -7378,6 +7378,65 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: opacity 400ms ease;
+        }
+
+        /* --- SCÉNARIO D'ANIMATION RECHERCHE PORTAIL VERS DASHBOARD --- */
+        #portalCenterBox {
+            transition: transform 750ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease;
+        }
+
+        #portalAnimLogo {
+            transition: transform 750ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease;
+        }
+
+        #portalAnimTitle {
+            transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1), opacity 350ms ease;
+        }
+
+        #portalSearchWrapper {
+            transition: transform 750ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease, max-width 750ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* État actif de l'animation : le logo et la barre montent vers le haut */
+        .portal-flight-active #portalAnimTitle {
+            opacity: 0 !important;
+            transform: translateY(-20px) scale(0.9) !important;
+            pointer-events: none !important;
+        }
+
+        .portal-flight-active #portalAnimLogo {
+            transform: translate(calc(-50vw + 3.5rem), calc(-50vh + 2.4rem)) scale(0.28) !important;
+            opacity: 0.95 !important;
+        }
+
+        .portal-flight-active #portalSearchWrapper {
+            transform: translate(calc(-50vw + 14.5rem), calc(-50vh + 2.4rem)) scale(0.68) !important;
+            max-width: 260px !important;
+            opacity: 0.95 !important;
+        }
+
+        .portal-flight-active #portalPmePreviewCard,
+        .portal-flight-active #portalSearchResultsDropdown {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: scale(0.9) !important;
+            transition: opacity 250ms ease, transform 250ms ease !important;
+        }
+
+        @keyframes tableAppearSmooth {
+            0% {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-table-appear {
+            animation: tableAppearSmooth 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
         }
         .portal-search-input::placeholder {
             color: #94a3b8;
@@ -7500,16 +7559,16 @@
     <!-- ========================================================================= -->
     <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: none;">
         <!-- Zone Centrale Fixe : Proportions Exactes de la Référence Stitch -->
-        <main class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
+        <main id="portalCenterBox" class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
             <!-- LOGO GROW SARCELLE / ÉMERAUDE DE L'IMAGE STITCH -->
-            <div class="relative group cursor-pointer mb-2 sm:mb-3" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
+            <div id="portalAnimLogo" class="relative group cursor-pointer mb-2 sm:mb-3 origin-top-left" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
                 <img src="/static/grow_logo_teal.png" alt="Grow Logo" 
                      class="relative w-28 sm:w-36 max-w-[170px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
                      style="filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.06));">
             </div>
 
             <!-- Texte Animé Machine à Écrire (Exactement préservé) -->
-            <div class="min-h-[44px] sm:min-h-[48px] flex items-center justify-center my-3 sm:my-4">
+            <div id="portalAnimTitle" class="min-h-[44px] sm:min-h-[48px] flex items-center justify-center my-3 sm:my-4">
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-[#1e293b] tracking-tight flex items-center justify-center">
                     <span id="portalTypewriterText" class="text-[#1e293b]">Portail Grow pour comptables</span>
                     <span class="inline-block w-0.5 sm:w-1 h-6 sm:h-7 bg-[#168078] ml-1.5 animate-pulse"></span>
@@ -7613,13 +7672,21 @@
         <!-- HEADER SUPÉRIEUR ÉPURÉ (Exacte Référence Stitch : > CGLT + Bouton Portail + Profil) -->
         <!-- BARRE SUPÉRIEURE SOMBRE (STYLE EXACT FACTOO) -->
         <header class="h-13 px-4 md:px-7 flex items-center justify-between sticky top-0 z-40 bg-[#081514] border-b border-[#168078]/25 text-white shadow-md select-none">
-            <!-- Gauche : Vrai Logo GROW et Palette Officielle Sarcelle -->
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="openPortalView()" title="Portail Cabinet GROW">
-                <div class="h-8 w-8 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                    <img src="/static/grow_logo_teal.png" alt="GROW" class="h-8 w-8 object-contain">
+            <!-- Gauche : Vrai Logo GROW et Barre de recherche compacte à côté de lui -->
+            <div class="flex items-center gap-3 md:gap-4">
+                <div class="flex items-center gap-2 cursor-pointer group" onclick="openPortalView()" title="Portail Cabinet GROW">
+                    <div class="h-8 w-8 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                        <img src="/static/grow_logo_teal.png" alt="GROW" class="h-8 w-8 object-contain">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold text-base tracking-tight text-white hidden sm:inline">GROW</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="font-extrabold text-base tracking-tight text-white">GROW</span>
+
+                <!-- Barre de recherche réduite au minimum à côté du logo -->
+                <div class="flex items-center relative w-48 sm:w-60 md:w-72" id="headerMiniSearchBox">
+                    <span class="material-symbols-outlined notranslate absolute left-2.5 top-1/2 -translate-y-1/2 text-[#a0d9d2] text-[15px] pointer-events-none" translate="no">search</span>
+                    <input type="text" id="headerMiniSearchInput" onclick="openPortalView()" placeholder="Rechercher dossier..." class="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 focus:border-[#a0d9d2]/60 text-white placeholder:text-slate-400 text-xs font-medium cursor-pointer transition-all focus:outline-none">
                 </div>
             </div>
 
@@ -13517,6 +13584,9 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         function openPortalView() {
             const portal = document.getElementById('viewPortalComptable');
             if (!portal) return;
+            portal.classList.remove('portal-flight-active');
+            portal.style.opacity = '1';
+            portal.style.transition = '';
             portal.style.display = 'flex';
             initPortalTypewriter();
             
@@ -13546,6 +13616,58 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             portal.style.display = 'none';
         }
 
+        // =========================================================================
+        // SCÉNARIO CINÉMATIQUE : RECHERCHE PORTAIL -> VOL DU LOGO -> TABLEAU
+        // =========================================================================
+        function executePortalFlightScenario(ent) {
+            const portal = document.getElementById('viewPortalComptable');
+            const tableSection = document.getElementById('viewJournal');
+            const miniInput = document.getElementById('headerMiniSearchInput');
+            const query = (document.getElementById('portalCompanySearchInput')?.value || '').trim();
+            const cleanName = ent ? (ent.nom_entreprise || ent.nom || 'CGLT') : 'CGLT';
+
+            if (!portal || portal.style.display === 'none') {
+                if (ent) loadDashboardData(ent.id, ent.telephone_whatsapp);
+                return;
+            }
+
+            // 1. Transférer la recherche dans la barre réduite à côté du logo
+            if (miniInput) miniInput.value = query || cleanName;
+
+            // 2. DÉCLENCHEMENT DU SCÉNARIO : Le logo et la barre montent vers le haut
+            portal.classList.add('portal-flight-active');
+
+            // 3. Charger le dossier en arrière-plan
+            if (ent) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('portal');
+                if (ent.id) url.searchParams.set('id', ent.id);
+                if (ent.telephone_whatsapp) url.searchParams.set('phone', ent.telephone_whatsapp);
+                window.history.pushState({}, '', url);
+                loadDashboardData(ent.id, ent.telephone_whatsapp);
+            }
+
+            // 4. Après 500ms : fondu du portail et apparition élégante du tableau
+            setTimeout(() => {
+                portal.style.opacity = '0';
+                if (tableSection) {
+                    tableSection.classList.remove('animate-table-appear');
+                    void tableSection.offsetWidth; // Reflow
+                    tableSection.classList.add('animate-table-appear');
+                }
+            }, 500);
+
+            // 5. Après 900ms : cacher le portail et réinitialiser
+            setTimeout(() => {
+                portal.style.display = 'none';
+                portal.style.opacity = '1';
+                portal.classList.remove('portal-flight-active');
+                const card = document.getElementById('portalPmePreviewCard');
+                if (card) card.style.display = 'none';
+                pendingSelectedCompany = null;
+            }, 920);
+        }
+
         let pendingSelectedCompany = null;
 
         function selectCompanyFromPortal(entId, phone) {
@@ -13566,28 +13688,8 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const dd = document.getElementById('portalSearchResultsDropdown');
             if (dd) dd.style.display = 'none';
 
-            // Remplir les données de la fiche PME
-            const cleanName = getCleanCompanyName(ent.nom_entreprise || ent.nom || 'CGLT');
-            const elName = document.getElementById('pmeCardName');
-            const elAvatar = document.getElementById('pmeCardAvatar');
-            const elNinea = document.getElementById('pmeCardNinea');
-            const elPhone = document.getElementById('pmeCardPhone');
-            const elTres = document.getElementById('pmeCardTresorerie');
-            const elCount = document.getElementById('pmeCardCount');
-
-            if (elName) elName.textContent = cleanName;
-            if (elAvatar) elAvatar.textContent = getCompanyInitials(cleanName);
-            if (elNinea) elNinea.textContent = ent.ninea || '00802996';
-            if (elPhone) elPhone.textContent = ent.telephone_whatsapp ? ('+' + ent.telephone_whatsapp) : '+221 78 877 38 27';
-            if (elTres) elTres.textContent = (cleanName === 'CGLT') ? '23 588 F' : '15 000 F';
-            if (elCount) elCount.textContent = (cleanName === 'CGLT') ? '16 opér.' : '12 opér.';
-
-            // Afficher la Fiche PME au centre
-            const card = document.getElementById('portalPmePreviewCard');
-            if (card) {
-                card.style.display = 'block';
-                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+            // Déclencher directement le scénario de vol vers le dashboard
+            executePortalFlightScenario(ent);
         }
 
         function cancelPmePreview() {
@@ -13603,25 +13705,10 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
         function confirmOpenPmeSpace() {
             if (!pendingSelectedCompany) {
-                quitterPortailVersDossier();
+                executePortalFlightScenario(null);
                 return;
             }
-            
-            const ent = pendingSelectedCompany;
-            quitterPortailVersDossier();
-            
-            const url = new URL(window.location.href);
-            url.searchParams.delete('portal');
-            if (ent.id) url.searchParams.set('id', ent.id);
-            if (ent.telephone_whatsapp) url.searchParams.set('phone', ent.telephone_whatsapp);
-            window.history.pushState({}, '', url);
-            
-            loadDashboardData(ent.id, ent.telephone_whatsapp);
-            
-            // Réinitialiser la fiche
-            const card = document.getElementById('portalPmePreviewCard');
-            if (card) card.style.display = 'none';
-            pendingSelectedCompany = null;
+            executePortalFlightScenario(pendingSelectedCompany);
         }
 
         function handlePortalCompanySearch(query) {
@@ -13758,7 +13845,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             ];
             
             if (!query) {
-                selectCompanyFromPortal(list[0].id, list[0].telephone_whatsapp);
+                executePortalFlightScenario(list[0]);
                 return;
             }
             
@@ -13769,11 +13856,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 return nom.includes(query) || nin.includes(query) || tel.includes(query);
             });
             
-            if (match) {
-                selectCompanyFromPortal(match.id, match.telephone_whatsapp);
-            } else {
-                selectCompanyFromPortal(list[0].id, list[0].telephone_whatsapp);
-            }
+            executePortalFlightScenario(match || list[0]);
         }
 
         document.addEventListener('click', (e) => {
@@ -13806,6 +13889,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
             
 
+
+            const urlPortal = new URLSearchParams(window.location.search).get('portal');
+            if (urlPortal === 'true' || urlPortal === '1') {
+                openPortalView();
+            }
 
             loadDashboardData();
 
