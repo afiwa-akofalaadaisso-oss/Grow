@@ -7448,6 +7448,33 @@
             max-width: 100% !important;
             background: #f8fafc !important;
         }
+
+        /* SUPPRESSION BORDURE BLEUE : GRIS CENDRE ÉLÉGANT SUR TOUS LES INPUTS */
+        #table-search-input,
+        #table-search-input:focus,
+        #table-search-input:focus-visible,
+        #table-search-input:active,
+        #factooTypeSelect,
+        #factooTypeSelect:focus,
+        #factooTypeSelect:focus-visible,
+        #factooDateInput,
+        #factooDateInput:focus,
+        #factooDateInput:focus-visible {
+            border: 1px solid #cbd5e1 !important;
+            outline: none !important;
+            box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+        }
+
+        #table-search-input:focus,
+        #table-search-input:focus-visible,
+        #factooTypeSelect:focus,
+        #factooTypeSelect:focus-visible,
+        #factooDateInput:focus,
+        #factooDateInput:focus-visible {
+            border-color: #94a3b8 !important; /* Gris cendre propre */
+            background-color: #ffffff !important;
+        }
 </style>
 </head>
 
@@ -7679,12 +7706,12 @@
                         <!-- Champ recherche tiers / facture -->
                         <div class="relative flex-1">
                             <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px] pointer-events-none" translate="no">search</span>
-                            <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Rechercher par libellé de l'opération, facture, tiers..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 text-xs placeholder:text-slate-400 font-medium transition-all">
+                            <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Rechercher par libellé de l'opération, facture, tiers..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-50 border border-slate-300 focus:bg-white focus:outline-none focus:border-slate-400 focus:ring-0 text-slate-900 text-xs placeholder:text-slate-400 font-medium transition-all" style="border: 1px solid #cbd5e1 !important; outline: none !important; box-shadow: none !important;">
                         </div>
 
                         <!-- Dropdown Type -->
                         <div class="relative w-full md:w-44">
-                            <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-[#168078] transition-all">
+                            <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-slate-50 border border-slate-300 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-slate-400 focus:ring-0 transition-all" style="border: 1px solid #cbd5e1 !important; outline: none !important; box-shadow: none !important;">
                                 <option value="all">Type : Tous</option>
                                 <option value="7">Facture Client (Vente)</option>
                                 <option value="6">Facture Fournisseur (Achat)</option>
@@ -7697,7 +7724,7 @@
 
                         <!-- Sélecteur de date jj/mm/yyyy -->
                         <div class="relative w-full md:w-36">
-                            <input type="date" id="factooDateInput" onchange="handleFactooDateFilter(this.value)" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-[#168078] transition-all">
+                            <input type="date" id="factooDateInput" onchange="handleFactooDateFilter(this.value)" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-slate-400 focus:ring-0 transition-all" style="border: 1px solid #cbd5e1 !important; outline: none !important; box-shadow: none !important;">
                         </div>
 
                         <!-- Bouton Réinitialiser -->
