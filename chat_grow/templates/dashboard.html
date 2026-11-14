@@ -7359,7 +7359,8 @@
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 28%, rgba(160, 217, 210, 0.16) 0%, rgba(20, 20, 20, 0.02) 55%, rgba(6, 6, 6, 0.98) 90%);
+            /* Cercle de luminosité vibrant autour du logo central */
+            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.48) 0%, rgba(20, 184, 166, 0.26) 24%, rgba(13, 148, 136, 0.08) 48%, transparent 70%);
             pointer-events: none;
             z-index: 2;
         }
@@ -7422,9 +7423,9 @@
 
         <!-- Zone Centrale Fixe : 100% Stable, Zéro Scroll, Zéro Saut de page -->
         <main class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
-            <!-- GRAND LOGO GROW MAJESTUEUX (Vivacité et éclat renforcés) -->
+            <!-- GRAND LOGO GROW MAJESTUEUX (Cercle de luminosité vibrant) -->
             <div class="relative group cursor-pointer mb-3 sm:mb-4" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
-                <div class="absolute -inset-8 bg-[#a0d9d2]/35 rounded-full blur-3xl group-hover:bg-[#a0d9d2]/55 transition-all"></div>
+                <div class="absolute -inset-10 sm:-inset-14 bg-gradient-to-r from-[#14b8a6]/40 via-[#a0d9d2]/60 to-[#14b8a6]/40 rounded-full blur-3xl group-hover:scale-110 transition-all duration-300"></div>
                 <img src="/static/grow_logo_transparent.png" alt="Grow Logo" 
                      class="relative w-44 sm:w-52 md:w-60 max-w-[260px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
                      style="filter: drop-shadow(0 0 25px rgba(160, 217, 210, 0.85)) drop-shadow(0 10px 30px rgba(20, 184, 166, 0.5)) saturate(1.45) brightness(1.18);">
