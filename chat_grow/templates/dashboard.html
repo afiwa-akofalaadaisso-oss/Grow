@@ -9771,6 +9771,119 @@
             }
         }
 
+        function getCleanCompanyName(rawName) {
+            if (!rawName) return 'CGLT';
+            let clean = rawName.replace(/^le nom de mon entreprise est\s*/i, '').trim();
+            return clean || rawName;
+        }
+
+        function getCompanyInitials(name) {
+            const clean = getCleanCompanyName(name);
+            const words = clean.split(/\s+/).filter(Boolean);
+            if (words.length >= 2) {
+                return (words[0][0] + words[1][0]).toUpperCase();
+            }
+            return (clean.substring(0, 2) || 'CG').toUpperCase();
+        }
+
+        function renderEnterpriseDropdown(list) {
+            const container = document.getElementById('enterpriseListContainer');
+            if (!container) return;
+
+            const listToRender = (list && list.length > 0) ? list : (allEntreprisesList || []);
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `<div class="p-2.5 text-center text-xs text-slate-500 font-medium">Aucun dossier trouvé</div>`;
+                return;
+            }
+
+            const curId = currentEntreprise ? (currentEntreprise.id || '') : '';
+            const curPhone = currentEntreprise ? (currentEntreprise.telephone_whatsapp || '') : '';
+
+            let itemsHtml = '';
+            listToRender.forEach(ent => {
+                const cleanName = getCleanCompanyName(ent.nom_entreprise);
+                const initials = getCompanyInitials(cleanName);
+                const isSelected = (curId && ent.id === curId) || (curPhone && ent.telephone_whatsapp === curPhone);
+                const activeBg = isSelected ? 'bg-[#14362b] text-[#a0d9d2]' : 'hover:bg-[#252525] text-slate-200';
+                const activeBadge = isSelected ? '<span class="text-[#a0d9d2] text-xs font-bold flex-shrink-0">✓</span>' : '';
+
+                itemsHtml += `
+                    <div onclick="selectEnterprise('${escapeHtml(ent.id || '')}', '${escapeHtml(ent.telephone_whatsapp || '')}')" class="flex items-center justify-between px-2.5 py-1.5 rounded-lg ${activeBg} cursor-pointer transition-colors text-left group">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="w-6 h-6 rounded bg-[#2a2a2a] text-slate-400 font-bold text-[10px] flex items-center justify-center flex-shrink-0">${escapeHtml(initials)}</span>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs font-medium truncate group-hover:text-white leading-tight">${escapeHtml(cleanName)}</span>
+                                <span class="text-[10px] text-slate-500 font-mono leading-tight">${escapeHtml(ent.ninea || '')}</span>
+                            </div>
+                        </div>
+                        ${activeBadge}
+                    </div>
+                `;
+            });
+            container.innerHTML = itemsHtml;
+        }
+
+        function filterEnterpriseList(query) {
+            openEnterpriseDropdown();
+            const q = (query || '').toLowerCase().trim();
+            if (!q) {
+                renderEnterpriseDropdown(allEntreprisesList);
+                return;
+            }
+            const filtered = (allEntreprisesList || []).filter(e => {
+                const name = (e.nom_entreprise || '').toLowerCase();
+                const ninea = (e.ninea || '').toLowerCase();
+                const phone = (e.telephone_whatsapp || '').toLowerCase();
+                return name.includes(q) || ninea.includes(q) || phone.includes(q);
+            });
+            renderEnterpriseDropdown(filtered);
+        }
+
+        function selectEnterprise(entId, phone) {
+            closeEnterpriseDropdown();
+            const url = new URL(window.location);
+            if (phone) {
+                url.searchParams.set('phone', phone);
+                url.searchParams.delete('id');
+            } else if (entId) {
+                url.searchParams.set('id', entId);
+                url.searchParams.delete('phone');
+            }
+            window.history.pushState({}, '', url);
+            loadDashboardData(entId, phone);
+        }
+
+        function toggleEnterpriseDropdown() {
+            const menu = document.getElementById('enterpriseDropdownMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+                if (!menu.classList.contains('hidden')) {
+                    renderEnterpriseDropdown(allEntreprisesList);
+                }
+            }
+        }
+
+        function openEnterpriseDropdown() {
+            const menu = document.getElementById('enterpriseDropdownMenu');
+            if (menu) {
+                menu.classList.remove('hidden');
+                renderEnterpriseDropdown(allEntreprisesList);
+            }
+        }
+
+        function closeEnterpriseDropdown() {
+            const menu = document.getElementById('enterpriseDropdownMenu');
+            if (menu) menu.classList.add('hidden');
+        }
+
+        document.addEventListener('click', function(e) {
+            const sec = document.getElementById('enterpriseSelectorSection');
+            if (sec && !sec.contains(e.target)) {
+                closeEnterpriseDropdown();
+            }
+        });
+
         // Chargement initial des données depuis Supabase
         async function loadDashboardData(entrepriseId = null, phone = null) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -9935,19 +10048,12 @@
                 // 4. Initialiser et afficher avec filtres et pagination
                 applyAllFiltersAndRender();
 
-                if (debugModal === 'wave') {
-                    setTimeout(() => openWaveProofModal('WV-B17A72F2', 'Encaissement Wave', '5 000 FCFA', '13/11/2026', 'Wave', '/static/mock_wave_photo.png'), 300);
-                } else if (debugModal === 'receipt') {
-                    setTimeout(() => openWaveProofModal('CMD-0981', 'Achat de Marchandises', '40 000 FCFA', '13/11/2026', 'Orange Money', '/static/mock_receipt_photo.png'), 300);
-                } else if (debugModal === 'tx' && allTransactions && allTransactions.length > 0) {
-                    setTimeout(() => openTxDetailModal(allTransactions[0]), 300);
-                }
-
             } catch (err) {
                 console.error("Erreur fetch dashboard data:", err);
                 document.getElementById('tableBody').innerHTML = `
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 40px; color: #0f172a;">
+                        <td colspan="8" style="text-align: center; padding: 40px; color: #64748b;">
+                            <i class="fa-solid fa-circle-exclamation" style="font-size: 22px; color: #a0d9d2; margin-bottom: 8px;"></i><br>
                             Impossible de charger la base de données. Vérifiez la connexion serveur.
                         </td>
                     </tr>
@@ -10894,30 +11000,15 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             const badgeJ = document.getElementById('badgeCountJournal');
             if (badgeJ) badgeJ.textContent = list.length;
 
-            // 5. Pagination exacte selon le nombre de lignes choisi
+            // 5. Affichage limité au nombre de lignes choisi (0 = tout)
             const totalItems = list.length;
-            let totalPages = 1;
-            let startIndex = 0;
-            let endIndex = totalItems;
-            let pageSlice = list;
-
-            if (pageSize > 0 && totalItems > 0) {
-                totalPages = Math.ceil(totalItems / pageSize) || 1;
-                if (currentPage > totalPages) currentPage = totalPages;
-                if (currentPage < 1) currentPage = 1;
-                startIndex = (currentPage - 1) * pageSize;
-                endIndex = Math.min(startIndex + pageSize, totalItems);
-                pageSlice = list.slice(startIndex, endIndex);
-            } else {
-                currentPage = 1;
-                totalPages = 1;
-                startIndex = 0;
-                endIndex = totalItems;
-                pageSlice = list;
-            }
-
-            renderTransactionsList(pageSlice, totalItems);
-            renderPaginationBar(totalItems, startIndex, endIndex, totalPages);
+            const visibleCount = (pageSize > 0) ? Math.min(pageSize * currentPage, totalItems) : totalItems;
+            renderTransactionsList(list.slice(0, visibleCount), totalItems);
+            renderPaginationBar(totalItems, 0, visibleCount, 1);
+            const more = document.getElementById('proofNavMore');
+            const moreInfo = document.getElementById('proofNavMoreInfo');
+            if (more) more.style.display = (visibleCount < totalItems) ? 'flex' : 'none';
+            if (moreInfo) moreInfo.textContent = `${visibleCount} sur ${totalItems} preuves`;
             updateProofNavDateLabel();
         }
 
@@ -11121,108 +11212,13 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             applyAllFiltersAndRender();
         }
 
-        function togglePageSizeDropdown(event) {
-            if (event) event.stopPropagation();
-            const menu = document.getElementById('menuPageSizeDropdown');
-            const chevron = document.getElementById('iconPageSizeChevron');
-            if (!menu) return;
-            const isHidden = menu.classList.contains('hidden');
-            if (isHidden) {
-                menu.classList.remove('hidden');
-                if (chevron) chevron.style.transform = 'rotate(180deg)';
-            } else {
-                menu.classList.add('hidden');
-                if (chevron) chevron.style.transform = 'rotate(0deg)';
-            }
-        }
-
-        function closePageSizeDropdown() {
-            const menu = document.getElementById('menuPageSizeDropdown');
-            const chevron = document.getElementById('iconPageSizeChevron');
-            if (menu) menu.classList.add('hidden');
-            if (chevron) chevron.style.transform = 'rotate(0deg)';
-        }
-
-        function updatePageSizeDropdownUI(currentSize) {
-            const lbl = document.getElementById('labelCurrentPageSize');
-            if (lbl) lbl.textContent = (currentSize === 0) ? 'Toutes' : `${currentSize}`;
-
-            document.querySelectorAll('.page-size-opt').forEach(btn => {
-                const val = parseInt(btn.getAttribute('data-val'), 10);
-                const checkIcon = btn.querySelector('.check-icon');
-                if (val === currentSize) {
-                    btn.className = 'page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg font-bold bg-[#e6f7f5] text-[#0d9488] transition-colors cursor-pointer';
-                    if (checkIcon) checkIcon.classList.remove('hidden');
-                } else {
-                    btn.className = 'page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#e6f7f5]/60 hover:text-[#0d9488] transition-colors cursor-pointer';
-                    if (checkIcon) checkIcon.classList.add('hidden');
-                }
-            });
-        }
-
-        function selectPageSizeOption(val) {
-            pageSize = parseInt(val, 10);
-            if (isNaN(pageSize) || pageSize < 0) pageSize = 15;
-            currentPage = 1;
-            updatePageSizeDropdownUI(pageSize);
-
-            closePageSizeDropdown();
-            applyAllFiltersAndRender();
-        }
-
         function changePageSize(size) {
-            selectPageSizeOption(size);
+            selectCustomPageSize(size);
         }
 
         function renderPaginationBar(totalItems, startIndex, endIndex, totalPages) {
-            const rangeEl = document.getElementById('pagRange');
-            const totalEl = document.getElementById('pagTotal');
-            const prevBtn = document.getElementById('btnPrevPage');
-            const nextBtn = document.getElementById('btnNextPage');
-            const pageNumBox = document.getElementById('pageNumberButtons');
-
-            updatePageSizeDropdownUI(pageSize);
-
-            if (totalEl) totalEl.textContent = totalItems;
-            if (rangeEl) {
-                if (totalItems === 0) {
-                    rangeEl.textContent = '0';
-                } else {
-                    rangeEl.textContent = `${startIndex + 1}-${endIndex}`;
-                }
-            }
-
-            if (prevBtn) prevBtn.disabled = (currentPage <= 1);
-            if (nextBtn) nextBtn.disabled = (currentPage >= totalPages || totalPages <= 1);
-
-            if (pageNumBox) {
-                let btnsHtml = '';
-                for (let p = 1; p <= totalPages; p++) {
-                    if (p === currentPage) {
-                        btnsHtml += `<span class="w-6 h-6 flex items-center justify-center rounded bg-slate-900 text-white font-bold font-mono text-xs">${p}</span>`;
-                    } else {
-                        btnsHtml += `<button type="button" onclick="goToPage(${p})" class="w-6 h-6 flex items-center justify-center rounded border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-medium font-mono text-xs transition-colors cursor-pointer">${p}</button>`;
-                    }
-                }
-                pageNumBox.innerHTML = btnsHtml;
-            }
-        }
-
-                document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('customPageSizeWrapper');
-            if (wrapper && !wrapper.contains(e.target)) {
-                closePageSizeDropdown();
-            }
-        });
-
-        function goToPage(p) {
-            currentPage = p;
-            applyAllFiltersAndRender();
-        }
-
-        function changePage(delta) {
-            currentPage += delta;
-            applyAllFiltersAndRender();
+            const bar = document.getElementById('paginationBar');
+            if (bar) bar.style.display = 'none';
         }
 
         
@@ -11652,43 +11648,37 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         }
 
         // Modale d'attestation de preuve numérique Wave / Orange Money
-        function cleanLibelleDisplay(str) {
-            if (!str) return 'Opération commerciale';
-            let s = String(str);
-            s = s.replace(/\s*\([^)]*(?:test|ev_|cmd_|ref_)[^)]*\)/gi, '');
-            s = s.replace(/[\s–-]+[0-9\s,\.]+\s*(?:FCFA|F)\b/gi, '');
-            s = s.replace(/\s*[–-]?\s*Réf[:\s].*$/gi, '');
-            s = s.trim();
-            return s || 'Encaissement Wave';
-        }
-
-        // Modale d'attestation de preuve numérique Wave / Orange Money (Reçu & Tof)
-        function openWaveProofModal(ref, libelle, montant, date, operateur, photoUrl) {
+        function openWaveProofModal(ref, libelle, montant, date, operateur) {
             const m = document.getElementById('waveCertModal');
             if (!m) return;
-            const isOM = ((operateur || '').toLowerCase().includes('orange'));
+            const isOM = (operateur === 'Orange Money');
             const opEl = document.getElementById('waveModalOperateur');
-            const logoEl = document.getElementById('waveModalHeaderLogo');
+            const typeEl = document.getElementById('waveModalType');
             const refEl = document.getElementById('waveModalRef');
             const montEl = document.getElementById('waveModalMontant');
             const dateEl = document.getElementById('waveModalDate');
-            const photoEl = document.getElementById('waveModalPhoto');
-            const dlBtn = document.getElementById('waveModalDownloadBtn');
-
-            const finalPhoto = photoUrl || (isOM ? '/static/mock_receipt_photo.png' : '/static/mock_wave_photo.png');
-            const cleanBase = finalPhoto.split('?')[0];
-            const liveUrl = cleanBase + '?v=' + Date.now();
+            const iconBox = document.getElementById('waveModalIconBox');
+            const icon = document.getElementById('waveModalIcon');
 
             if (opEl) opEl.textContent = isOM ? 'Orange Money Sénégal' : 'Wave Digital Finance';
-            if (logoEl) {
-                logoEl.src = isOM ? 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg' : 'https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png';
-            }
+            if (typeEl) typeEl.textContent = isOM ? 'Transfert certifié Orange Money • BCEAO' : 'Notification de transfert certifiée • BCEAO';
             if (refEl) refEl.textContent = ref || 'TX-AUTO-CERTIFIED';
             if (montEl) montEl.textContent = montant || '-';
             if (dateEl) dateEl.textContent = date || '-';
-            if (photoEl) photoEl.src = liveUrl;
-            if (dlBtn) dlBtn.href = cleanBase;
 
+            if (isOM) {
+                if (iconBox) {
+                    iconBox.style.background = 'rgba(160, 217, 210, 0.12)';
+                    iconBox.style.color = '#a0d9d2';
+                }
+                if (icon) icon.className = 'fa-solid fa-mobile-screen-button';
+            } else {
+                if (iconBox) {
+                    iconBox.style.background = 'rgba(160, 217, 210, 0.18)';
+                    iconBox.style.color = '#a0d9d2';
+                }
+                if (icon) icon.className = 'fa-solid fa-bolt-lightning';
+            }
             m.style.display = 'flex';
         }
 
@@ -11696,37 +11686,6 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             const m = document.getElementById('waveCertModal');
             if (m) m.style.display = 'none';
         }
-
-        // Fonctions d'agrandissement plein écran haute fidélité (Très Grand Format)
-        function openProofFullScreen() {
-            const fsModal = document.getElementById('fullScreenProofModal');
-            const fsImg = document.getElementById('fullScreenProofImg');
-            const photoEl = document.getElementById('waveModalPhoto');
-            if (fsImg && photoEl) {
-                fsImg.src = photoEl.src;
-            }
-            if (fsModal) fsModal.style.display = 'flex';
-        }
-
-        function openProofFullScreenDirect(url) {
-            const fsModal = document.getElementById('fullScreenProofModal');
-            const fsImg = document.getElementById('fullScreenProofImg');
-            if (fsImg && url) fsImg.src = url;
-            if (fsModal) fsModal.style.display = 'flex';
-        }
-
-        function closeProofFullScreen() {
-            const fsModal = document.getElementById('fullScreenProofModal');
-            if (fsModal) fsModal.style.display = 'none';
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeProofFullScreen();
-                closeWaveProofModal();
-                if (typeof closeProofModal === 'function') closeProofModal();
-            }
-        });
 
         // Écouteur délégué pour ouvrir les justificatifs sans attributs onclick inline (évite tout conflit de quotes)
         document.addEventListener('click', function (e) {
@@ -11886,10 +11845,6 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             if (input) {
                 input.value = `Du ${d1Disp} au ${d2Disp}`;
             }
-            const dateBtnLbl = document.getElementById('datePickerBtnLabel');
-            if (dateBtnLbl) {
-                dateBtnLbl.textContent = (d1Disp === d2Disp) ? `Le ${d1Disp}` : `Du ${d1Disp} au ${d2Disp}`;
-            }
 
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
 
@@ -11933,8 +11888,6 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         function resetDateFilter() {
             calStartDate = null;
             calEndDate = null;
-            const dateBtnLbl = document.getElementById('datePickerBtnLabel');
-            if (dateBtnLbl) dateBtnLbl.textContent = 'Toutes les dates';
             const input = document.getElementById('dateRangePicker');
             if (input) input.value = '';
             applyPresetFilter('all', document.getElementById('btnFilterAll'));
@@ -12323,6 +12276,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         function openTxDetailModal(tx) {
             if (!tx) return;
             const m = document.getElementById('modalTxDetail');
+            const h = document.getElementById('txDetailHeader');
             const badge = document.getElementById('txDetailTypeBadge');
             const amountBig = document.getElementById('txDetailAmountBig');
             const dateTop = document.getElementById('txDetailDateTop');
@@ -12330,82 +12284,32 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const compte = document.getElementById('txDetailCompte');
             const src = document.getElementById('txDetailSource');
             const ref = document.getElementById('txDetailRef');
-            const opIcon = document.getElementById('txDetailOpIcon');
-            const opTitle = document.getElementById('txDetailOpTitle');
-            const proofThumb = document.getElementById('txDetailProofThumb');
             const btnPreuve = document.getElementById('btnVoirPreuveDetail');
-            const btnPreuveAction = document.getElementById('btnVoirPreuveDetailAction');
 
-            const flux = (tx.type_flux || tx.sens || '').toUpperCase();
-            const isEntree = (flux === 'ENTREE' || flux === 'CREDIT');
+            const isEntree = (tx.type_flux === 'ENTREE');
             const montant = Number(tx.montant_fcfa) || 0;
-            const isOM = (tx.source_paiement || tx.operateur || '').toLowerCase().includes('orange');
 
-            // Miniature Photo (Tof)
-            let photoUrl = '/static/mock_wave_photo.png';
-            if (tx.preuves_numeriques && tx.preuves_numeriques.length > 0) {
-                photoUrl = tx.preuves_numeriques[0].url || tx.preuves_numeriques[0];
-            } else if (tx.id && tx.id.charCodeAt(0) % 3 === 1) {
-                photoUrl = '/static/mock_receipt_photo.png';
-            } else if (tx.id && tx.id.charCodeAt(0) % 3 === 2) {
-                photoUrl = '/static/justificatif-achat-riz.png';
+            if (h) h.className = 'tx-detail-header-band ' + (isEntree ? 'credit' : 'debit');
+            if (badge) badge.textContent = isEntree ? 'Recette / Vente' : 'Dépense / Achat';
+            if (amountBig) amountBig.textContent = (isEntree ? '+' : '-') + montant.toLocaleString('fr-FR') + ' F';
+            if (dateTop) dateTop.textContent = tx.created_at ? tx.created_at.substring(0, 16).replace('T', ' à ') : 'Aujourd\'hui';
+            if (lib) lib.textContent = tx.libelle || 'Opération';
+            if (compte) compte.textContent = `Compte ${tx.compte_syscohada || '471100'}`;
+            if (src) src.textContent = tx.source_paiement || 'ESPECES';
+            if (ref) ref.textContent = tx.reference_externe || ('TX-' + (tx.id ? tx.id.substring(0, 8).toUpperCase() : 'AUTO'));
+
+            if (btnPreuve) {
+                btnPreuve.onclick = () => {
+                    closeModalTxDetail();
+                    const srcP = (tx.source_paiement || '').toUpperCase();
+                    if (srcP === 'WAVE' || srcP === 'ORANGE_MONEY') {
+                        openWaveProofModal(tx.reference_externe, tx.libelle, montant.toLocaleString('fr-FR') + ' FCFA', tx.date_operation, srcP === 'WAVE' ? 'Wave' : 'Orange Money');
+                    } else {
+                        const url = (tx.preuves_numeriques && tx.preuves_numeriques[0]) ? tx.preuves_numeriques[0].url_stockage : '/static/justificatif-achat-riz.png';
+                        openProofModalDirect(url, tx.libelle);
+                    }
+                };
             }
-
-            if (opIcon) {
-                opIcon.src = isOM ? 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg' : 'https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png';
-            }
-            if (opTitle) opTitle.textContent = isOM ? 'Orange Money' : 'Wave Business';
-
-            if (badge) {
-                badge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold ' +
-                    (isEntree ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/70' : 'bg-rose-50 text-rose-700 border border-rose-200/70');
-                badge.textContent = isEntree ? 'Recette / Vente' : 'Dépense / Achat';
-            }
-
-            if (amountBig) {
-                amountBig.textContent = (isEntree ? '+' : '-') + montant.toLocaleString('fr-FR') + ' FCFA';
-                amountBig.className = 'text-3xl font-extrabold font-mono tracking-tight ' + (isEntree ? 'text-slate-900' : 'text-rose-600');
-            }
-
-            let dateDisplay = '-';
-            if (tx.date_operation) {
-                const parts = tx.date_operation.split('-');
-                if (parts.length === 3) dateDisplay = `${parts[2]}/${parts[1]}/${parts[0]}`;
-                else dateDisplay = tx.date_operation;
-            } else if (tx.created_at) {
-                dateDisplay = tx.created_at.substring(0, 10);
-            }
-            if (dateTop) dateTop.textContent = dateDisplay;
-
-            const cleanLib = cleanLibelleDisplay(tx.libelle);
-            if (lib) lib.textContent = cleanLib;
-
-            const compteNum = tx.compte_syscohada || '701';
-            let compteLabel = 'Ventes de marchandises';
-            if (compteNum.startsWith('60')) compteLabel = 'Achats de marchandises';
-            else if (compteNum.startsWith('61') || compteNum.startsWith('62')) compteLabel = 'Services extérieurs';
-            else if (compteNum.startsWith('52')) compteLabel = 'Banque / Mobile Money';
-            if (compte) compte.textContent = `${compteNum} • ${compteLabel}`;
-
-            if (src) {
-                src.innerHTML = `
-                    <img src="${isOM ? 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg' : 'https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png'}" class="w-4 h-4 rounded-xs object-contain">
-                    <span>${isOM ? 'Orange Money' : 'Wave Digital Finance'}</span>
-                `;
-            }
-
-            const refVal = tx.reference_externe || ('WV-' + (tx.id ? tx.id.substring(0, 8).toUpperCase() : 'AUTO'));
-            if (ref) ref.textContent = refVal;
-
-            if (proofThumb) proofThumb.src = photoUrl;
-
-            const handlerVoirPreuve = () => {
-                closeModalTxDetail();
-                openWaveProofModal(refVal, cleanLib, montant.toLocaleString('fr-FR') + ' FCFA', dateDisplay, isOM ? 'Orange Money' : 'Wave', photoUrl);
-            };
-
-            if (btnPreuve) btnPreuve.onclick = handlerVoirPreuve;
-            if (btnPreuveAction) btnPreuveAction.onclick = handlerVoirPreuve;
 
             if (m) m.style.display = 'flex';
         }
@@ -12521,183 +12425,336 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 setTimeout(ouvrirModalWebhookAssistant, 400);
             }
         });
+    </script>
+
     
+    <!-- ========================================================================= -->
+    <!-- MODALE DOSSIER 1-CLIC OFFICIEL BANCAIRE AVEC CHECKLIST DE PIÈCES           -->
+    <!-- ========================================================================= -->
+        <!-- ========================================================================= -->
+    <!-- MODALE DU COFFRE-FORT NUMÉRIQUE : VOS PREUVES FINANCIÈRES CERTIFIÉES      -->
+    <!-- ========================================================================= -->
+    <div id="modalCoffrePreuves" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeCoffrePreuvesModal()">
+        <div class="modal-box modal-coffre-box" onclick="event.stopPropagation()">
+            <!-- En-tête de la modale -->
+            <div class="modal-top" style="background: #222222; color: #ffffff; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #a0d9d2;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(160, 217, 210, 0.15); border: 1px solid #a0d9d2; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-file-shield" style="color: #a0d9d2; font-size: 20px;"></i>
+                    </div>
+                    <div>
+                        <strong style="font-size: 16px; display: block; color: #ffffff;">Vos Preuves Financières &amp; Justificatifs</strong>
+                        <span style="font-size: 11px; color: #a0d9d2;">Coffre-fort légal SYSCOHADA &bull; Certification ONECCA / BCEAO</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeCoffrePreuvesModal()" style="background: none; border: none; color: #ffffff; font-size: 20px; cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-        let isSidebarOpen = true;
+            <!-- Corps de la modale -->
+            <div class="modal-content" style="padding: 20px; overflow-y: auto; flex: 1;">
+                
+                <!-- Bannières Résumé Preuves -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 18px;">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #64748b; text-transform: uppercase;">Total Pièces Archivées</div>
+                        <div style="font-size: 20px; font-weight: 900; color: #0f172a; margin-top: 2px;" id="coffreStatTotal">0</div>
+                    </div>
+                    <div style="background: rgba(160, 217, 210, 0.12); border: 1px solid rgba(160, 217, 210, 0.35); border-radius: 12px; padding: 12px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #a0d9d2; text-transform: uppercase;">Conformité Fiscale</div>
+                        <div style="font-size: 20px; font-weight: 900; color: #a0d9d2; margin-top: 2px;" id="coffreStatConforme">100%</div>
+                    </div>
+                    <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 12px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #a0d9d2; text-transform: uppercase;">Empreinte Cryptographique</div>
+                        <div style="font-size: 13px; font-weight: 800; color: #a0d9d2; margin-top: 6px;">SHA-256 Validé</div>
+                    </div>
+                </div>
 
-        function updateSidebarToggleUI() {
-            const btnOpen = document.getElementById('btnOpenSidebar');
-            const aside = document.getElementById('comptableSidebar');
-            if (!btnOpen || !aside) return;
+                <!-- Filtres rapides -->
+                <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px;">
+                    <button type="button" class="filter-btn active" id="btnCoffreFilterAll" onclick="filterCoffrePreuves('all', this)" style="padding: 6px 14px; font-size: 12px;">Toutes les pièces</button>
+                    <button type="button" class="filter-btn" id="btnCoffreFilterImg" onclick="filterCoffrePreuves('photo', this)" style="padding: 6px 14px; font-size: 12px;"><i class="fa-solid fa-camera"></i> Reçus &amp; Factures</button>
+                    <button type="button" class="filter-btn" id="btnCoffreFilterWave" onclick="filterCoffrePreuves('mobile', this)" style="padding: 6px 14px; font-size: 12px;"><i class="fa-solid fa-bolt"></i> Wave / Orange Money</button>
+                </div>
 
-            // Détection directe depuis la présence de la classe de fermeture
-            const isClosed = aside.classList.contains('-translate-x-full');
-            if (isClosed) {
-                btnOpen.classList.remove('hidden');
-            } else {
-                btnOpen.classList.add('hidden');
-            }
-        }
+                <!-- Liste dynamique des preuves -->
+                <div id="coffrePreuvesList" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Rempli dynamiquement en JS -->
+                </div>
 
-        function toggleSidebar() {
-            const aside = document.getElementById('comptableSidebar');
-            const mainWrap = document.getElementById('mainContentWrapper');
-            const backdrop = document.getElementById('sidebarBackdrop');
+            </div>
 
-            if (window.innerWidth < 768) {
-                if (!aside) return;
-                const isClosed = aside.classList.contains('-translate-x-full');
-                if (isClosed) {
-                    aside.classList.remove('-translate-x-full');
-                    if (backdrop) backdrop.classList.remove('hidden');
-                    isSidebarOpen = true;
-                } else {
-                    aside.classList.add('-translate-x-full');
-                    if (backdrop) backdrop.classList.add('hidden');
-                    isSidebarOpen = false;
-                }
-            } else {
-                isSidebarOpen = !isSidebarOpen;
-                if (!aside || !mainWrap) return;
-                if (isSidebarOpen) {
-                    aside.classList.remove('-translate-x-full');
-                    mainWrap.classList.remove('md:pl-0');
-                    mainWrap.classList.add('md:pl-64');
-                } else {
-                    aside.classList.add('-translate-x-full');
-                    mainWrap.classList.remove('md:pl-64');
-                    mainWrap.classList.add('md:pl-0');
-                }
-            }
-            updateSidebarToggleUI();
-        }
+            <!-- Pied de page modale -->
+            <div style="padding: 14px 22px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <span style="font-size: 11.5px; color: #64748b;">
+                    <i class="fa-solid fa-lock" style="color: #a0d9d2;"></i> Archivage sécurisé garanti 10 ans (Norme OHADA).
+                </span>
+                <button type="button" onclick="closeCoffrePreuvesModal()" style="background: #222222; color: #ffffff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
 
-        window.addEventListener('resize', updateSidebarToggleUI);
-        document.addEventListener('DOMContentLoaded', updateSidebarToggleUI);
+    <div id="modalDossierPret" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeDossierPretModal()">
+        <div class="modal-box modal-dossier-box" onclick="event.stopPropagation()">
+            <div class="modal-top" style="background: #222222; color: #ffffff; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-folder-closed" style="color: #a0d9d2; font-size: 20px;"></i>
+                    <div>
+                        <strong style="font-size: 15px; display: block;" id="dossierModalTitle">Dossier de Crédit PME</strong>
+                        <span style="font-size: 11px; color: #a0d9d2;" id="dossierModalSub">Partenaire : Baobab Sénégal</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeDossierPretModal()" style="background: none; border: none; color: #ffffff; font-size: 18px; cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-        function toggleMobileSidebar() {
-            toggleSidebar();
-        }
+            <div class="modal-content" style="padding: 22px;">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Montant sollicité</div>
+                        <div style="font-size: 22px; font-weight: 900; color: #0f172a;" id="dossierModalAmount">2 500 000 FCFA</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Durée amortissement</div>
+                        <div style="font-size: 16px; font-weight: 800; color: #a0d9d2;" id="dossierModalDuration">12 mois</div>
+                    </div>
+                </div>
 
-        function handleSearchInput(query) {
-            if (!allTransactions) return;
-            const q = (query || '').toLowerCase().trim();
-            if (!q) {
-                renderTransactionsList(allTransactions);
-                if (debugModal === 'tx' && allTransactions.length > 0) {
-                    setTimeout(() => openTxDetailModal(allTransactions[0]), 300);
-                } else if (debugModal === 'wave' && allTransactions.length > 0) {
-                    setTimeout(() => openWaveProofModal('WV-B17A72F2', 'Encaissement Wave', '5 000 FCFA', '13/11/2026', 'Wave', '/static/mock_wave_photo.png'), 300);
-                }
-                return;
-            }
-            const filtered = allTransactions.filter(t => {
-                const lib = (t.libelle || '').toLowerCase();
-                const m = String(t.montant_fcfa || '');
-                const c = (t.compte_syscohada || '').toLowerCase();
-                const op = (t.operateur || '').toLowerCase();
-                return lib.includes(q) || m.includes(q) || c.includes(q) || op.includes(q);
-            });
-            renderTransactionsList(filtered, filtered.length);
-        }
+                <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; color: #334155; margin-bottom: 10px;">
+                    Checklist des pièces officielles transmises à l'agence :
+                </div>
 
-        function ouvrirModalSaisieRapide() {
-            if (typeof ouvrirModalQuickTx === 'function') {
-                ouvrirModalQuickTx();
-            } else {
-                const m = document.getElementById('modalQuickTx');
-                if (m) m.style.display = 'flex';
-            }
-        }
+                <div id="dossierModalDocsList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                    <!-- Rempli en JS -->
+                </div>
 
-        function togglePopoverFiltreAvance() {
-            const val = prompt("Filtrer par montant, libellé ou compte (ex: 701, Demba, 5000) :");
-            if (val !== null && val.trim() !== '') {
-                handleSearchInput(val.trim());
-                const inp = document.getElementById('table-search-input');
-                if (inp) inp.value = val.trim();
-            } else if (val !== null) {
-                handleSearchInput('');
-                const inp = document.getElementById('table-search-input');
-                if (inp) inp.value = '';
-            }
-        }
+                <div style="background: rgba(160, 217, 210, 0.12); border: 1px solid rgba(160, 217, 210, 0.35); border-radius: 10px; padding: 12px; font-size: 11.5px; color: #a0d9d2; line-height: 1.45; margin-bottom: 20px;">
+                    <i class="fa-solid fa-shield-halved"></i> <strong>Garantie Grow &amp; ONECCA :</strong> L'ensemble de vos pièces justificatives, bilans comptables SYSCOHADA et historiques de flux Wave sont déjà certifiés et horodatés pour transmission immédiate au comité de crédit.
+                </div>
 
-        function ouvrirModalVisaOnecca() {
-            const m = document.getElementById('modalVisaOnecca');
-            if (m) {
-                const entName = document.getElementById('modalVisaEntrepriseName');
-                if (entName && currentEntreprise) entName.textContent = currentEntreprise.nom_entreprise || currentEntreprise.nom || 'Le Nom De Mon Entreprise Est Cglt';
-                m.style.display = 'flex';
-            } else {
-                alert("Attestation de Scellement ONECCA : Tous les flux sont vérifiés et certifiés conformes au SYSCOHADA Révisé.");
-            }
-        }
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn-submit-tx" style="background: #f1f5f9; color: #475569; margin: 0; flex: 1;" onclick="closeDossierPretModal()">
+                        Fermer
+                    </button>
+                    <button type="button" class="btn-submit-tx" style="background: #222222; color: #a0d9d2; margin: 0; flex: 2;" id="btnDossierSubmit">
+                        <i class="fa-solid fa-paper-plane"></i> Transmettre le Dossier
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function closeModalVisaOnecca() {
-            const m = document.getElementById('modalVisaOnecca');
-            if (m) m.style.display = 'none';
-        }
+    <!-- ========================================================================= -->
+    <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (SMARTPHONE & PC)           -->
+    <!-- ========================================================================= -->
+    <div id="modalQuickTx" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalQuickTx()">
+        <div class="modal-box modal-quick-tx-box" onclick="event.stopPropagation()">
+            <div class="modal-top" style="background: #0a2540; color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-calculator" style="color: #a0d9d2;"></i>
+                    <strong style="font-size: 14px;" id="quickTxModalTitle">Ajouter une Opération Comptable</strong>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeModalQuickTx()" style="background: none; border: none; color: #ffffff; font-size: 18px; cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-content" style="padding: 20px;">
+                <div class="quick-tx-type-tabs">
+                    <button type="button" class="quick-tx-tab-btn active credit" id="btnTabCredit" onclick="setQuickTxType('ENTREE')">
+                        <i class="fa-solid fa-arrow-down-left"></i> Vente / Entrée
+                    </button>
+                    <button type="button" class="quick-tx-tab-btn debit" id="btnTabDebit" onclick="setQuickTxType('SORTIE')">
+                        <i class="fa-solid fa-arrow-up-right"></i> Dépense / Sortie
+                    </button>
+                </div>
 
-        function telechargerAttestationVisaPDF() {
-            alert("Génération de l'attestation scellée ONECCA en cours (PDF)...");
-            window.print();
-        }
+                <form id="quickTxForm" onsubmit="submitQuickTx(event)">
+                    <div class="form-group-mobile">
+                        <label>Montant en Francs CFA (FCFA) *</label>
+                        <input type="number" id="quickTxMontant" class="form-control-mobile" placeholder="Ex: 25000" required min="1" step="1">
+                    </div>
 
-        function telechargerFichierFEC() {
-            alert("Génération du Fichier des Écritures Comptables (FEC)...");
-            const header = "JournalCode|JournalLib|EcritureNum|EcritureDate|CompteNum|CompteLib|CompAuxNum|CompAuxLib|PieceRef|PieceDate|EcritureLib|Debit|Credit|EcritureLet|DateLet|ValidDate|Montantdevise|Idevise\n";
-            const rows = (allTransactions || []).map((t, i) => {
-                const isSortie = (t.type_flux || '').toUpperCase() === 'SORTIE';
-                const m = t.montant_fcfa || 0;
-                const deb = isSortie ? m : 0;
-                const cred = !isSortie ? m : 0;
-                const ref = t.reference_externe || ('PC-' + (i + 1));
-                const d = t.date_operation || '2026-11-13';
-                const lib = (t.libelle || 'Opération').replace(/\|/g, ' ');
-                return `VT|Journal Ventes & Trésorerie|${1001 + i}|${d}|${t.compte_syscohada || '701'}|Compte SYSCOHADA|||${ref}|${d}|${lib}|${deb}|${cred}|||${d}||`;
-            }).join("\n");
+                    <div class="form-group-mobile">
+                        <label>Libellé de l'opération *</label>
+                        <input type="text" id="quickTxLibelle" class="form-control-mobile" placeholder="Ex: Vente tissus, Achat riz, Facture..." required>
+                    </div>
 
-            const blob = new Blob([header + rows], { type: 'text/plain;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `FEC_${currentEntreprise ? currentEntreprise.ninea : '00802996'}_2026.txt`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+                    <div class="form-group-mobile">
+                        <label>Mode de paiement / Trésorerie</label>
+                        <select id="quickTxSource" class="form-control-mobile">
+                            <option value="ESPECES">Caisse Espèces (Cash au comptoir)</option>
+                            <option value="WAVE">Compte Wave</option>
+                            <option value="ORANGE_MONEY">Orange Money</option>
+                            <option value="BANQUE">Compte Bancaire</option>
+                        </select>
+                    </div>
 
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-                e.preventDefault();
-                const inp = document.getElementById('table-search-input');
-                if (inp) inp.focus();
-            }
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
-                e.preventDefault();
-                toggleSidebar();
-            }
-        });
+                    <button type="submit" class="btn-submit-tx" id="btnSubmitTxText">
+                        <i class="fa-solid fa-check"></i> Enregistrer dans le Journal
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.innerWidth < 768) {
-                const aside = document.getElementById('comptableSidebar');
-                if (aside) aside.classList.add('-translate-x-full');
-            }
-            const selectAll = document.getElementById('select-all-rows');
-            if (selectAll) {
-                selectAll.addEventListener('change', function() {
-                    document.querySelectorAll('.row-checkbox').forEach(cb => {
-                        cb.checked = selectAll.checked;
-                    });
-                });
-            }
-        });
+    <!-- ========================================================================= -->
+    <!-- MODALE DÉTAIL D'UNE TRANSACTION AU CLIC SUR LA CARTE MOBILE                -->
+    <!-- ========================================================================= -->
+    <div id="modalTxDetail" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalTxDetail()">
+        <div class="modal-box modal-tx-detail-box" onclick="event.stopPropagation()">
+            <div id="txDetailHeader" class="tx-detail-header-band credit">
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;" id="txDetailTypeBadge">Recette Validée</div>
+                <div style="font-size: 32px; font-weight: 900; margin: 6px 0;" id="txDetailAmountBig">0 FCFA</div>
+                <div style="font-size: 12px; opacity: 0.9;" id="txDetailDateTop">-</div>
+            </div>
+            <div class="tx-detail-content-body">
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Libellé :</span>
+                    <span class="tx-detail-val" id="txDetailLibelle">-</span>
+                </div>
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Compte SYSCOHADA :</span>
+                    <span class="tx-detail-val" id="txDetailCompte">-</span>
+                </div>
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Source de paiement :</span>
+                    <span class="tx-detail-val" id="txDetailSource">-</span>
+                </div>
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Référence :</span>
+                    <span class="tx-detail-val" id="txDetailRef" style="font-family: monospace;">-</span>
+                </div>
+                <div class="tx-detail-info-row">
+                    <span class="tx-detail-label">Statut légal :</span>
+                    <span class="tx-detail-val" style="color: #a0d9d2;"><i class="fa-solid fa-shield-halved"></i> Conforme SYSCOHADA</span>
+                </div>
 
-</script>
+                <div style="margin-top: 18px; display: flex; gap: 8px;">
+                    <button type="button" class="btn-submit-tx" style="background: #f1f5f9; color: #334155; margin-top: 0;" onclick="closeModalTxDetail()">
+                        Fermer
+                    </button>
+                    <button type="button" class="btn-submit-tx" style="background: #0a2540; color: #ffffff; margin-top: 0;" id="btnVoirPreuveDetail">
+                        <i class="fa-solid fa-eye"></i> Justificatif
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- SCRIPT 1 -->
+    <!-- ========================================================================= -->
+    <!-- MODALE DU CODE QR D'ACCÈS INSTANTANÉ À GROW                              -->
+    <!-- ========================================================================= -->
+        <!-- ========================================================================= -->
+    <!-- MODALE DU VISA & SCELLEMENT NUMÉRIQUE ONECCA SÉNÉGAL                      -->
+    <!-- ========================================================================= -->
+    <div id="modalVisaOnecca" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 3000;" onclick="closeModalVisaOnecca()">
+        <div class="modal-box" style="max-width: 580px; width: 95%; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 60px -15px rgba(11, 18, 34, 0.4); border: 1.5px solid #e2e8f0;" onclick="event.stopPropagation()">
+            <div style="background: linear-gradient(135deg, #0b1222 0%, #060d1a 100%); color: #ffffff; padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #a0d9d2;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(160, 217, 210, 0.15); border: 1px solid rgba(160, 217, 210, 0.4); color: #a0d9d2; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                        <i class="fa-solid fa-stamp"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.2px;">Visa de Clôture &amp; Scellement ONECCA</div>
+                        <div style="font-size: 11px; color: #a0d9d2; font-weight: 600;">Ordre National des Experts Comptables et Comptables Agréés du Sénégal</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModalVisaOnecca()" style="background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; line-height: 1;">&times;</button>
+            </div>
+
+            <div style="padding: 24px 24px; background: #ffffff;">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <div>
+                            <span style="font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 800; letter-spacing: 0.5px;">Dossier d'entreprise certifié</span>
+                            <div style="font-size: 16px; font-weight: 800; color: #0b1222;" id="modalVisaEntrepriseName">Le Nom De Mon Entreprise Est Cglt</div>
+                        </div>
+                        <span style="display: inline-flex; align-items: center; gap: 6px; background: #a0d9d2; color: #0b1222; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px;">
+                            <i class="fa-solid fa-check-circle"></i> CONFORME ONECCA
+                        </span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
+                        <div><span style="color: #64748b;">NINEA :</span> <strong id="modalVisaNinea">00802996</strong></div>
+                        <div><span style="color: #64748b;">N° Attestation :</span> <strong id="modalVisaCertNum">SN-DKR-2026-EXP-7721</strong></div>
+                        <div><span style="color: #64748b;">Référentiel :</span> <strong>SYSCOHADA Révisé</strong></div>
+                        <div><span style="color: #64748b;">Horodatage :</span> <strong id="modalVisaTimestamp">13/11/2026 à 20:00</strong></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 11.5px; font-weight: 800; color: #0b1222; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">
+                        <i class="fa-solid fa-fingerprint" style="color: #a0d9d2; margin-right: 6px;"></i> Empreinte Cryptographique du Grand Livre (SHA-256)
+                    </label>
+                    <div style="background: #0b1222; color: #a0d9d2; font-family: monospace; font-size: 11.5px; padding: 12px; border-radius: 10px; word-break: break-all; border: 1px solid rgba(160, 217, 210, 0.3);" id="modalVisaHash">
+                        e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+                    </div>
+                    <span style="font-size: 10.5px; color: #64748b; margin-top: 5px; display: block;">
+                        Ce hash garantit l'immutabilité absolue des écritures comptables selon les normes de l'ONECCA et du Code Général des Impôts du Sénégal.
+                    </span>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" onclick="telechargerAttestationVisaPDF()" style="flex: 1; background: #0b1222; color: #ffffff; border: 1.5px solid #0b1222; padding: 12px; border-radius: 999px; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(11, 18, 34, 0.25);">
+                        <i class="fa-solid fa-file-pdf" style="color: #a0d9d2;"></i> Télécharger Attestation Officielle (PDF)
+                    </button>
+                    <button type="button" onclick="closeModalVisaOnecca()" style="background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; padding: 12px 20px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer;">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="modalQRAccesGrow" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 3000;" onclick="closeModalQRAccesGrow()">
+        <div class="modal-box modal-qr-box" style="background: radial-gradient(circle at 50% 0%, #262c35 0%, #171b20 100%); border-radius: 26px; overflow: hidden; max-width: 420px; width: 92%; box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1); border: none;" onclick="event.stopPropagation()">
+            
+            <!-- En-tête Designer Minimaliste (discutez avec grow sur whatsapp) -->
+            <div style="padding: 26px 22px 16px; text-align: center; position: relative;">
+                <button type="button" onclick="closeModalQRAccesGrow()" style="position: absolute; right: 16px; top: 16px; background: rgba(255, 255, 255, 0.1); border: none; width: 32px; height: 32px; border-radius: 50%; color: #cbd5e1; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; transition: background 0.15s ease;">&times;</button>
+                
+                <div style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.4px; line-height: 1.25;">
+                    discutez avec <span style="color: #a0d9d2; font-weight: 900; display: inline-flex; align-items: center; gap: 3px;">grow <i class="fa-solid fa-seedling" style="font-size: 15px;"></i></span>
+                </div>
+                <div style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.4px; line-height: 1.25; margin-top: 2px;">
+                    sur <span style="color: #25D366; font-weight: 900;">whatsapp</span>
+                </div>
+            </div>
+
+            <!-- Corps du Modal avec la Carte Blanche QR Code du Designer -->
+            <div style="padding: 0 24px 26px; text-align: center;">
+                <div style="background: #ffffff; padding: 18px; border-radius: 22px; display: inline-block; box-shadow: 0 12px 36px rgba(0,0,0,0.4); margin-bottom: 16px; position: relative;">
+                    <img src="/static/qr_code_whatsapp.png" alt="Code QR WhatsApp Grow" style="width: 210px; height: 210px; border-radius: 12px; display: block;" />
+                    <div style="position: absolute; bottom: 8px; right: 8px; width: 28px; height: 28px; border-radius: 6px; background: rgba(15, 23, 42, 0.06); display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; border: 1px solid rgba(15, 23, 42, 0.08);">
+                        <i class="fa-solid fa-expand"></i>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); padding: 5px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #ffffff; margin-bottom: 6px;">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> +221 78 877 38 27
+                    </div>
+                    <div style="font-size: 11px; color: #94a3b8; line-height: 1.4;">
+                        Scannez pour envoyer vos transactions par message vocal ou photo de reçu.
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank" style="background: #25D366; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 999px; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35); transition: transform 0.15s ease;">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> Ouvrir directement sur WhatsApp
+                    </a>
+                    <a href="/carte-comptoir" target="_blank" style="background: rgba(255, 255, 255, 0.08); color: #a0d9d2; border: 1px solid rgba(160, 217, 210, 0.3); text-decoration: none; padding: 10px; border-radius: 999px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s ease;">
+                        <i class="fa-solid fa-print"></i> Plaque Présentoir Comptoir (A5/A6)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function allerVersAbonnement() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -12788,130 +12845,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
         }
 
-
-        // ==========================================
-        // GESTION ET RECHERCHE D'ENTREPRISES
-        // ==========================================
-        function toggleEnterpriseDropdown(e) {
-            if (e) e.stopPropagation();
-            const menu = document.getElementById('enterpriseDropdownMenu');
-            if (menu) {
-                if (menu.classList.contains('hidden')) {
-                    openEnterpriseDropdown();
-                } else {
-                    closeEnterpriseDropdown();
-                }
-            }
-        }
-
-        function openEnterpriseDropdown() {
-            const menu = document.getElementById('enterpriseDropdownMenu');
-            if (menu) {
-                menu.classList.remove('hidden');
-                renderEnterpriseDropdown(allEntreprisesList);
-            }
-        }
-
-        function closeEnterpriseDropdown() {
-            const menu = document.getElementById('enterpriseDropdownMenu');
-            if (menu) menu.classList.add('hidden');
-        }
-
-        function getCleanCompanyName(rawName) {
-            if (!rawName) return 'Entreprise';
-            let clean = rawName.replace(/^le nom de mon entreprise est\s*/i, '').trim();
-            return clean || rawName;
-        }
-
-        function getCompanyInitials(name) {
-            const clean = getCleanCompanyName(name);
-            const words = clean.split(/\s+/).filter(Boolean);
-            if (words.length >= 2) {
-                return (words[0][0] + words[1][0]).toUpperCase();
-            }
-            return clean.substring(0, 2).toUpperCase();
-        }
-
-        function renderEnterpriseDropdown(list) {
-            const container = document.getElementById('enterpriseListContainer');
-            if (!container) return;
-
-            const listToRender = (list && list.length > 0) ? list : (allEntreprisesList || []);
-
-            if (listToRender.length === 0) {
-                container.innerHTML = `<div class="p-2.5 text-center text-xs text-slate-500 font-medium">Aucun dossier trouvé</div>`;
-                return;
-            }
-
-            const curId = currentEntreprise ? (currentEntreprise.id || '') : '';
-            const curPhone = currentEntreprise ? (currentEntreprise.telephone_whatsapp || '') : '';
-
-            let itemsHtml = '';
-            listToRender.forEach(ent => {
-                const cleanName = getCleanCompanyName(ent.nom_entreprise);
-                const initials = getCompanyInitials(cleanName);
-                const isSelected = (curId && ent.id === curId) || (curPhone && ent.telephone_whatsapp === curPhone);
-                const activeBg = isSelected ? 'bg-[#14362b] text-[#a0d9d2]' : 'hover:bg-[#252525] text-slate-200';
-                const activeBadge = isSelected ? '<span class="text-[#a0d9d2] text-xs font-bold flex-shrink-0">✓</span>' : '';
-
-                itemsHtml += `
-                    <div onclick="selectEnterprise('${escapeHtml(ent.id || '')}', '${escapeHtml(ent.telephone_whatsapp || '')}')" class="flex items-center justify-between px-2.5 py-1.5 rounded-lg ${activeBg} cursor-pointer transition-colors text-left group">
-                        <div class="flex items-center gap-2 min-w-0">
-                            <span class="w-6 h-6 rounded bg-[#2a2a2a] text-slate-400 font-bold text-[10px] flex items-center justify-center flex-shrink-0">${escapeHtml(initials)}</span>
-                            <div class="flex flex-col min-w-0">
-                                <span class="text-xs font-medium truncate group-hover:text-white leading-tight">${escapeHtml(cleanName)}</span>
-                                <span class="text-[10px] text-slate-500 font-mono leading-tight">${escapeHtml(ent.ninea || '')}</span>
-                            </div>
-                        </div>
-                        ${activeBadge}
-                    </div>
-                `;
-            });
-            container.innerHTML = itemsHtml;
-        }
-
-        function filterEnterpriseList(query) {
-            openEnterpriseDropdown();
-            const q = (query || '').toLowerCase().trim();
-            if (!q) {
-                renderEnterpriseDropdown(allEntreprisesList);
-                return;
-            }
-            const filtered = allEntreprisesList.filter(e => {
-                const name = (e.nom_entreprise || '').toLowerCase();
-                const ninea = (e.ninea || '').toLowerCase();
-                const phone = (e.telephone_whatsapp || '').toLowerCase();
-                return name.includes(q) || ninea.includes(q) || phone.includes(q);
-            });
-            renderEnterpriseDropdown(filtered);
-        }
-
-        function selectEnterprise(entId, phone) {
-            closeEnterpriseDropdown();
-            const url = new URL(window.location);
-            if (phone) {
-                url.searchParams.set('phone', phone);
-                url.searchParams.delete('id');
-            } else if (entId) {
-                url.searchParams.set('id', entId);
-                url.searchParams.delete('phone');
-            }
-            window.history.pushState({}, '', url);
-            loadDashboardData(entId, phone);
-        }
-
-        // Fermer le dropdown si on clique ailleurs
-        document.addEventListener('click', function(e) {
-            const sec = document.getElementById('enterpriseSelectorSection');
-            if (sec && !sec.contains(e.target)) {
-                closeEnterpriseDropdown();
-            }
-        });
-
 </script>
 </body>
 
-</html>
-
-</body>
 </html>
