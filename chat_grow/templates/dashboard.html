@@ -7332,30 +7332,30 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EXACT FIDÉLITÉ DÉGRADÉ & LOGO GÉANT STYLE AWA) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (STYLE AWA RAFFINÉ & ÉQUILIBRÉ) --- */
         #viewPortalComptable {
             position: fixed;
             inset: 0;
             z-index: 1500;
-            /* Dégradé vertical riche et profond inspiré de la maquette AWA : du vert-menthe sombre au noir obsidienne */
-            background: linear-gradient(180deg, #1b433e 0%, #153531 20%, #102522 45%, #0c1917 70%, #070d0c 100%) !important;
+            /* Dégradé vertical raffiné : du vert-menthe sombre au noir profond */
+            background: linear-gradient(180deg, #173b37 0%, #122b28 25%, #0e201d 50%, #0a1614 75%, #060c0b 100%) !important;
             overflow-y: auto;
-            display: none;
+            display: flex;
         }
         .portal-pattern-layer {
             position: absolute;
             inset: 0;
             background-image: url('/static/grow_logo_transparent.png');
             background-repeat: repeat;
-            background-size: 140px 140px;
-            opacity: 0.12; /* Visible et net comme le motif tapisserie dans l'image AWA */
+            background-size: 150px 150px;
+            opacity: 0.045; /* Filigrane doux et subtil, non agressif */
             pointer-events: none;
             z-index: 1;
         }
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 25%, rgba(160, 217, 210, 0.22) 0%, rgba(20, 50, 46, 0.05) 60%, rgba(7, 13, 12, 0.95) 90%);
+            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.20) 0%, rgba(18, 45, 41, 0.04) 55%, rgba(6, 12, 11, 0.95) 90%);
             pointer-events: none;
             z-index: 2;
         }
@@ -7387,7 +7387,7 @@
         .portal-search-pill:hover,
         .portal-search-pill:focus-within {
             border-color: #a0d9d2;
-            box-shadow: 0 0 30px rgba(160, 217, 210, 0.32);
+            box-shadow: 0 0 25px rgba(160, 217, 210, 0.30);
             background: rgba(14, 28, 25, 0.92);
         }
 
@@ -7406,50 +7406,50 @@
 
 
 
-        <!-- Zone Centrale : Grand Logo Grow + Texte Typewriter + Barre de Recherche Entreprise -->
-        <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-10 md:py-14 text-center max-w-4xl mx-auto w-full">
-            <!-- GRAND LOGO GROW MAJESTUEUX (Exactement comme dans la maquette AWA) -->
-            <div class="relative group cursor-pointer mb-6" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
-                <div class="absolute -inset-10 bg-[#a0d9d2]/20 rounded-full blur-3xl group-hover:bg-[#a0d9d2]/35 transition-all"></div>
+        <!-- Zone Centrale : Proportions Parfaites 100vh sans scroll ni coupure basse -->
+        <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-6 text-center max-w-2xl mx-auto w-full my-auto">
+            <!-- GRAND LOGO GROW MAJESTUEUX (Équilibré pour tenir parfaitement dans l'écran) -->
+            <div class="relative group cursor-pointer mb-3 sm:mb-4" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
+                <div class="absolute -inset-6 bg-[#a0d9d2]/20 rounded-full blur-2xl group-hover:bg-[#a0d9d2]/35 transition-all"></div>
                 <img src="/static/grow_logo_transparent.png" alt="Grow Logo" 
-                     class="relative w-64 sm:w-72 md:w-84 lg:w-96 max-w-[360px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
-                     style="filter: drop-shadow(0 15px 35px rgba(160, 217, 210, 0.35));">
+                     class="relative w-44 sm:w-52 md:w-60 max-w-[260px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
+                     style="filter: drop-shadow(0 10px 25px rgba(160, 217, 210, 0.35));">
             </div>
 
             <!-- Texte Animé Machine à Écrire (Typewriter) -->
-            <div class="min-h-[52px] md:min-h-[68px] flex items-center justify-center mb-3">
-                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-md">
-                    <span id="portalTypewriterText" class="text-white"></span>
-                    <span class="inline-block w-1 md:w-1.5 h-8 md:h-12 bg-[#a0d9d2] ml-2 animate-pulse"></span>
+            <div class="min-h-[44px] sm:min-h-[52px] flex items-center justify-center mb-2">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-md">
+                    <span id="portalTypewriterText" class="text-white">Portail Grow pour comptables</span>
+                    <span class="inline-block w-1 h-7 sm:h-9 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
                 </h1>
             </div>
 
             <!-- Sous-titre officiel en majuscules aérées -->
-            <p class="text-[11px] sm:text-xs md:text-[13px] font-bold tracking-[0.25em] text-[#a0d9d2] uppercase mb-10 max-w-2xl drop-shadow-xs">
+            <p class="text-[10.5px] sm:text-xs font-bold tracking-[0.22em] text-[#a0d9d2] uppercase mb-6 sm:mb-8 max-w-xl drop-shadow-xs">
                 Accédez aux dossiers comptables de vos PME clientes en temps réel • SYSCOHADA
             </p>
 
-            <!-- Barre de Recherche Entreprise (Exacte proportion & élégance pilule AWA) -->
-            <div class="relative w-full max-w-[380px] sm:max-w-[420px] mx-auto text-left" id="portalSearchWrapper">
-                <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 sm:py-3 shadow-xl transition-all">
-                    <span class="material-symbols-outlined text-[#a0d9d2] text-[20px] mr-3 flex-shrink-0 select-none">search</span>
+            <!-- Barre de Recherche Entreprise (Exacte proportion & élégance pilule AWA, parfaitement visible) -->
+            <div class="relative w-full max-w-[360px] sm:max-w-[400px] mx-auto text-left" id="portalSearchWrapper">
+                <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 shadow-xl transition-all">
+                    <span class="material-symbols-outlined text-[#a0d9d2] text-[19px] mr-2.5 flex-shrink-0 select-none">search</span>
                     <input type="text" id="portalCompanySearchInput" 
-                           class="portal-search-input w-full bg-transparent text-white placeholder:text-white/60 text-xs sm:text-[13.5px] font-medium tracking-wide focus:outline-none"
+                           class="portal-search-input w-full bg-transparent text-white placeholder:text-white/60 text-xs sm:text-[13px] font-medium tracking-wide focus:outline-none"
                            placeholder="Rechercher une entreprise cliente..."
                            autocomplete="off"
                            oninput="handlePortalCompanySearch(this.value)"
                            onkeydown="handlePortalSearchKeydown(event)"
                            onfocus="showPortalDropdown()">
                     <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-white p-0.5 mr-1 transition-colors cursor-pointer">
-                        <span class="material-symbols-outlined text-[16px]">close</span>
+                        <span class="material-symbols-outlined text-[15px]">close</span>
                     </button>
-                    <button type="button" onclick="submitPortalSearch()" class="w-7 h-7 rounded-full bg-[#a0d9d2] hover:bg-white text-[#1c1c1c] flex items-center justify-center transition-all cursor-pointer flex-shrink-0 shadow-sm" title="Ouvrir le dossier">
-                        <span class="material-symbols-outlined text-[15px] font-bold">arrow_forward</span>
+                    <button type="button" onclick="submitPortalSearch()" class="w-6 h-6 rounded-full bg-[#a0d9d2] hover:bg-white text-[#1c1c1c] flex items-center justify-center transition-all cursor-pointer flex-shrink-0 shadow-sm" title="Ouvrir le dossier">
+                        <span class="material-symbols-outlined text-[14px] font-bold">arrow_forward</span>
                     </button>
                 </div>
 
                 <!-- Menu Déroulant Instantané des Entreprises du Cabinet -->
-                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2 bg-[#102421]/95 backdrop-blur-xl border border-[#a0d9d2]/40 rounded-2xl shadow-2xl divide-y divide-white/5 overflow-hidden z-50 max-h-80 overflow-y-auto" style="display: none;">
+                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2 bg-[#102421]/95 backdrop-blur-xl border border-[#a0d9d2]/40 rounded-2xl shadow-2xl divide-y divide-white/5 overflow-hidden z-50 max-h-64 overflow-y-auto" style="display: none;">
                     <!-- Injecté dynamiquement par JavaScript -->
                 </div>
             </div>
@@ -12985,34 +12985,6 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
         }
 
-        // Lancement au chargement de la page
-        document.addEventListener('DOMContentLoaded', () => {
-            renderCalendar();
-            initDatesAndPeriods();
-
-            // Initialisation de la vue Bureau / Smartphone sur ordinateur
-            const urlMode = new URLSearchParams(window.location.search).get('mode');
-            const savedMode = localStorage.getItem('grow_view_mode');
-            if (window.innerWidth < 768) {
-                document.body.classList.remove('force-mobile-view');
-                const sidebar = document.getElementById('comptableSidebar');
-                if (sidebar) sidebar.classList.add('-translate-x-full');
-            } else if (urlMode === 'mobile' || urlMode === 'smartphone' || (!urlMode && savedMode === 'mobile')) {
-                setDeviceView('mobile');
-            } else {
-                setDeviceView('desktop');
-            }
-
-            // Affichage automatique de l'Accueil Portail Cabinet (sauf si bypass direct demandé en URL)
-            const urlParamsPortal = new URLSearchParams(window.location.search);
-            const shouldBypassPortal = urlParamsPortal.get('direct') === '1' || urlParamsPortal.get('skip_portal') === '1';
-            if (shouldBypassPortal) {
-                quitterPortailVersDossier();
-            } else {
-                openPortalView();
-            }
-
-            
         // =========================================================================
         // LOGIQUE DU PORTAIL ACCUEIL EXPERT-COMPTABLE
         // =========================================================================
@@ -13239,6 +13211,29 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
         });
 
+        // Lancement au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCalendar();
+            initDatesAndPeriods();
+
+            // Initialisation de la vue Bureau / Smartphone sur ordinateur
+            const urlMode = new URLSearchParams(window.location.search).get('mode');
+            const savedMode = localStorage.getItem('grow_view_mode');
+            if (window.innerWidth < 768) {
+                document.body.classList.remove('force-mobile-view');
+                const sidebar = document.getElementById('comptableSidebar');
+                if (sidebar) sidebar.classList.add('-translate-x-full');
+            } else if (urlMode === 'mobile' || urlMode === 'smartphone' || (!urlMode && savedMode === 'mobile')) {
+                setDeviceView('mobile');
+            } else {
+                setDeviceView('desktop');
+            }
+
+
+
+            
+
+
             loadDashboardData();
 
             // Par défaut, TOUJOURS afficher l'onglet Accueil (Journal des écritures & preuves)
@@ -13257,6 +13252,14 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             // Ouverture automatique de l'assistant webhook si demandé par lien WhatsApp
             if (new URLSearchParams(window.location.search).get('open_webhook') === '1') {
                 setTimeout(ouvrirModalWebhookAssistant, 400);
+            }
+            // Affichage automatique de l'Accueil Portail Cabinet (sauf si bypass direct demandé en URL)
+            const urlParamsPortal = new URLSearchParams(window.location.search);
+            const shouldBypassPortal = urlParamsPortal.get('direct') === '1' || urlParamsPortal.get('skip_portal') === '1';
+            if (shouldBypassPortal) {
+                quitterPortailVersDossier();
+            } else {
+                openPortalView();
             }
         });
     </script>
