@@ -7711,7 +7711,7 @@
                                         <th class="py-3 px-3.5 whitespace-nowrap w-40">Type</th>
                                         <th class="py-3 px-4 min-w-[260px]">Libellé de l'opération</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Statuts</th>
-                                        <th class="py-3 px-3.5 whitespace-nowrap w-32 font-mono">N° de document</th>
+                                        <th class="py-3 px-3.5 whitespace-nowrap w-44">N° de compte</th>
                                         <th class="py-3 px-4 text-right whitespace-nowrap w-28">Montant HT</th>
                                         <th class="py-3 px-4 text-right whitespace-nowrap w-28">Montant TTC</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Date doc.</th>
@@ -12132,6 +12132,17 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 const montantTTC = montant;
                 const montantHT = Math.round(montant / 1.18); // Estimation TVA 18% standard UEMOA
                 const compteNum = t.compte_syscohada || (isSortie ? '601' : '701');
+                let compteLabel = isSortie ? 'Charges diverses' : 'Ventes de m/ses';
+                if (compteNum.startsWith('706')) compteLabel = 'Services vendus';
+                else if (compteNum.startsWith('701')) compteLabel = 'Ventes m/ses';
+                else if (compteNum.startsWith('661')) compteLabel = 'Rémunération';
+                else if (compteNum.startsWith('628')) compteLabel = 'Frais télécom';
+                else if (compteNum.startsWith('612')) compteLabel = 'Transports';
+                else if (compteNum.startsWith('605')) compteLabel = 'Énergie (Woyofal)';
+                else if (compteNum.startsWith('601')) compteLabel = 'Achats m/ses';
+                else if (compteNum.startsWith('411')) compteLabel = 'Créance client';
+                else if (compteNum.startsWith('521')) compteLabel = 'Banque CBAO';
+                else if (compteNum.startsWith('571')) compteLabel = 'Caisse';
                 let sub = 'Wave Business';
                 if (srcPaiement.includes('ORANGE')) sub = 'Orange Money';
                 else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE')) sub = 'Caisse Espèces';
@@ -12166,7 +12177,12 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     <td class="py-3 px-3.5 text-center whitespace-nowrap">
                         <span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${statusClass}">${statusLabel}</span>
                     </td>
-                    <td class="py-3 px-3.5 whitespace-nowrap font-mono text-slate-700 text-[12px]">${escapeHtml(refDisplay)}</td>
+                    <td class="py-3 px-3.5 whitespace-nowrap">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#168078]/10 text-[#168078] border border-[#168078]/25 text-[11px] font-semibold">
+                            <span class="font-mono font-bold">${escapeHtml(compteNum)}</span>
+                            <span class="text-slate-600 font-medium truncate max-w-[120px]">${escapeHtml(compteLabel)}</span>
+                        </span>
+                    </td>
                     <td class="py-3 px-4 text-right whitespace-nowrap font-mono font-medium text-slate-700 text-[12.5px]">${montantHT.toLocaleString('fr-FR')} F</td>
                     <td class="py-3 px-4 text-right whitespace-nowrap font-mono font-bold ${isSortie ? 'text-slate-900' : 'text-blue-600'} text-[12.5px]">${montantTTC.toLocaleString('fr-FR')} F</td>
                     <td class="py-3 px-3.5 text-center whitespace-nowrap text-slate-600 font-medium text-[11.5px]">${escapeHtml(dateDoc)}</td>
