@@ -13040,24 +13040,57 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         // =========================================================================
         // LOGIQUE DU PORTAIL ACCUEIL EXPERT-COMPTABLE
         // =========================================================================
-        let portalTypewriterInterval = null;
-        const portalTextToType = "Portail Grow pour comptables";
+        // =========================================================================
+        // LOGIQUE TYPEWRITER BOUCLANTE (EFFACEMENT & RÉÉCRITURE STYLE AWA)
+        // =========================================================================
+        let portalTypewriterTimeout = null;
+        const portalPhrases = [
+            "Portail Grow pour comptables",
+            "Gestion SYSCOHADA certifiée",
+            "Dossiers PME en temps réel"
+        ];
+        let portalPhraseIndex = 0;
+        let portalCharIndex = 0;
+        let portalIsDeleting = false;
 
-        function initPortalTypewriter() {
+        function runPortalTypewriterLoop() {
             const el = document.getElementById('portalTypewriterText');
             if (!el) return;
-            el.textContent = "";
-            if (portalTypewriterInterval) clearInterval(portalTypewriterInterval);
-            
-            let i = 0;
-            portalTypewriterInterval = setInterval(() => {
-                if (i < portalTextToType.length) {
-                    el.textContent += portalTextToType.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(portalTypewriterInterval);
-                }
-            }, 65);
+
+            const currentPhrase = portalPhrases[portalPhraseIndex % portalPhrases.length];
+
+            if (portalIsDeleting) {
+                // La barre revient et efface lettre par lettre
+                portalCharIndex--;
+                el.textContent = currentPhrase.substring(0, portalCharIndex);
+            } else {
+                // La frappe écrit lettre par lettre
+                portalCharIndex++;
+                el.textContent = currentPhrase.substring(0, portalCharIndex);
+            }
+
+            let typeSpeed = portalIsDeleting ? 40 : 80;
+
+            if (!portalIsDeleting && portalCharIndex === currentPhrase.length) {
+                // Phrase complètement écrite : pause pour lecture avant d'effacer
+                typeSpeed = 2200;
+                portalIsDeleting = true;
+            } else if (portalIsDeleting && portalCharIndex === 0) {
+                // Phrase complètement effacée : pause brève puis réécriture
+                portalIsDeleting = false;
+                portalPhraseIndex++;
+                typeSpeed = 400;
+            }
+
+            portalTypewriterTimeout = setTimeout(runPortalTypewriterLoop, typeSpeed);
+        }
+
+        function initPortalTypewriter() {
+            if (portalTypewriterTimeout) clearTimeout(portalTypewriterTimeout);
+            portalPhraseIndex = 0;
+            portalCharIndex = 0;
+            portalIsDeleting = false;
+            runPortalTypewriterLoop();
         }
 
         function openPortalView() {
