@@ -131,6 +131,15 @@
             transition: all 0.12s;
         }
 
+                @keyframes growSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .grow-spinning {
+            animation: growSpin 0.75s linear infinite !important;
+            display: inline-block !important;
+        }
+
         .cal-preset-pill:hover {
             background: rgba(160, 217, 210, 0.18);
             border-color: #a0d9d2;
@@ -7823,8 +7832,8 @@
 
                     <!-- Boutons d'action à droite (Exact Factoo) -->
                     <div class="flex items-center gap-2 flex-wrap">
-                        <button type="button" onclick="loadDashboardData()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors shadow-2xs cursor-pointer" title="Rafraîchir les écritures">
-                            <span class="material-symbols-outlined notranslate text-[18px]" translate="no">refresh</span>
+                        <button type="button" id="btnRefreshDashboard" onclick="triggerManualRefresh(this)" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-600 hover:text-slate-900 transition-all shadow-2xs cursor-pointer flex items-center justify-center group" title="Actualiser le tableau des opérations">
+                            <span class="material-symbols-outlined notranslate text-[18px] transition-transform duration-500" id="refreshIconSpan" translate="no">refresh</span>
                         </button>
                         <!-- Trésorerie Actuelle en direct (Design Sombre Fintech Premium assorti au logo #222222) -->
                         <div class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-[#222222] border border-[#333333] shadow-xs select-none" title="Trésorerie nette disponible">
@@ -10989,8 +10998,71 @@
             }
         });
 
+        // Système de notification Toast élégant pour Grow
+        function showGrowToast(message, type = 'success') {
+            const existing = document.getElementById('growGlobalToast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'growGlobalToast';
+            const isError = type === 'error';
+            const isNewTx = type === 'new_tx';
+            
+            let bgStyle = 'background: #1c1c1c; border: 1px solid rgba(160, 217, 210, 0.4); color: #ffffff;';
+            let iconName = 'check_circle';
+            let iconColor = '#a0d9d2';
+
+            if (isError) {
+                bgStyle = 'background: #3f1212; border: 1px solid #ef4444; color: #ffffff;';
+                iconName = 'error';
+                iconColor = '#f87171';
+            } else if (isNewTx) {
+                bgStyle = 'background: #0f2c25; border: 1px solid #34d399; color: #ffffff; box-shadow: 0 10px 25px -5px rgba(22, 128, 120, 0.4);';
+                iconName = 'notifications_active';
+                iconColor = '#a0d9d2';
+            }
+
+            toast.style.cssText = `position: fixed; bottom: 24px; right: 24px; z-index: 9999; padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(20px); opacity: 0; pointer-events: none; ${bgStyle}`;
+            
+            toast.innerHTML = `
+                <span class="material-symbols-outlined notranslate text-[20px]" style="color: ${iconColor}; font-variation-settings: 'FILL' 1;" translate="no">${iconName}</span>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+            });
+
+            setTimeout(() => {
+                toast.style.transform = 'translateY(15px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3600);
+        }
+
+        // Action de rafraîchissement manuel avec rotation animée de l'icône
+        async function triggerManualRefresh(btn) {
+            const icon = document.getElementById('refreshIconSpan') || (btn ? btn.querySelector('.material-symbols-outlined') : null);
+            if (btn) btn.disabled = true;
+            if (icon) icon.classList.add('grow-spinning');
+            
+            try {
+                await loadDashboardData(null, null, false, true);
+            } catch (e) {
+                console.error("Erreur lors de l'actualisation:", e);
+                showGrowToast("⚠️ Erreur de connexion lors de l'actualisation", "error");
+            } finally {
+                setTimeout(() => {
+                    if (icon) icon.classList.remove('grow-spinning');
+                    if (btn) btn.disabled = false;
+                }, 600);
+            }
+        }
+
         // Chargement initial des données depuis Supabase
-        async function loadDashboardData(entrepriseId = null, phone = null) {
+        async function loadDashboardData(entrepriseId = null, phone = null, isSilent = false, manualTrigger = false) {
             const urlParams = new URLSearchParams(window.location.search);
             const pPhone = phone || urlParams.get('phone') || localStorage.getItem('grow_active_phone') || '221788773827';
             const debugModal = urlParams.get('debug_modal');
@@ -10999,6 +11071,7 @@
             let apiUrl = '/api/dashboard-data?';
             if (pId) apiUrl += `entreprise_id=${encodeURIComponent(pId)}&`;
             if (pPhone) apiUrl += `phone=${encodeURIComponent(pPhone)}&`;
+            apiUrl += `_t=${Date.now()}&`;
 
             try {
                 const res = await fetch(apiUrl);
@@ -11026,7 +11099,21 @@
                         localStorage.setItem('grow_active_id', currentEntreprise.id);
                     }
                 }
-                allTransactions = data.transactions || [];
+                const fetchedTransactions = data.transactions || [];
+                let newTxFound = [];
+                if (window._growKnownTxIds && window._growKnownTxIds.size > 0 && !window._growIsInitialLoad) {
+                    newTxFound = fetchedTransactions.filter(t => t.id && !window._growKnownTxIds.has(t.id));
+                }
+                if (newTxFound.length > 0) {
+                    const newIdSet = new Set(newTxFound.map(t => t.id));
+                    fetchedTransactions.forEach(t => {
+                        if (newIdSet.has(t.id)) t._isNew = true;
+                    });
+                }
+                window._growKnownTxIds = new Set(fetchedTransactions.map(t => t.id));
+                window._growIsInitialLoad = false;
+
+                allTransactions = fetchedTransactions;
                 window.allTransactionsCache = allTransactions;
                 const factooBreadcrumb = document.getElementById('factooBreadcrumbCompany');
                 const factooTitle = document.getElementById('factooPageTitle');
@@ -11167,6 +11254,22 @@
 
                 // 4. Initialiser et afficher avec filtres et pagination
                 applyAllFiltersAndRender();
+
+                // Feedback utilisateur
+                if (manualTrigger) {
+                    if (newTxFound.length > 0) {
+                        showGrowToast(`✨ +${newTxFound.length} nouvelle${newTxFound.length > 1 ? 's' : ''} opération${newTxFound.length > 1 ? 's' : ''} ajoutée${newTxFound.length > 1 ? 's' : ''} au tableau !`, 'new_tx');
+                    } else {
+                        showGrowToast(`✓ Tableau à jour • ${allTransactions.length} opérations`, 'success');
+                    }
+                } else if (newTxFound.length > 0) {
+                    const firstTx = newTxFound[0];
+                    const lib = firstTx.libelle || 'Nouvelle écriture';
+                    const mnt = firstTx.montant_fcfa ? ` (${Number(firstTx.montant_fcfa).toLocaleString('fr-FR')} FCFA)` : '';
+                    showGrowToast(`⚡ Nouvelle opération reçue : ${lib}${mnt}`, 'new_tx');
+                }
+
+                return data;
 
             } catch (err) {
                 console.error("Erreur fetch dashboard data:", err);
@@ -12604,7 +12707,15 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
             txList.forEach((t, idx) => {
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50/80 transition-colors border-b border-slate-100 cursor-pointer bg-white';
+                if (t._isNew) {
+                    tr.className = 'bg-teal-50/90 hover:bg-teal-100/80 border-b border-teal-200 cursor-pointer transition-all duration-700';
+                    setTimeout(() => {
+                        delete t._isNew;
+                        tr.className = 'hover:bg-slate-50/80 transition-colors border-b border-slate-100 cursor-pointer bg-white';
+                    }, 6000);
+                } else {
+                    tr.className = 'hover:bg-slate-50/80 transition-colors border-b border-slate-100 cursor-pointer bg-white';
+                }
                 tr.onclick = () => openTxDetailModal(t);
 
                 const rawDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '13/11/2026');
@@ -12753,7 +12864,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 // Rendu Carte Mobile Native (< 768px, style Wave / Revolut Mobile Pro)
                 if (mobContainer) {
                     const mobCard = document.createElement('div');
-                    mobCard.className = 'p-3 flex items-center justify-between gap-2.5 hover:bg-white/90 active:bg-slate-100 transition-colors cursor-pointer select-none';
+                    mobCard.className = 'p-3 flex items-center justify-between gap-2.5 hover:bg-white/90 active:bg-slate-100 transition-colors cursor-pointer select-none' + (t._isNew ? ' ring-2 ring-[#a0d9d2] bg-teal-50/60' : '');
                     mobCard.onclick = () => openTxDetailModal(t);
 
                     mobCard.innerHTML = `
@@ -14136,17 +14247,17 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             // Synchro automatique en temps réel toutes les 10 secondes (fond de page transparent)
             setInterval(() => {
                 if (document.visibilityState === 'visible') {
-                    loadDashboardData();
+                    loadDashboardData(null, null, true, false);
                 }
             }, 10000);
 
             // Rechargement immédiat dès que l'onglet redevient actif
             window.addEventListener('focus', () => {
-                loadDashboardData();
+                loadDashboardData(null, null, true, false);
             });
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'visible') {
-                    loadDashboardData();
+                    loadDashboardData(null, null, true, false);
                 }
             });
         });
