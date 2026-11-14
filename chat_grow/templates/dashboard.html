@@ -7462,15 +7462,15 @@
     <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col ambient-mint-gradient transition-all duration-200 ease-in-out">
 
         <!-- HEADER SUPÉRIEUR ÉPURÉ (Même couleur menthe que le fond parent) -->
-        <header class="h-14 px-3 md:px-6 flex items-center justify-between sticky top-0 z-40" style="background: linear-gradient(180deg, #a0d9d2 0%, #aee0da 56px) !important; border-bottom: 1px solid rgba(13, 148, 136, 0.18);">
-            <div class="flex items-center gap-2 md:gap-3">
-                <!-- Bouton réouverture latérale (icône dock_to_left demandée par l'utilisateur) -->
-                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="flex md:hidden p-1.5 -ml-1 mr-1 text-[#1c1c1c] hover:text-black bg-white/80 hover:bg-white border border-[#a0d9d2]/80 rounded-lg shadow-2xs transition-colors cursor-pointer items-center justify-center" title="Afficher le menu (Ctrl+B)">
+        <header class="h-14 px-3 md:px-6 flex items-center justify-between sticky top-0 z-40" style="background: linear-gradient(180deg, #a0d9d2 0%, #aee0da 56px) !important; border-bottom: 1px solid rgba(28, 28, 28, 0.08);">
+            <div class="flex items-center gap-2 md:gap-3 min-w-0">
+                <!-- Bouton réouverture latérale -->
+                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="flex md:hidden p-1.5 -ml-1 mr-1 text-[#1c1c1c] hover:text-black bg-white/80 hover:bg-white border border-[#a0d9d2]/80 rounded-lg shadow-2xs transition-colors cursor-pointer items-center justify-center flex-shrink-0" title="Afficher le menu (Ctrl+B)">
                     <span class="material-symbols-outlined text-[19px] block">menu</span>
                 </button>
-                <div class="flex items-center gap-2 text-xs text-slate-600 font-medium">
-                    <span class="text-slate-900 font-bold text-sm" id="headerBreadcrumbTitle">Journal</span>
-                    <span class="px-2 py-0.5 rounded-full bg-white/40 border border-[#0d9488]/20 text-[#0f766e] text-[11px] font-semibold" id="txCountBadge">8 opérations</span>
+                <div class="flex items-center gap-2 text-xs text-slate-600 font-medium truncate">
+                    <span class="text-slate-900 font-bold text-sm tracking-tight truncate" id="headerBreadcrumbTitle">Journal</span>
+                    <span class="px-2 py-0.5 rounded-full bg-[#1c1c1c] text-[#a0d9d2] text-[10.5px] font-mono font-bold shadow-2xs whitespace-nowrap" id="txCountBadge">16 opérations</span>
                 </div>
             </div>
 
@@ -7494,8 +7494,8 @@
             <div id="viewJournal">
 
                 <!-- Barre d'Action & Recherche avec Calendrier et Filtres -->
-                <div class="mb-4 flex items-center justify-between gap-3">
-                    <div class="relative flex-1 max-w-md">
+                <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-2.5 md:gap-3">
+                    <div class="relative w-full md:max-w-md">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
                         <input class="w-full pl-9 pr-14 py-2 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0d9488] focus:ring-1 focus:ring-[#0d9488] text-xs shadow-2xs" id="table-search-input" placeholder="Rechercher une opération..." type="text" oninput="handleSearchInput(this.value)">
                         <div class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px] font-mono">
@@ -7503,13 +7503,15 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 w-full md:w-auto">
                         <!-- Sélecteur de Calendrier & Période -->
-                        <div class="relative">
-                            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium shadow-2xs transition-colors cursor-pointer" onclick="toggleCalendarPopover(event)" id="datePickerBtn" title="Filtrer par date ou période">
-                                <span class="material-symbols-outlined text-[16px] text-slate-400">calendar_today</span>
-                                <span id="datePickerBtnLabel">Toutes les dates</span>
-                                <span class="material-symbols-outlined text-[14px] text-slate-400">expand_more</span>
+                        <div class="relative flex-1 md:flex-initial">
+                            <button type="button" class="w-full inline-flex items-center justify-between md:justify-start gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium shadow-2xs transition-colors cursor-pointer" onclick="toggleCalendarPopover(event)" id="datePickerBtn" title="Filtrer par date ou période">
+                                <span class="flex items-center gap-1.5 truncate">
+                                    <span class="material-symbols-outlined text-[16px] text-slate-400">calendar_today</span>
+                                    <span id="datePickerBtnLabel" class="truncate">Toutes les dates</span>
+                                </span>
+                                <span class="material-symbols-outlined text-[14px] text-slate-400 flex-shrink-0">expand_more</span>
                             </button>
 
                             <!-- Popover Calendrier Moderne Sur-Mesure Grow -->
@@ -7545,11 +7547,11 @@
                         </div>
 
                         <!-- Bouton Filtres Avancés -->
-                        <button class="inline-flex items-center gap-1 px-2.5 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium shadow-2xs transition-colors cursor-pointer" onclick="togglePopoverFiltreAvance()">
+                        <button class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium shadow-2xs transition-colors cursor-pointer flex-shrink-0" onclick="togglePopoverFiltreAvance()">
                             <span class="material-symbols-outlined text-[15px] text-slate-400">filter_list</span>
                             <span>Filtres</span>
                         </button>
-                        <button class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer" onclick="loadDashboardData()" title="Rafraîchir">
+                        <button class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer flex-shrink-0" onclick="loadDashboardData()" title="Rafraîchir">
                             <span class="material-symbols-outlined text-[15px]">refresh</span>
                         </button>
                     </div>
@@ -7564,8 +7566,8 @@
                         <span id="cumulTotal" class="hidden"></span>
                     </div>
 
-                    <!-- Tableau Directement sur le Fond Parent -->
-                    <div class="overflow-x-auto w-full">
+                    <!-- VUE BUREAU : Tableau grand format complet (>= 768px) -->
+                    <div class="hidden md:block overflow-x-auto w-full">
                         <table class="w-full text-left border-collapse" id="transactionsTable">
                             <thead>
                                 <tr class="border-b border-slate-300/80 text-slate-500 text-[11px] font-bold uppercase tracking-wider select-none">
@@ -7585,6 +7587,11 @@
                                 <!-- Lignes injectées dynamiquement -->
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- VUE SMARTPHONE : Liste native épurée style Wave / Fintech Pro (< 768px) -->
+                    <div class="block md:hidden w-full flex flex-col bg-white/70 backdrop-blur-md rounded-2xl border border-black/5 shadow-2xs divide-y divide-slate-200/60 overflow-hidden" id="mobileTransactionsList">
+                        <!-- Éléments mobiles injectés dynamiquement -->
                     </div>
 
                     <!-- Pied de tableau directement intégré au fond parent -->
@@ -9870,7 +9877,7 @@
             if (tabName === 'journal' || tabName === 'dashboard') {
                 if (viewJournal) viewJournal.style.display = 'block';
                 applyActiveTabStyle('navItemJournal');
-                if (breadTitle) breadTitle.textContent = 'Journal des Écritures';
+                if (breadTitle) breadTitle.textContent = (window.innerWidth < 768 ? 'Journal' : 'Journal des Écritures');
             } else if (tabName === 'bilan') {
                 if (viewBilan) viewBilan.style.display = 'block';
                 applyActiveTabStyle('navItemBilan');
@@ -11471,8 +11478,9 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         // Rendu HTML des transactions
         function renderTransactionsList(txList, totalFilteredCount) {
             const tbody = document.getElementById('tableBody');
-            if (!tbody) return;
-            tbody.innerHTML = '';
+            const mobContainer = document.getElementById('mobileTransactionsList');
+            if (tbody) tbody.innerHTML = '';
+            if (mobContainer) mobContainer.innerHTML = '';
 
             const total = (typeof totalFilteredCount === 'number') ? totalFilteredCount : (txList ? txList.length : 0);
 
@@ -11490,14 +11498,24 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             let totalCredit = 0;
 
             if (!txList || txList.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="py-16 text-center text-slate-400 font-medium bg-slate-50/50">
+                if (tbody) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="py-16 text-center text-slate-400 font-medium bg-slate-50/50">
+                                <span class="material-symbols-outlined text-[32px] block mb-2 text-slate-300">receipt_long</span>
+                                Aucune écriture trouvée.
+                            </td>
+                        </tr>
+                    `;
+                }
+                if (mobContainer) {
+                    mobContainer.innerHTML = `
+                        <div class="py-12 px-4 text-center text-slate-400 font-medium">
                             <span class="material-symbols-outlined text-[32px] block mb-2 text-slate-300">receipt_long</span>
                             Aucune écriture trouvée.
-                        </td>
-                    </tr>
-                `;
+                        </div>
+                    `;
+                }
                 const cTot = document.getElementById('cumulTotal');
                 if (cTot) cTot.textContent = 'Total : 0 FCFA';
                 return;
@@ -11599,7 +11617,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     </td>
                     <td class="py-3 px-3.5">
                         <div class="flex items-center gap-2.5">
-                            <img alt="Wave" class="w-6 h-6 rounded-md object-contain flex-shrink-0 shadow-2xs border border-slate-100" src="${logoUrl}" onerror="this.src='${WAVE_ICON_URL}'">
+                            <img alt="Logo" class="w-6 h-6 rounded-md object-contain flex-shrink-0 shadow-2xs border border-slate-100" src="${logoUrl}" onerror="this.src='${WAVE_ICON_URL}'">
                             <div class="flex items-center gap-2 min-w-0">
                                 <span class="font-semibold text-slate-900 text-[13px] truncate">${escapeHtml(title)}</span>
                                 <span class="text-[11px] text-slate-400 font-normal truncate">• ${escapeHtml(sub)}</span>
@@ -11618,7 +11636,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                         ${creditDisplay}
                     </td>
                     <td class="py-2 px-3.5 text-center whitespace-nowrap w-28" onclick="event.stopPropagation()">
-                        <div class="inline-flex items-center justify-center group cursor-pointer" onclick="openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', 'Wave', '${photoUrl}')" title="Cliquer pour afficher la pièce en grand">
+                        <div class="inline-flex items-center justify-center group cursor-pointer" onclick="openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', '${escapeHtml(sub)}', '${photoUrl}')" title="Cliquer pour afficher la pièce en grand">
                             <!-- Grande Miniature Photo du reçu / justificatif (Tof) -->
                             <div class="relative w-14 h-11 rounded-lg overflow-hidden border border-slate-200/90 shadow-2xs group-hover:border-[#0d9488] group-hover:shadow-md transition-all flex-shrink-0 bg-slate-100">
                                 <img src="${photoUrl}" alt="Photo preuve" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-200">
@@ -11635,6 +11653,41 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     </td>
                 `;
                 tbody.appendChild(tr);
+
+                // Rendu Carte Mobile Native (< 768px, style Wave / Revolut Mobile Pro)
+                if (mobContainer) {
+                    const mobCard = document.createElement('div');
+                    mobCard.className = 'p-3 flex items-center justify-between gap-2.5 hover:bg-white/90 active:bg-slate-100 transition-colors cursor-pointer select-none';
+                    mobCard.onclick = () => openTxDetailModal(t);
+
+                    mobCard.innerHTML = `
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                            <div class="w-10 h-10 rounded-xl bg-slate-50 p-1.5 border border-slate-200/60 shadow-2xs flex-shrink-0 flex items-center justify-center">
+                                <img alt="Logo" class="w-7 h-7 object-contain" src="${logoUrl}" onerror="this.src='${WAVE_ICON_URL}'">
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="font-bold text-[#1c1c1c] text-[13px] truncate leading-tight">${escapeHtml(title)}</div>
+                                <div class="flex items-center gap-1 text-[11px] text-slate-500 mt-0.5 truncate">
+                                    <span class="font-medium text-slate-600">${escapeHtml(dateDisplay)}</span>
+                                    <span class="text-slate-400 text-[10px]">${escapeHtml(timeDisplay)}</span>
+                                    <span class="text-slate-300">•</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.2 rounded bg-black/5 text-[#1c1c1c] font-mono font-bold text-[10px]">${escapeHtml(compteNum)}</span>
+                                    <span class="truncate text-slate-400">• ${escapeHtml(sub)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end flex-shrink-0 text-right">
+                            <div class="font-mono font-bold text-[13.5px] text-[#1c1c1c] whitespace-nowrap leading-tight">
+                                ${isSortie ? '- ' : '+ '}${montant.toLocaleString('fr-FR')} F
+                            </div>
+                            <button type="button" onclick="event.stopPropagation(); openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', '${escapeHtml(sub)}', '${photoUrl}')" class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#1c1c1c] text-[#a0d9d2] text-[10px] font-semibold shadow-2xs hover:bg-black transition-colors cursor-pointer">
+                                <span class="material-symbols-outlined text-[12px]">receipt_long</span>
+                                <span>Preuve</span>
+                            </button>
+                        </div>
+                    `;
+                    mobContainer.appendChild(mobCard);
+                }
             });
 
             const netTresorerie = totalCredit - totalDebit;
@@ -11790,7 +11843,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         }
 
         // Modale d'attestation de preuve numérique Wave / Orange Money
-        function openWaveProofModal(ref, libelle, montant, date, operateur) {
+        function openWaveProofModal(ref, libelle, montant, date, operateur, customPhotoUrl) {
             const m = document.getElementById('waveCertModal');
             if (!m) return;
             const isOM = (operateur === 'Orange Money');
@@ -11801,8 +11854,13 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             const dateEl = document.getElementById('waveModalDate');
             const iconBox = document.getElementById('waveModalIconBox');
             const icon = document.getElementById('waveModalIcon');
+            const photoEl = document.getElementById('waveModalPhoto');
 
-            if (opEl) opEl.textContent = isOM ? 'Orange Money Sénégal' : 'Wave Digital Finance';
+            if (photoEl && customPhotoUrl) {
+                photoEl.src = customPhotoUrl;
+            }
+
+            if (opEl) opEl.textContent = isOM ? 'Orange Money Sénégal' : (operateur ? operateur : 'Wave Digital Finance');
             if (typeEl) typeEl.textContent = isOM ? 'Transfert certifié Orange Money • BCEAO' : 'Notification de transfert certifiée • BCEAO';
             if (refEl) refEl.textContent = ref || 'TX-AUTO-CERTIFIED';
             if (montEl) montEl.textContent = montant || '-';
