@@ -7456,21 +7456,22 @@
             background: #f8fafc !important;
         }
 
-        /* BARRE DE FILTRES FACTOO SUR FOND SOMBRE DU LOGO (#222222) */
+        /* BARRE DE FILTRES FACTOO COULEUR DU HAUT / TEAL LOGO (#329ea1 / #168078) */
         .factoo-dark-filter-bar {
-            background-color: #222222 !important;
-            border: 1px solid #333333 !important;
+            background: linear-gradient(135deg, #14726b 0%, #168078 45%, #329ea1 100%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 0 4px 14px -1px rgba(22, 128, 120, 0.25), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
         }
 
         #table-search-input,
         #factooTypeSelect,
         #factooDateBtn {
-            background-color: #2c2c2c !important;
-            border: 1px solid #444444 !important;
-            color: #ffffff !important;
+            background-color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.8) !important;
+            color: #0f172a !important;
             outline: none !important;
-            box-shadow: none !important;
-            -webkit-box-shadow: none !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+            -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
         }
 
         #table-search-input:focus,
@@ -7478,16 +7479,16 @@
         #factooTypeSelect:focus,
         #factooTypeSelect:focus-visible,
         #factooDateBtn:focus {
-            border-color: #a0d9d2 !important; /* Vert d'eau logo */
-            background-color: #333333 !important;
-            color: #ffffff !important;
+            border-color: #0f766e !important;
+            background-color: #ffffff !important;
+            color: #0f172a !important;
             outline: none !important;
-            box-shadow: 0 0 0 2px rgba(160, 217, 210, 0.2) !important;
+            box-shadow: 0 0 0 2px rgba(22, 128, 120, 0.3) !important;
         }
 
         #factooTypeSelect option {
-            background-color: #222222 !important;
-            color: #ffffff !important;
+            background-color: #ffffff !important;
+            color: #0f172a !important;
         }
 </style>
 </head>
@@ -7712,17 +7713,17 @@
 
                 <!-- 1. VUE JOURNAL DES ÉCRITURES -->
                 <div id="viewJournal">
-<!-- BARRE DE RECHERCHE ET FILTRES RAPIDES FACTOO (Fond sombre du logo #222222) -->
-                    <div class="factoo-dark-filter-bar p-3 rounded-xl shadow-md mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs" style="background-color: #222222 !important; border: 1px solid #333333 !important;">
+<!-- BARRE DE RECHERCHE ET FILTRES RAPIDES FACTOO (Couleur sarcelle / teal GROW du haut) -->
+                    <div class="factoo-dark-filter-bar p-3 rounded-xl shadow-md mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs">
                         <!-- Champ recherche tiers / facture -->
                         <div class="relative flex-1">
-                            <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-[#a0d9d2] text-[18px] pointer-events-none" translate="no">search</span>
-                            <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Rechercher par libellé de l'opération, facture, tiers..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-[#2c2c2c] border border-[#444444] text-white text-xs placeholder:text-slate-400 font-medium transition-all" style="background-color: #2c2c2c !important; border: 1px solid #444444 !important; color: #ffffff !important; outline: none !important; box-shadow: none !important;">
+                            <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-[#168078] text-[18px] pointer-events-none" translate="no">search</span>
+                            <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Rechercher par libellé de l'opération, facture, tiers..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-white border border-white/70 text-slate-800 text-xs placeholder:text-slate-400 font-medium transition-all shadow-xs">
                         </div>
 
                         <!-- Dropdown Type -->
                         <div class="relative w-full md:w-44">
-                            <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-[#2c2c2c] border border-[#444444] text-white text-xs font-medium transition-all cursor-pointer" style="background-color: #2c2c2c !important; border: 1px solid #444444 !important; color: #ffffff !important; outline: none !important; box-shadow: none !important;">
+                            <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-white border border-white/70 text-slate-800 text-xs font-medium transition-all cursor-pointer shadow-xs">
                                 <option value="all">Type : Tous</option>
                                 <option value="7">Facture Client (Vente)</option>
                                 <option value="6">Facture Fournisseur (Achat)</option>
@@ -7735,12 +7736,12 @@
 
                         <!-- Sélecteur de date ultra-pro GROW -->
                         <div class="relative w-full md:w-52" id="factooDateWrapper">
-                            <button type="button" id="factooDateBtn" onclick="toggleFactooCalendar(event)" class="w-full py-2 px-3 rounded-lg bg-[#2c2c2c] hover:bg-[#333333] text-white text-xs font-medium flex items-center justify-between transition-all select-none cursor-pointer group" style="background-color: #2c2c2c !important; border: 1px solid #444444 !important; color: #ffffff !important; outline: none !important; box-shadow: none !important;">
+                            <button type="button" id="factooDateBtn" onclick="toggleFactooCalendar(event)" class="w-full py-2 px-3 rounded-lg bg-white hover:bg-slate-50 text-slate-800 text-xs font-medium flex items-center justify-between transition-all select-none cursor-pointer group shadow-xs">
                                 <div class="flex items-center gap-2 min-w-0">
-                                    <span class="material-symbols-outlined notranslate text-[16px] text-[#a0d9d2]" translate="no">calendar_today</span>
-                                    <span id="factooDateBtnLabel" class="truncate font-semibold text-slate-100">Toutes les dates</span>
+                                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">calendar_today</span>
+                                    <span id="factooDateBtnLabel" class="truncate font-semibold text-slate-800">Toutes les dates</span>
                                 </div>
-                                <span class="material-symbols-outlined notranslate text-[16px] text-slate-400 group-hover:text-slate-200 transition-transform duration-200" id="factooDateChevron" translate="no">expand_more</span>
+                                <span class="material-symbols-outlined notranslate text-[16px] text-slate-500 group-hover:text-slate-700 transition-transform duration-200" id="factooDateChevron" translate="no">expand_more</span>
                             </button>
                             <input type="hidden" id="factooDateInput" value="">
 
@@ -7787,7 +7788,7 @@
                         </div>
 
                         <!-- Bouton Réinitialiser -->
-                        <button type="button" onclick="resetFactooFilters()" class="px-3.5 py-2 rounded-lg bg-[#333333] hover:bg-[#444444] text-slate-200 hover:text-white border border-[#444444] text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap shadow-2xs">
+                        <button type="button" onclick="resetFactooFilters()" class="px-3.5 py-2 rounded-lg bg-white/20 hover:bg-white/35 text-white border border-white/35 text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap shadow-xs backdrop-blur-xs">
                             Réinitialiser
                         </button>
                     </div>
