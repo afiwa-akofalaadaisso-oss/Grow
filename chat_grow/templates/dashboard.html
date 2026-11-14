@@ -7395,10 +7395,11 @@
         }
 
         #portalSearchWrapper {
-            transition: transform 750ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease, max-width 750ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 500ms ease;
+            transform: none !important;
         }
 
-        /* État actif de l'animation : le logo et la barre montent vers le haut */
+        /* État actif de l'animation : le logo monte vers le haut, la barre de recherche reste strictement immobile */
         .portal-flight-active #portalAnimTitle {
             opacity: 0 !important;
             transform: translateY(-20px) scale(0.9) !important;
@@ -7411,9 +7412,8 @@
         }
 
         .portal-flight-active #portalSearchWrapper {
-            transform: translate(calc(-50vw + 14.5rem), calc(-50vh + 2.4rem)) scale(0.68) !important;
-            max-width: 260px !important;
-            opacity: 0.95 !important;
+            transform: none !important;
+            pointer-events: none !important;
         }
 
         .portal-flight-active #portalPmePreviewCard,
