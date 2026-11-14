@@ -7332,12 +7332,13 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (STYLE GOOGLE & BRANDING GROW AWA) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EXACT FIDÉLITÉ DÉGRADÉ & LOGO GÉANT STYLE AWA) --- */
         #viewPortalComptable {
             position: fixed;
             inset: 0;
             z-index: 1500;
-            background-color: #141414;
+            /* Dégradé vertical riche et profond inspiré de la maquette AWA : du vert-menthe sombre au noir obsidienne */
+            background: linear-gradient(180deg, #1b433e 0%, #153531 20%, #102522 45%, #0c1917 70%, #070d0c 100%) !important;
             overflow-y: auto;
             display: none;
         }
@@ -7346,21 +7347,20 @@
             inset: 0;
             background-image: url('/static/grow_logo_transparent.png');
             background-repeat: repeat;
-            background-size: 130px 130px;
-            opacity: 0.045;
+            background-size: 140px 140px;
+            opacity: 0.12; /* Visible et net comme le motif tapisserie dans l'image AWA */
             pointer-events: none;
             z-index: 1;
         }
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 36%, rgba(160, 217, 210, 0.14) 0%, rgba(20, 20, 20, 0.96) 72%);
+            background: radial-gradient(circle at 50% 25%, rgba(160, 217, 210, 0.22) 0%, rgba(20, 50, 46, 0.05) 60%, rgba(7, 13, 12, 0.95) 90%);
             pointer-events: none;
             z-index: 2;
         }
         .portal-search-input::placeholder {
-            color: #94a3b8;
-            opacity: 0.85;
+            color: rgba(255, 255, 255, 0.65);
         }
         /* Suppression absolue de tout contour bleu ou anneau natif */
         #portalCompanySearchInput,
@@ -7377,15 +7377,18 @@
             --tw-ring-color: transparent !important;
         }
         .portal-search-pill {
-            background-color: #1c1c1c;
-            border: 1.5px solid rgba(160, 217, 210, 0.65);
+            background: rgba(14, 28, 25, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(160, 217, 210, 0.75);
             border-radius: 9999px;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
         .portal-search-pill:hover,
         .portal-search-pill:focus-within {
             border-color: #a0d9d2;
-            box-shadow: 0 0 24px rgba(160, 217, 210, 0.22);
+            box-shadow: 0 0 30px rgba(160, 217, 210, 0.32);
+            background: rgba(14, 28, 25, 0.92);
         }
 
     </style>
@@ -7422,23 +7425,25 @@
         </header>
 
         <!-- Zone Centrale : Grand Logo Grow + Texte Typewriter + Barre de Recherche Entreprise -->
-        <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-8 text-center max-w-3xl mx-auto w-full">
-            <!-- Grand Logo Grow avec aura menthe douce -->
+        <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-10 md:py-14 text-center max-w-4xl mx-auto w-full">
+            <!-- GRAND LOGO GROW MAJESTUEUX (Exactement comme dans la maquette AWA) -->
             <div class="relative group cursor-pointer mb-6" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
-                <div class="absolute -inset-6 bg-[#a0d9d2]/15 rounded-full blur-2xl group-hover:bg-[#a0d9d2]/25 transition-all"></div>
-                <img src="/static/grow_logo_transparent.png" alt="Grow Logo" class="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain drop-shadow-2xl mx-auto transform group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute -inset-10 bg-[#a0d9d2]/20 rounded-full blur-3xl group-hover:bg-[#a0d9d2]/35 transition-all"></div>
+                <img src="/static/grow_logo_transparent.png" alt="Grow Logo" 
+                     class="relative w-64 sm:w-72 md:w-84 lg:w-96 max-w-[360px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
+                     style="filter: drop-shadow(0 15px 35px rgba(160, 217, 210, 0.35));">
             </div>
 
             <!-- Texte Animé Machine à Écrire (Typewriter) -->
-            <div class="min-h-[48px] md:min-h-[64px] flex items-center justify-center mb-2">
-                <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight flex items-center justify-center">
+            <div class="min-h-[52px] md:min-h-[68px] flex items-center justify-center mb-3">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-md">
                     <span id="portalTypewriterText" class="text-white"></span>
-                    <span class="inline-block w-1 md:w-1.5 h-7 md:h-11 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
+                    <span class="inline-block w-1 md:w-1.5 h-8 md:h-12 bg-[#a0d9d2] ml-2 animate-pulse"></span>
                 </h1>
             </div>
 
-            <!-- Sous-titre officiel -->
-            <p class="text-[11px] sm:text-xs md:text-[13px] font-bold tracking-[0.2em] text-[#a0d9d2] uppercase mb-8 max-w-xl">
+            <!-- Sous-titre officiel en majuscules aérées -->
+            <p class="text-[11px] sm:text-xs md:text-[13px] font-bold tracking-[0.25em] text-[#a0d9d2] uppercase mb-10 max-w-2xl drop-shadow-xs">
                 Accédez aux dossiers comptables de vos PME clientes en temps réel • SYSCOHADA
             </p>
 
