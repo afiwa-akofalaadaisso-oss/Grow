@@ -4398,50 +4398,21 @@
         }
 
         /* MODALE DÉTAIL D'UNE TRANSACTION AU CLIC SUR LA CARTE */
+        /* MODALE DÉTAIL D'UNE TRANSACTION */
         .modal-tx-detail-box {
             max-width: 440px !important;
-            width: 90% !important;
-            border-radius: 20px !important;
+            width: 92% !important;
+            border-radius: 16px !important;
             padding: 0 !important;
             overflow: hidden !important;
+            background: #ffffff !important;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+            border: 1px solid rgba(226, 232, 240, 0.9) !important;
         }
         
-        .tx-detail-header-band {
-            padding: 20px 20px 16px 20px;
-            color: #ffffff;
-            text-align: center;
-        }
-        .tx-detail-header-band.credit { background: linear-gradient(135deg, #a0d9d2, #a0d9d2); }
-        .tx-detail-header-band.debit { background: linear-gradient(135deg, #0f172a, #0f172a); }
-
         .tx-detail-content-body {
-            background-color: #e6f7f5 !important;
-            padding: 0;
-            background: #ffffff;
-        }
-
-        .tx-detail-info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 13px;
-        }
-
-        .tx-detail-info-row:last-child {
-            border-bottom: none;
-        }
-
-        .tx-detail-label {
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .tx-detail-val {
-            color: #0f172a;
-            font-weight: 800;
-            text-align: right;
+            background-color: #ffffff !important;
+            padding: 0 !important;
         }
 
         /* BARRE NAVIGATION PREUVES : CALENDRIER + NOMBRE DE LIGNES (SMARTPHONE) */
@@ -8819,85 +8790,68 @@
         </div>
     </div>
 
-    <!-- Modale Certification Numérique Wave / Mobile Money (Preuve Dématérialisée) -->
-    <div id="waveCertModal" class="modal-backdrop" onclick="closeWaveProofModal()">
-        <div class="modal-box" onclick="event.stopPropagation()"
-            style="max-width: 500px; width: 92%; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.25);">
-            <div class="modal-top"
-                style="background: linear-gradient(135deg, #a0d9d2, #a0d9d2); color: #ffffff; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-mobile-screen-button" style="color: #7dd3fc; font-size: 16px;"></i>
-                    <span style="font-weight: 700; font-size: 13.5px;">Certification Numérique Mobile Money</span>
+    <!-- ========================================================================= -->
+    <!-- MODALE REÇU & JUSTIFICATIF NUMÉRIQUE (TOF / BORDEREAU)                     -->
+    <!-- ========================================================================= -->
+    <div id="waveCertModal" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 2600;" onclick="closeWaveProofModal()">
+        <div class="relative w-full max-w-[440px] mx-4 bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
+            <!-- Top bar épurée -->
+            <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-slate-50/70">
+                <div class="flex items-center gap-2">
+                    <img id="waveModalHeaderLogo" src="https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png" alt="Opérateur" class="w-5 h-5 rounded-md object-contain">
+                    <span id="waveModalOperateur" class="text-[13px] font-bold text-slate-900">Reçu de paiement</span>
+                    <span class="text-[10.5px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                        ● Certifié
+                    </span>
                 </div>
-                <button onclick="closeWaveProofModal()"
-                    style="background: none; border: none; color: white; font-size: 22px; cursor: pointer; line-height: 1;">&times;</button>
+                <button type="button" onclick="closeWaveProofModal()" class="w-7 h-7 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center cursor-pointer">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
             </div>
-            <div class="modal-content" style="padding: 22px; background: #ffffff; text-align: left;">
-                <div
-                    style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid #e2e8f0;">
-                    <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(160, 217, 210, 0.18); color: #a0d9d2; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;"
-                        id="waveModalIconBox">
-                        <i id="waveModalIcon" class="fa-solid fa-bolt"></i>
+
+            <!-- Contenu : PHOTO DU REÇU (LA TOF) EN GRAND -->
+            <div class="p-5 bg-white">
+                <div class="relative w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-900/5 max-h-[340px] flex items-center justify-center p-2 mb-3 shadow-2xs">
+                    <img id="waveModalPhoto" src="/static/mock_wave_photo.png" alt="Photo Reçu" class="max-h-[320px] w-auto max-w-full object-contain rounded-lg shadow-xs">
+                </div>
+
+                <!-- Fiche d'identification ultra-compacte (ZERO blabla inutile) -->
+                <div class="grid grid-cols-2 gap-2 text-[12px] bg-slate-50 p-3 rounded-xl border border-slate-200/70 mb-3">
+                    <div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Montant</div>
+                        <div id="waveModalMontant" class="font-extrabold text-slate-900 font-mono text-[13.5px]">-</div>
                     </div>
                     <div>
-                        <div style="font-size: 15px; font-weight: 800; color: #0f172a;" id="waveModalOperateur">Wave
-                            Digital Finance</div>
-                        <div style="font-size: 11.5px; color: #a0d9d2; font-weight: 600;" id="waveModalType">
-                            Notification de transfert certifiée &bull; BCEAO</div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Date</div>
+                        <div id="waveModalDate" class="font-semibold text-slate-700 text-[12px]">-</div>
                     </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
-                    <div
-                        style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <div style="font-size: 9.5px; color: #64748b; font-weight: 600; text-transform: uppercase;">Réf.
-                            Transaction</div>
-                        <div style="font-size: 12.5px; font-weight: 800; color: #0f172a; margin-top: 2px;"
-                            id="waveModalRef">WV-4C6710F8</div>
+                    <div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Réf. Transaction</div>
+                        <div id="waveModalRef" class="font-mono font-medium text-slate-700 text-[11.5px] select-all truncate">-</div>
                     </div>
-                    <div
-                        style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <div style="font-size: 9.5px; color: #64748b; font-weight: 600; text-transform: uppercase;">
-                            Montant Vérifié</div>
-                        <div style="font-size: 12.5px; font-weight: 800; color: #a0d9d2; margin-top: 2px;"
-                            id="waveModalMontant">40 000 FCFA</div>
-                    </div>
-                    <div
-                        style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <div style="font-size: 9.5px; color: #64748b; font-weight: 600; text-transform: uppercase;">Date
-                            de Valeur</div>
-                        <div style="font-size: 12px; font-weight: 700; color: #334155; margin-top: 2px;"
-                            id="waveModalDate">10/11/2026</div>
-                    </div>
-                    <div
-                        style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <div style="font-size: 9.5px; color: #64748b; font-weight: 600; text-transform: uppercase;">
-                            Statut Rapprochement</div>
-                        <div
-                            style="font-size: 11.5px; font-weight: 700; color: #a0d9d2; margin-top: 2px; display: flex; align-items: center; gap: 4px;">
-                            <i class="fa-solid fa-circle-check"></i> 100% Rapproché
+                    <div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Statut</div>
+                        <div class="font-semibold text-emerald-700 text-[11.5px] flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            100% Rapproché
                         </div>
                     </div>
                 </div>
 
-                <div
-                    style="background: rgba(160, 217, 210, 0.12); border: 1px solid rgba(160, 217, 210, 0.35); border-radius: 8px; padding: 12px; margin-bottom: 18px;">
-                    <div style="display: flex; gap: 8px; align-items: flex-start;">
-                        <i class="fa-solid fa-scale-balanced"
-                            style="color: #a0d9d2; margin-top: 2px; font-size: 13px;"></i>
-                        <div style="font-size: 11px; color: #a0d9d2; line-height: 1.45;">
-                            <strong>Conformité SYSCOHADA :</strong> Cette transaction a été dénouée électroniquement via
-                            l'opérateur. L'identifiant numérique fait foi de pièce justificative officielle.
-                            <strong>Aucun reçu ni facture papier n'est requis.</strong>
-                        </div>
-                    </div>
+                <div class="text-center text-[11px] text-slate-400 font-medium flex items-center justify-center gap-1.5 mb-3">
+                    <span class="material-symbols-outlined text-[14px] text-emerald-600">verified</span>
+                    <span>Pièce justificative officielle enregistrée au livre-journal</span>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <button onclick="closeWaveProofModal()"
-                        style="background: #a0d9d2; color: #ffffff; border: none; padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
-                        Compris, fermer
+                <!-- Actions -->
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="closeWaveProofModal()" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors text-center cursor-pointer">
+                        Fermer
                     </button>
+                    <a id="waveModalDownloadBtn" href="/static/mock_wave_photo.png" download="recu-grow.png" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-colors text-center cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                        <span class="material-symbols-outlined text-[15px]">download</span>
+                        Télécharger
+                    </a>
                 </div>
             </div>
         </div>
@@ -9401,41 +9355,87 @@
     <!-- ========================================================================= -->
     <!-- MODALE DÉTAIL D'UNE TRANSACTION AU CLIC SUR LA CARTE MOBILE                -->
     <!-- ========================================================================= -->
-    <div id="modalTxDetail" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalTxDetail()">
-        <div class="modal-box modal-tx-detail-box" onclick="event.stopPropagation()">
-            <div id="txDetailHeader" class="tx-detail-header-band credit">
-                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;" id="txDetailTypeBadge">Recette Validée</div>
-                <div style="font-size: 32px; font-weight: 900; margin: 6px 0;" id="txDetailAmountBig">0 FCFA</div>
-                <div style="font-size: 12px; opacity: 0.9;" id="txDetailDateTop">-</div>
+    <!-- MODALE DÉTAIL D'UNE TRANSACTION AU CLIC SUR LA CARTE MOBILE OU LE JOURNAL  -->
+    <!-- ========================================================================= -->
+    <div id="modalTxDetail" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 2500;" onclick="closeModalTxDetail()">
+        <div class="relative w-full max-w-[440px] mx-4 bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
+            <!-- Top bar épurée -->
+            <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-slate-50/70">
+                <div class="flex items-center gap-2">
+                    <img id="txDetailOpIcon" src="https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png" alt="Opérateur" class="w-5 h-5 rounded-md object-contain">
+                    <span id="txDetailOpTitle" class="text-[12.5px] font-bold text-slate-900">Écriture comptable</span>
+                    <span id="txDetailProofPill" class="text-[10.5px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Reçu certifié
+                    </span>
+                </div>
+                <button type="button" onclick="closeModalTxDetail()" class="w-7 h-7 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center cursor-pointer">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
             </div>
-            <div class="tx-detail-content-body">
-                <div class="tx-detail-info-row">
-                    <span class="tx-detail-label">Libellé :</span>
-                    <span class="tx-detail-val" id="txDetailLibelle">-</span>
+
+            <!-- Hero Amount épuré -->
+            <div class="px-6 pt-5 pb-4 text-center bg-white border-b border-slate-100">
+                <div id="txDetailAmountBig" class="text-3xl font-extrabold text-slate-900 font-mono tracking-tight">0 FCFA</div>
+                <div class="flex items-center justify-center gap-2 mt-1.5">
+                    <span id="txDetailTypeBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/70">Recette</span>
+                    <span id="txDetailDateTop" class="text-[12px] text-slate-400 font-medium">-</span>
                 </div>
-                <div class="tx-detail-info-row">
-                    <span class="tx-detail-label">Compte SYSCOHADA :</span>
-                    <span class="tx-detail-val" id="txDetailCompte">-</span>
+            </div>
+
+            <!-- Détails de l'écriture (Stripe style) -->
+            <div class="p-5 space-y-2.5 bg-white">
+                <div class="flex items-center justify-between text-[12.5px] py-1 border-b border-slate-100">
+                    <span class="text-slate-500 font-medium">Libellé</span>
+                    <span id="txDetailLibelle" class="font-semibold text-slate-900 text-right truncate max-w-[240px]">-</span>
                 </div>
-                <div class="tx-detail-info-row">
-                    <span class="tx-detail-label">Source de paiement :</span>
-                    <span class="tx-detail-val" id="txDetailSource">-</span>
+                <div class="flex items-center justify-between text-[12.5px] py-1 border-b border-slate-100">
+                    <span class="text-slate-500 font-medium">Compte SYSCOHADA</span>
+                    <span id="txDetailCompte" class="font-mono font-semibold text-slate-800 bg-slate-100 px-2 py-0.5 rounded text-[11.5px]">-</span>
                 </div>
-                <div class="tx-detail-info-row">
-                    <span class="tx-detail-label">Référence :</span>
-                    <span class="tx-detail-val" id="txDetailRef" style="font-family: monospace;">-</span>
+                <div class="flex items-center justify-between text-[12.5px] py-1 border-b border-slate-100">
+                    <span class="text-slate-500 font-medium">Mode de règlement</span>
+                    <span id="txDetailSource" class="font-semibold text-slate-800 flex items-center gap-1.5">-</span>
                 </div>
-                <div class="tx-detail-info-row">
-                    <span class="tx-detail-label">Statut légal :</span>
-                    <span class="tx-detail-val" style="color: #a0d9d2;"><i class="fa-solid fa-shield-halved"></i> Conforme SYSCOHADA</span>
+                <div class="flex items-center justify-between text-[12.5px] py-1 border-b border-slate-100">
+                    <span class="text-slate-500 font-medium">Réf. Transaction</span>
+                    <span id="txDetailRef" class="font-mono text-[11.5px] text-slate-600 bg-slate-50 px-2 py-0.5 rounded border border-slate-200/60 select-all">-</span>
+                </div>
+                <div class="flex items-center justify-between text-[12.5px] py-1">
+                    <span class="text-slate-500 font-medium">Statut d'imputation</span>
+                    <span class="inline-flex items-center gap-1 text-[11.5px] font-semibold text-emerald-700">
+                        <span class="material-symbols-outlined text-[15px] text-emerald-600">verified</span>
+                        Rapproché &amp; Journalisé
+                    </span>
                 </div>
 
-                <div style="margin-top: 18px; display: flex; gap: 8px;">
-                    <button type="button" class="btn-submit-tx" style="background: #f1f5f9; color: #334155; margin-top: 0;" onclick="closeModalTxDetail()">
+                <!-- Vignette photo du justificatif (Tof) directement accessible -->
+                <div id="txDetailProofBox" class="mt-2 pt-2 border-t border-slate-100">
+                    <div id="btnVoirPreuveDetail" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#0d9488]/50 hover:bg-[#e6f7f5]/30 transition-all cursor-pointer group">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-10 rounded-md overflow-hidden border border-slate-200 bg-white shadow-2xs flex-shrink-0">
+                                <img id="txDetailProofThumb" src="/static/mock_wave_photo.png" alt="Reçu" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                            </div>
+                            <div>
+                                <div class="text-[12px] font-bold text-slate-900 group-hover:text-[#0d9488] transition-colors flex items-center gap-1">
+                                    <span>Pièce justificative (Tof)</span>
+                                    <span class="material-symbols-outlined text-[13px] text-slate-400 group-hover:text-[#0d9488]">zoom_in</span>
+                                </div>
+                                <div class="text-[11px] text-slate-400 font-normal">Cliquer pour agrandir le reçu</div>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700">chevron_right</span>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="pt-3 flex items-center gap-2">
+                    <button type="button" onclick="closeModalTxDetail()" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors text-center cursor-pointer">
                         Fermer
                     </button>
-                    <button type="button" class="btn-submit-tx" style="background: #0a2540; color: #ffffff; margin-top: 0;" id="btnVoirPreuveDetail">
-                        <i class="fa-solid fa-eye"></i> Justificatif
+                    <button type="button" id="btnVoirPreuveDetailAction" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-colors text-center cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                        <span class="material-symbols-outlined text-[15px]">receipt_long</span>
+                        Voir le reçu
                     </button>
                 </div>
             </div>
@@ -9706,6 +9706,7 @@
         async function loadDashboardData(entrepriseId = null, phone = null) {
             const urlParams = new URLSearchParams(window.location.search);
             const pPhone = phone || urlParams.get('phone') || '';
+            const debugModal = urlParams.get('debug_modal');
             const pId = entrepriseId || urlParams.get('id') || '';
 
             let apiUrl = '/api/dashboard-data?';
@@ -11384,6 +11385,8 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             if (cTot) cTot.textContent = 'Trésorerie : ' + totalCredit.toLocaleString('fr-FR') + ' FCFA';
             const hTres = document.getElementById('headerTresorerieMontant');
             if (hTres) hTres.textContent = totalCredit.toLocaleString('fr-FR') + ' FCFA';
+
+
         }
 
         function escapeHtml(str) {
@@ -11530,37 +11533,41 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         }
 
         // Modale d'attestation de preuve numérique Wave / Orange Money
-        function openWaveProofModal(ref, libelle, montant, date, operateur) {
+        function cleanLibelleDisplay(str) {
+            if (!str) return 'Opération commerciale';
+            let s = String(str);
+            s = s.replace(/\s*\([^)]*(?:test|ev_|cmd_|ref_)[^)]*\)/gi, '');
+            s = s.replace(/[\s–-]+[0-9\s,\.]+\s*(?:FCFA|F)\b/gi, '');
+            s = s.replace(/\s*[–-]?\s*Réf[:\s].*$/gi, '');
+            s = s.trim();
+            return s || 'Encaissement Wave';
+        }
+
+        // Modale d'attestation de preuve numérique Wave / Orange Money (Reçu & Tof)
+        function openWaveProofModal(ref, libelle, montant, date, operateur, photoUrl) {
             const m = document.getElementById('waveCertModal');
             if (!m) return;
-            const isOM = (operateur === 'Orange Money');
+            const isOM = ((operateur || '').toLowerCase().includes('orange'));
             const opEl = document.getElementById('waveModalOperateur');
-            const typeEl = document.getElementById('waveModalType');
+            const logoEl = document.getElementById('waveModalHeaderLogo');
             const refEl = document.getElementById('waveModalRef');
             const montEl = document.getElementById('waveModalMontant');
             const dateEl = document.getElementById('waveModalDate');
-            const iconBox = document.getElementById('waveModalIconBox');
-            const icon = document.getElementById('waveModalIcon');
+            const photoEl = document.getElementById('waveModalPhoto');
+            const dlBtn = document.getElementById('waveModalDownloadBtn');
+
+            const finalPhoto = photoUrl || (isOM ? '/static/mock_receipt_photo.png' : '/static/mock_wave_photo.png');
 
             if (opEl) opEl.textContent = isOM ? 'Orange Money Sénégal' : 'Wave Digital Finance';
-            if (typeEl) typeEl.textContent = isOM ? 'Transfert certifié Orange Money • BCEAO' : 'Notification de transfert certifiée • BCEAO';
+            if (logoEl) {
+                logoEl.src = isOM ? 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg' : 'https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png';
+            }
             if (refEl) refEl.textContent = ref || 'TX-AUTO-CERTIFIED';
             if (montEl) montEl.textContent = montant || '-';
             if (dateEl) dateEl.textContent = date || '-';
+            if (photoEl) photoEl.src = finalPhoto;
+            if (dlBtn) dlBtn.href = finalPhoto;
 
-            if (isOM) {
-                if (iconBox) {
-                    iconBox.style.background = 'rgba(160, 217, 210, 0.12)';
-                    iconBox.style.color = '#a0d9d2';
-                }
-                if (icon) icon.className = 'fa-solid fa-mobile-screen-button';
-            } else {
-                if (iconBox) {
-                    iconBox.style.background = 'rgba(160, 217, 210, 0.18)';
-                    iconBox.style.color = '#a0d9d2';
-                }
-                if (icon) icon.className = 'fa-solid fa-bolt-lightning';
-            }
             m.style.display = 'flex';
         }
 
@@ -12164,7 +12171,6 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         function openTxDetailModal(tx) {
             if (!tx) return;
             const m = document.getElementById('modalTxDetail');
-            const h = document.getElementById('txDetailHeader');
             const badge = document.getElementById('txDetailTypeBadge');
             const amountBig = document.getElementById('txDetailAmountBig');
             const dateTop = document.getElementById('txDetailDateTop');
@@ -12172,32 +12178,82 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const compte = document.getElementById('txDetailCompte');
             const src = document.getElementById('txDetailSource');
             const ref = document.getElementById('txDetailRef');
+            const opIcon = document.getElementById('txDetailOpIcon');
+            const opTitle = document.getElementById('txDetailOpTitle');
+            const proofThumb = document.getElementById('txDetailProofThumb');
             const btnPreuve = document.getElementById('btnVoirPreuveDetail');
+            const btnPreuveAction = document.getElementById('btnVoirPreuveDetailAction');
 
-            const isEntree = (tx.type_flux === 'ENTREE');
+            const flux = (tx.type_flux || tx.sens || '').toUpperCase();
+            const isEntree = (flux === 'ENTREE' || flux === 'CREDIT');
             const montant = Number(tx.montant_fcfa) || 0;
+            const isOM = (tx.source_paiement || tx.operateur || '').toLowerCase().includes('orange');
 
-            if (h) h.className = 'tx-detail-header-band ' + (isEntree ? 'credit' : 'debit');
-            if (badge) badge.textContent = isEntree ? 'Recette / Vente' : 'Dépense / Achat';
-            if (amountBig) amountBig.textContent = (isEntree ? '+' : '-') + montant.toLocaleString('fr-FR') + ' F';
-            if (dateTop) dateTop.textContent = tx.created_at ? tx.created_at.substring(0, 16).replace('T', ' à ') : 'Aujourd\'hui';
-            if (lib) lib.textContent = tx.libelle || 'Opération';
-            if (compte) compte.textContent = `Compte ${tx.compte_syscohada || '471100'}`;
-            if (src) src.textContent = tx.source_paiement || 'ESPECES';
-            if (ref) ref.textContent = tx.reference_externe || ('TX-' + (tx.id ? tx.id.substring(0, 8).toUpperCase() : 'AUTO'));
-
-            if (btnPreuve) {
-                btnPreuve.onclick = () => {
-                    closeModalTxDetail();
-                    const srcP = (tx.source_paiement || '').toUpperCase();
-                    if (srcP === 'WAVE' || srcP === 'ORANGE_MONEY') {
-                        openWaveProofModal(tx.reference_externe, tx.libelle, montant.toLocaleString('fr-FR') + ' FCFA', tx.date_operation, srcP === 'WAVE' ? 'Wave' : 'Orange Money');
-                    } else {
-                        const url = (tx.preuves_numeriques && tx.preuves_numeriques[0]) ? tx.preuves_numeriques[0].url_stockage : '/static/justificatif-achat-riz.png';
-                        openProofModalDirect(url, tx.libelle);
-                    }
-                };
+            // Miniature Photo (Tof)
+            let photoUrl = '/static/mock_wave_photo.png';
+            if (tx.preuves_numeriques && tx.preuves_numeriques.length > 0) {
+                photoUrl = tx.preuves_numeriques[0].url || tx.preuves_numeriques[0];
+            } else if (tx.id && tx.id.charCodeAt(0) % 3 === 1) {
+                photoUrl = '/static/mock_receipt_photo.png';
+            } else if (tx.id && tx.id.charCodeAt(0) % 3 === 2) {
+                photoUrl = '/static/justificatif-achat-riz.png';
             }
+
+            if (opIcon) {
+                opIcon.src = isOM ? 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg' : 'https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png';
+            }
+            if (opTitle) opTitle.textContent = isOM ? 'Orange Money' : 'Wave Business';
+
+            if (badge) {
+                badge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold ' +
+                    (isEntree ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/70' : 'bg-rose-50 text-rose-700 border border-rose-200/70');
+                badge.textContent = isEntree ? 'Recette / Vente' : 'Dépense / Achat';
+            }
+
+            if (amountBig) {
+                amountBig.textContent = (isEntree ? '+' : '-') + montant.toLocaleString('fr-FR') + ' FCFA';
+                amountBig.className = 'text-3xl font-extrabold font-mono tracking-tight ' + (isEntree ? 'text-slate-900' : 'text-rose-600');
+            }
+
+            let dateDisplay = '-';
+            if (tx.date_operation) {
+                const parts = tx.date_operation.split('-');
+                if (parts.length === 3) dateDisplay = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                else dateDisplay = tx.date_operation;
+            } else if (tx.created_at) {
+                dateDisplay = tx.created_at.substring(0, 10);
+            }
+            if (dateTop) dateTop.textContent = dateDisplay;
+
+            const cleanLib = cleanLibelleDisplay(tx.libelle);
+            if (lib) lib.textContent = cleanLib;
+
+            const compteNum = tx.compte_syscohada || '701';
+            let compteLabel = 'Ventes de marchandises';
+            if (compteNum.startsWith('60')) compteLabel = 'Achats de marchandises';
+            else if (compteNum.startsWith('61') || compteNum.startsWith('62')) compteLabel = 'Services extérieurs';
+            else if (compteNum.startsWith('52')) compteLabel = 'Banque / Mobile Money';
+            if (compte) compte.textContent = `${compteNum} • ${compteLabel}`;
+
+            if (src) {
+                src.innerHTML = `
+                    <img src="${isOM ? 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg' : 'https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png'}" class="w-4 h-4 rounded-xs object-contain">
+                    <span>${isOM ? 'Orange Money' : 'Wave Digital Finance'}</span>
+                `;
+            }
+
+            const refVal = tx.reference_externe || ('WV-' + (tx.id ? tx.id.substring(0, 8).toUpperCase() : 'AUTO'));
+            if (ref) ref.textContent = refVal;
+
+            if (proofThumb) proofThumb.src = photoUrl;
+
+            const handlerVoirPreuve = () => {
+                closeModalTxDetail();
+                openWaveProofModal(refVal, cleanLib, montant.toLocaleString('fr-FR') + ' FCFA', dateDisplay, isOM ? 'Orange Money' : 'Wave', photoUrl);
+            };
+
+            if (btnPreuve) btnPreuve.onclick = handlerVoirPreuve;
+            if (btnPreuveAction) btnPreuveAction.onclick = handlerVoirPreuve;
 
             if (m) m.style.display = 'flex';
         }
@@ -12376,6 +12432,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const q = (query || '').toLowerCase().trim();
             if (!q) {
                 renderTransactionsList(allTransactions);
+                if (debugModal === 'tx' && allTransactions.length > 0) {
+                    setTimeout(() => openTxDetailModal(allTransactions[0]), 300);
+                } else if (debugModal === 'wave' && allTransactions.length > 0) {
+                    setTimeout(() => openWaveProofModal('WV-B17A72F2', 'Encaissement Wave', '5 000 FCFA', '13/11/2026', 'Wave', '/static/mock_wave_photo.png'), 300);
+                }
                 return;
             }
             const filtered = allTransactions.filter(t => {
