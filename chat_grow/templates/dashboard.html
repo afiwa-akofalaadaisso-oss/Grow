@@ -7375,60 +7375,60 @@
 
             <!-- Navigation Simple et Aérée -->
             <nav class="px-2.5 flex flex-col gap-1 py-1 text-[13px]">
-                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#e6f7f4] text-black font-bold border-l-4 border-black shadow-xs active transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#e6f7f4] text-black font-bold border-l-4 border-black shadow-xs active transition-all cursor-pointer group" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-black">menu_book</span>
-                        <span class="text-black font-bold">Journal</span>
+                        <span class="material-symbols-outlined text-[18px] text-black group-hover:text-black transition-colors">menu_book</span>
+                        <span class="nav-label">Journal</span>
                     </div>
                 </a>
                 
-                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#e6f7f4] hover:text-black hover:font-bold transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-400">account_balance</span>
-                        <span>Bilan</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-black transition-colors">account_balance</span>
+                        <span class="nav-label">Bilan</span>
                     </div>
                 </a>
                 
-                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#e6f7f4] hover:text-black hover:font-bold transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-400">query_stats</span>
-                        <span>Résultat</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-black transition-colors">query_stats</span>
+                        <span class="nav-label">Résultat</span>
                     </div>
                 </a>
                 
-                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#e6f7f4] hover:text-black hover:font-bold transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-400">payments</span>
-                        <span>Trésorerie (TFT)</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-black transition-colors">payments</span>
+                        <span class="nav-label">Trésorerie (TFT)</span>
                     </div>
                 </a>
                 
-                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#e6f7f4] hover:text-black hover:font-bold transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-400">description</span>
-                        <span>Liasse &amp; Notes</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-black transition-colors">description</span>
+                        <span class="nav-label">Liasse &amp; Notes</span>
                     </div>
                 </a>
 
                 <div class="pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Outils</div>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#e6f7f4] hover:text-black hover:font-bold transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-400">verified</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-black transition-colors">verified</span>
                         <span>Visa ONECCA</span>
                     </div>
                 </a>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="telechargerFichierFEC();">
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#e6f7f4] hover:text-black hover:font-bold transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="telechargerFichierFEC();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-400">output</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-black transition-colors">output</span>
                         <span>Export FEC</span>
                     </div>
                 </a>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="ouvrirModalQRAccesGrow();">
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#e6f7f4] hover:text-black hover:font-bold transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalQRAccesGrow();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-400">qr_code_2</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-black transition-colors">qr_code_2</span>
                         <span>QR WhatsApp</span>
                     </div>
                 </a>
@@ -9618,6 +9618,19 @@
         });
 
         // Bascule entre Journal, Prêts et Tout Savoir Sur Nous via le menu horizontal et la barre mobile
+        
+        function applyActiveTabStyle(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            el.classList.add('bg-[#e6f7f4]', 'text-black', 'font-bold', 'border-l-4', 'border-black', 'shadow-xs', 'active');
+            el.classList.remove('text-slate-300');
+            const icon = el.querySelector('.material-symbols-outlined');
+            if (icon) {
+                icon.classList.remove('text-slate-400');
+                icon.classList.add('text-black');
+            }
+        }
+
         function switchVerticalTab(tabName) {
             console.log("Switching tab to:", tabName);
 
@@ -9647,48 +9660,26 @@
 
             if (tabName === 'journal' || tabName === 'dashboard') {
                 if (viewJournal) viewJournal.style.display = 'block';
-                const el = document.getElementById('navItemJournal');
-                if (el) {
-                    el.classList.add('bg-[#e6f7f4]', 'text-black', 'font-bold', 'border-l-4', 'border-black', 'shadow-xs', 'active');
-                    el.classList.remove('text-slate-300', 'text-[#064e3b]');
-                    const icon = el.querySelector('.material-symbols-outlined');
-                    if (icon) { icon.classList.remove('text-slate-400', 'text-[#064e3b]'); icon.classList.add('text-black'); }
-                }
+                applyActiveTabStyle('navItemJournal');
                 if (breadTitle) breadTitle.textContent = 'Journal des Écritures';
             } else if (tabName === 'bilan') {
                 if (viewBilan) viewBilan.style.display = 'block';
-                const el = document.getElementById('navItemBilan');
-                if (el) {
-                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
-                    el.classList.remove('text-slate-600');
-                }
+                applyActiveTabStyle('navItemBilan');
                 if (breadTitle) breadTitle.textContent = 'Bilan SYSCOHADA';
                 if (typeof updateBilanDisplay === 'function') updateBilanDisplay();
             } else if (tabName === 'resultat') {
                 if (viewResultat) viewResultat.style.display = 'block';
-                const el = document.getElementById('navItemResultat');
-                if (el) {
-                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
-                    el.classList.remove('text-slate-600');
-                }
+                applyActiveTabStyle('navItemResultat');
                 if (breadTitle) breadTitle.textContent = 'Compte de Résultat';
                 if (typeof updateCompteResultatDisplay === 'function') updateCompteResultatDisplay();
             } else if (tabName === 'tft') {
                 if (viewTFT) viewTFT.style.display = 'block';
-                const el = document.getElementById('navItemTFT');
-                if (el) {
-                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
-                    el.classList.remove('text-slate-600');
-                }
+                applyActiveTabStyle('navItemTFT');
                 if (breadTitle) breadTitle.textContent = 'Flux de Trésorerie (TFT)';
                 if (typeof updateTFTDisplay === 'function') updateTFTDisplay();
             } else if (tabName === 'annexes') {
                 if (viewAnnexes) viewAnnexes.style.display = 'block';
-                const el = document.getElementById('navItemAnnexes');
-                if (el) {
-                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
-                    el.classList.remove('text-slate-600');
-                }
+                applyActiveTabStyle('navItemAnnexes');
                 if (breadTitle) breadTitle.textContent = 'Notes & Liasse DGID';
                 if (typeof updateAnnexesDisplay === 'function') updateAnnexesDisplay();
             } else if (tabName === 'prets') {
