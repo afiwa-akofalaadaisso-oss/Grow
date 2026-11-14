@@ -7339,41 +7339,32 @@
 
             <!-- Entité Active Ultra Minimaliste -->
 <!-- Entreprise Active & Sélecteur (Recherche et Choix sur fond Sombre #222222) -->
-            <div class="p-3 relative" id="enterpriseSelectorSection">
-                <div class="p-2.5 rounded-xl bg-[#181818] border border-[#333333] flex flex-col gap-2">
-                    <!-- Entête Carte Entité avec bouton Changer -->
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Entité Active</span>
-                        <button type="button" onclick="toggleEnterpriseDropdown(event)" class="text-[11px] font-semibold text-[#a0d9d2] hover:text-[#d1fae5] flex items-center gap-0.5 transition-colors cursor-pointer" id="btnChangerEntite">
-                            <span>Changer</span>
-                            <span class="material-symbols-outlined text-[13px]">unfold_more</span>
-                        </button>
-                    </div>
-
-                    <!-- Infos Entité Active -->
-                    <div class="flex items-center justify-between cursor-pointer" onclick="toggleEnterpriseDropdown(event)">
-                        <div class="flex flex-col min-w-0 pr-2">
-                            <span class="font-bold text-white text-xs truncate" id="sidebarEntityName">Le Nom De Mon Entreprise Est Cglt</span>
-                            <span class="text-[10px] text-slate-400 font-mono" id="sidebarEntityNinea">NINEA : 00802996</span>
+            <!-- SÉLECTEUR D'ENTREPRISE PRO & ÉPURÉ (Style Linear / Stripe) -->
+            <div class="px-3 py-2.5 relative" id="enterpriseSelectorSection">
+                <button type="button" onclick="toggleEnterpriseDropdown(event)" class="w-full flex items-center justify-between p-2 rounded-xl bg-[#1a1a1a] hover:bg-[#252525] border border-[#2d2d2d] transition-all cursor-pointer group text-left shadow-2xs">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-7 h-7 rounded-lg bg-[#2a3d36] text-[#a0d9d2] border border-[#3d5a4f] flex items-center justify-center font-bold text-[11px] flex-shrink-0" id="sidebarEntityAvatar">
+                            CG
                         </div>
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0 shadow-[0_0_6px_rgba(16,185,129,0.5)]" title="Registre certifié"></span>
+                        <div class="flex flex-col min-w-0">
+                            <span class="font-semibold text-xs text-white truncate group-hover:text-[#a0d9d2] transition-colors leading-tight" id="sidebarEntityName">CGLT</span>
+                            <span class="text-[10px] text-slate-500 font-mono leading-tight mt-0.5" id="sidebarEntityNinea">00802996</span>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-slate-500 group-hover:text-slate-300 text-[18px] flex-shrink-0 ml-1">unfold_more</span>
+                </button>
+
+                <!-- Popover Déroulant des Dossiers -->
+                <div id="enterpriseDropdownMenu" class="hidden absolute left-3 right-3 top-full mt-1.5 bg-[#1a1a1a] border border-[#333333] rounded-xl shadow-2xl z-[100] overflow-hidden">
+                    <div class="p-2 border-b border-[#2d2d2d] bg-[#141414]">
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-500 text-[14px]">search</span>
+                            <input id="enterpriseSearchInput" oninput="filterEnterpriseList(this.value)" type="text" placeholder="Rechercher..." class="w-full bg-[#202020] border border-[#333333] rounded-md pl-6 pr-2 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#a0d9d2]">
+                        </div>
                     </div>
 
-                    <!-- Champ Recherche Entreprise -->
-                    <div class="relative mt-0.5">
-                        <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-[14px]">search</span>
-                        <input id="enterpriseSearchInput" oninput="filterEnterpriseList(this.value)" onfocus="openEnterpriseDropdown()" type="text" placeholder="Rechercher entreprise..." class="w-full bg-[#121212] border border-[#333333] rounded-lg pl-7 pr-2 py-1 text-[11px] text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#a0d9d2] focus:ring-1 focus:ring-[#a0d9d2] transition-all">
-                    </div>
-                </div>
-
-                <!-- Menu Déroulant / Liste des Entreprises -->
-                <div id="enterpriseDropdownMenu" class="hidden absolute left-3 right-3 top-full mt-1.5 bg-[#181818] border border-[#333333] rounded-xl shadow-2xl z-[100] overflow-hidden flex flex-col">
-                    <div class="px-3 py-1.5 border-b border-[#2d2d2d] bg-[#141414] text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                        <span>Dossiers Clients</span>
-                        <span id="enterpriseCountLabel" class="text-slate-400 font-mono">1</span>
-                    </div>
-                    <div id="enterpriseListContainer" class="overflow-y-auto divide-y divide-[#2d2d2d] max-h-52">
-                        <!-- Entreprises injectées dynamiquement -->
+                    <div id="enterpriseListContainer" class="p-1 max-h-48 overflow-y-auto divide-y divide-[#242424]">
+                        <!-- Items épurés injectés dynamiquement -->
                     </div>
                 </div>
             </div>
@@ -9739,9 +9730,9 @@
                 // Liste de toutes les entreprises
                 const dbEnts = data.entreprises || [];
                 const demoEnts = [
-                    { id: 'ent-demo-1', nom_entreprise: 'SARL Dakar Import & Transit', ninea: '00802996-2G3', telephone_whatsapp: '221770001122' },
-                    { id: 'ent-demo-2', nom_entreprise: 'Cabinet Conseil Diallo & Frères', ninea: '00754128-1A2', telephone_whatsapp: '221762223344' },
-                    { id: 'ent-demo-3', nom_entreprise: 'Boutique Express Almadies', ninea: '00912440-3K9', telephone_whatsapp: '221781112233' }
+                    { id: 'ent-demo-1', nom_entreprise: 'Dakar Import', ninea: '00802996-2G3', telephone_whatsapp: '221770001122' },
+                    { id: 'ent-demo-2', nom_entreprise: 'Diallo & Frères', ninea: '00754128-1A2', telephone_whatsapp: '221762223344' },
+                    { id: 'ent-demo-3', nom_entreprise: 'Boutique Almadies', ninea: '00912440-3K9', telephone_whatsapp: '221781112233' }
                 ];
                 // Fusionner avec la liste de la base de données
                 allEntreprisesList = [...dbEnts];
@@ -9757,8 +9748,12 @@
                 if (currentEntreprise) {
                     const sbName = document.getElementById('sidebarEntityName');
                     const sbNinea = document.getElementById('sidebarEntityNinea');
-                    if (sbName) sbName.textContent = currentEntreprise.nom_entreprise || currentEntreprise.nom || 'Le Nom De Mon Entreprise Est Cglt';
-                    if (sbNinea) sbNinea.textContent = 'NINEA : ' + (currentEntreprise.ninea || '00802996');
+                    const sbAvatar = document.getElementById('sidebarEntityAvatar');
+                    const rawName = currentEntreprise.nom_entreprise || currentEntreprise.nom || 'CGLT';
+                    const cName = getCleanCompanyName(rawName);
+                    if (sbName) sbName.textContent = cName;
+                    if (sbNinea) sbNinea.textContent = currentEntreprise.ninea || '00802996';
+                    if (sbAvatar) sbAvatar.textContent = getCompanyInitials(cName);
                     const clientNameEl = document.getElementById('comptableCurrentClientName');
                     if (clientNameEl) {
                         clientNameEl.textContent = `Dossier Client : ${currentEntreprise.nom_entreprise || 'Entreprise'}`;
@@ -12586,20 +12581,29 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (menu) menu.classList.add('hidden');
         }
 
+        function getCleanCompanyName(rawName) {
+            if (!rawName) return 'Entreprise';
+            let clean = rawName.replace(/^le nom de mon entreprise est\s*/i, '').trim();
+            return clean || rawName;
+        }
+
+        function getCompanyInitials(name) {
+            const clean = getCleanCompanyName(name);
+            const words = clean.split(/\s+/).filter(Boolean);
+            if (words.length >= 2) {
+                return (words[0][0] + words[1][0]).toUpperCase();
+            }
+            return clean.substring(0, 2).toUpperCase();
+        }
+
         function renderEnterpriseDropdown(list) {
             const container = document.getElementById('enterpriseListContainer');
-            const countLabel = document.getElementById('enterpriseCountLabel');
             if (!container) return;
 
             const listToRender = (list && list.length > 0) ? list : (allEntreprisesList || []);
-            if (countLabel) countLabel.textContent = listToRender.length;
 
             if (listToRender.length === 0) {
-                container.innerHTML = `
-                    <div class="p-3 text-center text-xs text-slate-400 font-medium">
-                        Aucune entreprise trouvée
-                    </div>
-                `;
+                container.innerHTML = `<div class="p-2.5 text-center text-xs text-slate-500 font-medium">Aucun dossier trouvé</div>`;
                 return;
             }
 
@@ -12608,15 +12612,20 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
             let itemsHtml = '';
             listToRender.forEach(ent => {
+                const cleanName = getCleanCompanyName(ent.nom_entreprise);
+                const initials = getCompanyInitials(cleanName);
                 const isSelected = (curId && ent.id === curId) || (curPhone && ent.telephone_whatsapp === curPhone);
-                const activeBadge = isSelected ? '<span class="text-[#0d9488] font-bold text-xs flex-shrink-0">✓</span>' : '';
-                const activeBg = isSelected ? 'bg-[#e6f7f5]/80 text-[#0f766e]' : 'hover:bg-slate-50 text-slate-800';
+                const activeBg = isSelected ? 'bg-[#14362b] text-[#a0d9d2]' : 'hover:bg-[#252525] text-slate-200';
+                const activeBadge = isSelected ? '<span class="text-[#a0d9d2] text-xs font-bold flex-shrink-0">✓</span>' : '';
 
                 itemsHtml += `
-                    <div onclick="selectEnterprise('${escapeHtml(ent.id || '')}', '${escapeHtml(ent.telephone_whatsapp || '')}')" class="p-2.5 ${activeBg} cursor-pointer transition-colors flex items-center justify-between group">
-                        <div class="flex flex-col min-w-0 pr-2">
-                            <span class="font-semibold text-xs group-hover:text-[#0d9488] truncate">${escapeHtml(ent.nom_entreprise || 'Entreprise')}</span>
-                            <span class="text-[10px] text-slate-400 font-mono truncate">NINEA : ${escapeHtml(ent.ninea || '00802996')} • ${escapeHtml(ent.telephone_whatsapp || '')}</span>
+                    <div onclick="selectEnterprise('${escapeHtml(ent.id || '')}', '${escapeHtml(ent.telephone_whatsapp || '')}')" class="flex items-center justify-between px-2.5 py-1.5 rounded-lg ${activeBg} cursor-pointer transition-colors text-left group">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="w-6 h-6 rounded bg-[#2a2a2a] text-slate-400 font-bold text-[10px] flex items-center justify-center flex-shrink-0">${escapeHtml(initials)}</span>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs font-medium truncate group-hover:text-white leading-tight">${escapeHtml(cleanName)}</span>
+                                <span class="text-[10px] text-slate-500 font-mono leading-tight">${escapeHtml(ent.ninea || '')}</span>
+                            </div>
                         </div>
                         ${activeBadge}
                     </div>
