@@ -219,15 +219,17 @@
         .cal-day-cell.selected-start,
         .cal-day-cell.selected-end {
             background: #a0d9d2 !important;
-            color: #ffffff !important;
-            font-weight: 800;
+            color: #14362b !important;
+            font-weight: 800 !important;
             border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(160, 217, 210, 0.4);
         }
 
         .cal-day-cell.in-range {
-            background: rgba(160, 217, 210, 0.22) !important;
-            color: #1c1c1c !important;
+            background: rgba(160, 217, 210, 0.25) !important;
+            color: #14362b !important;
             border-radius: 0;
+            font-weight: 600;
         }
 
         .cal-footer {
@@ -240,13 +242,18 @@
 
         .cal-btn-cancel {
             background: #f1f5f9;
-            border: none;
+            border: 1px solid #e2e8f0;
             padding: 6px 14px;
             border-radius: 8px;
             font-size: 11.5px;
             font-weight: 600;
             color: #64748b;
             cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .cal-btn-cancel:hover {
+            background: #e2e8f0;
+            color: #334155;
         }
 
         .cal-btn-apply {
@@ -256,7 +263,7 @@
             border-radius: 8px;
             font-size: 12px;
             font-weight: 800;
-            color: #ffffff;
+            color: #14362b;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(160, 217, 210, 0.4);
             transition: all 0.15s ease;
@@ -7722,9 +7729,57 @@
                             </select>
                         </div>
 
-                        <!-- Sélecteur de date jj/mm/yyyy -->
-                        <div class="relative w-full md:w-36">
-                            <input type="date" id="factooDateInput" onchange="handleFactooDateFilter(this.value)" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-slate-400 focus:ring-0 transition-all" style="border: 1px solid #cbd5e1 !important; outline: none !important; box-shadow: none !important;">
+                        <!-- Sélecteur de date ultra-pro GROW -->
+                        <div class="relative w-full md:w-52" id="factooDateWrapper">
+                            <button type="button" id="factooDateBtn" onclick="toggleFactooCalendar(event)" class="w-full py-2 px-3 rounded-lg bg-slate-50 hover:bg-white text-slate-700 text-xs font-medium flex items-center justify-between transition-all select-none cursor-pointer group" style="border: 1px solid #cbd5e1 !important; outline: none !important; box-shadow: none !important;">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <span class="material-symbols-outlined notranslate text-[16px] text-[#14362b] group-hover:text-[#0b5c53] transition-colors" translate="no">calendar_today</span>
+                                    <span id="factooDateBtnLabel" class="truncate font-semibold text-slate-800">Toutes les dates</span>
+                                </div>
+                                <span class="material-symbols-outlined notranslate text-[16px] text-slate-400 group-hover:text-slate-600 transition-transform duration-200" id="factooDateChevron" translate="no">expand_more</span>
+                            </button>
+                            <input type="hidden" id="factooDateInput" value="">
+
+                            <!-- Popover Calendrier Moderne GROW Pro -->
+                            <div id="factooCalendarPopover" class="calendar-popover-box" onclick="event.stopPropagation()">
+                                <!-- Presets rapides -->
+                                <div class="cal-quick-presets">
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('all')">Toutes</button>
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('today')">Aujourd'hui</button>
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('month')">Ce mois</button>
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('last_month')">Mois dernier</button>
+                                </div>
+
+                                <!-- En-tête mois avec chevrons -->
+                                <div class="cal-header">
+                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_left</span>
+                                    </button>
+                                    <span class="cal-month-title text-[#14362b] font-bold" id="factooCalMonthTitle">Novembre 2026</span>
+                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(1)">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_right</span>
+                                    </button>
+                                </div>
+
+                                <!-- Jours de semaine -->
+                                <div class="cal-weekdays">
+                                    <span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span>
+                                </div>
+
+                                <!-- Grille des jours -->
+                                <div class="cal-days-grid" id="factooCalDaysGrid"></div>
+
+                                <!-- Résumé de sélection -->
+                                <div class="text-[11px] text-slate-500 font-medium mb-2 text-center" id="factooCalSummary">
+                                    Cliquez pour choisir une date ou période
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="cal-footer">
+                                    <button type="button" class="cal-btn-cancel" onclick="resetFactooCalendarFilter()">Effacer</button>
+                                    <button type="button" class="cal-btn-apply" onclick="applyFactooCalendarFilter()">Appliquer</button>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Bouton Réinitialiser -->
@@ -14302,16 +14357,217 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             applyAllFactooFilters();
         }
 
+        // =========================================================================
+        // CALENDRIER MODERNE GROW PRO POUR FACTOO
+        // =========================================================================
+        let factooCalCurrentMonth = new Date();
+        let factooStartDate = '';
+        let factooEndDate = '';
+
+        function toggleFactooCalendar(event) {
+            if (event) event.stopPropagation();
+            const pop = document.getElementById('factooCalendarPopover');
+            const chev = document.getElementById('factooDateChevron');
+            if (!pop) return;
+            const isShowing = pop.classList.contains('show');
+            if (isShowing) {
+                closeFactooCalendar();
+            } else {
+                pop.classList.add('show');
+                if (chev) chev.style.transform = 'rotate(180deg)';
+                renderFactooCalendar();
+            }
+        }
+
+        function closeFactooCalendar() {
+            const pop = document.getElementById('factooCalendarPopover');
+            const chev = document.getElementById('factooDateChevron');
+            if (pop) pop.classList.remove('show');
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function changeFactooCalendarMonth(delta) {
+            factooCalCurrentMonth.setMonth(factooCalCurrentMonth.getMonth() + delta);
+            renderFactooCalendar();
+        }
+
+        function renderFactooCalendar() {
+            const y = factooCalCurrentMonth.getFullYear();
+            const m = factooCalCurrentMonth.getMonth();
+            const titleEl = document.getElementById('factooCalMonthTitle');
+            if (titleEl) {
+                const mName = factooCalCurrentMonth.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+                titleEl.textContent = mName.charAt(0).toUpperCase() + mName.slice(1);
+            }
+
+            const grid = document.getElementById('factooCalDaysGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const firstDayIndex = new Date(y, m, 1).getDay();
+            const startOffset = (firstDayIndex === 0 ? 7 : firstDayIndex) - 1;
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+            for (let i = 0; i < startOffset; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'cal-day-cell empty';
+                grid.appendChild(empty);
+            }
+
+            const todayStr = new Date().toISOString().substring(0, 10);
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'cal-day-cell';
+                const dayStr = `${y}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                cell.textContent = day;
+
+                if (dayStr === todayStr) {
+                    cell.classList.add('today');
+                }
+
+                if (factooStartDate && dayStr === factooStartDate) {
+                    cell.classList.add('selected-start');
+                } else if (factooEndDate && dayStr === factooEndDate) {
+                    cell.classList.add('selected-end');
+                } else if (factooStartDate && factooEndDate && dayStr > factooStartDate && dayStr < factooEndDate) {
+                    cell.classList.add('in-range');
+                }
+
+                cell.onclick = () => onSelectFactooDay(dayStr);
+                grid.appendChild(cell);
+            }
+
+            updateFactooCalSummary();
+        }
+
+        function onSelectFactooDay(dayStr) {
+            if (!factooStartDate || (factooStartDate && factooEndDate)) {
+                factooStartDate = dayStr;
+                factooEndDate = '';
+            } else if (factooStartDate && !factooEndDate) {
+                if (dayStr >= factooStartDate) {
+                    factooEndDate = dayStr;
+                } else {
+                    factooEndDate = factooStartDate;
+                    factooStartDate = dayStr;
+                }
+            }
+            renderFactooCalendar();
+        }
+
+        function updateFactooCalSummary() {
+            const sum = document.getElementById('factooCalSummary');
+            if (!sum) return;
+            if (factooStartDate && factooEndDate) {
+                const [y1, m1, d1] = factooStartDate.split('-');
+                const [y2, m2, d2] = factooEndDate.split('-');
+                if (factooStartDate === factooEndDate) {
+                    sum.textContent = `Date : ${d1}/${m1}/${y1}`;
+                } else {
+                    sum.textContent = `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                }
+            } else if (factooStartDate) {
+                const [y1, m1, d1] = factooStartDate.split('-');
+                sum.textContent = `Début : ${d1}/${m1}/${y1} (cliquez pour terminer)`;
+            } else {
+                sum.textContent = `Cliquez pour choisir une date ou période`;
+            }
+        }
+
+        function applyFactooCalendarFilter() {
+            const btnLabel = document.getElementById('factooDateBtnLabel');
+            if (!factooStartDate) {
+                if (btnLabel) btnLabel.textContent = 'Toutes les dates';
+                currentFactooDate = '';
+            } else if (factooStartDate && !factooEndDate) {
+                const [y1, m1, d1] = factooStartDate.split('-');
+                if (btnLabel) btnLabel.textContent = `${d1}/${m1}/${y1}`;
+                currentFactooDate = factooStartDate;
+            } else if (factooStartDate && factooEndDate) {
+                const [y1, m1, d1] = factooStartDate.split('-');
+                const [y2, m2, d2] = factooEndDate.split('-');
+                if (factooStartDate === factooEndDate) {
+                    if (btnLabel) btnLabel.textContent = `${d1}/${m1}/${y1}`;
+                } else {
+                    if (btnLabel) btnLabel.textContent = `${d1}/${m1} - ${d2}/${m2}`;
+                }
+                currentFactooDate = '';
+            }
+            applyAllFactooFilters();
+            closeFactooCalendar();
+        }
+
+        function selectFactooCalendarPreset(type) {
+            const now = new Date();
+            const todayStr = now.toISOString().substring(0, 10);
+
+            if (type === 'all') {
+                factooStartDate = '';
+                factooEndDate = '';
+                currentFactooDate = '';
+                const btnLabel = document.getElementById('factooDateBtnLabel');
+                if (btnLabel) btnLabel.textContent = 'Toutes les dates';
+                applyAllFactooFilters();
+                closeFactooCalendar();
+                return;
+            } else if (type === 'today') {
+                factooStartDate = todayStr;
+                factooEndDate = todayStr;
+                factooCalCurrentMonth = new Date(now);
+            } else if (type === 'month') {
+                factooStartDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+                factooEndDate = todayStr;
+                factooCalCurrentMonth = new Date(now);
+            } else if (type === 'last_month') {
+                const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                const lastDay = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                factooStartDate = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, '0')}-01`;
+                factooEndDate = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+                factooCalCurrentMonth = new Date(prev);
+            }
+
+            renderFactooCalendar();
+            applyFactooCalendarFilter();
+        }
+
+        function resetFactooCalendarFilter() {
+            factooStartDate = '';
+            factooEndDate = '';
+            currentFactooDate = '';
+            const btnLabel = document.getElementById('factooDateBtnLabel');
+            if (btnLabel) btnLabel.textContent = 'Toutes les dates';
+            renderFactooCalendar();
+            applyAllFactooFilters();
+            closeFactooCalendar();
+        }
+
+        // Fermer le calendrier Factoo en cas de clic à l'extérieur
+        document.addEventListener('click', (e) => {
+            const pop = document.getElementById('factooCalendarPopover');
+            const wrap = document.getElementById('factooDateWrapper');
+            if (pop && pop.classList.contains('show')) {
+                if (!pop.contains(e.target) && wrap && !wrap.contains(e.target)) {
+                    closeFactooCalendar();
+                }
+            }
+        });
+
         function resetFactooFilters() {
             currentFactooTab = 'all';
             currentFactooType = 'all';
             currentFactooDate = '';
+            factooStartDate = '';
+            factooEndDate = '';
+            const btnLabel = document.getElementById('factooDateBtnLabel');
+            if (btnLabel) btnLabel.textContent = 'Toutes les dates';
             const searchInp = document.getElementById('table-search-input');
             if (searchInp) searchInp.value = '';
             const typeSel = document.getElementById('factooTypeSelect');
             if (typeSel) typeSel.value = 'all';
             const dateInp = document.getElementById('factooDateInput');
             if (dateInp) dateInp.value = '';
+            closeFactooCalendar();
             document.querySelectorAll('.factoo-tab-pill').forEach((b, i) => {
                 b.classList.remove('active', 'bg-[#a0d9d2]', 'text-[#14362b]', 'font-bold', 'shadow-xs', 'bg-[#168078]', 'text-white', 'font-semibold');
                 b.classList.add('border', 'border-slate-200', 'text-slate-700');
@@ -14496,7 +14752,13 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 if (currentFactooType === 'especes' && !((t.source_paiement || '').toUpperCase().includes('CAISSE') || (t.source_paiement || '').toUpperCase().includes('ESPECES'))) return false;
 
                 // Filtre de Date
-                if (currentFactooDate) {
+                if (factooStartDate && factooEndDate) {
+                    const opDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '');
+                    if (opDate && (opDate < factooStartDate || opDate > factooEndDate)) return false;
+                } else if (factooStartDate) {
+                    const opDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '');
+                    if (opDate && !opDate.startsWith(factooStartDate)) return false;
+                } else if (currentFactooDate) {
                     const opDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '');
                     if (opDate && !opDate.startsWith(currentFactooDate)) return false;
                 }
