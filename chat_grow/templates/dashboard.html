@@ -13060,7 +13060,13 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (!portal) return;
             portal.style.display = 'flex';
             initPortalTypewriter();
-            renderPortalCompanyResults('');
+            
+            // Masquer la liste tant qu'aucun mot n'est tapé
+            const dd = document.getElementById('portalSearchResultsDropdown');
+            if (dd) {
+                dd.style.display = 'none';
+                dd.innerHTML = '';
+            }
             
             const btnTxt = document.getElementById('portalActiveDossierBtnText');
             if (btnTxt && currentEntreprise) {
@@ -13094,16 +13100,32 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         }
 
         function handlePortalCompanySearch(query) {
+            const trimmed = (query || '').trim();
             const clearBtn = document.getElementById('portalClearSearchBtn');
-            if (clearBtn) clearBtn.style.display = query ? 'block' : 'none';
-            renderPortalCompanyResults(query);
+            if (clearBtn) clearBtn.style.display = trimmed ? 'block' : 'none';
+            
+            // Ne rien faire apparaître tant qu'aucun mot n'est tapé
+            if (!trimmed) {
+                const dd = document.getElementById('portalSearchResultsDropdown');
+                if (dd) {
+                    dd.style.display = 'none';
+                    dd.innerHTML = '';
+                }
+                return;
+            }
+            renderPortalCompanyResults(trimmed);
         }
 
         function showPortalDropdown() {
             const inp = document.getElementById('portalCompanySearchInput');
-            renderPortalCompanyResults(inp ? inp.value : '');
-            const dd = document.getElementById('portalSearchResultsDropdown');
-            if (dd) dd.style.display = 'block';
+            const val = (inp ? inp.value : '').trim();
+            // Ne rien afficher au focus tant qu'aucun mot n'est tapé
+            if (!val) {
+                const dd = document.getElementById('portalSearchResultsDropdown');
+                if (dd) dd.style.display = 'none';
+                return;
+            }
+            renderPortalCompanyResults(val);
         }
 
         function clearPortalSearch() {
@@ -13114,7 +13136,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
             const clearBtn = document.getElementById('portalClearSearchBtn');
             if (clearBtn) clearBtn.style.display = 'none';
-            renderPortalCompanyResults('');
+            const dd = document.getElementById('portalSearchResultsDropdown');
+            if (dd) {
+                dd.style.display = 'none';
+                dd.innerHTML = '';
+            }
         }
 
         function renderPortalCompanyResults(queryRaw) {
@@ -13122,6 +13148,13 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (!dd) return;
             
             const query = (queryRaw || '').toLowerCase().trim();
+            // Sécurité absolue : ne jamais afficher si la recherche est vide
+            if (!query) {
+                dd.style.display = 'none';
+                dd.innerHTML = '';
+                return;
+            }
+            
             const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : [
                 { id: 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27', nom_entreprise: 'CGLT', ninea: '00802996', telephone_whatsapp: '221788773827' },
                 { id: 'ent-demo-1', nom_entreprise: 'Dakar Import', ninea: '00802996-2G3', telephone_whatsapp: '221770001122' },
