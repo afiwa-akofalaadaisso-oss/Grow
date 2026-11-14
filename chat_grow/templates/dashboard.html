@@ -7359,8 +7359,8 @@
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            /* Cercle de luminosité concentré à rayon réduit autour du logo central */
-            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.65) 0%, rgba(20, 184, 166, 0.32) 10%, rgba(13, 148, 136, 0.08) 20%, transparent 32%);
+            /* Cercle parfait géométrique à rayon fixe équidistant (aucun étirement en ovale) */
+            background: radial-gradient(circle 200px at 50% 28%, rgba(160, 217, 210, 0.60) 0%, rgba(20, 184, 166, 0.28) 40%, rgba(13, 148, 136, 0.08) 70%, transparent 100%);
             pointer-events: none;
             z-index: 2;
         }
@@ -7423,9 +7423,9 @@
 
         <!-- Zone Centrale Fixe : 100% Stable, Zéro Scroll, Zéro Saut de page -->
         <main class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
-            <!-- GRAND LOGO GROW MAJESTUEUX (Cercle de luminosité à rayon réduit) -->
+            <!-- GRAND LOGO GROW MAJESTUEUX (Cercle de luminosité parfaitement rond) -->
             <div class="relative group cursor-pointer mb-3 sm:mb-4" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
-                <div class="absolute -inset-4 sm:-inset-6 bg-gradient-to-r from-[#14b8a6]/45 via-[#a0d9d2]/65 to-[#14b8a6]/45 rounded-full blur-2xl group-hover:scale-105 transition-all duration-300"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 sm:w-60 sm:h-60 rounded-full bg-gradient-to-r from-[#14b8a6]/40 via-[#a0d9d2]/60 to-[#14b8a6]/40 blur-2xl group-hover:scale-105 transition-all duration-300 pointer-events-none"></div>
                 <img src="/static/grow_logo_transparent.png" alt="Grow Logo" 
                      class="relative w-44 sm:w-52 md:w-60 max-w-[260px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
                      style="filter: drop-shadow(0 0 25px rgba(160, 217, 210, 0.85)) drop-shadow(0 10px 30px rgba(20, 184, 166, 0.5)) saturate(1.45) brightness(1.18);">
