@@ -7332,15 +7332,15 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET NOIR ÉMERAUDE & HAUTE VISIBILITÉ MENTHE) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET ÉMERAUDE VIBRANT & HAUTE VISIBILITÉ MENTHE) --- */
         #viewPortalComptable {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
             z-index: 1500;
-            /* Fond Noir Émeraude Profond & Luxueux inspiré d'AWA */
-            background: radial-gradient(ellipse at 50% 35%, #132b25 0%, #0c1a17 45%, #050b0a 100%) !important;
+            /* Fond Vert Émeraude / Sarcelle Vibrant & Lumineux (Inspiré AWA) */
+            background: radial-gradient(circle at 50% 33%, #0e7068 0%, #0a5750 22%, #08433d 44%, #042a26 70%, #011412 100%) !important;
             overflow: hidden !important; /* Page 100% fixe : aucun défilement ni saut */
             display: flex;
             align-items: center;
@@ -7352,19 +7352,20 @@
             background-image: url('/static/grow_logo_transparent.png');
             background-repeat: repeat;
             background-size: 130px 130px;
-            opacity: 0.12; /* Filigrane bien visible et net sur tout l'écran comme AWA */
+            opacity: 0.22; /* Filigrane nettement plus vif, présent et texturé comme AWA */
+            filter: brightness(1.25) contrast(1.15);
             pointer-events: none;
             z-index: 1;
         }
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.22) 0%, rgba(18, 38, 33, 0.08) 50%, rgba(6, 14, 12, 0.95) 90%);
+            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.45) 0%, rgba(20, 184, 166, 0.28) 32%, rgba(13, 148, 136, 0.12) 60%, transparent 85%);
             pointer-events: none;
             z-index: 2;
         }
         .portal-search-input::placeholder {
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.75);
         }
         /* Suppression absolue de tout contour bleu ou anneau natif */
         #portalCompanySearchInput,
@@ -7381,33 +7382,33 @@
             --tw-ring-color: transparent !important;
         }
         .portal-search-pill {
-            background: #152420;
-            border: 1.5px solid #a0d9d2;
+            background: rgba(8, 38, 34, 0.9);
+            border: 2px solid #a0d9d2;
             border-radius: 9999px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(160, 217, 210, 0.18);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(160, 217, 210, 0.4);
             transition: all 0.25s ease;
         }
         .portal-search-pill:hover,
         .portal-search-pill:focus-within {
-            border-color: #a0d9d2;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9), 0 0 30px rgba(160, 217, 210, 0.35);
-            background: #192d28;
+            border-color: #6ee7b7;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 40px rgba(160, 217, 210, 0.65);
+            background: rgba(12, 50, 44, 0.95);
         }
         .portal-companies-card {
-            background: rgba(16, 26, 23, 0.92);
-            border: 1px solid rgba(160, 217, 210, 0.3);
-            backdrop-filter: blur(16px);
-            border-radius: 1rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(160, 217, 210, 0.08);
+            background: rgba(6, 28, 24, 0.94);
+            border: 1.5px solid rgba(160, 217, 210, 0.45);
+            backdrop-filter: blur(20px);
+            border-radius: 1.25rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(160, 217, 210, 0.2);
         }
         #portalSearchResultsDropdown::-webkit-scrollbar {
             width: 5px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-track {
-            background: #101c18;
+            background: #08241f;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb {
-            background: #253d36;
+            background: #14594e;
             border-radius: 9999px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb:hover {
@@ -7431,17 +7432,17 @@
         <main class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
             <!-- GRAND LOGO GROW MAJESTUEUX (Équilibré pour tenir parfaitement dans l'écran) -->
             <div class="relative group cursor-pointer mb-3 sm:mb-4" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
-                <div class="absolute -inset-6 bg-[#a0d9d2]/20 rounded-full blur-2xl group-hover:bg-[#a0d9d2]/35 transition-all"></div>
+                <div class="absolute -inset-8 bg-gradient-to-r from-[#14b8a6]/45 via-[#a0d9d2]/55 to-[#14b8a6]/45 rounded-full blur-3xl group-hover:scale-110 transition-all duration-500"></div>
                 <img src="/static/grow_logo_transparent.png" alt="Grow Logo" 
-                     class="relative w-44 sm:w-52 md:w-60 max-w-[260px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
-                     style="filter: drop-shadow(0 10px 25px rgba(160, 217, 210, 0.35));">
+                     class="relative w-48 sm:w-56 md:w-64 max-w-[280px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
+                     style="filter: drop-shadow(0 0 35px rgba(160, 217, 210, 0.8)) drop-shadow(0 15px 30px rgba(13, 148, 136, 0.6));">
             </div>
 
             <!-- Texte Animé Machine à Écrire (Typewriter) -->
             <div class="min-h-[44px] sm:min-h-[52px] flex items-center justify-center mb-6 sm:mb-7">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-md">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-[0_4px_20px_rgba(160,217,210,0.5)]">
                     <span id="portalTypewriterText" class="text-white">Portail Grow pour comptables</span>
-                    <span class="inline-block w-1 h-7 sm:h-9 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
+                    <span class="inline-block w-1 h-7 sm:h-9 bg-[#a0d9d2] ml-1.5 animate-pulse shadow-[0_0_12px_#a0d9d2]"></span>
                 </h1>
             </div>
 
