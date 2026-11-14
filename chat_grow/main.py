@@ -422,8 +422,10 @@ async def verify_webhook(
 
 @app.get("/dashboard", response_class=HTMLResponse)
 @app.get("/client", response_class=HTMLResponse)
-async def serve_dashboard():
+async def serve_dashboard(request: Request, phone: str = None, id: str = None):
     """Tableau de bord PME & Agence conforme aux maquettes officielles Grow & ONECCA."""
+    if not phone and not id and not request.query_params.get("phone") and not request.query_params.get("id"):
+        return RedirectResponse(url="/dashboard?phone=221788773827", status_code=302)
     html_path = os.path.join(TEMPLATES_DIR, "dashboard.html")
     if os.path.exists(html_path):
         with open(html_path, "r", encoding="utf-8") as f:
@@ -1137,13 +1139,10 @@ async def api_modifier_transaction(payload: dict = Body(...)):
 
 
 @app.get("/agence", response_class=HTMLResponse)
-async def serve_agence_dashboard():
-    """Espace réservé à l'Expert-Comptable / Agence ONECCA."""
-    html_path = os.path.join(TEMPLATES_DIR, "agence.html")
-    if os.path.exists(html_path):
-        with open(html_path, "r", encoding="utf-8") as f:
-            return HTMLResponse(content=f.read())
-    return HTMLResponse(content="<h1>Espace Agence en cours d'initialisation</h1>", status_code=200)
+async def serve_agence_dashboard(request: Request, phone: str = None, id: str = None):
+    """Espace réservé à l'Expert-Comptable / Agence ONECCA (redirection directe vers le tableau de bord en direct)."""
+    target_phone = phone or request.query_params.get("phone") or "221788773827"
+    return RedirectResponse(url=f"/dashboard?phone={target_phone}", status_code=302)
 
 
 @app.get("/abonnement", response_class=HTMLResponse)
