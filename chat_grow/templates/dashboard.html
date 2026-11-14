@@ -7570,26 +7570,26 @@
 
         <!-- HEADER SUPÉRIEUR ÉPURÉ (Exacte Référence Stitch : > CGLT + Bouton Portail + Profil) -->
         <!-- BARRE SUPÉRIEURE SOMBRE (STYLE EXACT FACTOO) -->
-        <header class="h-13 px-4 md:px-7 flex items-center justify-between sticky top-0 z-40 bg-[#0b1329] text-white shadow-md select-none">
-            <!-- Gauche : Logo GROW stylé Factoo -->
-            <div class="flex items-center gap-2.5 cursor-pointer" onclick="openPortalView()" title="Accueil Factoo / Cabinet">
-                <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
-                    <span class="material-symbols-outlined notranslate text-[17px]" translate="no">description</span>
+        <header class="h-13 px-4 md:px-7 flex items-center justify-between sticky top-0 z-40 bg-[#081514] border-b border-[#168078]/25 text-white shadow-md select-none">
+            <!-- Gauche : Vrai Logo GROW et Palette Officielle Sarcelle -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="openPortalView()" title="Portail Cabinet GROW">
+                <div class="h-8 w-8 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <img src="/static/grow_logo_teal.png" alt="GROW" class="h-8 w-8 object-contain">
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="font-bold text-base tracking-tight text-white">GROW</span>
-                    <span class="text-[10px] uppercase font-semibold text-blue-400 bg-blue-950/80 px-1.5 py-0.5 rounded border border-blue-800/60">SYSCOHADA</span>
+                    <span class="font-extrabold text-base tracking-tight text-white">GROW</span>
+                    <span class="text-[10px] uppercase font-bold text-[#a0d9d2] bg-[#14362b] px-2 py-0.5 rounded-md border border-[#168078]/50 shadow-2xs">SYSCOHADA PRO</span>
                 </div>
             </div>
 
             <!-- Droite : Profil Admin Factoo -->
             <div class="flex items-center gap-3">
                 <button type="button" onclick="openPortalView()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium border border-slate-700/60 transition-colors" title="Changer d'entreprise cliente">
-                    <span class="material-symbols-outlined notranslate text-[15px] text-blue-400" translate="no">domain</span>
+                    <span class="material-symbols-outlined notranslate text-[15px] text-[#a0d9d2]" translate="no">domain</span>
                     <span>Changer de dossier</span>
                 </button>
                 <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-800/60 border border-slate-700/50 cursor-pointer hover:bg-slate-800 transition-colors">
-                    <div class="w-6 h-6 rounded-md bg-gradient-to-tr from-pink-500 via-purple-500 to-indigo-500 p-0.5 flex items-center justify-center">
+                    <div class="w-6 h-6 rounded-md bg-gradient-to-tr from-[#168078] via-[#0f766e] to-[#a0d9d2] p-0.5 flex items-center justify-center">
                         <span class="material-symbols-outlined notranslate text-[14px] text-white" translate="no">person</span>
                     </div>
                     <span class="text-xs font-semibold text-slate-200 tracking-tight" id="headerAdminLabel">admin 3 grow</span>
@@ -7602,9 +7602,9 @@
 
             <!-- FIL D'ARIANE FACTOO (Tous les dossiers > CGLT > Onglet) -->
             <div class="py-2.5 px-4 md:px-8 text-xs text-slate-500 font-medium border-b border-slate-200/80 bg-white flex items-center gap-2 select-none overflow-x-auto w-full">
-                <span class="hover:text-blue-600 cursor-pointer" onclick="openPortalView()">Tous les dossiers</span>
+                <span class="hover:text-[#168078] cursor-pointer" onclick="openPortalView()">Tous les dossiers</span>
                 <span class="text-slate-300">›</span>
-                <span class="hover:text-blue-600 cursor-pointer" onclick="openPortalView()" id="factooBreadcrumbCompany">CGLT (00802996)</span>
+                <span class="hover:text-[#168078] cursor-pointer" onclick="openPortalView()" id="factooBreadcrumbCompany">CGLT (00802996)</span>
                 <span class="text-slate-300">›</span>
                 <span class="text-slate-900 font-bold" id="factooBreadcrumbCurrentTab">Journal des Écritures</span>
             </div>
@@ -7616,7 +7616,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 select-none">
                     <!-- Titre avec icône carrée dégradée (Exact Factoo) -->
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 shadow-sm flex items-center justify-center flex-shrink-0">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0f4d47] via-[#168078] to-[#a0d9d2] shadow-sm flex items-center justify-center flex-shrink-0">
                             <span class="material-symbols-outlined notranslate text-white text-[20px]" translate="no">folder_open</span>
                         </div>
                         <div class="flex items-center gap-2.5">
@@ -7630,10 +7630,10 @@
                         <button type="button" onclick="loadDashboardData()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors shadow-2xs cursor-pointer" title="Rafraîchir les écritures">
                             <span class="material-symbols-outlined notranslate text-[18px]" translate="no">refresh</span>
                         </button>
-                        <button type="button" onclick="openPortalView()" class="px-3.5 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-semibold transition-colors shadow-2xs cursor-pointer">
+                        <button type="button" onclick="openPortalView()" class="px-3.5 py-2 rounded-lg border border-[#168078] text-[#168078] hover:bg-[#168078]/10 text-xs font-semibold transition-colors shadow-2xs cursor-pointer">
                             Gestion du dossier
                         </button>
-                        <button type="button" onclick="ouvrirModalQuickTx('ENTREE')" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm shadow-blue-500/20 cursor-pointer flex items-center gap-1.5">
+                        <button type="button" onclick="ouvrirModalQuickTx('ENTREE')" class="px-4 py-2 rounded-lg bg-[#168078] hover:bg-[#136c66] active:bg-[#0f5954] text-white text-xs font-bold transition-all shadow-sm shadow-[#168078]/25 cursor-pointer flex items-center gap-1.5">
                             <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">add</span>
                             <span>Ajouter une écriture</span>
                         </button>
@@ -7645,7 +7645,7 @@
 
                 <!-- ONGLETS COMMANDÉS : BILAN, RÉSULTAT, TAFIRE, ANNEXES -->
                 <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4 select-none text-xs font-medium">
-                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill active px-4 py-1.5 rounded-full bg-[#0f172a] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-xs flex items-center gap-1.5">
+                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill active px-4 py-1.5 rounded-full bg-[#168078] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-xs flex items-center gap-1.5">
                         <span class="material-symbols-outlined notranslate text-[15px]" translate="no">receipt_long</span>
                         <span>Écritures &amp; Factures</span>
                     </button>
@@ -7674,12 +7674,12 @@
                         <!-- Champ recherche tiers / facture -->
                         <div class="relative flex-1">
                             <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px] pointer-events-none" translate="no">search</span>
-                            <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Nom du Tiers / N° de facture, libellé..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-blue-500 text-slate-900 text-xs placeholder:text-slate-400 font-medium transition-all">
+                            <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Nom du Tiers / N° de facture, libellé..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 text-xs placeholder:text-slate-400 font-medium transition-all">
                         </div>
 
                         <!-- Dropdown Type -->
                         <div class="relative w-full md:w-44">
-                            <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-blue-500 transition-all">
+                            <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-[#168078] transition-all">
                                 <option value="all">Type : Tous</option>
                                 <option value="7">Facture Client (Vente)</option>
                                 <option value="6">Facture Fournisseur (Achat)</option>
@@ -7692,7 +7692,7 @@
 
                         <!-- Sélecteur de date jj/mm/yyyy -->
                         <div class="relative w-full md:w-36">
-                            <input type="date" id="factooDateInput" onchange="handleFactooDateFilter(this.value)" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-blue-500 transition-all">
+                            <input type="date" id="factooDateInput" onchange="handleFactooDateFilter(this.value)" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-[#168078] transition-all">
                         </div>
 
                         <!-- Bouton Réinitialiser -->
@@ -7736,7 +7736,7 @@
                                 <button type="button" class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
                                     ‹
                                 </button>
-                                <button type="button" class="w-7 h-7 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center shadow-xs cursor-pointer">
+                                <button type="button" class="w-7 h-7 rounded-lg bg-[#168078] text-white font-bold flex items-center justify-center shadow-xs cursor-pointer">
                                     1
                                 </button>
                                 <button type="button" class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold flex items-center justify-center transition-colors cursor-pointer">
@@ -12143,7 +12143,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
                     <td class="py-3 px-3.5 whitespace-nowrap">
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined notranslate text-blue-500 text-[18px]" translate="no">receipt_long</span>
+                            <span class="material-symbols-outlined notranslate text-[#168078] text-[18px]" translate="no">receipt_long</span>
                             <span class="font-medium text-slate-800 text-[12px]">${docType}</span>
                         </div>
                     </td>
@@ -13938,12 +13938,12 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
         function switchFactooTab(tabName) {
             document.querySelectorAll('.factoo-tab-pill').forEach(b => {
-                b.classList.remove('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.remove('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
                 b.classList.add('border', 'border-slate-200', 'text-slate-700', 'hover:bg-slate-100');
             });
             const activeBtn = document.getElementById('pillTab_' + tabName);
             if (activeBtn) {
-                activeBtn.classList.add('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                activeBtn.classList.add('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
                 activeBtn.classList.remove('border', 'border-slate-200', 'text-slate-700', 'hover:bg-slate-100');
             }
 
@@ -13963,11 +13963,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         function handleFactooTab(tab, btn) {
             currentFactooTab = tab;
             document.querySelectorAll('.factoo-tab-pill').forEach(b => {
-                b.classList.remove('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.remove('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
                 b.classList.add('border', 'border-slate-200', 'text-slate-700');
             });
             if (btn) {
-                btn.classList.add('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                btn.classList.add('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
                 btn.classList.remove('border', 'border-slate-200', 'text-slate-700');
             }
             applyAllFactooFilters();
@@ -13994,10 +13994,10 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const dateInp = document.getElementById('factooDateInput');
             if (dateInp) dateInp.value = '';
             document.querySelectorAll('.factoo-tab-pill').forEach((b, i) => {
-                b.classList.remove('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.remove('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
                 b.classList.add('border', 'border-slate-200', 'text-slate-700');
                 if (i === 1) {
-                    b.classList.add('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                    b.classList.add('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
                     b.classList.remove('border', 'border-slate-200', 'text-slate-700');
                 }
             });
