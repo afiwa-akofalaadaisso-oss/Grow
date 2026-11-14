@@ -7321,30 +7321,30 @@
     <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
 
     <!-- SIDEBAR BLANCHE ÉPURÉE -->
-    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200/90 shadow-sm flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out">
+    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#222222] border-r border-[#333333] shadow-2xl flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out">
         <div class="flex flex-col">
-            <!-- Header Marque avec le vrai logo GROW -->
-            <div class="h-16 px-5 flex items-center justify-between border-b border-slate-100 bg-white">
+            <!-- Header Marque avec le vrai logo GROW sur fond #222222 -->
+            <div class="h-16 px-5 flex items-center justify-between border-b border-[#333333] bg-[#1c1c1c]">
                 <div class="flex items-center gap-3">
-                    <img src="/static/images/grow_logo.png" alt="Grow" class="w-8 h-8 rounded-lg object-contain shadow-xs">
+                    <img src="/static/images/grow_logo.png" alt="Grow" class="w-8 h-8 rounded-lg object-contain shadow-sm">
                     <div class="flex flex-col">
-                        <span class="font-brand font-extrabold text-base text-slate-900 tracking-tight leading-none">GROW</span>
+                        <span class="font-brand font-extrabold text-base text-white tracking-tight leading-none">GROW</span>
                         <span class="text-[10px] text-slate-400 font-medium mt-0.5">SYSCOHADA Pro</span>
                     </div>
                 </div>
-                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" title="Réduire le menu (Ctrl+B)">
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-[#2d2d2d] transition-colors cursor-pointer" title="Réduire le menu (Ctrl+B)">
                     <span class="material-symbols-outlined text-[19px]">dock_to_left</span>
                 </button>
             </div>
 
             <!-- Entité Active Ultra Minimaliste -->
-<!-- Entreprise Active & Sélecteur (Recherche et Choix) -->
+<!-- Entreprise Active & Sélecteur (Recherche et Choix sur fond Sombre #222222) -->
             <div class="p-3 relative" id="enterpriseSelectorSection">
-                <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/90 flex flex-col gap-2">
+                <div class="p-2.5 rounded-xl bg-[#181818] border border-[#333333] flex flex-col gap-2">
                     <!-- Entête Carte Entité avec bouton Changer -->
                     <div class="flex items-center justify-between">
                         <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Entité Active</span>
-                        <button type="button" onclick="toggleEnterpriseDropdown(event)" class="text-[11px] font-semibold text-[#0d9488] hover:text-[#0f766e] flex items-center gap-0.5 transition-colors cursor-pointer" id="btnChangerEntite">
+                        <button type="button" onclick="toggleEnterpriseDropdown(event)" class="text-[11px] font-semibold text-[#a0d9d2] hover:text-[#d1fae5] flex items-center gap-0.5 transition-colors cursor-pointer" id="btnChangerEntite">
                             <span>Changer</span>
                             <span class="material-symbols-outlined text-[13px]">unfold_more</span>
                         </button>
@@ -7353,7 +7353,7 @@
                     <!-- Infos Entité Active -->
                     <div class="flex items-center justify-between cursor-pointer" onclick="toggleEnterpriseDropdown(event)">
                         <div class="flex flex-col min-w-0 pr-2">
-                            <span class="font-bold text-slate-900 text-xs truncate" id="sidebarEntityName">Le Nom De Mon Entreprise Est Cglt</span>
+                            <span class="font-bold text-white text-xs truncate" id="sidebarEntityName">Le Nom De Mon Entreprise Est Cglt</span>
                             <span class="text-[10px] text-slate-400 font-mono" id="sidebarEntityNinea">NINEA : 00802996</span>
                         </div>
                         <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0 shadow-[0_0_6px_rgba(16,185,129,0.5)]" title="Registre certifié"></span>
@@ -7361,18 +7361,18 @@
 
                     <!-- Champ Recherche Entreprise -->
                     <div class="relative mt-0.5">
-                        <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[14px]">search</span>
-                        <input id="enterpriseSearchInput" oninput="filterEnterpriseList(this.value)" onfocus="openEnterpriseDropdown()" type="text" placeholder="Rechercher entreprise..." class="w-full bg-white border border-slate-200 rounded-lg pl-7 pr-2 py-1 text-[11px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0d9488] focus:ring-1 focus:ring-[#0d9488] transition-all">
+                        <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-[14px]">search</span>
+                        <input id="enterpriseSearchInput" oninput="filterEnterpriseList(this.value)" onfocus="openEnterpriseDropdown()" type="text" placeholder="Rechercher entreprise..." class="w-full bg-[#121212] border border-[#333333] rounded-lg pl-7 pr-2 py-1 text-[11px] text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#a0d9d2] focus:ring-1 focus:ring-[#a0d9d2] transition-all">
                     </div>
                 </div>
 
                 <!-- Menu Déroulant / Liste des Entreprises -->
-                <div id="enterpriseDropdownMenu" class="hidden absolute left-3 right-3 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-2xl z-[100] overflow-hidden flex flex-col">
-                    <div class="px-3 py-1.5 border-b border-slate-100 bg-slate-50/70 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                <div id="enterpriseDropdownMenu" class="hidden absolute left-3 right-3 top-full mt-1.5 bg-[#181818] border border-[#333333] rounded-xl shadow-2xl z-[100] overflow-hidden flex flex-col">
+                    <div class="px-3 py-1.5 border-b border-[#2d2d2d] bg-[#141414] text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
                         <span>Dossiers Clients</span>
-                        <span id="enterpriseCountLabel" class="text-slate-500 font-mono">1</span>
+                        <span id="enterpriseCountLabel" class="text-slate-400 font-mono">1</span>
                     </div>
-                    <div id="enterpriseListContainer" class="overflow-y-auto divide-y divide-slate-100 max-h-52">
+                    <div id="enterpriseListContainer" class="overflow-y-auto divide-y divide-[#2d2d2d] max-h-52">
                         <!-- Entreprises injectées dynamiquement -->
                     </div>
                 </div>
@@ -7380,58 +7380,58 @@
 
             <!-- Navigation Simple et Aérée -->
             <nav class="px-2.5 flex flex-col gap-1 py-1 text-[13px]">
-                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#e6f7f5] text-[#0d9488] font-bold border-l-4 border-[#0d9488] shadow-xs cursor-pointer active" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#14362b] text-[#a0d9d2] font-semibold border-l-4 border-[#a0d9d2] shadow-xs active transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-[#0d9488]">menu_book</span>
+                        <span class="material-symbols-outlined text-[18px] text-[#a0d9d2]">menu_book</span>
                         <span>Journal</span>
                     </div>
                 </a>
                 
-                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-400">account_balance</span>
                         <span>Bilan</span>
                     </div>
                 </a>
                 
-                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-400">query_stats</span>
                         <span>Résultat</span>
                     </div>
                 </a>
                 
-                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-400">payments</span>
                         <span>Trésorerie (TFT)</span>
                     </div>
                 </a>
                 
-                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-400">description</span>
                         <span>Liasse &amp; Notes</span>
                     </div>
                 </a>
 
-                <div class="pt-3 pb-1 px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Outils</div>
+                <div class="pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Outils</div>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-400">verified</span>
                         <span>Visa ONECCA</span>
                     </div>
                 </a>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="telechargerFichierFEC();">
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="telechargerFichierFEC();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-400">output</span>
                         <span>Export FEC</span>
                     </div>
                 </a>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="ouvrirModalQRAccesGrow();">
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-300 hover:bg-[#2d2d2d] hover:text-white transition-colors cursor-pointer font-medium" href="javascript:void(0)" onclick="ouvrirModalQRAccesGrow();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-400">qr_code_2</span>
                         <span>QR WhatsApp</span>
@@ -7440,14 +7440,14 @@
             </nav>
         </div>
 
-        <!-- Profil EC Compact -->
-        <div class="p-3 border-t border-slate-100">
+        <!-- Profil EC Compact sur fond #222222 -->
+        <div class="p-3 border-t border-[#333333] bg-[#1c1c1c]">
             <div class="flex items-center gap-2.5 p-1.5">
-                <div class="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-[11px] flex-shrink-0">
+                <div class="w-7 h-7 rounded-full bg-[#2d2d2d] text-[#a0d9d2] border border-[#444444] flex items-center justify-center font-bold text-[11px] flex-shrink-0">
                     AF
                 </div>
                 <div class="flex flex-col min-w-0">
-                    <span class="text-xs font-semibold text-slate-800 truncate">Amadou Fall</span>
+                    <span class="text-xs font-semibold text-white truncate">Amadou Fall</span>
                     <span class="text-[10px] text-slate-400">ONECCA #482</span>
                 </div>
             </div>
@@ -9638,8 +9638,13 @@
             });
 
             document.querySelectorAll('.sidebar-nav-item').forEach(b => {
-                b.classList.remove('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
-                b.classList.add('text-slate-600');
+                b.classList.remove('bg-[#14362b]', 'text-[#a0d9d2]', 'font-bold', 'border-l-4', 'border-[#a0d9d2]', 'shadow-xs', 'active', 'bg-[#e6f7f5]', 'text-[#0d9488]');
+                b.classList.add('text-slate-300');
+                const icon = b.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.classList.remove('text-[#a0d9d2]');
+                    icon.classList.add('text-slate-400');
+                }
             });
 
             const breadTitle = document.getElementById('headerBreadcrumbTitle');
@@ -9648,8 +9653,10 @@
                 if (viewJournal) viewJournal.style.display = 'block';
                 const el = document.getElementById('navItemJournal');
                 if (el) {
-                    el.classList.add('bg-[#e6f7f5]', 'text-[#0d9488]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
-                    el.classList.remove('text-slate-600');
+                    el.classList.add('bg-[#14362b]', 'text-[#a0d9d2]', 'font-bold', 'border-l-4', 'border-[#a0d9d2]', 'shadow-xs', 'active');
+                    el.classList.remove('text-slate-300');
+                    const icon = el.querySelector('.material-symbols-outlined');
+                    if (icon) { icon.classList.remove('text-slate-400'); icon.classList.add('text-[#a0d9d2]'); }
                 }
                 if (breadTitle) breadTitle.textContent = 'Journal des Écritures';
             } else if (tabName === 'bilan') {
