@@ -8794,27 +8794,27 @@
 
     <!-- Modale Zoom Preuve Numérique Pro -->
     <div id="proofModal" class="modal-backdrop" onclick="closeProofModal()">
-        <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 600px; width: 92%;">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 960px; width: 95%; max-height: 92vh; display: flex; flex-direction: column;">
             <div class="modal-top">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-file-invoice" style="color: #4ade80;"></i>
+                    <i class="fa-solid fa-file-invoice" style="color: #a0d9d2;"></i>
                     <span id="proofModalTitle">Justificatif Certifié</span>
                 </div>
                 <button onclick="closeProofModal()"
                     style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; line-height: 1;">&times;</button>
             </div>
-            <div class="modal-content" style="padding: 20px; background: #0f172a; text-align: center;">
+            <div class="modal-content" style="padding: 20px; background: #0b0f19; text-align: center; overflow: auto; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <img id="proofModalImg" src="/static/justificatif-achat-riz.png" alt="Preuve Agrandie"
-                    style="max-height: 70vh; max-width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;">
+                    style="max-height: 76vh; max-width: 100%; border-radius: 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); object-fit: contain; cursor: zoom-in;" onclick="openProofFullScreenDirect(this.src)">
                 <div
                     style="margin-top: 14px; display: flex; gap: 12px; width: 100%; justify-content: center; align-items: center;">
                     <a id="proofDownloadBtn" href="/static/justificatif-achat-riz.png" download="justificatif-grow.png"
                         target="_blank"
-                        style="background: #a0d9d2; color: #ffffff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-download"></i> Télécharger la pièce
+                        style="background: #a0d9d2; color: #1c1c1c; text-decoration: none; padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-download"></i> Télécharger en HD
                     </a>
                     <button onclick="closeProofModal()"
-                        style="background: #334155; color: #ffffff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                        style="background: #334155; color: #ffffff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
                         Fermer
                     </button>
                 </div>
@@ -8823,69 +8823,107 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- MODALE REÇU & JUSTIFICATIF NUMÉRIQUE (TOF / BORDEREAU)                     -->
+    <!-- MODALE REÇU & JUSTIFICATIF NUMÉRIQUE (GRANDE TAILLE / HD)                   -->
     <!-- ========================================================================= -->
     <div id="waveCertModal" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 2600;" onclick="closeWaveProofModal()">
-        <div class="relative w-full max-w-[440px] mx-4 bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
+        <div class="relative w-full max-w-4xl lg:max-w-5xl mx-4 bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden transform transition-all font-sans flex flex-col max-h-[92vh]" onclick="event.stopPropagation()">
             <!-- Top bar épurée -->
-            <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-slate-50/70">
-                <div class="flex items-center gap-2">
-                    <img id="waveModalHeaderLogo" src="https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png" alt="Opérateur" class="w-5 h-5 rounded-md object-contain">
-                    <span id="waveModalOperateur" class="text-[13px] font-bold text-slate-900">Reçu de paiement</span>
-                    <span class="text-[10.5px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
-                        ● Certifié
-                    </span>
-                </div>
-                <button type="button" onclick="closeWaveProofModal()" class="w-7 h-7 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center cursor-pointer">
-                    <span class="material-symbols-outlined text-[18px]">close</span>
-                </button>
-            </div>
-
-            <!-- Contenu : PHOTO DU REÇU (LA TOF) EN GRAND -->
-            <div class="p-5 bg-white">
-                <div class="relative w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-900/5 max-h-[340px] flex items-center justify-center p-2 mb-3 shadow-2xs">
-                    <img id="waveModalPhoto" src="/static/mock_wave_photo.png" alt="Photo Reçu" class="max-h-[320px] w-auto max-w-full object-contain rounded-lg shadow-xs">
-                </div>
-
-                <!-- Fiche d'identification ultra-compacte (ZERO blabla inutile) -->
-                <div class="grid grid-cols-2 gap-2 text-[12px] bg-slate-50 p-3 rounded-xl border border-slate-200/70 mb-3">
+            <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-slate-50/80 flex-shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <img id="waveModalHeaderLogo" src="https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png" alt="Opérateur" class="w-6 h-6 rounded-md object-contain">
                     <div>
-                        <div class="text-[10px] uppercase font-bold text-slate-400">Montant</div>
-                        <div id="waveModalMontant" class="font-extrabold text-slate-900 font-mono text-[13.5px]">-</div>
-                    </div>
-                    <div>
-                        <div class="text-[10px] uppercase font-bold text-slate-400">Date</div>
-                        <div id="waveModalDate" class="font-semibold text-slate-700 text-[12px]">-</div>
-                    </div>
-                    <div>
-                        <div class="text-[10px] uppercase font-bold text-slate-400">Réf. Transaction</div>
-                        <div id="waveModalRef" class="font-mono font-medium text-slate-700 text-[11.5px] select-all truncate">-</div>
-                    </div>
-                    <div>
-                        <div class="text-[10px] uppercase font-bold text-slate-400">Statut</div>
-                        <div class="font-semibold text-emerald-700 text-[11.5px] flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            100% Rapproché
+                        <div class="flex items-center gap-2">
+                            <span id="waveModalOperateur" class="text-[13.5px] font-bold text-slate-900">Wave Digital Finance</span>
+                            <span class="text-[10.5px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                                ● Certifié Conforme SYSCOHADA
+                            </span>
                         </div>
                     </div>
                 </div>
-
-                <div class="text-center text-[11px] text-slate-400 font-medium flex items-center justify-center gap-1.5 mb-3">
-                    <span class="material-symbols-outlined text-[14px] text-emerald-600">verified</span>
-                    <span>Pièce justificative officielle enregistrée au livre-journal</span>
-                </div>
-
-                <!-- Actions -->
-                <div class="flex items-center gap-2">
-                    <button type="button" onclick="closeWaveProofModal()" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors text-center cursor-pointer">
-                        Fermer
+                <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="openProofFullScreen()" title="Afficher en plein écran" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 transition-colors flex items-center justify-center cursor-pointer">
+                        <span class="material-symbols-outlined text-[20px]">fullscreen</span>
                     </button>
-                    <a id="waveModalDownloadBtn" href="/static/mock_wave_photo.png" download="recu-grow.png" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-colors text-center cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
-                        <span class="material-symbols-outlined text-[15px]">download</span>
-                        Télécharger
-                    </a>
+                    <button type="button" onclick="closeWaveProofModal()" class="w-7 h-7 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center cursor-pointer ml-1">
+                        <span class="material-symbols-outlined text-[18px]">close</span>
+                    </button>
                 </div>
             </div>
+
+            <!-- Contenu : Vue 2 Colonnes (Image Haute Définition en Très Grand à gauche + Fiche Métadonnées à droite) -->
+            <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+                <!-- Zone Image Reçu Très Grand Format -->
+                <div class="flex-1 bg-[#0b0f19] flex items-center justify-center p-4 md:p-6 overflow-auto relative min-h-[360px] md:min-h-[560px]" style="background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 20px 20px;">
+                    <img id="waveModalPhoto" src="/static/mock_wave_photo.png" alt="Photo Reçu Agrandie" 
+                        class="max-h-[72vh] md:max-h-[76vh] w-auto max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-200 hover:scale-[1.01] cursor-zoom-in border border-white/10" 
+                        onclick="openProofFullScreen()" title="Cliquer pour afficher en plein écran">
+                    
+                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md text-white/90 text-[11px] px-3.5 py-1 rounded-full pointer-events-none flex items-center gap-1.5 border border-white/10 shadow-lg">
+                        <span class="material-symbols-outlined text-[14px] text-[#a0d9d2]">zoom_in</span>
+                        <span>Cliquer sur l'image pour agrandir plein écran</span>
+                    </div>
+                </div>
+
+                <!-- Panneau Latéral Métadonnées & Actions -->
+                <div class="w-full md:w-80 bg-white p-5 md:p-6 flex flex-col justify-between border-t md:border-t-0 md:border-l border-slate-100 flex-shrink-0 overflow-y-auto">
+                    <div>
+                        <!-- Montant Mise en avant -->
+                        <div class="text-[10.5px] uppercase font-bold text-slate-400 tracking-wider">Montant Pièce Justificative</div>
+                        <div id="waveModalMontant" class="text-2xl md:text-3xl font-black font-mono text-slate-900 mt-1 mb-4 select-all">-</div>
+
+                        <!-- Détails d'authenticité -->
+                        <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200/70 mb-4 text-[12px]">
+                            <div>
+                                <div class="text-[10px] uppercase font-bold text-slate-400">Date d'opération</div>
+                                <div id="waveModalDate" class="font-semibold text-slate-800 text-[12.5px] mt-0.5">-</div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase font-bold text-slate-400">Réf. Transaction / Identifiant</div>
+                                <div id="waveModalRef" class="font-mono font-medium text-slate-700 text-[11.5px] select-all truncate mt-0.5">-</div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase font-bold text-slate-400">Statut de conformité</div>
+                                <div class="font-semibold text-emerald-700 text-[11.5px] flex items-center gap-1.5 mt-0.5">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    100% Rapproché & Scellé
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase font-bold text-slate-400">Preuve comptable</div>
+                                <div class="text-[11px] text-slate-600 font-medium mt-0.5 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[13px] text-emerald-600">verified</span>
+                                    <span>Livre-Journal SYSCOHADA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="space-y-2 pt-2">
+                        <a id="waveModalDownloadBtn" href="/static/mock_wave_photo.png" download="justificatif-grow.png" target="_blank" class="w-full py-2.5 px-4 rounded-xl text-[12.5px] font-bold text-white bg-slate-900 hover:bg-slate-800 transition-colors text-center cursor-pointer flex items-center justify-center gap-2 shadow-xs">
+                            <span class="material-symbols-outlined text-[16px]">download</span>
+                            Télécharger l'image HD
+                        </a>
+                        <button type="button" onclick="openProofFullScreen()" class="w-full py-2 px-4 rounded-xl text-[12px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors text-center cursor-pointer flex items-center justify-center gap-1.5">
+                            <span class="material-symbols-outlined text-[16px]">open_in_full</span>
+                            Plein écran
+                        </button>
+                        <button type="button" onclick="closeWaveProofModal()" class="w-full py-2 px-4 rounded-xl text-[12px] font-semibold text-slate-500 hover:text-slate-800 transition-colors text-center cursor-pointer">
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Ultra Plein Écran (Plein Viewer Lightbox sans bordure) -->
+    <div id="fullScreenProofModal" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 3100; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px);" onclick="closeProofFullScreen()">
+        <div class="relative max-w-[96vw] max-h-[96vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+            <button type="button" onclick="closeProofFullScreen()" class="absolute -top-12 right-0 md:top-2 md:right-2 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer backdrop-blur-md transition-colors" title="Fermer">
+                <span class="material-symbols-outlined text-[24px]">close</span>
+            </button>
+            <img id="fullScreenProofImg" src="/static/mock_wave_photo.png" alt="Reçu Grand Format" class="max-h-[92vh] max-w-[94vw] object-contain rounded-xl shadow-2xl border border-white/10">
         </div>
     </div>
 
@@ -9897,6 +9935,14 @@
 
                 // 4. Initialiser et afficher avec filtres et pagination
                 applyAllFiltersAndRender();
+
+                if (debugModal === 'wave') {
+                    setTimeout(() => openWaveProofModal('WV-B17A72F2', 'Encaissement Wave', '5 000 FCFA', '13/11/2026', 'Wave', '/static/mock_wave_photo.png'), 300);
+                } else if (debugModal === 'receipt') {
+                    setTimeout(() => openWaveProofModal('CMD-0981', 'Achat de Marchandises', '40 000 FCFA', '13/11/2026', 'Orange Money', '/static/mock_receipt_photo.png'), 300);
+                } else if (debugModal === 'tx' && allTransactions && allTransactions.length > 0) {
+                    setTimeout(() => openTxDetailModal(allTransactions[0]), 300);
+                }
 
             } catch (err) {
                 console.error("Erreur fetch dashboard data:", err);
@@ -11649,6 +11695,37 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             const m = document.getElementById('waveCertModal');
             if (m) m.style.display = 'none';
         }
+
+        // Fonctions d'agrandissement plein écran haute fidélité (Très Grand Format)
+        function openProofFullScreen() {
+            const fsModal = document.getElementById('fullScreenProofModal');
+            const fsImg = document.getElementById('fullScreenProofImg');
+            const photoEl = document.getElementById('waveModalPhoto');
+            if (fsImg && photoEl) {
+                fsImg.src = photoEl.src;
+            }
+            if (fsModal) fsModal.style.display = 'flex';
+        }
+
+        function openProofFullScreenDirect(url) {
+            const fsModal = document.getElementById('fullScreenProofModal');
+            const fsImg = document.getElementById('fullScreenProofImg');
+            if (fsImg && url) fsImg.src = url;
+            if (fsModal) fsModal.style.display = 'flex';
+        }
+
+        function closeProofFullScreen() {
+            const fsModal = document.getElementById('fullScreenProofModal');
+            if (fsModal) fsModal.style.display = 'none';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProofFullScreen();
+                closeWaveProofModal();
+                if (typeof closeProofModal === 'function') closeProofModal();
+            }
+        });
 
         // Écouteur délégué pour ouvrir les justificatifs sans attributs onclick inline (évite tout conflit de quotes)
         document.addEventListener('click', function (e) {
