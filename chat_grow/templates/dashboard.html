@@ -7399,7 +7399,7 @@
     <!-- ========================================================================= -->
     <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE GOOGLE RECHERCHE & AWA BRANDING)  -->
     <!-- ========================================================================= -->
-    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex-col justify-between overflow-y-auto" style="display: none; background-color: #141414;">
+    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex flex-col justify-between overflow-y-auto" style="display: flex;">
         <!-- Pattern filigrane logo Grow répété en fond (Inspiré Image 2 AWA) -->
         <div class="portal-pattern-layer"></div>
         <div class="portal-ambient-glow"></div>
@@ -13003,11 +13003,12 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 setDeviceView('desktop');
             }
 
-            // Affichage automatique du Portail Cabinet sur Ordinateur si demandé ou si aucun client en URL
+            // Affichage automatique de l'Accueil Portail Cabinet (sauf si bypass direct demandé en URL)
             const urlParamsPortal = new URLSearchParams(window.location.search);
-            const isPortalReq = urlParamsPortal.get('portal') === '1' || urlParamsPortal.get('mode') === 'portal';
-            const hasClientInUrl = Boolean(urlParamsPortal.get('phone') || urlParamsPortal.get('id'));
-            if (isPortalReq || (!hasClientInUrl && window.innerWidth >= 768)) {
+            const shouldBypassPortal = urlParamsPortal.get('direct') === '1' || urlParamsPortal.get('skip_portal') === '1';
+            if (shouldBypassPortal) {
+                quitterPortailVersDossier();
+            } else {
                 openPortalView();
             }
 
