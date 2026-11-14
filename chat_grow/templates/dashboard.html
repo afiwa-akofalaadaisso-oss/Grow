@@ -7391,51 +7391,87 @@
                     </div>
                 </a>
                 
-                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <!-- ESPACE COMPTABLE (ORDINATEUR COMPTABLES UNIQUEMENT >= 768px) -->
+                <div class="hidden md:block pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Espace Comptable</div>
+
+                <a id="navItemBilan" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">account_balance</span>
-                        <span class="nav-label">Bilan</span>
+                        <span class="nav-label">Bilan SYSCOHADA</span>
                     </div>
                 </a>
                 
-                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemResultat" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">query_stats</span>
-                        <span class="nav-label">Résultat</span>
+                        <span class="nav-label">Compte de Résultat</span>
                     </div>
                 </a>
                 
-                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemTFT" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">payments</span>
-                        <span class="nav-label">Trésorerie (TFT)</span>
+                        <span class="nav-label">Flux Trésorerie (TFT)</span>
                     </div>
                 </a>
                 
-                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemAnnexes" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">description</span>
-                        <span class="nav-label">Liasse &amp; Notes</span>
+                        <span class="nav-label">Liasse &amp; Notes DGID</span>
                     </div>
                 </a>
 
-                <div class="pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Outils</div>
+                <!-- SERVICES COMMERÇANTS & PME (SMARTPHONE ET ORDINATEUR) -->
+                <div class="pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Services PME</div>
+
+                <a id="navItemPrets" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('prets'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">payments</span>
+                        <span class="nav-label">Crédit &amp; Prêts</span>
+                    </div>
+                </a>
+
+                <a id="navItemPaiement" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('paiement'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">point_of_sale</span>
+                        <span class="nav-label">Paiement &amp; Encaissement</span>
+                    </div>
+                </a>
+
+                <!-- ABONNEMENT (ORDINATEUR : demandé spécifiquement par l'utilisateur) -->
+                <a id="navItemAbonnement" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('abonnement'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">workspace_premium</span>
+                        <span class="nav-label">Abonnement</span>
+                    </div>
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#a0d9d2]/15 text-[#a0d9d2] border border-[#a0d9d2]/30">PRO</span>
+                </a>
+
+                <a id="navItemAbout" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('about'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                    <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">spa</span>
+                        <span class="nav-label">À Propos de GROW</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:block pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Outils Comptables</div>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
+                <a class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">verified</span>
                         <span>Visa ONECCA</span>
                     </div>
                 </a>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="telechargerFichierFEC();">
+                <a class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="telechargerFichierFEC();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">output</span>
                         <span>Export FEC</span>
                     </div>
                 </a>
                 
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalQRAccesGrow();">
+                <a class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalQRAccesGrow();">
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">qr_code_2</span>
                         <span>QR WhatsApp</span>
@@ -8827,33 +8863,195 @@
 
         </div>
 
+        <!-- CONTENU 4 : PAIEMENT & ENCAISSEMENT PME (WAVE, ORANGE MONEY, ESPÈCES) -->
+        <div id="viewPaiement" style="display: none;">
+            <div class="max-w-4xl mx-auto space-y-5">
+                
+                <!-- Carte Solde Trésorerie & Encaissements du Jour -->
+                <div class="bg-gradient-to-r from-[#1c1c1c] to-[#262626] rounded-2xl p-5 md:p-6 text-white border border-black/20 shadow-lg">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <span class="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Trésorerie Immédiatement Disponible</span>
+                            <div class="text-2xl md:text-3xl font-black font-mono text-[#a0d9d2] mt-1" id="paiementTresorerieTotal">20 088 FCFA</div>
+                            <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-2">
+                                <span>● Wave</span>
+                                <span>● Orange Money</span>
+                                <span>● Caisse Espèces</span>
+                                <span>● CBAO</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="ouvrirModalQuickTx('ENTREE')" class="w-full md:w-auto px-4 py-2.5 rounded-xl bg-[#a0d9d2] text-[#1c1c1c] font-bold text-xs hover:bg-[#8ecfc7] shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                                <span>Encaisser une Vente</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Générateur de Lien de Paiement Client Rapide -->
+                <div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 border border-black/5 shadow-2xs">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-[20px] text-[#1c1c1c]">send_to_mobile</span>
+                        <h2 class="font-bold text-[#1c1c1c] text-sm md:text-base">Générer un Lien de Paiement (WhatsApp)</h2>
+                    </div>
+                    <p class="text-xs text-slate-600 mb-4">Créez un lien ou une demande de règlement par Wave ou Orange Money à envoyer à votre client.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3.5">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Montant à encaisser (FCFA) *</label>
+                            <input id="paiementClientMontant" type="number" placeholder="Ex: 15000" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm font-mono font-bold focus:outline-none focus:border-[#1c1c1c]">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Commande / Motif client *</label>
+                            <input id="paiementClientMotif" type="text" placeholder="Ex: Commande Robe Wax" class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:border-[#1c1c1c]">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <button type="button" onclick="genererLienPaiement('WAVE')" class="flex-1 min-w-[130px] px-3.5 py-2.5 rounded-xl bg-[#1c1c1c] hover:bg-black text-[#a0d9d2] font-bold text-xs shadow-2xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Wave_logo.png" alt="Wave" class="w-4 h-4 object-contain">
+                            <span>Lien Wave</span>
+                        </button>
+                        <button type="button" onclick="genererLienPaiement('OM')" class="flex-1 min-w-[130px] px-3.5 py-2.5 rounded-xl bg-[#1c1c1c] hover:bg-black text-[#a0d9d2] font-bold text-xs shadow-2xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg" alt="OM" class="w-4 h-4 object-contain">
+                            <span>Lien Orange Money</span>
+                        </button>
+                    </div>
+
+                    <!-- Résultat lien généré -->
+                    <div id="boxLienGenere" class="hidden mt-4 p-3.5 rounded-xl bg-[#a0d9d2]/15 border border-[#a0d9d2]/40">
+                        <div class="text-xs font-bold text-slate-800 mb-1 flex items-center justify-between">
+                            <span>Lien prêt à être partagé :</span>
+                            <span class="text-[11px] font-mono font-bold text-[#1c1c1c]" id="labelLienMontant">15 000 FCFA</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-white border border-slate-200 font-mono text-[11px] text-slate-700 truncate select-all mb-2.5" id="textLienGenere"></div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="partagerLienWhatsApp()" class="px-3 py-1.5 rounded-lg bg-[#25D366] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 hover:bg-[#20ba59] transition-all cursor-pointer">
+                                <i class="fa-brands fa-whatsapp text-[14px]"></i> Partager sur WhatsApp
+                            </button>
+                            <button type="button" onclick="copierLienGenere()" class="px-3 py-1.5 rounded-lg bg-[#1c1c1c] text-white text-xs font-medium shadow-xs flex items-center gap-1.5 hover:bg-black transition-all cursor-pointer">
+                                <span class="material-symbols-outlined text-[15px]">content_copy</span> Copier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code d'Encaissement au Comptoir -->
+                <div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 border border-black/5 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="flex items-center justify-center md:justify-start gap-2 mb-1.5">
+                            <span class="material-symbols-outlined text-[20px] text-[#1c1c1c]">qr_code_2</span>
+                            <h3 class="font-bold text-[#1c1c1c] text-sm md:text-base">QR Code d'Encaissement Comptoir</h3>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-2">Présentez ce QR Code en caisse : le client le scanne directement depuis son application Wave ou Orange Money.</p>
+                        <div class="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span>Crédité en direct au Journal (Compte 701)</span>
+                        </div>
+                    </div>
+                    <div class="w-32 h-32 p-2 bg-white rounded-2xl border-2 border-dashed border-[#1c1c1c]/20 shadow-xs flex flex-col items-center justify-center flex-shrink-0 text-center">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=WAVE_GROW_PAY_221788773827" alt="QR Encaissement" class="w-24 h-24 object-contain">
+                        <span class="text-[8.5px] font-bold text-slate-400 mt-1 uppercase">Scanner pour payer</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- CONTENU 5 : ABONNEMENT GROW (ORDINATEUR COMPTABLES & PME) -->
+        <div id="viewAbonnement" style="display: none;">
+            <div class="max-w-4xl mx-auto space-y-5">
+                <!-- En-tête statut abonnement -->
+                <div class="bg-gradient-to-r from-[#1c1c1c] to-[#2b2b2b] rounded-2xl p-5 md:p-6 text-white border border-black/20 shadow-lg">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#a0d9d2]/20 border border-[#a0d9d2]/30 text-[#a0d9d2] text-xs font-bold mb-2">
+                                <span class="material-symbols-outlined text-[14px]">verified</span>
+                                <span>Abonnement Actif &amp; Conforme SYSCOHADA</span>
+                            </div>
+                            <h2 class="text-xl md:text-2xl font-bold">Formule : Grow Pro Cabinet &amp; PME</h2>
+                            <p class="text-xs text-slate-300 mt-1">Accès complet à la tenue automatisée, aux déclarations DGID et aux dossiers de crédit bancaire.</p>
+                        </div>
+                        <div class="flex flex-col items-start md:items-end flex-shrink-0">
+                            <span class="text-[11px] text-slate-400 uppercase font-semibold">Prochain renouvellement</span>
+                            <span class="text-base md:text-lg font-bold font-mono text-[#a0d9d2]">28 Novembre 2026</span>
+                            <span class="text-[11px] text-slate-400">Prélèvement automatique Wave</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grille des Formules Disponibles -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Starter PME -->
+                    <div class="bg-white/80 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-black/5 shadow-2xs flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10.5px] font-bold uppercase text-slate-400 tracking-wider">Starter PME</span>
+                            <div class="text-2xl font-black font-mono text-[#1c1c1c] my-2">10 000 <span class="text-xs font-bold text-slate-500">FCFA/mois</span></div>
+                            <ul class="text-xs text-slate-600 space-y-2 mb-4">
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Saisie WhatsApp vocale &amp; photo</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Journal des écritures en direct</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> 1 utilisateur commerçant</li>
+                            </ul>
+                        </div>
+                        <a href="/abonnement" class="w-full text-center py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all">Choisir Starter</a>
+                    </div>
+
+                    <!-- Pro Commerce (Recommandé) -->
+                    <div class="bg-white/95 rounded-2xl p-4 md:p-5 border-2 border-[#1c1c1c] shadow-md flex flex-col justify-between relative">
+                        <div class="absolute -top-3 right-4 bg-[#1c1c1c] text-[#a0d9d2] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Actif</div>
+                        <div>
+                            <span class="text-[10.5px] font-bold uppercase text-[#1c1c1c] tracking-wider">Pro PME &amp; Commerce</span>
+                            <div class="text-2xl font-black font-mono text-[#1c1c1c] my-2">25 000 <span class="text-xs font-bold text-slate-500">FCFA/mois</span></div>
+                            <ul class="text-xs text-slate-700 space-y-2 mb-4 font-medium">
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Tout le pack Starter inclus</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Bilan &amp; Compte de Résultat</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Score &amp; Dossier de Prêt Bancaire</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Liens d'encaissement Wave &amp; OM</li>
+                            </ul>
+                        </div>
+                        <button type="button" class="w-full text-center py-2 rounded-xl bg-[#1c1c1c] text-[#a0d9d2] text-xs font-bold cursor-default">Votre Formule Actuelle</button>
+                    </div>
+
+                    <!-- Cabinet Comptable Expert -->
+                    <div class="bg-white/80 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-black/5 shadow-2xs flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10.5px] font-bold uppercase text-slate-400 tracking-wider">Cabinet Expert</span>
+                            <div class="text-2xl font-black font-mono text-[#1c1c1c] my-2">50 000 <span class="text-xs font-bold text-slate-500">FCFA/mois</span></div>
+                            <ul class="text-xs text-slate-600 space-y-2 mb-4">
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Multi-dossiers PME illimités</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Visa ONECCA &amp; Export FEC fiscal</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px] text-emerald-600">check</span> Liasses fiscales &amp; Notes DGID</li>
+                            </ul>
+                        </div>
+                        <a href="/abonnement" class="w-full text-center py-2 rounded-xl bg-[#1c1c1c] text-white hover:bg-black text-xs font-bold transition-all">Gérer les Dossiers</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- DOCK NAVIGATION MOBILE FIXÉ EN BAS (Strictement #1c1c1c et #a0d9d2) -->
-    <nav id="mobileBottomDock" class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#1c1c1c] border-t border-[#333333] px-2 py-1.5 flex items-center justify-around shadow-2xl">
+    <!-- DOCK NAVIGATION MOBILE FIXÉ EN BAS (Strictement PME : Journal, Crédit, Paiement, Grow) -->
+    <nav id="mobileBottomDock" class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#1c1c1c] border-t border-[#333333] px-1 py-1.5 flex items-center justify-around shadow-2xl">
         <button type="button" onclick="switchVerticalTab('journal'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-[#a0d9d2] active py-1 px-3 transition-colors cursor-pointer" data-tab="journal">
             <span class="material-symbols-outlined text-[20px]">menu_book</span>
             <span class="text-[10px] font-bold">Journal</span>
             <span class="w-1.5 h-1.5 rounded-full bg-[#a0d9d2] mt-0.5"></span>
         </button>
-        <button type="button" onclick="switchVerticalTab('bilan'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="bilan">
-            <span class="material-symbols-outlined text-[20px]">account_balance</span>
-            <span class="text-[10px] font-semibold">Bilan</span>
-            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
-        </button>
-        <button type="button" onclick="switchVerticalTab('resultat'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="resultat">
-            <span class="material-symbols-outlined text-[20px]">query_stats</span>
-            <span class="text-[10px] font-semibold">Résultat</span>
-            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
-        </button>
-        <button type="button" onclick="switchVerticalTab('tft'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="tft">
+        <button type="button" onclick="switchVerticalTab('prets'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="prets">
             <span class="material-symbols-outlined text-[20px]">payments</span>
-            <span class="text-[10px] font-semibold">Trésorerie</span>
+            <span class="text-[10px] font-semibold">Crédit</span>
             <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
         </button>
-        <button type="button" onclick="toggleSidebar()" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer">
-            <span class="material-symbols-outlined text-[20px]">menu</span>
-            <span class="text-[10px] font-semibold">Menu</span>
+        <button type="button" onclick="switchVerticalTab('paiement'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="paiement">
+            <span class="material-symbols-outlined text-[20px]">point_of_sale</span>
+            <span class="text-[10px] font-semibold">Paiement</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+        </button>
+        <button type="button" onclick="switchVerticalTab('about'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="about">
+            <span class="material-symbols-outlined text-[20px]">spa</span>
+            <span class="text-[10px] font-semibold">Grow</span>
             <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
         </button>
     </nav>
@@ -9843,6 +10041,12 @@
 
         function switchVerticalTab(tabName) {
             console.log("Switching tab to:", tabName);
+
+            // SÉCURITÉ MOBILE : Sur smartphone (< 768px), interdiction stricte d'accéder au Bilan, Résultat ou Trésorerie
+            if (window.innerWidth < 768 && (tabName === 'bilan' || tabName === 'resultat' || tabName === 'tft' || tabName === 'annexes')) {
+                tabName = 'journal';
+            }
+
             setActiveMobileTab(tabName);
 
             const viewJournal = document.getElementById('viewJournal');
@@ -9852,8 +10056,10 @@
             const viewAnnexes = document.getElementById('viewAnnexes');
             const viewPrets = document.getElementById('viewPrets');
             const viewAbout = document.getElementById('viewAbout');
+            const viewPaiement = document.getElementById('viewPaiement');
+            const viewAbonnement = document.getElementById('viewAbonnement');
 
-            [viewJournal, viewBilan, viewResultat, viewTFT, viewAnnexes, viewPrets, viewAbout].forEach(v => {
+            [viewJournal, viewBilan, viewResultat, viewTFT, viewAnnexes, viewPrets, viewAbout, viewPaiement, viewAbonnement].forEach(v => {
                 if (v) v.style.display = 'none';
             });
 
@@ -9900,10 +10106,58 @@
                 if (typeof updateAnnexesDisplay === 'function') updateAnnexesDisplay();
             } else if (tabName === 'prets') {
                 if (viewPrets) viewPrets.style.display = 'block';
-                if (breadTitle) breadTitle.textContent = 'Rapprochement & Dossiers';
+                applyActiveTabStyle('navItemPrets');
+                if (breadTitle) breadTitle.textContent = (window.innerWidth < 768 ? 'Crédit' : 'Rapprochement & Dossiers Prêts');
+            } else if (tabName === 'paiement') {
+                if (viewPaiement) viewPaiement.style.display = 'block';
+                applyActiveTabStyle('navItemPaiement');
+                if (breadTitle) breadTitle.textContent = 'Paiement';
+            } else if (tabName === 'abonnement') {
+                if (viewAbonnement) viewAbonnement.style.display = 'block';
+                applyActiveTabStyle('navItemAbonnement');
+                if (breadTitle) breadTitle.textContent = 'Abonnement';
             } else if (tabName === 'about') {
                 if (viewAbout) viewAbout.style.display = 'block';
-                if (breadTitle) breadTitle.textContent = 'À Propos de GROW';
+                applyActiveTabStyle('navItemAbout');
+                if (breadTitle) breadTitle.textContent = (window.innerWidth < 768 ? 'Grow' : 'À Propos de GROW');
+            }
+        }
+
+        // Fonctions d'encaissement et liens de paiement PME
+        function genererLienPaiement(op) {
+            const montInput = document.getElementById('paiementClientMontant');
+            const motifInput = document.getElementById('paiementClientMotif');
+            const mont = (montInput && montInput.value) ? montInput.value : '10000';
+            const motif = (motifInput && motifInput.value) ? motifInput.value : 'Commande client';
+            
+            const box = document.getElementById('boxLienGenere');
+            const labelM = document.getElementById('labelLienMontant');
+            const txt = document.getElementById('textLienGenere');
+            
+            const url = `https://sensor-suggestions-vehicles-hardly.trycloudflare.com/dashboard?phone=221788773827&pay=${encodeURIComponent(motif)}&amount=${mont}&op=${op}`;
+            if (labelM) labelM.textContent = Number(mont).toLocaleString('fr-FR') + ' FCFA';
+            if (txt) txt.textContent = url;
+            if (box) box.classList.remove('hidden');
+        }
+
+        function partagerLienWhatsApp() {
+            const txtEl = document.getElementById('textLienGenere');
+            const montEl = document.getElementById('labelLienMontant');
+            const txt = txtEl ? txtEl.textContent : '';
+            const mont = montEl ? montEl.textContent : '';
+            const msg = `Bonjour, voici le lien de règlement Wave / Orange Money (${mont}) pour votre commande : ${txt}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function copierLienGenere() {
+            const txtEl = document.getElementById('textLienGenere');
+            const txt = txtEl ? txtEl.textContent : '';
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(txt).then(() => {
+                    alert("Lien de paiement copié dans le presse-papier !");
+                });
+            } else {
+                alert("Lien : " + txt);
             }
         }
 
