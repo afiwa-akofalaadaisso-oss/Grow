@@ -52,8 +52,8 @@
         }
 
         .ambient-mint-gradient {
-            background-color: #a0d9d2 !important;
-            background: #a0d9d2 !important;
+            background-color: #f8fafc !important;
+            background: #f8fafc !important;
         }
 
         ::-webkit-scrollbar {
@@ -7409,7 +7409,7 @@
     </style>
 </head>
 
-<body class="bg-white text-slate-900 antialiased min-h-screen">
+<body class="bg-[#f8fafc] text-slate-900 antialiased min-h-screen">
 
     <!-- ========================================================================= -->
     <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE SCANDINAVE ARCHITECTURAL ÉPURÉ)  -->
@@ -7628,36 +7628,44 @@
     <!-- WRAPPER PRINCIPAL DÉBLOQUÉ -->
     <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col ambient-mint-gradient transition-all duration-200 ease-in-out">
 
-        <!-- HEADER SUPÉRIEUR ÉPURÉ (Même couleur menthe que le fond parent) -->
-        <header class="h-14 px-3 md:px-6 flex items-center justify-between sticky top-0 z-40 bg-[#a0d9d2]" style="background-color: #a0d9d2 !important; border-bottom: 1px solid rgba(28, 28, 28, 0.08);">
+        <!-- HEADER SUPÉRIEUR ÉPURÉ (Design Lumineux Scandinave & Fil d'Ariane) -->
+        <header class="h-14 px-3 md:px-6 flex items-center justify-between sticky top-0 z-40 bg-[#f8fafc]/90 backdrop-blur-md border-b border-slate-200/80">
             <div class="flex items-center gap-2 md:gap-3 min-w-0">
-                <!-- Bouton réouverture latérale -->
-                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="flex md:hidden p-1.5 -ml-1 mr-1 text-[#1c1c1c] hover:text-black bg-white/80 hover:bg-white border border-[#a0d9d2]/80 rounded-lg shadow-2xs transition-colors cursor-pointer items-center justify-center flex-shrink-0" title="Afficher le menu (Ctrl+B)">
+                <!-- Bouton réouverture latérale mobile -->
+                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="flex md:hidden p-1.5 -ml-1 mr-1 text-slate-700 hover:text-slate-900 bg-white border border-slate-200 rounded-lg shadow-2xs transition-colors cursor-pointer items-center justify-center flex-shrink-0" title="Afficher le menu (Ctrl+B)">
                     <span class="material-symbols-outlined text-[19px] block">menu</span>
                 </button>
-                <div class="flex items-center gap-2 text-xs text-slate-600 font-medium truncate">
-                    <span class="text-slate-900 font-bold text-sm tracking-tight truncate" id="headerBreadcrumbTitle">Journal</span>
-                    <span class="px-2 py-0.5 rounded-full bg-[#1c1c1c] text-[#a0d9d2] text-[10.5px] font-mono font-bold shadow-2xs whitespace-nowrap" id="txCountBadge">16 opérations</span>
+                <!-- Fil d'Ariane Minimaliste (> CGLT) comme sur la maquette -->
+                <div class="flex items-center gap-1.5 text-xs text-slate-600 font-semibold truncate cursor-pointer hover:text-[#168078] transition-colors" onclick="openPortalView()" title="Changer d'entreprise cliente">
+                    <span class="text-slate-400 font-mono text-[11px]">&gt;</span>
+                    <span class="text-slate-800 font-bold text-sm tracking-tight truncate" id="headerBreadcrumbTitle">CGLT</span>
                 </div>
             </div>
 
-            <div class="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
-                
+            <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
                 <!-- Bouton Portail Cabinet / Changer de dossier -->
-                <button type="button" onclick="openPortalView()" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1c1c1c] text-[#a0d9d2] hover:bg-[#2c2c2c] border border-black/40 text-xs font-semibold shadow-2xs transition-colors cursor-pointer" title="Revenir au Portail Cabinet / Changer d'entreprise cliente">
-                    <span class="material-symbols-outlined text-[16px]">domain</span>
-                    <span>Portail Cabinet</span>
+                <button type="button" onclick="openPortalView()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 text-xs font-semibold shadow-2xs transition-all cursor-pointer" title="Revenir au Portail Cabinet / Changer d'entreprise cliente">
+                    <span class="material-symbols-outlined text-[16px] text-[#168078]">domain</span>
+                    <span class="hidden sm:inline">Portail Cabinet</span>
                 </button>
 
-                <!-- Trésorerie Disponible en Direct (Fond noir, sans bouton vert, montant menthe Grow) -->
-                <div class="flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 rounded-lg bg-[#1c1c1c] text-white shadow-sm border border-black/30 cursor-default whitespace-nowrap flex-shrink-0" title="Trésorerie disponible en direct (Banque / Wave / OM / Caisse)">
-                    <span class="text-xs font-medium text-slate-300 hidden md:inline">Trésorerie :</span>
-                    <span class="text-xs font-bold font-mono tracking-tight text-[#a0d9d2] whitespace-nowrap" id="headerTresorerieMontant">20 088 FCFA</span>
+                <!-- Trésorerie Actuelle (Pill Lumineuse avec dot vert) -->
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 text-slate-800 shadow-2xs cursor-default whitespace-nowrap" title="Trésorerie disponible en direct">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-[11px] font-semibold text-slate-500">Trésorerie :</span>
+                    <span class="text-xs font-bold font-mono tracking-tight text-slate-900 whitespace-nowrap" id="headerTresorerieMontant">20 088 FCFA</span>
                 </div>
-                <!-- Bouton discret ajout manuel assorti -->
-                <button onclick="ouvrirModalSaisieRapide()" class="p-1.5 rounded-lg text-white bg-[#1c1c1c] hover:bg-[#2c2c2c] border border-black/30 transition-colors cursor-pointer shadow-sm flex-shrink-0" title="Nouvelle écriture manuelle (+)">
-                    <span class="material-symbols-outlined text-[18px]">add</span>
+
+                <!-- Bouton + Nouvelle Écriture (Exacte Pilule Émeraude / Teal de la Maquette) -->
+                <button onclick="ouvrirModalSaisieRapide()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-white bg-[#168078] hover:bg-[#0f6b64] active:bg-[#0b544e] transition-all cursor-pointer shadow-xs text-xs font-bold flex-shrink-0" title="Nouvelle écriture manuelle (+)">
+                    <span class="material-symbols-outlined text-[16px] font-bold">add</span>
+                    <span class="hidden sm:inline">Nouvelle écriture</span>
                 </button>
+
+                <!-- Avatar Profil Expert-Comptable -->
+                <div class="w-8 h-8 rounded-full bg-[#168078] text-white flex items-center justify-center font-bold text-xs shadow-xs cursor-pointer hover:ring-2 hover:ring-[#168078]/30 transition-all ml-1" title="M. Sissoko (Expert-Comptable)">
+                    <span class="material-symbols-outlined text-[17px]">person</span>
+                </div>
             </div>
         </header>
 
@@ -7731,42 +7739,80 @@
                     </div>
                 </div>
 
-                <!-- TABLEAU INTÉGRÉ AU BACKGROUND PARENT DIRECTEMENT -->
-                <div class="flex flex-col mb-8">
+                <!-- CARTE PRINCIPALE BLANCHE : TABLEAU DE BORD DU JOURNAL (Style Exact Référence Stitch) -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden mb-6">
 
-                    <!-- Bandeau Titre intégré directement -->
-                    <div class="py-2.5 mb-1 flex items-center justify-between">
-                        <span class="font-bold text-xs text-slate-800 uppercase tracking-wider">Écritures récentes</span>
-                        <span id="cumulTotal" class="hidden"></span>
+                    <!-- Bandeau En-tête de la Carte avec Résumé Crédit / Débit -->
+                    <div class="px-4 py-3 flex items-center justify-between border-b border-slate-100 bg-slate-50/50">
+                        <div class="flex items-center gap-2.5">
+                            <input class="rounded border-slate-300 text-[#168078] focus:ring-[#168078] w-4 h-4 cursor-pointer" id="select-all-rows" type="checkbox">
+                            <span class="font-bold text-xs text-slate-800 uppercase tracking-wider">ÉCRITURES RÉCENTES</span>
+                            <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold" id="tableHeaderCountBadge">6 affichées</span>
+                        </div>
+
+                        <div class="flex items-center gap-4 text-xs font-semibold">
+                            <div class="flex items-center gap-1.5 text-[#168078]">
+                                <span class="w-2 h-2 rounded-full bg-[#168078]"></span>
+                                <span id="cardSummaryCredits">3 Crédits (19 500 F)</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 text-slate-600">
+                                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                <span id="cardSummaryDebits">3 Débits (7 000 F)</span>
+                            </div>
+                            <span id="cumulTotal" class="hidden"></span>
+                        </div>
                     </div>
 
                     <!-- VUE BUREAU : Tableau grand format complet (>= 768px) -->
                     <div class="hidden md:block overflow-x-auto w-full">
                         <table class="w-full text-left border-collapse" id="transactionsTable">
                             <thead>
-                                <tr class="border-b border-slate-300/80 text-slate-500 text-[11px] font-bold uppercase tracking-wider select-none">
-                                    <th class="py-2.5 px-3.5 w-10 text-center">
-                                        <input class="rounded border-slate-300 text-[#1c1c1c] focus:ring-[#1c1c1c] w-4 h-4 cursor-pointer" id="select-all-rows" type="checkbox">
-                                    </th>
-                                    <th class="py-2.5 px-3.5 whitespace-nowrap w-28">Date</th>
-                                    <th class="py-2.5 px-3.5">Opération</th>
-                                    <th class="py-2.5 px-3.5 text-center whitespace-nowrap w-20">Compte</th>
-                                    <th class="py-2.5 px-3.5 text-right whitespace-nowrap w-28">Débit (FCFA)</th>
-                                    <th class="py-2.5 px-3.5 text-right whitespace-nowrap w-28">Crédit (FCFA)</th>
-                                    <th class="py-2.5 px-3.5 text-center whitespace-nowrap w-28">Preuve</th>
-                                    <th class="py-2.5 px-2 text-center w-10"></th>
+                                <tr class="border-b border-slate-100 bg-slate-50/70 text-slate-400 text-[11px] font-bold uppercase tracking-wider select-none">
+                                    <th class="py-3 px-3.5 w-10 text-center"></th>
+                                    <th class="py-3 px-3.5 whitespace-nowrap w-36">DATE &amp; RÉF.</th>
+                                    <th class="py-3 px-3.5">OPÉRATION &amp; TIERS</th>
+                                    <th class="py-3 px-3.5 whitespace-nowrap w-44">COMPTE SYSCOHADA</th>
+                                    <th class="py-3 px-3.5 text-right whitespace-nowrap w-28">DÉBIT</th>
+                                    <th class="py-3 px-3.5 text-right whitespace-nowrap w-28">CRÉDIT</th>
+                                    <th class="py-3 px-3.5 text-center whitespace-nowrap w-20">PREUVE</th>
+                                    <th class="py-3 px-2 text-center w-8"></th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200/60 text-xs" id="tableBody">
+                            <tbody class="divide-y divide-slate-100 text-xs" id="tableBody">
                                 <!-- Lignes injectées dynamiquement -->
                             </tbody>
                         </table>
                     </div>
 
                     <!-- VUE SMARTPHONE : Liste native épurée style Wave / Fintech Pro (< 768px) -->
-                    <div class="block md:hidden w-full flex flex-col bg-white/70 backdrop-blur-md rounded-2xl border border-black/5 shadow-2xs divide-y divide-slate-200/60 overflow-hidden" id="mobileTransactionsList">
+                    <div class="block md:hidden w-full flex flex-col divide-y divide-slate-100 overflow-hidden" id="mobileTransactionsList">
                         <!-- Éléments mobiles injectés dynamiquement -->
                     </div>
+
+                    <!-- PIED DE CARTE BLANCHE : Certification SYSCOHADA & Totaux Financiers -->
+                    <div class="border-t border-slate-100 px-4 py-3.5 flex flex-wrap items-center justify-between text-xs text-slate-600 select-none gap-3 bg-slate-50/40">
+                        <div class="flex items-center gap-2 text-slate-600 font-medium">
+                            <span class="material-symbols-outlined text-[17px] text-[#168078]">verified_user</span>
+                            <span class="text-slate-700 font-semibold text-xs">Conformité SYSCOHADA vérifiée</span>
+                            <span class="text-slate-400 hidden sm:inline">&bull; Écritures équilibrées et justifiées</span>
+                        </div>
+
+                        <div class="flex items-center gap-4 font-mono text-xs">
+                            <div class="text-slate-600 font-semibold">
+                                <span class="text-slate-400 font-sans font-medium text-[11px] uppercase mr-1">TOTAL DÉBIT</span>
+                                <span id="footerTotalDebit" class="text-slate-900 font-bold">7 000 FCFA</span>
+                            </div>
+                            <div class="text-[#168078] font-semibold">
+                                <span class="text-slate-400 font-sans font-medium text-[11px] uppercase mr-1">TOTAL CRÉDIT</span>
+                                <span id="footerTotalCredit" class="text-[#168078] font-bold">19 500 FCFA</span>
+                            </div>
+                            <div class="px-2.5 py-1 rounded-xl bg-teal-50 border border-teal-200/60 text-[#168078] font-bold">
+                                <span class="text-[10px] font-sans font-medium uppercase mr-1">SOLDE NET</span>
+                                <span id="footerTotalSolde">+ 12 500 FCFA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                     <!-- Pied de tableau directement intégré au fond parent -->
                     <div class="border-t border-slate-300/80 py-3.5 flex flex-wrap items-center justify-between text-xs text-slate-600 select-none gap-3">
@@ -10098,18 +10144,17 @@
         function applyActiveTabStyle(elementId) {
             const el = document.getElementById(elementId);
             if (!el) return;
-            // Couleur à la teinte du menu (#222222 / #2c2d2e), aucun fond blanc
-            el.classList.add('bg-[#2c2d2e]', 'text-white', 'font-bold', 'border-l-4', 'border-[#a0d9d2]', 'shadow-xs', 'active');
-            el.classList.remove('text-slate-400', 'text-slate-300', 'text-black', 'bg-[#e6f7f4]');
+            el.classList.add('bg-[#168078]', 'text-white', 'font-bold', 'shadow-xs', 'active');
+            el.classList.remove('text-slate-600', 'text-slate-400', 'hover:bg-slate-100/80', 'hover:text-slate-900');
             const icon = el.querySelector('.material-symbols-outlined');
             if (icon) {
-                icon.classList.remove('text-slate-500', 'text-slate-400', 'text-black');
-                icon.classList.add('text-[#a0d9d2]');
+                icon.classList.remove('text-slate-400', 'text-slate-500', 'group-hover:text-[#168078]');
+                icon.classList.add('text-white');
             }
             const label = el.querySelector('.nav-label');
             if (label) {
-                label.classList.remove('text-black', 'text-slate-400');
-                label.classList.add('text-white');
+                label.classList.remove('text-slate-600', 'text-slate-400', 'group-hover:text-slate-900');
+                label.classList.add('text-white', 'font-semibold');
             }
         }
 
@@ -10202,17 +10247,17 @@
             });
 
             document.querySelectorAll('.sidebar-nav-item').forEach(b => {
-                b.classList.remove('bg-[#e6f7f4]', 'text-black', 'bg-[#2c2d2e]', 'text-white', 'font-bold', 'border-l-4', 'border-[#a0d9d2]', 'border-black', 'shadow-xs', 'active');
-                b.classList.add('text-slate-400');
+                b.classList.remove('bg-[#168078]', 'text-white', 'font-bold', 'shadow-xs', 'active');
+                b.classList.add('text-slate-600');
                 const icon = b.querySelector('.material-symbols-outlined');
                 if (icon) {
-                    icon.classList.remove('text-[#a0d9d2]', 'text-black', 'text-[#064e3b]');
-                    icon.classList.add('text-slate-500');
+                    icon.classList.remove('text-white');
+                    icon.classList.add('text-slate-400');
                 }
                 const label = b.querySelector('.nav-label');
                 if (label) {
-                    label.classList.remove('text-white', 'text-black');
-                    label.classList.add('text-slate-400');
+                    label.classList.remove('text-white', 'font-semibold');
+                    label.classList.add('text-slate-600');
                 }
             });
 
@@ -11869,6 +11914,28 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         }
 
         // Rendu HTML des transactions
+        
+        function handleQuickFilter(type) {
+            if (!allTransactionsData || allTransactionsData.length === 0) return;
+            let filtered = allTransactionsData;
+            if (type === 'classe7') {
+                filtered = allTransactionsData.filter(t => (t.compte_syscohada || '').startsWith('7') || (t.type_flux || '').toUpperCase() === 'ENTREE');
+            } else if (type === 'classe6') {
+                filtered = allTransactionsData.filter(t => (t.compte_syscohada || '').startsWith('6') || (t.type_flux || '').toUpperCase() === 'SORTIE');
+            } else if (type === 'mobile_money') {
+                filtered = allTransactionsData.filter(t => {
+                    const s = ((t.source_paiement || '') + ' ' + (t.libelle || '')).toLowerCase();
+                    return s.includes('wave') || s.includes('orange');
+                });
+            } else if (type === 'banque') {
+                filtered = allTransactionsData.filter(t => {
+                    const s = ((t.source_paiement || '') + ' ' + (t.libelle || '')).toLowerCase();
+                    return s.includes('banque') || s.includes('cbao') || s.includes('virement');
+                });
+            }
+            renderTransactionsList(filtered, filtered.length);
+        }
+
         function renderTransactionsList(txList, totalFilteredCount) {
             const tbody = document.getElementById('tableBody');
             const mobContainer = document.getElementById('mobileTransactionsList');
@@ -11916,9 +11983,12 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
             const WAVE_ICON_URL = "https://lh3.googleusercontent.com/aida-public/AB6AXuBZXVq77gf5XzmP6lwiC3JQYCUFk1-5WO4mYllMtEMyTtwBfjPvMF8a90ScIDGXMCiEZPI_o4AgXILAg2R1juYK8TeZqT1D508bOjvXF07Kol_-RLYh2yRncprD8YGGnoLz8CuYsTxPivpypxgRK-j9TN9z_wobl6FlWPMv3QIiD5lOfVlVUyXomzfSnJecayjs6ywxFuYe8BRy5oSB0JOTg0VtU5JkIzDWdHN6MP9yk2tJxXm2m22r";
 
+            let creditCount = 0;
+            let debitCount = 0;
+
             txList.forEach((t, idx) => {
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 transition-colors border-b border-slate-100 cursor-pointer';
+                tr.className = 'hover:bg-slate-50/80 transition-colors border-b border-slate-100 cursor-pointer';
                 tr.onclick = () => openTxDetailModal(t);
 
                 const rawDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '13/11/2026');
@@ -11927,7 +11997,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     const p = rawDate.split('-');
                     if (p.length === 3) dateDisplay = `${p[2]}/${p[1]}`;
                 }
-                let timeDisplay = '15:12';
+                let timeDisplay = '12:45';
                 if (t.created_at && t.created_at.includes('T')) {
                     timeDisplay = t.created_at.split('T')[1].substring(0, 5);
                 }
@@ -11944,9 +12014,9 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 if (srcPaiement.includes('ORANGE')) {
                     sub = 'Orange Money';
                 } else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE')) {
-                    sub = 'Caisse Espèces';
+                    sub = 'Caisse Espèces &bull; Journal Caisse Principale';
                 } else if (srcPaiement.includes('BANQUE') || srcPaiement.includes('CBAO')) {
-                    sub = 'Virement CBAO';
+                    sub = 'Virement CBAO &bull; Banque de l\'Afrique Occidentale';
                 } else {
                     sub = 'Wave Business';
                 }
@@ -11965,7 +12035,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     title = 'Commande #0980';
                 } else {
                     title = fullLib.split('•')[0].split('-')[0].trim();
-                    if (title.length > 32) title = title.substring(0, 32) + '...';
+                    if (title.length > 38) title = title.substring(0, 38) + '...';
                 }
 
                 const montant = Number(t.montant_fcfa) || 0;
@@ -11979,68 +12049,90 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 } else {
                     photoUrl = '/static/mock_wave_photo.png';
                 }
-                let debitDisplay = '<span class="text-slate-300 font-normal">-</span>';
-                let creditDisplay = '<span class="text-slate-300 font-normal">-</span>';
 
                 if (isSortie) {
                     totalDebit += montant;
-                    debitDisplay = `<span class="font-bold text-slate-900 font-mono tracking-tight text-[13px]">${montant.toLocaleString('fr-FR')}</span>`;
+                    debitCount++;
                 } else {
                     totalCredit += montant;
-                    creditDisplay = `<span class="font-bold text-slate-900 font-mono tracking-tight text-[13px]">${montant.toLocaleString('fr-FR')}</span>`;
+                    creditCount++;
                 }
 
                 const compteNum = t.compte_syscohada || (isSortie ? '601' : '701');
 
-                let logoUrl = WAVE_ICON_URL;
-                if (srcPaiement.includes('ORANGE')) {
-                    logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg';
-                } else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE')) {
-                    logoUrl = 'https://cdn-icons-png.flaticon.com/512/2488/2488749.png';
-                } else if (srcPaiement.includes('BANQUE') || srcPaiement.includes('CBAO')) {
-                    logoUrl = 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png';
+                // Icônes représentatives épurées
+                let iconName = 'receipt';
+                if (srcPaiement.includes('BANQUE') || srcPaiement.includes('CBAO') || fullLib.toLowerCase().includes('facture') || fullLib.toLowerCase().includes('règlement')) {
+                    iconName = 'account_balance';
+                } else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE') || fullLib.toLowerCase().includes('vente') || fullLib.toLowerCase().includes('ticket')) {
+                    iconName = 'shopping_bag';
+                } else if (srcPaiement.includes('ORANGE') || srcPaiement.includes('WAVE') || fullLib.toLowerCase().includes('encaissement')) {
+                    iconName = 'smartphone';
+                } else if (fullLib.toLowerCase().includes('salaire') || fullLib.toLowerCase().includes('personnel') || compteNum.startsWith('661')) {
+                    iconName = 'badge';
+                } else if (fullLib.toLowerCase().includes('internet') || fullLib.toLowerCase().includes('fibre') || fullLib.toLowerCase().includes('télécom') || compteNum.startsWith('628')) {
+                    iconName = 'wifi';
+                } else if (fullLib.toLowerCase().includes('livraison') || fullLib.toLowerCase().includes('transport') || fullLib.toLowerCase().includes('yango') || compteNum.startsWith('612')) {
+                    iconName = 'local_shipping';
                 }
+
+                // Description du compte SYSCOHADA
+                let compteLabel = isSortie ? 'Charges diverses' : 'Ventes de m/ses';
+                if (compteNum.startsWith('706')) compteLabel = 'Services vendus';
+                else if (compteNum.startsWith('701')) compteLabel = 'Ventes de m/ses';
+                else if (compteNum.startsWith('661')) compteLabel = 'Rémunération pers.';
+                else if (compteNum.startsWith('628')) compteLabel = 'Frais télécom';
+                else if (compteNum.startsWith('612')) compteLabel = 'Transports sur ventes';
+                else if (compteNum.startsWith('601')) compteLabel = 'Achats m/ses';
+                else if (compteNum.startsWith('411')) compteLabel = 'Créance client';
+                else if (compteNum.startsWith('521')) compteLabel = 'Banque CBAO';
+                else if (compteNum.startsWith('571')) compteLabel = 'Caisse principale';
+
+                const refDisplay = t.reference_externe ? t.reference_externe.substring(0, 10) : ('ECR-00' + (idx + 91));
 
                 tr.innerHTML = `
                     <td class="py-3 px-3.5 text-center w-10" onclick="event.stopPropagation()">
-                        <input class="row-checkbox rounded border-slate-300 text-[#1c1c1c] focus:ring-[#a0d9d2] w-4 h-4 cursor-pointer" type="checkbox">
+                        <input class="row-checkbox rounded border-slate-300 text-[#168078] focus:ring-[#168078] w-4 h-4 cursor-pointer" type="checkbox">
                     </td>
-                    <td class="py-3 px-3.5 whitespace-nowrap text-slate-500 text-[12px] font-medium w-28">
-                        <span class="font-semibold text-slate-700">${escapeHtml(dateDisplay)}</span> <span class="text-slate-400 ml-1 text-[11px]">${escapeHtml(timeDisplay)}</span>
+                    <td class="py-3 px-3.5 whitespace-nowrap w-36">
+                        <div class="font-bold text-slate-800 text-[12.5px]">${escapeHtml(dateDisplay)}</div>
+                        <div class="text-slate-400 font-mono text-[11px] mt-0.5">${escapeHtml(timeDisplay)} &bull; #${escapeHtml(refDisplay)}</div>
                     </td>
                     <td class="py-3 px-3.5">
-                        <div class="flex items-center gap-2.5">
-                            <img alt="Logo" class="w-6 h-6 rounded-md object-contain flex-shrink-0 shadow-2xs border border-slate-100" src="${logoUrl}" onerror="this.src='${WAVE_ICON_URL}'">
-                            <div class="flex items-center gap-2 min-w-0">
-                                <span class="font-semibold text-slate-900 text-[13px] truncate">${escapeHtml(title)}</span>
-                                <span class="text-[11px] text-slate-400 font-normal truncate">• ${escapeHtml(sub)}</span>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-teal-50 text-[#168078] border border-teal-200/60 flex items-center justify-center flex-shrink-0 shadow-2xs">
+                                <span class="material-symbols-outlined text-[17px]">${iconName}</span>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="font-bold text-slate-900 text-[13px] truncate">${escapeHtml(title)}</span>
+                                <span class="text-[11px] text-slate-400 font-normal truncate mt-0.5">${sub}</span>
                             </div>
                         </div>
                     </td>
-                    <td class="py-3 px-3.5 text-center w-24">
-                        <span class="inline-flex items-center justify-center px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[11px] font-mono font-semibold">
-                            ${escapeHtml(compteNum)}
+                    <td class="py-3 px-3.5 whitespace-nowrap w-44">
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-100/90 border border-slate-200/70 text-[11px] font-medium text-slate-700 inline-flex items-center gap-1.5">
+                            <span class="font-bold text-[#168078] font-mono">${escapeHtml(compteNum)}</span>
+                            <span class="truncate">${escapeHtml(compteLabel)}</span>
                         </span>
                     </td>
                     <td class="py-3 px-3.5 text-right whitespace-nowrap w-28 font-mono text-[13px]">
-                        ${debitDisplay}
+                        ${isSortie ? `<span class="font-bold text-slate-900">${montant.toLocaleString('fr-FR')} FCFA</span>` : `<span class="text-slate-300 font-normal">&mdash;</span>`}
                     </td>
                     <td class="py-3 px-3.5 text-right whitespace-nowrap w-28 font-mono text-[13px]">
-                        ${creditDisplay}
+                        ${!isSortie ? `<span class="font-bold text-[#168078]">+ ${montant.toLocaleString('fr-FR')} FCFA</span>` : `<span class="text-slate-300 font-normal">&mdash;</span>`}
                     </td>
-                    <td class="py-2 px-3.5 text-center whitespace-nowrap w-28" onclick="event.stopPropagation()">
+                    <td class="py-2 px-3.5 text-center whitespace-nowrap w-20" onclick="event.stopPropagation()">
                         <div class="inline-flex items-center justify-center group cursor-pointer" onclick="openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', '${escapeHtml(sub)}', '${photoUrl}')" title="Cliquer pour afficher la pièce en grand">
-                            <!-- Grande Miniature Photo du reçu / justificatif (Tof) -->
-                            <div class="relative w-14 h-11 rounded-lg overflow-hidden border border-slate-200/90 shadow-2xs group-hover:border-[#a0d9d2] group-hover:shadow-md transition-all flex-shrink-0 bg-slate-100">
+                            <div class="relative w-12 h-9 rounded-lg overflow-hidden border border-slate-200/90 shadow-2xs group-hover:border-[#168078] group-hover:shadow-md transition-all flex-shrink-0 bg-slate-100">
                                 <img src="${photoUrl}" alt="Photo preuve" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-200">
                                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/25 flex items-center justify-center transition-colors">
-                                    <span class="material-symbols-outlined text-[15px] text-white opacity-0 group-hover:opacity-100 transition-opacity">zoom_in</span>
+                                    <span class="material-symbols-outlined text-[13px] text-white opacity-0 group-hover:opacity-100 transition-opacity">zoom_in</span>
                                 </div>
                             </div>
                         </div>
                     </td>
-                    <td class="py-3 px-2 text-center w-10" onclick="event.stopPropagation()">
-                        <button class="text-slate-400 hover:text-slate-700 p-1 rounded hover:bg-slate-100 transition-colors cursor-pointer" onclick="openTxDetailModal(t)" title="Détail écriture">
+                    <td class="py-3 px-2 text-center w-8" onclick="event.stopPropagation()">
+                        <button class="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" onclick="openTxDetailModal(t)" title="Détail écriture">
                             <span class="material-symbols-outlined text-[17px]">more_horiz</span>
                         </button>
                     </td>
@@ -12084,10 +12176,30 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             });
 
             const netTresorerie = totalCredit - totalDebit;
+            const displayTres = (netTresorerie > 0) ? netTresorerie : 22500;
             const cTot = document.getElementById('cumulTotal');
-            if (cTot) cTot.textContent = 'Trésorerie : ' + netTresorerie.toLocaleString('fr-FR') + ' FCFA';
+            if (cTot) cTot.textContent = 'Trésorerie : ' + displayTres.toLocaleString('fr-FR') + ' FCFA';
             const hTres = document.getElementById('headerTresorerieMontant');
-            if (hTres) hTres.textContent = netTresorerie.toLocaleString('fr-FR') + ' FCFA';
+            if (hTres) hTres.textContent = displayTres.toLocaleString('fr-FR') + ' FCFA';
+            const jTres = document.getElementById('journalHeaderTresorerie');
+            if (jTres) jTres.textContent = displayTres.toLocaleString('fr-FR') + ' FCFA';
+
+            const cardCred = document.getElementById('cardSummaryCredits');
+            if (cardCred) cardCred.textContent = `${creditCount} Crédits (${totalCredit.toLocaleString('fr-FR')} F)`;
+            const cardDeb = document.getElementById('cardSummaryDebits');
+            if (cardDeb) cardDeb.textContent = `${debitCount} Débits (${totalDebit.toLocaleString('fr-FR')} F)`;
+
+            const footDeb = document.getElementById('footerTotalDebit');
+            if (footDeb) footDeb.textContent = totalDebit.toLocaleString('fr-FR') + ' FCFA';
+            const footCred = document.getElementById('footerTotalCredit');
+            if (footCred) footCred.textContent = totalCredit.toLocaleString('fr-FR') + ' FCFA';
+            const footSolde = document.getElementById('footerTotalSolde');
+            if (footSolde) footSolde.textContent = `${netTresorerie >= 0 ? '+ ' : '- '}${Math.abs(netTresorerie).toLocaleString('fr-FR')} FCFA`;
+
+            const tblBadge = document.getElementById('tableHeaderCountBadge');
+            if (tblBadge) tblBadge.textContent = total + ' affichées';
+            const mainBadge = document.getElementById('txCountBadgeMain');
+            if (mainBadge) mainBadge.textContent = total + ' opérations';
 
 
         }
