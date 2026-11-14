@@ -7338,13 +7338,43 @@
             </div>
 
             <!-- Entité Active Ultra Minimaliste -->
-            <div class="p-3">
-                <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                    <div class="flex flex-col min-w-0 pr-2">
-                        <span class="font-semibold text-slate-900 text-xs truncate" id="sidebarEntityName">Le Nom De Mon Entreprise Est Cglt</span>
-                        <span class="text-[10px] text-slate-400 font-mono" id="sidebarEntityNinea">NINEA : 00802996</span>
+<!-- Entreprise Active & Sélecteur (Recherche et Choix) -->
+            <div class="p-3 relative" id="enterpriseSelectorSection">
+                <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/90 flex flex-col gap-2">
+                    <!-- Entête Carte Entité avec bouton Changer -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Entité Active</span>
+                        <button type="button" onclick="toggleEnterpriseDropdown(event)" class="text-[11px] font-semibold text-[#0d9488] hover:text-[#0f766e] flex items-center gap-0.5 transition-colors cursor-pointer" id="btnChangerEntite">
+                            <span>Changer</span>
+                            <span class="material-symbols-outlined text-[13px]">unfold_more</span>
+                        </button>
                     </div>
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" title="Actif"></span>
+
+                    <!-- Infos Entité Active -->
+                    <div class="flex items-center justify-between cursor-pointer" onclick="toggleEnterpriseDropdown(event)">
+                        <div class="flex flex-col min-w-0 pr-2">
+                            <span class="font-bold text-slate-900 text-xs truncate" id="sidebarEntityName">Le Nom De Mon Entreprise Est Cglt</span>
+                            <span class="text-[10px] text-slate-400 font-mono" id="sidebarEntityNinea">NINEA : 00802996</span>
+                        </div>
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0 shadow-[0_0_6px_rgba(16,185,129,0.5)]" title="Registre certifié"></span>
+                    </div>
+
+                    <!-- Champ Recherche Entreprise -->
+                    <div class="relative mt-0.5">
+                        <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[14px]">search</span>
+                        <input id="enterpriseSearchInput" oninput="filterEnterpriseList(this.value)" onfocus="openEnterpriseDropdown()" type="text" placeholder="Rechercher entreprise..." class="w-full bg-white border border-slate-200 rounded-lg pl-7 pr-2 py-1 text-[11px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0d9488] focus:ring-1 focus:ring-[#0d9488] transition-all">
+                    </div>
+                </div>
+
+                <!-- Menu Déroulant / Liste des Entreprises -->
+                <div id="enterpriseDropdownMenu" class="hidden absolute left-3 right-3 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-2xl z-[100] overflow-hidden flex flex-col">
+                    <div class="px-3 py-1.5 border-b border-slate-100 bg-slate-50/70 text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                        <span>Dossiers Clients</span>
+                        <span id="enterpriseCountLabel" class="text-slate-500 font-mono">1</span>
+                    </div>
+                    <div id="enterpriseListContainer" class="overflow-y-auto divide-y divide-slate-100 max-h-52">
+                        <!-- Entreprises injectées dynamiquement -->
+                    </div>
                 </div>
             </div>
 
@@ -9532,6 +9562,7 @@
     <script>
         let allTransactions = [];
         let currentEntreprise = null;
+        var allEntreprisesList = [];
 
         function formatFCFA(val) {
             return (Number(val) || 0).toLocaleString('fr-FR') + ' FCFA';
@@ -9693,8 +9724,26 @@
                     return;
                 }
 
+
                 currentEntreprise = data.entreprise;
                 allTransactions = data.transactions || [];
+
+                // Liste de toutes les entreprises
+                const dbEnts = data.entreprises || [];
+                const demoEnts = [
+                    { id: 'ent-demo-1', nom_entreprise: 'SARL Dakar Import & Transit', ninea: '00802996-2G3', telephone_whatsapp: '221770001122' },
+                    { id: 'ent-demo-2', nom_entreprise: 'Cabinet Conseil Diallo & Frères', ninea: '00754128-1A2', telephone_whatsapp: '221762223344' },
+                    { id: 'ent-demo-3', nom_entreprise: 'Boutique Express Almadies', ninea: '00912440-3K9', telephone_whatsapp: '221781112233' }
+                ];
+                // Fusionner avec la liste de la base de données
+                allEntreprisesList = [...dbEnts];
+                demoEnts.forEach(demo => {
+                    if (!allEntreprisesList.some(e => e.nom_entreprise === demo.nom_entreprise || e.telephone_whatsapp === demo.telephone_whatsapp)) {
+                        allEntreprisesList.push(demo);
+                    }
+                });
+                renderEnterpriseDropdown(allEntreprisesList);
+
 
                 // Mise à jour du Dossier Client dans l'Espace Expert-Comptable
                 if (currentEntreprise) {
@@ -12479,6 +12528,112 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 handleSearchInput('');
             }
         }
+
+
+        // ==========================================
+        // GESTION ET RECHERCHE D'ENTREPRISES
+        // ==========================================
+        function toggleEnterpriseDropdown(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('enterpriseDropdownMenu');
+            if (menu) {
+                if (menu.classList.contains('hidden')) {
+                    openEnterpriseDropdown();
+                } else {
+                    closeEnterpriseDropdown();
+                }
+            }
+        }
+
+        function openEnterpriseDropdown() {
+            const menu = document.getElementById('enterpriseDropdownMenu');
+            if (menu) {
+                menu.classList.remove('hidden');
+                renderEnterpriseDropdown(allEntreprisesList);
+            }
+        }
+
+        function closeEnterpriseDropdown() {
+            const menu = document.getElementById('enterpriseDropdownMenu');
+            if (menu) menu.classList.add('hidden');
+        }
+
+        function renderEnterpriseDropdown(list) {
+            const container = document.getElementById('enterpriseListContainer');
+            const countLabel = document.getElementById('enterpriseCountLabel');
+            if (!container) return;
+
+            const listToRender = (list && list.length > 0) ? list : (allEntreprisesList || []);
+            if (countLabel) countLabel.textContent = listToRender.length;
+
+            if (listToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="p-3 text-center text-xs text-slate-400 font-medium">
+                        Aucune entreprise trouvée
+                    </div>
+                `;
+                return;
+            }
+
+            const curId = currentEntreprise ? (currentEntreprise.id || '') : '';
+            const curPhone = currentEntreprise ? (currentEntreprise.telephone_whatsapp || '') : '';
+
+            let itemsHtml = '';
+            listToRender.forEach(ent => {
+                const isSelected = (curId && ent.id === curId) || (curPhone && ent.telephone_whatsapp === curPhone);
+                const activeBadge = isSelected ? '<span class="text-[#0d9488] font-bold text-xs flex-shrink-0">✓</span>' : '';
+                const activeBg = isSelected ? 'bg-[#e6f7f5]/80 text-[#0f766e]' : 'hover:bg-slate-50 text-slate-800';
+
+                itemsHtml += `
+                    <div onclick="selectEnterprise('${escapeHtml(ent.id || '')}', '${escapeHtml(ent.telephone_whatsapp || '')}')" class="p-2.5 ${activeBg} cursor-pointer transition-colors flex items-center justify-between group">
+                        <div class="flex flex-col min-w-0 pr-2">
+                            <span class="font-semibold text-xs group-hover:text-[#0d9488] truncate">${escapeHtml(ent.nom_entreprise || 'Entreprise')}</span>
+                            <span class="text-[10px] text-slate-400 font-mono truncate">NINEA : ${escapeHtml(ent.ninea || '00802996')} • ${escapeHtml(ent.telephone_whatsapp || '')}</span>
+                        </div>
+                        ${activeBadge}
+                    </div>
+                `;
+            });
+            container.innerHTML = itemsHtml;
+        }
+
+        function filterEnterpriseList(query) {
+            openEnterpriseDropdown();
+            const q = (query || '').toLowerCase().trim();
+            if (!q) {
+                renderEnterpriseDropdown(allEntreprisesList);
+                return;
+            }
+            const filtered = allEntreprisesList.filter(e => {
+                const name = (e.nom_entreprise || '').toLowerCase();
+                const ninea = (e.ninea || '').toLowerCase();
+                const phone = (e.telephone_whatsapp || '').toLowerCase();
+                return name.includes(q) || ninea.includes(q) || phone.includes(q);
+            });
+            renderEnterpriseDropdown(filtered);
+        }
+
+        function selectEnterprise(entId, phone) {
+            closeEnterpriseDropdown();
+            const url = new URL(window.location);
+            if (phone) {
+                url.searchParams.set('phone', phone);
+                url.searchParams.delete('id');
+            } else if (entId) {
+                url.searchParams.set('id', entId);
+                url.searchParams.delete('phone');
+            }
+            window.history.pushState({}, '', url);
+            loadDashboardData(entId, phone);
+        }
+
+        // Fermer le dropdown si on clique ailleurs
+        document.addEventListener('click', function(e) {
+            const sec = document.getElementById('enterpriseSelectorSection');
+            if (sec && !sec.contains(e.target)) {
+                closeEnterpriseDropdown();
+            }
+        });
 
 </script>
 </body>
