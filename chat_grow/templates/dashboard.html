@@ -7687,13 +7687,13 @@
                     </div>
                 </div>
 
-                <!-- ONGLETS COMMANDÉS (Préservés dans le DOM) -->
-                <div class="hidden" style="display: none;">
-                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill"></button>
-                    <button type="button" id="pillTab_bilan" onclick="switchFactooTab('bilan')" class="factoo-tab-pill"></button>
-                    <button type="button" id="pillTab_resultat" onclick="switchFactooTab('resultat')" class="factoo-tab-pill"></button>
-                    <button type="button" id="pillTab_tft" onclick="switchFactooTab('tft')" class="factoo-tab-pill"></button>
-                    <button type="button" id="pillTab_annexes" onclick="switchFactooTab('annexes')" class="factoo-tab-pill"></button>
+                <!-- ONGLETS COMMANDÉS (Supprimés visuellement de l'interface, préservés invisibles pour compatibilité JS) -->
+                <div style="display: none !important;" aria-hidden="true" hidden>
+                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill" style="display: none !important;"></button>
+                    <button type="button" id="pillTab_bilan" onclick="switchFactooTab('bilan')" class="factoo-tab-pill" style="display: none !important;"></button>
+                    <button type="button" id="pillTab_resultat" onclick="switchFactooTab('resultat')" class="factoo-tab-pill" style="display: none !important;"></button>
+                    <button type="button" id="pillTab_tft" onclick="switchFactooTab('tft')" class="factoo-tab-pill" style="display: none !important;"></button>
+                    <button type="button" id="pillTab_annexes" onclick="switchFactooTab('annexes')" class="factoo-tab-pill" style="display: none !important;"></button>
                 </div>
 
                 <!-- BARRE DE RECHERCHE, FILTRES RAPIDES ET MENU 4 TRAITS FACTOO (Couleur sarcelle / teal GROW) -->
