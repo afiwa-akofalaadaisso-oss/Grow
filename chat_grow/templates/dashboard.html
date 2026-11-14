@@ -7707,9 +7707,7 @@
                             <table class="w-full text-left border-collapse" id="transactionsTable">
                                 <thead>
                                     <tr class="border-b border-slate-200 bg-slate-50/70 text-slate-500 text-[11px] font-bold uppercase tracking-wider select-none">
-                                        <th class="py-3 px-3.5 w-10 text-center">
-                                            <input type="checkbox" id="select-all-rows" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer">
-                                        </th>
+
                                         <th class="py-3 px-3.5 whitespace-nowrap w-40">Type</th>
                                         <th class="py-3 px-4 min-w-[200px]">Nom du tiers / Opération</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Statuts</th>
@@ -12142,9 +12140,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 const refDisplay = t.reference_externe ? t.reference_externe.substring(0, 10) : ('4' + (idx + 3110));
 
                 tr.innerHTML = `
-                    <td class="py-3 px-3.5 text-center w-10" onclick="event.stopPropagation()">
-                        <input class="row-checkbox rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer" type="checkbox">
-                    </td>
+
                     <td class="py-3 px-3.5 whitespace-nowrap">
                         <div class="flex items-center gap-2">
                             <span class="material-symbols-outlined notranslate text-blue-500 text-[18px]" translate="no">receipt_long</span>
