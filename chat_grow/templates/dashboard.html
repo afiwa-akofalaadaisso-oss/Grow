@@ -7332,7 +7332,7 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (DESIGN OFFICIEL GROW LUXURY GLASS) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (STYLE SCANDINAVE ARCHITECTURAL ÉPURÉ) --- */
         #viewPortalComptable {
             position: fixed;
             top: 0;
@@ -7343,26 +7343,18 @@
             height: 100vh;
             height: 100dvh;
             z-index: 1500;
-            /* Fond Noir Charbon Atmosphérique & Profond façon Studio Luxe */
-            background: 
-                radial-gradient(circle 500px at 15% 20%, rgba(20, 34, 32, 0.5) 0%, transparent 80%),
-                radial-gradient(circle 550px at 85% 30%, rgba(18, 28, 27, 0.45) 0%, transparent 80%),
-                radial-gradient(ellipse at 50% 50%, #0c0f0f 0%, #060808 60%, #020303 100%) !important;
+            background-color: #f2f1ed;
+            background-image: url('/static/portal_bg_clean.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             overflow: hidden !important; /* Page 100% fixe : aucun défilement ni saut */
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .portal-ambient-glow {
-            position: absolute;
-            inset: 0;
-            /* Cercle parfait de luminosité vert menthe doux centré derrière le logo */
-            background: radial-gradient(circle 220px at 50% 33%, rgba(140, 230, 218, 0.40) 0%, rgba(20, 160, 145, 0.18) 45%, rgba(10, 80, 75, 0.05) 75%, transparent 100%);
-            pointer-events: none;
-            z-index: 2;
-        }
         .portal-search-input::placeholder {
-            color: rgba(255, 255, 255, 0.45);
+            color: #94a3b8;
         }
         /* Suppression absolue de tout contour bleu ou anneau natif */
         #portalCompanySearchInput,
@@ -7378,50 +7370,39 @@
             --tw-ring-offset-shadow: none !important;
             --tw-ring-color: transparent !important;
         }
-        /* Pilule en Verre Fumé Givré Haut de Gamme (Design Image Référence) */
+        /* Pilule Blanche Pure Flottante (Exacte Référence Stitch) */
         .portal-search-pill {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.04) 100%);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            border: 1px solid rgba(255, 255, 255, 0.20);
-            border-top: 1px solid rgba(255, 255, 255, 0.32);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 9999px;
-            box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.25),
-                0 12px 35px rgba(0, 0, 0, 0.65),
-                0 0 20px rgba(160, 217, 210, 0.08);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+            transition: all 0.25s ease;
         }
         .portal-search-pill:hover,
         .portal-search-pill:focus-within {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.17) 0%, rgba(255, 255, 255, 0.07) 100%);
-            border-color: rgba(160, 217, 210, 0.45);
-            box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.35),
-                0 16px 40px rgba(0, 0, 0, 0.75),
-                0 0 25px rgba(160, 217, 210, 0.20);
+            border-color: rgba(22, 128, 120, 0.45);
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.09), 0 0 15px rgba(22, 128, 120, 0.12);
         }
         #portalSearchResultsDropdown {
-            background: rgba(14, 18, 18, 0.94);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 1.25rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(160, 217, 210, 0.10);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
         }
         #portalSearchResultsDropdown::-webkit-scrollbar {
             width: 5px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-track {
-            background: #0d1212;
+            background: #f8fafc;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb {
-            background: #233533;
+            background: #cbd5e1;
             border-radius: 9999px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb:hover {
-            background: #a0d9d2;
+            background: #168078;
         }
 
     </style>
@@ -7430,51 +7411,48 @@
 <body class="bg-white text-slate-900 antialiased min-h-screen">
 
     <!-- ========================================================================= -->
-    <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE EXACT DE LA RÉFÉRENCE UTILISATEUR)-->
+    <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE SCANDINAVE ARCHITECTURAL ÉPURÉ)  -->
     <!-- ========================================================================= -->
     <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: flex;">
-        <div class="portal-ambient-glow"></div>
-
-        <!-- Zone Centrale Fixe : Proportions Exactes, Zéro Saut de page -->
+        <!-- Zone Centrale Fixe : Proportions Exactes de la Référence Stitch -->
         <main class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
-            <!-- LOGO GROW MAJESTUEUX (Cercle de luminosité doux et centré) -->
+            <!-- LOGO GROW SARCELLE / ÉMERAUDE DE L'IMAGE STITCH -->
             <div class="relative group cursor-pointer mb-2 sm:mb-3" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-gradient-to-r from-[#14b8a6]/35 via-[#9aeae0]/50 to-[#14b8a6]/35 blur-3xl pointer-events-none"></div>
-                <img src="/static/grow_logo_transparent.png" alt="Grow Logo" 
-                     class="relative w-36 sm:w-44 max-w-[220px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
-                     style="filter: drop-shadow(0 0 25px rgba(160, 217, 210, 0.85)) drop-shadow(0 8px 25px rgba(20, 184, 166, 0.5));">
+                <img src="/static/grow_logo_teal.png" alt="Grow Logo" 
+                     class="relative w-28 sm:w-36 max-w-[170px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
+                     style="filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.06));">
             </div>
 
             <!-- Texte Animé Machine à Écrire (Exactement préservé) -->
             <div class="min-h-[44px] sm:min-h-[48px] flex items-center justify-center my-3 sm:my-4">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center justify-center drop-shadow-md">
-                    <span id="portalTypewriterText" class="text-white">Portail Grow pour comptables</span>
-                    <span class="inline-block w-0.5 sm:w-1 h-6 sm:h-7 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-[#1e293b] tracking-tight flex items-center justify-center">
+                    <span id="portalTypewriterText" class="text-[#1e293b]">Portail Grow pour comptables</span>
+                    <span class="inline-block w-0.5 sm:w-1 h-6 sm:h-7 bg-[#168078] ml-1.5 animate-pulse"></span>
                 </h1>
             </div>
 
-            <!-- Barre de Recherche Verre Fumé Givré (Exacte Image Référence) -->
+            <!-- Barre de Recherche Blanche Flottante (Exacte Image Référence Stitch) -->
             <div class="relative w-full max-w-[420px] sm:max-w-[460px] mx-auto text-left" id="portalSearchWrapper">
-                <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 shadow-xl transition-all">
-                    <span class="material-symbols-outlined text-white/50 text-[18px] mr-2.5 flex-shrink-0 select-none">search</span>
+                <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 transition-all">
+                    <span class="material-symbols-outlined text-[#94a3b8] text-[19px] mr-2.5 flex-shrink-0 select-none">search</span>
                     <input type="text" id="portalCompanySearchInput" 
-                           class="portal-search-input w-full bg-transparent text-white placeholder:text-white/45 text-xs sm:text-[13px] font-medium tracking-wide focus:outline-none"
+                           class="portal-search-input w-full bg-transparent text-[#1e293b] placeholder:text-[#94a3b8] text-xs sm:text-[13.5px] font-medium tracking-wide focus:outline-none"
                            placeholder="Rechercher une entreprise cliente..."
                            autocomplete="off"
                            oninput="handlePortalCompanySearch(this.value)"
                            onkeydown="handlePortalSearchKeydown(event)"
                            onfocus="showPortalDropdown()">
-                    <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-white p-0.5 mr-1 transition-colors cursor-pointer">
+                    <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-slate-700 p-0.5 mr-1 transition-colors cursor-pointer">
                         <span class="material-symbols-outlined text-[15px]">close</span>
                     </button>
-                    <!-- Bouton Flèche Givré Arrondi (Style Référence) -->
-                    <button type="button" onclick="submitPortalSearch()" class="w-7 h-7 rounded-full bg-white/12 hover:bg-white/22 active:bg-white/30 border border-white/20 flex items-center justify-center text-white/85 transition-all cursor-pointer flex-shrink-0 shadow-sm" title="Ouvrir le dossier">
-                        <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+                    <!-- Bouton Flèche Gris Perle Arrondi (Exactement comme sur l'image) -->
+                    <button type="button" onclick="submitPortalSearch()" class="w-7 h-7 rounded-full bg-[#f1f5f9] hover:bg-[#e2e8f0] active:bg-[#cbd5e1] text-[#475569] flex items-center justify-center transition-all cursor-pointer flex-shrink-0 shadow-xs" title="Ouvrir le dossier">
+                        <span class="material-symbols-outlined text-[15px] font-bold">arrow_forward</span>
                     </button>
                 </div>
 
                 <!-- Menu Déroulant Instantané des Entreprises du Cabinet (Apparaît seulement à la saisie) -->
-                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2.5 divide-y divide-white/[0.06] overflow-hidden z-50 max-h-64 overflow-y-auto" style="display: none;">
+                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2.5 divide-y divide-slate-100 overflow-hidden z-50 max-h-64 overflow-y-auto" style="display: none;">
                     <!-- Injecté dynamiquement par JavaScript -->
                 </div>
             </div>
@@ -13192,22 +13170,22 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 const isCurrent = currentEntreprise && (e.id === currentEntreprise.id || e.telephone_whatsapp === currentEntreprise.telephone_whatsapp);
                 return `
                     <div onclick="selectCompanyFromPortal('${e.id}', '${e.telephone_whatsapp || ''}')" 
-                         class="group px-4 py-3 flex items-center justify-between hover:bg-white/[0.08] active:bg-white/[0.14] transition-colors cursor-pointer select-none">
+                         class="group px-4 py-3 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer select-none">
                         <div class="flex items-center gap-3 min-w-0 mr-2">
-                            <div class="w-8 h-8 rounded-full bg-[#1b2a27] text-[#a0d9d2] border border-[#a0d9d2]/40 flex items-center justify-center font-bold text-xs flex-shrink-0 group-hover:border-[#a0d9d2] group-hover:scale-105 transition-all">
+                            <div class="w-8 h-8 rounded-full bg-[#e6f4f2] text-[#168078] border border-[#168078]/25 flex items-center justify-center font-bold text-xs flex-shrink-0 group-hover:border-[#168078] group-hover:scale-105 transition-all">
                                 ${escapeHtml(inits)}
                             </div>
                             <div class="min-w-0 flex flex-col">
-                                <div class="text-white font-semibold text-[13.5px] truncate flex items-center gap-2">
+                                <div class="text-slate-900 font-semibold text-[13.5px] truncate flex items-center gap-2">
                                     <span class="truncate">${escapeHtml(nom)}</span>
-                                    ${isCurrent ? '<span class="px-1.5 py-0.2 rounded-full bg-[#a0d9d2]/20 text-[#a0d9d2] border border-[#a0d9d2]/40 text-[9.5px] font-bold flex-shrink-0">Actif</span>' : ''}
+                                    ${isCurrent ? '<span class="px-1.5 py-0.2 rounded-full bg-[#168078]/10 text-[#168078] border border-[#168078]/30 text-[9.5px] font-bold flex-shrink-0">Actif</span>' : ''}
                                 </div>
-                                <div class="text-[11.5px] text-slate-400 font-mono truncate mt-0.5">
+                                <div class="text-[11.5px] text-slate-500 font-mono truncate mt-0.5">
                                     NINEA: ${escapeHtml(e.ninea || '00802996')}
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center text-[#a0d9d2]/80 group-hover:text-[#a0d9d2] group-hover:translate-x-0.5 transition-all flex-shrink-0">
+                        <div class="flex items-center text-[#168078] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all flex-shrink-0">
                             <span class="material-symbols-outlined text-[19px]">chevron_right</span>
                         </div>
                     </div>
