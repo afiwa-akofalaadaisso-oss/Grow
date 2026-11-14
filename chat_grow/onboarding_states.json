@@ -27,5 +27,24 @@
     "soldes_multi_operateurs": {
       "WAVE": 1088
     }
+  },
+  "221764093183": {
+    "etape": "CHOIX_LANGUE",
+    "langue_preferee": null,
+    "ninea": null,
+    "nom_entreprise": null,
+    "nom_personne_physique": null,
+    "capital": null,
+    "date_creation": null,
+    "adresse_siege": null,
+    "nombre_employes": null,
+    "operateurs": null,
+    "liste_operateurs_cles": null,
+    "immobilisations": null,
+    "valeur_equipements_fcfa": null,
+    "equipements_photo_validee": false,
+    "statut": "EN_ATTENTE_LANGUE",
+    "abonnement_valide": false,
+    "premier_contact_effectue": true
   }
 }
