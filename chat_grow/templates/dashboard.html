@@ -7687,111 +7687,147 @@
                     </div>
                 </div>
 
-                <!-- ONGLETS COMMANDÉS : BILAN, RÉSULTAT, TAFIRE, ANNEXES -->
-                <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4 select-none text-xs font-medium">
-                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill active px-4 py-1.5 rounded-full bg-[#a0d9d2] text-[#14362b] font-bold transition-all cursor-pointer whitespace-nowrap shadow-xs flex items-center gap-1.5">
-                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">receipt_long</span>
-                        <span>Écritures &amp; Factures</span>
-                    </button>
-                    <button type="button" id="pillTab_bilan" onclick="switchFactooTab('bilan')" class="factoo-tab-pill px-4 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5">
-                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">scale</span>
-                        <span>Bilan</span>
-                    </button>
-                    <button type="button" id="pillTab_resultat" onclick="switchFactooTab('resultat')" class="factoo-tab-pill px-4 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5">
-                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">trending_up</span>
-                        <span>Résultat</span>
-                    </button>
-                    <button type="button" id="pillTab_tft" onclick="switchFactooTab('tft')" class="factoo-tab-pill px-4 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5">
-                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">payments</span>
-                        <span>TAFIRE</span>
-                    </button>
-                    <button type="button" id="pillTab_annexes" onclick="switchFactooTab('annexes')" class="factoo-tab-pill px-4 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5">
-                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">description</span>
-                        <span>Annexes</span>
-                    </button>
+                <!-- ONGLETS COMMANDÉS (Préservés dans le DOM) -->
+                <div class="hidden" style="display: none;">
+                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill"></button>
+                    <button type="button" id="pillTab_bilan" onclick="switchFactooTab('bilan')" class="factoo-tab-pill"></button>
+                    <button type="button" id="pillTab_resultat" onclick="switchFactooTab('resultat')" class="factoo-tab-pill"></button>
+                    <button type="button" id="pillTab_tft" onclick="switchFactooTab('tft')" class="factoo-tab-pill"></button>
+                    <button type="button" id="pillTab_annexes" onclick="switchFactooTab('annexes')" class="factoo-tab-pill"></button>
                 </div>
 
-                <!-- 1. VUE JOURNAL DES ÉCRITURES -->
-                <div id="viewJournal">
-<!-- BARRE DE RECHERCHE ET FILTRES RAPIDES FACTOO (Couleur sarcelle / teal GROW du haut) -->
-                    <div class="factoo-dark-filter-bar p-3 rounded-xl shadow-md mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs">
-                        <!-- Champ recherche tiers / facture -->
-                        <div class="relative flex-1">
-                            <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-[#168078] text-[18px] pointer-events-none" translate="no">search</span>
-                            <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Rechercher par libellé de l'opération, facture, tiers..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-white border border-white/70 text-slate-800 text-xs placeholder:text-slate-400 font-medium transition-all shadow-xs">
-                        </div>
+                <!-- BARRE DE RECHERCHE, FILTRES RAPIDES ET MENU 4 TRAITS FACTOO (Couleur sarcelle / teal GROW) -->
+                <div class="factoo-dark-filter-bar p-3 rounded-xl shadow-md mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs">
+                    <!-- Champ recherche tiers / facture -->
+                    <div class="relative flex-1">
+                        <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-[#168078] text-[18px] pointer-events-none" translate="no">search</span>
+                        <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Rechercher par libellé de l'opération, facture, tiers..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-white border border-white/70 text-slate-800 text-xs placeholder:text-slate-400 font-medium transition-all shadow-xs">
+                    </div>
 
-                        <!-- Dropdown Type -->
-                        <div class="relative w-full md:w-44">
-                            <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-white border border-white/70 text-slate-800 text-xs font-medium transition-all cursor-pointer shadow-xs">
-                                <option value="all">Type : Tous</option>
-                                <option value="7">Facture Client (Vente)</option>
-                                <option value="6">Facture Fournisseur (Achat)</option>
-                                <option value="wave">Wave Sénégal</option>
-                                <option value="orange">Orange Money</option>
-                                <option value="banque">Virement Bancaire CBAO</option>
-                                <option value="especes">Caisse Espèces</option>
-                            </select>
-                        </div>
+                    <!-- Dropdown Type -->
+                    <div class="relative w-full md:w-44">
+                        <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-white border border-white/70 text-slate-800 text-xs font-medium transition-all cursor-pointer shadow-xs">
+                            <option value="all">Type : Tous</option>
+                            <option value="7">Facture Client (Vente)</option>
+                            <option value="6">Facture Fournisseur (Achat)</option>
+                            <option value="wave">Wave Sénégal</option>
+                            <option value="orange">Orange Money</option>
+                            <option value="banque">Virement Bancaire CBAO</option>
+                            <option value="especes">Caisse Espèces</option>
+                        </select>
+                    </div>
 
-                        <!-- Sélecteur de date ultra-pro GROW -->
-                        <div class="relative w-full md:w-52" id="factooDateWrapper">
-                            <button type="button" id="factooDateBtn" onclick="toggleFactooCalendar(event)" class="w-full py-2 px-3 rounded-lg bg-white hover:bg-slate-50 text-slate-800 text-xs font-medium flex items-center justify-between transition-all select-none cursor-pointer group shadow-xs">
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">calendar_today</span>
-                                    <span id="factooDateBtnLabel" class="truncate font-semibold text-slate-800">Toutes les dates</span>
-                                </div>
-                                <span class="material-symbols-outlined notranslate text-[16px] text-slate-500 group-hover:text-slate-700 transition-transform duration-200" id="factooDateChevron" translate="no">expand_more</span>
-                            </button>
-                            <input type="hidden" id="factooDateInput" value="">
+                    <!-- Sélecteur de date ultra-pro GROW -->
+                    <div class="relative w-full md:w-52" id="factooDateWrapper">
+                        <button type="button" id="factooDateBtn" onclick="toggleFactooCalendar(event)" class="w-full py-2 px-3 rounded-lg bg-white hover:bg-slate-50 text-slate-800 text-xs font-medium flex items-center justify-between transition-all select-none cursor-pointer group shadow-xs">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">calendar_today</span>
+                                <span id="factooDateBtnLabel" class="truncate font-semibold text-slate-800">Toutes les dates</span>
+                            </div>
+                            <span class="material-symbols-outlined notranslate text-[16px] text-slate-500 group-hover:text-slate-700 transition-transform duration-200" id="factooDateChevron" translate="no">expand_more</span>
+                        </button>
+                        <input type="hidden" id="factooDateInput" value="">
 
-                            <!-- Popover Calendrier Moderne GROW Pro -->
-                            <div id="factooCalendarPopover" class="calendar-popover-box" onclick="event.stopPropagation()">
-                                <!-- Presets rapides -->
-                                <div class="cal-quick-presets">
-                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('all')">Toutes</button>
-                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('today')">Aujourd'hui</button>
-                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('month')">Ce mois</button>
-                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('last_month')">Mois dernier</button>
-                                </div>
+                        <!-- Popover Calendrier Moderne GROW Pro -->
+                        <div id="factooCalendarPopover" class="calendar-popover-box" onclick="event.stopPropagation()">
+                            <!-- Presets rapides -->
+                            <div class="cal-quick-presets">
+                                <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('all')">Toutes</button>
+                                <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('today')">Aujourd'hui</button>
+                                <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('month')">Ce mois</button>
+                                <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('last_month')">Mois dernier</button>
+                            </div>
 
-                                <!-- En-tête mois avec chevrons -->
-                                <div class="cal-header">
-                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)">
-                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_left</span>
-                                    </button>
-                                    <span class="cal-month-title text-[#14362b] font-bold" id="factooCalMonthTitle">Novembre 2026</span>
-                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(1)">
-                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_right</span>
-                                    </button>
-                                </div>
+                            <!-- En-tête mois avec chevrons -->
+                            <div class="cal-header">
+                                <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)">
+                                    <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_left</span>
+                                </button>
+                                <span class="cal-month-title text-[#14362b] font-bold" id="factooCalMonthTitle">Novembre 2026</span>
+                                <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(1)">
+                                    <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_right</span>
+                                </button>
+                            </div>
 
-                                <!-- Jours de semaine -->
-                                <div class="cal-weekdays">
-                                    <span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span>
-                                </div>
+                            <!-- Jours de semaine -->
+                            <div class="cal-weekdays">
+                                <span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span>
+                            </div>
 
-                                <!-- Grille des jours -->
-                                <div class="cal-days-grid" id="factooCalDaysGrid"></div>
+                            <!-- Grille des jours -->
+                            <div class="cal-days-grid" id="factooCalDaysGrid"></div>
 
-                                <!-- Résumé de sélection -->
-                                <div class="text-[11px] text-slate-500 font-medium mb-2 text-center" id="factooCalSummary">
-                                    Cliquez pour choisir une date ou période
-                                </div>
+                            <!-- Résumé de sélection -->
+                            <div class="text-[11px] text-slate-500 font-medium mb-2 text-center" id="factooCalSummary">
+                                Cliquez pour choisir une date ou période
+                            </div>
 
-                                <!-- Actions -->
-                                <div class="cal-footer">
-                                    <button type="button" class="cal-btn-cancel" onclick="resetFactooCalendarFilter()">Effacer</button>
-                                    <button type="button" class="cal-btn-apply" onclick="applyFactooCalendarFilter()">Appliquer</button>
-                                </div>
+                            <!-- Actions -->
+                            <div class="cal-footer">
+                                <button type="button" class="cal-btn-cancel" onclick="resetFactooCalendarFilter()">Effacer</button>
+                                <button type="button" class="cal-btn-apply" onclick="applyFactooCalendarFilter()">Appliquer</button>
                             </div>
                         </div>
-
-                        <!-- Bouton Réinitialiser -->
-                        <button type="button" onclick="resetFactooFilters()" class="px-3.5 py-2 rounded-lg bg-white/20 hover:bg-white/35 text-white border border-white/35 text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap shadow-xs backdrop-blur-xs">
-                            Réinitialiser
-                        </button>
                     </div>
+
+                    <!-- Bouton 4 traits : Menu Bilan, Résultat, TAFIRE, Annexe -->
+                    <div class="relative">
+                        <button type="button" id="factooMenuTraitsBtn" onclick="toggleFactooTraitsMenu(event)" class="px-3 py-2 rounded-lg bg-white/20 hover:bg-white/35 active:bg-white/45 text-white border border-white/35 transition-all cursor-pointer flex items-center justify-center shadow-xs backdrop-blur-xs group" title="Menu des états financiers (Bilan, Résultat, TAFIRE, Annexe)">
+                            <svg class="w-5 h-5 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                                <line x1="3" y1="5" x2="21" y2="5"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                                <line x1="3" y1="15" x2="21" y2="15"></line>
+                                <line x1="3" y1="20" x2="21" y2="20"></line>
+                            </svg>
+                        </button>
+
+                        <!-- Popover Menu des 4 traits (Bilan, Résultat, TAFIRE, Annexe) -->
+                        <div id="factooTraitsMenuPopover" class="hidden absolute right-0 top-full mt-2 w-64 bg-[#081514] border border-[#168078]/60 rounded-xl shadow-2xl p-2 z-[2500] text-xs select-none backdrop-blur-md" onclick="event.stopPropagation()">
+                            <div class="px-3 py-2 text-[10.5px] font-bold uppercase tracking-wider text-[#a0d9d2] border-b border-slate-700/60 mb-1 flex items-center justify-between">
+                                <span>États Financiers</span>
+                                <span class="w-2 h-2 rounded-full bg-[#a0d9d2] animate-pulse"></span>
+                            </div>
+                            <button type="button" onclick="selectFactooView('journal')" data-view-target="journal" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">table_rows</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-bold text-slate-100">Journal des écritures</span>
+                                    <span class="text-[10px] text-slate-400">Tableau principal</span>
+                                </div>
+                            </button>
+                            <button type="button" onclick="selectFactooView('bilan')" data-view-target="bilan" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">account_balance</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-bold text-slate-100">Bilan</span>
+                                    <span class="text-[10px] text-slate-400">Actif &amp; Passif SYSCOHADA</span>
+                                </div>
+                            </button>
+                            <button type="button" onclick="selectFactooView('resultat')" data-view-target="resultat" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">trending_up</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-bold text-slate-100">Résultat</span>
+                                    <span class="text-[10px] text-slate-400">Compte de résultat &amp; SIG</span>
+                                </div>
+                            </button>
+                            <button type="button" onclick="selectFactooView('tft')" data-view-target="tft" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">payments</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-bold text-slate-100">TAFIRE</span>
+                                    <span class="text-[10px] text-slate-400">Flux de trésorerie (TFT)</span>
+                                </div>
+                            </button>
+                            <button type="button" onclick="selectFactooView('annexes')" data-view-target="annexes" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">description</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-bold text-slate-100">Annexe</span>
+                                    <span class="text-[10px] text-slate-400">Notes &amp; liasse fiscale DGID</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. VUE JOURNAL DES ÉCRITURES (TABLEAU) -->
+                <div id="viewJournal">
 
                     <!-- TABLEAU PLEINE LARGEUR FACTOO (Sur fond blanc propre) -->
                     <div class="bg-white rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden mb-4">
@@ -7940,6 +7976,16 @@
 
             <!-- VUES SECONDAIRES (Bilan, Compte de Résultat, TFT, Annexes) -->
             <div id="viewBilan" style="display: none;">
+                <div class="mb-3 flex items-center justify-between">
+                    <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+                        <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
+                        <span>Retour au Journal des écritures</span>
+                    </button>
+                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
+                        <span>Vue active : <b class="text-slate-800">Bilan SYSCOHADA</b></span>
+                    </span>
+                </div>
             <div class="comptable-statement-card">
                 <div class="statement-header">
                     <div class="statement-title-wrap">
@@ -8021,6 +8067,16 @@
         <!-- MODULE 3 : COMPTE DE RÉSULTAT SYSCOHADA & SOLDES DE GESTION (SIG)       -->
         <!-- ========================================================================= -->
         <div id="viewResultat" style="display: none;">
+            <div class="mb-3 flex items-center justify-between">
+                <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
+                    <span>Retour au Journal des écritures</span>
+                </button>
+                <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
+                    <span>Vue active : <b class="text-slate-800">Compte de Résultat</b></span>
+                </span>
+            </div>
             <div class="comptable-statement-card">
                 <div class="statement-header">
                     <div class="statement-title-wrap">
@@ -8083,6 +8139,16 @@
         <!-- MODULE 4 : TABLEAU DES FLUX DE TRÉSORERIE (TFT SYSCOHADA)                -->
         <!-- ========================================================================= -->
         <div id="viewTFT" style="display: none;">
+            <div class="mb-3 flex items-center justify-between">
+                <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
+                    <span>Retour au Journal des écritures</span>
+                </button>
+                <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
+                    <span>Vue active : <b class="text-slate-800">TAFIRE (Flux de Trésorerie)</b></span>
+                </span>
+            </div>
             <div class="comptable-statement-card">
                 <div class="statement-header">
                     <div class="statement-title-wrap">
@@ -8172,6 +8238,16 @@
         <!-- MODULE 5 : NOTES ANNEXES & CONFORMITÉ FISCALE DGID                       -->
         <!-- ========================================================================= -->
         <div id="viewAnnexes" style="display: none;">
+            <div class="mb-3 flex items-center justify-between">
+                <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
+                    <span>Retour au Journal des écritures</span>
+                </button>
+                <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
+                    <span>Vue active : <b class="text-slate-800">Notes &amp; Annexes DGID</b></span>
+                </span>
+            </div>
             <div class="comptable-statement-card">
                 <div class="statement-header">
                     <div class="statement-title-wrap">
@@ -10426,11 +10502,7 @@
         function switchVerticalTab(tabName) {
             console.log("Switching tab to:", tabName);
 
-            // SÉCURITÉ MOBILE : Sur smartphone (< 768px), interdiction stricte d'accéder au Bilan, Résultat ou Trésorerie
-            if (window.innerWidth < 768 && (tabName === 'bilan' || tabName === 'resultat' || tabName === 'tft' || tabName === 'annexes')) {
-                tabName = 'journal';
-            }
-
+            // Accès autorisé sur tous les écrans pour Bilan, Résultat, TAFIRE et Annexes
             setActiveMobileTab(tabName);
 
             const viewJournal = document.getElementById('viewJournal');
@@ -14353,8 +14425,42 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const bCurrent = document.getElementById('factooBreadcrumbCurrentTab');
             if (bCurrent) bCurrent.textContent = labels[tabName] || tabName;
 
+            // Highlight dans le menu 4 traits
+            document.querySelectorAll('[data-view-target]').forEach(item => {
+                const target = item.getAttribute('data-view-target');
+                if (target === tabName) {
+                    item.classList.add('bg-[#168078]/40', 'border', 'border-[#a0d9d2]/40');
+                } else {
+                    item.classList.remove('bg-[#168078]/40', 'border', 'border-[#a0d9d2]/40');
+                }
+            });
+
             switchVerticalTab(tabName);
         }
+
+        function toggleFactooTraitsMenu(e) {
+            if (e) e.stopPropagation();
+            const pop = document.getElementById('factooTraitsMenuPopover');
+            if (!pop) return;
+            pop.classList.toggle('hidden');
+        }
+
+        function selectFactooView(viewName) {
+            const pop = document.getElementById('factooTraitsMenuPopover');
+            if (pop) pop.classList.add('hidden');
+            switchFactooTab(viewName);
+        }
+
+        // Fermer le popover des 4 traits au clic extérieur
+        document.addEventListener('click', function(e) {
+            const pop = document.getElementById('factooTraitsMenuPopover');
+            const btn = document.getElementById('factooMenuTraitsBtn');
+            if (pop && !pop.classList.contains('hidden')) {
+                if (btn && !btn.contains(e.target) && !pop.contains(e.target)) {
+                    pop.classList.add('hidden');
+                }
+            }
+        });
 
         function handleFactooTab(tab, btn) {
             currentFactooTab = tab;
