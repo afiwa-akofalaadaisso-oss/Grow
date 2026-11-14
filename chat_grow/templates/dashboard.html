@@ -7332,15 +7332,15 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET ÉMERAUDE VIBRANT & HAUTE VISIBILITÉ MENTHE) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET NOIR PUR & HAUTE VISIBILITÉ MENTHE) --- */
         #viewPortalComptable {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
             z-index: 1500;
-            /* Fond Vert Émeraude / Sarcelle Vibrant & Lumineux (Inspiré AWA) */
-            background: radial-gradient(circle at 50% 33%, #0e7068 0%, #0a5750 22%, #08433d 44%, #042a26 70%, #011412 100%) !important;
+            /* Fond Noir Profond Absolu avec dégradé subtil haut-de-gamme */
+            background: radial-gradient(circle at 50% 30%, #161616 0%, #0d0d0d 55%, #050505 100%) !important;
             overflow: hidden !important; /* Page 100% fixe : aucun défilement ni saut */
             display: flex;
             align-items: center;
@@ -7351,21 +7351,20 @@
             inset: 0;
             background-image: url('/static/grow_logo_transparent.png');
             background-repeat: repeat;
-            background-size: 130px 130px;
-            opacity: 0.22; /* Filigrane nettement plus vif, présent et texturé comme AWA */
-            filter: brightness(1.25) contrast(1.15);
+            background-size: 150px 150px;
+            opacity: 0.038; /* Filigrane noir texturé discret et luxueux */
             pointer-events: none;
             z-index: 1;
         }
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.45) 0%, rgba(20, 184, 166, 0.28) 32%, rgba(13, 148, 136, 0.12) 60%, transparent 85%);
+            background: radial-gradient(circle at 50% 28%, rgba(160, 217, 210, 0.16) 0%, rgba(20, 20, 20, 0.02) 55%, rgba(6, 6, 6, 0.98) 90%);
             pointer-events: none;
             z-index: 2;
         }
         .portal-search-input::placeholder {
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.65);
         }
         /* Suppression absolue de tout contour bleu ou anneau natif */
         #portalCompanySearchInput,
@@ -7382,33 +7381,26 @@
             --tw-ring-color: transparent !important;
         }
         .portal-search-pill {
-            background: rgba(8, 38, 34, 0.9);
-            border: 2px solid #a0d9d2;
+            background: #181818;
+            border: 1.5px solid #a0d9d2;
             border-radius: 9999px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(160, 217, 210, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(160, 217, 210, 0.15);
             transition: all 0.25s ease;
         }
         .portal-search-pill:hover,
         .portal-search-pill:focus-within {
-            border-color: #6ee7b7;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 40px rgba(160, 217, 210, 0.65);
-            background: rgba(12, 50, 44, 0.95);
-        }
-        .portal-companies-card {
-            background: rgba(6, 28, 24, 0.94);
-            border: 1.5px solid rgba(160, 217, 210, 0.45);
-            backdrop-filter: blur(20px);
-            border-radius: 1.25rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(160, 217, 210, 0.2);
+            border-color: #a0d9d2;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9), 0 0 30px rgba(160, 217, 210, 0.35);
+            background: #1f1f1f;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar {
             width: 5px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-track {
-            background: #08241f;
+            background: #141414;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb {
-            background: #14594e;
+            background: #2a3a37;
             border-radius: 9999px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb:hover {
@@ -7430,33 +7422,33 @@
 
         <!-- Zone Centrale Fixe : 100% Stable, Zéro Scroll, Zéro Saut de page -->
         <main class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
-            <!-- GRAND LOGO GROW MAJESTUEUX (Équilibré pour tenir parfaitement dans l'écran) -->
+            <!-- GRAND LOGO GROW MAJESTUEUX (Vivacité et éclat renforcés) -->
             <div class="relative group cursor-pointer mb-3 sm:mb-4" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
-                <div class="absolute -inset-8 bg-gradient-to-r from-[#14b8a6]/45 via-[#a0d9d2]/55 to-[#14b8a6]/45 rounded-full blur-3xl group-hover:scale-110 transition-all duration-500"></div>
+                <div class="absolute -inset-8 bg-[#a0d9d2]/35 rounded-full blur-3xl group-hover:bg-[#a0d9d2]/55 transition-all"></div>
                 <img src="/static/grow_logo_transparent.png" alt="Grow Logo" 
-                     class="relative w-48 sm:w-56 md:w-64 max-w-[280px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
-                     style="filter: drop-shadow(0 0 35px rgba(160, 217, 210, 0.8)) drop-shadow(0 15px 30px rgba(13, 148, 136, 0.6));">
+                     class="relative w-44 sm:w-52 md:w-60 max-w-[260px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
+                     style="filter: drop-shadow(0 0 25px rgba(160, 217, 210, 0.85)) drop-shadow(0 10px 30px rgba(20, 184, 166, 0.5)) saturate(1.45) brightness(1.18);">
             </div>
 
             <!-- Texte Animé Machine à Écrire (Typewriter) -->
-            <div class="min-h-[44px] sm:min-h-[52px] flex items-center justify-center mb-6 sm:mb-7">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-[0_4px_20px_rgba(160,217,210,0.5)]">
+            <div class="min-h-[44px] sm:min-h-[52px] flex items-center justify-center mb-6 sm:mb-8">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-md">
                     <span id="portalTypewriterText" class="text-white">Portail Grow pour comptables</span>
-                    <span class="inline-block w-1 h-7 sm:h-9 bg-[#a0d9d2] ml-1.5 animate-pulse shadow-[0_0_12px_#a0d9d2]"></span>
+                    <span class="inline-block w-1 h-7 sm:h-9 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
                 </h1>
             </div>
 
-            <!-- Conteneur Recherche & Dossiers Clients Intégrés (Zéro saut, Zéro vide noir) -->
+            <!-- Barre de Recherche Entreprise (Pilule Google/AWA épurée, stable et large) -->
             <div class="relative w-full max-w-[420px] sm:max-w-[460px] mx-auto text-left" id="portalSearchWrapper">
-                <!-- Pilule de Recherche -->
-                <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 shadow-xl transition-all mb-3">
+                <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 shadow-xl transition-all">
                     <span class="material-symbols-outlined text-[#a0d9d2] text-[19px] mr-2.5 flex-shrink-0 select-none">search</span>
                     <input type="text" id="portalCompanySearchInput" 
                            class="portal-search-input w-full bg-transparent text-white placeholder:text-white/60 text-xs sm:text-[13px] font-medium tracking-wide focus:outline-none"
                            placeholder="Rechercher une entreprise cliente..."
                            autocomplete="off"
                            oninput="handlePortalCompanySearch(this.value)"
-                           onkeydown="handlePortalSearchKeydown(event)">
+                           onkeydown="handlePortalSearchKeydown(event)"
+                           onfocus="showPortalDropdown()">
                     <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-white p-0.5 mr-1 transition-colors cursor-pointer">
                         <span class="material-symbols-outlined text-[15px]">close</span>
                     </button>
@@ -7465,18 +7457,9 @@
                     </button>
                 </div>
 
-                <!-- Carte Intégrée des Dossiers Clients (Toujours visible & filtrable en direct) -->
-                <div class="portal-companies-card overflow-hidden">
-                    <div class="px-4 py-2 border-b border-white/[0.06] flex items-center justify-between bg-black/20">
-                        <span class="text-[10.5px] uppercase font-bold tracking-wider text-[#a0d9d2] flex items-center gap-1.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#a0d9d2]"></span>
-                            Dossiers clients du cabinet
-                        </span>
-                        <span class="text-[10px] text-slate-400 font-medium">Sélection directe</span>
-                    </div>
-                    <div id="portalSearchResultsDropdown" class="divide-y divide-white/[0.06] max-h-56 overflow-y-auto">
-                        <!-- Injecté dynamiquement par JavaScript -->
-                    </div>
+                <!-- Menu Déroulant Instantané des Entreprises du Cabinet -->
+                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2.5 bg-[#141414] border border-[#a0d9d2]/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] divide-y divide-white/[0.06] overflow-hidden z-50 max-h-64 overflow-y-auto" style="display: none;">
+                    <!-- Injecté dynamiquement par JavaScript -->
                 </div>
             </div>
         </main>
@@ -13219,6 +13202,14 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 selectCompanyFromPortal(list[0].id, list[0].telephone_whatsapp);
             }
         }
+
+        document.addEventListener('click', (e) => {
+            const wrap = document.getElementById('portalSearchWrapper');
+            const dd = document.getElementById('portalSearchResultsDropdown');
+            if (wrap && dd && !wrap.contains(e.target)) {
+                dd.style.display = 'none';
+            }
+        });
 
         // Lancement au chargement de la page
         document.addEventListener('DOMContentLoaded', () => {
