@@ -7557,7 +7557,7 @@
     <!-- ========================================================================= -->
     <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE SCANDINAVE ARCHITECTURAL ÉPURÉ)  -->
     <!-- ========================================================================= -->
-    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: none;">
+    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: flex;">
         <!-- Zone Centrale Fixe : Proportions Exactes de la Référence Stitch -->
         <main id="portalCenterBox" class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
             <!-- LOGO GROW SARCELLE / ÉMERAUDE DE L'IMAGE STITCH -->
@@ -13914,10 +13914,10 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (new URLSearchParams(window.location.search).get('open_webhook') === '1') {
                 setTimeout(ouvrirModalWebhookAssistant, 400);
             }
-            // Affichage direct du tableau connecté à Supabase (portail uniquement si ?portal=1)
+            // PAR DÉFAUT : Démarrage toujours sur la page d'accueil (Portail de recherche scénarisé)
             const urlParamsPortal = new URLSearchParams(window.location.search);
-            const shouldShowPortal = urlParamsPortal.get('portal') === '1';
-            if (shouldShowPortal) {
+            const skipPortal = urlParamsPortal.get('direct') === '1' || urlParamsPortal.get('skip_portal') === '1';
+            if (!skipPortal) {
                 openPortalView();
             } else {
                 quitterPortailVersDossier();

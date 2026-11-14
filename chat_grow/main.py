@@ -413,7 +413,7 @@ async def verify_webhook(
         print("Webhook validé avec succès par Meta !")
         return PlainTextResponse(content=hub_challenge)
     if request.url.path == "/":
-        return RedirectResponse(url="/dashboard?phone=221788773827", status_code=302)
+        return RedirectResponse(url="/dashboard", status_code=302)
     return {
         "status": "online",
         "message": "Grow MVP WhatsApp avec Onboarding NINEA & IA SYSCOHADA est 100% opérationnel 🚀"
@@ -424,8 +424,6 @@ async def verify_webhook(
 @app.get("/client", response_class=HTMLResponse)
 async def serve_dashboard(request: Request, phone: str = None, id: str = None):
     """Tableau de bord PME & Agence conforme aux maquettes officielles Grow & ONECCA."""
-    if not phone and not id and not request.query_params.get("phone") and not request.query_params.get("id"):
-        return RedirectResponse(url="/dashboard?phone=221788773827", status_code=302)
     html_path = os.path.join(TEMPLATES_DIR, "dashboard.html")
     if os.path.exists(html_path):
         with open(html_path, "r", encoding="utf-8") as f:
