@@ -41,7 +41,8 @@
         }
 
         html, body {
-            background-color: #ffffff !important;
+            background: linear-gradient(180deg, #a0d9d2 0%, #bde7e2 120px, #d5f2ee 260px, #e8f8f5 420px, #ffffff 620px, #ffffff 100%) !important;
+            background-attachment: fixed !important;
             overflow-y: auto !important;
             overflow-x: hidden !important;
             min-height: 100vh !important;
@@ -51,7 +52,7 @@
         }
 
         .ambient-mint-gradient {
-            background: linear-gradient(180deg, #dcf5f1 0%, #edf8f6 160px, #f7fcfb 340px, #ffffff 580px, #ffffff 100%) !important;
+            background: linear-gradient(180deg, #a0d9d2 0%, #bde7e2 120px, #d5f2ee 260px, #e8f8f5 420px, #ffffff 620px, #ffffff 100%) !important;
             background-attachment: fixed !important;
         }
 
@@ -7426,7 +7427,7 @@
     <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col ambient-mint-gradient transition-all duration-200 ease-in-out">
 
         <!-- HEADER SUPÉRIEUR ÉPURÉ -->
-        <header class="h-14 bg-white/85 backdrop-blur-md border-b border-[#a0d9d2]/30 px-6 flex items-center justify-between sticky top-0 z-40">
+        <header class="h-14 bg-white/70 backdrop-blur-md border-b border-[#a0d9d2]/30 px-6 flex items-center justify-between sticky top-0 z-40">
             <div class="flex items-center gap-3">
                 <!-- Bouton réouverture latérale (icône dock_to_left demandée par l'utilisateur) -->
                 <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="hidden p-1.5 -ml-2 mr-1 text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg shadow-2xs transition-colors cursor-pointer flex items-center justify-center" title="Afficher le menu latéral (Ctrl+B)">
