@@ -7572,7 +7572,7 @@
                                     <th class="py-2.5 px-3.5 text-center whitespace-nowrap w-20">Compte</th>
                                     <th class="py-2.5 px-3.5 text-right whitespace-nowrap w-28">Débit (FCFA)</th>
                                     <th class="py-2.5 px-3.5 text-right whitespace-nowrap w-28">Crédit (FCFA)</th>
-                                    <th class="py-2.5 px-3.5 text-center whitespace-nowrap w-24">Preuve</th>
+                                    <th class="py-2.5 px-3.5 text-left whitespace-nowrap w-36">Preuve / Reçu</th>
                                     <th class="py-2.5 px-2 text-center w-10"></th>
                                 </tr>
                             </thead>
@@ -11303,6 +11303,14 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
                 const flux = (t.type_flux || t.sens || '').toUpperCase();
                 const montant = Number(t.montant_fcfa) || 0;
+                let photoUrl = '/static/mock_wave_photo.png';
+                if (t.preuves_numeriques && t.preuves_numeriques.length > 0) {
+                    photoUrl = t.preuves_numeriques[0].url || t.preuves_numeriques[0];
+                } else if (idx % 3 === 1) {
+                    photoUrl = '/static/mock_receipt_photo.png';
+                } else if (idx % 3 === 2) {
+                    photoUrl = '/static/justificatif-achat-riz.png';
+                }
                 let debitDisplay = '<span class="text-slate-300 font-normal">-</span>';
                 let creditDisplay = '<span class="text-slate-300 font-normal">-</span>';
 
@@ -11348,11 +11356,20 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     <td class="py-3 px-3.5 text-right whitespace-nowrap w-28 font-mono text-[13px]">
                         ${creditDisplay}
                     </td>
-                    <td class="py-3 px-3.5 text-center whitespace-nowrap w-24" onclick="event.stopPropagation()">
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#e6f7f5] text-[#0d9488] border border-[#a0d9d2]/60 hover:bg-[#d4f2ee] transition-colors cursor-pointer" onclick="openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', 'Wave')" title="Preuve Wave certifiée">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#0d9488]"></span>
-                            <span>Reçu</span>
-                        </span>
+                    <td class="py-2 px-3.5 text-left whitespace-nowrap w-36" onclick="event.stopPropagation()">
+                        <div class="inline-flex items-center gap-2 group cursor-pointer" onclick="openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', 'Wave', '${photoUrl}')" title="Cliquer pour afficher la photo de la preuve">
+                            <!-- Miniature Photo du reçu / justificatif (Tof) -->
+                            <div class="relative w-8 h-9 rounded-md overflow-hidden border border-slate-200/90 shadow-2xs group-hover:border-[#0d9488] group-hover:shadow-xs transition-all flex-shrink-0 bg-slate-100">
+                                <img src="${photoUrl}" alt="Photo preuve" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/25 flex items-center justify-center transition-colors">
+                                    <span class="material-symbols-outlined text-[12px] text-white opacity-0 group-hover:opacity-100 transition-opacity">zoom_in</span>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#e6f7f5] text-[#0d9488] border border-[#a0d9d2]/60 group-hover:bg-[#d4f2ee] transition-colors">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#0d9488]"></span>
+                                <span>Reçu</span>
+                            </span>
+                        </div>
                     </td>
                     <td class="py-3 px-2 text-center w-10" onclick="event.stopPropagation()">
                         <button class="text-slate-400 hover:text-slate-700 p-1 rounded hover:bg-slate-100 transition-colors cursor-pointer" onclick="openTxDetailModal(t)" title="Détail écriture">
