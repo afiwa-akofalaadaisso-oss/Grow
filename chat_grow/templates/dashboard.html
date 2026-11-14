@@ -3070,7 +3070,8 @@
         /* --- SMARTPHONES & MOBILES (<= 768px) --- */
         @media (max-width: 768px) {
             html, body {
-            background-color: #e6f7f5 !important;
+                background: linear-gradient(180deg, #a0d9d2 0%, #bde7e2 120px, #d5f2ee 260px, #e8f8f5 420px, #ffffff 620px, #ffffff 100%) !important;
+                background-attachment: fixed !important;
                 overflow-x: hidden !important;
                 width: 100% !important;
                 -webkit-text-size-adjust: 100%;
@@ -4636,9 +4637,9 @@
             }
         }
 
-        /* QUAND LE MODE SMARTPHONE EST ACTIVÉ SUR PC */
+        /* QUAND LE MODE SMARTPHONE EST ACTIVÉ SUR PC (Strictement #1c1c1c & #a0d9d2 avec Dégradé) */
         body.force-mobile-view {
-            background: #0b1329 !important;
+            background: #1c1c1c !important;
             padding: 0 10px 40px 10px !important;
             display: flex !important;
             flex-direction: column !important;
@@ -4651,17 +4652,51 @@
             top: 0 !important;
             left: 0 !important;
             right: 0 !important;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4) !important;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.6) !important;
+            background: #1c1c1c !important;
+            border-bottom: 1px solid rgba(160, 217, 210, 0.25) !important;
+        }
+
+        body.force-mobile-view #comptableSidebar {
+            display: none !important;
+        }
+
+        body.force-mobile-view #btnOpenSidebar {
+            display: none !important;
+        }
+
+        body.force-mobile-view #mainContentWrapper {
+            width: 100% !important;
+            max-width: 430px !important;
+            margin: 20px auto 30px auto !important;
+            background: linear-gradient(180deg, #a0d9d2 0%, #bde7e2 120px, #d5f2ee 260px, #e8f8f5 420px, #ffffff 620px, #ffffff 100%) !important;
+            border-radius: 44px !important;
+            border: 9px solid #1c1c1c !important;
+            box-shadow: 0 0 0 1.5px rgba(160, 217, 210, 0.4), 0 25px 70px rgba(0, 0, 0, 0.9) !important;
+            overflow: hidden !important;
+            position: relative !important;
+            min-height: 840px !important;
+            padding-left: 0 !important;
+        }
+
+        body.force-mobile-view #mobileBottomDock {
+            display: flex !important;
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            border-bottom-left-radius: 35px !important;
+            border-bottom-right-radius: 35px !important;
         }
 
         body.force-mobile-view .app-container {
             width: 100% !important;
             max-width: 440px !important;
             margin: 20px auto 20px auto !important;
-            background: #f8fafc !important;
+            background: linear-gradient(180deg, #a0d9d2 0%, #bde7e2 120px, #d5f2ee 260px, #e8f8f5 420px, #ffffff 620px, #ffffff 100%) !important;
             border-radius: 40px !important;
-            border: 8px solid #1e293b !important;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+            border: 8px solid #1c1c1c !important;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8), 0 0 0 1.5px rgba(160, 217, 210, 0.35) !important;
             overflow: hidden !important;
             position: relative !important;
             min-height: 840px !important;
@@ -7299,7 +7334,7 @@
     <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
 
     <!-- SIDEBAR BLANCHE ÉPURÉE -->
-    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#222222] border-r border-[#333333] shadow-2xl flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out">
+    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#222222] border-r border-[#333333] shadow-2xl flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out -translate-x-full md:translate-x-0">
         <div class="flex flex-col">
             <!-- Header Marque avec le vrai logo GROW sur fond #222222 -->
             <div class="h-16 px-5 flex items-center justify-between border-b border-[#333333] bg-[#1c1c1c]">
@@ -7427,33 +7462,33 @@
     <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col ambient-mint-gradient transition-all duration-200 ease-in-out">
 
         <!-- HEADER SUPÉRIEUR ÉPURÉ (Même couleur menthe que le fond parent) -->
-        <header class="h-14 px-6 flex items-center justify-between sticky top-0 z-40" style="background: linear-gradient(180deg, #a0d9d2 0%, #aee0da 56px) !important; border-bottom: 1px solid rgba(13, 148, 136, 0.18);">
-            <div class="flex items-center gap-3">
+        <header class="h-14 px-3 md:px-6 flex items-center justify-between sticky top-0 z-40" style="background: linear-gradient(180deg, #a0d9d2 0%, #aee0da 56px) !important; border-bottom: 1px solid rgba(13, 148, 136, 0.18);">
+            <div class="flex items-center gap-2 md:gap-3">
                 <!-- Bouton réouverture latérale (icône dock_to_left demandée par l'utilisateur) -->
-                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="hidden p-1.5 -ml-2 mr-1 text-slate-700 hover:text-slate-900 bg-white/70 hover:bg-white border border-[#0d9488]/30 rounded-lg shadow-2xs transition-colors cursor-pointer flex items-center justify-center" title="Afficher le menu latéral (Ctrl+B)">
-                    <span class="material-symbols-outlined text-[19px] block">dock_to_left</span>
+                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="flex md:hidden p-1.5 -ml-1 mr-1 text-[#1c1c1c] hover:text-black bg-white/80 hover:bg-white border border-[#a0d9d2]/80 rounded-lg shadow-2xs transition-colors cursor-pointer items-center justify-center" title="Afficher le menu (Ctrl+B)">
+                    <span class="material-symbols-outlined text-[19px] block">menu</span>
                 </button>
                 <div class="flex items-center gap-2 text-xs text-slate-600 font-medium">
-                    <span class="text-slate-900 font-bold text-sm" id="headerBreadcrumbTitle">Journal des Écritures</span>
+                    <span class="text-slate-900 font-bold text-sm" id="headerBreadcrumbTitle">Journal</span>
                     <span class="px-2 py-0.5 rounded-full bg-white/40 border border-[#0d9488]/20 text-[#0f766e] text-[11px] font-semibold" id="txCountBadge">8 opérations</span>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
                 <!-- Trésorerie Disponible en Direct (Fond noir, sans bouton vert, montant menthe Grow) -->
-                <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#1c1c1c] text-white shadow-sm border border-black/30 cursor-default" title="Trésorerie disponible en direct (Banque / Wave / OM / Caisse)">
-                    <span class="text-xs font-medium text-slate-300">Trésorerie :</span>
-                    <span class="text-xs font-bold font-mono tracking-tight text-[#a0d9d2]" id="headerTresorerieMontant">20 088 FCFA</span>
+                <div class="flex items-center gap-1.5 px-2.5 md:px-3.5 py-1.5 rounded-lg bg-[#1c1c1c] text-white shadow-sm border border-black/30 cursor-default whitespace-nowrap flex-shrink-0" title="Trésorerie disponible en direct (Banque / Wave / OM / Caisse)">
+                    <span class="text-xs font-medium text-slate-300 hidden md:inline">Trésorerie :</span>
+                    <span class="text-xs font-bold font-mono tracking-tight text-[#a0d9d2] whitespace-nowrap" id="headerTresorerieMontant">20 088 FCFA</span>
                 </div>
                 <!-- Bouton discret ajout manuel assorti -->
-                <button onclick="ouvrirModalSaisieRapide()" class="p-1.5 rounded-lg text-white bg-[#1c1c1c] hover:bg-[#2c2c2c] border border-black/30 transition-colors cursor-pointer shadow-sm" title="Nouvelle écriture manuelle (+)">
+                <button onclick="ouvrirModalSaisieRapide()" class="p-1.5 rounded-lg text-white bg-[#1c1c1c] hover:bg-[#2c2c2c] border border-black/30 transition-colors cursor-pointer shadow-sm flex-shrink-0" title="Nouvelle écriture manuelle (+)">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                 </button>
             </div>
         </header>
 
         <!-- CONTENU PRINCIPAL AÉRÉ -->
-        <main class="flex-1 p-6 max-w-6xl w-full mx-auto pb-20">
+        <main class="flex-1 p-3 md:p-6 max-w-6xl w-full mx-auto pb-28 md:pb-20">
 
             <!-- 1. VUE JOURNAL DES ÉCRITURES -->
             <div id="viewJournal">
@@ -8786,6 +8821,35 @@
         </div>
 
     </main>
+
+    <!-- DOCK NAVIGATION MOBILE FIXÉ EN BAS (Strictement #1c1c1c et #a0d9d2) -->
+    <nav id="mobileBottomDock" class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#1c1c1c] border-t border-[#333333] px-2 py-1.5 flex items-center justify-around shadow-2xl">
+        <button type="button" onclick="switchVerticalTab('journal'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-[#a0d9d2] active py-1 px-3 transition-colors cursor-pointer" data-tab="journal">
+            <span class="material-symbols-outlined text-[20px]">menu_book</span>
+            <span class="text-[10px] font-bold">Journal</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-[#a0d9d2] mt-0.5"></span>
+        </button>
+        <button type="button" onclick="switchVerticalTab('bilan'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="bilan">
+            <span class="material-symbols-outlined text-[20px]">account_balance</span>
+            <span class="text-[10px] font-semibold">Bilan</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+        </button>
+        <button type="button" onclick="switchVerticalTab('resultat'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="resultat">
+            <span class="material-symbols-outlined text-[20px]">query_stats</span>
+            <span class="text-[10px] font-semibold">Résultat</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+        </button>
+        <button type="button" onclick="switchVerticalTab('tft'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="tft">
+            <span class="material-symbols-outlined text-[20px]">payments</span>
+            <span class="text-[10px] font-semibold">Trésorerie</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+        </button>
+        <button type="button" onclick="toggleSidebar()" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-[20px]">menu</span>
+            <span class="text-[10px] font-semibold">Menu</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+        </button>
+    </nav>
     </div> <!-- Fin comptable-layout-wrapper -->
 
     <!-- Modale Zoom Preuve Numérique Pro -->
@@ -9706,8 +9770,73 @@
             }
         }
 
+        function toggleSidebar(forceState = null) {
+            const sidebar = document.getElementById('comptableSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const btnOpen = document.getElementById('btnOpenSidebar');
+            const wrapper = document.getElementById('mainContentWrapper');
+            if (!sidebar) return;
+
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                const isClosed = sidebar.classList.contains('-translate-x-full');
+                const shouldOpen = forceState !== null ? forceState : isClosed;
+                if (shouldOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    if (backdrop) backdrop.classList.remove('hidden');
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    if (backdrop) backdrop.classList.add('hidden');
+                }
+            } else {
+                const isCollapsed = sidebar.classList.contains('md:-translate-x-full');
+                const shouldOpen = forceState !== null ? forceState : isCollapsed;
+                if (shouldOpen) {
+                    sidebar.classList.remove('md:-translate-x-full');
+                    if (wrapper) wrapper.classList.add('md:pl-64');
+                    if (btnOpen) btnOpen.classList.add('hidden');
+                } else {
+                    sidebar.classList.add('md:-translate-x-full');
+                    if (wrapper) wrapper.classList.remove('md:pl-64');
+                    if (btnOpen) btnOpen.classList.remove('hidden');
+                }
+            }
+        }
+        function toggleMobileSidebar() {
+            toggleSidebar();
+        }
+
+        function setActiveMobileTab(btnOrTabName) {
+            const btns = document.querySelectorAll('.mobile-tab-btn');
+            btns.forEach(b => {
+                b.classList.remove('text-[#a0d9d2]', 'active');
+                b.classList.add('text-slate-400');
+                const dot = b.querySelector('span:last-child');
+                if (dot) {
+                    dot.classList.remove('bg-[#a0d9d2]');
+                    dot.classList.add('bg-transparent');
+                }
+            });
+            let targetBtn = null;
+            if (typeof btnOrTabName === 'string') {
+                targetBtn = document.querySelector(`.mobile-tab-btn[data-tab="${btnOrTabName}"]`);
+            } else if (btnOrTabName && btnOrTabName.nodeType) {
+                targetBtn = btnOrTabName;
+            }
+            if (targetBtn) {
+                targetBtn.classList.remove('text-slate-400');
+                targetBtn.classList.add('text-[#a0d9d2]', 'active');
+                const dot = targetBtn.querySelector('span:last-child');
+                if (dot) {
+                    dot.classList.remove('bg-transparent');
+                    dot.classList.add('bg-[#a0d9d2]');
+                }
+            }
+        }
+
         function switchVerticalTab(tabName) {
             console.log("Switching tab to:", tabName);
+            setActiveMobileTab(tabName);
 
             const viewJournal = document.getElementById('viewJournal');
             const viewBilan = document.getElementById('viewBilan');
@@ -12399,7 +12528,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             // Initialisation de la vue Bureau / Smartphone sur ordinateur
             const urlMode = new URLSearchParams(window.location.search).get('mode');
             const savedMode = localStorage.getItem('grow_view_mode');
-            if (urlMode === 'mobile' || urlMode === 'smartphone' || (!urlMode && savedMode === 'mobile')) {
+            if (window.innerWidth < 768) {
+                document.body.classList.remove('force-mobile-view');
+                const sidebar = document.getElementById('comptableSidebar');
+                if (sidebar) sidebar.classList.add('-translate-x-full');
+            } else if (urlMode === 'mobile' || urlMode === 'smartphone' || (!urlMode && savedMode === 'mobile')) {
                 setDeviceView('mobile');
             } else {
                 setDeviceView('desktop');
