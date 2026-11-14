@@ -10041,8 +10041,30 @@
 
     <!-- SCRIPT 0 -->
     <script>
-        let allTransactions = [];
-        let currentEntreprise = null;
+        // =========================================================================
+        // VARIABLES GLOBALES D'ÉTAT & FILTRES (DÉCLARÉES AU SOMMET - SANS TDZ)
+        // =========================================================================
+        var currentFilterPeriod = 'all';  // 'all' | 'semaine' | 'custom'
+        var currentFilterStatus = 'all';  // 'all' | 'certified' | 'pending'
+        var currentFilterFlow = 'all';
+        var currentCompteClasseFilter = '';
+        var currentFactooTab = 'all';
+        var currentFactooType = 'all';
+        var currentFactooDate = '';
+        var currentSearchQuery = '';
+        var currentPage = 1;
+        var pageSize = 50;
+        var calStartDate = null;
+        var calEndDate = null;
+        var allTransactions = [];
+        var allTransactionsCache = [];
+        var allEntreprisesList = [];
+        var currentEntreprise = null;
+        var realSoldeNetFormatted = "0";
+        var isBalanceHidden = false;
+
+        // allTransactions déjà déclaré en tête
+        // currentEntreprise déjà déclaré en tête
         var allEntreprisesList = [];
 
         function formatFCFA(val) {
@@ -10617,11 +10639,11 @@
         // =========================================================================
         // PIPELINE DE FILTRAGE, RECHERCHE INSTANTANÉE & PAGINATION INTELLIGENTE
         // =========================================================================
-        let currentFilterPeriod = 'all';  // 'all' | 'semaine' | 'custom'
-        let currentFilterStatus = 'all';  // 'all' | 'certified' | 'pending'
-        let currentSearchQuery = '';
-        let currentPage = 1;
-        let pageSize = 50;
+        // currentFilterPeriod déjà déclaré au sommet
+        // currentFilterStatus déjà déclaré au sommet
+        // currentSearchQuery déjà déclaré au sommet
+        // currentPage déjà déclaré au sommet
+        // pageSize déjà déclaré au sommet
 
         // 1. Vérification que le compte SYSCOHADA est vrai et certain (non vide et non temporaire comme 471 / 471100)
         function isCompteVrai(t) {
@@ -10867,7 +10889,7 @@
             return { key: 'especes', label: 'Espèces FCFA', logoUrl: '/static/images/flows/especes.png', iconFallback: 'fa-solid fa-money-bill-wave' };
         }
 
-        let currentFilterFlow = 'all';
+        // currentFilterFlow déjà déclaré au sommet
 
         function filterByFlow(flowKey, btn) {
             currentFilterFlow = flowKey;
@@ -11912,7 +11934,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         // Rendu HTML des transactions
         
                 // GESTION DU FILTRE DÉDIÉ : RECHERCHE PAR COMPTE DE CLASSE SYSCOHADA
-        let currentCompteClasseFilter = '';
+        // currentCompteClasseFilter déjà déclaré au sommet
 
         function handleCompteClasseSearch(query) {
             currentCompteClasseFilter = (query || '').trim();
@@ -12105,6 +12127,12 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 // Montants HT et TTC
                 const montantTTC = montant;
                 const montantHT = Math.round(montant / 1.18); // Estimation TVA 18% standard UEMOA
+                const compteNum = t.compte_syscohada || (isSortie ? '601' : '701');
+                let sub = 'Wave Business';
+                if (srcPaiement.includes('ORANGE')) sub = 'Orange Money';
+                else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE')) sub = 'Caisse Espèces';
+                else if (srcPaiement.includes('BANQUE') || srcPaiement.includes('CBAO')) sub = 'Virement CBAO';
+                const photoUrl = (t.preuves_numeriques && t.preuves_numeriques.length > 0) ? (t.preuves_numeriques[0].url || '/static/mock_wave_photo.png') : '/static/mock_wave_photo.png';
                 const refDisplay = t.reference_externe ? t.reference_externe.substring(0, 10) : ('4' + (idx + 3110));
 
                 tr.innerHTML = `
@@ -12420,8 +12448,8 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
         // Variables calendrier sur-mesure Grow (100% Autonome et Fiable)
         let calCurrentDate = new Date();
-        let calStartDate = null;
-        let calEndDate = null;
+        // calStartDate déjà déclaré au sommet
+        // calEndDate déjà déclaré au sommet
 
         function toggleCalendarPopover(event) {
             if (event) event.stopPropagation();
@@ -12838,8 +12866,10 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
         
         // Gestion du masquage / affichage du solde (façon Wave & Orange Money)
-        let isBalanceHidden = false;
-        let realSoldeNetFormatted = "0";
+        // isBalanceHidden déjà déclaré en tête
+        isBalanceHidden = false;
+        // realSoldeNetFormatted déjà déclaré au sommet
+            realSoldeNetFormatted = "0";
 
         function toggleBalanceVisibility() {
             isBalanceHidden = !isBalanceHidden;
@@ -13896,9 +13926,12 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         // =========================================================================
         // GESTION DES FILTRES ET ONGLETS FACTOO (MODE PLEINE LARGEUR SANS MENU)
         // =========================================================================
-        let currentFactooTab = 'pending';
-        let currentFactooType = 'all';
-        let currentFactooDate = '';
+        // currentFactooTab déjà déclaré au sommet
+        currentFactooTab = 'all';
+        // currentFactooType déjà déclaré au sommet
+        currentFactooType = 'all';
+        // currentFactooDate déjà déclaré au sommet
+        currentFactooDate = '';
 
         function handleFactooTab(tab, btn) {
             currentFactooTab = tab;

@@ -552,9 +552,8 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
         score_base = 50 + (30 if solde_net > 0 else 10) + int(20 * taux_preuve)
         score_financier = min(98, max(50, score_base)) if raw_txs else 70
 
-        # Isolation stricte : si un téléphone ou un ID est spécifié, la liste ne contient QUE cette entreprise
-        if phone or entreprise_id:
-            all_ents = [target_ent] if target_ent else []
+        # Permettre au cabinet comptable de voir et basculer entre toutes les entreprises en base
+        # (tout en ciblant target_ent pour les écritures et totaux actifs)
 
         return {
             "entreprise": target_ent,
