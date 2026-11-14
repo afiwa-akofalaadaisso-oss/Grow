@@ -7384,12 +7384,13 @@
             box-shadow: 0 14px 35px rgba(0, 0, 0, 0.09), 0 0 15px rgba(22, 128, 120, 0.12);
         }
         #portalSearchResultsDropdown {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(226, 232, 240, 0.85);
             border-radius: 1.25rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.14), 0 0 1px 1px rgba(0, 0, 0, 0.04);
+            padding: 0.4rem;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar {
             width: 5px;
@@ -7452,7 +7453,7 @@
                 </div>
 
                 <!-- Menu Déroulant Instantané des Entreprises du Cabinet (Apparaît seulement à la saisie) -->
-                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2.5 divide-y divide-slate-100 overflow-hidden z-50 max-h-64 overflow-y-auto" style="display: none;">
+                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-3 p-1.5 flex flex-col gap-1 overflow-hidden z-50 max-h-72 overflow-y-auto" style="display: none;">
                     <!-- Injecté dynamiquement par JavaScript -->
                 </div>
             </div>
@@ -10301,6 +10302,7 @@
         function getCleanCompanyName(rawName) {
             if (!rawName) return 'CGLT';
             let clean = rawName.replace(/^le nom de mon entreprise est\s*/i, '').trim();
+            if (clean.toLowerCase() === 'cglt') return 'CGLT';
             return clean || rawName;
         }
 
@@ -13155,9 +13157,10 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             
             if (filtered.length === 0) {
                 dd.innerHTML = `
-                    <div class="p-4 text-center text-slate-400 text-xs">
-                        Aucune entreprise ne correspond à « <span class="text-white font-semibold">${escapeHtml(queryRaw)}</span> ».<br>
-                        <span class="text-[11px] text-slate-500 mt-1 block">Essayez par nom (ex: CGLT), NINEA ou numéro WhatsApp.</span>
+                    <div class="p-5 text-center text-slate-500 text-xs">
+                        <span class="material-symbols-outlined text-slate-300 text-2xl block mb-1">domain_disabled</span>
+                        Aucune entreprise trouvée pour « <span class="text-slate-800 font-semibold">${escapeHtml(queryRaw)}</span> »<br>
+                        <span class="text-[11px] text-slate-400 mt-1 block">Essayez par nom (ex: CGLT), NINEA ou téléphone.</span>
                     </div>
                 `;
                 dd.style.display = 'block';
@@ -13170,23 +13173,26 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 const isCurrent = currentEntreprise && (e.id === currentEntreprise.id || e.telephone_whatsapp === currentEntreprise.telephone_whatsapp);
                 return `
                     <div onclick="selectCompanyFromPortal('${e.id}', '${e.telephone_whatsapp || ''}')" 
-                         class="group px-4 py-3 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors cursor-pointer select-none">
-                        <div class="flex items-center gap-3 min-w-0 mr-2">
-                            <div class="w-8 h-8 rounded-full bg-[#e6f4f2] text-[#168078] border border-[#168078]/25 flex items-center justify-center font-bold text-xs flex-shrink-0 group-hover:border-[#168078] group-hover:scale-105 transition-all">
+                         class="group p-2.5 sm:p-3 flex items-center justify-between rounded-xl hover:bg-slate-50 active:bg-slate-100/80 transition-all cursor-pointer select-none">
+                        <div class="flex items-center gap-3.5 min-w-0 mr-2">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#168078] to-[#0d5953] text-white flex items-center justify-center font-bold text-xs tracking-wider flex-shrink-0 shadow-sm shadow-[#168078]/25 group-hover:scale-105 group-hover:shadow-md transition-all">
                                 ${escapeHtml(inits)}
                             </div>
                             <div class="min-w-0 flex flex-col">
-                                <div class="text-slate-900 font-semibold text-[13.5px] truncate flex items-center gap-2">
-                                    <span class="truncate">${escapeHtml(nom)}</span>
-                                    ${isCurrent ? '<span class="px-1.5 py-0.2 rounded-full bg-[#168078]/10 text-[#168078] border border-[#168078]/30 text-[9.5px] font-bold flex-shrink-0">Actif</span>' : ''}
+                                <div class="flex items-center gap-2">
+                                    <span class="text-slate-900 font-bold text-[14px] truncate tracking-tight group-hover:text-[#168078] transition-colors">${escapeHtml(nom)}</span>
+                                    ${isCurrent ? '<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 text-[10px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Actif</span>' : ''}
                                 </div>
-                                <div class="text-[11.5px] text-slate-500 font-mono truncate mt-0.5">
-                                    NINEA: ${escapeHtml(e.ninea || '00802996')}
+                                <div class="flex items-center gap-2 text-[12px] text-slate-500 font-normal truncate mt-0.5">
+                                    <span class="text-slate-400 font-medium text-[11px]">NINEA</span>
+                                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                                    <span class="font-medium text-slate-700 tracking-wide">${escapeHtml(e.ninea || '00802996')}</span>
+                                    ${e.telephone_whatsapp ? `<span class="w-1 h-1 rounded-full bg-slate-300"></span><span class="text-slate-400 text-[11.5px]">+${escapeHtml(e.telephone_whatsapp)}</span>` : ''}
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center text-[#168078] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all flex-shrink-0">
-                            <span class="material-symbols-outlined text-[19px]">chevron_right</span>
+                        <div class="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-[#168078] group-hover:text-white text-slate-400 flex items-center justify-center transition-all flex-shrink-0 ml-2 shadow-2xs">
+                            <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
                         </div>
                     </div>
                 `;
@@ -13291,7 +13297,6 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         });
     </script>
 
-    
     <!-- ========================================================================= -->
     <!-- MODALE DOSSIER 1-CLIC OFFICIEL BANCAIRE AVEC CHECKLIST DE PIÈCES           -->
     <!-- ========================================================================= -->
