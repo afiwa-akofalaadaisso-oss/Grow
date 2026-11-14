@@ -7454,7 +7454,7 @@
             <!-- Barre de Recherche Blanche Flottante (Exacte Image Référence Stitch) -->
             <div class="relative w-full max-w-[420px] sm:max-w-[460px] mx-auto text-left" id="portalSearchWrapper">
                 <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 transition-all">
-                    <span class="material-symbols-outlined notranslate text-[#94a3b8] text-[19px] mr-2.5 flex-shrink-0 select-none"" translate="no">search</span>
+                    <span class="material-symbols-outlined notranslate text-[#94a3b8] text-[19px] mr-2.5 flex-shrink-0 select-none" translate="no">search</span>
                     <input type="text" id="portalCompanySearchInput" 
                            class="portal-search-input w-full bg-transparent text-[#1e293b] placeholder:text-[#94a3b8] text-xs sm:text-[13.5px] font-medium tracking-wide focus:outline-none"
                            placeholder="Rechercher une entreprise cliente..."
@@ -7463,11 +7463,11 @@
                            onkeydown="handlePortalSearchKeydown(event)"
                            onfocus="showPortalDropdown()">
                     <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-slate-700 p-0.5 mr-1 transition-colors cursor-pointer">
-                        <span class="material-symbols-outlined notranslate text-[15px]"" translate="no">close</span>
+                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">close</span>
                     </button>
                     <!-- Bouton Flèche Gris Perle Arrondi (Exactement comme sur l'image) -->
                     <button type="button" onclick="submitPortalSearch()" class="w-7 h-7 rounded-full bg-[#f1f5f9] hover:bg-[#e2e8f0] active:bg-[#cbd5e1] text-[#475569] flex items-center justify-center transition-all cursor-pointer flex-shrink-0 shadow-xs" title="Ouvrir le dossier">
-                        <span class="material-symbols-outlined notranslate text-[15px] font-bold"" translate="no">arrow_forward</span>
+                        <span class="material-symbols-outlined notranslate text-[15px] font-bold" translate="no">arrow_forward</span>
                     </button>
                 </div>
 
@@ -7496,120 +7496,49 @@
                     </div>
                 </div>
                 <button onclick="toggleSidebar()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" title="Réduire le menu (Ctrl+B)">
-                    <span class="material-symbols-outlined notranslate text-[19px]"" translate="no">dock_to_left</span>
+                    <span class="material-symbols-outlined notranslate text-[19px]" translate="no">dock_to_left</span>
                 </button>
             </div>
 
-            <!-- Entreprise Active Épurée (Image Référence : CG | Cglt Actif | NINEA: 00802996) -->
-            <div class="px-3.5 py-3 border-b border-slate-200/60 relative bg-white/50" id="enterpriseSelectorSection">
-                <button type="button" onclick="toggleEnterpriseDropdown(event)" class="w-full flex items-center justify-between p-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 transition-all cursor-pointer group text-left shadow-2xs">
-                    <div class="flex items-center gap-2.5 min-w-0">
-                        <div class="w-8 h-8 rounded-full bg-teal-50 text-[#168078] border border-teal-200/60 flex items-center justify-center font-bold text-xs flex-shrink-0" id="sidebarEntityAvatar">
-                            CG
-                        </div>
-                        <div class="flex flex-col min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <span class="font-bold text-xs text-slate-900 truncate" id="sidebarEntityName">CGLT</span>
-                                <span class="px-1.5 py-0.2 rounded-full bg-teal-50 text-[#168078] border border-teal-200/60 text-[9.5px] font-semibold">Actif</span>
-                            </div>
-                            <span class="text-[10px] text-slate-400 font-mono leading-tight mt-0.5" id="sidebarEntityNinea">00802996</span>
-                        </div>
-                    </div>
-                    <span class="material-symbols-outlined notranslate text-slate-400 group-hover:text-slate-600 text-[18px] flex-shrink-0 ml-1"" translate="no">unfold_more</span>
-                </button>
-
-                <!-- Popover Déroulant des Dossiers du Cabinet -->
-                <div id="enterpriseDropdownMenu" class="hidden absolute left-3 right-3 top-full mt-1.5 bg-white border border-slate-200/90 rounded-xl shadow-xl z-[100] overflow-hidden">
-                    <div class="p-2 border-b border-slate-100 bg-slate-50">
-                        <div class="relative">
-                            <span class="material-symbols-outlined notranslate absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-[14px]"" translate="no">search</span>
-                            <input id="enterpriseSearchInput" oninput="filterEnterpriseList(this.value)" type="text" placeholder="Rechercher..." class="w-full bg-white border border-slate-200 rounded-md pl-6 pr-2 py-1 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#168078]">
-                        </div>
-                    </div>
-                    <div id="enterpriseListContainer" class="p-1 max-h-48 overflow-y-auto divide-y divide-slate-100">
-                        <!-- Items injectés dynamiquement -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Navigation Principale Thème Clair Épuré (Exacte Référence Stitch) -->
-            <nav class="px-2.5 py-2 flex flex-col gap-0.5 text-xs">
-                <!-- Groupe 1 : ÉTATS FINANCIERS & JOURNAL -->
-                <div class="px-3 pt-3 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <!-- Navigation Principale : ÉTATS FINANCIERS & JOURNAL (Pure & Épurée) -->
+            <nav class="px-2.5 py-3 flex flex-col gap-1 text-xs">
+                <div class="px-3 pt-2 pb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     ÉTATS FINANCIERS &amp; JOURNAL
                 </div>
 
                 <!-- Active : Journal des Écritures (Pilule pleine sarcelle #168078) -->
-                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#168078] text-white font-semibold shadow-xs transition-all cursor-pointer group" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#168078] text-white font-semibold shadow-xs transition-all cursor-pointer group" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-white"" translate="no">menu_book</span>
+                        <span class="material-symbols-outlined notranslate text-[18px] text-white" translate="no">menu_book</span>
                         <span class="nav-label text-white">Journal des Écritures</span>
                     </div>
                 </a>
 
-                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors"" translate="no">account_balance</span>
+                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors" translate="no">account_balance</span>
                         <span class="nav-label">Bilan SYSCOHADA</span>
                     </div>
                 </a>
 
-                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors"" translate="no">query_stats</span>
+                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors" translate="no">query_stats</span>
                         <span class="nav-label">Compte de Résultat</span>
                     </div>
                 </a>
 
-                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors"" translate="no">payments</span>
+                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors" translate="no">payments</span>
                         <span class="nav-label">Flux Trésorerie TFT</span>
                     </div>
                 </a>
 
-                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors"" translate="no">description</span>
+                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors" translate="no">description</span>
                         <span class="nav-label">Liasse &amp; Notes DGID</span>
-                    </div>
-                </a>
-
-                <!-- Groupe 2 : SERVICES & FINANCEMENT PME -->
-                <div class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    SERVICES &amp; FINANCEMENT PME
-                </div>
-
-                <a id="navItemPrets" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('prets'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors"" translate="no">account_balance_wallet</span>
-                        <span class="nav-label">Crédit &amp; Prêts</span>
-                    </div>
-                </a>
-
-                <a id="navItemPaiement" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('paiement'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors"" translate="no">point_of_sale</span>
-                        <span class="nav-label">Paiement &amp; Encaissement</span>
-                    </div>
-                </a>
-
-                <a id="navItemAbonnement" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('abonnement'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors"" translate="no">workspace_premium</span>
-                        <span class="nav-label">Abonnement Pro</span>
-                    </div>
-                </a>
-
-                <!-- Groupe 3 : OUTILS & HOMOLOGATION -->
-                <div class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    OUTILS &amp; HOMOLOGATION
-                </div>
-
-                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors"" translate="no">verified</span>
-                        <span class="nav-label">Visa ONECCA</span>
                     </div>
                 </a>
             </nav>
@@ -7619,7 +7548,7 @@
         <div class="p-3 border-t border-slate-200/80 bg-white flex items-center justify-between">
             <div class="flex items-center gap-2.5 min-w-0">
                 <div class="w-8 h-8 rounded-full bg-[#168078] text-white flex items-center justify-center font-bold text-xs shadow-2xs flex-shrink-0">
-                    <span class="material-symbols-outlined notranslate text-[18px]"" translate="no">person</span>
+                    <span class="material-symbols-outlined notranslate text-[18px]" translate="no">person</span>
                 </div>
                 <div class="flex flex-col min-w-0">
                     <span class="text-xs font-bold text-slate-900 truncate">M. Sissoko</span>
@@ -7627,7 +7556,7 @@
                 </div>
             </div>
             <button type="button" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer flex-shrink-0" title="Paramètres">
-                <span class="material-symbols-outlined notranslate text-[18px]"" translate="no">settings</span>
+                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">settings</span>
             </button>
         </div>
     </aside>
@@ -7640,7 +7569,7 @@
             <div class="flex items-center gap-2 md:gap-3 min-w-0">
                 <!-- Bouton réouverture latérale mobile -->
                 <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="flex md:hidden p-1.5 -ml-1 mr-1 text-slate-700 hover:text-slate-900 bg-white border border-slate-200 rounded-lg shadow-2xs transition-colors cursor-pointer items-center justify-center flex-shrink-0" title="Afficher le menu (Ctrl+B)">
-                    <span class="material-symbols-outlined notranslate text-[19px] block"" translate="no">menu</span>
+                    <span class="material-symbols-outlined notranslate text-[19px] block" translate="no">menu</span>
                 </button>
                 <!-- Fil d'Ariane Minimaliste (> CGLT) comme sur la maquette -->
                 <div class="flex items-center gap-2 text-xs text-slate-500 font-medium truncate cursor-pointer hover:text-slate-900 transition-colors" onclick="openPortalView()" title="Changer d'entreprise cliente">
@@ -7652,13 +7581,13 @@
             <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
                 <!-- Bouton Portail Cabinet / Changer de dossier -->
                 <button type="button" onclick="openPortalView()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 text-xs font-semibold shadow-2xs transition-all cursor-pointer" title="Revenir au Portail Cabinet / Changer d'entreprise cliente">
-                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]"" translate="no">domain</span>
+                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">domain</span>
                     <span class="hidden sm:inline">Portail Cabinet</span>
                 </button>
 
                 <!-- Avatar Profil Expert-Comptable -->
                 <div class="w-8 h-8 rounded-full bg-[#168078] text-white flex items-center justify-center font-bold text-xs shadow-xs cursor-pointer hover:ring-2 hover:ring-[#168078]/30 transition-all ml-1" title="M. Sissoko (Expert-Comptable)">
-                    <span class="material-symbols-outlined notranslate text-[17px]"" translate="no">person</span>
+                    <span class="material-symbols-outlined notranslate text-[17px]" translate="no">person</span>
                 </div>
             </div>
         </header>
@@ -7688,7 +7617,7 @@
 
                         <!-- Bouton + Nouvelle Écriture (Bouton Sarcelle Signature) -->
                         <button onclick="ouvrirModalSaisieRapide()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-white bg-[#168078] hover:bg-[#0f6b64] active:bg-[#0b544e] transition-all cursor-pointer shadow-sm text-xs sm:text-[13px] font-bold flex-shrink-0" title="Ajouter une écriture manuelle (+)">
-                            <span class="material-symbols-outlined notranslate text-[17px] font-bold"" translate="no">add</span>
+                            <span class="material-symbols-outlined notranslate text-[17px] font-bold" translate="no">add</span>
                             <span>Nouvelle écriture</span>
                         </button>
                     </div>
@@ -7698,14 +7627,14 @@
                 <div class="mb-3.5 flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
                     <!-- Champ Recherche avec ⌘K et bouton rond flèche -->
                     <div class="relative w-full lg:max-w-md">
-                        <span class="material-symbols-outlined notranslate absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px] pointer-events-none"" translate="no">search</span>
+                        <span class="material-symbols-outlined notranslate absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px] pointer-events-none" translate="no">search</span>
                         <input class="w-full pl-10 pr-20 py-2.5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" id="table-search-input" placeholder="Rechercher par flux ou opération (Wave, Caisse, Orange, virement...)" type="text" oninput="handleSearchInput(this.value)">
                         <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
                             <div class="hidden sm:flex text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200/80 pointer-events-none select-none">
                                 ⌘K
                             </div>
                             <button type="button" class="w-6 h-6 rounded-full bg-[#168078] text-white flex items-center justify-center transition-all cursor-pointer shadow-2xs" title="Lancer la recherche">
-                                <span class="material-symbols-outlined notranslate text-[13px] font-bold"" translate="no">arrow_forward</span>
+                                <span class="material-symbols-outlined notranslate text-[13px] font-bold" translate="no">arrow_forward</span>
                             </button>
                         </div>
                     </div>
@@ -7715,10 +7644,10 @@
                         <div class="relative flex-1 sm:flex-initial">
                             <button type="button" class="w-full inline-flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer" onclick="toggleCalendarPopover(event)" id="datePickerBtn" title="Filtrer par date ou période">
                                 <span class="flex items-center gap-1.5 truncate">
-                                    <span class="material-symbols-outlined notranslate text-[16px] text-slate-500"" translate="no">calendar_today</span>
+                                    <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">calendar_today</span>
                                     <span id="datePickerBtnLabel" class="truncate">Toutes les dates</span>
                                 </span>
-                                <span class="material-symbols-outlined notranslate text-[15px] text-slate-400 flex-shrink-0"" translate="no">expand_more</span>
+                                <span class="material-symbols-outlined notranslate text-[15px] text-slate-400 flex-shrink-0" translate="no">expand_more</span>
                             </button>
 
                             <!-- Popover Calendrier Moderne Sur-Mesure Grow -->
@@ -7755,18 +7684,18 @@
 
                         <!-- Bouton Filtres Avancés -->
                         <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="togglePopoverFiltreAvance()">
-                            <span class="material-symbols-outlined notranslate text-[16px] text-slate-500"" translate="no">tune</span>
+                            <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">tune</span>
                             <span>Filtres <span class="px-1.5 py-0.2 rounded-full bg-slate-100 text-[10px] text-slate-600 font-bold ml-0.5">2</span></span>
                         </button>
 
                         <!-- Rafraîchir -->
                         <button class="p-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-all shadow-2xs cursor-pointer flex-shrink-0 flex items-center justify-center" onclick="loadDashboardData()" title="Rafraîchir les écritures">
-                            <span class="material-symbols-outlined notranslate text-[17px]"" translate="no">refresh</span>
+                            <span class="material-symbols-outlined notranslate text-[17px]" translate="no">refresh</span>
                         </button>
 
                         <!-- Export FEC -->
                         <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="telechargerFichierFEC()" title="Exporter le Fichier des Écritures Comptables">
-                            <span class="material-symbols-outlined notranslate text-[16px] text-slate-500"" translate="no">download</span>
+                            <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">download</span>
                             <span>Export FEC</span>
                         </button>
                     </div>
@@ -7836,7 +7765,7 @@
                     <!-- PIED DE CARTE BLANCHE : Certification SYSCOHADA & Totaux Financiers -->
                     <div class="border-t border-slate-100 px-4 py-3.5 flex flex-wrap items-center justify-between text-xs text-slate-600 select-none gap-3 bg-slate-50/40">
                         <div class="flex items-center gap-2 text-slate-600 font-medium">
-                            <span class="material-symbols-outlined notranslate text-[17px] text-[#168078]"" translate="no">verified_user</span>
+                            <span class="material-symbols-outlined notranslate text-[17px] text-[#168078]" translate="no">verified_user</span>
                             <span class="text-slate-700 font-semibold text-xs">Conformité SYSCOHADA vérifiée</span>
                             <span class="text-slate-400 hidden sm:inline">&bull; Écritures équilibrées et justifiées</span>
                         </div>
@@ -7871,7 +7800,7 @@
                                 <div class="relative inline-block text-left">
                                     <button type="button" id="btnPageSizeDropdown" onclick="togglePageSizeDropdown(event)" class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:border-[#1c1c1c] rounded-lg shadow-2xs hover:shadow-xs transition-all cursor-pointer focus:outline-none">
                                         <span id="labelCurrentPageSize" class="font-mono">15</span>
-                                        <span class="material-symbols-outlined notranslate text-[15px] text-slate-400 leading-none transition-transform duration-150" id="iconPageSizeChevron"" translate="no">expand_more</span>
+                                        <span class="material-symbols-outlined notranslate text-[15px] text-slate-400 leading-none transition-transform duration-150" id="iconPageSizeChevron" translate="no">expand_more</span>
                                     </button>
 
                                     <!-- Menu flottant au-dessus avec coins arrondis et ombre douce -->
@@ -7880,27 +7809,27 @@
                                         <div class="space-y-0.5 px-1">
                                             <button type="button" onclick="selectPageSizeOption(5)" data-val="5" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-mono font-medium">5 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden"" translate="no">check</span>
+                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
                                             </button>
                                             <button type="button" onclick="selectPageSizeOption(10)" data-val="10" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-mono font-medium">10 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden"" translate="no">check</span>
+                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
                                             </button>
                                             <button type="button" onclick="selectPageSizeOption(15)" data-val="15" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg font-bold bg-[#1c1c1c] text-[#a0d9d2] transition-colors cursor-pointer">
                                                 <span class="font-mono font-bold">15 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#a0d9d2] check-icon"" translate="no">check</span>
+                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#a0d9d2] check-icon" translate="no">check</span>
                                             </button>
                                             <button type="button" onclick="selectPageSizeOption(25)" data-val="25" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-mono font-medium">25 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden"" translate="no">check</span>
+                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
                                             </button>
                                             <button type="button" onclick="selectPageSizeOption(50)" data-val="50" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-mono font-medium">50 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden"" translate="no">check</span>
+                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
                                             </button>
                                             <button type="button" onclick="selectPageSizeOption(0)" data-val="0" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-medium">Toutes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden"" translate="no">check</span>
+                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
                                             </button>
                                         </div>
                                     </div>
@@ -7910,13 +7839,13 @@
                             <!-- Contrôles de Pages -->
                             <div class="flex items-center gap-1">
                                 <button type="button" id="btnPrevPage" onclick="changePage(-1)" class="w-6 h-6 flex items-center justify-center rounded border border-slate-200 bg-white hover:bg-slate-100 text-slate-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer" title="Page précédente" disabled>
-                                    <span class="material-symbols-outlined notranslate text-[15px] leading-none"" translate="no">chevron_left</span>
+                                    <span class="material-symbols-outlined notranslate text-[15px] leading-none" translate="no">chevron_left</span>
                                 </button>
                                 <div id="pageNumberButtons" class="flex items-center gap-1">
                                     <span class="w-6 h-6 flex items-center justify-center rounded bg-slate-900 text-white font-bold font-mono text-xs">1</span>
                                 </div>
                                 <button type="button" id="btnNextPage" onclick="changePage(1)" class="w-6 h-6 flex items-center justify-center rounded border border-slate-200 bg-white hover:bg-slate-100 text-slate-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer" title="Page suivante" disabled>
-                                    <span class="material-symbols-outlined notranslate text-[15px] leading-none"" translate="no">chevron_right</span>
+                                    <span class="material-symbols-outlined notranslate text-[15px] leading-none" translate="no">chevron_right</span>
                                 </button>
                             </div>
                         </div>
@@ -9110,7 +9039,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <button type="button" onclick="ouvrirModalQuickTx('ENTREE')" class="w-full md:w-auto px-4 py-2.5 rounded-xl bg-[#a0d9d2] text-[#1c1c1c] font-bold text-xs hover:bg-[#8ecfc7] shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[18px]"" translate="no">add_circle</span>
+                                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">add_circle</span>
                                 <span>Encaisser une Vente</span>
                             </button>
                         </div>
@@ -9120,7 +9049,7 @@
                 <!-- Générateur de Lien de Paiement Client Rapide -->
                 <div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 border border-black/5 shadow-2xs">
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="material-symbols-outlined notranslate text-[20px] text-[#1c1c1c]"" translate="no">send_to_mobile</span>
+                        <span class="material-symbols-outlined notranslate text-[20px] text-[#1c1c1c]" translate="no">send_to_mobile</span>
                         <h2 class="font-bold text-[#1c1c1c] text-sm md:text-base">Générer un Lien de Paiement (WhatsApp)</h2>
                     </div>
                     <p class="text-xs text-slate-600 mb-4">Créez un lien ou une demande de règlement par Wave ou Orange Money à envoyer à votre client.</p>
@@ -9159,7 +9088,7 @@
                                 <i class="fa-brands fa-whatsapp text-[14px]"></i> Partager sur WhatsApp
                             </button>
                             <button type="button" onclick="copierLienGenere()" class="px-3 py-1.5 rounded-lg bg-[#1c1c1c] text-white text-xs font-medium shadow-xs flex items-center gap-1.5 hover:bg-black transition-all cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[15px]"" translate="no">content_copy</span> Copier
+                                <span class="material-symbols-outlined notranslate text-[15px]" translate="no">content_copy</span> Copier
                             </button>
                         </div>
                     </div>
@@ -9169,7 +9098,7 @@
                 <div class="bg-white/80 backdrop-blur-md rounded-2xl p-5 border border-black/5 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-4">
                     <div class="flex-1 text-center md:text-left">
                         <div class="flex items-center justify-center md:justify-start gap-2 mb-1.5">
-                            <span class="material-symbols-outlined notranslate text-[20px] text-[#1c1c1c]"" translate="no">qr_code_2</span>
+                            <span class="material-symbols-outlined notranslate text-[20px] text-[#1c1c1c]" translate="no">qr_code_2</span>
                             <h3 class="font-bold text-[#1c1c1c] text-sm md:text-base">QR Code d'Encaissement Comptoir</h3>
                         </div>
                         <p class="text-xs text-slate-600 mb-2">Présentez ce QR Code en caisse : le client le scanne directement depuis son application Wave ou Orange Money.</p>
@@ -9195,7 +9124,7 @@
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
                             <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#a0d9d2]/20 border border-[#a0d9d2]/30 text-[#a0d9d2] text-xs font-bold mb-2">
-                                <span class="material-symbols-outlined notranslate text-[14px]"" translate="no">verified</span>
+                                <span class="material-symbols-outlined notranslate text-[14px]" translate="no">verified</span>
                                 <span>Abonnement Actif &amp; Conforme SYSCOHADA</span>
                             </div>
                             <h2 class="text-xl md:text-2xl font-bold">Formule : Grow Pro Cabinet &amp; PME</h2>
@@ -9217,9 +9146,9 @@
                             <span class="text-[10.5px] font-bold uppercase text-slate-400 tracking-wider">Starter PME</span>
                             <div class="text-2xl font-black font-mono text-[#1c1c1c] my-2">10 000 <span class="text-xs font-bold text-slate-500">FCFA/mois</span></div>
                             <ul class="text-xs text-slate-600 space-y-2 mb-4">
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Saisie WhatsApp vocale &amp; photo</li>
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Journal des écritures en direct</li>
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> 1 utilisateur commerçant</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Saisie WhatsApp vocale &amp; photo</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Journal des écritures en direct</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> 1 utilisateur commerçant</li>
                             </ul>
                         </div>
                         <a href="/abonnement" class="w-full text-center py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition-all">Choisir Starter</a>
@@ -9232,10 +9161,10 @@
                             <span class="text-[10.5px] font-bold uppercase text-[#1c1c1c] tracking-wider">Pro PME &amp; Commerce</span>
                             <div class="text-2xl font-black font-mono text-[#1c1c1c] my-2">25 000 <span class="text-xs font-bold text-slate-500">FCFA/mois</span></div>
                             <ul class="text-xs text-slate-700 space-y-2 mb-4 font-medium">
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Tout le pack Starter inclus</li>
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Bilan &amp; Compte de Résultat</li>
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Score &amp; Dossier de Prêt Bancaire</li>
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Liens d'encaissement Wave &amp; OM</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Tout le pack Starter inclus</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Bilan &amp; Compte de Résultat</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Score &amp; Dossier de Prêt Bancaire</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Liens d'encaissement Wave &amp; OM</li>
                             </ul>
                         </div>
                         <button type="button" class="w-full text-center py-2 rounded-xl bg-[#1c1c1c] text-[#a0d9d2] text-xs font-bold cursor-default">Votre Formule Actuelle</button>
@@ -9247,9 +9176,9 @@
                             <span class="text-[10.5px] font-bold uppercase text-slate-400 tracking-wider">Cabinet Expert</span>
                             <div class="text-2xl font-black font-mono text-[#1c1c1c] my-2">50 000 <span class="text-xs font-bold text-slate-500">FCFA/mois</span></div>
                             <ul class="text-xs text-slate-600 space-y-2 mb-4">
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Multi-dossiers PME illimités</li>
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Visa ONECCA &amp; Export FEC fiscal</li>
-                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">check</span> Liasses fiscales &amp; Notes DGID</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Multi-dossiers PME illimités</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Visa ONECCA &amp; Export FEC fiscal</li>
+                                <li class="flex items-center gap-1.5"><span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">check</span> Liasses fiscales &amp; Notes DGID</li>
                             </ul>
                         </div>
                         <a href="/abonnement" class="w-full text-center py-2 rounded-xl bg-[#1c1c1c] text-white hover:bg-black text-xs font-bold transition-all">Gérer les Dossiers</a>
@@ -9263,22 +9192,22 @@
     <!-- DOCK NAVIGATION MOBILE FIXÉ EN BAS (Strictement PME : Journal, Crédit, Paiement, Grow) -->
     <nav id="mobileBottomDock" class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#1c1c1c] border-t border-[#333333] px-1 py-1.5 flex items-center justify-around shadow-2xl">
         <button type="button" onclick="switchVerticalTab('journal'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-[#a0d9d2] active py-1 px-3 transition-colors cursor-pointer" data-tab="journal">
-            <span class="material-symbols-outlined notranslate text-[20px]"" translate="no">menu_book</span>
+            <span class="material-symbols-outlined notranslate text-[20px]" translate="no">menu_book</span>
             <span class="text-[10px] font-bold">Journal</span>
             <span class="w-1.5 h-1.5 rounded-full bg-[#a0d9d2] mt-0.5"></span>
         </button>
         <button type="button" onclick="switchVerticalTab('prets'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="prets">
-            <span class="material-symbols-outlined notranslate text-[20px]"" translate="no">payments</span>
+            <span class="material-symbols-outlined notranslate text-[20px]" translate="no">payments</span>
             <span class="text-[10px] font-semibold">Crédit</span>
             <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
         </button>
         <button type="button" onclick="switchVerticalTab('paiement'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="paiement">
-            <span class="material-symbols-outlined notranslate text-[20px]"" translate="no">point_of_sale</span>
+            <span class="material-symbols-outlined notranslate text-[20px]" translate="no">point_of_sale</span>
             <span class="text-[10px] font-semibold">Paiement</span>
             <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
         </button>
         <button type="button" onclick="switchVerticalTab('about'); setActiveMobileTab(this)" class="mobile-tab-btn flex flex-col items-center justify-center gap-0.5 text-slate-400 py-1 px-3 transition-colors cursor-pointer" data-tab="about">
-            <span class="material-symbols-outlined notranslate text-[20px]"" translate="no">spa</span>
+            <span class="material-symbols-outlined notranslate text-[20px]" translate="no">spa</span>
             <span class="text-[10px] font-semibold">Grow</span>
             <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
         </button>
@@ -9335,10 +9264,10 @@
                 </div>
                 <div class="flex items-center gap-1.5">
                     <button type="button" onclick="openProofFullScreen()" title="Afficher en plein écran" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 transition-colors flex items-center justify-center cursor-pointer">
-                        <span class="material-symbols-outlined notranslate text-[20px]"" translate="no">fullscreen</span>
+                        <span class="material-symbols-outlined notranslate text-[20px]" translate="no">fullscreen</span>
                     </button>
                     <button type="button" onclick="closeWaveProofModal()" class="w-7 h-7 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center cursor-pointer ml-1">
-                        <span class="material-symbols-outlined notranslate text-[18px]"" translate="no">close</span>
+                        <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
                     </button>
                 </div>
             </div>
@@ -9353,7 +9282,7 @@
                         onclick="openProofFullScreen()" title="Cliquer pour afficher en plein écran">
                     
                     <button type="button" onclick="openProofFullScreen()" class="absolute bottom-3 right-3 bg-black/75 hover:bg-black/90 text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 border border-white/20 shadow-lg cursor-pointer backdrop-blur-md transition-colors">
-                        <span class="material-symbols-outlined notranslate text-[15px] text-[#a0d9d2]"" translate="no">fullscreen</span>
+                        <span class="material-symbols-outlined notranslate text-[15px] text-[#a0d9d2]" translate="no">fullscreen</span>
                         <span>Tout l'écran</span>
                     </button>
                 </div>
@@ -9385,7 +9314,7 @@
                             <div>
                                 <div class="text-[10px] uppercase font-bold text-slate-400">Conformité</div>
                                 <div class="text-[11px] text-slate-600 font-medium mt-0.5 flex items-center gap-1">
-                                    <span class="material-symbols-outlined notranslate text-[13px] text-emerald-600"" translate="no">verified</span>
+                                    <span class="material-symbols-outlined notranslate text-[13px] text-emerald-600" translate="no">verified</span>
                                     <span>Livre-Journal SYSCOHADA</span>
                                 </div>
                             </div>
@@ -9395,11 +9324,11 @@
                     <!-- Actions -->
                     <div class="space-y-2 pt-1">
                         <a id="waveModalDownloadBtn" href="/static/mock_wave_photo.png?v=20261114" download="justificatif-grow.png" target="_blank" class="w-full py-2.5 px-4 rounded-xl text-[12px] font-bold text-white bg-slate-900 hover:bg-slate-800 transition-colors text-center cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
-                            <span class="material-symbols-outlined notranslate text-[16px]"" translate="no">download</span>
+                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">download</span>
                             Télécharger l'image HD
                         </a>
                         <button type="button" onclick="openProofFullScreen()" class="w-full py-2 px-4 rounded-xl text-[12px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors text-center cursor-pointer flex items-center justify-center gap-1.5">
-                            <span class="material-symbols-outlined notranslate text-[16px]"" translate="no">open_in_full</span>
+                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">open_in_full</span>
                             Plein écran
                         </button>
                         <button type="button" onclick="closeWaveProofModal()" class="w-full py-2 px-4 rounded-xl text-[12px] font-semibold text-slate-500 hover:text-slate-800 transition-colors text-center cursor-pointer">
@@ -9415,7 +9344,7 @@
     <div id="fullScreenProofModal" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 3100; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px);" onclick="closeProofFullScreen()">
         <div class="relative w-full h-full max-w-[98vw] max-h-[98vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
             <button type="button" onclick="closeProofFullScreen()" class="absolute top-3 right-3 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer backdrop-blur-md transition-colors shadow-lg" title="Fermer">
-                <span class="material-symbols-outlined notranslate text-[24px]"" translate="no">close</span>
+                <span class="material-symbols-outlined notranslate text-[24px]" translate="no">close</span>
             </button>
             <img id="fullScreenProofImg" src="/static/mock_wave_photo.png?v=20261114" alt="Reçu Grand Format" 
                 class="w-full h-full max-h-[95vh] max-w-[96vw] object-contain rounded-xl shadow-2xl"
@@ -9936,7 +9865,7 @@
                     </span>
                 </div>
                 <button type="button" onclick="closeModalTxDetail()" class="w-7 h-7 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center cursor-pointer">
-                    <span class="material-symbols-outlined notranslate text-[18px]"" translate="no">close</span>
+                    <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
                 </button>
             </div>
 
@@ -9970,7 +9899,7 @@
                 <div class="flex items-center justify-between text-[12.5px] py-1">
                     <span class="text-slate-500 font-medium">Statut d'imputation</span>
                     <span class="inline-flex items-center gap-1 text-[11.5px] font-semibold text-emerald-700">
-                        <span class="material-symbols-outlined notranslate text-[15px] text-emerald-600"" translate="no">verified</span>
+                        <span class="material-symbols-outlined notranslate text-[15px] text-emerald-600" translate="no">verified</span>
                         Rapproché &amp; Journalisé
                     </span>
                 </div>
@@ -9985,12 +9914,12 @@
                             <div>
                                 <div class="text-[12px] font-bold text-slate-900 group-hover:text-[#1c1c1c] transition-colors flex items-center gap-1">
                                     <span>Pièce justificative (Tof)</span>
-                                    <span class="material-symbols-outlined notranslate text-[13px] text-slate-400 group-hover:text-[#1c1c1c]"" translate="no">zoom_in</span>
+                                    <span class="material-symbols-outlined notranslate text-[13px] text-slate-400 group-hover:text-[#1c1c1c]" translate="no">zoom_in</span>
                                 </div>
                                 <div class="text-[11px] text-slate-400 font-normal">Cliquer pour agrandir le reçu</div>
                             </div>
                         </div>
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700"" translate="no">chevron_right</span>
+                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700" translate="no">chevron_right</span>
                     </div>
                 </div>
 
@@ -10000,7 +9929,7 @@
                         Fermer
                     </button>
                     <button type="button" id="btnVoirPreuveDetailAction" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-colors text-center cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
-                        <span class="material-symbols-outlined notranslate text-[15px]"" translate="no">receipt_long</span>
+                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">receipt_long</span>
                         Voir le reçu
                     </button>
                 </div>
@@ -12062,7 +11991,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="8" class="py-16 text-center text-slate-400 font-medium bg-slate-50/50">
-                                <span class="material-symbols-outlined notranslate text-[32px] block mb-2 text-slate-300"" translate="no">receipt_long</span>
+                                <span class="material-symbols-outlined notranslate text-[32px] block mb-2 text-slate-300" translate="no">receipt_long</span>
                                 Aucune écriture trouvée.
                             </td>
                         </tr>
@@ -12071,7 +12000,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 if (mobContainer) {
                     mobContainer.innerHTML = `
                         <div class="py-12 px-4 text-center text-slate-400 font-medium">
-                            <span class="material-symbols-outlined notranslate text-[32px] block mb-2 text-slate-300"" translate="no">receipt_long</span>
+                            <span class="material-symbols-outlined notranslate text-[32px] block mb-2 text-slate-300" translate="no">receipt_long</span>
                             Aucune écriture trouvée.
                         </div>
                     `;
@@ -12254,7 +12183,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                                 ${isSortie ? '- ' : '+ '}${montant.toLocaleString('fr-FR')} F
                             </div>
                             <button type="button" onclick="event.stopPropagation(); openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', '${escapeHtml(sub)}', '${photoUrl}')" class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#1c1c1c] text-[#a0d9d2] text-[10px] font-semibold shadow-2xs hover:bg-black transition-colors cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[12px]"" translate="no">receipt_long</span>
+                                <span class="material-symbols-outlined notranslate text-[12px]" translate="no">receipt_long</span>
                                 <span>Preuve</span>
                             </button>
                         </div>
@@ -13358,7 +13287,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (filtered.length === 0) {
                 dd.innerHTML = `
                     <div class="p-5 text-center text-slate-500 text-xs">
-                        <span class="material-symbols-outlined notranslate text-slate-300 text-2xl block mb-1"" translate="no">domain_disabled</span>
+                        <span class="material-symbols-outlined notranslate text-slate-300 text-2xl block mb-1" translate="no">domain_disabled</span>
                         Aucune entreprise trouvée pour « <span class="text-slate-800 font-semibold">${escapeHtml(queryRaw)}</span> »<br>
                         <span class="text-[11px] text-slate-400 mt-1 block">Essayez par nom (ex: CGLT), NINEA ou téléphone.</span>
                     </div>
@@ -13392,7 +13321,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                             </div>
                         </div>
                         <div class="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-[#168078] group-hover:text-white text-slate-400 flex items-center justify-center transition-all flex-shrink-0 ml-2 shadow-2xs">
-                            <span class="material-symbols-outlined notranslate text-[16px] group-hover:translate-x-0.5 transition-transform"" translate="no">arrow_forward</span>
+                            <span class="material-symbols-outlined notranslate text-[16px] group-hover:translate-x-0.5 transition-transform" translate="no">arrow_forward</span>
                         </div>
                     </div>
                 `;
