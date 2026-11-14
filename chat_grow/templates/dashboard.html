@@ -7712,8 +7712,8 @@
                                         <th class="py-3 px-4 min-w-[260px]">Libellé de l'opération</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Statuts</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap w-44">N° de compte</th>
-                                        <th class="py-3 px-4 text-right whitespace-nowrap w-28">Montant HT</th>
-                                        <th class="py-3 px-4 text-right whitespace-nowrap w-28">Montant TTC</th>
+                                        <th class="py-3 px-4 text-right whitespace-nowrap w-28">Débit</th>
+                                        <th class="py-3 px-4 text-right whitespace-nowrap w-28">Crédit</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Date doc.</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-36">Date d'import</th>
                                         <th class="py-3 px-3 text-center w-12"></th>
@@ -12183,8 +12183,12 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                             <span class="text-slate-600 font-medium truncate max-w-[120px]">${escapeHtml(compteLabel)}</span>
                         </span>
                     </td>
-                    <td class="py-3 px-4 text-right whitespace-nowrap font-mono font-medium text-slate-700 text-[12.5px]">${montantHT.toLocaleString('fr-FR')} F</td>
-                    <td class="py-3 px-4 text-right whitespace-nowrap font-mono font-bold ${isSortie ? 'text-slate-900' : 'text-blue-600'} text-[12.5px]">${montantTTC.toLocaleString('fr-FR')} F</td>
+                    <td class="py-3 px-4 text-right whitespace-nowrap font-mono text-[12.5px]">
+                        ${isSortie ? `<span class="font-bold text-slate-900">${montant.toLocaleString('fr-FR')} F</span>` : `<span class="text-slate-300 font-normal">&mdash;</span>`}
+                    </td>
+                    <td class="py-3 px-4 text-right whitespace-nowrap font-mono text-[12.5px]">
+                        ${!isSortie ? `<span class="font-bold text-[#168078]">+ ${montant.toLocaleString('fr-FR')} F</span>` : `<span class="text-slate-300 font-normal">&mdash;</span>`}
+                    </td>
                     <td class="py-3 px-3.5 text-center whitespace-nowrap text-slate-600 font-medium text-[11.5px]">${escapeHtml(dateDoc)}</td>
                     <td class="py-3 px-3.5 text-center whitespace-nowrap text-slate-400 font-mono text-[11px]">${escapeHtml(dateImport)}</td>
                     <td class="py-3 px-3 text-center" onclick="event.stopPropagation()">
