@@ -7414,7 +7414,7 @@
     <!-- ========================================================================= -->
     <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE SCANDINAVE ARCHITECTURAL ÉPURÉ)  -->
     <!-- ========================================================================= -->
-    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: flex;">
+    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: none;">
         <!-- Zone Centrale Fixe : Proportions Exactes de la Référence Stitch -->
         <main class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
             <!-- LOGO GROW SARCELLE / ÉMERAUDE DE L'IMAGE STITCH -->
@@ -7465,163 +7465,151 @@
     <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
 
     <!-- SIDEBAR BLANCHE ÉPURÉE -->
-    <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#222222] border-r border-[#333333] shadow-2xl flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out -translate-x-full md:translate-x-0">
+        <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#f8fafc] border-r border-slate-200/80 shadow-sm flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out -translate-x-full md:translate-x-0 select-none">
         <div class="flex flex-col">
-            <!-- Header Marque avec le vrai logo GROW sur fond #222222 -->
-            <div class="h-16 px-5 flex items-center justify-between border-b border-[#333333] bg-[#1c1c1c]">
-                <div class="flex items-center gap-3">
-                    <img src="/static/grow_logo.png" alt="Grow" class="w-8 h-8 rounded-lg object-contain shadow-sm">
+            <!-- Header Marque Dossie / SYSCOHADA PRO (Exact Référence Image Stitch) -->
+            <div class="h-16 px-5 flex items-center justify-between border-b border-slate-200/80 bg-white">
+                <div class="flex items-center gap-2.5 cursor-pointer" onclick="openPortalView()" title="Aller à l'accueil du cabinet">
+                    <img src="/static/grow_logo_teal.png" alt="Dossie Logo" class="w-8 h-8 object-contain">
                     <div class="flex flex-col">
-                        <span class="font-brand font-extrabold text-base text-white tracking-tight leading-none">GROW</span>
-                        <span class="text-[10px] text-slate-400 font-medium mt-0.5">SYSCOHADA Pro</span>
+                        <span class="font-bold text-[15px] text-slate-900 tracking-tight leading-none">Dossie</span>
+                        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">SYSCOHADA PRO</span>
                     </div>
                 </div>
-                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-[#2d2d2d] transition-colors cursor-pointer" title="Réduire le menu (Ctrl+B)">
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" title="Réduire le menu (Ctrl+B)">
                     <span class="material-symbols-outlined text-[19px]">dock_to_left</span>
                 </button>
             </div>
 
-            <!-- Entité Active Ultra Minimaliste -->
-<!-- Entreprise Active & Sélecteur (Recherche et Choix sur fond Sombre #222222) -->
-            <!-- SÉLECTEUR D'ENTREPRISE PRO & ÉPURÉ (Style Linear / Stripe) -->
-            <div class="px-3 py-2.5 relative" id="enterpriseSelectorSection">
-                <button type="button" onclick="toggleEnterpriseDropdown(event)" class="w-full flex items-center justify-between p-2 rounded-xl bg-[#1a1a1a] hover:bg-[#252525] border border-[#2d2d2d] transition-all cursor-pointer group text-left shadow-2xs">
+            <!-- Entreprise Active Épurée (Image Référence : CG | Cglt Actif | NINEA: 00802996) -->
+            <div class="px-3.5 py-3 border-b border-slate-200/60 relative bg-white/50" id="enterpriseSelectorSection">
+                <button type="button" onclick="toggleEnterpriseDropdown(event)" class="w-full flex items-center justify-between p-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/80 transition-all cursor-pointer group text-left shadow-2xs">
                     <div class="flex items-center gap-2.5 min-w-0">
-                        <div class="w-7 h-7 rounded-lg bg-[#2a3d36] text-[#a0d9d2] border border-[#3d5a4f] flex items-center justify-center font-bold text-[11px] flex-shrink-0" id="sidebarEntityAvatar">
+                        <div class="w-8 h-8 rounded-full bg-teal-50 text-[#168078] border border-teal-200/60 flex items-center justify-center font-bold text-xs flex-shrink-0" id="sidebarEntityAvatar">
                             CG
                         </div>
                         <div class="flex flex-col min-w-0">
-                            <span class="font-semibold text-xs text-white truncate group-hover:text-[#a0d9d2] transition-colors leading-tight" id="sidebarEntityName">CGLT</span>
-                            <span class="text-[10px] text-slate-500 font-mono leading-tight mt-0.5" id="sidebarEntityNinea">00802996</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-bold text-xs text-slate-900 truncate" id="sidebarEntityName">CGLT</span>
+                                <span class="px-1.5 py-0.2 rounded-full bg-teal-50 text-[#168078] border border-teal-200/60 text-[9.5px] font-semibold">Actif</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400 font-mono leading-tight mt-0.5" id="sidebarEntityNinea">00802996</span>
                         </div>
                     </div>
-                    <span class="material-symbols-outlined text-slate-500 group-hover:text-slate-300 text-[18px] flex-shrink-0 ml-1">unfold_more</span>
+                    <span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 text-[18px] flex-shrink-0 ml-1">unfold_more</span>
                 </button>
 
-                <!-- Popover Déroulant des Dossiers -->
-                <div id="enterpriseDropdownMenu" class="hidden absolute left-3 right-3 top-full mt-1.5 bg-[#1a1a1a] border border-[#333333] rounded-xl shadow-2xl z-[100] overflow-hidden">
-                    <div class="p-2 border-b border-[#2d2d2d] bg-[#141414]">
+                <!-- Popover Déroulant des Dossiers du Cabinet -->
+                <div id="enterpriseDropdownMenu" class="hidden absolute left-3 right-3 top-full mt-1.5 bg-white border border-slate-200/90 rounded-xl shadow-xl z-[100] overflow-hidden">
+                    <div class="p-2 border-b border-slate-100 bg-slate-50">
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-500 text-[14px]">search</span>
-                            <input id="enterpriseSearchInput" oninput="filterEnterpriseList(this.value)" type="text" placeholder="Rechercher..." class="w-full bg-[#202020] border border-[#333333] rounded-md pl-6 pr-2 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#a0d9d2]">
+                            <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-[14px]">search</span>
+                            <input id="enterpriseSearchInput" oninput="filterEnterpriseList(this.value)" type="text" placeholder="Rechercher..." class="w-full bg-white border border-slate-200 rounded-md pl-6 pr-2 py-1 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#168078]">
                         </div>
                     </div>
-
-                    <div id="enterpriseListContainer" class="p-1 max-h-48 overflow-y-auto divide-y divide-[#242424]">
-                        <!-- Items épurés injectés dynamiquement -->
+                    <div id="enterpriseListContainer" class="p-1 max-h-48 overflow-y-auto divide-y divide-slate-100">
+                        <!-- Items injectés dynamiquement -->
                     </div>
                 </div>
             </div>
 
-            <!-- Navigation Simple et Aérée -->
-            <nav class="px-2.5 flex flex-col gap-1 py-1 text-[13px]">
-                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#2c2d2e] text-white font-bold border-l-4 border-[#a0d9d2] shadow-xs active transition-all cursor-pointer group" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
+            <!-- Navigation Principale Thème Clair Épuré (Exacte Référence Stitch) -->
+            <nav class="px-2.5 py-2 flex flex-col gap-0.5 text-xs">
+                <!-- Groupe 1 : ÉTATS FINANCIERS & JOURNAL -->
+                <div class="px-3 pt-3 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    ÉTATS FINANCIERS &amp; JOURNAL
+                </div>
+
+                <!-- Active : Journal des Écritures (Pilule pleine sarcelle #168078) -->
+                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#168078] text-white font-semibold shadow-xs transition-all cursor-pointer group" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-[#a0d9d2] group-hover:text-[#a0d9d2] transition-colors">menu_book</span>
-                        <span class="nav-label text-white group-hover:text-white">Journal</span>
+                        <span class="material-symbols-outlined text-[18px] text-white">menu_book</span>
+                        <span class="nav-label text-white">Journal des Écritures</span>
                     </div>
                 </a>
-                
-                <!-- ESPACE COMPTABLE (ORDINATEUR COMPTABLES UNIQUEMENT >= 768px) -->
-                <div class="hidden md:block pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Espace Comptable</div>
 
-                <a id="navItemBilan" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">account_balance</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors">account_balance</span>
                         <span class="nav-label">Bilan SYSCOHADA</span>
                     </div>
                 </a>
-                
-                <a id="navItemResultat" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
+
+                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">query_stats</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors">query_stats</span>
                         <span class="nav-label">Compte de Résultat</span>
                     </div>
                 </a>
-                
-                <a id="navItemTFT" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
+
+                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">payments</span>
-                        <span class="nav-label">Flux Trésorerie (TFT)</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors">payments</span>
+                        <span class="nav-label">Flux Trésorerie TFT</span>
                     </div>
                 </a>
-                
-                <a id="navItemAnnexes" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
+
+                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">description</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors">description</span>
                         <span class="nav-label">Liasse &amp; Notes DGID</span>
                     </div>
                 </a>
 
-                <!-- SERVICES COMMERÇANTS & PME (SMARTPHONE ET ORDINATEUR) -->
-                <div class="pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Services PME</div>
+                <!-- Groupe 2 : SERVICES & FINANCEMENT PME -->
+                <div class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    SERVICES &amp; FINANCEMENT PME
+                </div>
 
-                <a id="navItemPrets" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('prets'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemPrets" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('prets'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">payments</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors">account_balance_wallet</span>
                         <span class="nav-label">Crédit &amp; Prêts</span>
                     </div>
                 </a>
 
-                <a id="navItemPaiement" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('paiement'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemPaiement" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('paiement'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">point_of_sale</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors">point_of_sale</span>
                         <span class="nav-label">Paiement &amp; Encaissement</span>
                     </div>
                 </a>
 
-                <!-- ABONNEMENT (ORDINATEUR : demandé spécifiquement par l'utilisateur) -->
-                <a id="navItemAbonnement" class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('abonnement'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemAbonnement" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('abonnement'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">workspace_premium</span>
-                        <span class="nav-label">Abonnement</span>
-                    </div>
-                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#a0d9d2]/15 text-[#a0d9d2] border border-[#a0d9d2]/30">PRO</span>
-                </a>
-
-                <a id="navItemAbout" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('about'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">spa</span>
-                        <span class="nav-label">À Propos de GROW</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors">workspace_premium</span>
+                        <span class="nav-label">Abonnement Pro</span>
                     </div>
                 </a>
 
-                <div class="hidden md:block pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Outils Comptables</div>
-                
-                <a class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
+                <!-- Groupe 3 : OUTILS & HOMOLOGATION -->
+                <div class="px-3 pt-4 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    OUTILS &amp; HOMOLOGATION
+                </div>
+
+                <a class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalVisaOnecca();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">verified</span>
-                        <span>Visa ONECCA</span>
-                    </div>
-                </a>
-                
-                <a class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="telechargerFichierFEC();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">output</span>
-                        <span>Export FEC</span>
-                    </div>
-                </a>
-                
-                <a class="sidebar-nav-item hidden md:flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:bg-[#2c2d2e] hover:text-white transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="ouvrirModalQRAccesGrow();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors">qr_code_2</span>
-                        <span>QR WhatsApp</span>
+                        <span class="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors">verified</span>
+                        <span class="nav-label">Visa ONECCA</span>
                     </div>
                 </a>
             </nav>
         </div>
 
-        <!-- Profil EC Compact sur fond #222222 -->
-        <div class="p-3 border-t border-[#333333] bg-[#1c1c1c]">
-            <div class="flex items-center gap-2.5 p-1.5">
-                <div class="w-7 h-7 rounded-full bg-[#2d2d2d] text-[#a0d9d2] border border-[#444444] flex items-center justify-center font-bold text-[11px] flex-shrink-0">
-                    AF
+        <!-- Profil M. Sissoko Expert-Comptable (Exact Référence Image Stitch) -->
+        <div class="p-3 border-t border-slate-200/80 bg-white flex items-center justify-between">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-8 h-8 rounded-full bg-[#168078] text-white flex items-center justify-center font-bold text-xs shadow-2xs flex-shrink-0">
+                    <span class="material-symbols-outlined text-[18px]">person</span>
                 </div>
                 <div class="flex flex-col min-w-0">
-                    <span class="text-xs font-semibold text-white truncate">Amadou Fall</span>
-                    <span class="text-[10px] text-slate-400">ONECCA #482</span>
+                    <span class="text-xs font-bold text-slate-900 truncate">M. Sissoko</span>
+                    <span class="text-[10px] text-slate-400 font-medium">Expert-Comptable</span>
                 </div>
             </div>
+            <button type="button" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer flex-shrink-0" title="Paramètres">
+                <span class="material-symbols-outlined text-[18px]">settings</span>
+            </button>
         </div>
     </aside>
 
@@ -10684,7 +10672,7 @@
         let currentFilterStatus = 'all';  // 'all' | 'certified' | 'pending'
         let currentSearchQuery = '';
         let currentPage = 1;
-        let pageSize = 15;
+        let pageSize = 50;
 
         // 1. Vérification que le compte SYSCOHADA est vrai et certain (non vide et non temporaire comme 471 / 471100)
         function isCompteVrai(t) {
@@ -11950,19 +11938,19 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         // Rendu HTML des transactions
         
         function handleQuickFilter(type) {
-            if (!allTransactionsData || allTransactionsData.length === 0) return;
-            let filtered = allTransactionsData;
+            if (!allTransactions || allTransactions.length === 0) return;
+            let filtered = allTransactions;
             if (type === 'classe7') {
-                filtered = allTransactionsData.filter(t => (t.compte_syscohada || '').startsWith('7') || (t.type_flux || '').toUpperCase() === 'ENTREE');
+                filtered = allTransactions.filter(t => (t.compte_syscohada || '').startsWith('7') || (t.type_flux || '').toUpperCase() === 'ENTREE');
             } else if (type === 'classe6') {
-                filtered = allTransactionsData.filter(t => (t.compte_syscohada || '').startsWith('6') || (t.type_flux || '').toUpperCase() === 'SORTIE');
+                filtered = allTransactions.filter(t => (t.compte_syscohada || '').startsWith('6') || (t.type_flux || '').toUpperCase() === 'SORTIE');
             } else if (type === 'mobile_money') {
-                filtered = allTransactionsData.filter(t => {
+                filtered = allTransactions.filter(t => {
                     const s = ((t.source_paiement || '') + ' ' + (t.libelle || '')).toLowerCase();
                     return s.includes('wave') || s.includes('orange');
                 });
             } else if (type === 'banque') {
-                filtered = allTransactionsData.filter(t => {
+                filtered = allTransactions.filter(t => {
                     const s = ((t.source_paiement || '') + ' ' + (t.libelle || '')).toLowerCase();
                     return s.includes('banque') || s.includes('cbao') || s.includes('virement');
                 });
@@ -12016,6 +12004,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             }
 
             const WAVE_ICON_URL = "https://lh3.googleusercontent.com/aida-public/AB6AXuBZXVq77gf5XzmP6lwiC3JQYCUFk1-5WO4mYllMtEMyTtwBfjPvMF8a90ScIDGXMCiEZPI_o4AgXILAg2R1juYK8TeZqT1D508bOjvXF07Kol_-RLYh2yRncprD8YGGnoLz8CuYsTxPivpypxgRK-j9TN9z_wobl6FlWPMv3QIiD5lOfVlVUyXomzfSnJecayjs6ywxFuYe8BRy5oSB0JOTg0VtU5JkIzDWdHN6MP9yk2tJxXm2m22r";
+            const logoUrl = WAVE_ICON_URL;
 
             let creditCount = 0;
             let debitCount = 0;
@@ -13417,13 +13406,13 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (new URLSearchParams(window.location.search).get('open_webhook') === '1') {
                 setTimeout(ouvrirModalWebhookAssistant, 400);
             }
-            // Affichage automatique de l'Accueil Portail Cabinet (sauf si bypass direct demandé en URL)
+            // Affichage direct du tableau connecté à Supabase (portail uniquement si ?portal=1)
             const urlParamsPortal = new URLSearchParams(window.location.search);
-            const shouldBypassPortal = urlParamsPortal.get('direct') === '1' || urlParamsPortal.get('skip_portal') === '1';
-            if (shouldBypassPortal) {
-                quitterPortailVersDossier();
-            } else {
+            const shouldShowPortal = urlParamsPortal.get('portal') === '1';
+            if (shouldShowPortal) {
                 openPortalView();
+            } else {
+                quitterPortailVersDossier();
             }
         });
     </script>

@@ -413,7 +413,7 @@ async def verify_webhook(
         print("Webhook validé avec succès par Meta !")
         return PlainTextResponse(content=hub_challenge)
     if request.url.path == "/":
-        return RedirectResponse(url="/dashboard?portal=1", status_code=302)
+        return RedirectResponse(url="/dashboard?phone=221788773827", status_code=302)
     return {
         "status": "online",
         "message": "Grow MVP WhatsApp avec Onboarding NINEA & IA SYSCOHADA est 100% opérationnel 🚀"
