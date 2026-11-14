@@ -7332,13 +7332,13 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (STYLE AWA RAFFINÉ & ÉQUILIBRÉ) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET NOIR PUR & HAUTE VISIBILITÉ MENTHE) --- */
         #viewPortalComptable {
             position: fixed;
             inset: 0;
             z-index: 1500;
-            /* Dégradé vertical raffiné : du vert-menthe sombre au noir profond */
-            background: linear-gradient(180deg, #173b37 0%, #122b28 25%, #0e201d 50%, #0a1614 75%, #060c0b 100%) !important;
+            /* Fond Noir Profond Absolu avec dégradé subtil haut-de-gamme */
+            background: linear-gradient(180deg, #141414 0%, #101010 35%, #0a0a0a 70%, #060606 100%) !important;
             overflow-y: auto;
             display: flex;
         }
@@ -7348,14 +7348,14 @@
             background-image: url('/static/grow_logo_transparent.png');
             background-repeat: repeat;
             background-size: 150px 150px;
-            opacity: 0.045; /* Filigrane doux et subtil, non agressif */
+            opacity: 0.038; /* Filigrane noir texturé discret et luxueux */
             pointer-events: none;
             z-index: 1;
         }
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.20) 0%, rgba(18, 45, 41, 0.04) 55%, rgba(6, 12, 11, 0.95) 90%);
+            background: radial-gradient(circle at 50% 28%, rgba(160, 217, 210, 0.16) 0%, rgba(20, 20, 20, 0.02) 55%, rgba(6, 6, 6, 0.98) 90%);
             pointer-events: none;
             z-index: 2;
         }
@@ -7377,18 +7377,17 @@
             --tw-ring-color: transparent !important;
         }
         .portal-search-pill {
-            background: rgba(14, 28, 25, 0.75);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1.5px solid rgba(160, 217, 210, 0.75);
+            background: #181818;
+            border: 1.5px solid #a0d9d2;
             border-radius: 9999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(160, 217, 210, 0.15);
             transition: all 0.25s ease;
         }
         .portal-search-pill:hover,
         .portal-search-pill:focus-within {
             border-color: #a0d9d2;
-            box-shadow: 0 0 25px rgba(160, 217, 210, 0.30);
-            background: rgba(14, 28, 25, 0.92);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9), 0 0 30px rgba(160, 217, 210, 0.35);
+            background: #1f1f1f;
         }
 
     </style>
