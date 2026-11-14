@@ -7753,14 +7753,40 @@
                     </div>
                 </div>
 
-                <!-- FILTRES RAPIDES PAR CLASSE / OPÉRATEUR (Exacte Reproduction Maquette) -->
-                <div class="mb-5 flex flex-wrap items-center gap-2 text-xs">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">FILTRES RAPIDES :</span>
-                    <button type="button" class="px-3.5 py-1 rounded-full bg-[#168078] text-white font-semibold shadow-2xs transition-all cursor-pointer" onclick="handleQuickFilter('all')">Tous les flux</button>
-                    <button type="button" class="px-3.5 py-1 rounded-full bg-white hover:bg-slate-50 text-slate-600 border border-slate-200/90 font-medium transition-all cursor-pointer" onclick="handleQuickFilter('classe7')">Comptes Classe 7 (Produits)</button>
-                    <button type="button" class="px-3.5 py-1 rounded-full bg-white hover:bg-slate-50 text-slate-600 border border-slate-200/90 font-medium transition-all cursor-pointer" onclick="handleQuickFilter('classe6')">Comptes Classe 6 (Charges)</button>
-                    <button type="button" class="px-3.5 py-1 rounded-full bg-white hover:bg-slate-50 text-slate-600 border border-slate-200/90 font-medium transition-all cursor-pointer" onclick="handleQuickFilter('mobile_money')">Mobile Money (Orange &amp; Wave)</button>
-                    <button type="button" class="px-3.5 py-1 rounded-full bg-white hover:bg-slate-50 text-slate-600 border border-slate-200/90 font-medium transition-all cursor-pointer" onclick="handleQuickFilter('banque')">Banque CBAO</button>
+                <!-- FILTRES RAPIDES PAR FLUX (AVEC LES VRAIES ICÔNES DE FLUX) -->
+                <div class="mb-5 flex flex-wrap items-center gap-2 text-xs" id="quickFiltersContainer">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">FILTRES FLUX :</span>
+                    <button type="button" class="quick-filter-btn px-3.5 py-1.5 rounded-full bg-[#168078] text-white font-semibold shadow-2xs transition-all cursor-pointer inline-flex items-center gap-1.5" onclick="handleQuickFilter('all', this)">
+                        <span>Tous les flux</span>
+                    </button>
+                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('wave', this)">
+                        <img src="/static/images/flows/wave.png" alt="Wave" class="w-4 h-4 object-contain rounded-xs">
+                        <span>Wave</span>
+                    </button>
+                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('orange', this)">
+                        <img src="/static/images/flows/orange.png" alt="Orange Money" class="w-4 h-4 object-contain rounded-xs">
+                        <span>Orange Money</span>
+                    </button>
+                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('especes', this)">
+                        <img src="/static/images/flows/especes.png" alt="Caisse Espèces" class="w-4 h-4 object-contain rounded-xs">
+                        <span>Caisse Espèces</span>
+                    </button>
+                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('banque', this)">
+                        <img src="/static/images/flows/banque.png" alt="Banque CBAO" class="w-4 h-4 object-contain rounded-xs">
+                        <span>Banque CBAO</span>
+                    </button>
+                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('salaire', this)">
+                        <img src="/static/images/flows/salaire.png" alt="Salaires" class="w-4 h-4 object-contain rounded-xs">
+                        <span>Salaires</span>
+                    </button>
+                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('creance', this)">
+                        <img src="/static/images/flows/creance.png" alt="Créances" class="w-4 h-4 object-contain rounded-xs">
+                        <span>Créances</span>
+                    </button>
+                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('stock', this)">
+                        <img src="/static/images/flows/stock.png" alt="Stock" class="w-4 h-4 object-contain rounded-xs">
+                        <span>Stock</span>
+                    </button>
                 </div>
 
                 <!-- CARTE PRINCIPALE BLANCHE : TABLEAU DE BORD DU JOURNAL (Style Exact Référence Stitch) -->
@@ -11937,24 +11963,37 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
         // Rendu HTML des transactions
         
-        function handleQuickFilter(type) {
+        function handleQuickFilter(type, btn) {
             if (!allTransactions || allTransactions.length === 0) return;
-            let filtered = allTransactions;
-            if (type === 'classe7') {
-                filtered = allTransactions.filter(t => (t.compte_syscohada || '').startsWith('7') || (t.type_flux || '').toUpperCase() === 'ENTREE');
-            } else if (type === 'classe6') {
-                filtered = allTransactions.filter(t => (t.compte_syscohada || '').startsWith('6') || (t.type_flux || '').toUpperCase() === 'SORTIE');
-            } else if (type === 'mobile_money') {
-                filtered = allTransactions.filter(t => {
-                    const s = ((t.source_paiement || '') + ' ' + (t.libelle || '')).toLowerCase();
-                    return s.includes('wave') || s.includes('orange');
-                });
-            } else if (type === 'banque') {
-                filtered = allTransactions.filter(t => {
-                    const s = ((t.source_paiement || '') + ' ' + (t.libelle || '')).toLowerCase();
-                    return s.includes('banque') || s.includes('cbao') || s.includes('virement');
-                });
+
+            // Mise à jour visuelle des boutons de filtre
+            document.querySelectorAll('.quick-filter-btn').forEach(b => {
+                b.className = 'quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs';
+            });
+            if (btn) {
+                btn.className = 'quick-filter-btn px-3.5 py-1.5 rounded-full bg-[#168078] text-white font-semibold shadow-2xs transition-all cursor-pointer inline-flex items-center gap-1.5';
             }
+
+            if (type === 'all') {
+                renderTransactionsList(allTransactions, allTransactions.length);
+                return;
+            }
+
+            let filtered = allTransactions.filter(t => {
+                const fm = detectFlowMeta(t);
+                if (fm && fm.key === type) return true;
+                const lib = ((t.libelle || '') + ' ' + (t.source_paiement || '')).toLowerCase();
+                const compte = (t.compte_syscohada || '');
+                if (type === 'wave') return lib.includes('wave');
+                if (type === 'orange') return lib.includes('orange');
+                if (type === 'especes') return lib.includes('espece') || lib.includes('caisse') || compte.startsWith('57');
+                if (type === 'banque') return lib.includes('banque') || lib.includes('cbao') || lib.includes('virement') || compte.startsWith('52');
+                if (type === 'salaire') return lib.includes('salaire') || lib.includes('personnel') || compte.startsWith('66');
+                if (type === 'creance') return lib.includes('creance') || lib.includes('demba') || compte.startsWith('411');
+                if (type === 'stock') return lib.includes('stock') || lib.includes('achat') || lib.includes('riz') || compte.startsWith('601') || compte.startsWith('3');
+                return false;
+            });
+
             renderTransactionsList(filtered, filtered.length);
         }
 
@@ -12112,6 +12151,8 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 else if (compteNum.startsWith('571')) compteLabel = 'Caisse principale';
 
                 const refDisplay = t.reference_externe ? t.reference_externe.substring(0, 10) : ('ECR-00' + (idx + 91));
+                const flowMeta = detectFlowMeta(t);
+                const flowLogo = flowMeta.logoUrl || WAVE_ICON_URL;
 
                 tr.innerHTML = `
                     <td class="py-3.5 px-3.5 text-center w-10" onclick="event.stopPropagation()">
@@ -12123,8 +12164,8 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     </td>
                     <td class="py-3.5 px-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-teal-50 text-[#168078] border border-teal-200/60 flex items-center justify-center flex-shrink-0 shadow-2xs">
-                                <span class="material-symbols-outlined text-[18px]">${iconName}</span>
+                            <div class="w-9 h-9 rounded-xl bg-white border border-slate-200/80 p-1.5 flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:border-[#168078]/40 transition-colors">
+                                <img src="${flowLogo}" alt="${flowMeta.label}" class="w-6 h-6 object-contain rounded-md" onerror="this.onerror=null; this.src='${WAVE_ICON_URL}';">
                             </div>
                             <div class="flex flex-col min-w-0">
                                 <span class="font-bold text-slate-900 text-[13px] truncate">${escapeHtml(title)}</span>
