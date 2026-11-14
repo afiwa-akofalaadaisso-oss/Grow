@@ -10658,9 +10658,9 @@
         // Chargement initial des données depuis Supabase
         async function loadDashboardData(entrepriseId = null, phone = null) {
             const urlParams = new URLSearchParams(window.location.search);
-            const pPhone = phone || urlParams.get('phone') || '';
+            const pPhone = phone || urlParams.get('phone') || localStorage.getItem('grow_active_phone') || '221788773827';
             const debugModal = urlParams.get('debug_modal');
-            const pId = entrepriseId || urlParams.get('id') || '';
+            const pId = entrepriseId || urlParams.get('id') || localStorage.getItem('grow_active_id') || '';
 
             let apiUrl = '/api/dashboard-data?';
             if (pId) apiUrl += `entreprise_id=${encodeURIComponent(pId)}&`;
@@ -10683,8 +10683,15 @@
                     return;
                 }
 
-
                 currentEntreprise = data.entreprise;
+                if (currentEntreprise) {
+                    if (currentEntreprise.telephone_whatsapp) {
+                        localStorage.setItem('grow_active_phone', currentEntreprise.telephone_whatsapp);
+                    }
+                    if (currentEntreprise.id) {
+                        localStorage.setItem('grow_active_id', currentEntreprise.id);
+                    }
+                }
                 allTransactions = data.transactions || [];
                 window.allTransactionsCache = allTransactions;
                 const factooBreadcrumb = document.getElementById('factooBreadcrumbCompany');
@@ -13757,6 +13764,23 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             } else {
                 quitterPortailVersDossier();
             }
+
+            // Synchro automatique en temps réel toutes les 10 secondes (fond de page transparent)
+            setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                    loadDashboardData();
+                }
+            }, 10000);
+
+            // Rechargement immédiat dès que l'onglet redevient actif
+            window.addEventListener('focus', () => {
+                loadDashboardData();
+            });
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    loadDashboardData();
+                }
+            });
         });
     </script>
 

@@ -495,7 +495,15 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
             }
             all_ents = [target_ent]
         elif not target_ent and all_ents:
-            target_ent = next((e for e in all_ents if e.get("nom_entreprise") == "Grow Dakar Test"), all_ents[0])
+            # 1. Priorité absolue : Entreprise principale active (CGLT / 221788773827)
+            primary_ent = next(
+                (e for e in all_ents if "221788773827" in str(e.get("telephone_whatsapp") or "") or "CGLT" in (e.get("nom_entreprise") or "").upper()),
+                None
+            )
+            if primary_ent:
+                target_ent = primary_ent
+            else:
+                target_ent = all_ents[0]
 
         if not target_ent:
             return {
