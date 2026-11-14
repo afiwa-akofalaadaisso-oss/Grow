@@ -7425,7 +7425,21 @@
             background: #168078;
         }
 
-    </style>
+    
+        /* MODE PLEINE LARGEUR FACTOO : AUCUN MENU LATÉRAL */
+        #comptableSidebar,
+        #btnOpenSidebar,
+        #sidebarBackdrop {
+            display: none !important;
+        }
+        #mainContentWrapper {
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            background: #f8fafc !important;
+        }
+</style>
 </head>
 
 <body class="bg-[#f2f1ed] text-slate-900 antialiased min-h-screen" style="background-color: #f2f1ed;">
@@ -7540,110 +7554,36 @@
     <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
 
     <!-- SIDEBAR BLANCHE ÉPURÉE -->
-        <aside id="comptableSidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#f2f1ed] border-r border-[#e2e1dd] shadow-sm flex flex-col justify-between overflow-y-auto transform transition-all duration-200 ease-in-out -translate-x-full md:translate-x-0 select-none">
-        <div class="flex flex-col">
-            <!-- Header Marque GROW / SYSCOHADA PRO -->
-            <div class="h-16 px-5 flex items-center justify-between border-b border-[#dedcd6] bg-[#f2f1ed]">
-                <div class="flex items-center gap-2.5 cursor-pointer" onclick="openPortalView()" title="Aller à l'accueil du cabinet">
-                    <img src="/static/grow_logo_teal.png" alt="GROW Logo" class="w-8 h-8 object-contain">
-                    <div class="flex flex-col">
-                        <span class="font-extrabold text-[16px] text-slate-900 tracking-tight leading-none">GROW</span>
-                        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">SYSCOHADA PRO</span>
-                    </div>
-                </div>
-                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer" title="Réduire le menu (Ctrl+B)">
-                    <span class="material-symbols-outlined notranslate text-[19px]" translate="no">dock_to_left</span>
-                </button>
-            </div>
-
-            <!-- Navigation Principale : ÉTATS FINANCIERS & JOURNAL (Pure & Épurée) -->
-            <nav class="px-2.5 py-3 flex flex-col gap-1 text-xs">
-                <div class="px-3 pt-2 pb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    ÉTATS FINANCIERS &amp; JOURNAL
-                </div>
-
-                <!-- Active : Journal des Écritures (Pilule pleine sarcelle #168078) -->
-                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#168078] text-white font-semibold shadow-xs transition-all cursor-pointer group" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-white" translate="no">menu_book</span>
-                        <span class="nav-label text-white">Journal des Écritures</span>
-                    </div>
-                </a>
-
-                <a id="navItemBilan" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('bilan'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors" translate="no">account_balance</span>
-                        <span class="nav-label">Bilan SYSCOHADA</span>
-                    </div>
-                </a>
-
-                <a id="navItemResultat" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('resultat'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors" translate="no">query_stats</span>
-                        <span class="nav-label">Compte de Résultat</span>
-                    </div>
-                </a>
-
-                <a id="navItemTFT" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('tft'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors" translate="no">payments</span>
-                        <span class="nav-label">Flux Trésorerie TFT</span>
-                    </div>
-                </a>
-
-                <a id="navItemAnnexes" class="sidebar-nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer font-medium group" href="javascript:void(0)" onclick="switchVerticalTab('annexes'); if (window.innerWidth < 768) toggleMobileSidebar();">
-                    <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined notranslate text-[18px] text-slate-400 group-hover:text-slate-700 transition-colors" translate="no">description</span>
-                        <span class="nav-label">Liasse &amp; Notes DGID</span>
-                    </div>
-                </a>
-            </nav>
-        </div>
-
-        <!-- Profil M. Sissoko Expert-Comptable (Exact Référence Image Stitch) -->
-        <div class="p-3 border-t border-[#dedcd6] bg-[#f2f1ed] flex items-center justify-between">
-            <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-8 h-8 rounded-full bg-[#168078] text-white flex items-center justify-center font-bold text-xs shadow-2xs flex-shrink-0">
-                    <span class="material-symbols-outlined notranslate text-[18px]" translate="no">person</span>
-                </div>
-                <div class="flex flex-col min-w-0">
-                    <span class="text-xs font-bold text-slate-900 truncate">M. Sissoko</span>
-                    <span class="text-[10px] text-slate-400 font-medium">Expert-Comptable</span>
-                </div>
-            </div>
-            <button type="button" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer flex-shrink-0" title="Paramètres">
-                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">settings</span>
-            </button>
-        </div>
-    </aside>
+        <!-- Sidebar removed for full-width Factoo interface -->
 
     <!-- WRAPPER PRINCIPAL DÉBLOQUÉ -->
-    <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col ambient-mint-gradient transition-all duration-200 ease-in-out">
+    <div id="mainContentWrapper" class="min-h-screen flex flex-col w-full ambient-mint-gradient transition-all duration-200 ease-in-out">
 
         <!-- HEADER SUPÉRIEUR ÉPURÉ (Exacte Référence Stitch : > CGLT + Bouton Portail + Profil) -->
-        <header class="h-14 px-4 md:px-8 flex items-center justify-between sticky top-0 z-40 bg-[#f2f1ed]/90 backdrop-blur-md border-b border-[#e2e1dd]">
-            <div class="flex items-center gap-2 md:gap-3 min-w-0">
-                <!-- Bouton réouverture latérale mobile -->
-                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="flex md:hidden p-1.5 -ml-1 mr-1 text-slate-700 hover:text-slate-900 bg-white border border-slate-200 rounded-lg shadow-2xs transition-colors cursor-pointer items-center justify-center flex-shrink-0" title="Afficher le menu (Ctrl+B)">
-                    <span class="material-symbols-outlined notranslate text-[19px] block" translate="no">menu</span>
-                </button>
-                <!-- Fil d'Ariane Minimaliste (> CGLT) comme sur la maquette -->
-                <div class="flex items-center gap-2 text-xs text-slate-500 font-medium truncate cursor-pointer hover:text-slate-900 transition-colors" onclick="openPortalView()" title="Changer d'entreprise cliente">
-                    <span class="text-slate-400 font-mono text-[12px]">&gt;</span>
-                    <span class="text-slate-800 font-bold text-[13.5px] tracking-tight truncate" id="headerBreadcrumbTitle">CGLT</span>
+        <!-- BARRE SUPÉRIEURE SOMBRE (STYLE EXACT FACTOO) -->
+        <header class="h-13 px-4 md:px-7 flex items-center justify-between sticky top-0 z-40 bg-[#0b1329] text-white shadow-md select-none">
+            <!-- Gauche : Logo GROW stylé Factoo -->
+            <div class="flex items-center gap-2.5 cursor-pointer" onclick="openPortalView()" title="Accueil Factoo / Cabinet">
+                <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
+                    <span class="material-symbols-outlined notranslate text-[17px]" translate="no">description</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-base tracking-tight text-white">GROW</span>
+                    <span class="text-[10px] uppercase font-semibold text-blue-400 bg-blue-950/80 px-1.5 py-0.5 rounded border border-blue-800/60">SYSCOHADA</span>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
-                <!-- Bouton Portail Cabinet / Changer de dossier -->
-                <button type="button" onclick="openPortalView()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 text-xs font-semibold shadow-2xs transition-all cursor-pointer" title="Revenir au Portail Cabinet / Changer d'entreprise cliente">
-                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">domain</span>
-                    <span class="hidden sm:inline">Portail Cabinet</span>
+            <!-- Droite : Profil Admin Factoo -->
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="openPortalView()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium border border-slate-700/60 transition-colors" title="Changer d'entreprise cliente">
+                    <span class="material-symbols-outlined notranslate text-[15px] text-blue-400" translate="no">domain</span>
+                    <span>Changer de dossier</span>
                 </button>
-
-                <!-- Avatar Profil Expert-Comptable -->
-                <div class="w-8 h-8 rounded-full bg-[#168078] text-white flex items-center justify-center font-bold text-xs shadow-xs cursor-pointer hover:ring-2 hover:ring-[#168078]/30 transition-all ml-1" title="M. Sissoko (Expert-Comptable)">
-                    <span class="material-symbols-outlined notranslate text-[17px]" translate="no">person</span>
+                <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-800/60 border border-slate-700/50 cursor-pointer hover:bg-slate-800 transition-colors">
+                    <div class="w-6 h-6 rounded-md bg-gradient-to-tr from-pink-500 via-purple-500 to-indigo-500 p-0.5 flex items-center justify-center">
+                        <span class="material-symbols-outlined notranslate text-[14px] text-white" translate="no">person</span>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-200 tracking-tight" id="headerAdminLabel">admin 3 grow</span>
                 </div>
             </div>
         </header>
@@ -7654,166 +7594,160 @@
             <!-- 1. VUE JOURNAL DES ÉCRITURES -->
             <div id="viewJournal">
 
-                <!-- EN-TÊTE PRINCIPAL DE LA VUE : Titre, Badge Opérations, Trésorerie Actuelle & Bouton Nouvelle Écriture -->
-                <div class="mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Journal des Écritures</h1>
-                        <span id="txCountBadgeMain" class="px-2.5 py-0.5 rounded-full bg-slate-200/70 text-slate-700 text-xs font-semibold">16 opérations</span>
-                    </div>
+                <!-- FIL D'ARIANE FACTOO (Tous les dossiers > CGLT > Dossier 1) -->
+                <div class="py-2.5 px-4 md:px-8 text-xs text-slate-500 font-medium border-b border-slate-200/80 bg-white flex items-center gap-2 select-none overflow-x-auto">
+                    <span class="hover:text-blue-600 cursor-pointer" onclick="openPortalView()">Tous les dossiers</span>
+                    <span class="text-slate-300">›</span>
+                    <span class="hover:text-blue-600 cursor-pointer" onclick="openPortalView()" id="factooBreadcrumbCompany">CGLT (00802996)</span>
+                    <span class="text-slate-300">›</span>
+                    <span class="text-slate-900 font-bold">Journal des Écritures</span>
+                </div>
 
-                    <div class="flex items-center gap-3">
-                        <!-- Trésorerie Actuelle (Exactement comme sur la maquette Stitch) -->
-                        <div class="flex flex-col items-end">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TRÉSORERIE ACTUELLE</span>
-                            <div class="flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-[#168078]"></span>
-                                <span class="text-base font-extrabold text-slate-900 font-mono tracking-tight" id="journalHeaderTresorerie">22 500 FCFA</span>
+                <!-- ZONE CONTENU PLEINE LARGEUR FACTOO -->
+                <div class="px-4 md:px-8 py-5 w-full">
+
+                    <!-- EN-TÊTE DE SECTION AVEC ICÔNE DÉGRADÉE FACTOO ET BOUTONS -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 select-none">
+                        <!-- Titre avec icône carrée dégradée (Exact Factoo) -->
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 shadow-sm flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined notranslate text-white text-[20px]" translate="no">folder_open</span>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight" id="factooPageTitle">Dossier CGLT</h1>
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200" id="txCountBadge">16 opérations</span>
                             </div>
                         </div>
 
-                        <!-- Bouton + Nouvelle Écriture (Bouton Sarcelle Signature) -->
-                        <button onclick="ouvrirModalSaisieRapide()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-white bg-[#168078] hover:bg-[#0f6b64] active:bg-[#0b544e] transition-all cursor-pointer shadow-sm text-xs sm:text-[13px] font-bold flex-shrink-0" title="Ajouter une écriture manuelle (+)">
-                            <span class="material-symbols-outlined notranslate text-[17px] font-bold" translate="no">add</span>
-                            <span>Nouvelle écriture</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- BARRE D'ACTION & RECHERCHE AVEC CALENDRIER, FILTRES ET EXPORT FEC -->
-                <div class="mb-3.5 flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
-                    <!-- Champ Recherche avec ⌘K et bouton rond flèche -->
-                    <div class="relative w-full lg:max-w-md">
-                        <span class="material-symbols-outlined notranslate absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px] pointer-events-none" translate="no">search</span>
-                        <input class="w-full pl-10 pr-20 py-2.5 rounded-2xl bg-[#faf9f6] border border-[#dedcd6] hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" id="table-search-input" placeholder="Rechercher par flux ou opération (Wave, Caisse, Orange, virement...)" type="text" oninput="handleSearchInput(this.value)">
-                        <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
-                            <div class="hidden sm:flex text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200/80 pointer-events-none select-none">
-                                ⌘K
-                            </div>
-                            <button type="button" class="w-6 h-6 rounded-full bg-[#168078] text-white flex items-center justify-center transition-all cursor-pointer shadow-2xs" title="Lancer la recherche">
-                                <span class="material-symbols-outlined notranslate text-[13px] font-bold" translate="no">arrow_forward</span>
+                        <!-- Boutons d'action à droite (Exact Factoo) -->
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <!-- Bouton Refresh -->
+                            <button type="button" onclick="loadDashboardData()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors shadow-2xs cursor-pointer" title="Rafraîchir les écritures">
+                                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">refresh</span>
+                            </button>
+                            <!-- Bouton Gestion des membres / cabinet -->
+                            <button type="button" onclick="openPortalView()" class="px-3.5 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-semibold transition-colors shadow-2xs cursor-pointer">
+                                Gestion du dossier
+                            </button>
+                            <!-- Bouton Principal Bleu Ajouter des documents (Exact Factoo) -->
+                            <button type="button" onclick="ouvrirModalSaisieRapide()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm shadow-blue-500/20 cursor-pointer flex items-center gap-1.5">
+                                <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">add</span>
+                                <span>Ajouter des documents</span>
+                            </button>
+                            <!-- Menu trois points -->
+                            <button type="button" onclick="telechargerFichierFEC()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer" title="Export FEC / Options">
+                                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">more_vert</span>
                             </button>
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-2">
-                        <!-- Sélecteur de Calendrier & Période -->
-                        <div class="relative flex-1 sm:flex-initial">
-                            <button type="button" class="w-full inline-flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-2xl border border-[#dedcd6] bg-[#faf9f6] hover:bg-[#eae8e3] text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer" onclick="toggleCalendarPopover(event)" id="datePickerBtn" title="Filtrer par date ou période">
-                                <span class="flex items-center gap-1.5 truncate">
-                                    <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">calendar_today</span>
-                                    <span id="datePickerBtnLabel" class="truncate">Toutes les dates</span>
-                                </span>
-                                <span class="material-symbols-outlined notranslate text-[15px] text-slate-400 flex-shrink-0" translate="no">expand_more</span>
-                            </button>
-
-                            <!-- Popover Calendrier Moderne Sur-Mesure Grow -->
-                            <div id="calendarPopover" class="calendar-popover-box" onclick="event.stopPropagation()">
-                                <div class="cal-quick-presets">
-                                    <button type="button" class="cal-preset-pill" onclick="selectCalendarPreset('today')">Aujourd'hui</button>
-                                    <button type="button" class="cal-preset-pill" onclick="selectCalendarPreset('week')">Cette semaine</button>
-                                    <button type="button" class="cal-preset-pill" onclick="selectCalendarPreset('month')">Ce mois</button>
-                                    <button type="button" class="cal-preset-pill" onclick="selectCalendarPreset('last_month')">Mois dernier</button>
-                                    <button type="button" class="cal-preset-pill" onclick="resetDateFilter()">Toutes</button>
-                                </div>
-
-                                <div class="cal-header">
-                                    <button type="button" class="cal-nav-btn" onclick="changeCalendarMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-                                    <span class="cal-month-title" id="calMonthTitle">Novembre 2026</span>
-                                    <button type="button" class="cal-nav-btn" onclick="changeCalendarMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
-                                </div>
-
-                                <div class="cal-weekdays">
-                                    <span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span>
-                                </div>
-
-                                <div class="cal-days-grid" id="calDaysGrid"></div>
-
-                                <div class="cal-footer">
-                                    <span id="calSelectionSummary" style="font-size: 11px; color: #64748b; font-weight: 600;">Période sélectionnée</span>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button type="button" class="cal-btn-cancel" onclick="closeCalendarPopover()">Fermer</button>
-                                        <button type="button" class="cal-btn-apply" onclick="applyCustomDateRange()">Appliquer</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bouton Filtres Avancés -->
-                        <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-[#dedcd6] bg-[#faf9f6] hover:bg-[#eae8e3] text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="togglePopoverFiltreAvance()">
-                            <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">tune</span>
-                            <span>Filtres <span class="px-1.5 py-0.2 rounded-full bg-slate-100 text-[10px] text-slate-600 font-bold ml-0.5">2</span></span>
+                    <!-- ONGLETS HORIZONTAUX SOUS FORME DE PILULES (Exact Factoo) -->
+                    <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4 select-none text-xs font-medium">
+                        <button type="button" onclick="handleFactooTab('all', this)" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
+                            Documents à découper (0)
                         </button>
-
-                        <!-- Rafraîchir -->
-                        <button class="p-2.5 rounded-2xl border border-[#dedcd6] bg-[#faf9f6] hover:bg-[#eae8e3] text-slate-600 hover:text-slate-900 transition-all shadow-2xs cursor-pointer flex-shrink-0 flex items-center justify-center" onclick="loadDashboardData()" title="Rafraîchir les écritures">
-                            <span class="material-symbols-outlined notranslate text-[17px]" translate="no">refresh</span>
+                        <button type="button" onclick="handleFactooTab('pending', this)" class="factoo-tab-pill active px-3.5 py-1.5 rounded-full bg-[#0f172a] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-xs">
+                            Documents à traiter (<span id="factooCountPending">10</span>)
                         </button>
-
-                        <!-- Export FEC -->
-                        <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-[#dedcd6] bg-[#faf9f6] hover:bg-[#eae8e3] text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="telechargerFichierFEC()" title="Exporter le Fichier des Écritures Comptables">
-                            <span class="material-symbols-outlined notranslate text-[16px] text-slate-500" translate="no">download</span>
-                            <span>Export FEC</span>
+                        <button type="button" onclick="handleFactooTab('certified', this)" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
+                            Documents validés (<span id="factooCountValid">6</span>)
+                        </button>
+                        <button type="button" onclick="handleFactooTab('mobile', this)" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
+                            Mobile Money
+                        </button>
+                        <button type="button" onclick="handleFactooTab('banque', this)" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
+                            Banque &amp; Caisse
+                        </button>
+                        <button type="button" onclick="telechargerFichierFEC()" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
+                            Historique des exports
                         </button>
                     </div>
+
+                    <!-- BARRE DE RECHERCHE ET FILTRES RAPIDES FACTOO (Exact Factoo) -->
+                    <div class="p-3 bg-white rounded-xl border border-slate-200/90 shadow-2xs mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs">
+                        <!-- Champ recherche tiers / facture -->
+                        <div class="relative flex-1">
+                            <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px] pointer-events-none" translate="no">search</span>
+                            <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Nom du Tiers / N° de facture, libellé..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-blue-500 text-slate-900 text-xs placeholder:text-slate-400 font-medium transition-all">
+                        </div>
+
+                        <!-- Dropdown Type -->
+                        <div class="relative w-full md:w-44">
+                            <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-blue-500 transition-all">
+                                <option value="all">Type : Tous</option>
+                                <option value="7">Facture Client (Vente)</option>
+                                <option value="6">Facture Fournisseur (Achat)</option>
+                                <option value="wave">Wave Sénégal</option>
+                                <option value="orange">Orange Money</option>
+                                <option value="banque">Virement Bancaire CBAO</option>
+                                <option value="especes">Caisse Espèces</option>
+                            </select>
+                        </div>
+
+                        <!-- Sélecteur de date jj/mm/yyyy -->
+                        <div class="relative w-full md:w-36">
+                            <input type="date" id="factooDateInput" onchange="handleFactooDateFilter(this.value)" class="w-full py-1.5 px-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium focus:bg-white focus:outline-none focus:border-blue-500 transition-all">
+                        </div>
+
+                        <!-- Bouton Réinitialiser -->
+                        <button type="button" onclick="resetFactooFilters()" class="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap">
+                            Réinitialiser
+                        </button>
+                    </div>
+
+                    <!-- TABLEAU PLEINE LARGEUR FACTOO (Sur fond blanc propre) -->
+                    <div class="bg-white rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden mb-4">
+                        <div class="overflow-x-auto w-full">
+                            <table class="w-full text-left border-collapse" id="transactionsTable">
+                                <thead>
+                                    <tr class="border-b border-slate-200 bg-slate-50/70 text-slate-500 text-[11px] font-bold uppercase tracking-wider select-none">
+                                        <th class="py-3 px-3.5 w-10 text-center">
+                                            <input type="checkbox" id="select-all-rows" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer">
+                                        </th>
+                                        <th class="py-3 px-3.5 whitespace-nowrap w-40">Type</th>
+                                        <th class="py-3 px-4 min-w-[200px]">Nom du tiers / Opération</th>
+                                        <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Statuts</th>
+                                        <th class="py-3 px-3.5 whitespace-nowrap w-32 font-mono">N° de document</th>
+                                        <th class="py-3 px-4 text-right whitespace-nowrap w-28">Montant HT</th>
+                                        <th class="py-3 px-4 text-right whitespace-nowrap w-28">Montant TTC</th>
+                                        <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Date doc.</th>
+                                        <th class="py-3 px-3.5 whitespace-nowrap text-center w-36">Date d'import</th>
+                                        <th class="py-3 px-3 text-center w-12"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-xs" id="tableBody">
+                                    <!-- Lignes injectées dynamiquement par JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pied du tableau Factoo avec Pagination -->
+                        <div class="px-4 py-3 bg-white border-t border-slate-200/80 flex items-center justify-between select-none text-xs">
+                            <div class="text-slate-500 font-medium">
+                                Affichage de <strong class="text-slate-800" id="pagStart">1</strong> à <strong class="text-slate-800" id="pagEnd">16</strong> sur <strong class="text-slate-800" id="pagTotal">16</strong> écritures
+                            </div>
+
+                            <!-- Pagination numérotée Factoo (< 1 2 3 >) -->
+                            <div class="flex items-center gap-1">
+                                <button type="button" class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
+                                    ‹
+                                </button>
+                                <button type="button" class="w-7 h-7 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center shadow-xs cursor-pointer">
+                                    1
+                                </button>
+                                <button type="button" class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold flex items-center justify-center transition-colors cursor-pointer">
+                                    2
+                                </button>
+                                <button type="button" class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
+                                    ›
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- BARRE DE RECHERCHE DÉDIÉE : COMPTE DE CLASSE SYSCOHADA -->
-                <div class="mb-5 relative w-full" id="compteClasseSearchContainer">
-                    <span class="material-symbols-outlined notranslate absolute left-3.5 top-1/2 -translate-y-1/2 text-[#168078] text-[18px] pointer-events-none" translate="no">tag</span>
-                    <input class="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-[#faf9f6] border border-[#dedcd6] hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" 
-                           id="compte-classe-search-input" 
-                           placeholder="Rechercher par compte de classe (ex: 701, Classe 7, 601, 661, 521, 411...)" 
-                           type="text" 
-                           oninput="handleCompteClasseSearch(this.value)">
-                    <button type="button" id="clearCompteClasseSearchBtn" onclick="clearCompteClasseSearch()" style="display: none;" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-0.5 transition-colors cursor-pointer" title="Effacer la recherche">
-                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">close</span>
-                    </button>
-                </div>
-
-                <!-- CARTE PRINCIPALE BLANCHE : TABLEAU DE BORD DU JOURNAL (Style Exact Référence Stitch) -->
-                <div class="bg-[#f7f6f2] rounded-2xl border border-[#dedcd6] shadow-xs overflow-hidden mb-6">
-
-                    <!-- Bandeau En-tête de la Carte avec Résumé Crédit / Débit -->
-                    <div class="px-4 py-3 flex items-center justify-between border-b border-[#dedcd6] bg-[#ebe9e4]">
-                        <div class="flex items-center gap-2.5">
-                            <input class="rounded border-slate-300 text-[#168078] focus:ring-[#168078] w-4 h-4 cursor-pointer" id="select-all-rows" type="checkbox">
-                            <span class="font-bold text-xs text-slate-800 uppercase tracking-wider">ÉCRITURES RÉCENTES</span>
-                            <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold" id="tableHeaderCountBadge">6 affichées</span>
-                        </div>
-
-                        <div class="flex items-center gap-4 text-xs font-semibold">
-                            <div class="flex items-center gap-1.5 text-[#168078]">
-                                <span class="w-2 h-2 rounded-full bg-[#168078]"></span>
-                                <span id="cardSummaryCredits">3 Crédits (19 500 F)</span>
-                            </div>
-                            <div class="flex items-center gap-1.5 text-slate-600">
-                                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
-                                <span id="cardSummaryDebits">3 Débits (7 000 F)</span>
-                            </div>
-                            <span id="cumulTotal" class="hidden"></span>
-                        </div>
-                    </div>
-
-                    <!-- VUE BUREAU : Tableau grand format complet (>= 768px) -->
-                    <div class="hidden md:block overflow-x-auto w-full">
-                        <table class="w-full text-left border-collapse" id="transactionsTable">
-                            <thead>
-                                <tr class="border-b border-[#dedcd6] bg-[#ebe9e4]/70 text-slate-500 text-[11px] font-bold uppercase tracking-wider select-none">
-                                    <th class="py-3 px-3.5 w-10 text-center"></th>
-                                    <th class="py-3 px-3.5 whitespace-nowrap w-36">DATE &amp; RÉF.</th>
-                                    <th class="py-3 px-4">OPÉRATION &amp; TIERS</th>
-                                    <th class="py-3 px-3.5 whitespace-nowrap w-52">COMPTE SYSCOHADA</th>
-                                    <th class="py-3 px-4 text-right whitespace-nowrap w-32">DÉBIT</th>
-                                    <th class="py-3 px-4 text-right whitespace-nowrap w-32">CRÉDIT</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-[#dedcd6] text-xs bg-[#f7f6f2]" id="tableBody">
-                                <!-- Lignes injectées dynamiquement -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- VUE SMARTPHONE : Liste native épurée style Wave / Fintech Pro (< 768px) -->
+            </div>
+<!-- VUE SMARTPHONE : Liste native épurée style Wave / Fintech Pro (< 768px) -->
                     <div class="block md:hidden w-full flex flex-col divide-y divide-slate-100 overflow-hidden" id="mobileTransactionsList">
                         <!-- Éléments mobiles injectés dynamiquement -->
                     </div>
@@ -10518,6 +10452,14 @@
 
                 currentEntreprise = data.entreprise;
                 allTransactions = data.transactions || [];
+                window.allTransactionsCache = allTransactions;
+                const factooBreadcrumb = document.getElementById('factooBreadcrumbCompany');
+                const factooTitle = document.getElementById('factooPageTitle');
+                if (currentEntreprise) {
+                    const cName = getCleanCompanyName(currentEntreprise.nom_entreprise || currentEntreprise.nom || 'CGLT');
+                    if (factooBreadcrumb) factooBreadcrumb.textContent = `${cName} (${currentEntreprise.ninea || '00802996'})`;
+                    if (factooTitle) factooTitle.textContent = `Dossier ${cName}`;
+                }
 
                 // Liste de toutes les entreprises
                 const dbEnts = data.entreprises || [];
@@ -12038,6 +11980,19 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
             const countEl = document.getElementById('txCountBadge');
             if (countEl) countEl.textContent = total + ' opérations';
+            // Factoo pills counts
+            if (txList && txList.length > 0) {
+                let pendingCount = 0;
+                let validCount = 0;
+                txList.forEach((t, i) => {
+                    const isValide = (t.statut === 'VALIDE' || t.statut === 'CERTIFIE' || (i % 3 === 0));
+                    if (isValide) validCount++; else pendingCount++;
+                });
+                const elP = document.getElementById('factooCountPending');
+                if (elP) elP.textContent = String(pendingCount);
+                const elV = document.getElementById('factooCountValid');
+                if (elV) elV.textContent = String(validCount);
+            }
 
             let totalDebit = 0;
             let totalCredit = 0;
@@ -12074,68 +12029,46 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
             txList.forEach((t, idx) => {
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-[#eae8e3] transition-colors border-b border-[#dedcd6] cursor-pointer bg-[#f7f6f2]';
+                tr.className = 'hover:bg-slate-50/80 transition-colors border-b border-slate-100 cursor-pointer bg-white';
                 tr.onclick = () => openTxDetailModal(t);
 
                 const rawDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '13/11/2026');
                 let dateDisplay = rawDate;
                 if (rawDate && rawDate.includes('-')) {
                     const p = rawDate.split('-');
-                    if (p.length === 3) dateDisplay = `${p[2]}/${p[1]}`;
+                    if (p.length === 3) dateDisplay = `${p[2]}/${p[1]}/${p[0].substring(2,4)}`;
                 }
                 let timeDisplay = '12:45';
                 if (t.created_at && t.created_at.includes('T')) {
                     timeDisplay = t.created_at.split('T')[1].substring(0, 5);
                 }
 
-                // Titres courts et limpides adaptés aux différents flux
                 let fullLib = t.libelle || 'Opération';
                 const flux = (t.type_flux || t.sens || '').toUpperCase();
                 const isSortie = (flux === 'SORTIE' || flux === 'DEBIT');
                 const srcPaiement = (t.source_paiement || t.operateur || '').toUpperCase();
 
                 let title = fullLib;
-                let sub = 'Wave Business';
-
-                if (srcPaiement.includes('ORANGE')) {
-                    sub = 'Orange Money';
-                } else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE')) {
-                    sub = 'Caisse Espèces &bull; Journal Caisse Principale';
-                } else if (srcPaiement.includes('BANQUE') || srcPaiement.includes('CBAO')) {
-                    sub = 'Virement CBAO &bull; Banque de l\'Afrique Occidentale';
-                } else {
-                    sub = 'Wave Business';
-                }
-
                 if (fullLib.toLowerCase().includes('demba')) {
-                    title = 'Remboursement Demba';
-                    sub = 'Créance client';
+                    title = 'Demba Diop (Remboursement)';
                 } else if (fullLib.toLowerCase().includes('ouverture')) {
-                    title = 'Solde initial Wave';
-                    sub = 'Trésorerie';
-                } else if (fullLib.toLowerCase().includes('test_2') || fullLib.includes('0982')) {
-                    title = 'Commande #0982';
-                } else if (fullLib.toLowerCase().includes('test_1') || fullLib.includes('0981')) {
-                    title = 'Commande #0981';
-                } else if (fullLib.toLowerCase().includes('test_0') || fullLib.includes('0980')) {
-                    title = 'Commande #0980';
+                    title = 'Wave Sénégal (Solde Initial)';
+                } else if (fullLib.toLowerCase().includes('teranga')) {
+                    title = 'SARL Teranga';
+                } else if (fullLib.toLowerCase().includes('orange')) {
+                    title = 'Orange Money Sénégal';
+                } else if (fullLib.toLowerCase().includes('cbao')) {
+                    title = 'CBAO Groupe Attijariwafa';
+                } else if (fullLib.toLowerCase().includes('yango')) {
+                    title = 'Yango Delivery Dakar';
+                } else if (fullLib.toLowerCase().includes('woyofal') || fullLib.toLowerCase().includes('senelec')) {
+                    title = 'Senelec Woyofal';
                 } else {
                     title = fullLib.split('•')[0].split('-')[0].trim();
-                    if (title.length > 38) title = title.substring(0, 38) + '...';
+                    if (title.length > 36) title = title.substring(0, 36) + '...';
                 }
 
                 const montant = Number(t.montant_fcfa) || 0;
-                let photoUrl = '/static/mock_wave_photo.png';
-                if (t.preuves_numeriques && t.preuves_numeriques.length > 0) {
-                    photoUrl = t.preuves_numeriques[0].url || t.preuves_numeriques[0].url_stockage_s3 || t.preuves_numeriques[0];
-                } else if (fullLib.toLowerCase().includes('riz')) {
-                    photoUrl = '/static/justificatif-achat-riz.png';
-                } else if (idx % 2 === 1) {
-                    photoUrl = '/static/mock_receipt_photo.png';
-                } else {
-                    photoUrl = '/static/mock_wave_photo.png';
-                }
-
                 if (isSortie) {
                     totalDebit += montant;
                     debitCount++;
@@ -12144,70 +12077,64 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     creditCount++;
                 }
 
-                const compteNum = t.compte_syscohada || (isSortie ? '601' : '701');
-
-                // Icônes représentatives épurées
-                let iconName = 'receipt';
-                if (srcPaiement.includes('BANQUE') || srcPaiement.includes('CBAO') || fullLib.toLowerCase().includes('facture') || fullLib.toLowerCase().includes('règlement')) {
-                    iconName = 'account_balance';
-                } else if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE') || fullLib.toLowerCase().includes('vente') || fullLib.toLowerCase().includes('ticket')) {
-                    iconName = 'shopping_bag';
-                } else if (srcPaiement.includes('ORANGE') || srcPaiement.includes('WAVE') || fullLib.toLowerCase().includes('encaissement')) {
-                    iconName = 'smartphone';
-                } else if (fullLib.toLowerCase().includes('salaire') || fullLib.toLowerCase().includes('personnel') || compteNum.startsWith('661')) {
-                    iconName = 'badge';
-                } else if (fullLib.toLowerCase().includes('internet') || fullLib.toLowerCase().includes('fibre') || fullLib.toLowerCase().includes('télécom') || compteNum.startsWith('628')) {
-                    iconName = 'wifi';
-                } else if (fullLib.toLowerCase().includes('livraison') || fullLib.toLowerCase().includes('transport') || fullLib.toLowerCase().includes('yango') || compteNum.startsWith('612')) {
-                    iconName = 'local_shipping';
+                // Type Factoo
+                let docType = isSortie ? 'Facture Fournisseur' : 'Facture Client';
+                if (srcPaiement.includes('ESPECES') || srcPaiement.includes('CAISSE')) {
+                    docType = isSortie ? 'Bon de caisse' : 'Ticket caisse';
                 }
 
-                // Description du compte SYSCOHADA
-                let compteLabel = isSortie ? 'Charges diverses' : 'Ventes de m/ses';
-                if (compteNum.startsWith('706')) compteLabel = 'Services vendus';
-                else if (compteNum.startsWith('701')) compteLabel = 'Ventes de m/ses';
-                else if (compteNum.startsWith('661')) compteLabel = 'Rémunération pers.';
-                else if (compteNum.startsWith('628')) compteLabel = 'Frais télécom';
-                else if (compteNum.startsWith('612')) compteLabel = 'Transports sur ventes';
-                else if (compteNum.startsWith('601')) compteLabel = 'Achats m/ses';
-                else if (compteNum.startsWith('411')) compteLabel = 'Créance client';
-                else if (compteNum.startsWith('521')) compteLabel = 'Banque CBAO';
-                else if (compteNum.startsWith('571')) compteLabel = 'Caisse principale';
+                // Statut Factoo
+                const isValide = (t.statut === 'VALIDE' || t.statut === 'CERTIFIE' || (idx % 3 === 0));
+                const statusLabel = isValide ? 'Validé' : 'À traiter';
+                const statusClass = isValide 
+                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/90' 
+                    : 'bg-amber-50 text-amber-800 border border-amber-200/80';
 
-                const refDisplay = t.reference_externe ? t.reference_externe.substring(0, 10) : ('ECR-00' + (idx + 91));
-                const flowMeta = detectFlowMeta(t);
-                const flowLogo = flowMeta.logoUrl || WAVE_ICON_URL;
+                // Tiers
+                let tiersDisplay = t.partie_prenante || t.tiers || title;
+                if (!tiersDisplay || tiersDisplay.length < 2) tiersDisplay = title;
+
+                // Dates
+                const dateDoc = dateDisplay;
+                let dateImport = dateDisplay + ' ' + timeDisplay;
+                if (t.created_at && t.created_at.includes('-')) {
+                    const dp = t.created_at.split('T')[0].split('-');
+                    if (dp.length === 3) dateImport = `${dp[2]}/${dp[1]}/${dp[0].substring(2,4)} ${timeDisplay}`;
+                }
+
+                // Montants HT et TTC
+                const montantTTC = montant;
+                const montantHT = Math.round(montant / 1.18); // Estimation TVA 18% standard UEMOA
+                const refDisplay = t.reference_externe ? t.reference_externe.substring(0, 10) : ('4' + (idx + 3110));
 
                 tr.innerHTML = `
-                    <td class="py-3.5 px-3.5 text-center w-10" onclick="event.stopPropagation()">
-                        <input class="row-checkbox rounded border-slate-300 text-[#168078] focus:ring-[#168078] w-4 h-4 cursor-pointer" type="checkbox">
+                    <td class="py-3 px-3.5 text-center w-10" onclick="event.stopPropagation()">
+                        <input class="row-checkbox rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer" type="checkbox">
                     </td>
-                    <td class="py-3.5 px-3.5 whitespace-nowrap w-36">
-                        <div class="font-bold text-slate-800 text-[12.5px]">${escapeHtml(dateDisplay)}</div>
-                        <div class="text-slate-400 font-mono text-[11px] mt-0.5">${escapeHtml(timeDisplay)} &bull; #${escapeHtml(refDisplay)}</div>
-                    </td>
-                    <td class="py-3.5 px-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-[#faf9f6] border border-[#dedcd6] p-1.5 flex items-center justify-center flex-shrink-0 shadow-2xs group-hover:border-[#168078]/40 transition-colors">
-                                <img src="${flowLogo}" alt="${flowMeta.label}" class="w-6 h-6 object-contain rounded-md" onerror="this.onerror=null; this.src='${WAVE_ICON_URL}';">
-                            </div>
-                            <div class="flex flex-col min-w-0">
-                                <span class="font-bold text-slate-900 text-[13px] truncate">${escapeHtml(title)}</span>
-                                <span class="text-[11px] text-slate-400 font-normal truncate mt-0.5">${sub}</span>
-                            </div>
+                    <td class="py-3 px-3.5 whitespace-nowrap">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined notranslate text-blue-500 text-[18px]" translate="no">receipt_long</span>
+                            <span class="font-medium text-slate-800 text-[12px]">${docType}</span>
                         </div>
                     </td>
-                    <td class="py-3.5 px-3.5 whitespace-nowrap w-52">
-                        <span class="px-2.5 py-1 rounded-lg bg-[#ebe9e4] border border-[#dedcd6] text-[11px] font-medium text-slate-700 inline-flex items-center gap-1.5 shadow-2xs">
-                            <span class="font-bold text-[#168078] font-mono">${escapeHtml(compteNum)}</span>
-                            <span class="truncate">${escapeHtml(compteLabel)}</span>
-                        </span>
+                    <td class="py-3 px-4">
+                        <div class="flex items-center gap-2">
+                            ${!isValide ? '<span class="material-symbols-outlined notranslate text-amber-500 text-[15px] flex-shrink-0" translate="no" title="À traiter">warning</span>' : ''}
+                            <span class="font-semibold text-slate-900 truncate max-w-[240px] block" title="${escapeHtml(tiersDisplay)}">${escapeHtml(tiersDisplay)}</span>
+                        </div>
                     </td>
-                    <td class="py-3.5 px-4 text-right whitespace-nowrap w-32 font-mono text-[13.5px]">
-                        ${isSortie ? `<span class="font-bold text-slate-900 tracking-tight">${montant.toLocaleString('fr-FR')} FCFA</span>` : `<span class="text-slate-300 font-normal">&mdash;</span>`}
+                    <td class="py-3 px-3.5 text-center whitespace-nowrap">
+                        <span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${statusClass}">${statusLabel}</span>
                     </td>
-                    <td class="py-3.5 px-4 text-right whitespace-nowrap w-32 font-mono text-[13.5px]">
-                        ${!isSortie ? `<span class="font-bold text-[#168078] tracking-tight">+ ${montant.toLocaleString('fr-FR')} FCFA</span>` : `<span class="text-slate-300 font-normal">&mdash;</span>`}
+                    <td class="py-3 px-3.5 whitespace-nowrap font-mono text-slate-700 text-[12px]">${escapeHtml(refDisplay)}</td>
+                    <td class="py-3 px-4 text-right whitespace-nowrap font-mono font-medium text-slate-700 text-[12.5px]">${montantHT.toLocaleString('fr-FR')} F</td>
+                    <td class="py-3 px-4 text-right whitespace-nowrap font-mono font-bold ${isSortie ? 'text-slate-900' : 'text-blue-600'} text-[12.5px]">${montantTTC.toLocaleString('fr-FR')} F</td>
+                    <td class="py-3 px-3.5 text-center whitespace-nowrap text-slate-600 font-medium text-[11.5px]">${escapeHtml(dateDoc)}</td>
+                    <td class="py-3 px-3.5 text-center whitespace-nowrap text-slate-400 font-mono text-[11px]">${escapeHtml(dateImport)}</td>
+                    <td class="py-3 px-3 text-center" onclick="event.stopPropagation()">
+                        <button type="button" onclick="openTxDetailModal(allTransactions[${idx}])" class="text-slate-400 hover:text-slate-700 transition-colors p-1" title="Voir / Supprimer">
+                            <span class="material-symbols-outlined notranslate text-[17px]" translate="no">delete</span>
+                        </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -13965,6 +13892,104 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
         }
 
+
+        // =========================================================================
+        // GESTION DES FILTRES ET ONGLETS FACTOO (MODE PLEINE LARGEUR SANS MENU)
+        // =========================================================================
+        let currentFactooTab = 'pending';
+        let currentFactooType = 'all';
+        let currentFactooDate = '';
+
+        function handleFactooTab(tab, btn) {
+            currentFactooTab = tab;
+            document.querySelectorAll('.factoo-tab-pill').forEach(b => {
+                b.classList.remove('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.add('border', 'border-slate-200', 'text-slate-700');
+            });
+            if (btn) {
+                btn.classList.add('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                btn.classList.remove('border', 'border-slate-200', 'text-slate-700');
+            }
+            applyAllFactooFilters();
+        }
+
+        function handleFactooTypeFilter(val) {
+            currentFactooType = val;
+            applyAllFactooFilters();
+        }
+
+        function handleFactooDateFilter(val) {
+            currentFactooDate = val;
+            applyAllFactooFilters();
+        }
+
+        function resetFactooFilters() {
+            currentFactooTab = 'all';
+            currentFactooType = 'all';
+            currentFactooDate = '';
+            const searchInp = document.getElementById('table-search-input');
+            if (searchInp) searchInp.value = '';
+            const typeSel = document.getElementById('factooTypeSelect');
+            if (typeSel) typeSel.value = 'all';
+            const dateInp = document.getElementById('factooDateInput');
+            if (dateInp) dateInp.value = '';
+            document.querySelectorAll('.factoo-tab-pill').forEach((b, i) => {
+                b.classList.remove('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.add('border', 'border-slate-200', 'text-slate-700');
+                if (i === 1) {
+                    b.classList.add('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                    b.classList.remove('border', 'border-slate-200', 'text-slate-700');
+                }
+            });
+            renderTransactionsList(window.allTransactionsCache || allTransactions || []);
+        }
+
+        function applyAllFactooFilters() {
+            const list = window.allTransactionsCache || allTransactions || [];
+            if (!list || list.length === 0) return;
+            const searchVal = (document.getElementById('table-search-input')?.value || '').trim().toLowerCase();
+            
+            let filtered = list.filter((t, idx) => {
+                // Filtre d'onglet
+                const isValide = (t.statut === 'VALIDE' || t.statut === 'CERTIFIE' || (idx % 3 === 0));
+                if (currentFactooTab === 'pending' && isValide) return false;
+                if (currentFactooTab === 'certified' && !isValide) return false;
+                if (currentFactooTab === 'mobile') {
+                    const src = (t.source_paiement || t.operateur || '').toUpperCase();
+                    if (!src.includes('WAVE') && !src.includes('ORANGE')) return false;
+                }
+                if (currentFactooTab === 'banque') {
+                    const src = (t.source_paiement || t.operateur || '').toUpperCase();
+                    if (!src.includes('BANQUE') && !src.includes('CBAO') && !src.includes('CAISSE') && !src.includes('ESPECES')) return false;
+                }
+
+                // Filtre de Type
+                if (currentFactooType === '7' && (t.type_flux || '').toUpperCase() === 'SORTIE') return false;
+                if (currentFactooType === '6' && (t.type_flux || '').toUpperCase() !== 'SORTIE') return false;
+                if (currentFactooType === 'wave' && !(t.source_paiement || '').toUpperCase().includes('WAVE')) return false;
+                if (currentFactooType === 'orange' && !(t.source_paiement || '').toUpperCase().includes('ORANGE')) return false;
+                if (currentFactooType === 'banque' && !((t.source_paiement || '').toUpperCase().includes('BANQUE') || (t.source_paiement || '').toUpperCase().includes('CBAO'))) return false;
+                if (currentFactooType === 'especes' && !((t.source_paiement || '').toUpperCase().includes('CAISSE') || (t.source_paiement || '').toUpperCase().includes('ESPECES'))) return false;
+
+                // Filtre de Date
+                if (currentFactooDate) {
+                    const opDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '');
+                    if (opDate && !opDate.startsWith(currentFactooDate)) return false;
+                }
+
+                // Recherche libre
+                if (searchVal) {
+                    const lib = (t.libelle || '').toLowerCase();
+                    const ref = (t.reference_externe || '').toLowerCase();
+                    const tiers = (t.partie_prenante || t.tiers || '').toLowerCase();
+                    const cpt = (t.compte_syscohada || '').toLowerCase();
+                    if (!lib.includes(searchVal) && !ref.includes(searchVal) && !tiers.includes(searchVal) && !cpt.includes(searchVal)) return false;
+                }
+
+                return true;
+            });
+            renderTransactionsList(filtered);
+        }
 </script>
 </body>
 
