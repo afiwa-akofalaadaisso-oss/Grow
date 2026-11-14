@@ -7715,7 +7715,7 @@
                                         <th class="py-3 px-4 text-right whitespace-nowrap w-28">Débit</th>
                                         <th class="py-3 px-4 text-right whitespace-nowrap w-28">Crédit</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Date doc.</th>
-                                        <th class="py-3 px-3.5 whitespace-nowrap text-center w-36">Date d'import</th>
+                                        <th class="py-3 px-3.5 whitespace-nowrap text-center w-36">Justificatif</th>
                                         <th class="py-3 px-3 text-center w-12"></th>
                                     </tr>
                                 </thead>
@@ -12190,7 +12190,12 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                         ${!isSortie ? `<span class="font-bold text-[#168078]">+ ${montant.toLocaleString('fr-FR')} F</span>` : `<span class="text-slate-300 font-normal">&mdash;</span>`}
                     </td>
                     <td class="py-3 px-3.5 text-center whitespace-nowrap text-slate-600 font-medium text-[11.5px]">${escapeHtml(dateDoc)}</td>
-                    <td class="py-3 px-3.5 text-center whitespace-nowrap text-slate-400 font-mono text-[11px]">${escapeHtml(dateImport)}</td>
+                    <td class="py-3 px-3.5 text-center whitespace-nowrap" onclick="event.stopPropagation()">
+                        <button type="button" onclick="openWaveProofModal('${escapeHtml(refDisplay)}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDoc)}', '${escapeHtml(sub)}', '${photoUrl}')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-50 hover:bg-[#168078] text-slate-700 hover:text-white border border-slate-200 hover:border-[#168078] text-[11px] font-semibold transition-all shadow-2xs cursor-pointer group" title="Consulter le justificatif">
+                            <span class="material-symbols-outlined notranslate text-[14px] text-slate-400 group-hover:text-white" translate="no">attach_file</span>
+                            <span>Justificatif</span>
+                        </button>
+                    </td>
                     <td class="py-3 px-3 text-center" onclick="event.stopPropagation()">
                         <button type="button" onclick="openTxDetailModal(allTransactions[${idx}])" class="text-slate-400 hover:text-slate-700 transition-colors p-1" title="Voir / Supprimer">
                             <span class="material-symbols-outlined notranslate text-[17px]" translate="no">delete</span>
