@@ -7684,7 +7684,7 @@
                 </div>
 
                 <!-- Barre de recherche réduite au minimum à côté du logo -->
-                <div class="flex items-center relative w-48 sm:w-60 md:w-72" id="headerMiniSearchBox">
+                <div class="items-center relative w-48 sm:w-60 md:w-72" id="headerMiniSearchBox" style="display: none !important;">
                     <span class="material-symbols-outlined notranslate absolute left-2.5 top-1/2 -translate-y-1/2 text-[#a0d9d2] text-[15px] pointer-events-none" translate="no">search</span>
                     <input type="text" id="headerMiniSearchInput" onclick="openPortalView()" placeholder="Rechercher dossier..." class="w-full pl-8 pr-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 focus:border-[#a0d9d2]/60 text-white placeholder:text-slate-400 text-xs font-medium cursor-pointer transition-all focus:outline-none">
                 </div>
@@ -7751,6 +7751,87 @@
                         <button type="button" onclick="telechargerFichierFEC()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer" title="Export FEC / Options">
                             <span class="material-symbols-outlined notranslate text-[18px]" translate="no">more_vert</span>
                         </button>
+
+                        <!-- BOUTON 3 TRAITS : MENU RECHERCHE & ÉTATS FINANCIERS (RESTE FERMÉ PAR DÉFAUT) -->
+                        <div class="relative">
+                            <button type="button" id="factooMenuTraitsBtn" onclick="toggleFactooTraitsMenu(event)" class="px-3 py-2 rounded-lg bg-[#168078] hover:bg-[#0f4d47] active:bg-[#082a27] text-white border border-[#168078] transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm select-none group" title="Menu, Recherche et États Financiers">
+                                <svg class="w-5 h-5 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                                </svg>
+                            </button>
+
+                            <!-- POPOVER MENU 3 TRAITS (RESTE FERMÉ PAR DÉFAUT : hidden) -->
+                            <div id="factooTraitsMenuPopover" class="hidden absolute right-0 top-full mt-2 w-80 sm:w-96 bg-[#081514] border border-[#168078]/60 rounded-xl shadow-2xl p-3 z-[2500] text-xs select-none backdrop-blur-md" onclick="event.stopPropagation()">
+                                <!-- 1. RECHERCHE DANS LE MENU -->
+                                <div class="mb-3">
+                                    <div class="px-1 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#a0d9d2] flex items-center justify-between mb-1.5">
+                                        <span>Recherche d'écriture</span>
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[15px]" translate="no">search</span>
+                                    </div>
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-[#168078] text-[17px] pointer-events-none" translate="no">search</span>
+                                        <input type="text" id="menu-search-input" oninput="handleMenuSearch(this.value)" placeholder="Rechercher par libellé, tiers, facture..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/95 border border-slate-700/80 text-white placeholder:text-slate-400 text-xs font-medium focus:outline-none focus:border-[#a0d9d2] transition-colors">
+                                    </div>
+                                </div>
+
+                                <!-- 2. FILTRES RAPIDES DANS LE MENU -->
+                                <div class="mb-3 grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="text-[10px] font-semibold text-slate-400 block mb-1">Type d'opération</label>
+                                        <select id="menuFactooTypeSelect" onchange="handleMenuTypeFilter(this.value)" class="w-full py-1.5 px-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-[11px] focus:outline-none focus:border-[#a0d9d2]">
+                                            <option value="all">Type : Tous</option>
+                                            <option value="7">Facture Client (Vente)</option>
+                                            <option value="6">Facture Fournisseur (Achat)</option>
+                                            <option value="wave">Wave Sénégal</option>
+                                            <option value="orange">Orange Money</option>
+                                            <option value="banque">Virement Bancaire</option>
+                                            <option value="especes">Caisse Espèces</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-semibold text-slate-400 block mb-1">Période</label>
+                                        <select id="menuFactooDateQuickSelect" onchange="handleMenuDateQuick(this.value)" class="w-full py-1.5 px-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-[11px] focus:outline-none focus:border-[#a0d9d2]">
+                                            <option value="all">Toutes dates</option>
+                                            <option value="today">Aujourd'hui</option>
+                                            <option value="this_month">Ce mois-ci</option>
+                                            <option value="last_month">Mois dernier</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-700/60 my-2"></div>
+
+                                <!-- 3. ÉTATS FINANCIERS DANS LE MENU -->
+                                <div class="px-1 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#a0d9d2] mb-1 flex items-center justify-between">
+                                    <span>Navigation &amp; États Financiers</span>
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#a0d9d2] animate-pulse"></span>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <button type="button" onclick="selectFactooView('journal')" data-view-target="journal" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">table_rows</span>
+                                        <span class="font-bold text-slate-100">Journal des écritures</span>
+                                    </button>
+                                    <button type="button" onclick="selectFactooView('bilan')" data-view-target="bilan" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">account_balance</span>
+                                        <span class="font-bold text-slate-100">Bilan SYSCOHADA</span>
+                                    </button>
+                                    <button type="button" onclick="selectFactooView('resultat')" data-view-target="resultat" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">trending_up</span>
+                                        <span class="font-bold text-slate-100">Compte de Résultat</span>
+                                    </button>
+                                    <button type="button" onclick="selectFactooView('tft')" data-view-target="tft" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">payments</span>
+                                        <span class="font-bold text-slate-100">TAFIRE (Flux de trésorerie)</span>
+                                    </button>
+                                    <button type="button" onclick="selectFactooView('annexes')" data-view-target="annexes" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">description</span>
+                                        <span class="font-bold text-slate-100">Notes &amp; Annexes DGID</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -7764,7 +7845,7 @@
                 </div>
 
                 <!-- BARRE DE RECHERCHE, FILTRES RAPIDES ET MENU 4 TRAITS FACTOO (Couleur sarcelle / teal GROW) -->
-                <div class="factoo-dark-filter-bar p-3 rounded-xl shadow-md mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs">
+                <div id="factooFilterBarContainer" class="factoo-dark-filter-bar p-3 rounded-xl shadow-md mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs" style="display: none !important;">
                     <!-- Champ recherche tiers / facture -->
                     <div class="relative flex-1">
                         <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-[#168078] text-[18px] pointer-events-none" translate="no">search</span>
@@ -14526,11 +14607,33 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             switchVerticalTab(tabName);
         }
 
+        function handleMenuSearch(val) {
+            const inputTable = document.getElementById('table-search-input');
+            if (inputTable) inputTable.value = val;
+            handleSearchInput(val);
+        }
+
+        function handleMenuTypeFilter(val) {
+            const select = document.getElementById('factooTypeSelect');
+            if (select) select.value = val;
+            handleFactooTypeFilter(val);
+        }
+
+        function handleMenuDateQuick(val) {
+            selectFactooCalendarPreset(val);
+        }
+
         function toggleFactooTraitsMenu(e) {
             if (e) e.stopPropagation();
             const pop = document.getElementById('factooTraitsMenuPopover');
             if (!pop) return;
             pop.classList.toggle('hidden');
+            if (!pop.classList.contains('hidden')) {
+                setTimeout(() => {
+                    const inp = document.getElementById('menu-search-input');
+                    if (inp) inp.focus();
+                }, 100);
+            }
         }
 
         function selectFactooView(viewName) {
