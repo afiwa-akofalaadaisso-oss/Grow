@@ -7550,13 +7550,38 @@
                         </table>
                     </div>
 
-                    <!-- Pied de tableau simple -->
-                    <div class="bg-white border-t border-slate-100 px-4 py-2.5 flex items-center justify-between text-xs text-slate-400 select-none">
-                        <div class="flex items-center gap-1 font-medium">
-                            <span id="pagTotal">8</span> écritures au journal
+                    <!-- Pied de tableau avec choix du nombre de lignes et pagination -->
+                    <div class="bg-white border-t border-slate-100 px-5 py-3 flex flex-wrap items-center justify-between text-xs text-slate-500 select-none gap-3">
+                        <div class="flex items-center gap-1 font-medium text-slate-600">
+                            Affichage de <span id="pagRange" class="font-bold text-slate-800">1-8</span> sur <span id="pagTotal" class="font-bold text-slate-800">8</span> écritures
                         </div>
-                        <div class="flex items-center gap-1 text-[11px]">
-                            <span class="px-2 py-0.5 rounded bg-slate-900 text-white font-bold font-mono">1</span>
+
+                        <div class="flex items-center gap-4">
+                            <!-- Sélecteur Lignes par page -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-500 text-[11px] font-medium">Lignes par page :</span>
+                                <select id="selectPageSize" onchange="changePageSize(this.value)" class="bg-white border border-slate-200 text-slate-700 text-xs rounded-lg px-2.5 py-1 focus:ring-1 focus:ring-[#0d9488] focus:border-[#0d9488] font-medium cursor-pointer shadow-xs outline-none">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15" selected>15</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="0">Toutes</option>
+                                </select>
+                            </div>
+
+                            <!-- Contrôles de Pages -->
+                            <div class="flex items-center gap-1">
+                                <button type="button" id="btnPrevPage" onclick="changePage(-1)" class="w-6 h-6 flex items-center justify-center rounded border border-slate-200 bg-white hover:bg-slate-100 text-slate-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer" title="Page précédente" disabled>
+                                    <span class="material-symbols-outlined text-[15px] leading-none">chevron_left</span>
+                                </button>
+                                <div id="pageNumberButtons" class="flex items-center gap-1">
+                                    <span class="w-6 h-6 flex items-center justify-center rounded bg-slate-900 text-white font-bold font-mono text-xs">1</span>
+                                </div>
+                                <button type="button" id="btnNextPage" onclick="changePage(1)" class="w-6 h-6 flex items-center justify-center rounded border border-slate-200 bg-white hover:bg-slate-100 text-slate-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer" title="Page suivante" disabled>
+                                    <span class="material-symbols-outlined text-[15px] leading-none">chevron_right</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -10727,15 +10752,30 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             const badgeJ = document.getElementById('badgeCountJournal');
             if (badgeJ) badgeJ.textContent = list.length;
 
-            // 5. Affichage limité au nombre de lignes choisi (0 = tout)
+            // 5. Pagination exacte selon le nombre de lignes choisi
             const totalItems = list.length;
-            const visibleCount = (pageSize > 0) ? Math.min(pageSize * currentPage, totalItems) : totalItems;
-            renderTransactionsList(list.slice(0, visibleCount), totalItems);
-            renderPaginationBar(totalItems, 0, visibleCount, 1);
-            const more = document.getElementById('proofNavMore');
-            const moreInfo = document.getElementById('proofNavMoreInfo');
-            if (more) more.style.display = (visibleCount < totalItems) ? 'flex' : 'none';
-            if (moreInfo) moreInfo.textContent = `${visibleCount} sur ${totalItems} preuves`;
+            let totalPages = 1;
+            let startIndex = 0;
+            let endIndex = totalItems;
+            let pageSlice = list;
+
+            if (pageSize > 0 && totalItems > 0) {
+                totalPages = Math.ceil(totalItems / pageSize) || 1;
+                if (currentPage > totalPages) currentPage = totalPages;
+                if (currentPage < 1) currentPage = 1;
+                startIndex = (currentPage - 1) * pageSize;
+                endIndex = Math.min(startIndex + pageSize, totalItems);
+                pageSlice = list.slice(startIndex, endIndex);
+            } else {
+                currentPage = 1;
+                totalPages = 1;
+                startIndex = 0;
+                endIndex = totalItems;
+                pageSlice = list;
+            }
+
+            renderTransactionsList(pageSlice, totalItems);
+            renderPaginationBar(totalItems, startIndex, endIndex, totalPages);
             updateProofNavDateLabel();
         }
 
@@ -10944,8 +10984,57 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
         }
 
         function renderPaginationBar(totalItems, startIndex, endIndex, totalPages) {
-            const bar = document.getElementById('paginationBar');
-            if (bar) bar.style.display = 'none';
+            const rangeEl = document.getElementById('pagRange');
+            const totalEl = document.getElementById('pagTotal');
+            const prevBtn = document.getElementById('btnPrevPage');
+            const nextBtn = document.getElementById('btnNextPage');
+            const pageNumBox = document.getElementById('pageNumberButtons');
+            const sel = document.getElementById('selectPageSize');
+
+            if (sel && sel.value !== String(pageSize)) {
+                sel.value = String(pageSize);
+            }
+
+            if (totalEl) totalEl.textContent = totalItems;
+            if (rangeEl) {
+                if (totalItems === 0) {
+                    rangeEl.textContent = '0';
+                } else {
+                    rangeEl.textContent = `${startIndex + 1}-${endIndex}`;
+                }
+            }
+
+            if (prevBtn) prevBtn.disabled = (currentPage <= 1);
+            if (nextBtn) nextBtn.disabled = (currentPage >= totalPages || totalPages <= 1);
+
+            if (pageNumBox) {
+                let btnsHtml = '';
+                for (let p = 1; p <= totalPages; p++) {
+                    if (p === currentPage) {
+                        btnsHtml += `<span class="w-6 h-6 flex items-center justify-center rounded bg-slate-900 text-white font-bold font-mono text-xs">${p}</span>`;
+                    } else {
+                        btnsHtml += `<button type="button" onclick="goToPage(${p})" class="w-6 h-6 flex items-center justify-center rounded border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-medium font-mono text-xs transition-colors cursor-pointer">${p}</button>`;
+                    }
+                }
+                pageNumBox.innerHTML = btnsHtml;
+            }
+        }
+
+        function goToPage(p) {
+            currentPage = p;
+            applyAllFiltersAndRender();
+        }
+
+        function changePage(delta) {
+            currentPage += delta;
+            applyAllFiltersAndRender();
+        }
+
+        function changePageSize(size) {
+            pageSize = parseInt(size, 10);
+            if (isNaN(pageSize) || pageSize < 0) pageSize = 15;
+            currentPage = 1;
+            applyAllFiltersAndRender();
         }
 
         
