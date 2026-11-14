@@ -12391,12 +12391,9 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                         </div>
                     </td>
                     <td class="py-2.5 px-2.5 min-w-0">
-                        <div class="flex items-center gap-1.5 min-w-0">
-                            ${!isValide ? '<span class="material-symbols-outlined notranslate text-amber-500 text-[14px] flex-shrink-0" translate="no" title="À traiter">warning</span>' : ''}
-                            <div class="flex flex-col min-w-0 flex-1">
-                                <span class="font-semibold text-slate-900 text-[12px] truncate max-w-[200px] lg:max-w-[280px] xl:max-w-[360px] block" title="${escapeHtml(t.libelle || title)}">${escapeHtml(t.libelle || title)}</span>
-                                <span class="text-[10px] text-slate-400 font-normal truncate mt-0.5">${escapeHtml(sub)} &bull; Cpt ${escapeHtml(compteNum)}</span>
-                            </div>
+                        <div class="flex flex-col min-w-0">
+                            <span class="font-semibold text-slate-900 text-[12px] truncate max-w-[200px] lg:max-w-[280px] xl:max-w-[360px] block" title="${escapeHtml(t.libelle || title)}">${escapeHtml(t.libelle || title)}</span>
+                            <span class="text-[10px] text-slate-400 font-normal truncate mt-0.5">${escapeHtml(sub)} &bull; Cpt ${escapeHtml(compteNum)}</span>
                         </div>
                     </td>
                     <td class="py-2.5 px-1.5 text-center whitespace-nowrap">
