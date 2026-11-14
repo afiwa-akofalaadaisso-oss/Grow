@@ -7476,6 +7476,62 @@
                     <!-- Injecté dynamiquement par JavaScript -->
                 </div>
             </div>
+
+            <!-- FICHE APERÇU PME (Apparaît au clic sur l'entreprise avant d'ouvrir l'espace PME) -->
+            <div id="portalPmePreviewCard" class="w-full max-w-[420px] sm:max-w-[460px] mx-auto mt-4 p-5 rounded-2xl bg-[#faf9f6] border border-[#dedcd6] shadow-xl text-left transform transition-all duration-300" style="display: none;">
+                <!-- En-tête PME avec Avatar, Nom, NINEA et Statut Actif -->
+                <div class="flex items-center justify-between pb-3.5 border-b border-[#dedcd6]">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#168078] to-[#0e524d] text-white flex items-center justify-center font-bold text-base shadow-sm flex-shrink-0" id="pmeCardAvatar">
+                            CG
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="font-extrabold text-base text-slate-900 tracking-tight truncate" id="pmeCardName">CGLT</span>
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold flex-shrink-0">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    PME Active
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs text-slate-500 font-mono mt-0.5 truncate">
+                                <span>NINEA : <strong class="text-slate-700" id="pmeCardNinea">00802996</strong></span>
+                                <span>•</span>
+                                <span id="pmeCardPhone">+221 78 877 38 27</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="cancelPmePreview()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-[#ebe9e4] transition-colors cursor-pointer flex-shrink-0" title="Changer d'entreprise">
+                        <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
+                    </button>
+                </div>
+
+                <!-- Indicateurs Clés de la PME -->
+                <div class="grid grid-cols-3 gap-2.5 my-3.5">
+                    <div class="p-2.5 rounded-xl bg-[#ebe9e4]/60 border border-[#dedcd6]/80 text-center">
+                        <span class="text-[9.5px] font-bold text-slate-500 uppercase block tracking-wider">Trésorerie</span>
+                        <span class="font-extrabold text-sm text-[#168078] font-mono mt-0.5 block" id="pmeCardTresorerie">23 588 F</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-[#ebe9e4]/60 border border-[#dedcd6]/80 text-center">
+                        <span class="text-[9.5px] font-bold text-slate-500 uppercase block tracking-wider">Écritures</span>
+                        <span class="font-extrabold text-sm text-slate-800 font-mono mt-0.5 block" id="pmeCardCount">16 opér.</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-[#ebe9e4]/60 border border-[#dedcd6]/80 text-center">
+                        <span class="text-[9.5px] font-bold text-slate-500 uppercase block tracking-wider">SYSCOHADA</span>
+                        <span class="font-extrabold text-sm text-emerald-700 mt-0.5 block">100% Validé</span>
+                    </div>
+                </div>
+
+                <!-- Actions : Bouton pour ouvrir l'espace PME -->
+                <div class="flex items-center gap-2 pt-1">
+                    <button type="button" onclick="cancelPmePreview()" class="flex-1 py-2.5 px-3 rounded-xl border border-[#dedcd6] bg-[#ebe9e4] hover:bg-[#dfddd7] text-slate-700 text-xs font-semibold transition-all cursor-pointer text-center">
+                        ← Changer
+                    </button>
+                    <button type="button" onclick="confirmOpenPmeSpace()" class="flex-[2] py-2.5 px-4 rounded-xl bg-[#168078] hover:bg-[#0f6b64] text-white text-xs font-bold shadow-md shadow-[#168078]/20 transition-all cursor-pointer flex items-center justify-center gap-2 group">
+                        <span>Ouvrir l'Espace PME</span>
+                        <span class="material-symbols-outlined notranslate text-[16px] group-hover:translate-x-1 transition-transform" translate="no">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -13201,16 +13257,82 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             portal.style.display = 'none';
         }
 
+        let pendingSelectedCompany = null;
+
         function selectCompanyFromPortal(entId, phone) {
+            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : [
+                { id: 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27', nom_entreprise: 'CGLT', ninea: '00802996', telephone_whatsapp: '221788773827' }
+            ];
+            
+            const ent = list.find(e => e.id === entId || (phone && e.telephone_whatsapp === phone)) || {
+                id: entId,
+                nom_entreprise: 'CGLT',
+                ninea: '00802996',
+                telephone_whatsapp: phone || '221788773827'
+            };
+            
+            pendingSelectedCompany = ent;
+
+            // Masquer le dropdown de recherche
+            const dd = document.getElementById('portalSearchResultsDropdown');
+            if (dd) dd.style.display = 'none';
+
+            // Remplir les données de la fiche PME
+            const cleanName = getCleanCompanyName(ent.nom_entreprise || ent.nom || 'CGLT');
+            const elName = document.getElementById('pmeCardName');
+            const elAvatar = document.getElementById('pmeCardAvatar');
+            const elNinea = document.getElementById('pmeCardNinea');
+            const elPhone = document.getElementById('pmeCardPhone');
+            const elTres = document.getElementById('pmeCardTresorerie');
+            const elCount = document.getElementById('pmeCardCount');
+
+            if (elName) elName.textContent = cleanName;
+            if (elAvatar) elAvatar.textContent = getCompanyInitials(cleanName);
+            if (elNinea) elNinea.textContent = ent.ninea || '00802996';
+            if (elPhone) elPhone.textContent = ent.telephone_whatsapp ? ('+' + ent.telephone_whatsapp) : '+221 78 877 38 27';
+            if (elTres) elTres.textContent = (cleanName === 'CGLT') ? '23 588 F' : '15 000 F';
+            if (elCount) elCount.textContent = (cleanName === 'CGLT') ? '16 opér.' : '12 opér.';
+
+            // Afficher la Fiche PME au centre
+            const card = document.getElementById('portalPmePreviewCard');
+            if (card) {
+                card.style.display = 'block';
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function cancelPmePreview() {
+            const card = document.getElementById('portalPmePreviewCard');
+            if (card) card.style.display = 'none';
+            pendingSelectedCompany = null;
+            const inp = document.getElementById('portalCompanySearchInput');
+            if (inp) {
+                inp.value = '';
+                inp.focus();
+            }
+        }
+
+        function confirmOpenPmeSpace() {
+            if (!pendingSelectedCompany) {
+                quitterPortailVersDossier();
+                return;
+            }
+            
+            const ent = pendingSelectedCompany;
             quitterPortailVersDossier();
             
             const url = new URL(window.location.href);
             url.searchParams.delete('portal');
-            if (entId) url.searchParams.set('id', entId);
-            if (phone) url.searchParams.set('phone', phone);
+            if (ent.id) url.searchParams.set('id', ent.id);
+            if (ent.telephone_whatsapp) url.searchParams.set('phone', ent.telephone_whatsapp);
             window.history.pushState({}, '', url);
             
-            loadDashboardData(entId, phone);
+            loadDashboardData(ent.id, ent.telephone_whatsapp);
+            
+            // Réinitialiser la fiche
+            const card = document.getElementById('portalPmePreviewCard');
+            if (card) card.style.display = 'none';
+            pendingSelectedCompany = null;
         }
 
         function handlePortalCompanySearch(query) {
