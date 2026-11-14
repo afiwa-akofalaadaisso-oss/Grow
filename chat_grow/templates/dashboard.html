@@ -7406,9 +7406,9 @@
             pointer-events: none !important;
         }
 
+        /* Le logo effectue un vol morphologique précis calculé en JS vers #dossierHeaderLogoBox */
         .portal-flight-active #portalAnimLogo {
-            transform: translate(calc(-50vw + 3.5rem), calc(-50vh + 2.4rem)) scale(0.28) !important;
-            opacity: 0.95 !important;
+            opacity: 1 !important;
         }
 
         .portal-flight-active #portalSearchWrapper {
@@ -7811,10 +7811,10 @@
 
                 <!-- EN-TÊTE DE SECTION AVEC ICÔNE DÉGRADÉE ET BOUTONS D'ACTION -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 select-none">
-                    <!-- Titre avec icône carrée dégradée (Exact Factoo) -->
+                    <!-- Titre avec Logo GROW (Point d'atterrissage morphologique du logo du portail) -->
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0f4d47] via-[#168078] to-[#a0d9d2] shadow-sm flex items-center justify-center flex-shrink-0">
-                            <span class="material-symbols-outlined notranslate text-white text-[20px]" translate="no">folder_open</span>
+                        <div id="dossierHeaderLogoBox" class="w-10 h-10 rounded-xl bg-white border border-[#168078]/25 p-1.5 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer group" onclick="openPortalView()" title="Revenir au portail d'accueil">
+                            <img id="dossierHeaderLogo" src="/static/grow_logo_teal.png" alt="Logo Grow" class="w-full h-full object-contain group-hover:scale-105 transition-transform">
                         </div>
                         <div class="flex items-center gap-2.5">
                             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight" id="factooPageTitle">Dossier CGLT</h1>
@@ -13715,13 +13715,13 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         }
 
         // =========================================================================
-        // SCÉNARIO CINÉMATIQUE : RECHERCHE PORTAIL -> VOL DU LOGO -> TABLEAU
+        // SCÉNARIO CINÉMATIQUE : VOL MORPHOLOGIQUE DU LOGO VERS LE DOSSIER
         // =========================================================================
         function executePortalFlightScenario(ent) {
             const portal = document.getElementById('viewPortalComptable');
             const tableSection = document.getElementById('viewJournal');
-            const miniInput = document.getElementById('headerMiniSearchInput');
-            const query = (document.getElementById('portalCompanySearchInput')?.value || '').trim();
+            const animLogo = document.getElementById('portalAnimLogo');
+            const targetBox = document.getElementById('dossierHeaderLogoBox');
             const cleanName = ent ? (ent.nom_entreprise || ent.nom || 'CGLT') : 'CGLT';
 
             if (!portal || portal.style.display === 'none') {
@@ -13729,13 +13729,28 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 return;
             }
 
-            // 1. Transférer la recherche dans la barre réduite à côté du logo
-            if (miniInput) miniInput.value = query || cleanName;
+            // Calcul du vol morphologique précis du logo vers #dossierHeaderLogoBox
+            if (animLogo && targetBox) {
+                const animRect = animLogo.getBoundingClientRect();
+                const targetRect = targetBox.getBoundingClientRect();
+                const currentCenterX = animRect.left + animRect.width / 2;
+                const currentCenterY = animRect.top + animRect.height / 2;
+                const targetCenterX = targetRect.left + targetRect.width / 2;
+                const targetCenterY = targetRect.top + targetRect.height / 2;
 
-            // 2. DÉCLENCHEMENT DU SCÉNARIO : Le logo et la barre montent vers le haut
+                const deltaX = targetCenterX - currentCenterX;
+                const deltaY = targetCenterY - currentCenterY;
+                const scale = (targetRect.width * 0.95) / animRect.width;
+
+                animLogo.style.transformOrigin = 'center center';
+                animLogo.style.transition = 'transform 750ms cubic-bezier(0.16, 1, 0.3, 1), opacity 700ms ease';
+                animLogo.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
+            }
+
+            // Déclenchement de la transition
             portal.classList.add('portal-flight-active');
 
-            // 3. Charger le dossier en arrière-plan
+            // Charger le dossier en arrière-plan
             if (ent) {
                 const url = new URL(window.location.href);
                 url.searchParams.delete('portal');
@@ -13745,25 +13760,29 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 loadDashboardData(ent.id, ent.telephone_whatsapp);
             }
 
-            // 4. Après 500ms : fondu du portail et apparition élégante du tableau
+            // Après 520ms : fondu du portail et apparition élégante du tableau
             setTimeout(() => {
                 portal.style.opacity = '0';
                 if (tableSection) {
                     tableSection.classList.remove('animate-table-appear');
-                    void tableSection.offsetWidth; // Reflow
+                    void tableSection.offsetWidth;
                     tableSection.classList.add('animate-table-appear');
                 }
-            }, 500);
+            }, 520);
 
-            // 5. Après 900ms : cacher le portail et réinitialiser
+            // Après 850ms : cacher le portail et réinitialiser
             setTimeout(() => {
                 portal.style.display = 'none';
                 portal.style.opacity = '1';
                 portal.classList.remove('portal-flight-active');
+                if (animLogo) {
+                    animLogo.style.transform = '';
+                    animLogo.style.transition = '';
+                }
                 const card = document.getElementById('portalPmePreviewCard');
                 if (card) card.style.display = 'none';
                 pendingSelectedCompany = null;
-            }, 920);
+            }, 880);
         }
 
         let pendingSelectedCompany = null;
