@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="bg-[#e6f7f5]">
+<html lang="fr" class="bg-white">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -39,14 +39,17 @@
         }
 
         html, body {
-            background-color: #e6f7f5 !important;
+            background-color: #ffffff !important;
             overflow-y: auto !important;
             overflow-x: hidden !important;
             min-height: 100vh !important;
             height: auto !important;
-            background-color: #f8fafc !important;
-            color: #0f172a !important;
-            position: static !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .ambient-mint-gradient {
+            background: linear-gradient(180deg, #e6f7f5 0%, #f3faf8 180px, #ffffff 420px, #ffffff 100%) !important;
         }
 
         ::-webkit-scrollbar {
@@ -7315,7 +7318,7 @@
     </style>
 </head>
 
-<body class="bg-[#e6f7f5] text-slate-900 antialiased min-h-screen">
+<body class="bg-white text-slate-900 antialiased min-h-screen">
 
     <!-- BACKDROP OVERLAY MOBILE -->
     <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/20 backdrop-blur-xs z-40 hidden md:hidden transition-opacity"></div>
@@ -7446,7 +7449,7 @@
     </aside>
 
     <!-- WRAPPER PRINCIPAL DÉBLOQUÉ -->
-    <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col bg-[#e6f7f5] transition-all duration-200 ease-in-out">
+    <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col ambient-mint-gradient transition-all duration-200 ease-in-out">
 
         <!-- HEADER SUPÉRIEUR ÉPURÉ -->
         <header class="h-14 bg-white border-b border-slate-200/90 px-6 flex items-center justify-between sticky top-0 z-40">
@@ -7547,7 +7550,7 @@
                 </div>
 
                 <!-- TABLEAU BLANC MINIMALISTE (Style Orders) -->
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col mb-8">
+                <div class="bg-white rounded-xl border border-slate-200/70 shadow-xs overflow-hidden flex flex-col mb-8">
 
                     <!-- Bandeau Titre et Total -->
                     <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between bg-white">
