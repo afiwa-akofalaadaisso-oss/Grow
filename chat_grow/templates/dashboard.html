@@ -7630,9 +7630,12 @@
                         <button type="button" onclick="loadDashboardData()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors shadow-2xs cursor-pointer" title="Rafraîchir les écritures">
                             <span class="material-symbols-outlined notranslate text-[18px]" translate="no">refresh</span>
                         </button>
-                        <button type="button" onclick="openPortalView()" class="px-3.5 py-2 rounded-lg border border-[#168078] text-[#168078] hover:bg-[#168078]/10 text-xs font-semibold transition-colors shadow-2xs cursor-pointer">
-                            Gestion du dossier
-                        </button>
+                        <!-- Trésorerie Actuelle en direct -->
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-slate-800 shadow-2xs select-none" title="Trésorerie nette disponible">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-tight">Trésorerie :</span>
+                            <span class="text-xs sm:text-[13px] font-extrabold font-mono text-emerald-700" id="headerTresorerieMontant">23 588 FCFA</span>
+                        </div>
                         <button type="button" onclick="ouvrirModalQuickTx('ENTREE')" class="px-4 py-2 rounded-lg bg-[#168078] hover:bg-[#136c66] active:bg-[#0f5954] text-white text-xs font-bold transition-all shadow-sm shadow-[#168078]/25 cursor-pointer flex items-center gap-1.5">
                             <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">add</span>
                             <span>Ajouter une écriture</span>
@@ -12241,13 +12244,13 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             });
 
             const netTresorerie = totalCredit - totalDebit;
-            const displayTres = (netTresorerie > 0) ? netTresorerie : 22500;
+            const displayTres = (totalCredit > 0 || totalDebit > 0) ? netTresorerie : 23588;
             const cTot = document.getElementById('cumulTotal');
-            if (cTot) cTot.textContent = 'Trésorerie : ' + displayTres.toLocaleString('fr-FR') + ' FCFA';
+            if (cTot) cTot.textContent = 'Trésorerie : ' + (displayTres >= 0 ? '' : '- ') + Math.abs(displayTres).toLocaleString('fr-FR') + ' FCFA';
             const hTres = document.getElementById('headerTresorerieMontant');
-            if (hTres) hTres.textContent = displayTres.toLocaleString('fr-FR') + ' FCFA';
+            if (hTres) hTres.textContent = (displayTres >= 0 ? '' : '- ') + Math.abs(displayTres).toLocaleString('fr-FR') + ' FCFA';
             const jTres = document.getElementById('journalHeaderTresorerie');
-            if (jTres) jTres.textContent = displayTres.toLocaleString('fr-FR') + ' FCFA';
+            if (jTres) jTres.textContent = (displayTres >= 0 ? '' : '- ') + Math.abs(displayTres).toLocaleString('fr-FR') + ' FCFA';
 
             const cardCred = document.getElementById('cardSummaryCredits');
             if (cardCred) cardCred.textContent = `${creditCount} Crédits (${totalCredit.toLocaleString('fr-FR')} F)`;
