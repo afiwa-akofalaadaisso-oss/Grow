@@ -7671,7 +7671,7 @@
 
         <!-- HEADER SUPÉRIEUR ÉPURÉ (Exacte Référence Stitch : > CGLT + Bouton Portail + Profil) -->
         <!-- BARRE SUPÉRIEURE SOMBRE (STYLE EXACT FACTOO) -->
-        <header class="h-13 px-4 md:px-7 flex items-center justify-between sticky top-0 z-40 bg-[#081514] border-b border-[#168078]/25 text-white shadow-md select-none">
+        <header class="h-13 px-4 md:px-7 flex items-center justify-between sticky top-0 z-40 bg-[#081514] border-b border-[#168078]/25 text-white shadow-md select-none" style="display: none !important;">
             <!-- Gauche : Vrai Logo GROW et Barre de recherche compacte à côté de lui -->
             <div class="flex items-center gap-3 md:gap-4">
                 <div class="flex items-center gap-2 cursor-pointer group" onclick="openPortalView()" title="Portail Cabinet GROW">
@@ -7701,7 +7701,7 @@
                 </button>
 
                 <!-- POPOVER MENU 3 TRAITS (RESTE FERMÉ PAR DÉFAUT : hidden) -->
-                <div id="factooTraitsMenuPopover" class="hidden absolute right-0 top-full mt-2 w-80 sm:w-96 bg-[#081514] border border-[#168078]/60 rounded-xl shadow-2xl p-3.5 z-[2500] text-xs select-none backdrop-blur-md" onclick="event.stopPropagation()">
+                <div id="hiddenHeaderPopover_unused" class="hidden absolute right-0 top-full mt-2 w-80 sm:w-96 bg-[#081514] border border-[#168078]/60 rounded-xl shadow-2xl p-3.5 z-[2500] text-xs select-none backdrop-blur-md" onclick="event.stopPropagation()">
                     <!-- 1. PROFIL EXPERT-COMPTABLE DANS LE MENU -->
                     <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-slate-900/90 border border-slate-800 mb-2">
                         <div class="w-7 h-7 rounded-md bg-gradient-to-tr from-[#168078] via-[#0f766e] to-[#a0d9d2] p-0.5 flex items-center justify-center shadow-xs flex-shrink-0">
@@ -7841,14 +7841,108 @@
                             <span class="material-symbols-outlined notranslate text-[18px]" translate="no">more_vert</span>
                         </button>
 
-                        <!-- Bouton 3 traits secondaire dans la barre d'action -->
-                        <button type="button" onclick="toggleFactooTraitsMenu(event)" class="factoo-menu-trigger px-3 py-2 rounded-lg bg-[#168078] hover:bg-[#0f4d47] active:bg-[#082a27] text-white border border-[#168078] transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm select-none group" title="Menu, Recherche & États Financiers">
-                            <svg class="w-5 h-5 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <line x1="3" y1="12" x2="21" y2="12"></line>
-                                <line x1="3" y1="18" x2="21" y2="18"></line>
-                            </svg>
-                        </button>
+                        <!-- BOUTON 3 TRAITS PRINCIPAL DANS LA BARRE D'ACTION AVEC POPOVER INTÉGRÉ -->
+                        <div class="relative">
+                            <button type="button" id="factooMenuTraitsBtn" onclick="toggleFactooTraitsMenu(event)" class="factoo-menu-trigger px-3 py-2 rounded-lg bg-[#168078] hover:bg-[#0f4d47] active:bg-[#082a27] text-white border border-[#168078] transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm select-none group" title="Menu, Recherche & États Financiers">
+                                <svg class="w-5 h-5 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                                </svg>
+                            </button>
+
+                            <!-- POPOVER MENU 3 TRAITS (RESTE FERMÉ PAR DÉFAUT : hidden) -->
+                            <div id="factooTraitsMenuPopover" class="hidden absolute right-0 top-full mt-2 w-80 sm:w-96 bg-[#081514] border border-[#168078]/60 rounded-xl shadow-2xl p-3.5 z-[2500] text-xs select-none backdrop-blur-md" onclick="event.stopPropagation()">
+                                <!-- 1. PROFIL EXPERT-COMPTABLE DANS LE MENU -->
+                                <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-slate-900/90 border border-slate-800 mb-2">
+                                    <div class="w-7 h-7 rounded-md bg-gradient-to-tr from-[#168078] via-[#0f766e] to-[#a0d9d2] p-0.5 flex items-center justify-center shadow-xs flex-shrink-0">
+                                        <span class="material-symbols-outlined notranslate text-[15px] text-white" translate="no">person</span>
+                                    </div>
+                                    <div class="flex flex-col min-w-0">
+                                        <span class="text-xs font-bold text-white tracking-tight" id="headerAdminLabel">Expert-Comptable</span>
+                                        <span class="text-[10px] text-[#a0d9d2] font-medium">Cabinet Agréé ONECCA</span>
+                                    </div>
+                                </div>
+
+                                <!-- 2. BOUTON CHANGER DE DOSSIER DANS LE MENU -->
+                                <button type="button" onclick="selectFactooView('portal')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#168078]/20 hover:bg-[#168078]/35 text-[#a0d9d2] hover:text-white border border-[#168078]/40 transition-colors text-left font-medium cursor-pointer mb-3">
+                                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">domain</span>
+                                    <div class="flex flex-col min-w-0">
+                                        <span class="font-bold text-slate-100">Changer de dossier</span>
+                                        <span class="text-[10px] text-slate-400">Rechercher une autre entreprise cliente</span>
+                                    </div>
+                                </button>
+
+                                <div class="border-t border-slate-700/60 my-2"></div>
+
+                                <!-- 3. RECHERCHE D'ÉCRITURE DANS LE MENU -->
+                                <div class="mb-3">
+                                    <div class="px-1 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#a0d9d2] flex items-center justify-between mb-1.5">
+                                        <span>Recherche d'écriture</span>
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[15px]" translate="no">search</span>
+                                    </div>
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-[#168078] text-[17px] pointer-events-none" translate="no">search</span>
+                                        <input type="text" id="menu-search-input" oninput="handleMenuSearch(this.value)" placeholder="Rechercher par libellé, tiers, facture..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/95 border border-slate-700/80 text-white placeholder:text-slate-400 text-xs font-medium focus:outline-none focus:border-[#a0d9d2] transition-colors">
+                                    </div>
+                                </div>
+
+                                <!-- 4. FILTRES RAPIDES DANS LE MENU -->
+                                <div class="mb-3 grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="text-[10px] font-semibold text-slate-400 block mb-1">Type d'opération</label>
+                                        <select id="menuFactooTypeSelect" onchange="handleMenuTypeFilter(this.value)" class="w-full py-1.5 px-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-[11px] focus:outline-none focus:border-[#a0d9d2]">
+                                            <option value="all">Type : Tous</option>
+                                            <option value="7">Facture Client (Vente)</option>
+                                            <option value="6">Facture Fournisseur (Achat)</option>
+                                            <option value="wave">Wave Sénégal</option>
+                                            <option value="orange">Orange Money</option>
+                                            <option value="banque">Virement Bancaire</option>
+                                            <option value="especes">Caisse Espèces</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-semibold text-slate-400 block mb-1">Période</label>
+                                        <select id="menuFactooDateQuickSelect" onchange="handleMenuDateQuick(this.value)" class="w-full py-1.5 px-2 rounded-lg bg-slate-900 border border-slate-700 text-white text-[11px] focus:outline-none focus:border-[#a0d9d2]">
+                                            <option value="all">Toutes dates</option>
+                                            <option value="today">Aujourd'hui</option>
+                                            <option value="this_month">Ce mois-ci</option>
+                                            <option value="last_month">Mois dernier</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-700/60 my-2"></div>
+
+                                <!-- 5. ÉTATS FINANCIERS DANS LE MENU -->
+                                <div class="px-1 py-1 text-[10.5px] font-bold uppercase tracking-wider text-[#a0d9d2] mb-1 flex items-center justify-between">
+                                    <span>Navigation &amp; États Financiers</span>
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#a0d9d2] animate-pulse"></span>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <button type="button" onclick="selectFactooView('journal')" data-view-target="journal" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">table_rows</span>
+                                        <span class="font-bold text-slate-100">Journal des écritures</span>
+                                    </button>
+                                    <button type="button" onclick="selectFactooView('bilan')" data-view-target="bilan" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">account_balance</span>
+                                        <span class="font-bold text-slate-100">Bilan SYSCOHADA</span>
+                                    </button>
+                                    <button type="button" onclick="selectFactooView('resultat')" data-view-target="resultat" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">trending_up</span>
+                                        <span class="font-bold text-slate-100">Compte de Résultat</span>
+                                    </button>
+                                    <button type="button" onclick="selectFactooView('tft')" data-view-target="tft" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">payments</span>
+                                        <span class="font-bold text-slate-100">TAFIRE (Flux de trésorerie)</span>
+                                    </button>
+                                    <button type="button" onclick="selectFactooView('annexes')" data-view-target="annexes" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
+                                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[17px]" translate="no">description</span>
+                                        <span class="font-bold text-slate-100">Notes &amp; Annexes DGID</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
