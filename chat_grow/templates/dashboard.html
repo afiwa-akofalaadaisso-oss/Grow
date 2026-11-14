@@ -7362,6 +7362,31 @@
             color: #94a3b8;
             opacity: 0.85;
         }
+        /* Suppression absolue de tout contour bleu ou anneau natif */
+        #portalCompanySearchInput,
+        #portalCompanySearchInput:focus,
+        #portalCompanySearchInput:focus-visible,
+        #portalCompanySearchInput:active {
+            outline: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            ring: 0 !important;
+            --tw-ring-shadow: none !important;
+            --tw-ring-offset-shadow: none !important;
+            --tw-ring-color: transparent !important;
+        }
+        .portal-search-pill {
+            background-color: #1c1c1c;
+            border: 1.5px solid rgba(160, 217, 210, 0.65);
+            border-radius: 9999px;
+            transition: all 0.2s ease;
+        }
+        .portal-search-pill:hover,
+        .portal-search-pill:focus-within {
+            border-color: #a0d9d2;
+            box-shadow: 0 0 24px rgba(160, 217, 210, 0.22);
+        }
 
     </style>
 </head>
@@ -7417,30 +7442,38 @@
                 Accédez aux dossiers comptables de vos PME clientes en temps réel • SYSCOHADA
             </p>
 
-            <!-- Barre de Recherche Entreprise (Emplacement « Découvrir nos formules » / Google style) -->
-            <div class="relative w-full max-w-2xl text-left" id="portalSearchWrapper">
-                <div class="relative flex items-center w-full bg-[#1c1c1c] border-2 border-[#a0d9d2]/80 hover:border-[#a0d9d2] focus-within:border-[#a0d9d2] focus-within:ring-4 focus-within:ring-[#a0d9d2]/20 rounded-full px-5 py-3.5 shadow-2xl transition-all">
-                    <span class="material-symbols-outlined text-[#a0d9d2] text-[22px] mr-3 flex-shrink-0">search</span>
+            <!-- Barre de Recherche Entreprise (Emplacement « Découvrir nos formules » / Google style épuré) -->
+            <div class="relative w-full max-w-xl mx-auto text-left" id="portalSearchWrapper">
+                <div class="portal-search-pill relative flex items-center w-full px-5 py-3.5 shadow-xl">
+                    <span class="material-symbols-outlined text-[#a0d9d2] text-[22px] mr-3.5 flex-shrink-0 select-none">search</span>
                     <input type="text" id="portalCompanySearchInput" 
                            class="portal-search-input w-full bg-transparent text-white placeholder:text-slate-400 text-sm md:text-base font-medium focus:outline-none"
-                           placeholder="Rechercher une entreprise cliente (ex: CGLT, Dakar Import, NINEA...)"
+                           placeholder="Rechercher une entreprise, NINEA, gérant..."
                            autocomplete="off"
                            oninput="handlePortalCompanySearch(this.value)"
                            onkeydown="handlePortalSearchKeydown(event)"
                            onfocus="showPortalDropdown()">
-                    <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-white p-1 mr-1 transition-colors">
+                    <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-white p-1 mr-2 transition-colors cursor-pointer">
                         <span class="material-symbols-outlined text-[18px]">close</span>
                     </button>
-                    <button type="button" onclick="submitPortalSearch()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#a0d9d2] hover:bg-white text-[#1c1c1c] font-bold text-xs md:text-sm shadow-md transition-all cursor-pointer flex-shrink-0">
-                        <span>Ouvrir</span>
-                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                    </button>
+                    <span class="text-[11px] font-mono font-semibold text-[#a0d9d2] bg-white/5 border border-white/10 px-2 py-0.5 rounded-md select-none hidden sm:inline-block">↵ Entrée</span>
                 </div>
 
                 <!-- Menu Déroulant Instantané des Entreprises du Cabinet -->
-                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2 bg-[#1c1c1c] border border-white/10 rounded-2xl shadow-2xl divide-y divide-white/5 overflow-hidden z-50 max-h-80 overflow-y-auto" style="display: none;">
+                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2.5 bg-[#1c1c1c] border border-[#a0d9d2]/30 rounded-2xl shadow-2xl divide-y divide-white/5 overflow-hidden z-50 max-h-80 overflow-y-auto" style="display: none;">
                     <!-- Injecté dynamiquement par JavaScript -->
                 </div>
+            </div>
+
+            <!-- Deux Boutons d'Action Centrés Style Google Officiel -->
+            <div class="mt-6 flex items-center justify-center gap-3">
+                <button type="button" onclick="submitPortalSearch()" class="px-5 py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-white text-[#1c1c1c] font-bold text-xs md:text-sm shadow-md hover:shadow-lg transition-all cursor-pointer">
+                    Ouvrir le dossier
+                </button>
+                <button type="button" onclick="selectCompanyFromPortal('af3f08b5-1c4a-4812-8e2d-23b7944f7b27', '221788773827')" class="px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 font-semibold text-xs md:text-sm transition-all cursor-pointer flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-[#a0d9d2]"></span>
+                    <span>Dossier actif : CGLT</span>
+                </button>
             </div>
 
             <!-- Badges d'accès direct aux dossiers PME (au lieu des raccourcis Google) -->
