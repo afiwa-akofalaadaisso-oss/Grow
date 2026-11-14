@@ -7375,10 +7375,10 @@
 
             <!-- Navigation Simple et Aérée -->
             <nav class="px-2.5 flex flex-col gap-1 py-1 text-[13px]">
-                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#e6f7f4] text-[#064e3b] font-bold border-l-4 border-[#0d9488] shadow-xs active transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
+                <a id="navItemJournal" class="sidebar-nav-item flex items-center justify-between px-3 py-2 rounded-lg bg-[#e6f7f4] text-black font-bold border-l-4 border-black shadow-xs active transition-colors cursor-pointer" href="javascript:void(0)" onclick="switchVerticalTab('journal'); if (window.innerWidth < 768) toggleMobileSidebar();">
                     <div class="flex items-center gap-2.5">
-                        <span class="material-symbols-outlined text-[18px] text-[#064e3b]">menu_book</span>
-                        <span>Journal</span>
+                        <span class="material-symbols-outlined text-[18px] text-black">menu_book</span>
+                        <span class="text-black font-bold">Journal</span>
                     </div>
                 </a>
                 
@@ -9634,7 +9634,7 @@
             });
 
             document.querySelectorAll('.sidebar-nav-item').forEach(b => {
-                b.classList.remove('bg-[#e6f7f4]', 'text-[#064e3b]', 'bg-[#14362b]', 'text-[#a0d9d2]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'border-[#a0d9d2]', 'shadow-xs', 'active', 'bg-[#e6f7f5]', 'text-[#0d9488]');
+                b.classList.remove('bg-[#e6f7f4]', 'text-black', 'text-[#064e3b]', 'border-black', 'bg-[#14362b]', 'text-[#a0d9d2]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'border-[#a0d9d2]', 'shadow-xs', 'active', 'bg-[#e6f7f5]', 'text-[#0d9488]');
                 b.classList.add('text-slate-300');
                 const icon = b.querySelector('.material-symbols-outlined');
                 if (icon) {
@@ -9649,10 +9649,10 @@
                 if (viewJournal) viewJournal.style.display = 'block';
                 const el = document.getElementById('navItemJournal');
                 if (el) {
-                    el.classList.add('bg-[#e6f7f4]', 'text-[#064e3b]', 'font-bold', 'border-l-4', 'border-[#0d9488]', 'shadow-xs', 'active');
-                    el.classList.remove('text-slate-300');
+                    el.classList.add('bg-[#e6f7f4]', 'text-black', 'font-bold', 'border-l-4', 'border-black', 'shadow-xs', 'active');
+                    el.classList.remove('text-slate-300', 'text-[#064e3b]');
                     const icon = el.querySelector('.material-symbols-outlined');
-                    if (icon) { icon.classList.remove('text-slate-400'); icon.classList.add('text-[#064e3b]'); }
+                    if (icon) { icon.classList.remove('text-slate-400', 'text-[#064e3b]'); icon.classList.add('text-black'); }
                 }
                 if (breadTitle) breadTitle.textContent = 'Journal des Écritures';
             } else if (tabName === 'bilan') {
