@@ -113,9 +113,9 @@
         }
 
         .cal-preset-pill:hover {
-            background: #e6f7f5;
+            background: rgba(160, 217, 210, 0.18);
             border-color: #a0d9d2;
-            color: #0d9488;
+            color: #1c1c1c;
         }
 
         .cal-header {
@@ -148,8 +148,8 @@
         }
 
         .cal-nav-btn:hover {
-            background: #0d9488;
-            color: #ffffff;
+            background: #a0d9d2;
+            color: #1c1c1c;
         }
 
         .cal-weekdays {
@@ -184,8 +184,8 @@
         }
 
         .cal-day-cell:hover:not(.empty) {
-            background: #e6f7f5;
-            color: #0d9488;
+            background: rgba(160, 217, 210, 0.2);
+            color: #1c1c1c;
         }
 
         .cal-day-cell.empty {
@@ -194,19 +194,20 @@
         }
 
         .cal-day-cell.today {
-            border: 1.5px solid #0d9488;
+            border: 2px solid #a0d9d2;
         }
 
         .cal-day-cell.selected-start,
         .cal-day-cell.selected-end {
-            background: #0d9488 !important;
+            background: #a0d9d2 !important;
             color: #ffffff !important;
-            font-weight: 700;
+            font-weight: 800;
+            border-radius: 8px;
         }
 
         .cal-day-cell.in-range {
-            background: #e6f7f5 !important;
-            color: #0d9488 !important;
+            background: rgba(160, 217, 210, 0.22) !important;
+            color: #1c1c1c !important;
             border-radius: 0;
         }
 
@@ -221,23 +222,28 @@
         .cal-btn-cancel {
             background: #f1f5f9;
             border: none;
-            padding: 5px 12px;
-            border-radius: 7px;
-            font-size: 11px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 11.5px;
             font-weight: 600;
             color: #64748b;
             cursor: pointer;
         }
 
         .cal-btn-apply {
-            background: #0d9488;
+            background: #a0d9d2;
             border: none;
-            padding: 5px 14px;
-            border-radius: 7px;
-            font-size: 11px;
-            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
             color: #ffffff;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(160, 217, 210, 0.4);
+            transition: all 0.15s ease;
+        }
+        .cal-btn-apply:hover {
+            background: #8ecfc7;
         }
 
         /* Styles complets existants préservés pour Bilan, Compte de Résultat et Modales */
@@ -6476,7 +6482,7 @@
         .sidebar-brand-sub {
             font-size: 9.5px;
             font-weight: 800;
-            color: #0d9488;
+            color: #a0d9d2;
             letter-spacing: 0.5px;
             text-transform: uppercase;
             margin-top: 3px;
@@ -6540,7 +6546,7 @@
         }
 
         .sidebar-client-switch {
-            color: #0d9488;
+            color: #a0d9d2;
             font-weight: 700;
             font-size: 10.5px;
             display: inline-flex;
@@ -7532,9 +7538,9 @@
                 <!-- Barre d'Action & Recherche avec Calendrier et Filtres -->
                 <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-2.5 md:gap-3">
                     <div class="relative w-full md:max-w-md">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
-                        <input class="w-full pl-9 pr-14 py-2 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0d9488] focus:ring-1 focus:ring-[#0d9488] text-xs shadow-2xs" id="table-search-input" placeholder="Rechercher une opération..." type="text" oninput="handleSearchInput(this.value)">
-                        <div class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px] font-mono">
+                        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px] pointer-events-none">search</span>
+                        <input class="w-full pl-10 pr-12 py-2.5 rounded-2xl bg-white/95 border border-[#a0d9d2]/60 hover:border-[#a0d9d2] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/35 text-[13px] shadow-2xs transition-all font-medium" id="table-search-input" placeholder="Rechercher une opération..." type="text" oninput="handleSearchInput(this.value)">
+                        <div class="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 pointer-events-none select-none">
                             ⌘K
                         </div>
                     </div>
@@ -7542,12 +7548,12 @@
                     <div class="flex items-center gap-2 w-full md:w-auto">
                         <!-- Sélecteur de Calendrier & Période -->
                         <div class="relative flex-1 md:flex-initial">
-                            <button type="button" class="w-full inline-flex items-center justify-between md:justify-start gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium shadow-2xs transition-colors cursor-pointer" onclick="toggleCalendarPopover(event)" id="datePickerBtn" title="Filtrer par date ou période">
+                            <button type="button" class="w-full inline-flex items-center justify-between md:justify-start gap-2 px-3.5 py-2.5 rounded-2xl border border-[#a0d9d2]/60 bg-white/95 hover:bg-white text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer" onclick="toggleCalendarPopover(event)" id="datePickerBtn" title="Filtrer par date ou période">
                                 <span class="flex items-center gap-1.5 truncate">
-                                    <span class="material-symbols-outlined text-[16px] text-slate-400">calendar_today</span>
+                                    <span class="material-symbols-outlined text-[17px] text-[#1c1c1c]">calendar_today</span>
                                     <span id="datePickerBtnLabel" class="truncate">Toutes les dates</span>
                                 </span>
-                                <span class="material-symbols-outlined text-[14px] text-slate-400 flex-shrink-0">expand_more</span>
+                                <span class="material-symbols-outlined text-[15px] text-slate-400 flex-shrink-0">expand_more</span>
                             </button>
 
                             <!-- Popover Calendrier Moderne Sur-Mesure Grow -->
@@ -7583,12 +7589,12 @@
                         </div>
 
                         <!-- Bouton Filtres Avancés -->
-                        <button class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium shadow-2xs transition-colors cursor-pointer flex-shrink-0" onclick="togglePopoverFiltreAvance()">
-                            <span class="material-symbols-outlined text-[15px] text-slate-400">filter_list</span>
+                        <button class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl border border-[#a0d9d2]/60 bg-white/95 hover:bg-white text-slate-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer flex-shrink-0" onclick="togglePopoverFiltreAvance()">
+                            <span class="material-symbols-outlined text-[16px] text-[#1c1c1c]">filter_list</span>
                             <span>Filtres</span>
                         </button>
-                        <button class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer flex-shrink-0" onclick="loadDashboardData()" title="Rafraîchir">
-                            <span class="material-symbols-outlined text-[15px]">refresh</span>
+                        <button class="p-2.5 rounded-2xl border border-[#a0d9d2]/60 bg-white/95 hover:bg-white text-slate-600 hover:text-black transition-all shadow-2xs cursor-pointer flex-shrink-0 flex items-center justify-center" onclick="loadDashboardData()" title="Rafraîchir">
+                            <span class="material-symbols-outlined text-[17px]">refresh</span>
                         </button>
                     </div>
                 </div>
@@ -7608,7 +7614,7 @@
                             <thead>
                                 <tr class="border-b border-slate-300/80 text-slate-500 text-[11px] font-bold uppercase tracking-wider select-none">
                                     <th class="py-2.5 px-3.5 w-10 text-center">
-                                        <input class="rounded border-slate-300 text-[#0d9488] focus:ring-[#0d9488] w-4 h-4 cursor-pointer" id="select-all-rows" type="checkbox">
+                                        <input class="rounded border-slate-300 text-[#1c1c1c] focus:ring-[#1c1c1c] w-4 h-4 cursor-pointer" id="select-all-rows" type="checkbox">
                                     </th>
                                     <th class="py-2.5 px-3.5 whitespace-nowrap w-28">Date</th>
                                     <th class="py-2.5 px-3.5">Opération</th>
@@ -7641,7 +7647,7 @@
                             <div class="relative flex items-center gap-2" id="customPageSizeWrapper">
                                 <span class="text-slate-500 text-[11px] font-medium">Lignes :</span>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" id="btnPageSizeDropdown" onclick="togglePageSizeDropdown(event)" class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:border-[#0d9488] rounded-lg shadow-2xs hover:shadow-xs transition-all cursor-pointer focus:outline-none">
+                                    <button type="button" id="btnPageSizeDropdown" onclick="togglePageSizeDropdown(event)" class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:border-[#1c1c1c] rounded-lg shadow-2xs hover:shadow-xs transition-all cursor-pointer focus:outline-none">
                                         <span id="labelCurrentPageSize" class="font-mono">15</span>
                                         <span class="material-symbols-outlined text-[15px] text-slate-400 leading-none transition-transform duration-150" id="iconPageSizeChevron">expand_more</span>
                                     </button>
@@ -7650,29 +7656,29 @@
                                     <div id="menuPageSizeDropdown" class="hidden absolute right-0 bottom-full mb-1.5 w-32 bg-white rounded-xl shadow-xl border border-slate-200/90 py-1.5 z-50 transform origin-bottom-right transition-all font-sans" onclick="event.stopPropagation()">
                                         <div class="px-2.5 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Affichage</div>
                                         <div class="space-y-0.5 px-1">
-                                            <button type="button" onclick="selectPageSizeOption(5)" data-val="5" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#e6f7f5]/60 hover:text-[#0d9488] transition-colors cursor-pointer">
+                                            <button type="button" onclick="selectPageSizeOption(5)" data-val="5" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-mono font-medium">5 lignes</span>
-                                                <span class="material-symbols-outlined text-[14px] text-[#0d9488] check-icon hidden">check</span>
+                                                <span class="material-symbols-outlined text-[14px] text-[#1c1c1c] check-icon hidden">check</span>
                                             </button>
-                                            <button type="button" onclick="selectPageSizeOption(10)" data-val="10" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#e6f7f5]/60 hover:text-[#0d9488] transition-colors cursor-pointer">
+                                            <button type="button" onclick="selectPageSizeOption(10)" data-val="10" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-mono font-medium">10 lignes</span>
-                                                <span class="material-symbols-outlined text-[14px] text-[#0d9488] check-icon hidden">check</span>
+                                                <span class="material-symbols-outlined text-[14px] text-[#1c1c1c] check-icon hidden">check</span>
                                             </button>
-                                            <button type="button" onclick="selectPageSizeOption(15)" data-val="15" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg font-bold bg-[#e6f7f5] text-[#0d9488] transition-colors cursor-pointer">
+                                            <button type="button" onclick="selectPageSizeOption(15)" data-val="15" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg font-bold bg-[#1c1c1c] text-[#a0d9d2] transition-colors cursor-pointer">
                                                 <span class="font-mono font-bold">15 lignes</span>
-                                                <span class="material-symbols-outlined text-[14px] text-[#0d9488] check-icon">check</span>
+                                                <span class="material-symbols-outlined text-[14px] text-[#a0d9d2] check-icon">check</span>
                                             </button>
-                                            <button type="button" onclick="selectPageSizeOption(25)" data-val="25" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#e6f7f5]/60 hover:text-[#0d9488] transition-colors cursor-pointer">
+                                            <button type="button" onclick="selectPageSizeOption(25)" data-val="25" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-mono font-medium">25 lignes</span>
-                                                <span class="material-symbols-outlined text-[14px] text-[#0d9488] check-icon hidden">check</span>
+                                                <span class="material-symbols-outlined text-[14px] text-[#1c1c1c] check-icon hidden">check</span>
                                             </button>
-                                            <button type="button" onclick="selectPageSizeOption(50)" data-val="50" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#e6f7f5]/60 hover:text-[#0d9488] transition-colors cursor-pointer">
+                                            <button type="button" onclick="selectPageSizeOption(50)" data-val="50" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-mono font-medium">50 lignes</span>
-                                                <span class="material-symbols-outlined text-[14px] text-[#0d9488] check-icon hidden">check</span>
+                                                <span class="material-symbols-outlined text-[14px] text-[#1c1c1c] check-icon hidden">check</span>
                                             </button>
-                                            <button type="button" onclick="selectPageSizeOption(0)" data-val="0" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#e6f7f5]/60 hover:text-[#0d9488] transition-colors cursor-pointer">
+                                            <button type="button" onclick="selectPageSizeOption(0)" data-val="0" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
                                                 <span class="font-medium">Toutes</span>
-                                                <span class="material-symbols-outlined text-[14px] text-[#0d9488] check-icon hidden">check</span>
+                                                <span class="material-symbols-outlined text-[14px] text-[#1c1c1c] check-icon hidden">check</span>
                                             </button>
                                         </div>
                                     </div>
@@ -9749,15 +9755,15 @@
 
                 <!-- Vignette photo du justificatif (Tof) directement accessible -->
                 <div id="txDetailProofBox" class="mt-2 pt-2 border-t border-slate-100">
-                    <div id="btnVoirPreuveDetail" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#0d9488]/50 hover:bg-[#e6f7f5]/30 transition-all cursor-pointer group">
+                    <div id="btnVoirPreuveDetail" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] hover:bg-[#a0d9d2]/10 transition-all cursor-pointer group">
                         <div class="flex items-center gap-2.5">
                             <div class="w-9 h-10 rounded-md overflow-hidden border border-slate-200 bg-white shadow-2xs flex-shrink-0">
                                 <img id="txDetailProofThumb" src="/static/mock_wave_photo.png" alt="Reçu" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
                             </div>
                             <div>
-                                <div class="text-[12px] font-bold text-slate-900 group-hover:text-[#0d9488] transition-colors flex items-center gap-1">
+                                <div class="text-[12px] font-bold text-slate-900 group-hover:text-[#1c1c1c] transition-colors flex items-center gap-1">
                                     <span>Pièce justificative (Tof)</span>
-                                    <span class="material-symbols-outlined text-[13px] text-slate-400 group-hover:text-[#0d9488]">zoom_in</span>
+                                    <span class="material-symbols-outlined text-[13px] text-slate-400 group-hover:text-[#1c1c1c]">zoom_in</span>
                                 </div>
                                 <div class="text-[11px] text-slate-400 font-normal">Cliquer pour agrandir le reçu</div>
                             </div>
@@ -11864,7 +11870,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
                 tr.innerHTML = `
                     <td class="py-3 px-3.5 text-center w-10" onclick="event.stopPropagation()">
-                        <input class="row-checkbox rounded border-slate-300 text-[#0d9488] focus:ring-[#0d9488] w-4 h-4 cursor-pointer" type="checkbox">
+                        <input class="row-checkbox rounded border-slate-300 text-[#1c1c1c] focus:ring-[#a0d9d2] w-4 h-4 cursor-pointer" type="checkbox">
                     </td>
                     <td class="py-3 px-3.5 whitespace-nowrap text-slate-500 text-[12px] font-medium w-28">
                         <span class="font-semibold text-slate-700">${escapeHtml(dateDisplay)}</span> <span class="text-slate-400 ml-1 text-[11px]">${escapeHtml(timeDisplay)}</span>
@@ -11892,7 +11898,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                     <td class="py-2 px-3.5 text-center whitespace-nowrap w-28" onclick="event.stopPropagation()">
                         <div class="inline-flex items-center justify-center group cursor-pointer" onclick="openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', '${escapeHtml(sub)}', '${photoUrl}')" title="Cliquer pour afficher la pièce en grand">
                             <!-- Grande Miniature Photo du reçu / justificatif (Tof) -->
-                            <div class="relative w-14 h-11 rounded-lg overflow-hidden border border-slate-200/90 shadow-2xs group-hover:border-[#0d9488] group-hover:shadow-md transition-all flex-shrink-0 bg-slate-100">
+                            <div class="relative w-14 h-11 rounded-lg overflow-hidden border border-slate-200/90 shadow-2xs group-hover:border-[#a0d9d2] group-hover:shadow-md transition-all flex-shrink-0 bg-slate-100">
                                 <img src="${photoUrl}" alt="Photo preuve" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-200">
                                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/25 flex items-center justify-center transition-colors">
                                     <span class="material-symbols-outlined text-[15px] text-white opacity-0 group-hover:opacity-100 transition-opacity">zoom_in</span>
