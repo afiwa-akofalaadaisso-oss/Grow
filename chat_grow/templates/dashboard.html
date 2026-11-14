@@ -7600,79 +7600,76 @@
         <!-- CONTENU PRINCIPAL AÉRÉ -->
         <main class="flex-1 w-full p-0 pb-16 min-h-[calc(100vh-52px)]">
 
-            <!-- 1. VUE JOURNAL DES ÉCRITURES -->
-            <div id="viewJournal">
+            <!-- FIL D'ARIANE FACTOO (Tous les dossiers > CGLT > Onglet) -->
+            <div class="py-2.5 px-4 md:px-8 text-xs text-slate-500 font-medium border-b border-slate-200/80 bg-white flex items-center gap-2 select-none overflow-x-auto w-full">
+                <span class="hover:text-blue-600 cursor-pointer" onclick="openPortalView()">Tous les dossiers</span>
+                <span class="text-slate-300">›</span>
+                <span class="hover:text-blue-600 cursor-pointer" onclick="openPortalView()" id="factooBreadcrumbCompany">CGLT (00802996)</span>
+                <span class="text-slate-300">›</span>
+                <span class="text-slate-900 font-bold" id="factooBreadcrumbCurrentTab">Journal des Écritures</span>
+            </div>
 
-                <!-- FIL D'ARIANE FACTOO (Tous les dossiers > CGLT > Dossier 1) -->
-                <div class="py-2.5 px-4 md:px-8 text-xs text-slate-500 font-medium border-b border-slate-200/80 bg-white flex items-center gap-2 select-none overflow-x-auto">
-                    <span class="hover:text-blue-600 cursor-pointer" onclick="openPortalView()">Tous les dossiers</span>
-                    <span class="text-slate-300">›</span>
-                    <span class="hover:text-blue-600 cursor-pointer" onclick="openPortalView()" id="factooBreadcrumbCompany">CGLT (00802996)</span>
-                    <span class="text-slate-300">›</span>
-                    <span class="text-slate-900 font-bold">Journal des Écritures</span>
+            <!-- ZONE CONTENU PRINCIPAL PLEINE LARGEUR FACTOO -->
+            <div class="px-4 md:px-8 py-5 w-full">
+
+                <!-- EN-TÊTE DE SECTION AVEC ICÔNE DÉGRADÉE ET BOUTONS D'ACTION -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 select-none">
+                    <!-- Titre avec icône carrée dégradée (Exact Factoo) -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 shadow-sm flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined notranslate text-white text-[20px]" translate="no">folder_open</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight" id="factooPageTitle">Dossier CGLT</h1>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200" id="txCountBadge">16 opérations</span>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action à droite (Exact Factoo) -->
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button type="button" onclick="loadDashboardData()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors shadow-2xs cursor-pointer" title="Rafraîchir les écritures">
+                            <span class="material-symbols-outlined notranslate text-[18px]" translate="no">refresh</span>
+                        </button>
+                        <button type="button" onclick="openPortalView()" class="px-3.5 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-semibold transition-colors shadow-2xs cursor-pointer">
+                            Gestion du dossier
+                        </button>
+                        <button type="button" onclick="ouvrirModalSaisieRapide()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm shadow-blue-500/20 cursor-pointer flex items-center gap-1.5">
+                            <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">add</span>
+                            <span>Ajouter des documents</span>
+                        </button>
+                        <button type="button" onclick="telechargerFichierFEC()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer" title="Export FEC / Options">
+                            <span class="material-symbols-outlined notranslate text-[18px]" translate="no">more_vert</span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- ZONE CONTENU PLEINE LARGEUR FACTOO -->
-                <div class="px-4 md:px-8 py-5 w-full">
+                <!-- ONGLETS COMMANDÉS : BILAN, RÉSULTAT, TAFIRE, ANNEXES -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4 select-none text-xs font-medium">
+                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill active px-4 py-1.5 rounded-full bg-[#0f172a] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-xs flex items-center gap-1.5">
+                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">receipt_long</span>
+                        <span>Écritures &amp; Factures</span>
+                    </button>
+                    <button type="button" id="pillTab_bilan" onclick="switchFactooTab('bilan')" class="factoo-tab-pill px-4 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">scale</span>
+                        <span>Bilan</span>
+                    </button>
+                    <button type="button" id="pillTab_resultat" onclick="switchFactooTab('resultat')" class="factoo-tab-pill px-4 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">trending_up</span>
+                        <span>Résultat</span>
+                    </button>
+                    <button type="button" id="pillTab_tft" onclick="switchFactooTab('tft')" class="factoo-tab-pill px-4 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">payments</span>
+                        <span>TAFIRE</span>
+                    </button>
+                    <button type="button" id="pillTab_annexes" onclick="switchFactooTab('annexes')" class="factoo-tab-pill px-4 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5">
+                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">description</span>
+                        <span>Annexes</span>
+                    </button>
+                </div>
 
-                    <!-- EN-TÊTE DE SECTION AVEC ICÔNE DÉGRADÉE FACTOO ET BOUTONS -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 select-none">
-                        <!-- Titre avec icône carrée dégradée (Exact Factoo) -->
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600 shadow-sm flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-outlined notranslate text-white text-[20px]" translate="no">folder_open</span>
-                            </div>
-                            <div class="flex items-center gap-2.5">
-                                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight" id="factooPageTitle">Dossier CGLT</h1>
-                                <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200" id="txCountBadge">16 opérations</span>
-                            </div>
-                        </div>
-
-                        <!-- Boutons d'action à droite (Exact Factoo) -->
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <!-- Bouton Refresh -->
-                            <button type="button" onclick="loadDashboardData()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors shadow-2xs cursor-pointer" title="Rafraîchir les écritures">
-                                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">refresh</span>
-                            </button>
-                            <!-- Bouton Gestion des membres / cabinet -->
-                            <button type="button" onclick="openPortalView()" class="px-3.5 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 text-xs font-semibold transition-colors shadow-2xs cursor-pointer">
-                                Gestion du dossier
-                            </button>
-                            <!-- Bouton Principal Bleu Ajouter des documents (Exact Factoo) -->
-                            <button type="button" onclick="ouvrirModalSaisieRapide()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-sm shadow-blue-500/20 cursor-pointer flex items-center gap-1.5">
-                                <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">add</span>
-                                <span>Ajouter des documents</span>
-                            </button>
-                            <!-- Menu trois points -->
-                            <button type="button" onclick="telechargerFichierFEC()" class="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors shadow-2xs cursor-pointer" title="Export FEC / Options">
-                                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">more_vert</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- ONGLETS HORIZONTAUX SOUS FORME DE PILULES (Exact Factoo) -->
-                    <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4 select-none text-xs font-medium">
-                        <button type="button" onclick="handleFactooTab('all', this)" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
-                            Documents à découper (0)
-                        </button>
-                        <button type="button" onclick="handleFactooTab('pending', this)" class="factoo-tab-pill active px-3.5 py-1.5 rounded-full bg-[#0f172a] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-xs">
-                            Documents à traiter (<span id="factooCountPending">10</span>)
-                        </button>
-                        <button type="button" onclick="handleFactooTab('certified', this)" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
-                            Documents validés (<span id="factooCountValid">6</span>)
-                        </button>
-                        <button type="button" onclick="handleFactooTab('mobile', this)" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
-                            Mobile Money
-                        </button>
-                        <button type="button" onclick="handleFactooTab('banque', this)" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
-                            Banque &amp; Caisse
-                        </button>
-                        <button type="button" onclick="telechargerFichierFEC()" class="factoo-tab-pill px-3.5 py-1.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all cursor-pointer whitespace-nowrap">
-                            Historique des exports
-                        </button>
-                    </div>
-
-                    <!-- BARRE DE RECHERCHE ET FILTRES RAPIDES FACTOO (Exact Factoo) -->
+                <!-- 1. VUE JOURNAL DES ÉCRITURES -->
+                <div id="viewJournal">
+<!-- BARRE DE RECHERCHE ET FILTRES RAPIDES FACTOO (Exact Factoo) -->
                     <div class="p-3 bg-white rounded-xl border border-slate-200/90 shadow-2xs mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs">
                         <!-- Champ recherche tiers / facture -->
                         <div class="relative flex-1">
@@ -13941,6 +13938,30 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         currentFactooType = 'all';
         // currentFactooDate déjà déclaré au sommet
         currentFactooDate = '';
+
+        function switchFactooTab(tabName) {
+            document.querySelectorAll('.factoo-tab-pill').forEach(b => {
+                b.classList.remove('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.add('border', 'border-slate-200', 'text-slate-700', 'hover:bg-slate-100');
+            });
+            const activeBtn = document.getElementById('pillTab_' + tabName);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-[#0f172a]', 'text-white', 'font-semibold', 'shadow-xs');
+                activeBtn.classList.remove('border', 'border-slate-200', 'text-slate-700', 'hover:bg-slate-100');
+            }
+
+            const labels = {
+                'journal': 'Journal des Écritures',
+                'bilan': 'Bilan SYSCOHADA',
+                'resultat': 'Compte de Résultat',
+                'tft': 'TAFIRE (Flux de Trésorerie)',
+                'annexes': 'Notes & Annexes DGID'
+            };
+            const bCurrent = document.getElementById('factooBreadcrumbCurrentTab');
+            if (bCurrent) bCurrent.textContent = labels[tabName] || tabName;
+
+            switchVerticalTab(tabName);
+        }
 
         function handleFactooTab(tab, btn) {
             currentFactooTab = tab;
