@@ -7636,7 +7636,7 @@
                             <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-tight">Trésorerie :</span>
                             <span class="text-xs sm:text-[13px] font-extrabold font-mono text-emerald-700" id="headerTresorerieMontant">23 588 FCFA</span>
                         </div>
-                        <button type="button" onclick="ouvrirModalQuickTx('ENTREE')" class="px-4 py-2 rounded-lg bg-[#168078] hover:bg-[#136c66] active:bg-[#0f5954] text-white text-xs font-bold transition-all shadow-sm shadow-[#168078]/25 cursor-pointer flex items-center gap-1.5">
+                        <button type="button" onclick="ouvrirModalQuickTx('ENTREE')" class="px-4 py-2 rounded-lg bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] text-xs font-bold transition-all shadow-sm shadow-[#a0d9d2]/30 cursor-pointer flex items-center gap-1.5">
                             <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">add</span>
                             <span>Ajouter une écriture</span>
                         </button>
@@ -7648,7 +7648,7 @@
 
                 <!-- ONGLETS COMMANDÉS : BILAN, RÉSULTAT, TAFIRE, ANNEXES -->
                 <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4 select-none text-xs font-medium">
-                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill active px-4 py-1.5 rounded-full bg-[#168078] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-xs flex items-center gap-1.5">
+                    <button type="button" id="pillTab_journal" onclick="switchFactooTab('journal')" class="factoo-tab-pill active px-4 py-1.5 rounded-full bg-[#a0d9d2] text-[#14362b] font-bold transition-all cursor-pointer whitespace-nowrap shadow-xs flex items-center gap-1.5">
                         <span class="material-symbols-outlined notranslate text-[15px]" translate="no">receipt_long</span>
                         <span>Écritures &amp; Factures</span>
                     </button>
@@ -7719,7 +7719,7 @@
                                         <th class="py-3 px-4 text-right whitespace-nowrap w-28">Crédit</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Date doc.</th>
                                         <th class="py-3 px-3.5 whitespace-nowrap text-center w-36">Justificatif</th>
-                                        <th class="py-3 px-3 text-center w-12"></th>
+                                        <th class="py-3 px-3.5 whitespace-nowrap text-center w-28">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 text-xs" id="tableBody">
@@ -7739,7 +7739,7 @@
                                 <button type="button" class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
                                     ‹
                                 </button>
-                                <button type="button" class="w-7 h-7 rounded-lg bg-[#168078] text-white font-bold flex items-center justify-center shadow-xs cursor-pointer">
+                                <button type="button" class="w-7 h-7 rounded-lg bg-[#a0d9d2] text-[#14362b] font-bold flex items-center justify-center shadow-xs cursor-pointer">
                                     1
                                 </button>
                                 <button type="button" class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold flex items-center justify-center transition-colors cursor-pointer">
@@ -9788,6 +9788,128 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODALE MODIFIER TOUTE LA LIGNE D'ÉCRITURE COMPTABLE                       -->
+    <!-- ========================================================================= -->
+    <div id="modalModifierEcriture" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 2600;" onclick="closeModalModifierEcriture()">
+        <div class="relative w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
+            <!-- Top bar -->
+            <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-[#081514] text-white">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-[#14362b] border border-[#a0d9d2]/40 flex items-center justify-center text-[#a0d9d2]">
+                        <span class="material-symbols-outlined notranslate text-[20px]" translate="no">edit_note</span>
+                    </div>
+                    <div>
+                        <h3 class="text-[13.5px] font-bold text-white flex items-center gap-1.5">
+                            <span>Modifier l'écriture comptable</span>
+                            <span class="text-[10px] font-bold text-[#14362b] bg-[#a0d9d2] px-2 py-0.2 rounded-full">SYSCOHADA</span>
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Modifiez l'ensemble des informations de cette ligne d'opération</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModalModifierEcriture()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
+                </button>
+            </div>
+
+            <!-- Formulaire complet -->
+            <form id="formModifierEcriture" onsubmit="submitModifierEcriture(event)" class="p-5 space-y-3.5 text-xs">
+                <input type="hidden" id="editTxId" value="">
+
+                <!-- 1. Sens du flux / Pièce -->
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">Type de flux / Opération *</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" id="editBtnFluxEntree" onclick="setEditFlux('ENTREE')" class="py-2 px-3 rounded-lg border flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer">
+                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_downward</span>
+                            <span>Crédit (Vente / Recette)</span>
+                        </button>
+                        <button type="button" id="editBtnFluxSortie" onclick="setEditFlux('SORTIE')" class="py-2 px-3 rounded-lg border flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer">
+                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_upward</span>
+                            <span>Débit (Achat / Dépense)</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="editTxFlux" value="ENTREE">
+                </div>
+
+                <!-- 2. Libellé -->
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">Libellé de l'opération *</label>
+                    <input type="text" id="editTxLibelle" required class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all" placeholder="Ex: Facture Client #ECR-0097 - SARL Teranga Transport">
+                </div>
+
+                <!-- 3. Montant & Date -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">Montant (FCFA) *</label>
+                        <input type="number" id="editTxMontant" required min="1" step="1" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-mono font-bold text-xs transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">Date de l'opération *</label>
+                        <input type="date" id="editTxDate" required class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-700 font-medium text-xs transition-all">
+                    </div>
+                </div>
+
+                <!-- 4. Compte SYSCOHADA & Source -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">N° de compte SYSCOHADA *</label>
+                        <select id="editTxCompte" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
+                            <option value="706">706 - Services vendus / Prestations</option>
+                            <option value="701">701 - Ventes de marchandises</option>
+                            <option value="601">601 - Achats de marchandises</option>
+                            <option value="605">605 - Autres achats / Carburant / Transport</option>
+                            <option value="622">622 - Locations & loyers commerciaux</option>
+                            <option value="624">624 - Entretien & réparations</option>
+                            <option value="631">631 - Impôts, taxes et versements assimilés</option>
+                            <option value="661">661 - Rémunérations directes du personnel</option>
+                            <option value="658">658 - Charges diverses d'exploitation</option>
+                            <option value="471100">471100 - Compte d'attente / À régulariser</option>
+                            <option value="521">521 - Banque locale (CBAO / BOA)</option>
+                            <option value="571">571 - Caisse espèces</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">Mode de règlement *</label>
+                        <select id="editTxSource" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
+                            <option value="WAVE">Wave Sénégal</option>
+                            <option value="ORANGE_MONEY">Orange Money</option>
+                            <option value="BANQUE">Virement Bancaire CBAO</option>
+                            <option value="ESPECES">Caisse Espèces</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 5. Référence pièce & Statut -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">N° de pièce / Justificatif</label>
+                        <input type="text" id="editTxRef" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-mono text-xs transition-all" placeholder="Ex: ECR-0097">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">Statut</label>
+                        <select id="editTxStatut" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
+                            <option value="VALIDE_PME">Validé</option>
+                            <option value="EN_ATTENTE">En attente de justificatif</option>
+                            <option value="CERTIFIE">Certifié ONECCA</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                    <button type="button" onclick="closeModalModifierEcriture()" class="px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-semibold transition-colors cursor-pointer">
+                        Annuler
+                    </button>
+                    <button type="submit" id="btnSubmitModifierEcriture" class="px-5 py-2 rounded-lg bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] font-bold transition-all shadow-sm shadow-[#a0d9d2]/30 cursor-pointer flex items-center gap-1.5">
+                        <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">save</span>
+                        <span>Enregistrer les modifications</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -12199,9 +12321,10 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                             <span>Justificatif</span>
                         </button>
                     </td>
-                    <td class="py-3 px-3 text-center" onclick="event.stopPropagation()">
-                        <button type="button" onclick="openTxDetailModal(allTransactions[${idx}])" class="text-slate-400 hover:text-slate-700 transition-colors p-1" title="Voir / Supprimer">
-                            <span class="material-symbols-outlined notranslate text-[17px]" translate="no">delete</span>
+                    <td class="py-3 px-3 text-center whitespace-nowrap" onclick="event.stopPropagation()">
+                        <button type="button" onclick="ouvrirModalModifierEcriture(allTransactions[${idx}])" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#a0d9d2]/25 hover:bg-[#a0d9d2] text-[#14362b] border border-[#a0d9d2]/60 hover:border-[#a0d9d2] text-[11px] font-bold transition-all shadow-2xs cursor-pointer group" title="Modifier toute la ligne">
+                            <span class="material-symbols-outlined notranslate text-[14px] text-[#14362b]" translate="no">edit</span>
+                            <span>Modifier</span>
                         </button>
                     </td>
                 `;
@@ -12233,10 +12356,16 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                             <div class="font-mono font-bold text-[13.5px] text-[#1c1c1c] whitespace-nowrap leading-tight">
                                 ${isSortie ? '- ' : '+ '}${montant.toLocaleString('fr-FR')} F
                             </div>
-                            <button type="button" onclick="event.stopPropagation(); openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', '${escapeHtml(sub)}', '${photoUrl}')" class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#1c1c1c] text-[#a0d9d2] text-[10px] font-semibold shadow-2xs hover:bg-black transition-colors cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[12px]" translate="no">receipt_long</span>
-                                <span>Preuve</span>
-                            </button>
+                            <div class="mt-1 flex items-center gap-1 justify-end">
+                                <button type="button" onclick="event.stopPropagation(); openWaveProofModal('${escapeHtml(t.reference_externe || 'TX-WAVE-0980')}', '${escapeHtml(title)}', '${montant.toLocaleString('fr-FR')} FCFA', '${escapeHtml(dateDisplay)}', '${escapeHtml(sub)}', '${photoUrl}')" class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-[#1c1c1c] text-[#a0d9d2] text-[10px] font-semibold shadow-2xs hover:bg-black transition-colors cursor-pointer">
+                                    <span class="material-symbols-outlined notranslate text-[11px]" translate="no">receipt_long</span>
+                                    <span>Preuve</span>
+                                </button>
+                                <button type="button" onclick="event.stopPropagation(); ouvrirModalModifierEcriture(allTransactions[${idx}])" class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-[#a0d9d2] text-[#14362b] text-[10px] font-bold shadow-2xs hover:bg-[#8ecec6] transition-colors cursor-pointer">
+                                    <span class="material-symbols-outlined notranslate text-[11px]" translate="no">edit</span>
+                                    <span>Modifier</span>
+                                </button>
+                            </div>
                         </div>
                     `;
                     mobContainer.appendChild(mobCard);
@@ -13667,6 +13796,128 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
     </div>
 
     <!-- ========================================================================= -->
+    <!-- MODALE MODIFIER TOUTE LA LIGNE D'ÉCRITURE COMPTABLE                       -->
+    <!-- ========================================================================= -->
+    <div id="modalModifierEcriture" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 2600;" onclick="closeModalModifierEcriture()">
+        <div class="relative w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
+            <!-- Top bar -->
+            <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-[#081514] text-white">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-[#14362b] border border-[#a0d9d2]/40 flex items-center justify-center text-[#a0d9d2]">
+                        <span class="material-symbols-outlined notranslate text-[20px]" translate="no">edit_note</span>
+                    </div>
+                    <div>
+                        <h3 class="text-[13.5px] font-bold text-white flex items-center gap-1.5">
+                            <span>Modifier l'écriture comptable</span>
+                            <span class="text-[10px] font-bold text-[#14362b] bg-[#a0d9d2] px-2 py-0.2 rounded-full">SYSCOHADA</span>
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Modifiez l'ensemble des informations de cette ligne d'opération</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeModalModifierEcriture()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
+                </button>
+            </div>
+
+            <!-- Formulaire complet -->
+            <form id="formModifierEcriture" onsubmit="submitModifierEcriture(event)" class="p-5 space-y-3.5 text-xs">
+                <input type="hidden" id="editTxId" value="">
+
+                <!-- 1. Sens du flux / Pièce -->
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">Type de flux / Opération *</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" id="editBtnFluxEntree" onclick="setEditFlux('ENTREE')" class="py-2 px-3 rounded-lg border flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer">
+                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_downward</span>
+                            <span>Crédit (Vente / Recette)</span>
+                        </button>
+                        <button type="button" id="editBtnFluxSortie" onclick="setEditFlux('SORTIE')" class="py-2 px-3 rounded-lg border flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer">
+                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_upward</span>
+                            <span>Débit (Achat / Dépense)</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="editTxFlux" value="ENTREE">
+                </div>
+
+                <!-- 2. Libellé -->
+                <div>
+                    <label class="block text-slate-700 font-semibold mb-1">Libellé de l'opération *</label>
+                    <input type="text" id="editTxLibelle" required class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all" placeholder="Ex: Facture Client #ECR-0097 - SARL Teranga Transport">
+                </div>
+
+                <!-- 3. Montant & Date -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">Montant (FCFA) *</label>
+                        <input type="number" id="editTxMontant" required min="1" step="1" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-mono font-bold text-xs transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">Date de l'opération *</label>
+                        <input type="date" id="editTxDate" required class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-700 font-medium text-xs transition-all">
+                    </div>
+                </div>
+
+                <!-- 4. Compte SYSCOHADA & Source -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">N° de compte SYSCOHADA *</label>
+                        <select id="editTxCompte" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
+                            <option value="706">706 - Services vendus / Prestations</option>
+                            <option value="701">701 - Ventes de marchandises</option>
+                            <option value="601">601 - Achats de marchandises</option>
+                            <option value="605">605 - Autres achats / Carburant / Transport</option>
+                            <option value="622">622 - Locations & loyers commerciaux</option>
+                            <option value="624">624 - Entretien & réparations</option>
+                            <option value="631">631 - Impôts, taxes et versements assimilés</option>
+                            <option value="661">661 - Rémunérations directes du personnel</option>
+                            <option value="658">658 - Charges diverses d'exploitation</option>
+                            <option value="471100">471100 - Compte d'attente / À régulariser</option>
+                            <option value="521">521 - Banque locale (CBAO / BOA)</option>
+                            <option value="571">571 - Caisse espèces</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">Mode de règlement *</label>
+                        <select id="editTxSource" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
+                            <option value="WAVE">Wave Sénégal</option>
+                            <option value="ORANGE_MONEY">Orange Money</option>
+                            <option value="BANQUE">Virement Bancaire CBAO</option>
+                            <option value="ESPECES">Caisse Espèces</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 5. Référence pièce & Statut -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">N° de pièce / Justificatif</label>
+                        <input type="text" id="editTxRef" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-mono text-xs transition-all" placeholder="Ex: ECR-0097">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1">Statut</label>
+                        <select id="editTxStatut" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
+                            <option value="VALIDE_PME">Validé</option>
+                            <option value="EN_ATTENTE">En attente de justificatif</option>
+                            <option value="CERTIFIE">Certifié ONECCA</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                    <button type="button" onclick="closeModalModifierEcriture()" class="px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-semibold transition-colors cursor-pointer">
+                        Annuler
+                    </button>
+                    <button type="submit" id="btnSubmitModifierEcriture" class="px-5 py-2 rounded-lg bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] font-bold transition-all shadow-sm shadow-[#a0d9d2]/30 cursor-pointer flex items-center gap-1.5">
+                        <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">save</span>
+                        <span>Enregistrer les modifications</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
     <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (SMARTPHONE & PC)           -->
     <!-- ========================================================================= -->
     <div id="modalQuickTx" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalQuickTx()">
@@ -13976,12 +14227,12 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
         function switchFactooTab(tabName) {
             document.querySelectorAll('.factoo-tab-pill').forEach(b => {
-                b.classList.remove('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.remove('active', 'bg-[#a0d9d2]', 'text-[#14362b]', 'font-bold', 'shadow-xs', 'bg-[#168078]', 'text-white', 'font-semibold');
                 b.classList.add('border', 'border-slate-200', 'text-slate-700', 'hover:bg-slate-100');
             });
             const activeBtn = document.getElementById('pillTab_' + tabName);
             if (activeBtn) {
-                activeBtn.classList.add('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
+                activeBtn.classList.add('active', 'bg-[#a0d9d2]', 'text-[#14362b]', 'font-bold', 'shadow-xs');
                 activeBtn.classList.remove('border', 'border-slate-200', 'text-slate-700', 'hover:bg-slate-100');
             }
 
@@ -14001,11 +14252,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         function handleFactooTab(tab, btn) {
             currentFactooTab = tab;
             document.querySelectorAll('.factoo-tab-pill').forEach(b => {
-                b.classList.remove('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.remove('active', 'bg-[#a0d9d2]', 'text-[#14362b]', 'font-bold', 'shadow-xs', 'bg-[#168078]', 'text-white', 'font-semibold');
                 b.classList.add('border', 'border-slate-200', 'text-slate-700');
             });
             if (btn) {
-                btn.classList.add('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
+                btn.classList.add('active', 'bg-[#a0d9d2]', 'text-[#14362b]', 'font-bold', 'shadow-xs');
                 btn.classList.remove('border', 'border-slate-200', 'text-slate-700');
             }
             applyAllFactooFilters();
@@ -14032,14 +14283,159 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const dateInp = document.getElementById('factooDateInput');
             if (dateInp) dateInp.value = '';
             document.querySelectorAll('.factoo-tab-pill').forEach((b, i) => {
-                b.classList.remove('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
+                b.classList.remove('active', 'bg-[#a0d9d2]', 'text-[#14362b]', 'font-bold', 'shadow-xs', 'bg-[#168078]', 'text-white', 'font-semibold');
                 b.classList.add('border', 'border-slate-200', 'text-slate-700');
                 if (i === 1) {
-                    b.classList.add('active', 'bg-[#168078]', 'text-white', 'font-semibold', 'shadow-xs');
+                    b.classList.add('active', 'bg-[#a0d9d2]', 'text-[#14362b]', 'font-bold', 'shadow-xs');
                     b.classList.remove('border', 'border-slate-200', 'text-slate-700');
                 }
             });
             renderTransactionsList(window.allTransactionsCache || allTransactions || []);
+        }
+
+        // =========================================================================
+        // GESTION DE LA MODIFICATION COMPLÈTE DE LA LIGNE D'ÉCRITURE
+        // =========================================================================
+        function ouvrirModalModifierEcriture(tx) {
+            if (!tx) return;
+            const m = document.getElementById('modalModifierEcriture');
+            if (!m) return;
+
+            document.getElementById('editTxId').value = tx.id || '';
+            document.getElementById('editTxLibelle').value = tx.libelle || '';
+            document.getElementById('editTxMontant').value = tx.montant_fcfa || 0;
+
+            const rawDate = tx.date_operation || (tx.created_at ? tx.created_at.substring(0, 10) : new Date().toISOString().substring(0, 10));
+            document.getElementById('editTxDate').value = rawDate;
+
+            const flux = (tx.type_flux || tx.sens || 'ENTREE').toUpperCase();
+            setEditFlux(flux === 'SORTIE' || flux === 'DEBIT' ? 'SORTIE' : 'ENTREE');
+
+            const cptSelect = document.getElementById('editTxCompte');
+            if (cptSelect) {
+                const cVal = String(tx.compte_syscohada || '706');
+                let found = false;
+                for (let i = 0; i < cptSelect.options.length; i++) {
+                    if (cptSelect.options[i].value === cVal || cVal.startsWith(cptSelect.options[i].value)) {
+                        cptSelect.selectedIndex = i;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    const opt = document.createElement('option');
+                    opt.value = cVal;
+                    opt.textContent = `${cVal} - Compte personnalisé`;
+                    cptSelect.appendChild(opt);
+                    cptSelect.value = cVal;
+                }
+            }
+
+            const srcSelect = document.getElementById('editTxSource');
+            if (srcSelect) {
+                const sVal = (tx.source_paiement || tx.operateur || 'ESPECES').toUpperCase();
+                srcSelect.value = sVal.includes('WAVE') ? 'WAVE' : (sVal.includes('ORANGE') ? 'ORANGE_MONEY' : (sVal.includes('BANQUE') || sVal.includes('CBAO') ? 'BANQUE' : 'ESPECES'));
+            }
+
+            document.getElementById('editTxRef').value = tx.reference_externe || '';
+            const statSelect = document.getElementById('editTxStatut');
+            if (statSelect) {
+                statSelect.value = tx.statut_validation || (tx.statut === 'VALIDE' ? 'VALIDE_PME' : 'VALIDE_PME');
+            }
+
+            m.style.display = 'flex';
+        }
+
+        function closeModalModifierEcriture() {
+            const m = document.getElementById('modalModifierEcriture');
+            if (m) m.style.display = 'none';
+        }
+
+        function setEditFlux(flux) {
+            document.getElementById('editTxFlux').value = flux;
+            const btnEntree = document.getElementById('editBtnFluxEntree');
+            const btnSortie = document.getElementById('editBtnFluxSortie');
+            if (flux === 'ENTREE') {
+                btnEntree.className = 'py-2 px-3 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer shadow-2xs';
+                btnSortie.className = 'py-2 px-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-500 flex items-center justify-center gap-1.5 font-medium transition-all cursor-pointer hover:bg-slate-100';
+            } else {
+                btnEntree.className = 'py-2 px-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-500 flex items-center justify-center gap-1.5 font-medium transition-all cursor-pointer hover:bg-slate-100';
+                btnSortie.className = 'py-2 px-3 rounded-lg border border-rose-300 bg-rose-50 text-rose-800 flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer shadow-2xs';
+            }
+        }
+
+        async function submitModifierEcriture(e) {
+            e.preventDefault();
+            const id = document.getElementById('editTxId').value;
+            const libelle = document.getElementById('editTxLibelle').value.trim();
+            const montant = parseFloat(document.getElementById('editTxMontant').value) || 0;
+            const dateOp = document.getElementById('editTxDate').value;
+            const flux = document.getElementById('editTxFlux').value;
+            const compte = document.getElementById('editTxCompte').value;
+            const source = document.getElementById('editTxSource').value;
+            const ref = document.getElementById('editTxRef').value.trim();
+            const statut = document.getElementById('editTxStatut').value;
+
+            const btn = document.getElementById('btnSubmitModifierEcriture');
+            const oldHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="material-symbols-outlined notranslate text-[16px] animate-spin">refresh</span> Enregistrement...';
+            }
+
+            try {
+                // 1. Appel API backend pour enregistrer dans Supabase
+                const payload = {
+                    id: id,
+                    libelle: libelle,
+                    montant_fcfa: montant,
+                    type_flux: flux,
+                    compte_syscohada: compte,
+                    source_paiement: source,
+                    date_operation: dateOp,
+                    reference_externe: ref,
+                    statut_validation: statut
+                };
+
+                await fetch('/api/modifier-transaction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                // 2. Mettre à jour l'objet localement dans le cache allTransactions
+                const list = window.allTransactionsCache || allTransactions || [];
+                const item = list.find(t => t.id === id);
+                if (item) {
+                    item.libelle = libelle;
+                    item.montant_fcfa = montant;
+                    item.type_flux = flux;
+                    item.compte_syscohada = compte;
+                    item.source_paiement = source;
+                    item.date_operation = dateOp;
+                    item.reference_externe = ref;
+                    item.statut_validation = statut;
+                }
+
+                closeModalModifierEcriture();
+                applyAllFactooFilters();
+
+                // Notification discrète
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-5 right-5 z-[3000] px-4 py-3 rounded-xl bg-[#081514] border border-[#a0d9d2]/50 text-white shadow-xl text-xs flex items-center gap-2 animate-bounce';
+                toast.innerHTML = `<span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]">check_circle</span> <span>Écriture modifiée avec succès !</span>`;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3500);
+
+            } catch (err) {
+                console.error('Erreur modification transaction:', err);
+                alert('Erreur lors de la modification : ' + err.message);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = oldHtml;
+                }
+            }
         }
 
         function applyAllFactooFilters() {

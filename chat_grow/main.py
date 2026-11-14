@@ -1088,6 +1088,46 @@ async def api_enregistrer_transaction(payload: dict = Body(...)):
         return {"status": "error", "message": str(e)}
 
 
+@app.post("/api/modifier-transaction")
+async def api_modifier_transaction(payload: dict = Body(...)):
+    """Modifie une transaction existante dans Supabase."""
+    sp = get_supabase()
+    if not sp:
+        return {"status": "error", "message": "Supabase indisponible"}
+
+    tx_id = payload.get("id")
+    if not tx_id:
+        return {"status": "error", "message": "ID de transaction manquant"}
+
+    update_fields = {}
+    if "libelle" in payload and payload["libelle"] is not None:
+        update_fields["libelle"] = str(payload["libelle"]).strip()
+    if "montant_fcfa" in payload and payload["montant_fcfa"] is not None:
+        try:
+            update_fields["montant_fcfa"] = float(payload["montant_fcfa"])
+        except (ValueError, TypeError):
+            pass
+    if "type_flux" in payload and payload["type_flux"] is not None:
+        update_fields["type_flux"] = str(payload["type_flux"]).upper().strip()
+    if "compte_syscohada" in payload and payload["compte_syscohada"] is not None:
+        update_fields["compte_syscohada"] = str(payload["compte_syscohada"]).strip()
+    if "source_paiement" in payload and payload["source_paiement"] is not None:
+        update_fields["source_paiement"] = str(payload["source_paiement"]).strip()
+    if "date_operation" in payload and payload["date_operation"]:
+        update_fields["date_operation"] = str(payload["date_operation"]).strip()
+    if "statut_validation" in payload and payload["statut_validation"]:
+        update_fields["statut_validation"] = str(payload["statut_validation"]).strip()
+    if "reference_externe" in payload and payload["reference_externe"]:
+        update_fields["reference_externe"] = str(payload["reference_externe"]).strip()
+
+    try:
+        res = sp.table("transactions").update(update_fields).eq("id", tx_id).execute()
+        return {"status": "success", "data": res.data}
+    except Exception as e:
+        print(f"Erreur modification transaction dashboard: {e}")
+        return {"status": "error", "message": str(e)}
+
+
 @app.get("/agence", response_class=HTMLResponse)
 async def serve_agence_dashboard():
     """Espace réservé à l'Expert-Comptable / Agence ONECCA."""
