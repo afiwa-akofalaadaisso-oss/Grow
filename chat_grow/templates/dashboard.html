@@ -7460,6 +7460,10 @@
         <!-- HEADER SUPÉRIEUR ÉPURÉ -->
         <header class="h-14 bg-white border-b border-slate-200/90 px-6 flex items-center justify-between sticky top-0 z-40">
             <div class="flex items-center gap-3">
+                <!-- Bouton réouverture latérale (icône dock_to_left demandée par l'utilisateur) -->
+                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="hidden p-1.5 -ml-2 mr-1 text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg shadow-2xs transition-colors cursor-pointer flex items-center justify-center" title="Afficher le menu latéral (Ctrl+B)">
+                    <span class="material-symbols-outlined text-[19px] block">dock_to_left</span>
+                </button>
                 <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
                     <span class="text-slate-900 font-bold text-sm" id="headerBreadcrumbTitle">Journal des Écritures</span>
                     <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold" id="txCountBadge">8 opérations</span>
@@ -12295,6 +12299,20 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
         let isSidebarOpen = true;
 
+        function updateSidebarToggleUI() {
+            const btnOpen = document.getElementById('btnOpenSidebar');
+            const aside = document.getElementById('comptableSidebar');
+            if (!btnOpen || !aside) return;
+
+            // Détection directe depuis la présence de la classe de fermeture
+            const isClosed = aside.classList.contains('-translate-x-full');
+            if (isClosed) {
+                btnOpen.classList.remove('hidden');
+            } else {
+                btnOpen.classList.add('hidden');
+            }
+        }
+
         function toggleSidebar() {
             const aside = document.getElementById('comptableSidebar');
             const mainWrap = document.getElementById('mainContentWrapper');
@@ -12306,9 +12324,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 if (isClosed) {
                     aside.classList.remove('-translate-x-full');
                     if (backdrop) backdrop.classList.remove('hidden');
+                    isSidebarOpen = true;
                 } else {
                     aside.classList.add('-translate-x-full');
                     if (backdrop) backdrop.classList.add('hidden');
+                    isSidebarOpen = false;
                 }
             } else {
                 isSidebarOpen = !isSidebarOpen;
@@ -12323,7 +12343,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                     mainWrap.classList.add('md:pl-0');
                 }
             }
+            updateSidebarToggleUI();
         }
+
+        window.addEventListener('resize', updateSidebarToggleUI);
+        document.addEventListener('DOMContentLoaded', updateSidebarToggleUI);
 
         function toggleMobileSidebar() {
             toggleSidebar();
