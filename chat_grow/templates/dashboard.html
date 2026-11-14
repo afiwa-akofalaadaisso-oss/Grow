@@ -7426,31 +7426,31 @@
     <!-- WRAPPER PRINCIPAL DÉBLOQUÉ -->
     <div id="mainContentWrapper" class="md:pl-64 min-h-screen flex flex-col ambient-mint-gradient transition-all duration-200 ease-in-out">
 
-        <!-- HEADER SUPÉRIEUR ÉPURÉ -->
-        <header class="h-14 bg-white/70 backdrop-blur-md border-b border-[#a0d9d2]/30 px-6 flex items-center justify-between sticky top-0 z-40">
+        <!-- HEADER SUPÉRIEUR ÉPURÉ (Même couleur menthe que le fond parent) -->
+        <header class="h-14 px-6 flex items-center justify-between sticky top-0 z-40" style="background: linear-gradient(180deg, #a0d9d2 0%, #aee0da 56px) !important; border-bottom: 1px solid rgba(13, 148, 136, 0.18);">
             <div class="flex items-center gap-3">
                 <!-- Bouton réouverture latérale (icône dock_to_left demandée par l'utilisateur) -->
-                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="hidden p-1.5 -ml-2 mr-1 text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg shadow-2xs transition-colors cursor-pointer flex items-center justify-center" title="Afficher le menu latéral (Ctrl+B)">
+                <button id="btnOpenSidebar" type="button" onclick="toggleSidebar()" class="hidden p-1.5 -ml-2 mr-1 text-slate-700 hover:text-slate-900 bg-white/70 hover:bg-white border border-[#0d9488]/30 rounded-lg shadow-2xs transition-colors cursor-pointer flex items-center justify-center" title="Afficher le menu latéral (Ctrl+B)">
                     <span class="material-symbols-outlined text-[19px] block">dock_to_left</span>
                 </button>
-                <div class="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                <div class="flex items-center gap-2 text-xs text-slate-600 font-medium">
                     <span class="text-slate-900 font-bold text-sm" id="headerBreadcrumbTitle">Journal des Écritures</span>
-                    <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold" id="txCountBadge">8 opérations</span>
+                    <span class="px-2 py-0.5 rounded-full bg-white/40 border border-[#0d9488]/20 text-[#0f766e] text-[11px] font-semibold" id="txCountBadge">8 opérations</span>
                 </div>
             </div>
 
             <div class="flex items-center gap-2.5">
                 <!-- Trésorerie Disponible en Direct (Couleur Grow #a0d9d2 / #0d9488) -->
-                <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#e6f7f5] border border-[#a0d9d2] text-[#0d9488] shadow-xs cursor-default" title="Trésorerie disponible en direct (Banque / Wave / OM / Caisse)">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/70 backdrop-blur-md border border-[#0d9488]/30 text-[#0d9488] shadow-xs cursor-default" title="Trésorerie disponible en direct (Banque / Wave / OM / Caisse)">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]"></span>
                     </span>
-                    <span class="text-xs font-medium text-[#0f766e]">Trésorerie :</span>
+                    <span class="text-xs font-semibold text-[#0f766e]">Trésorerie :</span>
                     <span class="text-xs font-bold font-mono tracking-tight text-[#0d9488]" id="headerTresorerieMontant">20 088 FCFA</span>
                 </div>
                 <!-- Bouton discret ajout manuel -->
-                <button onclick="ouvrirModalSaisieRapide()" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer" title="Nouvelle écriture manuelle (+)">
+                <button onclick="ouvrirModalSaisieRapide()" class="p-1.5 rounded-lg text-slate-700 hover:text-slate-900 bg-white/60 hover:bg-white/80 border border-[#0d9488]/30 transition-colors cursor-pointer" title="Nouvelle écriture manuelle (+)">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                 </button>
             </div>
