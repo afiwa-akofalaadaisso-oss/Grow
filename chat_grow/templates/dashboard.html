@@ -7680,7 +7680,7 @@
                     <!-- Champ Recherche avec ⌘K et bouton rond flèche -->
                     <div class="relative w-full lg:max-w-md">
                         <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[19px] pointer-events-none">search</span>
-                        <input class="w-full pl-10 pr-20 py-2.5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" id="table-search-input" placeholder="Rechercher une opération, compte..." type="text" oninput="handleSearchInput(this.value)">
+                        <input class="w-full pl-10 pr-20 py-2.5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" id="table-search-input" placeholder="Rechercher par flux ou opération (Wave, Caisse, Orange, virement...)" type="text" oninput="handleSearchInput(this.value)">
                         <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
                             <div class="hidden sm:flex text-slate-400 text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200/80 pointer-events-none select-none">
                                 ⌘K
@@ -7753,40 +7753,42 @@
                     </div>
                 </div>
 
-                <!-- FILTRES RAPIDES PAR FLUX (AVEC LES VRAIES ICÔNES DE FLUX) -->
-                <div class="mb-5 flex flex-wrap items-center gap-2 text-xs" id="quickFiltersContainer">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">FILTRES FLUX :</span>
-                    <button type="button" class="quick-filter-btn px-3.5 py-1.5 rounded-full bg-[#168078] text-white font-semibold shadow-2xs transition-all cursor-pointer inline-flex items-center gap-1.5" onclick="handleQuickFilter('all', this)">
-                        <span>Tous les flux</span>
-                    </button>
-                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('wave', this)">
-                        <img src="/static/images/flows/wave.png" alt="Wave" class="w-4 h-4 object-contain rounded-xs">
-                        <span>Wave</span>
-                    </button>
-                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('orange', this)">
-                        <img src="/static/images/flows/orange.png" alt="Orange Money" class="w-4 h-4 object-contain rounded-xs">
-                        <span>Orange Money</span>
-                    </button>
-                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('especes', this)">
-                        <img src="/static/images/flows/especes.png" alt="Caisse Espèces" class="w-4 h-4 object-contain rounded-xs">
-                        <span>Caisse Espèces</span>
-                    </button>
-                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('banque', this)">
-                        <img src="/static/images/flows/banque.png" alt="Banque CBAO" class="w-4 h-4 object-contain rounded-xs">
-                        <span>Banque CBAO</span>
-                    </button>
-                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('salaire', this)">
-                        <img src="/static/images/flows/salaire.png" alt="Salaires" class="w-4 h-4 object-contain rounded-xs">
-                        <span>Salaires</span>
-                    </button>
-                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('creance', this)">
-                        <img src="/static/images/flows/creance.png" alt="Créances" class="w-4 h-4 object-contain rounded-xs">
-                        <span>Créances</span>
-                    </button>
-                    <button type="button" class="quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs" onclick="handleQuickFilter('stock', this)">
-                        <img src="/static/images/flows/stock.png" alt="Stock" class="w-4 h-4 object-contain rounded-xs">
-                        <span>Stock</span>
-                    </button>
+                <!-- BARRE DE RECHERCHE DÉDIÉE : COMPTE DE CLASSE SYSCOHADA -->
+                <div class="mb-5 flex flex-col md:flex-row items-stretch md:items-center gap-2.5" id="compteClasseSearchContainer">
+                    <div class="relative flex-1">
+                        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[#168078] text-[18px] pointer-events-none">tag</span>
+                        <input class="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#168078]/60 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/20 text-[13px] shadow-2xs transition-all font-medium" 
+                               id="compte-classe-search-input" 
+                               placeholder="Rechercher par compte de classe (ex: 701, Classe 7, 601, 661, 521, 411...)" 
+                               type="text" 
+                               oninput="handleCompteClasseSearch(this.value)">
+                        <button type="button" id="clearCompteClasseSearchBtn" onclick="clearCompteClasseSearch()" style="display: none;" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-0.5 transition-colors cursor-pointer" title="Effacer la recherche">
+                            <span class="material-symbols-outlined text-[16px]">close</span>
+                        </button>
+                    </div>
+
+                    <!-- Sélecteur rapide des Classes SYSCOHADA (1-clic) -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 text-xs flex-shrink-0 select-none">
+                        <button type="button" class="classe-filter-chip px-3 py-2 rounded-xl bg-[#168078] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-2xs border border-[#168078]" onclick="filterByCompteClasse('', this)">
+                            Toutes
+                        </button>
+                        <button type="button" class="classe-filter-chip px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer whitespace-nowrap shadow-2xs inline-flex items-center gap-1.5" onclick="filterByCompteClasse('7', this)">
+                            <span class="w-2 h-2 rounded-full bg-[#168078]"></span>
+                            <span class="font-bold text-[#168078] font-mono">Cl. 7</span> Produits
+                        </button>
+                        <button type="button" class="classe-filter-chip px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer whitespace-nowrap shadow-2xs inline-flex items-center gap-1.5" onclick="filterByCompteClasse('6', this)">
+                            <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                            <span class="font-bold text-slate-800 font-mono">Cl. 6</span> Charges
+                        </button>
+                        <button type="button" class="classe-filter-chip px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer whitespace-nowrap shadow-2xs inline-flex items-center gap-1.5" onclick="filterByCompteClasse('5', this)">
+                            <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+                            <span class="font-bold text-[#168078] font-mono">Cl. 5</span> Trésorerie
+                        </button>
+                        <button type="button" class="classe-filter-chip px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer whitespace-nowrap shadow-2xs inline-flex items-center gap-1.5" onclick="filterByCompteClasse('4', this)">
+                            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                            <span class="font-bold text-slate-800 font-mono">Cl. 4</span> Tiers
+                        </button>
+                    </div>
                 </div>
 
                 <!-- CARTE PRINCIPALE BLANCHE : TABLEAU DE BORD DU JOURNAL (Style Exact Référence Stitch) -->
@@ -11591,6 +11593,31 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 list = list.filter(t => !isTransactionVerifiee(t));
             }
 
+            // 3a. Filtrage par Compte de Classe SYSCOHADA (Recherche Dédiée)
+            if (currentCompteClasseFilter && currentCompteClasseFilter.trim()) {
+                const rawQ = currentCompteClasseFilter.trim().toLowerCase();
+                const cleanDigits = rawQ.replace(/[^0-9]/g, '');
+                list = list.filter(t => {
+                    const c = String(t.compte_syscohada || '').toLowerCase();
+                    const lib = ((t.libelle || '') + ' ' + (t.source_paiement || '')).toLowerCase();
+
+                    // Si recherche par chiffre de classe unique (ex: "7", "6", "5", "4")
+                    if (cleanDigits.length === 1 && (rawQ.includes('classe') || rawQ.includes('cl') || rawQ === cleanDigits)) {
+                        return c.startsWith(cleanDigits);
+                    }
+                    // Si numéro de compte précis ou partiel (ex: 701, 706, 601, 661, 521, 411)
+                    if (cleanDigits && c.includes(cleanDigits)) return true;
+
+                    // Mots-clés comptables
+                    if (rawQ.includes('produit') || rawQ.includes('vente')) return c.startsWith('7');
+                    if (rawQ.includes('charge') || rawQ.includes('achat') || rawQ.includes('frais')) return c.startsWith('6');
+                    if (rawQ.includes('tresorerie') || rawQ.includes('trésorerie') || rawQ.includes('banque')) return c.startsWith('5');
+                    if (rawQ.includes('tiers') || rawQ.includes('client') || rawQ.includes('fournisseur')) return c.startsWith('4');
+
+                    return c.includes(rawQ) || lib.includes(rawQ);
+                });
+            }
+
             // 3. Filtrage par Recherche Robuste Multi-Champs & Sémantique
             if (currentSearchQuery.trim()) {
                 list = list.filter(t => matchTransactionRobust(t, currentSearchQuery));
@@ -11963,38 +11990,56 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
         // Rendu HTML des transactions
         
-        function handleQuickFilter(type, btn) {
-            if (!allTransactions || allTransactions.length === 0) return;
+                // GESTION DU FILTRE DÉDIÉ : RECHERCHE PAR COMPTE DE CLASSE SYSCOHADA
+        let currentCompteClasseFilter = '';
 
-            // Mise à jour visuelle des boutons de filtre
-            document.querySelectorAll('.quick-filter-btn').forEach(b => {
-                b.className = 'quick-filter-btn px-3 py-1.5 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-2xs';
+        function handleCompteClasseSearch(query) {
+            currentCompteClasseFilter = (query || '').trim();
+            const clearBtn = document.getElementById('clearCompteClasseSearchBtn');
+            if (clearBtn) clearBtn.style.display = currentCompteClasseFilter ? 'block' : 'none';
+
+            // Désélectionner les pilules si saisie libre
+            document.querySelectorAll('.classe-filter-chip').forEach(c => {
+                c.className = 'classe-filter-chip px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer whitespace-nowrap shadow-2xs inline-flex items-center gap-1.5';
+            });
+
+            applyAllFiltersAndRender();
+        }
+
+        function clearCompteClasseSearch() {
+            const input = document.getElementById('compte-classe-search-input');
+            if (input) input.value = '';
+            currentCompteClasseFilter = '';
+            const clearBtn = document.getElementById('clearCompteClasseSearchBtn');
+            if (clearBtn) clearBtn.style.display = 'none';
+
+            document.querySelectorAll('.classe-filter-chip').forEach(c => {
+                c.className = 'classe-filter-chip px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer whitespace-nowrap shadow-2xs inline-flex items-center gap-1.5';
+            });
+            const allChip = document.querySelector('.classe-filter-chip');
+            if (allChip) {
+                allChip.className = 'classe-filter-chip px-3 py-2 rounded-xl bg-[#168078] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-2xs border border-[#168078]';
+            }
+
+            applyAllFiltersAndRender();
+        }
+
+        function filterByCompteClasse(classePrefix, btn) {
+            const input = document.getElementById('compte-classe-search-input');
+            if (input) input.value = classePrefix ? ('Classe ' + classePrefix) : '';
+            currentCompteClasseFilter = classePrefix;
+
+            const clearBtn = document.getElementById('clearCompteClasseSearchBtn');
+            if (clearBtn) clearBtn.style.display = classePrefix ? 'block' : 'none';
+
+            document.querySelectorAll('.classe-filter-chip').forEach(c => {
+                c.className = 'classe-filter-chip px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-medium transition-all cursor-pointer whitespace-nowrap shadow-2xs inline-flex items-center gap-1.5';
             });
             if (btn) {
-                btn.className = 'quick-filter-btn px-3.5 py-1.5 rounded-full bg-[#168078] text-white font-semibold shadow-2xs transition-all cursor-pointer inline-flex items-center gap-1.5';
+                btn.className = 'classe-filter-chip px-3 py-2 rounded-xl bg-[#168078] text-white font-semibold transition-all cursor-pointer whitespace-nowrap shadow-2xs border border-[#168078] inline-flex items-center gap-1.5';
             }
 
-            if (type === 'all') {
-                renderTransactionsList(allTransactions, allTransactions.length);
-                return;
-            }
-
-            let filtered = allTransactions.filter(t => {
-                const fm = detectFlowMeta(t);
-                if (fm && fm.key === type) return true;
-                const lib = ((t.libelle || '') + ' ' + (t.source_paiement || '')).toLowerCase();
-                const compte = (t.compte_syscohada || '');
-                if (type === 'wave') return lib.includes('wave');
-                if (type === 'orange') return lib.includes('orange');
-                if (type === 'especes') return lib.includes('espece') || lib.includes('caisse') || compte.startsWith('57');
-                if (type === 'banque') return lib.includes('banque') || lib.includes('cbao') || lib.includes('virement') || compte.startsWith('52');
-                if (type === 'salaire') return lib.includes('salaire') || lib.includes('personnel') || compte.startsWith('66');
-                if (type === 'creance') return lib.includes('creance') || lib.includes('demba') || compte.startsWith('411');
-                if (type === 'stock') return lib.includes('stock') || lib.includes('achat') || lib.includes('riz') || compte.startsWith('601') || compte.startsWith('3');
-                return false;
-            });
-
-            renderTransactionsList(filtered, filtered.length);
+            applyAllFiltersAndRender();
         }
 
         function renderTransactionsList(txList, totalFilteredCount) {
