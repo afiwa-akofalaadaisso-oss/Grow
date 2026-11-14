@@ -7332,7 +7332,7 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET NOIR PUR & CONTRASTE LUMIÈRE) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (DESIGN OFFICIEL GROW LUXURY GLASS) --- */
         #viewPortalComptable {
             position: fixed;
             top: 0;
@@ -7343,8 +7343,11 @@
             height: 100vh;
             height: 100dvh;
             z-index: 1500;
-            /* Fond Noir Absolu Profond épuré sans logos d'arrière-plan */
-            background: #040807 !important;
+            /* Fond Noir Charbon Atmosphérique & Profond façon Studio Luxe */
+            background: 
+                radial-gradient(circle 500px at 15% 20%, rgba(20, 34, 32, 0.5) 0%, transparent 80%),
+                radial-gradient(circle 550px at 85% 30%, rgba(18, 28, 27, 0.45) 0%, transparent 80%),
+                radial-gradient(ellipse at 50% 50%, #0c0f0f 0%, #060808 60%, #020303 100%) !important;
             overflow: hidden !important; /* Page 100% fixe : aucun défilement ni saut */
             display: flex;
             align-items: center;
@@ -7353,13 +7356,13 @@
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            /* Cercle parfait géométrique à rayon fixe équidistant (aucun étirement en ovale) */
-            background: radial-gradient(circle 200px at 50% 28%, rgba(160, 217, 210, 0.60) 0%, rgba(20, 184, 166, 0.28) 40%, rgba(13, 148, 136, 0.08) 70%, transparent 100%);
+            /* Cercle parfait de luminosité vert menthe doux centré derrière le logo */
+            background: radial-gradient(circle 220px at 50% 33%, rgba(140, 230, 218, 0.40) 0%, rgba(20, 160, 145, 0.18) 45%, rgba(10, 80, 75, 0.05) 75%, transparent 100%);
             pointer-events: none;
             z-index: 2;
         }
         .portal-search-input::placeholder {
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.45);
         }
         /* Suppression absolue de tout contour bleu ou anneau natif */
         #portalCompanySearchInput,
@@ -7375,27 +7378,46 @@
             --tw-ring-offset-shadow: none !important;
             --tw-ring-color: transparent !important;
         }
+        /* Pilule en Verre Fumé Givré Haut de Gamme (Design Image Référence) */
         .portal-search-pill {
-            background: #181818;
-            border: 1.5px solid #a0d9d2;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.04) 100%);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            border-top: 1px solid rgba(255, 255, 255, 0.32);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
             border-radius: 9999px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(160, 217, 210, 0.15);
-            transition: all 0.25s ease;
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.25),
+                0 12px 35px rgba(0, 0, 0, 0.65),
+                0 0 20px rgba(160, 217, 210, 0.08);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .portal-search-pill:hover,
         .portal-search-pill:focus-within {
-            border-color: #a0d9d2;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9), 0 0 30px rgba(160, 217, 210, 0.35);
-            background: #1f1f1f;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.17) 0%, rgba(255, 255, 255, 0.07) 100%);
+            border-color: rgba(160, 217, 210, 0.45);
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.35),
+                0 16px 40px rgba(0, 0, 0, 0.75),
+                0 0 25px rgba(160, 217, 210, 0.20);
+        }
+        #portalSearchResultsDropdown {
+            background: rgba(14, 18, 18, 0.94);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 1.25rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(160, 217, 210, 0.10);
         }
         #portalSearchResultsDropdown::-webkit-scrollbar {
             width: 5px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-track {
-            background: #141414;
+            background: #0d1212;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb {
-            background: #2a3a37;
+            background: #233533;
             border-radius: 9999px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb:hover {
@@ -7408,35 +7430,35 @@
 <body class="bg-white text-slate-900 antialiased min-h-screen">
 
     <!-- ========================================================================= -->
-    <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE GOOGLE RECHERCHE & AWA BRANDING)  -->
+    <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE EXACT DE LA RÉFÉRENCE UTILISATEUR)-->
     <!-- ========================================================================= -->
     <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: flex;">
         <div class="portal-ambient-glow"></div>
 
-        <!-- Zone Centrale Fixe : 100% Stable, Zéro Scroll, Zéro Saut de page -->
+        <!-- Zone Centrale Fixe : Proportions Exactes, Zéro Saut de page -->
         <main class="relative z-10 flex flex-col items-center justify-center px-4 py-6 text-center max-w-xl mx-auto w-full select-none">
-            <!-- GRAND LOGO GROW MAJESTUEUX (Cercle de luminosité parfaitement rond) -->
-            <div class="relative group cursor-pointer mb-3 sm:mb-4" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 sm:w-60 sm:h-60 rounded-full bg-gradient-to-r from-[#14b8a6]/40 via-[#a0d9d2]/60 to-[#14b8a6]/40 blur-2xl group-hover:scale-105 transition-all duration-300 pointer-events-none"></div>
+            <!-- LOGO GROW MAJESTUEUX (Cercle de luminosité doux et centré) -->
+            <div class="relative group cursor-pointer mb-2 sm:mb-3" onclick="quitterPortailVersDossier()" title="Grow Cabinet">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-gradient-to-r from-[#14b8a6]/35 via-[#9aeae0]/50 to-[#14b8a6]/35 blur-3xl pointer-events-none"></div>
                 <img src="/static/grow_logo_transparent.png" alt="Grow Logo" 
-                     class="relative w-44 sm:w-52 md:w-60 max-w-[260px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
-                     style="filter: drop-shadow(0 0 25px rgba(160, 217, 210, 0.85)) drop-shadow(0 10px 30px rgba(20, 184, 166, 0.5)) saturate(1.45) brightness(1.18);">
+                     class="relative w-36 sm:w-44 max-w-[220px] h-auto object-contain mx-auto transform group-hover:scale-105 transition-all duration-300"
+                     style="filter: drop-shadow(0 0 25px rgba(160, 217, 210, 0.85)) drop-shadow(0 8px 25px rgba(20, 184, 166, 0.5));">
             </div>
 
-            <!-- Texte Animé Machine à Écrire (Typewriter) -->
-            <div class="min-h-[44px] sm:min-h-[52px] flex items-center justify-center mb-6 sm:mb-8">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-md">
+            <!-- Texte Animé Machine à Écrire (Exactement préservé) -->
+            <div class="min-h-[44px] sm:min-h-[48px] flex items-center justify-center my-3 sm:my-4">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center justify-center drop-shadow-md">
                     <span id="portalTypewriterText" class="text-white">Portail Grow pour comptables</span>
-                    <span class="inline-block w-1 h-7 sm:h-9 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
+                    <span class="inline-block w-0.5 sm:w-1 h-6 sm:h-7 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
                 </h1>
             </div>
 
-            <!-- Barre de Recherche Entreprise (Pilule Google/AWA épurée, stable et large) -->
+            <!-- Barre de Recherche Verre Fumé Givré (Exacte Image Référence) -->
             <div class="relative w-full max-w-[420px] sm:max-w-[460px] mx-auto text-left" id="portalSearchWrapper">
                 <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 shadow-xl transition-all">
-                    <span class="material-symbols-outlined text-[#a0d9d2] text-[19px] mr-2.5 flex-shrink-0 select-none">search</span>
+                    <span class="material-symbols-outlined text-white/50 text-[18px] mr-2.5 flex-shrink-0 select-none">search</span>
                     <input type="text" id="portalCompanySearchInput" 
-                           class="portal-search-input w-full bg-transparent text-white placeholder:text-white/60 text-xs sm:text-[13px] font-medium tracking-wide focus:outline-none"
+                           class="portal-search-input w-full bg-transparent text-white placeholder:text-white/45 text-xs sm:text-[13px] font-medium tracking-wide focus:outline-none"
                            placeholder="Rechercher une entreprise cliente..."
                            autocomplete="off"
                            oninput="handlePortalCompanySearch(this.value)"
@@ -7445,13 +7467,14 @@
                     <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-white p-0.5 mr-1 transition-colors cursor-pointer">
                         <span class="material-symbols-outlined text-[15px]">close</span>
                     </button>
-                    <button type="button" onclick="submitPortalSearch()" class="w-6 h-6 rounded-full bg-[#a0d9d2] hover:bg-white text-[#1c1c1c] flex items-center justify-center transition-all cursor-pointer flex-shrink-0 shadow-sm" title="Ouvrir le dossier">
-                        <span class="material-symbols-outlined text-[14px] font-bold">arrow_forward</span>
+                    <!-- Bouton Flèche Givré Arrondi (Style Référence) -->
+                    <button type="button" onclick="submitPortalSearch()" class="w-7 h-7 rounded-full bg-white/12 hover:bg-white/22 active:bg-white/30 border border-white/20 flex items-center justify-center text-white/85 transition-all cursor-pointer flex-shrink-0 shadow-sm" title="Ouvrir le dossier">
+                        <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
                     </button>
                 </div>
 
-                <!-- Menu Déroulant Instantané des Entreprises du Cabinet -->
-                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2.5 bg-[#141414] border border-[#a0d9d2]/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] divide-y divide-white/[0.06] overflow-hidden z-50 max-h-64 overflow-y-auto" style="display: none;">
+                <!-- Menu Déroulant Instantané des Entreprises du Cabinet (Apparaît seulement à la saisie) -->
+                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2.5 divide-y divide-white/[0.06] overflow-hidden z-50 max-h-64 overflow-y-auto" style="display: none;">
                     <!-- Injecté dynamiquement par JavaScript -->
                 </div>
             </div>
