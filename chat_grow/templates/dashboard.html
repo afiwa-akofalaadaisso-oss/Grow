@@ -7332,15 +7332,15 @@
 
 
 
-        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET NOIR PUR & HAUTE VISIBILITÉ MENTHE) --- */
+        /* --- PORTAIL D'ACCUEIL EXPERT-COMPTABLE (EFFET NOIR ÉMERAUDE & HAUTE VISIBILITÉ MENTHE) --- */
         #viewPortalComptable {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
             z-index: 1500;
-            /* Fond Noir Profond Absolu avec dégradé subtil haut-de-gamme */
-            background: radial-gradient(circle at 50% 30%, #161616 0%, #0d0d0d 55%, #050505 100%) !important;
+            /* Fond Noir Émeraude Profond & Luxueux inspiré d'AWA */
+            background: radial-gradient(ellipse at 50% 35%, #132b25 0%, #0c1a17 45%, #050b0a 100%) !important;
             overflow: hidden !important; /* Page 100% fixe : aucun défilement ni saut */
             display: flex;
             align-items: center;
@@ -7351,15 +7351,15 @@
             inset: 0;
             background-image: url('/static/grow_logo_transparent.png');
             background-repeat: repeat;
-            background-size: 150px 150px;
-            opacity: 0.038; /* Filigrane noir texturé discret et luxueux */
+            background-size: 130px 130px;
+            opacity: 0.12; /* Filigrane bien visible et net sur tout l'écran comme AWA */
             pointer-events: none;
             z-index: 1;
         }
         .portal-ambient-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 28%, rgba(160, 217, 210, 0.16) 0%, rgba(20, 20, 20, 0.02) 55%, rgba(6, 6, 6, 0.98) 90%);
+            background: radial-gradient(circle at 50% 30%, rgba(160, 217, 210, 0.22) 0%, rgba(18, 38, 33, 0.08) 50%, rgba(6, 14, 12, 0.95) 90%);
             pointer-events: none;
             z-index: 2;
         }
@@ -7381,26 +7381,33 @@
             --tw-ring-color: transparent !important;
         }
         .portal-search-pill {
-            background: #181818;
+            background: #152420;
             border: 1.5px solid #a0d9d2;
             border-radius: 9999px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(160, 217, 210, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(160, 217, 210, 0.18);
             transition: all 0.25s ease;
         }
         .portal-search-pill:hover,
         .portal-search-pill:focus-within {
             border-color: #a0d9d2;
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.9), 0 0 30px rgba(160, 217, 210, 0.35);
-            background: #1f1f1f;
+            background: #192d28;
+        }
+        .portal-companies-card {
+            background: rgba(16, 26, 23, 0.92);
+            border: 1px solid rgba(160, 217, 210, 0.3);
+            backdrop-filter: blur(16px);
+            border-radius: 1rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(160, 217, 210, 0.08);
         }
         #portalSearchResultsDropdown::-webkit-scrollbar {
             width: 5px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-track {
-            background: #141414;
+            background: #101c18;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb {
-            background: #2a3a37;
+            background: #253d36;
             border-radius: 9999px;
         }
         #portalSearchResultsDropdown::-webkit-scrollbar-thumb:hover {
@@ -7431,24 +7438,24 @@
             </div>
 
             <!-- Texte Animé Machine à Écrire (Typewriter) -->
-            <div class="min-h-[44px] sm:min-h-[52px] flex items-center justify-center mb-6 sm:mb-8">
+            <div class="min-h-[44px] sm:min-h-[52px] flex items-center justify-center mb-6 sm:mb-7">
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight flex items-center justify-center drop-shadow-md">
                     <span id="portalTypewriterText" class="text-white">Portail Grow pour comptables</span>
                     <span class="inline-block w-1 h-7 sm:h-9 bg-[#a0d9d2] ml-1.5 animate-pulse"></span>
                 </h1>
             </div>
 
-            <!-- Barre de Recherche Entreprise (Pilule Google/AWA épurée, stable et large) -->
+            <!-- Conteneur Recherche & Dossiers Clients Intégrés (Zéro saut, Zéro vide noir) -->
             <div class="relative w-full max-w-[420px] sm:max-w-[460px] mx-auto text-left" id="portalSearchWrapper">
-                <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 shadow-xl transition-all">
+                <!-- Pilule de Recherche -->
+                <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 shadow-xl transition-all mb-3">
                     <span class="material-symbols-outlined text-[#a0d9d2] text-[19px] mr-2.5 flex-shrink-0 select-none">search</span>
                     <input type="text" id="portalCompanySearchInput" 
                            class="portal-search-input w-full bg-transparent text-white placeholder:text-white/60 text-xs sm:text-[13px] font-medium tracking-wide focus:outline-none"
                            placeholder="Rechercher une entreprise cliente..."
                            autocomplete="off"
                            oninput="handlePortalCompanySearch(this.value)"
-                           onkeydown="handlePortalSearchKeydown(event)"
-                           onfocus="showPortalDropdown()">
+                           onkeydown="handlePortalSearchKeydown(event)">
                     <button type="button" id="portalClearSearchBtn" onclick="clearPortalSearch()" style="display: none;" class="text-slate-400 hover:text-white p-0.5 mr-1 transition-colors cursor-pointer">
                         <span class="material-symbols-outlined text-[15px]">close</span>
                     </button>
@@ -7457,9 +7464,18 @@
                     </button>
                 </div>
 
-                <!-- Menu Déroulant Instantané des Entreprises du Cabinet -->
-                <div id="portalSearchResultsDropdown" class="absolute left-0 right-0 top-full mt-2.5 bg-[#141414] border border-[#a0d9d2]/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] divide-y divide-white/[0.06] overflow-hidden z-50 max-h-64 overflow-y-auto" style="display: none;">
-                    <!-- Injecté dynamiquement par JavaScript -->
+                <!-- Carte Intégrée des Dossiers Clients (Toujours visible & filtrable en direct) -->
+                <div class="portal-companies-card overflow-hidden">
+                    <div class="px-4 py-2 border-b border-white/[0.06] flex items-center justify-between bg-black/20">
+                        <span class="text-[10.5px] uppercase font-bold tracking-wider text-[#a0d9d2] flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#a0d9d2]"></span>
+                            Dossiers clients du cabinet
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-medium">Sélection directe</span>
+                    </div>
+                    <div id="portalSearchResultsDropdown" class="divide-y divide-white/[0.06] max-h-56 overflow-y-auto">
+                        <!-- Injecté dynamiquement par JavaScript -->
+                    </div>
                 </div>
             </div>
         </main>
@@ -13202,14 +13218,6 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 selectCompanyFromPortal(list[0].id, list[0].telephone_whatsapp);
             }
         }
-
-        document.addEventListener('click', (e) => {
-            const wrap = document.getElementById('portalSearchWrapper');
-            const dd = document.getElementById('portalSearchResultsDropdown');
-            if (wrap && dd && !wrap.contains(e.target)) {
-                dd.style.display = 'none';
-            }
-        });
 
         // Lancement au chargement de la page
         document.addEventListener('DOMContentLoaded', () => {
