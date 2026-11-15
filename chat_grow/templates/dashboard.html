@@ -8090,11 +8090,15 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- VUE SMARTPHONE : Liste native épurée style Wave / Fintech Pro (< 768px) -->
+                        <div class="block md:hidden w-full flex flex-col divide-y divide-slate-100 overflow-hidden" id="mobileTransactionsList">
+                            <!-- Éléments mobiles injectés dynamiquement -->
+                        </div>
 
-                        <!-- Pied du tableau Factoo avec Pagination -->
+                        <!-- 1. PIED DE TABLEAU : Pagination interactive Factoo -->
                         <div class="px-4 py-3 bg-white border-t border-slate-200/80 flex items-center justify-between select-none text-xs">
                             <div class="text-slate-500 font-medium">
-                                Affichage de <strong class="text-slate-800" id="pagStart">1</strong> à <strong class="text-slate-800" id="pagEnd">16</strong> sur <strong class="text-slate-800" id="pagTotal">16</strong> écritures
+                                Affichage de <strong class="text-slate-800" id="pagStart">1</strong> à <strong class="text-slate-800" id="pagEnd">8</strong> sur <strong class="text-slate-800" id="pagTotal">16</strong> écritures
                             </div>
 
                             <!-- Pagination numérotée Factoo (< 1 2 3 >) DYNAMIQUE & INTERACTIVE -->
@@ -8104,108 +8108,37 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                </div>
-            </div>
-<!-- VUE SMARTPHONE : Liste native épurée style Wave / Fintech Pro (< 768px) -->
-                    <div class="block md:hidden w-full flex flex-col divide-y divide-slate-100 overflow-hidden" id="mobileTransactionsList">
-                        <!-- Éléments mobiles injectés dynamiquement -->
-                    </div>
-
-                    <!-- PIED DE CARTE BLANCHE : Certification SYSCOHADA & Totaux Financiers -->
-                    <div class="border-t border-slate-100 px-4 py-3.5 flex flex-wrap items-center justify-between text-xs text-slate-600 select-none gap-3 bg-slate-50/40">
-                        <div class="flex items-center gap-2 text-slate-600 font-medium">
-                            <span class="material-symbols-outlined notranslate text-[17px] text-[#168078]" translate="no">verified_user</span>
-                            <span class="text-slate-700 font-semibold text-xs">Conformité SYSCOHADA vérifiée</span>
-                            <span class="text-slate-400 hidden sm:inline">&bull; Écritures équilibrées et justifiées</span>
-                        </div>
-
-                        <div class="flex items-center gap-3 font-mono text-xs">
-                            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200/80">
-                                <span class="text-slate-400 font-sans font-bold text-[10px] uppercase tracking-wider">Débit</span>
-                                <span id="footerTotalDebit" class="text-slate-900 font-bold text-xs">7 000 FCFA</span>
+                        <!-- 2. BANDEAU DE CONFORMITÉ & TOTAUX FINANCIERS SYSCOHADA -->
+                        <div class="border-t border-slate-100 px-4 py-3 flex flex-wrap items-center justify-between text-xs text-slate-600 select-none gap-3 bg-slate-50/50">
+                            <div class="flex items-center gap-2 text-slate-600 font-medium">
+                                <span class="material-symbols-outlined notranslate text-[17px] text-[#168078]" translate="no">verified_user</span>
+                                <span class="text-slate-700 font-semibold text-xs">Conformité SYSCOHADA vérifiée</span>
+                                <span class="text-slate-400 hidden sm:inline">&bull; Écritures équilibrées</span>
                             </div>
-                            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200/80">
-                                <span class="text-slate-400 font-sans font-bold text-[10px] uppercase tracking-wider">Crédit</span>
-                                <span id="footerTotalCredit" class="text-[#168078] font-bold text-xs">19 500 FCFA</span>
-                            </div>
-                            <!-- SOLDE NET PREMIUM FINTECH SOMBRE (#222222) ASSORTI AU LOGO ET AU HEADER -->
-                            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-[#222222] border border-[#333333] shadow-xs select-none" title="Solde net disponible">
-                                <span class="w-2 h-2 rounded-full bg-[#168078] shadow-[0_0_8px_rgba(22,128,120,0.8)]"></span>
-                                <span class="text-[10px] font-sans font-bold uppercase tracking-wider text-[#a0d9d2]">Solde Net</span>
-                                <span id="footerTotalSolde" class="font-mono font-black text-white text-xs sm:text-[13px] tracking-tight">+ 12 500 FCFA</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                    <!-- Pied de tableau directement intégré au fond parent -->
-                    <div class="border-t border-slate-300/80 py-3.5 flex flex-wrap items-center justify-between text-xs text-slate-600 select-none gap-3">
-                        <div class="flex items-center gap-1 font-medium text-slate-600">
-                            Affichage de <span id="pagRange" class="font-bold text-slate-800">1-8</span> sur <span id="pagTotal" class="font-bold text-slate-800">8</span> écritures
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <!-- Sélecteur Lignes par page Personnalisé & Élégant (Linear / Stripe Style) -->
-                            <div class="relative flex items-center gap-2" id="customPageSizeWrapper">
-                                <span class="text-slate-500 text-[11px] font-medium">Lignes :</span>
-                                <div class="relative inline-block text-left">
-                                    <button type="button" id="btnPageSizeDropdown" onclick="togglePageSizeDropdown(event)" class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:border-[#1c1c1c] rounded-lg shadow-2xs hover:shadow-xs transition-all cursor-pointer focus:outline-none">
-                                        <span id="labelCurrentPageSize" class="font-mono">15</span>
-                                        <span class="material-symbols-outlined notranslate text-[15px] text-slate-400 leading-none transition-transform duration-150" id="iconPageSizeChevron" translate="no">expand_more</span>
-                                    </button>
-
-                                    <!-- Menu flottant au-dessus avec coins arrondis et ombre douce -->
-                                    <div id="menuPageSizeDropdown" class="hidden absolute right-0 bottom-full mb-1.5 w-32 bg-white rounded-xl shadow-xl border border-slate-200/90 py-1.5 z-50 transform origin-bottom-right transition-all font-sans" onclick="event.stopPropagation()">
-                                        <div class="px-2.5 py-1 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Affichage</div>
-                                        <div class="space-y-0.5 px-1">
-                                            <button type="button" onclick="selectPageSizeOption(5)" data-val="5" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
-                                                <span class="font-mono font-medium">5 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
-                                            </button>
-                                            <button type="button" onclick="selectPageSizeOption(10)" data-val="10" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
-                                                <span class="font-mono font-medium">10 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
-                                            </button>
-                                            <button type="button" onclick="selectPageSizeOption(15)" data-val="15" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg font-bold bg-[#1c1c1c] text-[#a0d9d2] transition-colors cursor-pointer">
-                                                <span class="font-mono font-bold">15 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#a0d9d2] check-icon" translate="no">check</span>
-                                            </button>
-                                            <button type="button" onclick="selectPageSizeOption(25)" data-val="25" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
-                                                <span class="font-mono font-medium">25 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
-                                            </button>
-                                            <button type="button" onclick="selectPageSizeOption(50)" data-val="50" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
-                                                <span class="font-mono font-medium">50 lignes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
-                                            </button>
-                                            <button type="button" onclick="selectPageSizeOption(0)" data-val="0" class="page-size-opt w-full flex items-center justify-between px-2.5 py-1.5 text-xs rounded-lg text-slate-700 hover:bg-[#1c1c1c]/5 hover:text-[#1c1c1c] transition-colors cursor-pointer">
-                                                <span class="font-medium">Toutes</span>
-                                                <span class="material-symbols-outlined notranslate text-[14px] text-[#1c1c1c] check-icon hidden" translate="no">check</span>
-                                            </button>
-                                        </div>
-                                    </div>
+                            <div class="flex items-center gap-3 font-mono text-xs">
+                                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200/80 shadow-2xs">
+                                    <span class="text-slate-400 font-sans font-bold text-[10px] uppercase tracking-wider">Débit</span>
+                                    <span id="footerTotalDebit" class="text-slate-900 font-bold text-xs">7 000 FCFA</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200/80 shadow-2xs">
+                                    <span class="text-slate-400 font-sans font-bold text-[10px] uppercase tracking-wider">Crédit</span>
+                                    <span id="footerTotalCredit" class="text-[#168078] font-bold text-xs">19 500 FCFA</span>
+                                </div>
+                                <!-- SOLDE NET PREMIUM FINTECH SOMBRE (#222222) -->
+                                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-[#222222] border border-[#333333] shadow-xs select-none" title="Solde net disponible">
+                                    <span class="w-2 h-2 rounded-full bg-[#168078] shadow-[0_0_8px_rgba(22,128,120,0.8)]"></span>
+                                    <span class="text-[10px] font-sans font-bold uppercase tracking-wider text-[#a0d9d2]">Solde Net</span>
+                                    <span id="footerTotalSolde" class="font-mono font-black text-white text-xs sm:text-[13px] tracking-tight">+ 12 500 FCFA</span>
                                 </div>
                             </div>
-
-                            <!-- Contrôles de Pages -->
-                            <div class="flex items-center gap-1">
-                                <button type="button" id="btnPrevPage" onclick="changePage(-1)" class="w-6 h-6 flex items-center justify-center rounded border border-slate-200 bg-white hover:bg-slate-100 text-slate-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer" title="Page précédente" disabled>
-                                    <span class="material-symbols-outlined notranslate text-[15px] leading-none" translate="no">chevron_left</span>
-                                </button>
-                                <div id="pageNumberButtons" class="flex items-center gap-1">
-                                    <span class="w-6 h-6 flex items-center justify-center rounded bg-slate-900 text-white font-bold font-mono text-xs">1</span>
-                                </div>
-                                <button type="button" id="btnNextPage" onclick="changePage(1)" class="w-6 h-6 flex items-center justify-center rounded border border-slate-200 bg-white hover:bg-slate-100 text-slate-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer" title="Page suivante" disabled>
-                                    <span class="material-symbols-outlined notranslate text-[15px] leading-none" translate="no">chevron_right</span>
-                                </button>
-                            </div>
                         </div>
-                    </div>
-                </div>
+                    </div> <!-- fin card table -->
 
-            </div>
+                </div> <!-- fin viewJournal -->
+
+            </div> <!-- fin container padding -->
 
             <!-- VUES SECONDAIRES (Bilan, Compte de Résultat, TFT, Annexes) -->
             <div id="viewBilan" style="display: none;">
