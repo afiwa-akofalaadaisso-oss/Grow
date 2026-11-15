@@ -15738,51 +15738,69 @@ function handleFactooTypeFilter(val) {
         }
 </script>
 
-    <!-- MODALE CONNEXION GROW -->
-    <div id="modalConnexion" class="fixed inset-0 z-[5000] bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 select-none" style="display: none;">
-        <div class="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200" onclick="event.stopPropagation()">
-            <!-- En-tête sombre Squircle #1c1c1c -->
-            <div class="bg-[#1c1c1c] p-6 text-white relative">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-[#2a2a2a] border border-[#3a3a3a] flex items-center justify-center">
-                            <img src="/static/grow_icon_squircle.png?v=3" alt="grow" class="w-7 h-7 object-contain">
-                        </div>
-                        <div>
-                            <h3 class="text-base font-black tracking-tight text-white">Connexion à votre espace</h3>
-                            <p class="text-xs text-[#a0d9d2] font-medium">Copilote Financier &amp; Pré-Comptable</p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="fermerModalConnexion()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center cursor-pointer transition-colors">
-                        ✕
-                    </button>
+        <!-- MODALE CONNEXION GROW (STYLE FINTECH PRO ÉPURÉ) -->
+    <div id="modalConnexion"
+        class="fixed inset-0 z-[5000] bg-slate-900/50 backdrop-blur-sm items-center justify-center p-4 select-none"
+        style="display: none;" onclick="fermerModalConnexion()">
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-2xl max-w-[420px] w-full overflow-hidden p-6 sm:p-7 relative font-sans text-slate-800"
+            onclick="event.stopPropagation()">
+            
+            <!-- Bouton fermer discret -->
+            <button type="button" onclick="fermerModalConnexion()"
+                class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition-colors"
+                title="Fermer">
+                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
+            </button>
+
+            <!-- En-tête Lumineux avec Avatar Grow -->
+            <div class="mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-[#14362b] text-[#a0d9d2] p-2 flex items-center justify-center shadow-xs mb-3.5">
+                    <img src="/static/grow_icon_squircle.png?v=3" alt="Grow" class="w-8 h-8 object-contain">
                 </div>
+                <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Connexion à votre espace</h3>
+                <p class="text-xs text-slate-500 font-medium mt-1">Copilote Financier &amp; Pré-Comptable SYSCOHADA</p>
             </div>
 
-            <!-- Formulaire -->
-            <form onsubmit="validerConnexion(event)" class="p-6 space-y-4">
+            <!-- Formulaire de Connexion -->
+            <form onsubmit="validerConnexion(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Numéro WhatsApp ou Email *</label>
-                    <input type="text" id="loginIdentifiant" required placeholder="Ex: +221 78 877 38 27 ou cabinet@grow.sn" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-800 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                    <label class="block text-[11.5px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Numéro WhatsApp ou Email *</label>
+                    <div class="relative flex items-center">
+                        <span class="absolute left-3.5 text-slate-400 pointer-events-none flex items-center justify-center">
+                            <span class="material-symbols-outlined notranslate text-[18px]" translate="no">account_circle</span>
+                        </span>
+                        <input type="text" id="loginIdentifiant" required
+                            placeholder="+221 78 877 38 27 ou cabinet@grow.sn"
+                            class="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                    </div>
                 </div>
 
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600">Code PIN ou Mot de passe *</label>
-                        <a href="https://wa.me/221788773827?text=Bonjour%20GROW,%20j'ai%20oublié%20mon%20code%20PIN" target="_blank" class="text-[11px] font-semibold text-[#168078] hover:underline">Code oublié ?</a>
+                        <label class="block text-[11.5px] font-bold text-slate-700 uppercase tracking-wider">Code PIN ou Mot de passe *</label>
+                        <a href="https://wa.me/221788773827?text=Bonjour%20GROW,%20j'ai%20oublié%20mon%20code%20PIN"
+                            target="_blank" class="text-[11.5px] font-semibold text-[#168078] hover:underline">Code oublié ?</a>
                     </div>
-                    <input type="password" id="loginPin" required placeholder="••••" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-800 focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                    <div class="relative flex items-center">
+                        <span class="absolute left-3.5 text-slate-400 pointer-events-none flex items-center justify-center">
+                            <span class="material-symbols-outlined notranslate text-[18px]" translate="no">lock</span>
+                        </span>
+                        <input type="password" id="loginPin" required placeholder="••••" maxlength="8"
+                            class="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[14px] font-bold font-mono tracking-widest text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                    </div>
                 </div>
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full py-3 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#a0d9d2]/30 cursor-pointer flex items-center justify-center gap-2">
-                        <span>Se connecter à mon espace</span>
-                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_forward</span>
+                    <button type="submit"
+                        class="w-full py-3 rounded-xl bg-[#14362b] hover:bg-[#1c4d3e] active:bg-[#0f2820] text-white text-[12.5px] font-bold transition-all shadow-sm shadow-[#14362b]/20 cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99]">
+                        <span>Se connecter</span>
+                        <span class="material-symbols-outlined notranslate text-[16px] text-[#a0d9d2]" translate="no">arrow_forward</span>
                     </button>
                 </div>
 
-                <div class="text-center pt-2 border-t border-slate-100">
-                    <p class="text-[11px] text-slate-400 font-medium">🔒 Données chiffrées &amp; conformes SYSCOHADA</p>
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[11px] text-slate-400 font-medium">
+                    <span class="material-symbols-outlined notranslate text-[14px] text-emerald-600" translate="no">verified_user</span>
+                    <span>Données chiffrées &bull; Conforme SYSCOHADA</span>
                 </div>
             </form>
         </div>
