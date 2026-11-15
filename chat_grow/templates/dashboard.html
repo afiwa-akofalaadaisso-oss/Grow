@@ -95,7 +95,7 @@
             position: absolute;
             top: calc(100% + 8px);
             right: 0;
-            width: 320px;
+            width: 340px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 16px;
@@ -129,6 +129,13 @@
             color: #475569;
             cursor: pointer;
             transition: all 0.12s;
+        }
+        .cal-preset-pill:hover,
+        .cal-preset-pill.active {
+            background: #e6f7f5;
+            border-color: #a0d9d2;
+            color: #14362b;
+            font-weight: 700;
         }
 
                         /* Barre de recherche accordéon animée */
@@ -7910,21 +7917,51 @@
 
                             <!-- Popover Calendrier Moderne GROW Pro -->
                             <div id="factooCalendarPopover" class="calendar-popover-box" onclick="event.stopPropagation()">
-                                <!-- Presets rapides -->
+                                <!-- Presets rapides pour comptables -->
                                 <div class="cal-quick-presets">
                                     <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('all')">Toutes</button>
                                     <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('today')">Aujourd'hui</button>
                                     <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('month')">Ce mois</button>
                                     <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('last_month')">Mois dernier</button>
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('year_current')">Année 2026</button>
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('year_prev')">Année 2025</button>
                                 </div>
 
-                                <!-- En-tête mois avec chevrons -->
-                                <div class="cal-header">
-                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)">
+                                <!-- En-tête mois & année avec chevrons et sélecteurs déroulants directs -->
+                                <div class="cal-header flex items-center justify-between gap-1 mb-2.5">
+                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)" title="Mois précédent">
                                         <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_left</span>
                                     </button>
-                                    <span class="cal-month-title text-[#14362b] font-bold" id="factooCalMonthTitle">Novembre 2026</span>
-                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(1)">
+                                    <div class="flex items-center gap-1.5 flex-1 justify-center">
+                                        <!-- Sélecteur de Mois -->
+                                        <select id="factooCalMonthSelect" onchange="onFactooMonthYearSelectChange()" class="text-xs font-bold text-[#14362b] bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 cursor-pointer focus:outline-none focus:border-[#168078]">
+                                            <option value="0">Janvier</option>
+                                            <option value="1">Février</option>
+                                            <option value="2">Mars</option>
+                                            <option value="3">Avril</option>
+                                            <option value="4">Mai</option>
+                                            <option value="5">Juin</option>
+                                            <option value="6">Juillet</option>
+                                            <option value="7">Août</option>
+                                            <option value="8">Septembre</option>
+                                            <option value="9">Octobre</option>
+                                            <option value="10">Novembre</option>
+                                            <option value="11">Décembre</option>
+                                        </select>
+                                        <!-- Sélecteur d'Année -->
+                                        <select id="factooCalYearSelect" onchange="onFactooMonthYearSelectChange()" class="text-xs font-bold text-[#14362b] bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 cursor-pointer focus:outline-none focus:border-[#168078]">
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                            <option value="2030">2030</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(1)" title="Mois suivant">
                                         <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_right</span>
                                     </button>
                                 </div>
@@ -7934,11 +7971,11 @@
                                     <span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span>
                                 </div>
 
-                                <!-- Grille des jours -->
+                                <!-- Grille des jours (générée dynamiquement) -->
                                 <div class="cal-days-grid" id="factooCalDaysGrid"></div>
 
                                 <!-- Résumé de sélection -->
-                                <div class="text-[11px] text-slate-500 font-medium mb-2 text-center" id="factooCalSummary">
+                                <div class="text-[11px] text-slate-500 font-medium mb-2.5 text-center px-1" id="factooCalSummary">
                                     Cliquez pour choisir une date ou période
                                 </div>
 
@@ -14578,6 +14615,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         // Lancement au chargement de la page
         document.addEventListener('DOMContentLoaded', () => {
             renderCalendar();
+            if (typeof renderFactooCalendar === 'function') renderFactooCalendar();
             initDatesAndPeriods();
 
             // Initialisation de la vue Bureau / Smartphone sur ordinateur
@@ -14929,15 +14967,6 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const p = urlParams.get('phone') || (window.currentEntreprise ? window.currentEntreprise.telephone_whatsapp : '221788773827');
             window.location.href = '/abonnement?phone=' + encodeURIComponent(p);
         }
-                    const entPhone = currentEntreprise.telephone_whatsapp || '';
-                    const entNinea = currentEntreprise.ninea ? `(NINEA: ${currentEntreprise.ninea})` : '(NINEA en cours)';
-                    const entCap = currentEntreprise.capital_initial_fcfa ? ` • Capital: ${formatFCFA(currentEntreprise.capital_initial_fcfa)}` : '';
-                    const entVille = currentEntreprise.adresse_siege || 'Dakar, Sénégal';
-
-                    const elNom = document.getElementById('headerCompanyName');
-                    if (elNom) elNom.textContent = entNom;
-                    const elDet = document.getElementById('headerCompanyDetails');
-                   
 
         let currentSelectedSaasField = 'customer';
 
@@ -15276,7 +15305,7 @@ function handleFactooTypeFilter(val) {
         }
 
         // =========================================================================
-        // CALENDRIER MODERNE GROW PRO POUR FACTOO
+        // CALENDRIER MODERNE GROW PRO POUR FACTOO (AVEC SÉLECTEUR DE MOIS & ANNÉE)
         // =========================================================================
         let factooCalCurrentMonth = new Date();
         let factooStartDate = '';
@@ -15309,13 +15338,39 @@ function handleFactooTypeFilter(val) {
             renderFactooCalendar();
         }
 
+        function onFactooMonthYearSelectChange() {
+            const mSel = document.getElementById('factooCalMonthSelect');
+            const ySel = document.getElementById('factooCalYearSelect');
+            if (!mSel || !ySel) return;
+            const m = parseInt(mSel.value, 10);
+            const y = parseInt(ySel.value, 10);
+            factooCalCurrentMonth = new Date(y, m, 1);
+            renderFactooCalendar();
+        }
+
         function renderFactooCalendar() {
             const y = factooCalCurrentMonth.getFullYear();
             const m = factooCalCurrentMonth.getMonth();
-            const titleEl = document.getElementById('factooCalMonthTitle');
-            if (titleEl) {
-                const mName = factooCalCurrentMonth.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-                titleEl.textContent = mName.charAt(0).toUpperCase() + mName.slice(1);
+
+            // Synchronisation dynamique des menus déroulants Mois et Année
+            const mSel = document.getElementById('factooCalMonthSelect');
+            const ySel = document.getElementById('factooCalYearSelect');
+            if (mSel) mSel.value = String(m);
+            if (ySel) {
+                let optExists = false;
+                for (let i = 0; i < ySel.options.length; i++) {
+                    if (parseInt(ySel.options[i].value, 10) === y) {
+                        optExists = true;
+                        break;
+                    }
+                }
+                if (!optExists) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.textContent = y;
+                    ySel.appendChild(opt);
+                }
+                ySel.value = String(y);
             }
 
             const grid = document.getElementById('factooCalDaysGrid');
@@ -15326,13 +15381,15 @@ function handleFactooTypeFilter(val) {
             const startOffset = (firstDayIndex === 0 ? 7 : firstDayIndex) - 1;
             const daysInMonth = new Date(y, m + 1, 0).getDate();
 
+            // Cases vides du mois précédent pour aligner le premier jour (Lu..Di)
             for (let i = 0; i < startOffset; i++) {
                 const empty = document.createElement('div');
                 empty.className = 'cal-day-cell empty';
                 grid.appendChild(empty);
             }
 
-            const todayStr = new Date().toISOString().substring(0, 10);
+            const today = new Date();
+            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const cell = document.createElement('div');
@@ -15380,14 +15437,16 @@ function handleFactooTypeFilter(val) {
             if (factooStartDate && factooEndDate) {
                 const [y1, m1, d1] = factooStartDate.split('-');
                 const [y2, m2, d2] = factooEndDate.split('-');
-                if (factooStartDate === factooEndDate) {
+                if (factooStartDate === `${y1}-01-01` && factooEndDate === `${y1}-12-31`) {
+                    sum.textContent = `Année complète ${y1} (Exercice comptable)`;
+                } else if (factooStartDate === factooEndDate) {
                     sum.textContent = `Date : ${d1}/${m1}/${y1}`;
                 } else {
                     sum.textContent = `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
                 }
             } else if (factooStartDate) {
                 const [y1, m1, d1] = factooStartDate.split('-');
-                sum.textContent = `Début : ${d1}/${m1}/${y1} (cliquez pour terminer)`;
+                sum.textContent = `Début : ${d1}/${m1}/${y1} (choisissez la date de fin)`;
             } else {
                 sum.textContent = `Cliquez pour choisir une date ou période`;
             }
@@ -15405,10 +15464,12 @@ function handleFactooTypeFilter(val) {
             } else if (factooStartDate && factooEndDate) {
                 const [y1, m1, d1] = factooStartDate.split('-');
                 const [y2, m2, d2] = factooEndDate.split('-');
-                if (factooStartDate === factooEndDate) {
+                if (factooStartDate === `${y1}-01-01` && factooEndDate === `${y1}-12-31`) {
+                    if (btnLabel) btnLabel.textContent = `Année ${y1}`;
+                } else if (factooStartDate === factooEndDate) {
                     if (btnLabel) btnLabel.textContent = `${d1}/${m1}/${y1}`;
                 } else {
-                    if (btnLabel) btnLabel.textContent = `${d1}/${m1} - ${d2}/${m2}`;
+                    if (btnLabel) btnLabel.textContent = `${d1}/${m1} - ${d2}/${m2}/${y2}`;
                 }
                 currentFactooDate = '';
             }
@@ -15418,7 +15479,8 @@ function handleFactooTypeFilter(val) {
 
         function selectFactooCalendarPreset(type) {
             const now = new Date();
-            const todayStr = now.toISOString().substring(0, 10);
+            const curY = now.getFullYear();
+            const todayStr = `${curY}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
             if (type === 'all') {
                 factooStartDate = '';
@@ -15426,6 +15488,7 @@ function handleFactooTypeFilter(val) {
                 currentFactooDate = '';
                 const btnLabel = document.getElementById('factooDateBtnLabel');
                 if (btnLabel) btnLabel.textContent = 'Toutes les dates';
+                renderFactooCalendar();
                 applyAllFactooFilters();
                 closeFactooCalendar();
                 return;
@@ -15434,15 +15497,25 @@ function handleFactooTypeFilter(val) {
                 factooEndDate = todayStr;
                 factooCalCurrentMonth = new Date(now);
             } else if (type === 'month') {
-                factooStartDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-                factooEndDate = todayStr;
+                factooStartDate = `${curY}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+                const lastDay = new Date(curY, now.getMonth() + 1, 0).getDate();
+                factooEndDate = `${curY}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
                 factooCalCurrentMonth = new Date(now);
             } else if (type === 'last_month') {
-                const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                const lastDay = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                const prev = new Date(curY, now.getMonth() - 1, 1);
+                const lastDay = new Date(prev.getFullYear(), prev.getMonth() + 1, 0).getDate();
                 factooStartDate = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, '0')}-01`;
                 factooEndDate = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
                 factooCalCurrentMonth = new Date(prev);
+            } else if (type === 'year_current') {
+                factooStartDate = `${curY}-01-01`;
+                factooEndDate = `${curY}-12-31`;
+                factooCalCurrentMonth = new Date(curY, now.getMonth(), 1);
+            } else if (type === 'year_prev') {
+                const prevY = curY - 1;
+                factooStartDate = `${prevY}-01-01`;
+                factooEndDate = `${prevY}-12-31`;
+                factooCalCurrentMonth = new Date(prevY, 0, 1);
             }
 
             renderFactooCalendar();
