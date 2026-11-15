@@ -13216,6 +13216,8 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
             let creditCount = 0;
             let debitCount = 0;
+            let totalDebit = 0;
+            let totalCredit = 0;
 
             list.forEach((t, idx) => {
                 const tr = document.createElement('tr');
@@ -13365,7 +13367,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                         </button>
                     </td>
                     <td class="py-2.5 px-1.5 text-center whitespace-nowrap" onclick="event.stopPropagation()">
-                        <button type="button" onclick="ouvrirModalModifierEcriture(allTransactions[${idx}])" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#a0d9d2]/25 hover:bg-[#a0d9d2] text-[#14362b] border border-[#a0d9d2]/60 hover:border-[#a0d9d2] text-[10.5px] font-bold transition-all shadow-2xs cursor-pointer group" title="Modifier toute la ligne">
+                        <button type="button" onclick="ouvrirModalModifierEcritureById('${escapeHtml(t.id)}')" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#a0d9d2]/25 hover:bg-[#a0d9d2] text-[#14362b] border border-[#a0d9d2]/60 hover:border-[#a0d9d2] text-[10.5px] font-bold transition-all shadow-2xs cursor-pointer group" title="Modifier toute la ligne">
                             <span class="material-symbols-outlined notranslate text-[13px] text-[#14362b]" translate="no">edit</span>
                             <span>Modifier</span>
                         </button>
@@ -13404,7 +13406,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                                     <span class="material-symbols-outlined notranslate text-[11px]" translate="no">receipt_long</span>
                                     <span>Preuve</span>
                                 </button>
-                                <button type="button" onclick="event.stopPropagation(); ouvrirModalModifierEcriture(allTransactions[${idx}])" class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-[#a0d9d2] text-[#14362b] text-[10px] font-bold shadow-2xs hover:bg-[#8ecec6] transition-colors cursor-pointer">
+                                <button type="button" onclick="event.stopPropagation(); ouvrirModalModifierEcritureById('${escapeHtml(t.id)}')" class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-[#a0d9d2] text-[#14362b] text-[10px] font-bold shadow-2xs hover:bg-[#8ecec6] transition-colors cursor-pointer">
                                     <span class="material-symbols-outlined notranslate text-[11px]" translate="no">edit</span>
                                     <span>Modifier</span>
                                 </button>
@@ -16576,6 +16578,14 @@ function handleFactooTypeFilter(val) {
         // =========================================================================
         // GESTION DE LA MODIFICATION COMPLÈTE DE LA LIGNE D'ÉCRITURE
         // =========================================================================
+        function ouvrirModalModifierEcritureById(id) {
+            const list = window.allTransactions || allTransactions || [];
+            const tx = list.find(t => String(t.id) === String(id));
+            if (tx) {
+                ouvrirModalModifierEcriture(tx);
+            }
+        }
+
         function ouvrirModalModifierEcriture(tx) {
             if (!tx) return;
             const m = document.getElementById('modalModifierEcriture');
