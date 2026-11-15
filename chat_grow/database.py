@@ -300,11 +300,15 @@ def get_transactions_resilient(entreprise_id: str) -> List[Dict[str, Any]]:
     sp = get_supabase_client()
     if sp:
         def fetch_sp():
-            res = sp.table("transactions").select("*, preuves_numeriques(*)").eq("entreprise_id", entreprise_id).order("date_operation", desc=True).order("created_at", desc=True).execute()
-            return res.data or []
+            try:
+                res = sp.table("transactions").select("*, preuves_numeriques(*)").eq("entreprise_id", entreprise_id).order("date_operation", desc=True).order("created_at", desc=True).execute()
+                return res.data or []
+            except Exception:
+                res = sp.table("transactions").select("*").eq("entreprise_id", entreprise_id).order("date_operation", desc=True).order("created_at", desc=True).execute()
+                return res.data or []
 
-        data = run_with_timeout(fetch_sp, timeout_seconds=2.5, fallback=None)
-        if data is not None:
+        data = run_with_timeout(fetch_sp, timeout_seconds=5.0, fallback=None)
+        if data is not None and len(data) > 0:
             try:
                 mirror_transactions_to_sqlite(data)
             except Exception as e:

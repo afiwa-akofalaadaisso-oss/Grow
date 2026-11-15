@@ -11522,12 +11522,18 @@
             let pPhone = phone || queryPhone;
             let pId = entrepriseId || queryId;
 
+            // Assainissement strict pour éviter les résidus 'undefined' / 'null'
+            if (pPhone && (pPhone === 'undefined' || pPhone === 'null')) pPhone = null;
+            if (pId && (pId === 'undefined' || pId === 'null')) pId = null;
+
             // Priorité absolue au numéro de téléphone demandé (évite qu'un vieil ID résiduel en localStorage n'écrase le compte)
             if (pPhone && !queryId && !entrepriseId) {
                 pId = '';
             } else if (!pPhone && !pId) {
-                pPhone = localStorage.getItem('grow_active_phone') || '221788773827';
-                pId = localStorage.getItem('grow_active_id') || '';
+                const storedPhone = localStorage.getItem('grow_active_phone');
+                pPhone = (storedPhone && storedPhone !== 'undefined' && storedPhone !== 'null') ? storedPhone : '221788773827';
+                const storedId = localStorage.getItem('grow_active_id');
+                pId = (storedId && storedId !== 'undefined' && storedId !== 'null') ? storedId : 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27';
             }
             const debugModal = urlParams.get('debug_modal');
 

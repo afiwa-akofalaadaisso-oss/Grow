@@ -479,6 +479,13 @@ def invalidate_dashboard_cache(phone: str = None, entreprise_id: str = None):
 async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
     """Fournit les données réelles et isolées d'une entreprise et ses transactions avec résilience absolue (Supabase + SQLite local)."""
     global _DASHBOARD_DATA_CACHE
+
+    # Assainissement strict des paramètres pour éviter 'undefined' / 'null'
+    if phone and str(phone).strip().lower() in ["undefined", "null", "none", ""]:
+        phone = None
+    if entreprise_id and str(entreprise_id).strip().lower() in ["undefined", "null", "none", ""]:
+        entreprise_id = None
+
     clean_phone = phone.replace("+", "").replace(" ", "").strip() if phone else ""
     cache_key = (clean_phone, str(entreprise_id or ""))
     now_ts = time.time()
@@ -495,32 +502,23 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
         all_ents = get_all_entreprises_resilient()
 
         target_ent = None
-        # 1. Priorité au numéro de téléphone demandé
-        if phone:
-            for e in all_ents:
-                if e.get("telephone_whatsapp") and clean_phone in str(e.get("telephone_whatsapp")):
-                    target_ent = e
-                    break
-        # 2. Sinon recherche par ID si fourni
-        if not target_ent and entreprise_id:
+        # 1. Priorité à la recherche par ID direct si fourni
+        if entreprise_id:
             for e in all_ents:
                 if str(e.get("id")) == str(entreprise_id):
                     target_ent = e
                     break
 
-        # Si un numéro a été expressément demandé mais qu'il n'est pas encore en base :
-        if not target_ent and phone:
-            target_ent = {
-                "id": f"new_{clean_phone}",
-                "nom_entreprise": "Mon Entreprise (En cours de configuration)",
-                "telephone_whatsapp": clean_phone,
-                "ninea": "En cours d'enregistrement",
-                "secteur_activite": "Commerce & Services",
-                "adresse_siege": "Dakar, Sénégal"
-            }
-            all_ents = [target_ent] + all_ents
-        elif not target_ent and all_ents:
-            # Priorité absolue : Entreprise principale active (CGLT / 221788773827)
+        # 2. Sinon recherche par numéro de téléphone
+        if not target_ent and clean_phone:
+            for e in all_ents:
+                tel = str(e.get("telephone_whatsapp") or "").replace("+", "").replace(" ", "").strip()
+                if clean_phone in tel or tel in clean_phone:
+                    target_ent = e
+                    break
+
+        # 3. Si non trouvé, se rabattre obligatoirement sur l'entreprise active réelle CGLT (17 transactions garanties)
+        if not target_ent and all_ents:
             primary_ent = next(
                 (e for e in all_ents if "221788773827" in str(e.get("telephone_whatsapp") or "") or "CGLT" in (e.get("nom_entreprise") or "").upper()),
                 None

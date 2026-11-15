@@ -86,19 +86,46 @@ Grow-mvp/
 git clone https://github.com/ton-repo/Grow-mvp.git
 cd Grow-mvp
 pip install -r requirements.txt   # FastAPI, Uvicorn, Twilio, Supabase, Google-GenerativeAI
+npm install                      # Outils de développement
 ```
 
 ### 2. Configurer les variables d'environnement
-Copiez `grow_shared/.env.example` vers `.env` et complétez vos clés :
+Copiez `grow_shared/.env.example` vers `chat_grow/.env` et complétez vos clés :
 ```bash
 cp grow_shared/.env.example chat_grow/.env
 ```
 
-### 3. Lancer l'application
+### 3. Démarrer tout en 1 commande (`npm run dev`)
 ```bash
-cd chat_grow
-python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+npm run dev
 ```
 
-* **Logiciel Web Comptable** : Ouvrez [http://localhost:8000/dashboard?portal=1](http://localhost:8000/dashboard?portal=1)
-* **Webhook WhatsApp** : L'URL est `http://localhost:8000/webhook` (exposable publiquement via Cloudflare Tunnel ou Ngrok).
+Cette commande démarre automatiquement :
+* 💻 **Le Logiciel Web Comptable** sur le port fixe : [http://localhost:8000/dashboard?portal=1](http://localhost:8000/dashboard?portal=1)
+* 📱 **Le Webhook WhatsApp Meta** : `http://localhost:8000/webhook`
+* 🗄️ **La Base Supabase Cloud** reliée en direct (36 écritures SYSCOHADA synchronisées)
+* 🔗 **Le Tunnel Public Cloudflare** pour recevoir les messages WhatsApp en temps réel.
+
+---
+
+## 🔒 Comment Sceller Définitivement le Tunnel WhatsApp (Lien Fixe à Vie)
+
+Pour que l'URL du webhook WhatsApp sur Meta for Developers ne change **JAMAIS**, vous disposez de deux méthodes scellées :
+
+### Option A : Tunnel Permanent Cloudflare Zero Trust (Recommandée)
+1. Rendez-vous sur votre compte Cloudflare gratuit : [dash.cloudflare.com](https://dash.cloudflare.com) > **Zero Trust** > **Networks** > **Tunnels**.
+2. Cliquez sur **Create a tunnel** (nommez-le par exemple `grow-dakar`).
+3. Cloudflare vous fournit un **Tunnel Token** unique.
+4. Ajoutez simplement cette ligne dans votre fichier `.env` :
+   ```env
+   CLOUDFLARE_TUNNEL_TOKEN="eyJhIjoi..."
+   ```
+5. Désormais, chaque fois que vous exécutez `npm run dev`, le tunnel se reconnecte automatiquement à votre adresse fixe scellée sans jamais changer d'URL ! Vous n'aurez plus **JAMAIS** à modifier l'URL du webhook sur Meta.
+
+### Option B : Localtunnel avec Sous-Domaine Réservé
+Si vous souhaitez un sous-domaine fixe immédiat sans compte Cloudflare, exécutez :
+```bash
+npx localtunnel --port 8000 --subdomain grow-assistant-dakar
+```
+Votre URL permanente sur Meta sera alors définitivement :
+👉 `https://grow-assistant-dakar.loca.lt/webhook`

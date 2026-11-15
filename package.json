@@ -1,0 +1,23 @@
+{
+  "name": "grow-mvp",
+  "version": "1.0.0",
+  "description": "Grow MVP - Copilote Financier & Assistant Pré-Comptable SYSCOHADA (WhatsApp & Logiciel Web)",
+  "main": "chat_grow/main.py",
+  "scripts": {
+    "dev": "node dev.js",
+    "start": "node dev.js",
+    "app": "cd chat_grow && python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload",
+    "tunnel": "node dev.js --tunnel-only"
+  },
+  "keywords": [
+    "grow",
+    "fintech",
+    "whatsapp",
+    "syscohada",
+    "dakar",
+    "senegal",
+    "comptabilite"
+  ],
+  "author": "Grow Team",
+  "license": "ISC"
+}
