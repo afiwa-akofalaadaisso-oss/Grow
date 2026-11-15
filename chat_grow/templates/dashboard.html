@@ -7611,22 +7611,36 @@
             color: #94a3b8;
         }
         /* Suppression absolue de tout contour bleu ou anneau natif */
+        input,
         input:focus,
         input:focus-visible,
+        input:active,
         select:focus,
         select:focus-visible,
+        button:focus,
         button:focus-visible,
         #portalCompanySearchInput,
         #portalCompanySearchInput:focus,
         #portalCompanySearchInput:focus-visible,
         #portalCompanySearchInput:active,
+        .portal-search-input,
+        .portal-search-input:focus,
+        .portal-search-input:focus-visible,
+        .portal-search-input:active,
         #factooTypeSearchInput,
         #factooTypeSearchInput:focus,
         #factooTypeSearchInput:focus-visible,
         #factooTypeSearchInput:active {
             outline: none !important;
+            outline-width: 0 !important;
+            outline-style: none !important;
+            outline-color: transparent !important;
+            border: 0 !important;
+            border-color: transparent !important;
             box-shadow: none !important;
             -webkit-box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-focus-ring-color: transparent !important;
             ring: 0 !important;
             --tw-ring-shadow: none !important;
             --tw-ring-offset-shadow: none !important;
@@ -7774,7 +7788,8 @@
                 <div class="portal-search-pill relative flex items-center w-full px-4 py-2.5 transition-all">
                     <span class="material-symbols-outlined notranslate text-[#94a3b8] text-[19px] mr-2.5 flex-shrink-0 select-none" translate="no">search</span>
                     <input type="text" id="portalCompanySearchInput" 
-                           class="portal-search-input w-full bg-transparent text-[#1e293b] placeholder:text-[#94a3b8] text-xs sm:text-[13.5px] font-medium tracking-wide focus:outline-none"
+                           style="outline: none !important; outline-width: 0 !important; border: none !important; box-shadow: none !important; -webkit-tap-highlight-color: transparent !important; -webkit-focus-ring-color: transparent !important;"
+                           class="portal-search-input w-full bg-transparent text-[#1e293b] placeholder:text-[#94a3b8] text-xs sm:text-[13.5px] font-medium tracking-wide focus:outline-none focus:ring-0 focus:border-0"
                            placeholder="Rechercher une entreprise cliente..."
                            autocomplete="off"
                            oninput="handlePortalCompanySearch(this.value)"
