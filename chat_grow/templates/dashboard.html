@@ -8095,26 +8095,14 @@
                             <!-- Éléments mobiles injectés dynamiquement -->
                         </div>
 
-                        <!-- 1. PIED DE TABLEAU : Pagination interactive Factoo -->
-                        <div class="px-4 py-3 bg-white border-t border-slate-200/80 flex items-center justify-between select-none text-xs">
-                            <div class="text-slate-500 font-medium">
-                                Affichage de <strong class="text-slate-800" id="pagStart">1</strong> à <strong class="text-slate-800" id="pagEnd">8</strong> sur <strong class="text-slate-800" id="pagTotal">16</strong> écritures
-                            </div>
 
-                            <!-- Pagination numérotée Factoo (< 1 2 3 >) DYNAMIQUE & INTERACTIVE -->
-                            <div class="flex items-center gap-1" id="factooPaginationContainer">
-                                <button type="button" onclick="changeFactooPage(1)" class="w-7 h-7 rounded-lg bg-[#a0d9d2] text-[#14362b] font-bold flex items-center justify-center shadow-xs cursor-pointer">
-                                    1
-                                </button>
-                            </div>
-                        </div>
 
                         <!-- 2. BANDEAU DE CONFORMITÉ & TOTAUX FINANCIERS SYSCOHADA -->
-                        <div class="border-t border-slate-100 px-4 py-3 flex flex-wrap items-center justify-between text-xs text-slate-600 select-none gap-3 bg-slate-50/50">
+                        <div class="border-t border-slate-200/80 px-4 py-3.5 flex flex-wrap items-center justify-between text-xs text-slate-600 select-none gap-3 bg-white">
                             <div class="flex items-center gap-2 text-slate-600 font-medium">
                                 <span class="material-symbols-outlined notranslate text-[17px] text-[#168078]" translate="no">verified_user</span>
-                                <span class="text-slate-700 font-semibold text-xs">Conformité SYSCOHADA vérifiée</span>
-                                <span class="text-slate-400 hidden sm:inline">&bull; Écritures équilibrées</span>
+                                <span class="text-slate-800 font-bold text-xs"><strong id="pagTotal">16</strong> opérations comptabilisées</span>
+                                <span class="text-slate-400 hidden sm:inline">&bull; Conformité SYSCOHADA vérifiée</span>
                             </div>
 
                             <div class="flex items-center gap-3 font-mono text-xs">
@@ -12598,121 +12586,26 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             applyAllFiltersAndRender();
         }
 
-                // =========================================================================
-        // GESTION DE LA PAGINATION INTERACTIVE GROW PRO
-        // =========================================================================
-        let factooCurrentPage = 1;
-        const FACTOO_PAGE_SIZE = 8; // 8 écritures par page
-        let factooFilteredCache = [];
-
-        function changeFactooPage(newPage) {
-            const total = (factooFilteredCache && factooFilteredCache.length) || 0;
-            const totalPages = Math.ceil(total / FACTOO_PAGE_SIZE) || 1;
-            if (newPage < 1 || newPage > totalPages) return;
-            factooCurrentPage = newPage;
-            renderTransactionsList(factooFilteredCache, total, false);
-            const tbl = document.getElementById('transactionsTable');
-            if (tbl) tbl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        function renderFactooPaginationControls(totalPages) {
-            const container = document.getElementById('factooPaginationContainer');
-            if (!container) return;
-
-            if (totalPages <= 1) {
-                container.innerHTML = `
-                    <button type="button" class="w-7 h-7 rounded-lg bg-[#a0d9d2] text-[#14362b] font-bold flex items-center justify-center shadow-xs cursor-default select-none">
-                        1
-                    </button>
-                `;
-                return;
-            }
-
-            let html = '';
-
-            // Bouton Précédent (‹)
-            const prevDisabled = factooCurrentPage <= 1;
-            html += `
-                <button type="button" 
-                        onclick="changeFactooPage(${factooCurrentPage - 1})" 
-                        ${prevDisabled ? 'disabled' : ''} 
-                        class="w-7 h-7 rounded-lg border border-slate-200 bg-white ${prevDisabled ? 'opacity-30 cursor-not-allowed text-slate-300' : 'hover:bg-slate-50 text-slate-700 cursor-pointer'} flex items-center justify-center transition-colors select-none" title="Page précédente">
-                    ‹
-                </button>
-            `;
-
-            // Boutons de numéros de page
-            for (let p = 1; p <= totalPages; p++) {
-                if (p === factooCurrentPage) {
-                    html += `
-                        <button type="button" class="w-7 h-7 rounded-lg bg-[#a0d9d2] text-[#14362b] font-bold flex items-center justify-center shadow-xs cursor-default select-none">
-                            ${p}
-                        </button>
-                    `;
-                } else {
-                    html += `
-                        <button type="button" 
-                                onclick="changeFactooPage(${p})" 
-                                class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold flex items-center justify-center transition-colors cursor-pointer select-none" title="Page ${p}">
-                            ${p}
-                        </button>
-                    `;
-                }
-            }
-
-            // Bouton Suivant (›)
-            const nextDisabled = factooCurrentPage >= totalPages;
-            html += `
-                <button type="button" 
-                        onclick="changeFactooPage(${factooCurrentPage + 1})" 
-                        ${nextDisabled ? 'disabled' : ''} 
-                        class="w-7 h-7 rounded-lg border border-slate-200 bg-white ${nextDisabled ? 'opacity-30 cursor-not-allowed text-slate-300' : 'hover:bg-slate-50 text-slate-700 cursor-pointer'} flex items-center justify-center transition-colors select-none" title="Page suivante">
-                    ›
-                </button>
-            `;
-
-            container.innerHTML = html;
-        }
-
-        function renderTransactionsList(txList, totalFilteredCount, resetPage = false) {
+                        function renderTransactionsList(txList, totalFilteredCount) {
             const tbody = document.getElementById('tableBody');
             const mobContainer = document.getElementById('mobileTransactionsList');
             if (tbody) tbody.innerHTML = '';
             if (mobContainer) mobContainer.innerHTML = '';
 
             const list = txList || [];
-            factooFilteredCache = list;
             const total = (typeof totalFilteredCount === 'number') ? totalFilteredCount : list.length;
 
-            if (resetPage) {
-                factooCurrentPage = 1;
-            }
-
-            const totalPages = Math.ceil(total / FACTOO_PAGE_SIZE) || 1;
-            if (factooCurrentPage > totalPages) factooCurrentPage = totalPages;
-            if (factooCurrentPage < 1) factooCurrentPage = 1;
-
-            const startIndex = (factooCurrentPage - 1) * FACTOO_PAGE_SIZE;
-            const endIndex = Math.min(startIndex + FACTOO_PAGE_SIZE, total);
-            const pageItems = list.slice(startIndex, endIndex);
-
-            const pagStart = document.getElementById('pagStart');
-            const pagEnd = document.getElementById('pagEnd');
             const pagTotal = document.getElementById('pagTotal');
-            if (pagStart) pagStart.textContent = total > 0 ? String(startIndex + 1) : '0';
-            if (pagEnd) pagEnd.textContent = String(endIndex);
             if (pagTotal) pagTotal.textContent = String(total);
-
-            // Mettre à jour les boutons de pagination
-            renderFactooPaginationControls(totalPages);
 
             const countEl = document.getElementById('txCountBadge');
             if (countEl) countEl.textContent = total + ' opérations';
+            
             // Factoo pills counts
-            if (txList && txList.length > 0) {
+            if (list && list.length > 0) {
                 let pendingCount = 0;
                 let validCount = 0;
-                txList.forEach((t, i) => {
+                list.forEach((t, i) => {
                     const isValide = (t.statut === 'VALIDE' || t.statut === 'CERTIFIE' || (i % 3 === 0));
                     if (isValide) validCount++; else pendingCount++;
                 });
@@ -12722,10 +12615,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 if (elV) elV.textContent = String(validCount);
             }
 
-            let totalDebit = 0;
-            let totalCredit = 0;
-
-            if (!txList || txList.length === 0) {
+            if (!list || list.length === 0) {
                 if (tbody) {
                     tbody.innerHTML = `
                         <tr>
@@ -12755,7 +12645,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             let creditCount = 0;
             let debitCount = 0;
 
-            pageItems.forEach((t, idx) => {
+            list.forEach((t, idx) => {
                 const tr = document.createElement('tr');
                 if (t._isNew) {
                     tr.className = 'bg-teal-50/90 hover:bg-teal-100/80 border-b border-teal-200 cursor-pointer transition-all duration-700';
