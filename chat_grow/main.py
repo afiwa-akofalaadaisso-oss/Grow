@@ -495,14 +495,16 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
         all_ents = get_all_entreprises_resilient()
 
         target_ent = None
-        if entreprise_id:
-            for e in all_ents:
-                if str(e.get("id")) == str(entreprise_id):
-                    target_ent = e
-                    break
-        elif phone:
+        # 1. Priorité au numéro de téléphone demandé
+        if phone:
             for e in all_ents:
                 if e.get("telephone_whatsapp") and clean_phone in str(e.get("telephone_whatsapp")):
+                    target_ent = e
+                    break
+        # 2. Sinon recherche par ID si fourni
+        if not target_ent and entreprise_id:
+            for e in all_ents:
+                if str(e.get("id")) == str(entreprise_id):
                     target_ent = e
                     break
 

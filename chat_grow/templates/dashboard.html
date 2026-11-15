@@ -7727,7 +7727,7 @@
     <!-- ========================================================================= -->
     <!-- PORTAIL ACCUEIL EXPERT-COMPTABLE (STYLE SCANDINAVE ARCHITECTURAL ÉPURÉ)  -->
     <!-- ========================================================================= -->
-    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: flex;">
+    <div id="viewPortalComptable" class="fixed inset-0 z-[1500] flex items-center justify-center overflow-hidden" style="display: none;">
 
         <!-- En-tête supérieur du portail d'accueil avec Se connecter -->
         <header class="absolute top-0 left-0 right-0 h-16 px-6 sm:px-10 flex items-center justify-between z-20 pointer-events-auto select-none">
@@ -11481,9 +11481,20 @@
         // Chargement initial des données depuis Supabase
         async function loadDashboardData(entrepriseId = null, phone = null, isSilent = false, manualTrigger = false) {
             const urlParams = new URLSearchParams(window.location.search);
-            const pPhone = phone || urlParams.get('phone') || localStorage.getItem('grow_active_phone') || '221788773827';
+            const queryPhone = urlParams.get('phone');
+            const queryId = urlParams.get('id');
+
+            let pPhone = phone || queryPhone;
+            let pId = entrepriseId || queryId;
+
+            // Priorité absolue au numéro de téléphone demandé (évite qu'un vieil ID résiduel en localStorage n'écrase le compte)
+            if (pPhone && !queryId && !entrepriseId) {
+                pId = '';
+            } else if (!pPhone && !pId) {
+                pPhone = localStorage.getItem('grow_active_phone') || '221788773827';
+                pId = localStorage.getItem('grow_active_id') || '';
+            }
             const debugModal = urlParams.get('debug_modal');
-            const pId = entrepriseId || urlParams.get('id') || localStorage.getItem('grow_active_id') || '';
 
             let apiUrl = '/api/dashboard-data?';
             if (pId) apiUrl += `entreprise_id=${encodeURIComponent(pId)}&`;
@@ -15350,10 +15361,11 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (new URLSearchParams(window.location.search).get('open_webhook') === '1') {
                 setTimeout(ouvrirModalWebhookAssistant, 400);
             }
-            // PAR DÉFAUT : Démarrage toujours sur la page d'accueil (Portail de recherche scénarisé)
+            
+            // Le portail d'accueil ne s'ouvre que si expressément demandé (?portal=true ou ?portal=1)
             const urlParamsPortal = new URLSearchParams(window.location.search);
-            const skipPortal = urlParamsPortal.get('direct') === '1' || urlParamsPortal.get('skip_portal') === '1';
-            if (!skipPortal) {
+            const forcePortal = urlParamsPortal.get('portal') === '1' || urlParamsPortal.get('portal') === 'true';
+            if (forcePortal) {
                 openPortalView();
             } else {
                 quitterPortailVersDossier();
