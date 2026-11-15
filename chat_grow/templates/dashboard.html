@@ -10234,42 +10234,45 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- MODALE MODIFIER TOUTE LA LIGNE D'ÉCRITURE COMPTABLE                       -->
+    <!-- MODALE OFFICIELLE : MODIFIER UNE ÉCRITURE COMPTABLE (SYSCOHADA PRO)       -->
     <!-- ========================================================================= -->
-    <div id="modalModifierEcriture" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 2600;" onclick="closeModalModifierEcriture()">
-        <div class="relative w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
-            <!-- Top bar -->
-            <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-[#081514] text-white">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-[#14362b] border border-[#a0d9d2]/40 flex items-center justify-center text-[#a0d9d2]">
-                        <span class="material-symbols-outlined notranslate text-[20px]" translate="no">edit_note</span>
+    <div id="modalModifierEcriture" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 2600; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(8px);" onclick="closeModalModifierEcriture()">
+        <div class="relative w-full max-w-lg mx-4 bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
+            
+            <!-- Header Lumineux Fintech Pro -->
+            <div class="px-6 py-4.5 flex items-center justify-between border-b border-slate-100 bg-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[#14362b] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0">
+                        <i class="fa-solid fa-pen-to-square text-[16px]"></i>
                     </div>
                     <div>
-                        <h3 class="text-[13.5px] font-bold text-white flex items-center gap-1.5">
-                            <span>Modifier l'écriture comptable</span>
-                            <span class="text-[10px] font-bold text-[#14362b] bg-[#a0d9d2] px-2 py-0.2 rounded-full">SYSCOHADA</span>
-                        </h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Modifiez l'ensemble des informations de cette ligne d'opération</p>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-[15px] font-bold text-slate-900 tracking-tight">Modifier l'écriture comptable</h3>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#a0d9d2]/20 text-[#14362b] border border-[#a0d9d2]/50">
+                                SYSCOHADA
+                            </span>
+                        </div>
+                        <p class="text-[11.5px] text-slate-400 font-medium mt-0.5">Mise à jour directe du Grand-Livre & Trésorerie</p>
                     </div>
                 </div>
-                <button type="button" onclick="closeModalModifierEcriture()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer">
+                <button type="button" onclick="closeModalModifierEcriture()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer" title="Fermer">
                     <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
                 </button>
             </div>
 
-            <!-- Formulaire complet -->
-            <form id="formModifierEcriture" onsubmit="submitModifierEcriture(event)" class="p-5 space-y-3.5 text-xs">
+            <!-- Formulaire épuré -->
+            <form id="formModifierEcriture" onsubmit="submitModifierEcriture(event)" class="p-6 space-y-4 text-xs">
                 <input type="hidden" id="editTxId" value="">
 
-                <!-- 1. Sens du flux / Pièce -->
+                <!-- 1. Sens du flux / Segmented Control -->
                 <div>
-                    <label class="block text-slate-700 font-semibold mb-1">Type de flux / Opération *</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button type="button" id="editBtnFluxEntree" onclick="setEditFlux('ENTREE')" class="py-2 px-3 rounded-lg border flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer">
+                    <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5 uppercase tracking-wider">Type de flux comptable *</label>
+                    <div class="bg-slate-100/80 p-1 rounded-xl grid grid-cols-2 gap-1 border border-slate-200/60">
+                        <button type="button" id="editBtnFluxEntree" onclick="setEditFlux('ENTREE')" class="py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 font-bold text-[12px] transition-all cursor-pointer">
                             <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_downward</span>
                             <span>Crédit (Vente / Recette)</span>
                         </button>
-                        <button type="button" id="editBtnFluxSortie" onclick="setEditFlux('SORTIE')" class="py-2 px-3 rounded-lg border flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer">
+                        <button type="button" id="editBtnFluxSortie" onclick="setEditFlux('SORTIE')" class="py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 font-bold text-[12px] transition-all cursor-pointer">
                             <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_upward</span>
                             <span>Débit (Achat / Dépense)</span>
                         </button>
@@ -10279,46 +10282,52 @@
 
                 <!-- 2. Libellé -->
                 <div>
-                    <label class="block text-slate-700 font-semibold mb-1">Libellé de l'opération *</label>
-                    <input type="text" id="editTxLibelle" required class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all" placeholder="Ex: Facture Client #ECR-0097 - SARL Teranga Transport">
+                    <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Libellé de l'opération *</label>
+                    <input type="text" id="editTxLibelle" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 text-slate-900 font-semibold text-[13px] placeholder:text-slate-400 transition-all" placeholder="Ex: Règlement facture SARL Teranga Transport">
                 </div>
 
                 <!-- 3. Montant & Date -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
-                        <label class="block text-slate-700 font-semibold mb-1">Montant (FCFA) *</label>
-                        <input type="number" id="editTxMontant" required min="1" step="1" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-mono font-bold text-xs transition-all">
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Montant net *</label>
+                        <div class="relative flex items-center">
+                            <input type="number" id="editTxMontant" required min="1" step="1" class="w-full pl-3.5 pr-14 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 text-slate-900 font-mono font-bold text-[14px] transition-all" placeholder="0">
+                            <span class="absolute right-3.5 text-[11px] font-bold text-slate-400 pointer-events-none">FCFA</span>
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-slate-700 font-semibold mb-1">Date de l'opération *</label>
-                        <input type="date" id="editTxDate" required class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-700 font-medium text-xs transition-all">
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Date de l'opération *</label>
+                        <input type="date" id="editTxDate" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 text-slate-800 font-medium text-[13px] transition-all">
                     </div>
                 </div>
 
-                <!-- 4. Compte SYSCOHADA & Source -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- 4. Compte SYSCOHADA & Mode de règlement -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
-                        <label class="block text-slate-700 font-semibold mb-1">N° de compte SYSCOHADA *</label>
-                        <select id="editTxCompte" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Compte SYSCOHADA *</label>
+                        <select id="editTxCompte" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
                             <option value="706">706 - Services vendus / Prestations</option>
                             <option value="701">701 - Ventes de marchandises</option>
                             <option value="601">601 - Achats de marchandises</option>
-                            <option value="605">605 - Autres achats / Carburant / Transport</option>
-                            <option value="622">622 - Locations & loyers commerciaux</option>
-                            <option value="624">624 - Entretien & réparations</option>
-                            <option value="631">631 - Impôts, taxes et versements assimilés</option>
-                            <option value="661">661 - Rémunérations directes du personnel</option>
+                            <option value="605">605 - Énergie (Senelec, Woyofal)</option>
+                            <option value="612">612 - Transports & Déplacements</option>
+                            <option value="622">622 - Locations & Loyers</option>
+                            <option value="628">628 - Frais Télécom / Internet</option>
+                            <option value="631">631 - Impôts & Taxes directes</option>
+                            <option value="661">661 - Rémunération du personnel</option>
                             <option value="658">658 - Charges diverses d'exploitation</option>
-                            <option value="471100">471100 - Compte d'attente / À régulariser</option>
-                            <option value="521">521 - Banque locale (CBAO / BOA)</option>
-                            <option value="571">571 - Caisse espèces</option>
+                            <option value="411">411 - Créances Clients</option>
+                            <option value="401">401 - Dettes Fournisseurs</option>
+                            <option value="521">521 - Banque CBAO Sénégal</option>
+                            <option value="571">571 - Caisse Espèces</option>
+                            <option value="471100">471100 - Compte d'attente</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-slate-700 font-semibold mb-1">Mode de règlement *</label>
-                        <select id="editTxSource" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
-                            <option value="WAVE">Wave Sénégal</option>
-                            <option value="ORANGE_MONEY">Orange Money</option>
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Mode de règlement *</label>
+                        <select id="editTxSource" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
+                            <option value="WAVE">Wave Business (API)</option>
+                            <option value="ORANGE_MONEY">Orange Money Sénégal</option>
                             <option value="BANQUE">Virement Bancaire CBAO</option>
                             <option value="ESPECES">Caisse Espèces</option>
                         </select>
@@ -10326,36 +10335,34 @@
                 </div>
 
                 <!-- 5. Référence pièce & Statut -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
-                        <label class="block text-slate-700 font-semibold mb-1">N° de pièce / Justificatif</label>
-                        <input type="text" id="editTxRef" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-mono text-xs transition-all" placeholder="Ex: ECR-0097">
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">N° de pièce / Réf. Justificatif</label>
+                        <input type="text" id="editTxRef" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-mono text-[12px] transition-all" placeholder="Ex: WV-43110-SN">
                     </div>
                     <div>
-                        <label class="block text-slate-700 font-semibold mb-1">Statut</label>
-                        <select id="editTxStatut" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
-                            <option value="VALIDE_PME">Validé</option>
-                            <option value="EN_ATTENTE">En attente de justificatif</option>
-                            <option value="CERTIFIE">Certifié ONECCA</option>
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Statut de validation</label>
+                        <select id="editTxStatut" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
+                            <option value="VALIDE_PME">● Validé (Rapproché)</option>
+                            <option value="EN_ATTENTE">○ En attente de pièce</option>
+                            <option value="CERTIFIE">✓ Certifié SYSCOHADA</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Actions -->
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
-                    <button type="button" onclick="closeModalModifierEcriture()" class="px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-semibold transition-colors cursor-pointer">
+                <!-- Footer Actions -->
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                    <button type="button" onclick="closeModalModifierEcriture()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-semibold text-[12.5px] transition-colors cursor-pointer">
                         Annuler
                     </button>
-                    <button type="submit" id="btnSubmitModifierEcriture" class="px-5 py-2 rounded-lg bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] font-bold transition-all shadow-sm shadow-[#a0d9d2]/30 cursor-pointer flex items-center gap-1.5">
-                        <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">save</span>
+                    <button type="submit" id="btnSubmitModifierEcriture" class="px-5 py-2.5 rounded-xl bg-[#14362b] hover:bg-[#1c4d3e] text-white font-bold text-[12.5px] shadow-sm hover:shadow transition-all cursor-pointer flex items-center gap-2 active:scale-[0.98]">
+                        <span class="material-symbols-outlined notranslate text-[16px] text-[#a0d9d2]" translate="no">check_circle</span>
                         <span>Enregistrer les modifications</span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-
-    <!-- ========================================================================= -->
     <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (SMARTPHONE & PC)           -->
     <!-- ========================================================================= -->
     <!-- ========================================================================= -->
@@ -14765,132 +14772,6 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- MODALE MODIFIER TOUTE LA LIGNE D'ÉCRITURE COMPTABLE                       -->
-    <!-- ========================================================================= -->
-    <div id="modalModifierEcriture" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 2600;" onclick="closeModalModifierEcriture()">
-        <div class="relative w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
-            <!-- Top bar -->
-            <div class="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-[#081514] text-white">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-[#14362b] border border-[#a0d9d2]/40 flex items-center justify-center text-[#a0d9d2]">
-                        <span class="material-symbols-outlined notranslate text-[20px]" translate="no">edit_note</span>
-                    </div>
-                    <div>
-                        <h3 class="text-[13.5px] font-bold text-white flex items-center gap-1.5">
-                            <span>Modifier l'écriture comptable</span>
-                            <span class="text-[10px] font-bold text-[#14362b] bg-[#a0d9d2] px-2 py-0.2 rounded-full">SYSCOHADA</span>
-                        </h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Modifiez l'ensemble des informations de cette ligne d'opération</p>
-                    </div>
-                </div>
-                <button type="button" onclick="closeModalModifierEcriture()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer">
-                    <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
-                </button>
-            </div>
-
-            <!-- Formulaire complet -->
-            <form id="formModifierEcriture" onsubmit="submitModifierEcriture(event)" class="p-5 space-y-3.5 text-xs">
-                <input type="hidden" id="editTxId" value="">
-
-                <!-- 1. Sens du flux / Pièce -->
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">Type de flux / Opération *</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button type="button" id="editBtnFluxEntree" onclick="setEditFlux('ENTREE')" class="py-2 px-3 rounded-lg border flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer">
-                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_downward</span>
-                            <span>Crédit (Vente / Recette)</span>
-                        </button>
-                        <button type="button" id="editBtnFluxSortie" onclick="setEditFlux('SORTIE')" class="py-2 px-3 rounded-lg border flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer">
-                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_upward</span>
-                            <span>Débit (Achat / Dépense)</span>
-                        </button>
-                    </div>
-                    <input type="hidden" id="editTxFlux" value="ENTREE">
-                </div>
-
-                <!-- 2. Libellé -->
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-1">Libellé de l'opération *</label>
-                    <input type="text" id="editTxLibelle" required class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all" placeholder="Ex: Facture Client #ECR-0097 - SARL Teranga Transport">
-                </div>
-
-                <!-- 3. Montant & Date -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">Montant (FCFA) *</label>
-                        <input type="number" id="editTxMontant" required min="1" step="1" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-mono font-bold text-xs transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">Date de l'opération *</label>
-                        <input type="date" id="editTxDate" required class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-700 font-medium text-xs transition-all">
-                    </div>
-                </div>
-
-                <!-- 4. Compte SYSCOHADA & Source -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">N° de compte SYSCOHADA *</label>
-                        <select id="editTxCompte" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
-                            <option value="706">706 - Services vendus / Prestations</option>
-                            <option value="701">701 - Ventes de marchandises</option>
-                            <option value="601">601 - Achats de marchandises</option>
-                            <option value="605">605 - Autres achats / Carburant / Transport</option>
-                            <option value="622">622 - Locations & loyers commerciaux</option>
-                            <option value="624">624 - Entretien & réparations</option>
-                            <option value="631">631 - Impôts, taxes et versements assimilés</option>
-                            <option value="661">661 - Rémunérations directes du personnel</option>
-                            <option value="658">658 - Charges diverses d'exploitation</option>
-                            <option value="471100">471100 - Compte d'attente / À régulariser</option>
-                            <option value="521">521 - Banque locale (CBAO / BOA)</option>
-                            <option value="571">571 - Caisse espèces</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">Mode de règlement *</label>
-                        <select id="editTxSource" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
-                            <option value="WAVE">Wave Sénégal</option>
-                            <option value="ORANGE_MONEY">Orange Money</option>
-                            <option value="BANQUE">Virement Bancaire CBAO</option>
-                            <option value="ESPECES">Caisse Espèces</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- 5. Référence pièce & Statut -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">N° de pièce / Justificatif</label>
-                        <input type="text" id="editTxRef" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-mono text-xs transition-all" placeholder="Ex: ECR-0097">
-                    </div>
-                    <div>
-                        <label class="block text-slate-700 font-semibold mb-1">Statut</label>
-                        <select id="editTxStatut" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#a0d9d2] text-slate-900 font-medium text-xs transition-all">
-                            <option value="VALIDE_PME">Validé</option>
-                            <option value="EN_ATTENTE">En attente de justificatif</option>
-                            <option value="CERTIFIE">Certifié ONECCA</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Actions -->
-                <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
-                    <button type="button" onclick="closeModalModifierEcriture()" class="px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-semibold transition-colors cursor-pointer">
-                        Annuler
-                    </button>
-                    <button type="submit" id="btnSubmitModifierEcriture" class="px-5 py-2 rounded-lg bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] font-bold transition-all shadow-sm shadow-[#a0d9d2]/30 cursor-pointer flex items-center gap-1.5">
-                        <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">save</span>
-                        <span>Enregistrer les modifications</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ========================================================================= -->
-    <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (SMARTPHONE & PC)           -->
-    <!-- ========================================================================= -->
-    <!-- ========================================================================= -->
     <!-- MODALE DÉTAIL D'UNE TRANSACTION AU CLIC SUR LA CARTE MOBILE                -->
     <!-- ========================================================================= -->
     <div id="modalTxDetail" class="modal-backdrop" style="display: none; align-items: center; justify-content: center;" onclick="closeModalTxDetail()">
@@ -15669,15 +15550,18 @@ function handleFactooTypeFilter(val) {
         }
 
         function setEditFlux(flux) {
-            document.getElementById('editTxFlux').value = flux;
+            const fluxInput = document.getElementById('editTxFlux');
+            if (fluxInput) fluxInput.value = flux;
             const btnEntree = document.getElementById('editBtnFluxEntree');
             const btnSortie = document.getElementById('editBtnFluxSortie');
+            if (!btnEntree || !btnSortie) return;
+
             if (flux === 'ENTREE') {
-                btnEntree.className = 'py-2 px-3 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer shadow-2xs';
-                btnSortie.className = 'py-2 px-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-500 flex items-center justify-center gap-1.5 font-medium transition-all cursor-pointer hover:bg-slate-100';
+                btnEntree.className = 'py-2.5 px-3 rounded-lg bg-white text-emerald-700 font-bold flex items-center justify-center gap-2 border border-slate-200 shadow-xs text-[12px] transition-all cursor-pointer';
+                btnSortie.className = 'py-2.5 px-3 rounded-lg text-slate-500 hover:text-slate-800 font-semibold flex items-center justify-center gap-2 text-[12px] transition-all cursor-pointer';
             } else {
-                btnEntree.className = 'py-2 px-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-500 flex items-center justify-center gap-1.5 font-medium transition-all cursor-pointer hover:bg-slate-100';
-                btnSortie.className = 'py-2 px-3 rounded-lg border border-rose-300 bg-rose-50 text-rose-800 flex items-center justify-center gap-1.5 font-bold transition-all cursor-pointer shadow-2xs';
+                btnEntree.className = 'py-2.5 px-3 rounded-lg text-slate-500 hover:text-slate-800 font-semibold flex items-center justify-center gap-2 text-[12px] transition-all cursor-pointer';
+                btnSortie.className = 'py-2.5 px-3 rounded-lg bg-white text-rose-700 font-bold flex items-center justify-center gap-2 border border-slate-200 shadow-xs text-[12px] transition-all cursor-pointer';
             }
         }
 
