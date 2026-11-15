@@ -10595,20 +10595,22 @@
     <!-- ========================================================================= -->
     <!-- MODALE SAISIE RAPIDE VENTE / DÉPENSE EN DIRECT (FINTECH PREMIUM GROW)      -->
     <!-- ========================================================================= -->
-    <div id="modalQuickTx" class="modal-backdrop fixed inset-0 z-[2600] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" style="display: none;" onclick="closeModalQuickTx()">
-        <div class="relative w-full max-w-[460px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
-            <!-- En-tête Blanc Épuré Fintech Pro -->
-            <div class="px-5 py-4 flex items-center justify-between border-b border-slate-100 bg-white text-slate-900 select-none">
+    <div id="modalQuickTx" class="modal-backdrop fixed inset-0 z-[2600] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" style="display: none;" onclick="closeModalQuickTx()">
+        <div class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden transform transition-all font-sans" onclick="event.stopPropagation()">
+            <!-- Header Lumineux Fintech Pro -->
+            <div class="px-6 py-4.5 flex items-center justify-between border-b border-slate-100 bg-white">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0">
+                    <div id="quickTxIconBox" class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0">
                         <span class="material-symbols-outlined notranslate text-[20px]" translate="no">add_circle</span>
                     </div>
                     <div>
-                        <h3 class="text-[14px] font-extrabold text-slate-900 flex items-center gap-2 leading-tight">
-                            <span id="quickTxModalTitle">Enregistrer une Vente (Recette)</span>
-                            <span class="text-[9.5px] font-bold uppercase tracking-wider text-[#14362b] bg-[#a0d9d2]/30 border border-[#a0d9d2]/60 px-2 py-0.5 rounded-full">SYSCOHADA</span>
-                        </h3>
-                        <p class="text-[11px] text-slate-500 font-medium mt-0.5">Saisie immédiate au journal comptable</p>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-[15px] font-bold text-slate-900 tracking-tight" id="quickTxModalTitle">Nouvelle Vente</h3>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#a0d9d2]/20 text-[#14362b] border border-[#a0d9d2]/50">
+                                SYSCOHADA
+                            </span>
+                        </div>
+                        <p class="text-[11.5px] text-slate-400 font-medium mt-0.5" id="quickTxModalSub">Saisie immédiate au Grand-Livre &amp; Trésorerie</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeModalQuickTx()" class="w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer" title="Fermer">
@@ -10616,84 +10618,84 @@
                 </button>
             </div>
 
-            <!-- Contenu du Formulaire -->
-            <form id="quickTxForm" onsubmit="submitQuickTx(event)" class="p-5 space-y-4 text-xs">
+            <!-- Formulaire épuré -->
+            <form id="quickTxForm" onsubmit="submitQuickTx(event)" class="p-6 space-y-4 text-xs">
                 
-                <!-- 1. Sélecteur Segmenté : Vente / Entrée vs Dépense / Sortie -->
+                <!-- 1. Sens du flux / Segmented Control Pro -->
                 <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Nature de l'écriture *</label>
-                    <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-xl gap-1">
-                        <button type="button" id="btnTabCredit" onclick="setQuickTxType('ENTREE')" class="py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer bg-white text-[#14362b] shadow-xs border border-emerald-100">
-                            <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_downward</span>
-                            <span>Vente / Recette (+ Crédit)</span>
+                    <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5 uppercase tracking-wider">Type d'opération</label>
+                    <div class="bg-slate-100/80 p-1 rounded-xl grid grid-cols-2 gap-1 border border-slate-200/60">
+                        <button type="button" id="btnTabCredit" onclick="setQuickTxType('ENTREE')" class="py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 font-bold text-[12px] transition-all cursor-pointer bg-white text-emerald-800 shadow-xs border border-emerald-100">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span>Recette / Vente</span>
                         </button>
-                        <button type="button" id="btnTabDebit" onclick="setQuickTxType('SORTIE')" class="py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent">
-                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_upward</span>
-                            <span>Dépense / Achat (- Débit)</span>
+                        <button type="button" id="btnTabDebit" onclick="setQuickTxType('SORTIE')" class="py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 font-bold text-[12px] transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent">
+                            <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                            <span>Dépense / Achat</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- 2. Montant en grand format Fintech -->
-                <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Montant en FCFA *</label>
-                    <div class="relative">
-                        <input type="number" id="quickTxMontant" required min="1" step="1" placeholder="0" class="w-full pl-4 pr-16 py-2.5 text-xl font-bold font-mono tracking-tight text-slate-900 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all placeholder:text-slate-300">
-                        <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 font-mono select-none">FCFA</span>
+                <!-- 2. Montant & Date -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Montant net *</label>
+                        <div class="relative flex items-center">
+                            <input type="number" id="quickTxMontant" required min="1" step="1" placeholder="0" class="w-full pl-3.5 pr-14 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 text-slate-900 font-mono font-bold text-[15px] transition-all">
+                            <span class="absolute right-3.5 text-[11px] font-bold text-slate-400 pointer-events-none">FCFA</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Date d'opération *</label>
+                        <input type="date" id="quickTxDate" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 text-slate-800 font-medium text-[13px] transition-all">
                     </div>
                 </div>
 
                 <!-- 3. Libellé de l'opération -->
                 <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Libellé de l'opération *</label>
-                    <input type="text" id="quickTxLibelle" required placeholder="Ex: Vente tissus Wax, Facture client Teranga..." class="w-full px-3.5 py-2.5 text-xs text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all placeholder:text-slate-400 font-medium">
+                    <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Libellé de l'opération *</label>
+                    <input type="text" id="quickTxLibelle" required placeholder="Ex: Vente tissus Wax, Facture client Teranga..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 text-slate-900 font-semibold text-[13px] placeholder:text-slate-400 transition-all">
                 </div>
 
-                <!-- 4. Compte SYSCOHADA (Possibilité de choisir ou personnaliser le compte) -->
-                <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500">Compte SYSCOHADA *</label>
-                        <span class="text-[10.5px] font-semibold text-[#168078]" id="quickTxCompteLabelHint">Compte Produit (Classe 7)</span>
-                    </div>
-                    <select id="quickTxCompte" onchange="onQuickTxCompteChange(this.value)" class="w-full px-3 py-2.5 text-xs text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all font-medium cursor-pointer">
-                        <option value="701">701 - Ventes de marchandises</option>
-                        <option value="706">706 - Services vendus / Prestations</option>
-                        <option value="707">707 - Produits accessoires</option>
-                        <option value="411">411 - Clients (Règlement de créance)</option>
-                        <option value="754">754 - Produits financiers & Divers</option>
-                        <option value="771">771 - Subventions et Dons</option>
-                        <option value="CUSTOM">✏️ + Saisir un autre compte...</option>
-                    </select>
-                    
-                    <!-- Champ personnalisé pour autre compte -->
-                    <div id="quickTxCustomCompteWrapper" class="mt-2" style="display: none;">
-                        <input type="text" id="quickTxCustomCompte" placeholder="Numéro du compte (ex: 706, 622, 638...)" class="w-full px-3.5 py-2 text-xs font-mono font-bold text-slate-800 bg-white border border-[#a0d9d2] rounded-xl focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all placeholder:font-sans placeholder:font-normal placeholder:text-slate-400">
-                        <p class="text-[10px] text-slate-400 mt-1">Saisissez le numéro à 3 ou 4 chiffres du plan comptable SYSCOHADA révisé.</p>
-                    </div>
-                </div>
-
-                <!-- 5. Mode de règlement / Trésorerie & Date -->
-                <div class="grid grid-cols-2 gap-2.5">
+                <!-- 4. Compte SYSCOHADA & Mode de règlement -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
-                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Trésorerie / Règlement</label>
-                        <select id="quickTxSource" class="w-full px-3 py-2.5 text-xs text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all font-medium cursor-pointer">
-                            <option value="WAVE">Wave (521)</option>
-                            <option value="ORANGE_MONEY">Orange Money (521)</option>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-slate-700 text-[11.5px] font-bold">Compte SYSCOHADA *</label>
+                            <span class="text-[10px] font-semibold text-[#168078]" id="quickTxCompteLabelHint">Produit (Cl. 7)</span>
+                        </div>
+                        <select id="quickTxCompte" onchange="onQuickTxCompteChange(this.value)" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
+                            <option value="701">701 - Ventes de marchandises</option>
+                            <option value="706">706 - Services vendus / Prestations</option>
+                            <option value="707">707 - Produits accessoires</option>
+                            <option value="411">411 - Clients (Règlement de créance)</option>
+                            <option value="754">754 - Produits financiers &amp; Divers</option>
+                            <option value="771">771 - Subventions et Dons</option>
+                            <option value="CUSTOM">✏️ + Saisir un autre compte...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Trésorerie / Règlement</label>
+                        <select id="quickTxSource" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
+                            <option value="WAVE">Wave (5213)</option>
+                            <option value="ORANGE_MONEY">Orange Money (5214)</option>
                             <option value="ESPECES" selected>Caisse Espèces (571)</option>
                             <option value="BANQUE">Compte Bancaire (521)</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Date d'opération</label>
-                        <input type="date" id="quickTxDate" class="w-full px-3 py-2 text-xs text-slate-800 bg-slate-50/70 border border-slate-200 rounded-xl focus:bg-white focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 focus:outline-none transition-all font-medium">
-                    </div>
                 </div>
 
-                <!-- 6. Bouton d'action principal -->
+                <!-- Champ personnalisé pour autre compte -->
+                <div id="quickTxCustomCompteWrapper" class="mt-2" style="display: none;">
+                    <input type="text" id="quickTxCustomCompte" placeholder="Numéro du compte (ex: 706, 622, 638...)" class="w-full px-3.5 py-2.5 text-xs font-mono font-bold text-slate-800 bg-white border border-[#168078] rounded-xl focus:ring-2 focus:ring-[#168078]/20 focus:outline-none transition-all placeholder:font-sans placeholder:font-normal placeholder:text-slate-400">
+                    <p class="text-[10.5px] text-slate-400 mt-1">Saisissez le numéro à 3 ou 4 chiffres du plan comptable SYSCOHADA révisé.</p>
+                </div>
+
+                <!-- 5. Bouton d'action principal -->
                 <div class="pt-2">
-                    <button type="submit" id="btnSubmitTxText" class="w-full py-3 px-4 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+                    <button type="submit" id="btnSubmitTxText" class="w-full py-3.5 px-4 rounded-xl bg-[#222222] hover:bg-[#111111] active:bg-black text-[#a0d9d2] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-[0.99]">
                         <span class="material-symbols-outlined notranslate text-[18px] font-bold" translate="no">check</span>
-                        <span id="btnSubmitTxLabel">Valider l'encaissement</span>
+                        <span id="btnSubmitTxLabel">Enregistrer l'opération</span>
                     </button>
                 </div>
             </form>
@@ -14237,33 +14239,44 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const btnCredit = document.getElementById('btnTabCredit');
             const btnDebit = document.getElementById('btnTabDebit');
             const title = document.getElementById('quickTxModalTitle');
+            const sub = document.getElementById('quickTxModalSub');
             const btnSubmit = document.getElementById('btnSubmitTxText');
             const btnSubmitLabel = document.getElementById('btnSubmitTxLabel');
 
             if (type === 'ENTREE') {
                 if (btnCredit) {
-                    btnCredit.className = 'py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer bg-white text-[#14362b] shadow-xs border border-emerald-100';
+                    btnCredit.className = 'py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 font-bold text-[12px] transition-all cursor-pointer bg-white text-emerald-800 shadow-xs border border-emerald-100';
+                    const dot = btnCredit.querySelector('span');
+                    if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
                 }
                 if (btnDebit) {
-                    btnDebit.className = 'py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent';
+                    btnDebit.className = 'py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 font-bold text-[12px] transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent';
+                    const dot = btnDebit.querySelector('span');
+                    if (dot) dot.className = 'w-2 h-2 rounded-full bg-slate-300';
                 }
-                if (title) title.textContent = 'Enregistrer une Vente (Recette)';
+                if (title) title.textContent = 'Nouvelle Vente';
+                if (sub) sub.textContent = 'Saisie immédiate au Grand-Livre • Recette';
                 if (btnSubmit) {
-                    btnSubmit.className = 'w-full py-3 px-4 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecec6] active:bg-[#7bc4bc] text-[#14362b] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer';
+                    btnSubmit.className = 'w-full py-3.5 px-4 rounded-xl bg-[#222222] hover:bg-[#111111] active:bg-black text-[#a0d9d2] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-[0.99]';
                 }
-                if (btnSubmitLabel) btnSubmitLabel.textContent = "Valider l'encaissement";
+                if (btnSubmitLabel) btnSubmitLabel.textContent = "Enregistrer la vente";
             } else {
                 if (btnCredit) {
-                    btnCredit.className = 'py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent';
+                    btnCredit.className = 'py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 font-bold text-[12px] transition-all cursor-pointer text-slate-600 hover:text-slate-900 border border-transparent';
+                    const dot = btnCredit.querySelector('span');
+                    if (dot) dot.className = 'w-2 h-2 rounded-full bg-slate-300';
                 }
                 if (btnDebit) {
-                    btnDebit.className = 'py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 font-bold text-xs transition-all cursor-pointer bg-white text-rose-800 shadow-xs border border-rose-100';
+                    btnDebit.className = 'py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 font-bold text-[12px] transition-all cursor-pointer bg-white text-rose-800 shadow-xs border border-rose-100';
+                    const dot = btnDebit.querySelector('span');
+                    if (dot) dot.className = 'w-2 h-2 rounded-full bg-rose-500';
                 }
-                if (title) title.textContent = 'Enregistrer une Dépense (Sortie)';
+                if (title) title.textContent = 'Nouvelle Dépense';
+                if (sub) sub.textContent = 'Saisie immédiate au Grand-Livre • Charge';
                 if (btnSubmit) {
-                    btnSubmit.className = 'w-full py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer';
+                    btnSubmit.className = 'w-full py-3.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-[0.99]';
                 }
-                if (btnSubmitLabel) btnSubmitLabel.textContent = "Valider la dépense";
+                if (btnSubmitLabel) btnSubmitLabel.textContent = "Enregistrer la dépense";
             }
 
             updateQuickTxComptesList(type);
