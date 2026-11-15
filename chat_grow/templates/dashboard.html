@@ -10715,31 +10715,90 @@
                     <input type="text" id="quickTxLibelle" required placeholder="Ex: Vente tissus Wax, Facture client Teranga..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 text-slate-900 font-semibold text-[13px] placeholder:text-slate-400 transition-all">
                 </div>
 
-                <!-- 4. Compte SYSCOHADA & Mode de règlement -->
+                <!-- 4. Compte SYSCOHADA & Mode de règlement (Sélecteurs Fintech Sur-Mesure) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
+                    <!-- 4.1 Sélecteur Custom Compte SYSCOHADA -->
+                    <div class="relative" id="quickTxCompteWrapper">
                         <div class="flex items-center justify-between mb-1.5">
                             <label class="block text-slate-700 text-[11.5px] font-bold">Compte SYSCOHADA *</label>
                             <span class="text-[10px] font-semibold text-[#168078]" id="quickTxCompteLabelHint">Produit (Cl. 7)</span>
                         </div>
-                        <select id="quickTxCompte" onchange="onQuickTxCompteChange(this.value)" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
-                            <option value="701">701 - Ventes de marchandises</option>
-                            <option value="706">706 - Services vendus / Prestations</option>
-                            <option value="707">707 - Produits accessoires</option>
-                            <option value="411">411 - Clients (Règlement de créance)</option>
-                            <option value="754">754 - Produits financiers &amp; Divers</option>
-                            <option value="771">771 - Subventions et Dons</option>
-                            <option value="CUSTOM">✏️ + Saisir un autre compte...</option>
-                        </select>
+                        <button type="button" id="quickTxCompteBtn" onclick="toggleQuickTxCompteDropdown(event)" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-white hover:border-[#168078] flex items-center justify-between cursor-pointer transition-all select-none">
+                            <div class="flex items-center gap-2 min-w-0" id="quickTxCompteDisplay">
+                                <span class="font-mono font-bold text-[11px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-800 flex-shrink-0">701</span>
+                                <span class="font-semibold text-slate-900 text-[12px] truncate">Ventes de marchandises</span>
+                            </div>
+                            <span class="material-symbols-outlined notranslate text-slate-400 text-[18px] transition-transform duration-200" id="quickTxCompteChevron" translate="no">expand_more</span>
+                        </button>
+                        <input type="hidden" id="quickTxCompte" name="quickTxCompte" value="701">
+
+                        <!-- Popover Menu Déroulant Comptes Pro -->
+                        <div id="quickTxComptePopover" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-xl p-1.5 z-[2900] max-h-[260px] overflow-y-auto space-y-0.5" onclick="event.stopPropagation()">
+                            <!-- Rempli dynamiquement par updateQuickTxComptesList() -->
+                        </div>
                     </div>
-                    <div>
+
+                    <!-- 4.2 Sélecteur Custom Trésorerie / Règlement -->
+                    <div class="relative" id="quickTxSourceWrapper">
                         <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Trésorerie / Règlement</label>
-                        <select id="quickTxSource" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
-                            <option value="WAVE">Wave (5213)</option>
-                            <option value="ORANGE_MONEY">Orange Money (5214)</option>
-                            <option value="ESPECES" selected>Caisse Espèces (571)</option>
-                            <option value="BANQUE">Compte Bancaire (521)</option>
-                        </select>
+                        <button type="button" id="quickTxSourceBtn" onclick="toggleQuickTxSourceDropdown(event)" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-white hover:border-[#168078] flex items-center justify-between cursor-pointer transition-all select-none">
+                            <div class="flex items-center gap-2 min-w-0" id="quickTxSourceDisplay">
+                                <div class="w-5 h-5 rounded-md bg-emerald-50 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                                    <span class="material-symbols-outlined notranslate text-[14px]" translate="no">payments</span>
+                                </div>
+                                <span class="font-bold text-slate-900 text-[12.5px]">Caisse Espèces (571)</span>
+                            </div>
+                            <span class="material-symbols-outlined notranslate text-slate-400 text-[18px] transition-transform duration-200" id="quickTxSourceChevron" translate="no">expand_more</span>
+                        </button>
+                        <input type="hidden" id="quickTxSource" name="quickTxSource" value="ESPECES">
+
+                        <!-- Popover Menu Déroulant Trésorerie Pro -->
+                        <div id="quickTxSourcePopover" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-xl p-1.5 z-[2900] space-y-0.5" onclick="event.stopPropagation()">
+                            <button type="button" onclick="selectQuickTxSource('WAVE', 'Wave Sénégal (5213)')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-lg bg-[#1da1f2]/10 text-[#1da1f2] flex items-center justify-center font-bold text-[11px] flex-shrink-0">W</div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Wave Sénégal</div>
+                                        <div class="text-[10px] text-slate-400">Compte 5213</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Mobile</span>
+                            </button>
+                            <button type="button" onclick="selectQuickTxSource('ORANGE_MONEY', 'Orange Money (5214)')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-lg bg-[#ff7900]/10 text-[#ff7900] flex items-center justify-center font-bold text-[11px] flex-shrink-0">OM</div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Orange Money</div>
+                                        <div class="text-[10px] text-slate-400">Compte 5214</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">Mobile</span>
+                            </button>
+                            <button type="button" onclick="selectQuickTxSource('ESPECES', 'Caisse Espèces (571)')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">payments</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Caisse Espèces</div>
+                                        <div class="text-[10px] text-slate-400">Compte 571</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Cash</span>
+                            </button>
+                            <button type="button" onclick="selectQuickTxSource('BANQUE', 'Compte Bancaire (521)')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">account_balance</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Compte Bancaire</div>
+                                        <div class="text-[10px] text-slate-400">Compte 521</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">Banque</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -14217,55 +14276,140 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             { code: 'CUSTOM', libelle: '✏️ + Saisir un autre compte...' }
         ];
 
-        function updateQuickTxComptesList(type, selectedCompte = null) {
-            const select = document.getElementById('quickTxCompte');
-            const hint = document.getElementById('quickTxCompteLabelHint');
-            const customWrap = document.getElementById('quickTxCustomCompteWrapper');
-            if (!select) return;
-
-            const list = (type === 'ENTREE') ? QUICK_COMPTES_ENTREE : QUICK_COMPTES_SORTIE;
-            if (hint) {
-                hint.textContent = (type === 'ENTREE') ? 'Compte Produit (Classe 7)' : 'Compte Charge (Classe 6)';
-                hint.className = (type === 'ENTREE') ? 'text-[10.5px] font-semibold text-[#168078]' : 'text-[10.5px] font-semibold text-rose-700';
-            }
-
-            select.innerHTML = '';
-            list.forEach(item => {
-                const opt = document.createElement('option');
-                opt.value = item.code;
-                opt.textContent = item.libelle;
-                select.appendChild(opt);
-            });
-
-            if (selectedCompte) {
-                const match = list.some(x => x.code === selectedCompte);
-                if (match) {
-                    select.value = selectedCompte;
-                    if (customWrap) customWrap.style.display = 'none';
-                } else {
-                    select.value = 'CUSTOM';
-                    if (customWrap) {
-                        customWrap.style.display = 'block';
-                        const customInput = document.getElementById('quickTxCustomCompte');
-                        if (customInput) customInput.value = selectedCompte;
-                    }
-                }
-            } else {
-                select.value = (type === 'ENTREE') ? '701' : '601';
-                if (customWrap) customWrap.style.display = 'none';
+        function toggleQuickTxSourceDropdown(e) {
+            if (e) e.stopPropagation();
+            closeQuickTxDatePicker();
+            closeQuickTxCompteDropdown();
+            const pop = document.getElementById('quickTxSourcePopover');
+            const chev = document.getElementById('quickTxSourceChevron');
+            if (!pop) return;
+            pop.classList.toggle('hidden');
+            if (chev) {
+                chev.style.transform = pop.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
             }
         }
 
-        function onQuickTxCompteChange(val) {
+        function closeQuickTxSourceDropdown() {
+            const pop = document.getElementById('quickTxSourcePopover');
+            const chev = document.getElementById('quickTxSourceChevron');
+            if (pop) pop.classList.add('hidden');
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function selectQuickTxSource(val, label) {
+            const inp = document.getElementById('quickTxSource');
+            const disp = document.getElementById('quickTxSourceDisplay');
+            if (inp) inp.value = val;
+            if (disp) {
+                let iconHtml = '<div class="w-5 h-5 rounded-md bg-emerald-50 text-emerald-700 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined notranslate text-[14px]" translate="no">payments</span></div>';
+                if (val === 'WAVE') {
+                    iconHtml = '<div class="w-5 h-5 rounded-md bg-[#1da1f2]/10 text-[#1da1f2] flex items-center justify-center font-bold text-[10px] flex-shrink-0">W</div>';
+                } else if (val === 'ORANGE_MONEY') {
+                    iconHtml = '<div class="w-5 h-5 rounded-md bg-[#ff7900]/10 text-[#ff7900] flex items-center justify-center font-bold text-[10px] flex-shrink-0">OM</div>';
+                } else if (val === 'BANQUE') {
+                    iconHtml = '<div class="w-5 h-5 rounded-md bg-indigo-50 text-indigo-700 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined notranslate text-[14px]" translate="no">account_balance</span></div>';
+                }
+                disp.innerHTML = `
+                    ${iconHtml}
+                    <span class="font-bold text-slate-900 text-[12.5px]">${label}</span>
+                `;
+            }
+            closeQuickTxSourceDropdown();
+        }
+
+        function toggleQuickTxCompteDropdown(e) {
+            if (e) e.stopPropagation();
+            closeQuickTxDatePicker();
+            closeQuickTxSourceDropdown();
+            const pop = document.getElementById('quickTxComptePopover');
+            const chev = document.getElementById('quickTxCompteChevron');
+            if (!pop) return;
+            pop.classList.toggle('hidden');
+            if (chev) {
+                chev.style.transform = pop.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+
+        function closeQuickTxCompteDropdown() {
+            const pop = document.getElementById('quickTxComptePopover');
+            const chev = document.getElementById('quickTxCompteChevron');
+            if (pop) pop.classList.add('hidden');
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function selectQuickTxCompte(code, libelle) {
+            const inp = document.getElementById('quickTxCompte');
+            const disp = document.getElementById('quickTxCompteDisplay');
             const customWrap = document.getElementById('quickTxCustomCompteWrapper');
             const customInput = document.getElementById('quickTxCustomCompte');
-            if (val === 'CUSTOM') {
+
+            if (inp) inp.value = code;
+            if (disp) {
+                if (code === 'CUSTOM') {
+                    disp.innerHTML = `
+                        <span class="material-symbols-outlined notranslate text-[#168078] text-[16px] flex-shrink-0" translate="no">edit</span>
+                        <span class="font-bold text-slate-900 text-[12px]">Compte personnalisé</span>
+                    `;
+                } else {
+                    const cleanTitle = (libelle || '').replace(/^\d+\s*-\s*/, '');
+                    disp.innerHTML = `
+                        <span class="font-mono font-bold text-[11px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-800 flex-shrink-0">${code}</span>
+                        <span class="font-semibold text-slate-900 text-[12px] truncate">${cleanTitle}</span>
+                    `;
+                }
+            }
+
+            if (code === 'CUSTOM') {
                 if (customWrap) customWrap.style.display = 'block';
                 if (customInput) customInput.focus();
             } else {
                 if (customWrap) customWrap.style.display = 'none';
                 if (customInput) customInput.value = '';
             }
+
+            closeQuickTxCompteDropdown();
+        }
+
+        function updateQuickTxComptesList(type, selectedCompte = null) {
+            const pop = document.getElementById('quickTxComptePopover');
+            const hint = document.getElementById('quickTxCompteLabelHint');
+            const customWrap = document.getElementById('quickTxCustomCompteWrapper');
+
+            const list = (type === 'ENTREE') ? QUICK_COMPTES_ENTREE : QUICK_COMPTES_SORTIE;
+            if (hint) {
+                hint.textContent = (type === 'ENTREE') ? 'Produit (Cl. 7)' : 'Charge (Cl. 6)';
+                hint.className = (type === 'ENTREE') ? 'text-[10px] font-semibold text-[#168078]' : 'text-[10px] font-semibold text-rose-700';
+            }
+
+            if (pop) {
+                let html = '';
+                list.forEach(item => {
+                    const isCustom = item.code === 'CUSTOM';
+                    const cleanTitle = item.libelle.replace(/^\d+\s*-\s*/, '');
+                    html += `
+                        <button type="button" onclick="selectQuickTxCompte('${item.code}', '${escapeHtml(item.libelle)}')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                            <div class="flex items-center gap-2 min-w-0">
+                                ${isCustom 
+                                    ? `<span class="material-symbols-outlined notranslate text-[#168078] text-[16px] flex-shrink-0" translate="no">edit</span>`
+                                    : `<span class="font-mono font-bold text-[10.5px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-800 group-hover:bg-[#a0d9d2]/30 group-hover:text-[#14362b] transition-colors flex-shrink-0">${item.code}</span>`
+                                }
+                                <span class="text-xs font-semibold text-slate-800 truncate">${isCustom ? 'Saisir un autre compte...' : cleanTitle}</span>
+                            </div>
+                        </button>
+                    `;
+                });
+                pop.innerHTML = html;
+            }
+
+            const initialCode = selectedCompte || (type === 'ENTREE' ? '701' : '601');
+            const initialItem = list.find(x => x.code === initialCode) || list[0];
+            if (initialItem) {
+                selectQuickTxCompte(initialItem.code, initialItem.libelle);
+            }
+        }
+
+        function onQuickTxCompteChange(val) {
+            selectQuickTxCompte(val, val);
         }
 
         // =========================================================================
@@ -14480,13 +14624,29 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             grid.innerHTML = html;
         }
 
-        // Écouteur global pour fermer les datepickers au clic extérieur
+        // Écouteur global pour fermer les popovers au clic extérieur
         document.addEventListener('click', (e) => {
             const qPop = document.getElementById('quickTxDatePopover');
             const qWrap = document.getElementById('quickTxDateWrapper');
             if (qPop && qPop.classList.contains('show')) {
                 if (!qPop.contains(e.target) && qWrap && !qWrap.contains(e.target)) {
                     closeQuickTxDatePicker();
+                }
+            }
+
+            const qSrcPop = document.getElementById('quickTxSourcePopover');
+            const qSrcWrap = document.getElementById('quickTxSourceWrapper');
+            if (qSrcPop && !qSrcPop.classList.contains('hidden')) {
+                if (!qSrcPop.contains(e.target) && qSrcWrap && !qSrcWrap.contains(e.target)) {
+                    closeQuickTxSourceDropdown();
+                }
+            }
+
+            const qCptPop = document.getElementById('quickTxComptePopover');
+            const qCptWrap = document.getElementById('quickTxCompteWrapper');
+            if (qCptPop && !qCptPop.classList.contains('hidden')) {
+                if (!qCptPop.contains(e.target) && qCptWrap && !qCptWrap.contains(e.target)) {
+                    closeQuickTxCompteDropdown();
                 }
             }
 
@@ -14523,6 +14683,8 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
         function closeModalQuickTx() {
             closeQuickTxDatePicker();
+            closeQuickTxSourceDropdown();
+            closeQuickTxCompteDropdown();
             const m = document.getElementById('modalQuickTx');
             if (m) m.style.display = 'none';
         }
