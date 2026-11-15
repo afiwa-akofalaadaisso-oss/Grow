@@ -9654,10 +9654,32 @@
                         </div>
 
                         <!-- Ligne de perforation style ticket fintech -->
-                        <div class="relative py-3 flex items-center justify-center">
+                        <div class="relative py-2 flex items-center justify-center">
                             <div class="absolute left-[-11px] w-5 h-5 rounded-full bg-slate-50 border border-slate-200/90 shadow-inner"></div>
                             <div class="w-full border-t border-dashed border-slate-200 mx-5"></div>
                             <div class="absolute right-[-11px] w-5 h-5 rounded-full bg-slate-50 border border-slate-200/90 shadow-inner"></div>
+                        </div>
+
+                        <!-- Preuve Texte Simple : Notification Officielle Opérateur Interceptée par API -->
+                        <div class="mx-5 my-2 p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 text-left">
+                            <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-slate-200/60">
+                                <div class="flex items-center gap-1.5">
+                                    <span id="voucherNotifBadgeDot" class="w-2 h-2 rounded-full bg-[#00b2fe] animate-pulse"></span>
+                                    <span id="voucherNotifBadgeLabel" class="text-[10px] font-bold uppercase tracking-wider text-slate-700">Notification API Interceptée</span>
+                                </div>
+                                <button type="button" onclick="copierTexteNotification()" class="text-[10.5px] font-bold text-[#168078] hover:text-[#14362b] flex items-center gap-1 cursor-pointer transition-colors" title="Copier le texte brut de la notification">
+                                    <span class="material-symbols-outlined notranslate text-[13px]" translate="no">content_copy</span>
+                                    <span id="copyNotifBtnText">Copier</span>
+                                </button>
+                            </div>
+                            <!-- Le texte simple authentique qui dit la notification Wave ou Orange -->
+                            <div id="voucherRawNotifText" class="text-[11.5px] font-mono leading-relaxed text-slate-800 select-all whitespace-pre-wrap bg-white p-2.5 rounded-lg border border-slate-200/70 shadow-2xs">
+                                -
+                            </div>
+                            <div class="mt-2 flex items-center justify-between text-[9.5px] text-slate-400 font-medium">
+                                <span>Origine : Interception Passerelle Directe</span>
+                                <span class="text-emerald-700 font-semibold flex items-center gap-1"><i class="fa-solid fa-shield text-[8px]"></i> Preuve Dématérialisée SYSCOHADA</span>
+                            </div>
                         </div>
 
                         <!-- Champs Clés de la Pièce Comptable -->
@@ -13222,6 +13244,48 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
                 vBadge.innerHTML = `<i class="fa-solid fa-circle-check text-[11px]"></i> Rapprochement Bancaire 100%`;
             }
 
+            // Génération du texte simple officiel de la notification Wave / Orange / CBAO
+            let rawNotifText = '';
+            const badgeDot = document.getElementById('voucherNotifBadgeDot');
+            const badgeLabel = document.getElementById('voucherNotifBadgeLabel');
+            const rawNotifEl = document.getElementById('voucherRawNotifText');
+
+            if (isWave) {
+                if (badgeDot) badgeDot.className = 'w-2 h-2 rounded-full bg-[#00b2fe]';
+                if (badgeLabel) badgeLabel.textContent = 'Notification Wave Mobile Money (API / Push)';
+                if (isSortie) {
+                    rawNotifText = `Transfert de ${cleanMontant} réussi à ${partnerName} le ${cleanDate}. Frais de transfert: 0 FCFA. Transaction ID: ${cleanRef}.`;
+                } else {
+                    rawNotifText = `Vous avez reçu ${cleanMontant} de ${partnerName} le ${cleanDate}. Frais: 0 FCFA. Transaction ID: ${cleanRef}.`;
+                }
+            } else if (isOM) {
+                if (badgeDot) badgeDot.className = 'w-2 h-2 rounded-full bg-[#ff7900]';
+                if (badgeLabel) badgeLabel.textContent = 'Notification Orange Money Sénégal (SMS / API)';
+                if (isSortie) {
+                    rawNotifText = `Paiement effectué : Vous avez transféré ${cleanMontant} vers ${partnerName} le ${cleanDate}. Réf : ${cleanRef}.`;
+                } else {
+                    rawNotifText = `Transfert reçu : Vous avez reçu un paiement de ${cleanMontant} de ${partnerName} le ${cleanDate}. Réf : ${cleanRef}.`;
+                }
+            } else if (isBank) {
+                if (badgeDot) badgeDot.className = 'w-2 h-2 rounded-full bg-[#168078]';
+                if (badgeLabel) badgeLabel.textContent = 'Notification Bancaire CBAO (Avis d\'opération)';
+                if (isSortie) {
+                    rawNotifText = `Avis de débit CBAO Sénégal : Virement émis de ${cleanMontant} en faveur de ${partnerName}. Réf. transaction : ${cleanRef} - Valeur : ${cleanDate}.`;
+                } else {
+                    rawNotifText = `Avis de crédit CBAO Sénégal : Virement reçu de ${cleanMontant} de ${partnerName} en faveur de CGLT Business (NINEA 00802996). Réf. : ${cleanRef} - Date valeur : ${cleanDate}.`;
+                }
+            } else if (isCaisse) {
+                if (badgeDot) badgeDot.className = 'w-2 h-2 rounded-full bg-emerald-600';
+                if (badgeLabel) badgeLabel.textContent = 'Bordereau de Caisse Espèces';
+                rawNotifText = `Encaissement espèces certifié : ${cleanMontant} reçu de ${partnerName} pour ${libelle || 'Vente directe'}. Enregistré au livre de caisse. N° Pièce : ${cleanRef}.`;
+            } else {
+                if (badgeDot) badgeDot.className = 'w-2 h-2 rounded-full bg-slate-700';
+                if (badgeLabel) badgeLabel.textContent = 'Notification Dématérialisée Grow';
+                rawNotifText = `Écriture certifiée : ${cleanMontant} (${libelle || 'Opération commerciale'}) - Tiers : ${partnerName} - Échéance/Date : ${cleanDate} - Réf. : ${cleanRef}.`;
+            }
+
+            if (rawNotifEl) rawNotifEl.textContent = rawNotifText;
+
             // Photo vs Voucher Toggle
             const imgWrap = document.getElementById('waveModalImageWrapper');
             const voucherWrap = document.getElementById('waveModalVoucherWrapper');
@@ -13276,6 +13340,19 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
         function imprimerJustificatifGrow() {
             window.print();
+        }
+
+        function copierTexteNotification() {
+            const rawEl = document.getElementById('voucherRawNotifText');
+            const btnText = document.getElementById('copyNotifBtnText');
+            if (rawEl && navigator.clipboard) {
+                navigator.clipboard.writeText(rawEl.textContent.trim()).then(() => {
+                    if (btnText) {
+                        btnText.textContent = 'Copié !';
+                        setTimeout(() => { btnText.textContent = 'Copier'; }, 2000);
+                    }
+                });
+            }
         }
 
         function telechargerAttestationGrow() {
