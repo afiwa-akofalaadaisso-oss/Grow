@@ -8121,18 +8121,20 @@
                             <span class="text-slate-400 hidden sm:inline">&bull; Écritures équilibrées et justifiées</span>
                         </div>
 
-                        <div class="flex items-center gap-4 font-mono text-xs">
-                            <div class="text-slate-600 font-semibold">
-                                <span class="text-slate-400 font-sans font-medium text-[11px] uppercase mr-1">TOTAL DÉBIT</span>
-                                <span id="footerTotalDebit" class="text-slate-900 font-bold">7 000 FCFA</span>
+                        <div class="flex items-center gap-3 font-mono text-xs">
+                            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200/80">
+                                <span class="text-slate-400 font-sans font-bold text-[10px] uppercase tracking-wider">Débit</span>
+                                <span id="footerTotalDebit" class="text-slate-900 font-bold text-xs">7 000 FCFA</span>
                             </div>
-                            <div class="text-[#168078] font-semibold">
-                                <span class="text-slate-400 font-sans font-medium text-[11px] uppercase mr-1">TOTAL CRÉDIT</span>
-                                <span id="footerTotalCredit" class="text-[#168078] font-bold">19 500 FCFA</span>
+                            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200/80">
+                                <span class="text-slate-400 font-sans font-bold text-[10px] uppercase tracking-wider">Crédit</span>
+                                <span id="footerTotalCredit" class="text-[#168078] font-bold text-xs">19 500 FCFA</span>
                             </div>
-                            <div class="px-2.5 py-1 rounded-xl bg-teal-50 border border-teal-200/60 text-[#168078] font-bold">
-                                <span class="text-[10px] font-sans font-medium uppercase mr-1">SOLDE NET</span>
-                                <span id="footerTotalSolde">+ 12 500 FCFA</span>
+                            <!-- SOLDE NET PREMIUM FINTECH SOMBRE (#222222) ASSORTI AU LOGO ET AU HEADER -->
+                            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-[#222222] border border-[#333333] shadow-xs select-none" title="Solde net disponible">
+                                <span class="w-2 h-2 rounded-full bg-[#168078] shadow-[0_0_8px_rgba(22,128,120,0.8)]"></span>
+                                <span class="text-[10px] font-sans font-bold uppercase tracking-wider text-[#a0d9d2]">Solde Net</span>
+                                <span id="footerTotalSolde" class="font-mono font-black text-white text-xs sm:text-[13px] tracking-tight">+ 12 500 FCFA</span>
                             </div>
                         </div>
                     </div>
