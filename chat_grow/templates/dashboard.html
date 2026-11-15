@@ -7743,6 +7743,199 @@
                             <span class="material-symbols-outlined notranslate text-[16px] font-bold" translate="no">add</span>
                             <span>Ajouter une écriture</span>
                         </button>
+                        <!-- 4. SÉLECTEUR DE TYPE / FLUX SYSCOHADA COMPLET GROW (TOUS LES TYPES) -->
+                        <div class="relative" id="factooTypeWrapper">
+                            <button type="button" id="factooTypeBtn" onclick="toggleFactooTypeMenu(event)" class="h-[38px] px-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center gap-2 shadow-2xs select-none cursor-pointer transition-all" title="Filtrer par type d'opération (SYSCOHADA)">
+                                <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">filter_list</span>
+                                <span id="factooTypeBtnLabel" class="truncate font-semibold text-slate-800 max-w-[110px] sm:max-w-[140px]">Tous les types</span>
+                                <span class="material-symbols-outlined notranslate text-[16px] text-slate-400 group-hover:text-slate-600 transition-transform duration-200" id="factooTypeChevron" translate="no">expand_more</span>
+                            </button>
+
+                            <!-- Popover Liste Complète des Types SYSCOHADA -->
+                            <div id="factooTypeMenuPopover" class="hidden absolute right-0 sm:right-auto sm:left-0 top-full mt-2 w-72 sm:w-80 bg-white border border-slate-200/90 rounded-2xl shadow-2xl shadow-slate-900/10 p-2 z-[2600] text-xs select-none max-h-[420px] overflow-y-auto" onclick="event.stopPropagation()">
+                                <div class="px-2.5 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between border-b border-slate-100 mb-1">
+                                    <span>Types d'opérations SYSCOHADA</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#a0d9d2]/30 text-[#14362b]">Complet</span>
+                                </div>
+
+                                <!-- Toutes les opérations -->
+                                <button type="button" onclick="selectFactooTypeCustom('all', 'Tous les types')" class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-slate-50 text-slate-800 text-left font-semibold cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[17px] text-[#168078]" translate="no">all_inclusive</span>
+                                        <span>Toutes les opérations</span>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-slate-400 group-hover:text-slate-600">Tous</span>
+                                </button>
+
+                                <!-- Exploitation Commerciale -->
+                                <div class="px-2.5 pt-2 pb-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400">Activité Commerciale</div>
+                                <button type="button" onclick="selectFactooTypeCustom('7', 'Facture Vente (7)')" class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-emerald-50/70 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[17px] text-emerald-600" translate="no">receipt_long</span>
+                                        <div>
+                                            <div class="font-semibold text-slate-900">Factures Clients (Ventes)</div>
+                                            <div class="text-[10px] text-slate-400">Produits d'exploitation • Classe 7</div>
+                                        </div>
+                                    </div>
+                                    <span class="px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-emerald-100 text-emerald-800">Recette</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('6', 'Facture Achat (6)')" class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-rose-50/70 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[17px] text-rose-500" translate="no">shopping_bag</span>
+                                        <div>
+                                            <div class="font-semibold text-slate-900">Factures Fournisseurs (Achats)</div>
+                                            <div class="text-[10px] text-slate-400">Charges d'exploitation • Classe 6</div>
+                                        </div>
+                                    </div>
+                                    <span class="px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-rose-100 text-rose-800">Dépense</span>
+                                </button>
+
+                                <!-- Trésorerie & Moyens de paiement -->
+                                <div class="px-2.5 pt-2 pb-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400">Trésorerie &amp; Règlements</div>
+                                <button type="button" onclick="selectFactooTypeCustom('wave', 'Wave Sénégal')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-blue-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-4 h-4 rounded-full bg-[#1da1f2] flex items-center justify-center text-[10px] text-white font-bold">W</span>
+                                        <span class="font-medium text-slate-800">Wave Sénégal (5213)</span>
+                                    </div>
+                                    <span class="text-[10px] text-[#1da1f2] font-semibold">Mobile</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('orange', 'Orange Money')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-orange-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-4 h-4 rounded-full bg-[#ff7900] flex items-center justify-center text-[10px] text-white font-bold">O</span>
+                                        <span class="font-medium text-slate-800">Orange Money (5214)</span>
+                                    </div>
+                                    <span class="text-[10px] text-[#ff7900] font-semibold">Mobile</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('especes', 'Caisse Espèces')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-teal-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-teal-600" translate="no">point_of_sale</span>
+                                        <span class="font-medium text-slate-800">Caisse Espèces (571)</span>
+                                    </div>
+                                    <span class="text-[10px] text-teal-700 font-semibold">Cash</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('banque', 'Virement / Banque')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-indigo-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-indigo-600" translate="no">account_balance</span>
+                                        <span class="font-medium text-slate-800">Banque &amp; Virement (521)</span>
+                                    </div>
+                                    <span class="text-[10px] text-indigo-700 font-semibold">Banque</span>
+                                </button>
+
+                                <!-- Charges spécifiques & Tiers -->
+                                <div class="px-2.5 pt-2 pb-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400">Charges &amp; Tiers SYSCOHADA</div>
+                                <button type="button" onclick="selectFactooTypeCustom('salaires', 'Salaires & Paie (66)')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-purple-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-purple-600" translate="no">payments</span>
+                                        <span class="font-medium text-slate-800">Salaires &amp; Rémunérations (66)</span>
+                                    </div>
+                                    <span class="text-[10px] text-purple-700 font-semibold">Paie</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('impots', 'Impôts & Taxes (64)')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-amber-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-amber-600" translate="no">gavel</span>
+                                        <span class="font-medium text-slate-800">Impôts, Taxes &amp; DGID (64/44)</span>
+                                    </div>
+                                    <span class="text-[10px] text-amber-700 font-semibold">Fiscal</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('creances', 'Créances Clients (41)')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-sky-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-sky-600" translate="no">person</span>
+                                        <span class="font-medium text-slate-800">Créances Clients (411)</span>
+                                    </div>
+                                    <span class="text-[10px] text-sky-700 font-semibold">Tiers</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('dettes', 'Dettes Fournisseurs (40)')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-slate-100 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-slate-600" translate="no">local_shipping</span>
+                                        <span class="font-medium text-slate-800">Dettes Fournisseurs (401)</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-600 font-semibold">Tiers</span>
+                                </button>
+
+                                <!-- Bilan & Patrimoine -->
+                                <div class="px-2.5 pt-2 pb-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400">Bilan &amp; Patrimoine</div>
+                                <button type="button" onclick="selectFactooTypeCustom('immo', 'Immobilisations (2)')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-teal-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">precision_manufacturing</span>
+                                        <span class="font-medium text-slate-800">Immobilisations &amp; Matériel (2)</span>
+                                    </div>
+                                    <span class="text-[10px] text-[#168078] font-semibold">Actif</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('stocks', 'Stocks (3)')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-amber-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-amber-700" translate="no">inventory_2</span>
+                                        <span class="font-medium text-slate-800">Stocks &amp; Marchandises (3)</span>
+                                    </div>
+                                    <span class="text-[10px] text-amber-800 font-semibold">Actif</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('emprunts', 'Emprunts Financiers (16)')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-rose-50/60 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-rose-600" translate="no">account_balance_wallet</span>
+                                        <span class="font-medium text-slate-800">Emprunts &amp; Dettes Financières (16)</span>
+                                    </div>
+                                    <span class="text-[10px] text-rose-700 font-semibold">Passif</span>
+                                </button>
+                                <button type="button" onclick="selectFactooTypeCustom('capital', 'Capitaux Propres (10)')" class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl hover:bg-[#a0d9d2]/20 text-slate-800 text-left font-medium cursor-pointer group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px] text-[#14362b]" translate="no">workspace_premium</span>
+                                        <span class="font-medium text-slate-800">Capital &amp; Réserves (10)</span>
+                                    </div>
+                                    <span class="text-[10px] text-[#14362b] font-semibold">Passif</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 5. SÉLECTEUR DE DATE ULTRA-PRO GROW AVEC CALENDRIER SUR-MESURE -->
+                        <div class="relative" id="factooDateWrapper">
+                            <button type="button" id="factooDateBtn" onclick="toggleFactooCalendar(event)" class="h-[38px] px-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center gap-2 shadow-2xs select-none cursor-pointer transition-all" title="Filtrer par date ou période">
+                                <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">calendar_today</span>
+                                <span id="factooDateBtnLabel" class="truncate font-semibold text-slate-800 max-w-[120px] sm:max-w-[160px]">Toutes les dates</span>
+                                <span class="material-symbols-outlined notranslate text-[16px] text-slate-400 group-hover:text-slate-600 transition-transform duration-200" id="factooDateChevron" translate="no">expand_more</span>
+                            </button>
+                            <input type="hidden" id="factooDateInput" value="">
+
+                            <!-- Popover Calendrier Moderne GROW Pro -->
+                            <div id="factooCalendarPopover" class="calendar-popover-box" onclick="event.stopPropagation()">
+                                <!-- Presets rapides -->
+                                <div class="cal-quick-presets">
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('all')">Toutes</button>
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('today')">Aujourd'hui</button>
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('month')">Ce mois</button>
+                                    <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('last_month')">Mois dernier</button>
+                                </div>
+
+                                <!-- En-tête mois avec chevrons -->
+                                <div class="cal-header">
+                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_left</span>
+                                    </button>
+                                    <span class="cal-month-title text-[#14362b] font-bold" id="factooCalMonthTitle">Novembre 2026</span>
+                                    <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(1)">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_right</span>
+                                    </button>
+                                </div>
+
+                                <!-- Jours de semaine -->
+                                <div class="cal-weekdays">
+                                    <span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span>
+                                </div>
+
+                                <!-- Grille des jours -->
+                                <div class="cal-days-grid" id="factooCalDaysGrid"></div>
+
+                                <!-- Résumé de sélection -->
+                                <div class="text-[11px] text-slate-500 font-medium mb-2 text-center" id="factooCalSummary">
+                                    Cliquez pour choisir une date ou période
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="cal-footer">
+                                    <button type="button" class="cal-btn-cancel" onclick="resetFactooCalendarFilter()">Effacer</button>
+                                    <button type="button" class="cal-btn-apply" onclick="applyFactooCalendarFilter()">Appliquer</button>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- BARRE DE RECHERCHE ACCORDÉON (Loupe seule au départ, s'agrandit au clic en poussant les autres) -->
                         <div id="expandableSearchBox" class="relative flex items-center h-[38px] bg-white border border-slate-200 rounded-lg shadow-2xs overflow-hidden group select-none">
                             <button type="button" id="expandableSearchTriggerBtn" onclick="toggleExpandableSearch(event)" class="w-[38px] h-[38px] flex-shrink-0 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors cursor-pointer select-none" title="Rechercher une opération">
@@ -7861,136 +8054,6 @@
                     <button type="button" id="pillTab_resultat" onclick="switchFactooTab('resultat')" class="factoo-tab-pill" style="display: none !important;"></button>
                     <button type="button" id="pillTab_tft" onclick="switchFactooTab('tft')" class="factoo-tab-pill" style="display: none !important;"></button>
                     <button type="button" id="pillTab_annexes" onclick="switchFactooTab('annexes')" class="factoo-tab-pill" style="display: none !important;"></button>
-                </div>
-
-                <!-- BARRE DE RECHERCHE, FILTRES RAPIDES ET MENU 4 TRAITS FACTOO (Couleur sarcelle / teal GROW) -->
-                <div id="factooFilterBarContainer" class="factoo-dark-filter-bar p-3 rounded-xl shadow-md mb-4 flex flex-col md:flex-row items-stretch md:items-center gap-2.5 text-xs" style="display: none !important;">
-                    <!-- Champ recherche tiers / facture -->
-                    <div class="relative flex-1">
-                        <span class="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-[#168078] text-[18px] pointer-events-none" translate="no">search</span>
-                        <input type="text" id="table-search-input" oninput="handleSearchInput(this.value)" placeholder="Rechercher par libellé de l'opération, facture, tiers..." class="w-full pl-9 pr-3 py-2 rounded-lg bg-white border border-white/70 text-slate-800 text-xs placeholder:text-slate-400 font-medium transition-all shadow-xs">
-                    </div>
-
-                    <!-- Dropdown Type -->
-                    <div class="relative w-full md:w-44">
-                        <select id="factooTypeSelect" onchange="handleFactooTypeFilter(this.value)" class="w-full py-2 px-3 rounded-lg bg-white border border-white/70 text-slate-800 text-xs font-medium transition-all cursor-pointer shadow-xs">
-                            <option value="all">Type : Tous</option>
-                            <option value="7">Facture Client (Vente)</option>
-                            <option value="6">Facture Fournisseur (Achat)</option>
-                            <option value="wave">Wave Sénégal</option>
-                            <option value="orange">Orange Money</option>
-                            <option value="banque">Virement Bancaire CBAO</option>
-                            <option value="especes">Caisse Espèces</option>
-                        </select>
-                    </div>
-
-                    <!-- Sélecteur de date ultra-pro GROW -->
-                    <div class="relative w-full md:w-52" id="factooDateWrapper">
-                        <button type="button" id="factooDateBtn" onclick="toggleFactooCalendar(event)" class="w-full py-2 px-3 rounded-lg bg-white hover:bg-slate-50 text-slate-800 text-xs font-medium flex items-center justify-between transition-all select-none cursor-pointer group shadow-xs">
-                            <div class="flex items-center gap-2 min-w-0">
-                                <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">calendar_today</span>
-                                <span id="factooDateBtnLabel" class="truncate font-semibold text-slate-800">Toutes les dates</span>
-                            </div>
-                            <span class="material-symbols-outlined notranslate text-[16px] text-slate-500 group-hover:text-slate-700 transition-transform duration-200" id="factooDateChevron" translate="no">expand_more</span>
-                        </button>
-                        <input type="hidden" id="factooDateInput" value="">
-
-                        <!-- Popover Calendrier Moderne GROW Pro -->
-                        <div id="factooCalendarPopover" class="calendar-popover-box" onclick="event.stopPropagation()">
-                            <!-- Presets rapides -->
-                            <div class="cal-quick-presets">
-                                <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('all')">Toutes</button>
-                                <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('today')">Aujourd'hui</button>
-                                <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('month')">Ce mois</button>
-                                <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('last_month')">Mois dernier</button>
-                            </div>
-
-                            <!-- En-tête mois avec chevrons -->
-                            <div class="cal-header">
-                                <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)">
-                                    <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_left</span>
-                                </button>
-                                <span class="cal-month-title text-[#14362b] font-bold" id="factooCalMonthTitle">Novembre 2026</span>
-                                <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(1)">
-                                    <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_right</span>
-                                </button>
-                            </div>
-
-                            <!-- Jours de semaine -->
-                            <div class="cal-weekdays">
-                                <span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span>
-                            </div>
-
-                            <!-- Grille des jours -->
-                            <div class="cal-days-grid" id="factooCalDaysGrid"></div>
-
-                            <!-- Résumé de sélection -->
-                            <div class="text-[11px] text-slate-500 font-medium mb-2 text-center" id="factooCalSummary">
-                                Cliquez pour choisir une date ou période
-                            </div>
-
-                            <!-- Actions -->
-                            <div class="cal-footer">
-                                <button type="button" class="cal-btn-cancel" onclick="resetFactooCalendarFilter()">Effacer</button>
-                                <button type="button" class="cal-btn-apply" onclick="applyFactooCalendarFilter()">Appliquer</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bouton 4 traits : Menu Bilan, Résultat, TAFIRE, Annexe -->
-                    <div class="relative">
-                        <button type="button" id="factooMenuTraitsBtn4" onclick="toggleFactooTraitsMenu(event)" class="px-3 py-2 rounded-lg bg-white/20 hover:bg-white/35 active:bg-white/45 text-white border border-white/35 transition-all cursor-pointer flex items-center justify-center shadow-xs backdrop-blur-xs group" title="Menu des états financiers (Bilan, Résultat, TAFIRE, Annexe)">
-                            <svg class="w-5 h-5 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-                                <line x1="3" y1="5" x2="21" y2="5"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                                <line x1="3" y1="15" x2="21" y2="15"></line>
-                                <line x1="3" y1="20" x2="21" y2="20"></line>
-                            </svg>
-                        </button>
-
-                        <!-- Popover Menu des 4 traits (Bilan, Résultat, TAFIRE, Annexe) -->
-                        <div id="factooTraitsMenuPopover4" class="hidden absolute right-0 top-full mt-2 w-64 bg-[#081514] border border-[#168078]/60 rounded-xl shadow-2xl p-2 z-[2500] text-xs select-none backdrop-blur-md" onclick="event.stopPropagation()">
-                            <div class="px-3 py-2 text-[10.5px] font-bold uppercase tracking-wider text-[#a0d9d2] border-b border-slate-700/60 mb-1 flex items-center justify-between">
-                                <span>États Financiers</span>
-                                <span class="w-2 h-2 rounded-full bg-[#a0d9d2] animate-pulse"></span>
-                            </div>
-                            <button type="button" onclick="selectFactooView('journal')" data-view-target="journal" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">table_rows</span>
-                                <div class="flex flex-col min-w-0">
-                                    <span class="font-bold text-slate-100">Journal des écritures</span>
-                                    <span class="text-[10px] text-slate-400">Tableau principal</span>
-                                </div>
-                            </button>
-                            <button type="button" onclick="selectFactooView('bilan')" data-view-target="bilan" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">account_balance</span>
-                                <div class="flex flex-col min-w-0">
-                                    <span class="font-bold text-slate-100">Bilan</span>
-                                    <span class="text-[10px] text-slate-400">Actif &amp; Passif SYSCOHADA</span>
-                                </div>
-                            </button>
-                            <button type="button" onclick="selectFactooView('resultat')" data-view-target="resultat" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">trending_up</span>
-                                <div class="flex flex-col min-w-0">
-                                    <span class="font-bold text-slate-100">Résultat</span>
-                                    <span class="text-[10px] text-slate-400">Compte de résultat &amp; SIG</span>
-                                </div>
-                            </button>
-                            <button type="button" onclick="selectFactooView('tft')" data-view-target="tft" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">payments</span>
-                                <div class="flex flex-col min-w-0">
-                                    <span class="font-bold text-slate-100">TAFIRE</span>
-                                    <span class="text-[10px] text-slate-400">Flux de trésorerie (TFT)</span>
-                                </div>
-                            </button>
-                            <button type="button" onclick="selectFactooView('annexes')" data-view-target="annexes" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-200 hover:text-white hover:bg-[#168078]/30 transition-colors text-left font-medium cursor-pointer">
-                                <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]" translate="no">description</span>
-                                <div class="flex flex-col min-w-0">
-                                    <span class="font-bold text-slate-100">Annexe</span>
-                                    <span class="text-[10px] text-slate-400">Notes &amp; liasse fiscale DGID</span>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- 1. VUE JOURNAL DES ÉCRITURES (TABLEAU) -->
@@ -15020,7 +15083,57 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             applyAllFactooFilters();
         }
 
-        function handleFactooTypeFilter(val) {
+                // =========================================================================
+        // SÉLECTEUR DE TYPE SYSCOHADA ULTRA-PRO GROW
+        // =========================================================================
+        function toggleFactooTypeMenu(event) {
+            if (event) event.stopPropagation();
+            const pop = document.getElementById('factooTypeMenuPopover');
+            const chev = document.getElementById('factooTypeChevron');
+            if (!pop) return;
+            const isHidden = pop.classList.contains('hidden');
+            
+            // Fermer les autres popovers
+            closeFactooCalendar();
+            const traitsPop = document.getElementById('factooTraitsMenuPopover');
+            if (traitsPop) traitsPop.classList.add('hidden');
+
+            if (isHidden) {
+                pop.classList.remove('hidden');
+                if (chev) chev.style.transform = 'rotate(180deg)';
+            } else {
+                pop.classList.add('hidden');
+                if (chev) chev.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function closeFactooTypeMenu() {
+            const pop = document.getElementById('factooTypeMenuPopover');
+            const chev = document.getElementById('factooTypeChevron');
+            if (pop) pop.classList.add('hidden');
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function selectFactooTypeCustom(val, label) {
+            currentFactooType = val;
+            const btnLabel = document.getElementById('factooTypeBtnLabel');
+            if (btnLabel) btnLabel.textContent = label || 'Tous les types';
+            closeFactooTypeMenu();
+            applyAllFactooFilters();
+        }
+
+        // Fermer le menu de type au clic extérieur
+        document.addEventListener('click', function(e) {
+            const pop = document.getElementById('factooTypeMenuPopover');
+            const wrap = document.getElementById('factooTypeWrapper');
+            if (pop && !pop.classList.contains('hidden')) {
+                if (!e.target.closest('#factooTypeWrapper')) {
+                    closeFactooTypeMenu();
+                }
+            }
+        });
+
+function handleFactooTypeFilter(val) {
             currentFactooType = val;
             applyAllFactooFilters();
         }
@@ -15400,10 +15513,16 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         function applyAllFactooFilters() {
             const list = window.allTransactionsCache || allTransactions || [];
             if (!list || list.length === 0) return;
-            const searchVal = (document.getElementById('table-search-input')?.value || '').trim().toLowerCase();
+            
+            // Recherche synchronisée multi-sources (loupe accordéon ou champ direct)
+            const searchVal = (
+                document.getElementById('expandableSearchInput')?.value ||
+                document.getElementById('table-search-input')?.value ||
+                ''
+            ).trim().toLowerCase();
             
             let filtered = list.filter((t, idx) => {
-                // Filtre d'onglet
+                // 1. Filtre d'onglet
                 const isValide = (t.statut === 'VALIDE' || t.statut === 'CERTIFIE' || (idx % 3 === 0));
                 if (currentFactooTab === 'pending' && isValide) return false;
                 if (currentFactooTab === 'certified' && !isValide) return false;
@@ -15416,15 +15535,45 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                     if (!src.includes('BANQUE') && !src.includes('CBAO') && !src.includes('CAISSE') && !src.includes('ESPECES')) return false;
                 }
 
-                // Filtre de Type
-                if (currentFactooType === '7' && (t.type_flux || '').toUpperCase() === 'SORTIE') return false;
-                if (currentFactooType === '6' && (t.type_flux || '').toUpperCase() !== 'SORTIE') return false;
-                if (currentFactooType === 'wave' && !(t.source_paiement || '').toUpperCase().includes('WAVE')) return false;
-                if (currentFactooType === 'orange' && !(t.source_paiement || '').toUpperCase().includes('ORANGE')) return false;
-                if (currentFactooType === 'banque' && !((t.source_paiement || '').toUpperCase().includes('BANQUE') || (t.source_paiement || '').toUpperCase().includes('CBAO'))) return false;
-                if (currentFactooType === 'especes' && !((t.source_paiement || '').toUpperCase().includes('CAISSE') || (t.source_paiement || '').toUpperCase().includes('ESPECES'))) return false;
+                // 2. Filtre de Type SYSCOHADA Complet & Pro
+                if (currentFactooType && currentFactooType !== 'all') {
+                    const c = String(t.compte_syscohada || '').trim();
+                    const flux = String(t.type_flux || '').toUpperCase();
+                    const src = String(t.source_paiement || t.operateur || '').toUpperCase();
+                    const lib = String(t.libelle || '').toUpperCase();
 
-                // Filtre de Date
+                    if (currentFactooType === '7') { // Ventes
+                        if (!c.startsWith('7') && flux !== 'ENTREE') return false;
+                    } else if (currentFactooType === '6') { // Achats
+                        if (!c.startsWith('6') && flux !== 'SORTIE') return false;
+                    } else if (currentFactooType === 'wave') { // Wave Sénégal
+                        if (!src.includes('WAVE') && !lib.includes('WAVE') && !c.startsWith('5213')) return false;
+                    } else if (currentFactooType === 'orange') { // Orange Money
+                        if (!src.includes('ORANGE') && !lib.includes('ORANGE') && !c.startsWith('5214')) return false;
+                    } else if (currentFactooType === 'especes') { // Caisse Espèces
+                        if (!src.includes('CAISSE') && !src.includes('ESPECES') && !lib.includes('CAISSE') && !c.startsWith('571')) return false;
+                    } else if (currentFactooType === 'banque') { // Banque & Virement
+                        if (!src.includes('BANQUE') && !src.includes('CBAO') && !src.includes('BOA') && !src.includes('VIREMENT') && !c.startsWith('521')) return false;
+                    } else if (currentFactooType === 'salaires') { // Salaires & Personnel (66)
+                        if (!c.startsWith('66') && !lib.includes('SALAIRE') && !lib.includes('PAIE') && !lib.includes('REMUNERATION')) return false;
+                    } else if (currentFactooType === 'impots') { // Impôts & Taxes (64 / 44)
+                        if (!c.startsWith('64') && !c.startsWith('44') && !lib.includes('IMPOT') && !lib.includes('TAXE') && !lib.includes('TVA') && !lib.includes('BRS')) return false;
+                    } else if (currentFactooType === 'creances') { // Créances Clients (411)
+                        if (!c.startsWith('41') && !lib.includes('CREANCE')) return false;
+                    } else if (currentFactooType === 'dettes') { // Dettes Fournisseurs (401)
+                        if (!c.startsWith('40') && !lib.includes('DETTE')) return false;
+                    } else if (currentFactooType === 'immo') { // Immobilisations (2)
+                        if (!c.startsWith('2') && !lib.includes('IMMO') && !lib.includes('INVESTISSEMENT')) return false;
+                    } else if (currentFactooType === 'stocks') { // Stocks (3)
+                        if (!c.startsWith('3') && !lib.includes('STOCK')) return false;
+                    } else if (currentFactooType === 'emprunts') { // Emprunts & Dettes Financières (16)
+                        if (!c.startsWith('16') && !lib.includes('EMPRUNT') && !lib.includes('CREDIT')) return false;
+                    } else if (currentFactooType === 'capital') { // Capitaux Propres (10)
+                        if (!c.startsWith('10') && !c.startsWith('1') && !lib.includes('CAPITAL') && !lib.includes('APPORT')) return false;
+                    }
+                }
+
+                // 3. Filtre de Date
                 if (factooStartDate && factooEndDate) {
                     const opDate = t.date_operation || (t.created_at ? t.created_at.substring(0, 10) : '');
                     if (opDate && (opDate < factooStartDate || opDate > factooEndDate)) return false;
@@ -15436,17 +15585,25 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                     if (opDate && !opDate.startsWith(currentFactooDate)) return false;
                 }
 
-                // Recherche libre
+                // 4. Recherche Multi-Champs
                 if (searchVal) {
                     const lib = (t.libelle || '').toLowerCase();
                     const ref = (t.reference_externe || '').toLowerCase();
                     const tiers = (t.partie_prenante || t.tiers || '').toLowerCase();
                     const cpt = (t.compte_syscohada || '').toLowerCase();
-                    if (!lib.includes(searchVal) && !ref.includes(searchVal) && !tiers.includes(searchVal) && !cpt.includes(searchVal)) return false;
+                    const montant = String(t.montant || '').toLowerCase();
+                    if (!lib.includes(searchVal) && !ref.includes(searchVal) && !tiers.includes(searchVal) && !cpt.includes(searchVal) && !montant.includes(searchVal)) return false;
                 }
 
                 return true;
             });
+
+            // Mettre à jour le badge du compteur
+            const countBadge = document.getElementById('txCountBadge');
+            if (countBadge) {
+                countBadge.textContent = `${filtered.length} opération${filtered.length > 1 ? 's' : ''}`;
+            }
+
             renderTransactionsList(filtered);
         }
 </script>
