@@ -62,3 +62,4 @@ grow_logiciel_comptable/
 ## 🚀 Lancement & Prérequis
 Les templates Jinja2 s'appuient sur FastAPI et le socle partagé `grow_shared/database.py`.
 Le style CSS est propulsé par Tailwind CSS et FontAwesome Pro.
+

@@ -65,3 +65,4 @@ Ce module s'appuie sur le fichier `.env` partagé :
 * `GEMINI_API_KEY` : Clé d'API Google Gemini pour l'audio et la classification.
 * `TWILIO_ACCOUNT_SID` & `TWILIO_AUTH_TOKEN` : Identifiants WhatsApp Twilio.
 * `WHATSAPP_PHONE_NUMBER` : Numéro officiel du bot (ex: `+221 78 877 38 27`).
+

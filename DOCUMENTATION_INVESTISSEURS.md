@@ -170,3 +170,4 @@ Les deux livrables développés à ce jour prouvent la faisabilité technique co
 3. ✅ **Socle scellé :** Base Supabase Cloud connectée en direct, résilience locale SQLite et commande universelle `npm run dev`.
 
 *Le capital d'amorçage permettra d'accélérer l'acquisition terrain, d'officialiser la ligne WhatsApp Meta Business et de sceller les premiers partenariats bancaires.*
+

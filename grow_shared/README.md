@@ -28,3 +28,4 @@ Garantir une source de vérité unique pour les données financières des PME :
 * **`transactions`** : ID, entreprise_id, date, libellé, montant, type (`ENTREE` / `SORTIE`), compte_syscohada (ex: `701`, `601`), mode_reglement (`WAVE`, `ORANGE_MONEY`, `ESPECES`, `BANQUE`), statut (`CERTIFIE`, `A_VERIFIER`).
 * **`pieces_jointes`** : URL du reçu ou capture de paiement Wave/OM, transaction_id, type mime.
 * **`abonnements`** : Statut d'abonnement SaaS de la PME, date d'échéance, plan choisi.
+
