@@ -14514,19 +14514,12 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             
             dd.innerHTML = filtered.map(e => {
                 const nom = getCleanCompanyName(e.nom_entreprise || e.nom || 'Entreprise');
-                const inits = getCompanyInitials(nom);
-                const isCurrent = currentEntreprise && (e.id === currentEntreprise.id || e.telephone_whatsapp === currentEntreprise.telephone_whatsapp);
                 return `
                     <div onclick="selectCompanyFromPortal('${e.id}', '${e.telephone_whatsapp || ''}')" 
                          class="group p-2.5 sm:p-3 flex items-center justify-between rounded-xl hover:bg-slate-50 active:bg-slate-100/80 transition-all cursor-pointer select-none">
-                        <div class="flex items-center gap-3.5 min-w-0 mr-2">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#168078] to-[#0d5953] text-white flex items-center justify-center font-bold text-xs tracking-wider flex-shrink-0 shadow-sm shadow-[#168078]/25 group-hover:scale-105 group-hover:shadow-md transition-all">
-                                ${escapeHtml(inits)}
-                            </div>
-                            <div class="min-w-0 flex flex-col justify-center">
-                                <span class="text-slate-900 font-bold text-[14.5px] truncate tracking-tight group-hover:text-[#168078] transition-colors">${escapeHtml(nom)}</span>
-                                <span class="text-[12px] text-slate-500 font-medium truncate mt-0.5">NINEA : <strong class="text-slate-700 font-semibold font-mono">${escapeHtml(e.ninea || '00802996')}</strong></span>
-                            </div>
+                        <div class="min-w-0 flex flex-col justify-center">
+                            <span class="text-slate-900 font-bold text-[14.5px] truncate tracking-tight group-hover:text-[#168078] transition-colors">${escapeHtml(nom)}</span>
+                            <span class="text-[12px] text-slate-500 font-medium truncate mt-0.5">NINEA : <strong class="text-slate-700 font-semibold font-mono">${escapeHtml(e.ninea || '00802996')}</strong></span>
                         </div>
                         <div class="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-[#168078] group-hover:text-white text-slate-400 flex items-center justify-center transition-all flex-shrink-0 ml-2 shadow-2xs">
                             <span class="material-symbols-outlined notranslate text-[16px] group-hover:translate-x-0.5 transition-transform" translate="no">arrow_forward</span>
