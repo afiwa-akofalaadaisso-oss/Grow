@@ -55,6 +55,18 @@ from expert_assistant import (
     gerer_dette_creance_locale
 )
 
+import uuid
+from database import (
+    get_all_entreprises_resilient,
+    get_transactions_resilient,
+    get_entreprise_by_phone_resilient,
+    save_transaction_resilient,
+    update_transaction_resilient,
+    save_or_update_entreprise_resilient,
+    flush_sync_queue,
+    get_supabase_client
+)
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # Fuseau horaire officiel du Sénégal (Dakar / GMT)
@@ -246,18 +258,8 @@ def get_tresorerie_stats(sp, entreprise_id: str):
 
 
 def get_supabase():
-    """Initialise le client Supabase."""
-    load_dotenv(override=True)
-    url = os.getenv("SUPABASE_URL")
-    key = os.getenv("SUPABASE_KEY")
-    if not url or not key:
-        return None
-    try:
-        from supabase import create_client
-        return create_client(url, key)
-    except Exception as e:
-        print(f"Erreur connexion Supabase : {e}")
-        return None
+    """Initialise ou récupère le client Supabase singleton réutilisable avec pool de connexions."""
+    return get_supabase_client()
 
 
 def load_onboarding_states() -> dict:
@@ -379,26 +381,26 @@ def update_onboarding_state(phone: str, key: str, value):
 
 
 def get_or_create_entreprise(sp, sender_phone: str) -> dict:
-    """Récupère ou crée automatiquement l'entreprise liée à ce numéro WhatsApp."""
-    if not sp or not sender_phone:
+    """Récupère ou crée automatiquement l'entreprise avec résilience locale SQLite ininterrompue."""
+    if not sender_phone:
         return {}
-    try:
-        clean_phone = str(sender_phone).replace("+", "").replace(" ", "").strip()
-        res = sp.table("entreprises").select("*").ilike("telephone_whatsapp", f"%{clean_phone}%").limit(1).execute()
-        if res.data and len(res.data) > 0:
-            return res.data[0]
+    clean_phone = str(sender_phone).replace("+", "").replace(" ", "").strip()
+    
+    # 1. Recherche résiliente (Supabase rapide ou SQLite instantané)
+    ent = get_entreprise_by_phone_resilient(clean_phone)
+    if ent:
+        return ent
 
-        nouvelle = sp.table("entreprises").insert({
-            "telephone_whatsapp": clean_phone,
-            "nom_entreprise": f"Boutique {clean_phone[-4:]}",
-            "secteur_activite": "Commerce & Services",
-            "capital_initial_fcfa": 0
-        }).execute()
-        if nouvelle.data:
-            return nouvelle.data[0]
-    except Exception as e:
-        print(f"Erreur gestion entreprise : {e}")
-    return {}
+    # 2. Création résiliente immédiate
+    new_id = str(uuid.uuid4())
+    new_ent = {
+        "id": new_id,
+        "telephone_whatsapp": clean_phone,
+        "nom_entreprise": f"Boutique {clean_phone[-4:]}",
+        "secteur_activite": "Commerce & Services",
+        "capital_initial_fcfa": 0
+    }
+    return save_or_update_entreprise_resilient(new_ent)
 
 
 @app.get("/")
@@ -475,30 +477,22 @@ def invalidate_dashboard_cache(phone: str = None, entreprise_id: str = None):
 
 @app.get("/api/dashboard-data")
 async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
-    """Fournit les données réelles et isolées d'une entreprise et ses transactions avec cache haute performance & résilience."""
+    """Fournit les données réelles et isolées d'une entreprise et ses transactions avec résilience absolue (Supabase + SQLite local)."""
     global _DASHBOARD_DATA_CACHE
     clean_phone = phone.replace("+", "").replace(" ", "").strip() if phone else ""
     cache_key = (clean_phone, str(entreprise_id or ""))
     now_ts = time.time()
 
-    # 1. Vérifier si un cache valide et récent existe (évite de spammer Supabase toutes les 10s)
+    # 1. Vérifier si un cache valide et récent existe (réponse instantanée < 1ms)
     cached_entry = _DASHBOARD_DATA_CACHE.get(cache_key)
     if cached_entry:
         cached_ts, cached_data = cached_entry
         if now_ts - cached_ts < _CACHE_TTL_SECONDS:
-            print(f'[CACHE HIT] phone={clean_phone} age={now_ts - cached_ts:.2f}s')
             return cached_data
-    print(f'[CACHE MISS] phone={clean_phone} querying Supabase...')
-
-    sp = get_supabase()
-    if not sp:
-        if cached_entry:
-            return cached_entry[1]
-        return {"error": "Base de données momentanément indisponible", "entreprises": [], "entreprise": None, "transactions": []}
 
     try:
-        # Récupérer la liste des entreprises enregistrées
-        all_ents = sp.table("entreprises").select("id, nom_entreprise, telephone_whatsapp, ninea, secteur_activite, adresse_siege, capital_initial_fcfa, donnees_onboarding").order("date_inscription", desc=True).execute().data or []
+        # Récupérer la liste des entreprises avec bascule transparente Supabase <-> SQLite
+        all_ents = get_all_entreprises_resilient()
 
         target_ent = None
         if entreprise_id:
@@ -506,19 +500,11 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 if str(e.get("id")) == str(entreprise_id):
                     target_ent = e
                     break
-            if not target_ent:
-                res = sp.table("entreprises").select("*").eq("id", entreprise_id).execute()
-                if res.data:
-                    target_ent = res.data[0]
         elif phone:
             for e in all_ents:
                 if e.get("telephone_whatsapp") and clean_phone in str(e.get("telephone_whatsapp")):
                     target_ent = e
                     break
-            if not target_ent:
-                res = sp.table("entreprises").select("*").eq("telephone_whatsapp", clean_phone).execute()
-                if res.data:
-                    target_ent = res.data[0]
 
         # Si un numéro a été expressément demandé mais qu'il n'est pas encore en base :
         if not target_ent and phone:
@@ -530,17 +516,14 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 "secteur_activite": "Commerce & Services",
                 "adresse_siege": "Dakar, Sénégal"
             }
-            all_ents = [target_ent]
+            all_ents = [target_ent] + all_ents
         elif not target_ent and all_ents:
-            # 1. Priorité absolue : Entreprise principale active (CGLT / 221788773827)
+            # Priorité absolue : Entreprise principale active (CGLT / 221788773827)
             primary_ent = next(
                 (e for e in all_ents if "221788773827" in str(e.get("telephone_whatsapp") or "") or "CGLT" in (e.get("nom_entreprise") or "").upper()),
                 None
             )
-            if primary_ent:
-                target_ent = primary_ent
-            else:
-                target_ent = all_ents[0]
+            target_ent = primary_ent if primary_ent else all_ents[0]
 
         if not target_ent:
             empty_res = {
@@ -566,15 +549,10 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
 
         ent_id = target_ent.get("id")
 
-        # Récupérer uniquement les transactions réelles de cette entreprise si l'ID est un UUID valide
+        # Récupérer les transactions avec bascule transparente Supabase <-> SQLite
         raw_txs = []
         if ent_id and not str(ent_id).startswith("new_"):
-            try:
-                tx_query = sp.table("transactions").select("*, preuves_numeriques(*)").eq("entreprise_id", ent_id).order("date_operation", desc=True).order("created_at", desc=True).execute()
-                raw_txs = tx_query.data or []
-            except Exception as tx_err:
-                print(f"Info tx query: {tx_err}")
-                raw_txs = []
+            raw_txs = get_transactions_resilient(ent_id)
 
         # Calculer les montants réels
         total_debit = 0
@@ -616,6 +594,15 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 "solde_net": solde_net
             }
         }
+        # Mise en cache mémoire immédiate
+        _DASHBOARD_DATA_CACHE[cache_key] = (now_ts, res_data)
+        return res_data
+
+    except Exception as e:
+        print(f"Erreur API dashboard-data (fallback sur cache ou donnees vides): {e}")
+        if cached_entry:
+            return cached_entry[1]
+        return {"error": str(e), "entreprises": [], "transactions": []}
         # Mise en cache mémoire immédiate
         _DASHBOARD_DATA_CACHE[cache_key] = (now_ts, res_data)
         return res_data
@@ -1104,11 +1091,7 @@ async def update_heure_rappel(payload: dict):
 
 @app.post("/api/enregistrer-transaction")
 async def api_enregistrer_transaction(payload: dict = Body(...)):
-    """Enregistre une transaction manuelle (vente ou dépense) depuis le dashboard smartphone."""
-    sp = get_supabase()
-    if not sp:
-        return {"status": "error", "message": "Supabase indisponible"}
-
+    """Enregistre une transaction manuelle (vente ou dépense) avec résilience totale (SQLite immédiat + Supabase)."""
     ent_id = payload.get("entreprise_id")
     montant = payload.get("montant_fcfa", 0)
     libelle = payload.get("libelle", "Opération")
@@ -1119,35 +1102,20 @@ async def api_enregistrer_transaction(payload: dict = Body(...)):
     if not ent_id or montant <= 0:
         return {"status": "error", "message": "Données invalides"}
 
-    tx_row = {
-        "entreprise_id": ent_id,
-        "libelle": libelle,
-        "compte_syscohada": compte,
-        "type_flux": type_flux,
-        "montant_fcfa": montant,
-        "source_paiement": source,
-        "statut_validation": "VALIDE_PME",
-        "est_professionnel": True
-    }
-    date_op = payload.get("date_operation")
-    if date_op:
-        tx_row["date_operation"] = str(date_op).strip()
-
     try:
-        res = sp.table("transactions").insert(tx_row).execute()
-        return {"status": "success", "data": res.data}
+        # Enregistrement ultra-résilient : SQLite local immédiat (0ms) + sync Supabase
+        res = save_transaction_resilient(payload)
+        # Invalidation du cache dashboard pour affichage immédiat
+        invalidate_dashboard_cache(entreprise_id=ent_id)
+        return {"status": "success", "data": res.get("data", [])}
     except Exception as e:
-        print(f"Erreur insertion transaction dashboard: {e}")
+        print(f"Erreur enregistrement transaction résiliente: {e}")
         return {"status": "error", "message": str(e)}
 
 
 @app.post("/api/modifier-transaction")
 async def api_modifier_transaction(payload: dict = Body(...)):
-    """Modifie une transaction existante dans Supabase."""
-    sp = get_supabase()
-    if not sp:
-        return {"status": "error", "message": "Supabase indisponible"}
-
+    """Modifie une transaction existante avec résilience totale (SQLite local immédiat + Supabase)."""
     tx_id = payload.get("id")
     if not tx_id:
         return {"status": "error", "message": "ID de transaction manquant"}
@@ -1174,10 +1142,11 @@ async def api_modifier_transaction(payload: dict = Body(...)):
         update_fields["reference_externe"] = str(payload["reference_externe"]).strip()
 
     try:
-        res = sp.table("transactions").update(update_fields).eq("id", tx_id).execute()
-        return {"status": "success", "data": res.data}
+        res = update_transaction_resilient(tx_id, update_fields)
+        invalidate_dashboard_cache()
+        return {"status": "success", "data": res}
     except Exception as e:
-        print(f"Erreur modification transaction dashboard: {e}")
+        print(f"Erreur modification transaction résiliente: {e}")
         return {"status": "error", "message": str(e)}
 
 
@@ -3662,10 +3631,18 @@ async def start_scheduler():
     # 4. Relance automatique des dettes et créances tous les 3 jours (à 10h00 heure de Dakar)
     scheduler.add_job(check_and_send_dettes_reminders, "cron", hour="10", minute="00", timezone=TZ_DAKAR)
 
+    # 6. Synchronisation continue et résiliente de la file d'attente (Supabase <-> SQLite)
+    scheduler.add_job(flush_sync_queue, "interval", seconds=15)
+
     # 5. Point hebdomadaire et mensuel
     scheduler.add_job(weekly_closure_check, "cron", day_of_week="sun", hour="18", minute="00", timezone=TZ_DAKAR)
     scheduler.add_job(monthly_closure_check, "cron", day="28", hour="09", minute="00", timezone=TZ_DAKAR)
 
     scheduler.start()
+    # Dépiler immédiatement toute écriture hors-ligne résiduelle
+    try:
+        flush_sync_queue()
+    except Exception as e:
+        print(f"Info startup sync: {e}")
     print("Planificateur automatique Grow (APScheduler) cale sur l'heure du Senegal (Africa/Dakar) demarre avec succes !")
 

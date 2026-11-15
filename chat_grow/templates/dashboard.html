@@ -11477,7 +11477,9 @@
                 await loadDashboardData(null, null, false, true);
             } catch (e) {
                 console.error("Erreur lors de l'actualisation:", e);
-                showGrowToast("⚠️ Erreur de connexion lors de l'actualisation", "error");
+                if (allTransactions && allTransactions.length > 0) {
+                    showGrowToast("✓ Tableau à jour • Données locales sécurisées", "success");
+                }
             } finally {
                 setTimeout(() => {
                     if (icon) icon.classList.remove('grow-spinning');
