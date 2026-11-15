@@ -12482,7 +12482,11 @@
                 }
             }
             if (subEq) {
-                subEq.textContent = `Actif Net : ${fmt(b.actif.total)} • Passif Total : ${fmt(b.passif.total)} • Écart : ${fmt(diffBilan)} • Conforme SYSCOHADA Révisé`;
+                if (isEquilibre) {
+                    subEq.textContent = `Actif Net : ${fmt(b.actif.total)} • Passif Total : ${fmt(b.passif.total)} • Écart : 0 FCFA • Conforme SYSCOHADA Révisé`;
+                } else {
+                    subEq.textContent = `Actif Net : ${fmt(b.actif.total)} • Passif Total : ${fmt(b.passif.total)} • Écart : ${fmt(diffBilan)} • Déséquilibre à régulariser (Non conforme SYSCOHADA)`;
+                }
             }
         }
 
@@ -14527,7 +14531,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
             let html = '';
             for (let i = 0; i < startDayIndex; i++) {
-                html += `<div class="h-7"></div>`;
+                html += `<div class="h-6"></div>`;
             }
 
             for (let d = 1; d <= daysInMonth; d++) {
@@ -14538,7 +14542,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 const isSelected = dateIso === selectedIso;
                 const isToday = dateIso === todayIso;
 
-                let cellClass = 'w-7 h-7 mx-auto rounded-lg flex items-center justify-center cursor-pointer transition-all text-xs font-semibold';
+                let cellClass = 'w-7 h-6 mx-auto rounded-md flex items-center justify-center cursor-pointer transition-all text-[11px] font-semibold';
                 if (isSelected) {
                     cellClass += ' bg-[#222222] text-[#a0d9d2] font-black shadow-xs';
                 } else if (isToday) {
@@ -14622,7 +14626,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
 
             let html = '';
             for (let i = 0; i < startDayIndex; i++) {
-                html += `<div class="h-7"></div>`;
+                html += `<div class="h-6"></div>`;
             }
 
             for (let d = 1; d <= daysInMonth; d++) {
@@ -14633,7 +14637,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 const isSelected = dateIso === selectedIso;
                 const isToday = dateIso === todayIso;
 
-                let cellClass = 'w-7 h-7 mx-auto rounded-lg flex items-center justify-center cursor-pointer transition-all text-xs font-semibold';
+                let cellClass = 'w-7 h-6 mx-auto rounded-md flex items-center justify-center cursor-pointer transition-all text-[11px] font-semibold';
                 if (isSelected) {
                     cellClass += ' bg-[#222222] text-[#a0d9d2] font-black shadow-xs';
                 } else if (isToday) {
@@ -15036,6 +15040,214 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             portalTypewriterTimeout = setTimeout(runPortalTypewriterLoop, typeSpeed);
         }
 
+        // =========================================================================
+        // MOTEUR ARTISTIQUE DE POINTS FLUIDES & INTERACTIFS (PORTAIL GROW)
+        // =========================================================================
+        let portalDotsCanvas = null;
+        let portalDotsCtx = null;
+        let portalDotsAnimationId = null;
+        let portalDotsList = [];
+        let portalMouse = { x: -9999, y: -9999, active: false };
+        let portalRipples = [];
+
+        class ArtisticPortalDot {
+            constructor(originX, originY) {
+                this.ox = originX;
+                this.oy = originY;
+                this.x = originX;
+                this.y = originY;
+                this.baseRadius = 1.8;
+                this.radius = 1.8;
+                this.alpha = 0.25;
+                this.baseAlpha = 0.22 + (Math.sin(originX * 0.05 + originY * 0.05) * 0.06);
+                this.phase = Math.random() * Math.PI * 2;
+                this.speed = 0.85 + Math.random() * 0.35;
+            }
+
+            update(time, mouseX, mouseY, ripples) {
+                // 1. Ondulation organique zen (double onde harmonique fluide)
+                const waveX = Math.sin(this.ox * 0.007 + time * 0.0016 * this.speed + this.phase) * 7.5;
+                const waveY = Math.cos(this.oy * 0.007 + time * 0.0013 * this.speed + this.phase) * 6.5;
+                const targetX = this.ox + waveX;
+                const targetY = this.oy + waveY;
+
+                // 2. Interaction magnétique avec le curseur (déviation fluide)
+                let repelX = 0;
+                let repelY = 0;
+                let mouseDist = 9999;
+                if (portalMouse.active) {
+                    const dx = this.x - mouseX;
+                    const dy = this.y - mouseY;
+                    mouseDist = Math.hypot(dx, dy);
+                    const maxDist = 140;
+                    if (mouseDist < maxDist && mouseDist > 0) {
+                        const factor = Math.pow(1 - mouseDist / maxDist, 1.8);
+                        const force = factor * 34;
+                        repelX = (dx / mouseDist) * force;
+                        repelY = (dy / mouseDist) * force;
+                    }
+                }
+
+                // 3. Propagation d'ondes de choc artistiques (clics / frappes)
+                let rippleShiftX = 0;
+                let rippleShiftY = 0;
+                if (ripples && ripples.length > 0) {
+                    for (let i = 0; i < ripples.length; i++) {
+                        const r = ripples[i];
+                        const rdx = this.x - r.x;
+                        const rdy = this.y - r.y;
+                        const d = Math.hypot(rdx, rdy);
+                        const distToWavefront = Math.abs(d - r.radius);
+                        if (distToWavefront < 65 && d > 0) {
+                            const intensity = (1 - distToWavefront / 65) * r.strength;
+                            rippleShiftX += (rdx / d) * Math.sin(distToWavefront * 0.1) * intensity * 15;
+                            rippleShiftY += (rdy / d) * Math.sin(distToWavefront * 0.1) * intensity * 15;
+                        }
+                    }
+                }
+
+                // Physique à ressort fluide
+                const finalTargetX = targetX + repelX + rippleShiftX;
+                const finalTargetY = targetY + repelY + rippleShiftY;
+                this.x += (finalTargetX - this.x) * 0.09;
+                this.y += (finalTargetY - this.y) * 0.09;
+
+                // Modulation dynamique de taille et d'opacité
+                const isNearMouse = mouseDist < 130;
+                const targetAlpha = isNearMouse 
+                    ? (0.50 + (1 - mouseDist / 130) * 0.35) 
+                    : (this.baseAlpha + Math.sin(this.ox * 0.005 + time * 0.002) * 0.08);
+                this.alpha += (targetAlpha - this.alpha) * 0.1;
+
+                const targetRadius = isNearMouse 
+                    ? (this.baseRadius + (1 - mouseDist / 130) * 1.5) 
+                    : (this.baseRadius + Math.sin(this.ox * 0.008 + time * 0.0018) * 0.35);
+                this.radius += (targetRadius - this.radius) * 0.1;
+            }
+
+            draw(ctx) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, Math.max(0.8, this.radius), 0, Math.PI * 2);
+                if (this.alpha > 0.4) {
+                    ctx.fillStyle = `rgba(22, 128, 120, ${this.alpha})`;
+                } else {
+                    ctx.fillStyle = `rgba(20, 54, 43, ${this.alpha})`;
+                }
+                ctx.fill();
+            }
+        }
+
+        function initPortalArtisticDotsCanvas() {
+            portalDotsCanvas = document.getElementById('portalDotsCanvas');
+            if (!portalDotsCanvas) return;
+            portalDotsCtx = portalDotsCanvas.getContext('2d');
+            resizePortalDotsCanvas();
+
+            window.removeEventListener('resize', resizePortalDotsCanvas);
+            window.addEventListener('resize', resizePortalDotsCanvas);
+
+            const portal = document.getElementById('viewPortalComptable');
+            if (portal && !portal._dotsListenersAttached) {
+                portal._dotsListenersAttached = true;
+                portal.addEventListener('mousemove', (e) => {
+                    const rect = portal.getBoundingClientRect();
+                    portalMouse.x = e.clientX - rect.left;
+                    portalMouse.y = e.clientY - rect.top;
+                    portalMouse.active = true;
+                });
+                portal.addEventListener('mouseleave', () => {
+                    portalMouse.active = false;
+                    portalMouse.x = -9999;
+                    portalMouse.y = -9999;
+                });
+                portal.addEventListener('click', (e) => {
+                    const rect = portal.getBoundingClientRect();
+                    spawnPortalRipple(e.clientX - rect.left, e.clientY - rect.top);
+                });
+            }
+        }
+
+        function spawnPortalRipple(x, y) {
+            portalRipples.push({
+                x: x,
+                y: y,
+                radius: 0,
+                maxRadius: Math.max(window.innerWidth, window.innerHeight) * 0.8,
+                speed: 7.0,
+                strength: 1.0
+            });
+        }
+
+        function resizePortalDotsCanvas() {
+            if (!portalDotsCanvas) return;
+            const dpr = window.devicePixelRatio || 1;
+            const w = portalDotsCanvas.parentElement ? portalDotsCanvas.parentElement.clientWidth : window.innerWidth;
+            const h = portalDotsCanvas.parentElement ? portalDotsCanvas.parentElement.clientHeight : window.innerHeight;
+            portalDotsCanvas.width = w * dpr;
+            portalDotsCanvas.height = h * dpr;
+            portalDotsCanvas.style.width = w + 'px';
+            portalDotsCanvas.style.height = h + 'px';
+            if (portalDotsCtx) portalDotsCtx.scale(dpr, dpr);
+
+            const spacing = window.innerWidth < 640 ? 26 : 30;
+            portalDotsList = [];
+            for (let x = spacing / 2; x < w + spacing; x += spacing) {
+                for (let y = spacing / 2; y < h + spacing; y += spacing) {
+                    portalDotsList.push(new ArtisticPortalDot(x, y));
+                }
+            }
+        }
+
+        function startPortalDotsAnimation() {
+            if (!portalDotsCanvas) {
+                initPortalArtisticDotsCanvas();
+            }
+            if (portalDotsAnimationId) return;
+
+            let startTime = performance.now();
+            function renderLoop(currentTime) {
+                const portal = document.getElementById('viewPortalComptable');
+                if (!portal || portal.style.display === 'none') {
+                    portalDotsAnimationId = null;
+                    return;
+                }
+
+                const elapsed = currentTime - startTime;
+                const dpr = window.devicePixelRatio || 1;
+                const w = portalDotsCanvas.width / dpr;
+                const h = portalDotsCanvas.height / dpr;
+
+                portalDotsCtx.clearRect(0, 0, w, h);
+
+                // Mettre à jour les ondes d'impact
+                for (let i = portalRipples.length - 1; i >= 0; i--) {
+                    const r = portalRipples[i];
+                    r.radius += r.speed;
+                    r.strength *= 0.985;
+                    if (r.radius > r.maxRadius || r.strength < 0.02) {
+                        portalRipples.splice(i, 1);
+                    }
+                }
+
+                // Mettre à jour et dessiner les points
+                for (let i = 0; i < portalDotsList.length; i++) {
+                    const dot = portalDotsList[i];
+                    dot.update(elapsed, portalMouse.x, portalMouse.y, portalRipples);
+                    dot.draw(portalDotsCtx);
+                }
+
+                portalDotsAnimationId = requestAnimationFrame(renderLoop);
+            }
+
+            portalDotsAnimationId = requestAnimationFrame(renderLoop);
+        }
+
+        function stopPortalDotsAnimation() {
+            if (portalDotsAnimationId) {
+                cancelAnimationFrame(portalDotsAnimationId);
+                portalDotsAnimationId = null;
+            }
+        }
         function initPortalTypewriter() {
             if (portalTypewriterTimeout) clearTimeout(portalTypewriterTimeout);
             portalPhraseIndex = 0;
@@ -15052,6 +15264,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             portal.style.transition = '';
             portal.style.display = 'flex';
             initPortalTypewriter();
+            startPortalDotsAnimation();
             
             // Masquer la liste tant qu'aucun mot n'est tapé
             const dd = document.getElementById('portalSearchResultsDropdown');
@@ -15077,6 +15290,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const portal = document.getElementById('viewPortalComptable');
             if (!portal) return;
             portal.style.display = 'none';
+            stopPortalDotsAnimation();
         }
 
         // =========================================================================
@@ -15139,6 +15353,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             setTimeout(() => {
                 portal.style.display = 'none';
                 portal.style.opacity = '1';
+                stopPortalDotsAnimation();
                 portal.classList.remove('portal-flight-active');
                 if (animLogo) {
                     animLogo.style.transform = '';
