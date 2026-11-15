@@ -44,15 +44,18 @@ function findCloudflared() {
 
 const cloudflaredBin = findCloudflared();
 const tunnelToken = envVars.CLOUDFLARE_TUNNEL_TOKEN || process.env.CLOUDFLARE_TUNNEL_TOKEN;
+const ngrokStaticDomain = envVars.NGROK_STATIC_DOMAIN || process.env.NGROK_STATIC_DOMAIN || 'https://rascal-legible-unsheathe.ngrok-free.dev';
 
 console.clear();
 console.log('\x1b[36m%s\x1b[0m', '======================================================================');
 console.log('\x1b[1m\x1b[32m%s\x1b[0m', ' 🌿 GROW MVP — COPILOTE FINANCIER & ASSISTANT PRÉ-COMPTABLE');
 console.log('\x1b[36m%s\x1b[0m', '======================================================================');
 console.log(' 💻 \x1b[1mLogiciel Web Comptable\x1b[0m : \x1b[34mhttp://localhost:8000/dashboard?portal=1\x1b[0m');
-console.log(' 📱 \x1b[1mWebhook WhatsApp Meta\x1b[0m  : \x1b[34mhttp://localhost:8000/webhook\x1b[0m');
+console.log(' 📱 \x1b[1mWebhook WhatsApp Meta\x1b[0m  : \x1b[34m' + (ngrokStaticDomain ? ngrokStaticDomain + '/webhook' : 'http://localhost:8000/webhook') + '\x1b[0m');
 console.log(' 🗄️ \x1b[1mBase Supabase Cloud\x1b[0m    : \x1b[32mConnectée en direct (36 écritures SYSCOHADA)\x1b[0m');
-if (tunnelToken) {
+if (ngrokStaticDomain) {
+    console.log(' 🔒 \x1b[1mTunnel Permanent Fixe\x1b[0m  : \x1b[32mScellé à vie sur ' + ngrokStaticDomain + '\x1b[0m');
+} else if (tunnelToken) {
     console.log(' 🔒 \x1b[1mMode Tunnel Permanent\x1b[0m  : \x1b[32mActivé via Token Cloudflare (Lien scellé à vie)\x1b[0m');
 } else {
     console.log(' 🌐 \x1b[1mMode Tunnel Public\x1b[0m     : \x1b[33mInitialisation Cloudflare Tunnel...\x1b[0m');
@@ -84,40 +87,53 @@ if (!isTunnelOnly) {
     });
 }
 
-// 2. Démarrage du Tunnel Cloudflare
-let tunnelArgs = [];
-if (tunnelToken) {
-    // Mode permanent scellé : utilise le token d'un tunnel Cloudflare Zero Trust
-    tunnelArgs = ['tunnel', 'run', '--token', tunnelToken];
-} else {
-    // Mode tunnel rapide standard vers le port 8000
-    tunnelArgs = ['tunnel', '--url', 'http://localhost:8000'];
-}
-
-console.log('\x1b[90m[Grow Tunnel] Connexion du tunnel Cloudflare...\x1b[0m');
-const tunnelProcess = spawn(cloudflaredBin, tunnelArgs, {
-    stdio: ['inherit', 'pipe', 'pipe'],
-    shell: true
-});
-
+// 2. Démarrage du Tunnel (ngrok statique permanent ou Cloudflare)
+let tunnelProcess = null;
 let foundTunnelUrl = false;
 
-function scanTunnelOutput(data) {
-    const text = data.toString();
-    const match = text.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
-    if (match && !foundTunnelUrl) {
-        foundTunnelUrl = true;
-        const url = match[0];
-        console.log('\n\x1b[32m%s\x1b[0m', '✨ ==================================================================');
-        console.log('\x1b[1m\x1b[32m  🚀 TUNNEL CLOUD WHATSAPP ACTIF :\x1b[0m');
-        console.log('     🔗 \x1b[1m\x1b[36m' + url + '\x1b[0m');
-        console.log('     📱 \x1b[1mWebhook Meta WhatsApp\x1b[0m : \x1b[33m' + url + '/webhook\x1b[0m');
-        console.log('\x1b[32m%s\x1b[0m\n', '================================================================== ✨');
+if (ngrokStaticDomain) {
+    console.log('\x1b[90m[Grow Tunnel] Connexion ngrok sur le domaine statique scellé à vie...\x1b[0m');
+    tunnelProcess = spawn('ngrok', ['http', '8000', `--url=${ngrokStaticDomain}`, '--log=stdout'], {
+        stdio: ['inherit', 'pipe', 'pipe'],
+        shell: true
+    });
+    console.log('\n\x1b[32m%s\x1b[0m', '✨ ==================================================================');
+    console.log('\x1b[1m\x1b[32m  🚀 TUNNEL PERMANENT SCELLÉ À VIE (NGROK) :\x1b[0m');
+    console.log('     🔗 \x1b[1m\x1b[36m' + ngrokStaticDomain + '\x1b[0m');
+    console.log('     📱 \x1b[1mWebhook Meta WhatsApp\x1b[0m : \x1b[33m' + ngrokStaticDomain + '/webhook\x1b[0m');
+    console.log('     🔑 \x1b[1mToken de vérification\x1b[0m : \x1b[37mgrow_dakar_secret_2026\x1b[0m');
+    console.log('\x1b[32m%s\x1b[0m\n', '================================================================== ✨');
+} else {
+    let tunnelArgs = [];
+    if (tunnelToken) {
+        tunnelArgs = ['tunnel', 'run', '--token', tunnelToken];
+    } else {
+        tunnelArgs = ['tunnel', '--url', 'http://localhost:8000'];
     }
-}
 
-tunnelProcess.stdout.on('data', scanTunnelOutput);
-tunnelProcess.stderr.on('data', scanTunnelOutput);
+    console.log('\x1b[90m[Grow Tunnel] Connexion du tunnel Cloudflare...\x1b[0m');
+    tunnelProcess = spawn(cloudflaredBin, tunnelArgs, {
+        stdio: ['inherit', 'pipe', 'pipe'],
+        shell: true
+    });
+
+    function scanTunnelOutput(data) {
+        const text = data.toString();
+        const match = text.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
+        if (match && !foundTunnelUrl) {
+            foundTunnelUrl = true;
+            const url = match[0];
+            console.log('\n\x1b[32m%s\x1b[0m', '✨ ==================================================================');
+            console.log('\x1b[1m\x1b[32m  🚀 TUNNEL CLOUD WHATSAPP ACTIF :\x1b[0m');
+            console.log('     🔗 \x1b[1m\x1b[36m' + url + '\x1b[0m');
+            console.log('     📱 \x1b[1mWebhook Meta WhatsApp\x1b[0m : \x1b[33m' + url + '/webhook\x1b[0m');
+            console.log('\x1b[32m%s\x1b[0m\n', '================================================================== ✨');
+        }
+    }
+
+    tunnelProcess.stdout.on('data', scanTunnelOutput);
+    tunnelProcess.stderr.on('data', scanTunnelOutput);
+}
 
 // Gestion de l'arrêt propre
 function cleanExit() {
