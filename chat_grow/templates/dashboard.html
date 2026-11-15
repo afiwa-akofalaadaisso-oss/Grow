@@ -7651,19 +7651,9 @@
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#168078] to-[#0e524d] text-white flex items-center justify-center font-bold text-base shadow-sm flex-shrink-0" id="pmeCardAvatar">
                             CG
                         </div>
-                        <div class="flex flex-col min-w-0">
-                            <div class="flex items-center gap-2">
-                                <span class="font-extrabold text-base text-slate-900 tracking-tight truncate" id="pmeCardName">CGLT</span>
-                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold flex-shrink-0">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    PME Active
-                                </span>
-                            </div>
-                            <div class="flex items-center gap-2 text-xs text-slate-500 font-mono mt-0.5 truncate">
-                                <span>NINEA : <strong class="text-slate-700" id="pmeCardNinea">00802996</strong></span>
-                                <span>•</span>
-                                <span id="pmeCardPhone">+221 78 877 38 27</span>
-                            </div>
+                        <div class="flex flex-col min-w-0 justify-center">
+                            <span class="font-extrabold text-base text-slate-900 tracking-tight truncate" id="pmeCardName">CGLT</span>
+                            <span class="text-xs text-slate-500 font-medium mt-0.5 truncate">NINEA : <strong class="text-slate-700 font-semibold font-mono" id="pmeCardNinea">00802996</strong></span>
                         </div>
                     </div>
                     <button type="button" onclick="cancelPmePreview()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-[#ebe9e4] transition-colors cursor-pointer flex-shrink-0" title="Changer d'entreprise">
@@ -14283,17 +14273,9 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#168078] to-[#0d5953] text-white flex items-center justify-center font-bold text-xs tracking-wider flex-shrink-0 shadow-sm shadow-[#168078]/25 group-hover:scale-105 group-hover:shadow-md transition-all">
                                 ${escapeHtml(inits)}
                             </div>
-                            <div class="min-w-0 flex flex-col">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-slate-900 font-bold text-[14px] truncate tracking-tight group-hover:text-[#168078] transition-colors">${escapeHtml(nom)}</span>
-                                    ${isCurrent ? '<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 text-[10px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Actif</span>' : ''}
-                                </div>
-                                <div class="flex items-center gap-2 text-[12px] text-slate-500 font-normal truncate mt-0.5">
-                                    <span class="text-slate-400 font-medium text-[11px]">NINEA</span>
-                                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
-                                    <span class="font-medium text-slate-700 tracking-wide">${escapeHtml(e.ninea || '00802996')}</span>
-                                    ${e.telephone_whatsapp ? `<span class="w-1 h-1 rounded-full bg-slate-300"></span><span class="text-slate-400 text-[11.5px]">+${escapeHtml(e.telephone_whatsapp)}</span>` : ''}
-                                </div>
+                            <div class="min-w-0 flex flex-col justify-center">
+                                <span class="text-slate-900 font-bold text-[14.5px] truncate tracking-tight group-hover:text-[#168078] transition-colors">${escapeHtml(nom)}</span>
+                                <span class="text-[12px] text-slate-500 font-medium truncate mt-0.5">NINEA : <strong class="text-slate-700 font-semibold font-mono">${escapeHtml(e.ninea || '00802996')}</strong></span>
                             </div>
                         </div>
                         <div class="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-[#168078] group-hover:text-white text-slate-400 flex items-center justify-center transition-all flex-shrink-0 ml-2 shadow-2xs">
