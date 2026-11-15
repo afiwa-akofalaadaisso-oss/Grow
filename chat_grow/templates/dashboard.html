@@ -7867,12 +7867,19 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 select-none">
                     <!-- Titre avec Logo grow officiel (Point d'atterrissage morphologique avec son fond sombre) -->
                     <div class="flex items-center gap-3">
-                        <div id="dossierHeaderLogoBox" class="w-10 h-10 rounded-xl shadow-md flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer group" onclick="openPortalView()" title="Revenir au portail d'accueil">
+                        <div id="dossierHeaderLogoBox" class="w-10 h-10 rounded-xl shadow-md flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer group" onclick="openPortalView()" title="Revenir au portail d'accueil (Recherche d'entreprise)">
                             <img id="dossierHeaderLogo" src="/static/grow_icon_squircle.png?v=3" alt="Logo grow" class="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform">
                         </div>
-                        <div class="flex items-center gap-2.5">
-                            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight lowercase select-none" id="factooPageTitle">grow</h1>
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200" id="txCountBadge">16 opérations</span>
+                        <div class="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+                            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight lowercase select-none cursor-pointer hover:opacity-85 transition-opacity" id="factooPageTitle" onclick="openPortalView()" title="Portail d'accueil">grow</h1>
+                            <!-- Bouton Pill Dossier Client Synchronisé avec le Portail -->
+                            <button type="button" onclick="openPortalView()" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-800 text-xs font-bold transition-all cursor-pointer border border-slate-200/90 shadow-2xs group select-none" title="Changer d'entreprise cliente (Ouvrir le portail d'accueil)">
+                                <span class="w-2 h-2 rounded-full bg-[#168078] shadow-[0_0_6px_rgba(22,128,120,0.6)]"></span>
+                                <span id="factooHeaderCompanyName" class="font-extrabold text-slate-900">CGLT</span>
+                                <span class="text-[10.5px] font-mono text-slate-400 group-hover:text-slate-600 transition-colors" id="factooHeaderCompanyNinea">(00802996)</span>
+                                <span class="material-symbols-outlined notranslate text-[15px] text-slate-400 group-hover:text-[#168078] transition-colors" translate="no">swap_horiz</span>
+                            </button>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200" id="txCountBadge">17 opérations</span>
                         </div>
                     </div>
 
@@ -11032,16 +11039,19 @@
         var pageSize = 50;
         var calStartDate = null;
         var calEndDate = null;
+        const DEFAULT_ENTREPRISES_DB = [
+            { id: 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27', nom_entreprise: 'CGLT', ninea: '00802996', telephone_whatsapp: '221788773827' },
+            { id: 'eca2e6d3-cab6-40d6-a1ea-d36f32efc9fc', nom_entreprise: 'Innovatech Médical Sénégal', ninea: '00670980', telephone_whatsapp: '221786709800' },
+            { id: 'a4bc2138-bf55-4684-b709-fa2546879e3e', nom_entreprise: 'Château de Gourmet', ninea: '00833740', telephone_whatsapp: '221768337400' },
+            { id: 'd55b2580-ba08-4688-8b4a-be2a38bc1c1a', nom_entreprise: 'Sérénité Assurances & Courtage', ninea: '00431120', telephone_whatsapp: '221704311200' },
+            { id: 'e4775b81-993f-449d-9a13-ba5bf7fd6160', nom_entreprise: 'Savoir-Faire Culinaires', ninea: '00872240', telephone_whatsapp: '221778722400' }
+        ];
         var allTransactions = [];
         var allTransactionsCache = [];
-        var allEntreprisesList = [];
+        var allEntreprisesList = [...DEFAULT_ENTREPRISES_DB];
         var currentEntreprise = null;
         var realSoldeNetFormatted = "0";
         var isBalanceHidden = false;
-
-        // allTransactions déjà déclaré en tête
-        // currentEntreprise déjà déclaré en tête
-        var allEntreprisesList = [];
 
         function formatFCFA(val) {
             return (Number(val) || 0).toLocaleString('fr-FR') + ' FCFA';
@@ -11562,24 +11572,23 @@
                 const factooTitle = document.getElementById('factooPageTitle');
                 if (currentEntreprise) {
                     const cName = getCleanCompanyName(currentEntreprise.nom_entreprise || currentEntreprise.nom || 'CGLT');
-                    if (factooBreadcrumb) factooBreadcrumb.textContent = `${cName} (${currentEntreprise.ninea || '00802996'})`;
+                    const cNinea = currentEntreprise.ninea || '00802996';
+                    const hName = document.getElementById('factooHeaderCompanyName');
+                    const hNinea = document.getElementById('factooHeaderCompanyNinea');
+                    if (hName) hName.textContent = cName;
+                    if (hNinea) hNinea.textContent = `(${cNinea})`;
+                    if (factooBreadcrumb) factooBreadcrumb.textContent = `${cName} (${cNinea})`;
                     if (factooTitle) factooTitle.textContent = "grow";
                 }
 
-                // Liste de toutes les entreprises
-                const dbEnts = data.entreprises || [];
-                const demoEnts = [
-                    { id: 'ent-demo-1', nom_entreprise: 'Dakar Import', ninea: '00802996-2G3', telephone_whatsapp: '221770001122' },
-                    { id: 'ent-demo-2', nom_entreprise: 'Diallo & Frères', ninea: '00754128-1A2', telephone_whatsapp: '221762223344' },
-                    { id: 'ent-demo-3', nom_entreprise: 'Boutique Almadies', ninea: '00912440-3K9', telephone_whatsapp: '221781112233' }
-                ];
-                // Fusionner avec la liste de la base de données
-                allEntreprisesList = [...dbEnts];
-                demoEnts.forEach(demo => {
-                    if (!allEntreprisesList.some(e => e.nom_entreprise === demo.nom_entreprise || e.telephone_whatsapp === demo.telephone_whatsapp)) {
-                        allEntreprisesList.push(demo);
-                    }
-                });
+                // Liste de toutes les entreprises réelles du cabinet
+                const dbEnts = (data.entreprises && data.entreprises.length > 0) ? data.entreprises : DEFAULT_ENTREPRISES_DB;
+                allEntreprisesList = dbEnts.map(e => ({
+                    id: e.id,
+                    nom_entreprise: getCleanCompanyName(e.nom_entreprise || e.nom || 'Entreprise'),
+                    telephone_whatsapp: e.telephone_whatsapp || '',
+                    ninea: e.ninea || '00802996'
+                }));
                 renderEnterpriseDropdown(allEntreprisesList);
 
 
@@ -15136,9 +15145,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         let pendingSelectedCompany = null;
 
         function selectCompanyFromPortal(entId, phone) {
-            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : [
-                { id: 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27', nom_entreprise: 'CGLT', ninea: '00802996', telephone_whatsapp: '221788773827' }
-            ];
+            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : DEFAULT_ENTREPRISES_DB;
             
             const ent = list.find(e => e.id === entId || (phone && e.telephone_whatsapp === phone)) || {
                 id: entId,
@@ -15180,28 +15187,12 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             const trimmed = (query || '').trim();
             const clearBtn = document.getElementById('portalClearSearchBtn');
             if (clearBtn) clearBtn.style.display = trimmed ? 'block' : 'none';
-            
-            // Ne rien faire apparaître tant qu'aucun mot n'est tapé
-            if (!trimmed) {
-                const dd = document.getElementById('portalSearchResultsDropdown');
-                if (dd) {
-                    dd.style.display = 'none';
-                    dd.innerHTML = '';
-                }
-                return;
-            }
             renderPortalCompanyResults(trimmed);
         }
 
         function showPortalDropdown() {
             const inp = document.getElementById('portalCompanySearchInput');
             const val = (inp ? inp.value : '').trim();
-            // Ne rien afficher au focus tant qu'aucun mot n'est tapé
-            if (!val) {
-                const dd = document.getElementById('portalSearchResultsDropdown');
-                if (dd) dd.style.display = 'none';
-                return;
-            }
             renderPortalCompanyResults(val);
         }
 
@@ -15220,24 +15211,12 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             }
         }
 
-        function renderPortalCompanyResults(queryRaw) {
+        function renderPortalCompanyResults(queryRaw = '') {
             const dd = document.getElementById('portalSearchResultsDropdown');
             if (!dd) return;
             
             const query = (queryRaw || '').toLowerCase().trim();
-            // Sécurité absolue : ne jamais afficher si la recherche est vide
-            if (!query) {
-                dd.style.display = 'none';
-                dd.innerHTML = '';
-                return;
-            }
-            
-            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : [
-                { id: 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27', nom_entreprise: 'CGLT', ninea: '00802996', telephone_whatsapp: '221788773827' },
-                { id: 'ent-demo-1', nom_entreprise: 'Dakar Import', ninea: '00802996-2G3', telephone_whatsapp: '221770001122' },
-                { id: 'ent-demo-2', nom_entreprise: 'Diallo & Frères', ninea: '00754128-1A2', telephone_whatsapp: '221762223344' },
-                { id: 'ent-demo-3', nom_entreprise: 'Boutique Almadies', ninea: '00912440-3K9', telephone_whatsapp: '221781112233' }
-            ];
+            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : DEFAULT_ENTREPRISES_DB;
             
             const filtered = list.filter(e => {
                 if (!query) return true;
@@ -15249,24 +15228,35 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             
             if (filtered.length === 0) {
                 dd.innerHTML = `
-                    <div class="p-5 text-center text-slate-500 text-xs">
+                    <div class="p-4 text-center text-slate-500 text-xs">
                         <span class="material-symbols-outlined notranslate text-slate-300 text-2xl block mb-1" translate="no">domain_disabled</span>
                         Aucune entreprise trouvée pour « <span class="text-slate-800 font-semibold">${escapeHtml(queryRaw)}</span> »<br>
-                        <span class="text-[11px] text-slate-400 mt-1 block">Essayez par nom (ex: CGLT), NINEA ou téléphone.</span>
+                        <span class="text-[11px] text-slate-400 mt-1 block">Essayez par nom (ex: CGLT, Innovatech...), NINEA ou téléphone.</span>
                     </div>
                 `;
                 dd.style.display = 'block';
                 return;
             }
             
-            dd.innerHTML = filtered.map(e => {
+            dd.innerHTML = `
+                <div class="px-3 py-1.5 text-[10.5px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 rounded-t-xl">
+                    <span>Dossiers Clients (${filtered.length})</span>
+                    <span class="text-[#168078] font-semibold">1-clic pour ouvrir</span>
+                </div>
+            ` + filtered.map(e => {
                 const nom = getCleanCompanyName(e.nom_entreprise || e.nom || 'Entreprise');
+                const initials = getCompanyInitials(nom);
                 return `
                     <div onclick="selectCompanyFromPortal('${e.id}', '${e.telephone_whatsapp || ''}')" 
                          class="group p-2.5 sm:p-3 flex items-center justify-between rounded-xl hover:bg-slate-50 active:bg-slate-100/80 transition-all cursor-pointer select-none">
-                        <div class="min-w-0 flex flex-col justify-center">
-                            <span class="text-slate-900 font-bold text-[14.5px] truncate tracking-tight group-hover:text-[#168078] transition-colors">${escapeHtml(nom)}</span>
-                            <span class="text-[12px] text-slate-500 font-medium truncate mt-0.5">NINEA : <strong class="text-slate-700 font-semibold font-mono">${escapeHtml(e.ninea || '00802996')}</strong></span>
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-8 h-8 rounded-lg bg-[#222222] text-[#a0d9d2] font-black text-xs flex items-center justify-center flex-shrink-0 shadow-2xs">
+                                ${initials}
+                            </div>
+                            <div class="min-w-0 flex flex-col justify-center text-left">
+                                <span class="text-slate-900 font-bold text-[13.5px] truncate tracking-tight group-hover:text-[#168078] transition-colors">${escapeHtml(nom)}</span>
+                                <span class="text-[11px] text-slate-500 font-medium truncate mt-0.5">NINEA : <strong class="text-slate-700 font-semibold font-mono">${escapeHtml(e.ninea || '00802996')}</strong> • <span class="font-mono text-slate-400">${escapeHtml(e.telephone_whatsapp || '')}</span></span>
+                            </div>
                         </div>
                         <div class="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-[#168078] group-hover:text-white text-slate-400 flex items-center justify-center transition-all flex-shrink-0 ml-2 shadow-2xs">
                             <span class="material-symbols-outlined notranslate text-[16px] group-hover:translate-x-0.5 transition-transform" translate="no">arrow_forward</span>
@@ -15290,9 +15280,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         function submitPortalSearch() {
             const inp = document.getElementById('portalCompanySearchInput');
             const query = (inp ? inp.value : '').toLowerCase().trim();
-            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : [
-                { id: 'af3f08b5-1c4a-4812-8e2d-23b7944f7b27', nom_entreprise: 'CGLT', telephone_whatsapp: '221788773827' }
-            ];
+            const list = (allEntreprisesList && allEntreprisesList.length > 0) ? allEntreprisesList : DEFAULT_ENTREPRISES_DB;
             
             if (!query) {
                 executePortalFlightScenario(list[0]);
@@ -15341,11 +15329,18 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             
 
 
-            const urlPortal = new URLSearchParams(window.location.search).get('portal');
-            if (urlPortal === 'true' || urlPortal === '1') {
+            // Gestion de l'affichage initial : Portail d'Accueil vs Tableau Dossier Client
+            const urlParamsPortal = new URLSearchParams(window.location.search);
+            const forcePortal = urlParamsPortal.get('portal') === '1' || urlParamsPortal.get('portal') === 'true';
+            const hasExplicitPhone = urlParamsPortal.has('phone') || urlParamsPortal.has('id');
+
+            if (forcePortal || (!hasExplicitPhone && !localStorage.getItem('grow_active_phone'))) {
                 openPortalView();
+            } else {
+                quitterPortailVersDossier();
             }
 
+            // Chargement initial des données de l'entreprise
             loadDashboardData();
 
             // Par défaut, TOUJOURS afficher l'onglet Accueil (Journal des écritures & preuves)
@@ -15365,15 +15360,6 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (new URLSearchParams(window.location.search).get('open_webhook') === '1') {
                 setTimeout(ouvrirModalWebhookAssistant, 400);
             }
-            
-            // Le portail d'accueil ne s'ouvre que si expressément demandé (?portal=true ou ?portal=1)
-            const urlParamsPortal = new URLSearchParams(window.location.search);
-            const forcePortal = urlParamsPortal.get('portal') === '1' || urlParamsPortal.get('portal') === 'true';
-            if (forcePortal) {
-                openPortalView();
-            } else {
-                quitterPortailVersDossier();
-            }
 
             // Synchro automatique en temps réel toutes les 10 secondes (fond de page transparent)
             setInterval(() => {
@@ -15389,6 +15375,19 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'visible') {
                     loadDashboardData(null, null, true, false);
+                }
+            });
+
+            // Synchronisation avec l'historique du navigateur (Boutons Précédent / Suivant)
+            window.addEventListener('popstate', () => {
+                const p = new URLSearchParams(window.location.search);
+                if (p.get('portal') === '1' || p.get('portal') === 'true') {
+                    openPortalView();
+                } else {
+                    quitterPortailVersDossier();
+                    const phone = p.get('phone');
+                    const id = p.get('id');
+                    loadDashboardData(id, phone);
                 }
             });
         });
