@@ -10579,52 +10579,146 @@
                     </div>
                 </div>
 
-                <!-- 4. Compte SYSCOHADA & Mode de règlement -->
+                <!-- 4. Compte SYSCOHADA & Mode de règlement (Sélecteurs Fintech Custom Pro) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
+                    <!-- 4.1 Sélecteur Custom Compte SYSCOHADA -->
+                    <div class="relative" id="editTxCompteWrapper">
                         <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Compte SYSCOHADA *</label>
-                        <select id="editTxCompte" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
-                            <option value="706">706 - Services vendus / Prestations</option>
-                            <option value="701">701 - Ventes de marchandises</option>
-                            <option value="601">601 - Achats de marchandises</option>
-                            <option value="605">605 - Énergie (Senelec, Woyofal)</option>
-                            <option value="612">612 - Transports & Déplacements</option>
-                            <option value="622">622 - Locations & Loyers</option>
-                            <option value="628">628 - Frais Télécom / Internet</option>
-                            <option value="631">631 - Impôts & Taxes directes</option>
-                            <option value="661">661 - Rémunération du personnel</option>
-                            <option value="658">658 - Charges diverses d'exploitation</option>
-                            <option value="411">411 - Créances Clients</option>
-                            <option value="401">401 - Dettes Fournisseurs</option>
-                            <option value="521">521 - Banque CBAO Sénégal</option>
-                            <option value="571">571 - Caisse Espèces</option>
-                            <option value="471100">471100 - Compte d'attente</option>
-                        </select>
+                        <button type="button" id="editTxCompteBtn" onclick="toggleEditTxCompteDropdown(event)" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-white hover:border-[#168078] flex items-center justify-between cursor-pointer transition-all select-none">
+                            <div class="flex items-center gap-2 min-w-0" id="editTxCompteDisplay">
+                                <span class="font-mono font-bold text-[11px] px-1.5 py-0.5 rounded bg-[#168078]/10 text-[#168078] border border-[#168078]/25 flex-shrink-0">706</span>
+                                <span class="font-semibold text-slate-900 text-[12px] truncate">Services vendus / Prestations</span>
+                            </div>
+                            <span class="material-symbols-outlined notranslate text-slate-400 text-[18px] transition-transform duration-200" id="editTxCompteChevron" translate="no">expand_more</span>
+                        </button>
+                        <input type="hidden" id="editTxCompte" name="editTxCompte" value="706">
+
+                        <!-- Popover Menu Déroulant Comptes Pro -->
+                        <div id="editTxComptePopover" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-2xl p-2 z-[3500] max-h-[290px] overflow-hidden flex flex-col" onclick="event.stopPropagation()">
+                            <!-- Champ de recherche interne -->
+                            <div class="p-1 pb-2 border-b border-slate-100 flex items-center gap-2">
+                                <span class="material-symbols-outlined notranslate text-slate-400 text-[16px]" translate="no">search</span>
+                                <input type="text" id="editTxCompteSearch" oninput="filterEditTxComptes(this.value)" placeholder="Filtrer un compte ou libellé..." class="w-full text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none bg-transparent">
+                            </div>
+                            <div id="editTxCompteList" class="overflow-y-auto space-y-0.5 pt-1.5 max-h-[220px]">
+                                <!-- Rempli dynamiquement -->
+                            </div>
+                        </div>
                     </div>
-                    <div>
+
+                    <!-- 4.2 Sélecteur Custom Mode de règlement -->
+                    <div class="relative" id="editTxSourceWrapper">
                         <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Mode de règlement *</label>
-                        <select id="editTxSource" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
-                            <option value="WAVE">Wave Business (API)</option>
-                            <option value="ORANGE_MONEY">Orange Money Sénégal</option>
-                            <option value="BANQUE">Virement Bancaire CBAO</option>
-                            <option value="ESPECES">Caisse Espèces</option>
-                        </select>
+                        <button type="button" id="editTxSourceBtn" onclick="toggleEditTxSourceDropdown(event)" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-white hover:border-[#168078] flex items-center justify-between cursor-pointer transition-all select-none">
+                            <div class="flex items-center gap-2.5 min-w-0" id="editTxSourceDisplay">
+                                <div class="w-5 h-5 rounded-md bg-[#1da1f2]/10 text-[#1da1f2] flex items-center justify-center font-bold text-[10px] flex-shrink-0">W</div>
+                                <span class="font-semibold text-slate-900 text-[12px] truncate">Wave Business (API)</span>
+                            </div>
+                            <span class="material-symbols-outlined notranslate text-slate-400 text-[18px] transition-transform duration-200" id="editTxSourceChevron" translate="no">expand_more</span>
+                        </button>
+                        <input type="hidden" id="editTxSource" name="editTxSource" value="WAVE">
+
+                        <!-- Popover Menu Déroulant Trésorerie Pro -->
+                        <div id="editTxSourcePopover" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-2xl p-1.5 z-[3500] space-y-1" onclick="event.stopPropagation()">
+                            <button type="button" onclick="selectEditTxSource('WAVE')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-lg bg-[#1da1f2]/10 text-[#1da1f2] flex items-center justify-center font-bold text-[11px] flex-shrink-0">W</div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Wave Business</div>
+                                        <div class="text-[10px] text-slate-400">Compte 5213 (API)</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Mobile</span>
+                            </button>
+                            <button type="button" onclick="selectEditTxSource('ORANGE_MONEY')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-lg bg-[#ff7900]/10 text-[#ff7900] flex items-center justify-center font-bold text-[11px] flex-shrink-0">OM</div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Orange Money Sénégal</div>
+                                        <div class="text-[10px] text-slate-400">Compte 5214 (Mobile)</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">Mobile</span>
+                            </button>
+                            <button type="button" onclick="selectEditTxSource('BANQUE')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">account_balance</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Virement Bancaire CBAO</div>
+                                        <div class="text-[10px] text-slate-400">Compte 521 (Banque)</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">Banque</span>
+                            </button>
+                            <button type="button" onclick="selectEditTxSource('ESPECES')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">payments</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Caisse Espèces</div>
+                                        <div class="text-[10px] text-slate-400">Compte 571 (Cash)</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Cash</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 5. Référence pièce & Statut -->
+                <!-- 5. Référence pièce & Statut (Sélecteur Custom Pro) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
                         <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">N° de pièce / Réf. Justificatif</label>
                         <input type="text" id="editTxRef" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-mono text-[12px] transition-all" placeholder="Ex: WV-43110-SN">
                     </div>
-                    <div>
+                    <!-- 5.2 Sélecteur Custom Statut de validation -->
+                    <div class="relative" id="editTxStatutWrapper">
                         <label class="block text-slate-700 text-[11.5px] font-bold mb-1.5">Statut de validation</label>
-                        <select id="editTxStatut" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:border-[#168078] text-slate-900 font-medium text-[12px] transition-all cursor-pointer">
-                            <option value="VALIDE_PME">● Validé (Rapproché)</option>
-                            <option value="EN_ATTENTE">○ En attente de pièce</option>
-                            <option value="CERTIFIE">✓ Certifié SYSCOHADA</option>
-                        </select>
+                        <button type="button" id="editTxStatutBtn" onclick="toggleEditTxStatutDropdown(event)" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-white hover:border-[#168078] flex items-center justify-between cursor-pointer transition-all select-none">
+                            <div class="flex items-center gap-2 min-w-0" id="editTxStatutDisplay">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                <span class="font-semibold text-slate-900 text-[12px] truncate">Validé (Rapproché)</span>
+                            </div>
+                            <span class="material-symbols-outlined notranslate text-slate-400 text-[18px] transition-transform duration-200" id="editTxStatutChevron" translate="no">expand_more</span>
+                        </button>
+                        <input type="hidden" id="editTxStatut" name="editTxStatut" value="VALIDE_PME">
+
+                        <!-- Popover Menu Déroulant Statuts Pro -->
+                        <div id="editTxStatutPopover" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-2xl p-1.5 z-[3500] space-y-1" onclick="event.stopPropagation()">
+                            <button type="button" onclick="selectEditTxStatut('VALIDE_PME')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Validé (Rapproché)</div>
+                                        <div class="text-[10px] text-slate-400">Rapprochement Wave / Banque certifié</div>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined notranslate text-emerald-600 text-[18px]" translate="no">check_circle</span>
+                            </button>
+                            <button type="button" onclick="selectEditTxStatut('EN_ATTENTE')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">En attente de pièce</div>
+                                        <div class="text-[10px] text-slate-400">Justificatif fiscal à fournir</div>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined notranslate text-amber-500 text-[18px]" translate="no">pending</span>
+                            </button>
+                            <button type="button" onclick="selectEditTxStatut('CERTIFIE')" class="w-full px-2.5 py-2 rounded-xl flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors text-left cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#168078] flex-shrink-0"></span>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-xs">Certifié SYSCOHADA</div>
+                                        <div class="text-[10px] text-slate-400">Scellement conforme référentiel UEMOA</div>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined notranslate text-[#168078] text-[18px]" translate="no">verified</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -16586,6 +16680,218 @@ function handleFactooTypeFilter(val) {
             }
         }
 
+        // =========================================================================
+        // GESTION DES SÉLECTEURS FINTECH PRO DE LA MODALE MODIFIER ÉCRITURE
+        // =========================================================================
+        const EDIT_SYSCOHADA_ACCOUNTS = [
+            { code: '706', label: 'Services vendus / Prestations', cat: 'Produit', catColor: 'bg-emerald-50 text-emerald-700' },
+            { code: '701', label: 'Ventes de marchandises', cat: 'Produit', catColor: 'bg-emerald-50 text-emerald-700' },
+            { code: '601', label: 'Achats de marchandises', cat: 'Charge', catColor: 'bg-rose-50 text-rose-700' },
+            { code: '605', label: 'Énergie (Senelec, Woyofal)', cat: 'Charge', catColor: 'bg-amber-50 text-amber-700' },
+            { code: '612', label: 'Transports & Déplacements', cat: 'Charge', catColor: 'bg-amber-50 text-amber-700' },
+            { code: '622', label: 'Locations & Loyers', cat: 'Charge', catColor: 'bg-amber-50 text-amber-700' },
+            { code: '628', label: 'Frais Télécom / Internet', cat: 'Charge', catColor: 'bg-amber-50 text-amber-700' },
+            { code: '631', label: 'Impôts & Taxes directes', cat: 'Charge', catColor: 'bg-rose-50 text-rose-700' },
+            { code: '661', label: 'Rémunération du personnel', cat: 'Personnel', catColor: 'bg-purple-50 text-purple-700' },
+            { code: '658', label: 'Charges diverses d\'exploitation', cat: 'Charge', catColor: 'bg-amber-50 text-amber-700' },
+            { code: '411', label: 'Créances Clients', cat: 'Tiers', catColor: 'bg-blue-50 text-blue-700' },
+            { code: '401', label: 'Dettes Fournisseurs', cat: 'Tiers', catColor: 'bg-blue-50 text-blue-700' },
+            { code: '521', label: 'Banque CBAO Sénégal', cat: 'Banque', catColor: 'bg-indigo-50 text-indigo-700' },
+            { code: '571', label: 'Caisse Espèces', cat: 'Caisse', catColor: 'bg-teal-50 text-teal-700' },
+            { code: '471100', label: 'Compte d\'attente', cat: 'Attente', catColor: 'bg-slate-100 text-slate-700' }
+        ];
+
+        function toggleEditTxCompteDropdown(e) {
+            if (e) e.stopPropagation();
+            closeAllEditDropdowns('editTxComptePopover');
+            const pop = document.getElementById('editTxComptePopover');
+            const chev = document.getElementById('editTxCompteChevron');
+            if (!pop) return;
+            const isHidden = pop.classList.contains('hidden');
+            if (isHidden) {
+                renderEditTxCompteList();
+                pop.classList.remove('hidden');
+                if (chev) chev.style.transform = 'rotate(180deg)';
+                const searchInput = document.getElementById('editTxCompteSearch');
+                if (searchInput) {
+                    searchInput.value = '';
+                    setTimeout(() => searchInput.focus(), 50);
+                }
+            } else {
+                pop.classList.add('hidden');
+                if (chev) chev.style.transform = '';
+            }
+        }
+
+        function renderEditTxCompteList(filterQuery = '') {
+            const container = document.getElementById('editTxCompteList');
+            if (!container) return;
+            const currentVal = document.getElementById('editTxCompte')?.value || '706';
+            const q = filterQuery.trim().toLowerCase();
+            const filtered = EDIT_SYSCOHADA_ACCOUNTS.filter(a => 
+                !q || a.code.toLowerCase().includes(q) || a.label.toLowerCase().includes(q) || a.cat.toLowerCase().includes(q)
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="p-3 text-center text-xs text-slate-400 font-medium">Aucun compte trouvé</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(a => {
+                const isSelected = (a.code === currentVal);
+                return `
+                    <button type="button" onclick="selectEditTxCompte('${a.code}', '${escapeHtml(a.label)}')" class="w-full px-3 py-2 rounded-xl flex items-center justify-between transition-all text-left cursor-pointer group ${isSelected ? 'bg-[#168078]/10 text-[#14362b]' : 'hover:bg-slate-50 text-slate-800'}">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <span class="font-mono font-bold text-[11px] px-1.5 py-0.5 rounded ${isSelected ? 'bg-[#168078] text-white' : 'bg-slate-100 text-slate-700 group-hover:bg-[#168078]/15 group-hover:text-[#168078]'} flex-shrink-0 transition-colors">${a.code}</span>
+                            <span class="font-semibold text-[12px] truncate ${isSelected ? 'font-bold text-[#14362b]' : 'text-slate-800 group-hover:text-[#168078]'}">${escapeHtml(a.label)}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            <span class="text-[9.5px] font-bold px-1.5 py-0.5 rounded-md ${a.catColor}">${a.cat}</span>
+                            ${isSelected ? '<span class="material-symbols-outlined notranslate text-[#168078] text-[16px] font-bold" translate="no">check</span>' : ''}
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function filterEditTxComptes(query) {
+            renderEditTxCompteList(query);
+        }
+
+        function selectEditTxCompte(code, label) {
+            const input = document.getElementById('editTxCompte');
+            if (input) input.value = code;
+            const disp = document.getElementById('editTxCompteDisplay');
+            if (disp) {
+                disp.innerHTML = `
+                    <span class="font-mono font-bold text-[11px] px-1.5 py-0.5 rounded bg-[#168078]/10 text-[#168078] border border-[#168078]/25 flex-shrink-0">${code}</span>
+                    <span class="font-semibold text-slate-900 text-[12px] truncate">${escapeHtml(label)}</span>
+                `;
+            }
+            closeAllEditDropdowns();
+        }
+
+        function setEditTxCompte(code) {
+            const acc = EDIT_SYSCOHADA_ACCOUNTS.find(a => a.code === code || code.startsWith(a.code));
+            if (acc) {
+                selectEditTxCompte(acc.code, acc.label);
+            } else {
+                selectEditTxCompte(code, `${code} - Compte personnalisé`);
+            }
+        }
+
+        const EDIT_PAYMENT_SOURCES = [
+            { key: 'WAVE', label: 'Wave Business (API)', badge: 'W', badgeColor: 'bg-[#1da1f2]/10 text-[#1da1f2]', tag: 'Mobile', tagColor: 'bg-blue-50 text-blue-700' },
+            { key: 'ORANGE_MONEY', label: 'Orange Money Sénégal', badge: 'OM', badgeColor: 'bg-[#ff7900]/10 text-[#ff7900]', tag: 'Mobile', tagColor: 'bg-orange-50 text-orange-700' },
+            { key: 'BANQUE', label: 'Virement Bancaire CBAO', icon: 'account_balance', iconColor: 'bg-indigo-50 text-indigo-700', tag: 'Banque', tagColor: 'bg-indigo-50 text-indigo-700' },
+            { key: 'ESPECES', label: 'Caisse Espèces', icon: 'payments', iconColor: 'bg-emerald-50 text-emerald-700', tag: 'Cash', tagColor: 'bg-emerald-50 text-emerald-700' }
+        ];
+
+        function toggleEditTxSourceDropdown(e) {
+            if (e) e.stopPropagation();
+            closeAllEditDropdowns('editTxSourcePopover');
+            const pop = document.getElementById('editTxSourcePopover');
+            const chev = document.getElementById('editTxSourceChevron');
+            if (!pop) return;
+            const isHidden = pop.classList.contains('hidden');
+            if (isHidden) {
+                pop.classList.remove('hidden');
+                if (chev) chev.style.transform = 'rotate(180deg)';
+            } else {
+                pop.classList.add('hidden');
+                if (chev) chev.style.transform = '';
+            }
+        }
+
+        function selectEditTxSource(key) {
+            const input = document.getElementById('editTxSource');
+            if (input) input.value = key;
+            const src = EDIT_PAYMENT_SOURCES.find(s => s.key === key) || EDIT_PAYMENT_SOURCES[0];
+            const disp = document.getElementById('editTxSourceDisplay');
+            if (disp) {
+                if (src.badge) {
+                    disp.innerHTML = `
+                        <div class="w-5 h-5 rounded-md ${src.badgeColor} flex items-center justify-center font-bold text-[10px] flex-shrink-0">${src.badge}</div>
+                        <span class="font-semibold text-slate-900 text-[12px] truncate">${escapeHtml(src.label)}</span>
+                    `;
+                } else {
+                    disp.innerHTML = `
+                        <div class="w-5 h-5 rounded-md ${src.iconColor} flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined notranslate text-[14px]" translate="no">${src.icon}</span>
+                        </div>
+                        <span class="font-semibold text-slate-900 text-[12px] truncate">${escapeHtml(src.label)}</span>
+                    `;
+                }
+            }
+            closeAllEditDropdowns();
+        }
+
+        function setEditTxSource(key) {
+            const sVal = (key || 'WAVE').toUpperCase();
+            const targetKey = sVal.includes('WAVE') ? 'WAVE' : (sVal.includes('ORANGE') ? 'ORANGE_MONEY' : (sVal.includes('BANQUE') || sVal.includes('CBAO') ? 'BANQUE' : 'ESPECES'));
+            selectEditTxSource(targetKey);
+        }
+
+        const EDIT_STATUTS = [
+            { key: 'VALIDE_PME', label: 'Validé (Rapproché)', dot: 'bg-emerald-500', desc: 'Rapprochement automatique Wave / Banque certifié' },
+            { key: 'EN_ATTENTE', label: 'En attente de pièce', dot: 'bg-amber-400', desc: 'Justificatif fiscal à fournir' },
+            { key: 'CERTIFIE', label: 'Certifié SYSCOHADA', dot: 'bg-[#168078]', desc: 'Scellement conforme référentiel UEMOA' }
+        ];
+
+        function toggleEditTxStatutDropdown(e) {
+            if (e) e.stopPropagation();
+            closeAllEditDropdowns('editTxStatutPopover');
+            const pop = document.getElementById('editTxStatutPopover');
+            const chev = document.getElementById('editTxStatutChevron');
+            if (!pop) return;
+            const isHidden = pop.classList.contains('hidden');
+            if (isHidden) {
+                pop.classList.remove('hidden');
+                if (chev) chev.style.transform = 'rotate(180deg)';
+            } else {
+                pop.classList.add('hidden');
+                if (chev) chev.style.transform = '';
+            }
+        }
+
+        function selectEditTxStatut(key) {
+            const input = document.getElementById('editTxStatut');
+            if (input) input.value = key;
+            const st = EDIT_STATUTS.find(s => s.key === key) || EDIT_STATUTS[0];
+            const disp = document.getElementById('editTxStatutDisplay');
+            if (disp) {
+                disp.innerHTML = `
+                    <span class="w-2 h-2 rounded-full ${st.dot}"></span>
+                    <span class="font-semibold text-slate-900 text-[12px] truncate">${escapeHtml(st.label)}</span>
+                `;
+            }
+            closeAllEditDropdowns();
+        }
+
+        function setEditTxStatut(key) {
+            const targetKey = (key === 'CERTIFIE') ? 'CERTIFIE' : ((key === 'EN_ATTENTE') ? 'EN_ATTENTE' : 'VALIDE_PME');
+            selectEditTxStatut(targetKey);
+        }
+
+        function closeAllEditDropdowns(exceptId = '') {
+            ['editTxComptePopover', 'editTxSourcePopover', 'editTxStatutPopover'].forEach(id => {
+                if (id !== exceptId) {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('hidden');
+                    const chevId = id.replace('Popover', 'Chevron');
+                    const chev = document.getElementById(chevId);
+                    if (chev) chev.style.transform = '';
+                }
+            });
+        }
+
+        // Fermer les dropdowns quand on clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#editTxCompteWrapper') && !e.target.closest('#editTxSourceWrapper') && !e.target.closest('#editTxStatutWrapper')) {
+                closeAllEditDropdowns();
+            }
+        });
+
         function ouvrirModalModifierEcriture(tx) {
             if (!tx) return;
             const m = document.getElementById('modalModifierEcriture');
@@ -16603,43 +16909,25 @@ function handleFactooTypeFilter(val) {
             const flux = (tx.type_flux || tx.sens || 'ENTREE').toUpperCase();
             setEditFlux(flux === 'SORTIE' || flux === 'DEBIT' ? 'SORTIE' : 'ENTREE');
 
-            const cptSelect = document.getElementById('editTxCompte');
-            if (cptSelect) {
-                const cVal = String(tx.compte_syscohada || '706');
-                let found = false;
-                for (let i = 0; i < cptSelect.options.length; i++) {
-                    if (cptSelect.options[i].value === cVal || cVal.startsWith(cptSelect.options[i].value)) {
-                        cptSelect.selectedIndex = i;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    const opt = document.createElement('option');
-                    opt.value = cVal;
-                    opt.textContent = `${cVal} - Compte personnalisé`;
-                    cptSelect.appendChild(opt);
-                    cptSelect.value = cVal;
-                }
-            }
+            // 4. Compte SYSCOHADA (Custom Fintech Selector)
+            const cVal = String(tx.compte_syscohada || '706');
+            setEditTxCompte(cVal);
 
-            const srcSelect = document.getElementById('editTxSource');
-            if (srcSelect) {
-                const sVal = (tx.source_paiement || tx.operateur || 'ESPECES').toUpperCase();
-                srcSelect.value = sVal.includes('WAVE') ? 'WAVE' : (sVal.includes('ORANGE') ? 'ORANGE_MONEY' : (sVal.includes('BANQUE') || sVal.includes('CBAO') ? 'BANQUE' : 'ESPECES'));
-            }
+            // 5. Mode de règlement (Custom Fintech Selector)
+            const sVal = (tx.source_paiement || tx.operateur || 'WAVE').toUpperCase();
+            setEditTxSource(sVal);
 
+            // 6. Référence & Statut (Custom Fintech Selector)
             document.getElementById('editTxRef').value = tx.reference_externe || '';
-            const statSelect = document.getElementById('editTxStatut');
-            if (statSelect) {
-                statSelect.value = tx.statut_validation || (tx.statut === 'VALIDE' ? 'VALIDE_PME' : 'VALIDE_PME');
-            }
+            const statVal = tx.statut_validation || (tx.statut === 'VALIDE' ? 'VALIDE_PME' : 'VALIDE_PME');
+            setEditTxStatut(statVal);
 
             m.style.display = 'flex';
         }
 
         function closeModalModifierEcriture() {
             closeEditTxDatePicker();
+            closeAllEditDropdowns();
             const m = document.getElementById('modalModifierEcriture');
             if (m) m.style.display = 'none';
         }
