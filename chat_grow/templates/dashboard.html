@@ -5734,13 +5734,15 @@
             color: #0b1222;
         }
 
-        /* Cartes et grilles des états financiers SYSCOHADA */
+        /* ========================================================================= */
+        /* ÉTATS FINANCIERS SYSCOHADA (BILAN, COMPTE DE RÉSULTAT, TFT, ANNEXES DGID) */
+        /* ========================================================================= */
         .comptable-statement-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 18px;
-            padding: 24px 28px;
-            box-shadow: 0 1px 3px rgba(11, 18, 34, 0.04), 0 12px 24px -6px rgba(11, 18, 34, 0.06);
+            border-radius: 20px;
+            padding: 26px 30px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 8px 24px -4px rgba(20, 54, 43, 0.05);
             margin-bottom: 24px;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -5752,24 +5754,46 @@
             flex-wrap: wrap;
             gap: 16px;
             border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 16px;
-            margin-bottom: 20px;
+            padding-bottom: 18px;
+            margin-bottom: 22px;
+        }
+
+        .statement-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .statement-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #14362b;
+            color: #a0d9d2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(20, 54, 43, 0.2);
+            flex-shrink: 0;
         }
 
         .statement-title-wrap h2 {
-            font-size: 18px;
+            font-size: 17.5px;
             font-weight: 800;
-            color: #0b1222;
+            color: #14362b;
             margin: 0;
+            letter-spacing: -0.25px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .statement-title-wrap p {
             font-size: 12px;
             color: #64748b;
-            margin: 4px 0 0 0;
+            margin: 3px 0 0 0;
+            font-weight: 500;
         }
 
         .statement-actions {
@@ -5781,31 +5805,76 @@
         .btn-statement-export {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 14px;
-            background: #0b1222;
+            gap: 8px;
+            padding: 8px 18px;
+            background: #14362b;
             color: #ffffff;
-            border: 1px solid rgba(160, 217, 210, 0.3);
-            border-radius: 999px;
+            border: 1px solid rgba(160, 217, 210, 0.35);
+            border-radius: 12px;
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 2px 8px rgba(20, 54, 43, 0.15);
         }
 
         .btn-statement-export:hover {
-            background: #060d1a;
+            background: #1c4d3e;
             color: #a0d9d2;
             border-color: #a0d9d2;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(11, 18, 34, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(20, 54, 43, 0.25);
         }
 
-        /* Grille Bilan Actif / Passif */
+        /* Bannière d'Équilibre du Bilan */
+        .bilan-equilibrium-banner {
+            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
+            color: #ffffff;
+            border: 1.5px solid rgba(160, 217, 210, 0.35);
+            border-radius: 16px;
+            padding: 16px 22px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            box-shadow: 0 8px 24px -8px rgba(20, 54, 43, 0.35);
+        }
+
+        .equilibrium-icon-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(160, 217, 210, 0.18);
+            border: 1px solid rgba(160, 217, 210, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a0d9d2;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .equilibrium-badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #a0d9d2;
+            color: #14362b;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 7px 18px;
+            border-radius: 999px;
+            box-shadow: 0 2px 8px rgba(160, 217, 210, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        /* Grille Bilan Actif / Passif (2 Colonnes) */
         .bilan-two-columns {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 22px;
         }
 
         .bilan-column-block {
@@ -5813,18 +5882,31 @@
             border-radius: 16px;
             overflow: hidden;
             background: #ffffff;
-            box-shadow: 0 1px 3px rgba(11, 18, 34, 0.03), 0 6px 16px -4px rgba(11, 18, 34, 0.05);
+            box-shadow: 0 1px 3px rgba(11, 18, 34, 0.03), 0 8px 20px -6px rgba(20, 54, 43, 0.06);
         }
 
         .bilan-col-head {
-            background: #0b1222;
+            background: #14362b;
             color: #ffffff;
             padding: 13px 18px;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 800;
+            letter-spacing: 0.3px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid rgba(160, 217, 210, 0.2);
+        }
+
+        .bilan-col-head-pill {
+            background: rgba(160, 217, 210, 0.18);
+            color: #a0d9d2;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 3px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(160, 217, 210, 0.3);
         }
 
         .bilan-table {
@@ -5840,31 +5922,141 @@
 
         .bilan-table th {
             background: #f8fafc;
-            color: #475569;
-            font-size: 11px;
-            font-weight: 700;
+            color: #64748b;
+            font-size: 10.5px;
+            font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .bilan-table .row-rubrique {
-            font-weight: 700;
-            color: #0a2540;
+            font-weight: 800;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #14362b;
             background: #f8fafc;
+            border-left: 3px solid #168078;
         }
 
         .bilan-table .row-detail td:first-child {
-            padding-left: 28px;
+            padding-left: 24px;
             color: #334155;
+            font-size: 12px;
+        }
+
+        .bilan-table .row-detail td:last-child {
+            font-family: ui-monospace, SFMono-Regular, monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #0f172a;
         }
 
         .bilan-table .row-total {
-            background: rgba(160, 217, 210, 0.12);
+            background: #f0fdf9;
             font-weight: 800;
-            color: #0a2540;
-            border-top: 2px solid #0a2540;
+            color: #14362b;
+            border-top: 2px solid #14362b;
+            font-size: 13px;
         }
 
-        /* Tableau Compte de Résultat & SIG */
+        .bilan-table .row-total td:last-child {
+            font-family: ui-monospace, monospace;
+            font-weight: 900;
+            font-size: 14px;
+            color: #14362b;
+        }
+
+        /* ========================================================================= */
+        /* COMPTE DE RÉSULTAT & SOLDES INTERMÉDIAIRES DE GESTION (SIG)               */
+        /* ========================================================================= */
+        .sig-cascade-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .sig-cascade-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 3px rgba(11, 18, 34, 0.04);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sig-cascade-card:hover {
+            transform: translateY(-2px);
+            border-color: #a0d9d2;
+            box-shadow: 0 6px 18px rgba(20, 54, 43, 0.08);
+        }
+
+        .sig-cascade-card.highlight {
+            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
+            color: #ffffff;
+            border: 1.5px solid rgba(160, 217, 210, 0.4);
+            box-shadow: 0 6px 20px rgba(20, 54, 43, 0.25);
+        }
+
+        .sig-card-step {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 2px 7px;
+            border-radius: 6px;
+            display: inline-block;
+            width: fit-content;
+            margin-bottom: 8px;
+        }
+
+        .sig-card-step.mint {
+            background: rgba(160, 217, 210, 0.2);
+            color: #a0d9d2;
+            border: 1px solid rgba(160, 217, 210, 0.3);
+        }
+
+        .sig-card-label {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: #14362b;
+            margin-bottom: 8px;
+        }
+
+        .sig-cascade-card.highlight .sig-card-label {
+            color: #ffffff;
+        }
+
+        .sig-card-val {
+            font-size: 19px;
+            font-weight: 900;
+            color: #14362b;
+            font-family: ui-monospace, monospace;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .sig-card-val.mint {
+            color: #a0d9d2;
+            font-size: 21px;
+        }
+
+        .sig-card-sub {
+            font-size: 10.5px;
+            color: #64748b;
+            line-height: 1.35;
+        }
+
+        .sig-cascade-card.highlight .sig-card-sub {
+            color: rgba(160, 217, 210, 0.85);
+        }
+
         .resultat-full-table {
             width: 100%;
             border-collapse: collapse;
@@ -5872,48 +6064,62 @@
         }
 
         .resultat-full-table th, .resultat-full-table td {
-            padding: 11px 16px;
+            padding: 11px 18px;
             border-bottom: 1px solid #f1f5f9;
         }
 
         .resultat-full-table th {
-            background: #0a2540;
+            background: #14362b;
             color: #ffffff;
             font-size: 11.5px;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
         }
 
         .resultat-full-table .sig-row {
-            background: #f8fafc;
+            background: #f0fdf9;
             font-weight: 800;
-            color: #0a2540;
+            color: #14362b;
+            border-top: 1px solid #ccfbf1;
+            border-bottom: 1px solid #ccfbf1;
+        }
+
+        .resultat-full-table .sig-row td:first-child {
+            border-left: 3px solid #168078;
         }
 
         .resultat-full-table .sig-row-net {
-            background: #0a2540;
+            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
             color: #ffffff;
             font-weight: 900;
             font-size: 14px;
+            border-top: 2px solid #a0d9d2;
         }
 
         .resultat-full-table .sig-row-net td {
             color: #ffffff !important;
             border-bottom: none;
+            padding: 14px 18px;
         }
 
         .resultat-full-table .sig-badge-val {
-            font-family: monospace;
-            font-size: 13px;
-            font-weight: 800;
+            font-family: ui-monospace, monospace;
+            font-size: 13.5px;
+            font-weight: 900;
+            color: #14362b;
         }
 
-        /* Cartes TFT Flux de Trésorerie */
+        /* ========================================================================= */
+        /* TABLEAU DES FLUX DE TRÉSORERIE (TFT / TAFIRE SYSCOHADA)                   */
+        /* ========================================================================= */
         .tft-section-box {
             border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 16px 20px;
-            margin-bottom: 16px;
+            border-radius: 16px;
+            padding: 18px 22px;
+            margin-bottom: 18px;
             background: #ffffff;
+            box-shadow: 0 1px 3px rgba(11, 18, 34, 0.03);
         }
 
         .tft-section-head {
@@ -5922,15 +6128,28 @@
             align-items: center;
             font-weight: 800;
             font-size: 13.5px;
-            color: #0a2540;
-            margin-bottom: 10px;
+            color: #14362b;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1.5px solid #f1f5f9;
+        }
+
+        .tft-section-head span:last-child {
+            font-family: ui-monospace, monospace;
+            font-size: 13px;
+            font-weight: 800;
+            color: #14362b;
+            background: rgba(160, 217, 210, 0.2);
+            padding: 3px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(160, 217, 210, 0.4);
         }
 
         .tft-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 0;
+            padding: 8px 0;
             font-size: 12.5px;
             color: #334155;
             border-bottom: 1px dashed #f1f5f9;
@@ -5941,48 +6160,71 @@
         }
 
         .tft-total-pill {
-            background: #0a2540;
+            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
             color: #ffffff;
-            padding: 14px 20px;
-            border-radius: 14px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(160, 217, 210, 0.35);
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 800;
-            font-size: 15px;
+            font-size: 14.5px;
             margin-top: 20px;
+            box-shadow: 0 4px 16px rgba(20, 54, 43, 0.15);
         }
 
-        /* Annexes & Liasse Fiscale */
+        .tft-total-pill span:last-child {
+            color: #a0d9d2;
+            font-family: ui-monospace, monospace;
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        /* ========================================================================= */
+        /* NOTES ANNEXES & LIASSE FISCALE DGID                                      */
+        /* ========================================================================= */
         .annexes-cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .annexe-card-item {
-            background: #f8fafc;
-            border: 1px solid #edf2f7;
-            border-radius: 14px;
-            padding: 16px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 18px 20px;
+            box-shadow: 0 1px 3px rgba(11, 18, 34, 0.03);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .annexe-card-item:hover {
+            border-color: #a0d9d2;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(20, 54, 43, 0.06);
         }
 
         .annexe-card-item h4 {
             margin: 0 0 8px 0;
             font-size: 13px;
-            font-weight: 700;
-            color: #0a2540;
+            font-weight: 800;
+            color: #14362b;
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .annexe-card-item h4 i {
+            color: #168078;
         }
 
         .annexe-card-item p {
             margin: 0;
             font-size: 12px;
             color: #64748b;
-            line-height: 1.45;
+            line-height: 1.5;
         }
 
         /* ========================================================================= */
@@ -5995,7 +6237,7 @@
             border-radius: 18px;
             padding: 22px 24px;
             margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(11, 18, 34, 0.04), 0 12px 24px -6px rgba(11, 18, 34, 0.06);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 12px 24px -6px rgba(20, 54, 43, 0.06);
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -6022,12 +6264,12 @@
             gap: 10px;
             font-size: 16px;
             font-weight: 800;
-            color: #0b1222;
+            color: #14362b;
             letter-spacing: -0.2px;
         }
 
         .cockpit-client-badge i {
-            color: #a0d9d2;
+            color: #168078;
             font-size: 16px;
         }
 
@@ -6068,7 +6310,7 @@
             border-radius: 999px;
             font-size: 12px;
             font-weight: 700;
-            color: #0b1222;
+            color: #14362b;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             font-family: inherit;
@@ -6078,18 +6320,18 @@
             border-color: #a0d9d2;
             background: #f8fafc;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(11, 18, 34, 0.08);
+            box-shadow: 0 4px 12px rgba(20, 54, 43, 0.08);
         }
 
         .btn-cockpit-action.primary {
-            background: #0b1222;
+            background: #14362b;
             color: #ffffff;
-            border-color: #0b1222;
-            box-shadow: 0 4px 14px rgba(11, 18, 34, 0.2);
+            border-color: #14362b;
+            box-shadow: 0 4px 14px rgba(20, 54, 43, 0.2);
         }
 
         .btn-cockpit-action.primary:hover {
-            background: #060d1a;
+            background: #1c4d3e;
             border-color: #a0d9d2;
         }
 
@@ -6097,7 +6339,6 @@
             color: #a0d9d2;
         }
 
-        /* Grille des 4 KPIs Stratégiques */
         .cockpit-kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -6116,14 +6357,14 @@
             background: #ffffff;
             border-color: rgba(160, 217, 210, 0.5);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px -6px rgba(11, 18, 34, 0.08);
+            box-shadow: 0 8px 20px -6px rgba(20, 54, 43, 0.08);
         }
 
         .cockpit-kpi-item.highlight {
-            background: linear-gradient(135deg, #0b1222 0%, #060d1a 100%);
+            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
             color: #ffffff;
             border-color: rgba(160, 217, 210, 0.3);
-            box-shadow: 0 8px 24px -8px rgba(11, 18, 34, 0.35);
+            box-shadow: 0 8px 24px -8px rgba(20, 54, 43, 0.35);
         }
 
         .cockpit-kpi-item.highlight .kpi-item-label {
@@ -6162,20 +6403,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #0b1222;
+            color: #14362b;
             font-size: 13px;
         }
 
         .kpi-item-icon-box.mint {
             background: rgba(160, 217, 210, 0.15);
             border-color: rgba(160, 217, 210, 0.4);
-            color: #a0d9d2;
+            color: #168078;
         }
 
         .kpi-item-value {
             font-size: 22px;
             font-weight: 900;
-            color: #0b1222;
+            color: #14362b;
             letter-spacing: -0.5px;
             margin-bottom: 8px;
             line-height: 1.1;
@@ -6199,133 +6440,17 @@
             background: #e2e8f0;
             font-size: 10px;
             font-weight: 800;
-            color: #0b1222;
+            color: #14362b;
         }
 
         .sub-pill.mint {
             background: #a0d9d2;
-            color: #0b1222;
+            color: #14362b;
         }
 
         .sub-pill.positive {
             background: rgba(160, 217, 210, 0.2);
-            color: #0b1222;
-        }
-
-        /* Banner d'Équilibre Bilan */
-        .bilan-equilibrium-banner {
-            background: linear-gradient(135deg, #0b1222 0%, #060d1a 100%);
-            color: #ffffff;
-            border: 1.5px solid rgba(160, 217, 210, 0.35);
-            border-radius: 16px;
-            padding: 14px 20px;
-            margin-bottom: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            box-shadow: 0 8px 24px -8px rgba(11, 18, 34, 0.3);
-        }
-
-        .equilibrium-icon-circle {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: rgba(160, 217, 210, 0.15);
-            border: 1px solid rgba(160, 217, 210, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #a0d9d2;
-            font-size: 16px;
-        }
-
-        .equilibrium-badge-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #a0d9d2;
-            color: #0b1222;
-            font-size: 12px;
-            font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 999px;
-            box-shadow: 0 2px 8px rgba(160, 217, 210, 0.3);
-        }
-
-        /* Cascade des SIG */
-        .sig-cascade-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-            margin-bottom: 24px;
-        }
-
-        .sig-cascade-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 1px 3px rgba(11, 18, 34, 0.04);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .sig-cascade-card:hover {
-            transform: translateY(-2px);
-            border-color: #a0d9d2;
-            box-shadow: 0 6px 16px rgba(11, 18, 34, 0.08);
-        }
-
-        .sig-cascade-card.highlight {
-            background: linear-gradient(135deg, #0b1222 0%, #060d1a 100%);
-            color: #ffffff;
-            border-color: rgba(160, 217, 210, 0.4);
-        }
-
-        .sig-card-step {
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #64748b;
-            margin-bottom: 6px;
-        }
-
-        .sig-card-step.mint {
-            color: #a0d9d2;
-        }
-
-        .sig-card-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #0b1222;
-            margin-bottom: 8px;
-        }
-
-        .sig-cascade-card.highlight .sig-card-label {
-            color: #ffffff;
-        }
-
-        .sig-card-val {
-            font-size: 18px;
-            font-weight: 900;
-            color: #0b1222;
-            margin-bottom: 6px;
-        }
-
-        .sig-card-val.mint {
-            color: #a0d9d2;
-        }
-
-        .sig-card-sub {
-            font-size: 10.5px;
-            color: #64748b;
-            line-height: 1.3;
-        }
-
-        .sig-cascade-card.highlight .sig-card-sub {
-            color: #94a3b8;
+            color: #14362b;
         }
 
         /* Animation d'Entrée des Vues */
@@ -8206,318 +8331,343 @@
             </div> <!-- fin container padding -->
 
             <!-- VUES SECONDAIRES (Bilan, Compte de Résultat, TFT, Annexes) -->
+            <!-- 1. VUE BILAN SYSCOHADA -->
             <div id="viewBilan" style="display: none;">
-                <div class="mb-3 flex items-center justify-between">
+                <div class="mb-3.5 flex items-center justify-between">
                     <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
                         <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
                         <span>Retour au Journal des écritures</span>
                     </button>
-                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs">
                         <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
-                        <span>Vue active : <b class="text-slate-800">Bilan SYSCOHADA</b></span>
+                        <span>Vue active : <b class="text-[#14362b]">Bilan SYSCOHADA</b></span>
                     </span>
                 </div>
-            <div class="comptable-statement-card">
-                <div class="statement-header">
-                    <div class="statement-title-wrap">
-                        <h2><i class="fa-solid fa-scale-balanced" style="color: #a0d9d2;"></i> Bilan Comptable SYSCOHADA (Système Normal &amp; SMT)</h2>
-                        <p id="bilanSubtitle">Calcul algorithmique certifié &bull; Clôture automatique en direct</p>
+                <div class="comptable-statement-card">
+                    <div class="statement-header">
+                        <div class="statement-title-wrap">
+                            <div class="statement-icon-box">
+                                <span class="material-symbols-outlined notranslate text-[22px]" translate="no">account_balance</span>
+                            </div>
+                            <div>
+                                <h2>Bilan Comptable SYSCOHADA (Système Normal &amp; SMT)</h2>
+                                <p id="bilanSubtitle">Calcul algorithmique certifié &bull; Clôture automatique en direct</p>
+                            </div>
+                        </div>
+                        <div class="statement-actions">
+                            <button type="button" class="btn-statement-export" onclick="alert('Export du Bilan SYSCOHADA certifié en cours...')">
+                                <span class="material-symbols-outlined notranslate text-[18px] text-[#a0d9d2]" translate="no">download</span>
+                                <span>Télécharger Bilan (PDF)</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="statement-actions">
-                        <button type="button" class="btn-statement-export" onclick="alert('Export du Bilan SYSCOHADA certifié en cours...')">
-                            <i class="fa-solid fa-file-arrow-down"></i> Télécharger Bilan (PDF)
-                        </button>
+
+                    <!-- Contrôle de Conformité Bilantielle SYSCOHADA -->
+                    <div class="bilan-equilibrium-banner">
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <div class="equilibrium-icon-circle">
+                                <span class="material-symbols-outlined notranslate text-[22px]" translate="no">scale</span>
+                            </div>
+                            <div>
+                                <div style="font-size: 14.5px; font-weight: 800; color: #ffffff;">Contrôle de Conformité Bilantielle SYSCOHADA Révisé</div>
+                                <div style="font-size: 12px; color: #a0d9d2; margin-top: 2px;" id="bilanEquilibriumSub">Équilibre parfait Actif Net = Passif Total (Écart : 0 FCFA) &bull; Prêt pour télédéclaration DGID Sen-E-Tax</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="equilibrium-badge-status" id="bilanEquilibriumBadge"><i class="fa-solid fa-circle-check"></i> BILAN CERTIFIÉ ÉQUILIBRÉ</span>
+                        </div>
+                    </div>
+
+                    <div class="bilan-two-columns">
+                        <!-- COLONNE ACTIF -->
+                        <div class="bilan-column-block">
+                            <div class="bilan-col-head">
+                                <span>ACTIF (Emplois)</span>
+                                <span id="bilanTotalActifHead" class="bilan-col-head-pill">0 FCFA</span>
+                            </div>
+                            <table class="bilan-table">
+                                <thead>
+                                    <tr><th>Rubrique Actif</th><th style="text-align: right;">Montant Brut</th></tr>
+                                </thead>
+                                <tbody id="bilanActifBody">
+                                    <!-- Rempli dynamiquement par l'algorithme -->
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bilan-table row-total">
+                                        <td>TOTAL ACTIF</td>
+                                        <td style="text-align: right;" id="bilanTotalActifVal">0 FCFA</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <!-- COLONNE PASSIF -->
+                        <div class="bilan-column-block">
+                            <div class="bilan-col-head">
+                                <span>PASSIF (Ressources)</span>
+                                <span id="bilanTotalPassifHead" class="bilan-col-head-pill">0 FCFA</span>
+                            </div>
+                            <table class="bilan-table">
+                                <thead>
+                                    <tr><th>Rubrique Passif</th><th style="text-align: right;">Montant Net</th></tr>
+                                </thead>
+                                <tbody id="bilanPassifBody">
+                                    <!-- Rempli dynamiquement par l'algorithme -->
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bilan-table row-total">
+                                        <td>TOTAL PASSIF</td>
+                                        <td style="text-align: right;" id="bilanTotalPassifVal">0 FCFA</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                                <!-- Contrôle de Conformité Bilantielle SYSCOHADA -->
-                <div class="bilan-equilibrium-banner">
-                    <div style="display: flex; align-items: center; gap: 14px;">
-                        <div class="equilibrium-icon-circle">
-                            <i class="fa-solid fa-scale-balanced"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 14px; font-weight: 800; color: #ffffff;">Contrôle de Conformité Bilantielle SYSCOHADA Révisé</div>
-                            <div style="font-size: 11.5px; color: #94a3b8;" id="bilanEquilibriumSub">Équilibre parfait Actif Net = Passif Total (Écart : 0 FCFA) &bull; Prêt pour télédéclaration DGID Sen-E-Tax</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <span class="equilibrium-badge-status" id="bilanEquilibriumBadge"><i class="fa-solid fa-circle-check"></i> BILAN CERTIFIÉ ÉQUILIBRÉ</span>
-                    </div>
+            <!-- ========================================================================= -->
+            <!-- 2. VUE COMPTE DE RÉSULTAT SYSCOHADA & SOLDES DE GESTION (SIG)             -->
+            <!-- ========================================================================= -->
+            <div id="viewResultat" style="display: none;">
+                <div class="mb-3.5 flex items-center justify-between">
+                    <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+                        <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
+                        <span>Retour au Journal des écritures</span>
+                    </button>
+                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
+                        <span>Vue active : <b class="text-[#14362b]">Compte de Résultat</b></span>
+                    </span>
                 </div>
-
-                <div class="bilan-two-columns">
-                    <!-- COLONNE ACTIF -->
-                    <div class="bilan-column-block">
-                        <div class="bilan-col-head">
-                            <span>ACTIF (Emplois)</span>
-                            <span id="bilanTotalActifHead">0 FCFA</span>
+                <div class="comptable-statement-card">
+                    <div class="statement-header">
+                        <div class="statement-title-wrap">
+                            <div class="statement-icon-box">
+                                <span class="material-symbols-outlined notranslate text-[22px]" translate="no">trending_up</span>
+                            </div>
+                            <div>
+                                <h2>Compte de Résultat &amp; Soldes Intermédiaires de Gestion</h2>
+                                <p id="resultatSubtitle">Calcul de la Valeur Ajoutée, EBE et Résultat Net de l'exercice</p>
+                            </div>
                         </div>
-                        <table class="bilan-table">
+                        <div class="statement-actions">
+                            <button type="button" class="btn-statement-export" onclick="alert('Export du Compte de Résultat SYSCOHADA en cours...')">
+                                <span class="material-symbols-outlined notranslate text-[18px] text-[#a0d9d2]" translate="no">download</span>
+                                <span>Télécharger Résultat (PDF)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Grille Synthétique des Soldes Intermédiaires de Gestion (SIG) -->
+                    <div class="sig-cascade-grid">
+                        <div class="sig-cascade-card">
+                            <div class="sig-card-step">Étape 1 &bull; Ventes</div>
+                            <div class="sig-card-label">Marge Commerciale</div>
+                            <div class="sig-card-val" id="sigValMarge">0 FCFA</div>
+                            <div class="sig-card-sub">Ventes de marchandises (701) - Achats consommés (601)</div>
+                        </div>
+                        <div class="sig-cascade-card">
+                            <div class="sig-card-step">Étape 2 &bull; Création</div>
+                            <div class="sig-card-label">Valeur Ajoutée (VA)</div>
+                            <div class="sig-card-val" id="sigValVA">0 FCFA</div>
+                            <div class="sig-card-sub">Richesse économique créée après consommations externes (62/63)</div>
+                        </div>
+                        <div class="sig-cascade-card">
+                            <div class="sig-card-step">Étape 3 &bull; Opérationnel</div>
+                            <div class="sig-card-label">Excédent Brut (EBE)</div>
+                            <div class="sig-card-val" id="sigValEBE">0 FCFA</div>
+                            <div class="sig-card-sub">Flux net opérationnel avant amortissements et charges financières</div>
+                        </div>
+                        <div class="sig-cascade-card highlight">
+                            <div class="sig-card-step mint">Étape 4 &bull; Net</div>
+                            <div class="sig-card-label">Résultat Net de l'Exercice</div>
+                            <div class="sig-card-val mint" id="sigValNet">0 FCFA</div>
+                            <div class="sig-card-sub">Bénéfice net certifié après impôts BIC &amp; charges financières</div>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 16px;">
+                        <table class="resultat-full-table">
                             <thead>
-                                <tr><th>Rubrique Actif</th><th style="text-align: right;">Montant Brut</th></tr>
+                                <tr>
+                                    <th>Poste Comptable &amp; Soldes de Gestion</th>
+                                    <th style="text-align: center; width: 140px;">Réf. SYSCOHADA</th>
+                                    <th style="text-align: right; width: 180px;">Montant (FCFA)</th>
+                                </tr>
                             </thead>
-                            <tbody id="bilanActifBody">
+                            <tbody id="resultatTableBody">
                                 <!-- Rempli dynamiquement par l'algorithme -->
                             </tbody>
-                            <tfoot>
-                                <tr class="bilan-table row-total">
-                                    <td>TOTAL ACTIF</td>
-                                    <td style="text-align: right;" id="bilanTotalActifVal">0 FCFA</td>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
+                </div>
+            </div>
 
-                    <!-- COLONNE PASSIF -->
-                    <div class="bilan-column-block">
-                        <div class="bilan-col-head">
-                            <span>PASSIF (Ressources)</span>
-                            <span id="bilanTotalPassifHead">0 FCFA</span>
+            <!-- ========================================================================= -->
+            <!-- 3. VUE TABLEAU DES FLUX DE TRÉSORERIE (TFT / TAFIRE SYSCOHADA)            -->
+            <!-- ========================================================================= -->
+            <div id="viewTFT" style="display: none;">
+                <div class="mb-3.5 flex items-center justify-between">
+                    <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+                        <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
+                        <span>Retour au Journal des écritures</span>
+                    </button>
+                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
+                        <span>Vue active : <b class="text-[#14362b]">TAFIRE (Flux de Trésorerie)</b></span>
+                    </span>
+                </div>
+                <div class="comptable-statement-card">
+                    <div class="statement-header">
+                        <div class="statement-title-wrap">
+                            <div class="statement-icon-box">
+                                <span class="material-symbols-outlined notranslate text-[22px]" translate="no">payments</span>
+                            </div>
+                            <div>
+                                <h2>Tableau des Flux de Trésorerie (TFT / TAFIRE)</h2>
+                                <p id="tftSubtitle">Flux opérationnels, investissements et financements certifiés</p>
+                            </div>
                         </div>
-                        <table class="bilan-table">
-                            <thead>
-                                <tr><th>Rubrique Passif</th><th style="text-align: right;">Montant Net</th></tr>
-                            </thead>
-                            <tbody id="bilanPassifBody">
-                                <!-- Rempli dynamiquement par l'algorithme -->
-                            </tbody>
-                            <tfoot>
-                                <tr class="bilan-table row-total">
-                                    <td>TOTAL PASSIF</td>
-                                    <td style="text-align: right;" id="bilanTotalPassifVal">0 FCFA</td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                        <div class="statement-actions">
+                            <button type="button" class="btn-statement-export" onclick="alert('Export du TFT SYSCOHADA en cours...')">
+                                <span class="material-symbols-outlined notranslate text-[18px] text-[#a0d9d2]" translate="no">download</span>
+                                <span>Télécharger TFT (PDF)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 1 : OPÉRATIONS D'ACTIVITÉ -->
+                    <div class="tft-section-box">
+                        <div class="tft-section-head">
+                            <span><i class="fa-solid fa-bolt" style="color: #168078; margin-right: 8px;"></i> A. Flux de trésorerie provenant des opérations d'activité</span>
+                            <span id="tftTotalActivite">0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Encaissements reçus des clients (Factures payées, ventes au comptant)</span>
+                            <span id="tftEncaissementsClients" style="color: #168078; font-weight: 700; font-family: ui-monospace, monospace;">+0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Sommes versées aux fournisseurs et achats de stocks décaissés</span>
+                            <span id="tftAchatsStocks" style="color: #0f172a; font-weight: 700; font-family: ui-monospace, monospace;">-0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Rémunérations et charges de personnel versées</span>
+                            <span id="tftSalaires" style="color: #0f172a; font-weight: 700; font-family: ui-monospace, monospace;">-0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Autres services extérieurs et charges décaissées (Transports, loyers, télécoms)</span>
+                            <span id="tftServices" style="color: #0f172a; font-weight: 700; font-family: ui-monospace, monospace;">-0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Impôts, taxes et droits assimilés payés (BRS, TVA, patente)</span>
+                            <span id="tftImpots" style="color: #0f172a; font-weight: 700; font-family: ui-monospace, monospace;">-0 FCFA</span>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2 : INVESTISSEMENTS -->
+                    <div class="tft-section-box">
+                        <div class="tft-section-head">
+                            <span><i class="fa-solid fa-building" style="color: #168078; margin-right: 8px;"></i> B. Flux de trésorerie provenant des opérations d'investissement</span>
+                            <span id="tftTotalInvestissement">0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Décaissements sur acquisitions d'immobilisations (Matériel, locaux, ordinateurs)</span>
+                            <span id="tftAcquisitionsImmo" style="color: #0f172a; font-weight: 700; font-family: ui-monospace, monospace;">-0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Encaissements sur cessions d'actifs immobilisés</span>
+                            <span style="color: #64748b; font-weight: 600; font-family: ui-monospace, monospace;">0 FCFA</span>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3 : FINANCEMENT -->
+                    <div class="tft-section-box">
+                        <div class="tft-section-head">
+                            <span><i class="fa-solid fa-vault" style="color: #168078; margin-right: 8px;"></i> C. Flux de trésorerie provenant des opérations de financement</span>
+                            <span id="tftTotalFinancement">0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Augmentations de capital et apports en numéraire</span>
+                            <span id="tftApportsCapital" style="color: #168078; font-weight: 700; font-family: ui-monospace, monospace;">+0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Emprunts bancaires et financements obtenus</span>
+                            <span id="tftEmpruntsObtenus" style="color: #168078; font-weight: 700; font-family: ui-monospace, monospace;">+0 FCFA</span>
+                        </div>
+                        <div class="tft-row">
+                            <span>Remboursements d'emprunts et dettes financières</span>
+                            <span id="tftRemboursementsDettes" style="color: #0f172a; font-weight: 700; font-family: ui-monospace, monospace;">-0 FCFA</span>
+                        </div>
+                    </div>
+
+                    <!-- SYNTHÈSE VARIATION FINALE -->
+                    <div class="tft-total-pill">
+                        <span><i class="fa-solid fa-chart-pie" style="color: #a0d9d2; margin-right: 10px;"></i> VARIATION NETTE DE TRÉSORERIE (A + B + C)</span>
+                        <span id="tftVariationNetteVal">0 FCFA</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- ========================================================================= -->
-        <!-- MODULE 3 : COMPTE DE RÉSULTAT SYSCOHADA & SOLDES DE GESTION (SIG)       -->
-        <!-- ========================================================================= -->
-        <div id="viewResultat" style="display: none;">
-            <div class="mb-3 flex items-center justify-between">
-                <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
-                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
-                    <span>Retour au Journal des écritures</span>
-                </button>
-                <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
-                    <span>Vue active : <b class="text-slate-800">Compte de Résultat</b></span>
-                </span>
-            </div>
-            <div class="comptable-statement-card">
-                <div class="statement-header">
-                    <div class="statement-title-wrap">
-                        <h2><i class="fa-solid fa-chart-line" style="color: #a0d9d2;"></i> Compte de Résultat &amp; Soldes Intermédiaires de Gestion</h2>
-                        <p id="resultatSubtitle">Calcul de la Valeur Ajoutée, EBE et Résultat Net de l'exercice</p>
-                    </div>
-                    <div class="statement-actions">
-                        <button type="button" class="btn-statement-export" onclick="alert('Export du Compte de Résultat SYSCOHADA en cours...')">
-                            <i class="fa-solid fa-file-arrow-down"></i> Télécharger Résultat (PDF)
-                        </button>
-                    </div>
+            <!-- ========================================================================= -->
+            <!-- 4. VUE NOTES ANNEXES & CONFORMITÉ FISCALE DGID                            -->
+            <!-- ========================================================================= -->
+            <div id="viewAnnexes" style="display: none;">
+                <div class="mb-3.5 flex items-center justify-between">
+                    <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+                        <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
+                        <span>Retour au Journal des écritures</span>
+                    </button>
+                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
+                        <span>Vue active : <b class="text-[#14362b]">Notes &amp; Annexes DGID</b></span>
+                    </span>
                 </div>
+                <div class="comptable-statement-card">
+                    <div class="statement-header">
+                        <div class="statement-title-wrap">
+                            <div class="statement-icon-box">
+                                <span class="material-symbols-outlined notranslate text-[22px]" translate="no">description</span>
+                            </div>
+                            <div>
+                                <h2>Notes Annexes &amp; Liasse Fiscale SYSCOHADA</h2>
+                                <p id="annexesSubtitle">Documentation légale, méthodes d'évaluation et tableau de rapprochement</p>
+                            </div>
+                        </div>
+                        <div class="statement-actions">
+                            <button type="button" class="btn-statement-export" onclick="alert('Export de la Liasse Fiscale & Déclarations DGID en cours...')">
+                                <span class="material-symbols-outlined notranslate text-[18px] text-[#a0d9d2]" translate="no">picture_as_pdf</span>
+                                <span>Télécharger Liasse Fiscale (PDF)</span>
+                            </button>
+                        </div>
+                    </div>
 
-                                <!-- Grille Synthétique des Soldes Intermédiaires de Gestion (SIG) -->
-                <div class="sig-cascade-grid">
-                    <div class="sig-cascade-card">
-                        <div class="sig-card-step">Étape 1 &bull; Ventes</div>
-                        <div class="sig-card-label">Marge Commerciale</div>
-                        <div class="sig-card-val" id="sigValMarge">0 FCFA</div>
-                        <div class="sig-card-sub">Ventes de marchandises (701) - Achats consommés (601)</div>
+                    <div class="annexes-cards-grid">
+                        <div class="annexe-card-item">
+                            <h4><i class="fa-solid fa-certificate"></i> Règle Comptable Appliquée</h4>
+                            <p>Système Minimal de Trésorerie (SMT) et Système Normal sous l'Acte Uniforme OHADA portant organisation et harmonisation des comptabilités des entreprises.</p>
+                        </div>
+                        <div class="annexe-card-item">
+                            <h4><i class="fa-solid fa-shield-halved"></i> Valeur Probante des Preuves</h4>
+                            <p>100% des écritures Wave et Orange Money sont scellées par webhook certifié. Les reçus physiques sont indexés avec horodatage immuable.</p>
+                        </div>
+                        <div class="annexe-card-item">
+                            <h4><i class="fa-solid fa-landmark"></i> Déclarations Fiscales (DGID)</h4>
+                            <p>Conforme aux obligations de l'impôt synthétique (CGU), BRS 5% et TVA sénégalaise. Prêt pour transmission directe à l'administration fiscale.</p>
+                        </div>
                     </div>
-                    <div class="sig-cascade-card">
-                        <div class="sig-card-step">Étape 2 &bull; Création</div>
-                        <div class="sig-card-label">Valeur Ajoutée (VA)</div>
-                        <div class="sig-card-val" id="sigValVA">0 FCFA</div>
-                        <div class="sig-card-sub">Richesse économique créée après consommation externe (62/63)</div>
-                    </div>
-                    <div class="sig-cascade-card">
-                        <div class="sig-card-step">Étape 3 &bull; Opérationnel</div>
-                        <div class="sig-card-label">Excédent Brut (EBE)</div>
-                        <div class="sig-card-val" id="sigValEBE">0 FCFA</div>
-                        <div class="sig-card-sub">Flux de trésorerie net avant amortissements et charges financières</div>
-                    </div>
-                    <div class="sig-cascade-card highlight">
-                        <div class="sig-card-step mint">Étape 4 &bull; Net</div>
-                        <div class="sig-card-label">Résultat Net de l'Exercice</div>
-                        <div class="sig-card-val mint" id="sigValNet">0 FCFA</div>
-                        <div class="sig-card-sub">Bénéfice net certifié après impôts BIC &amp; charges financières</div>
-                    </div>
-                </div>
 
-                <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 14px;">
-                    <table class="resultat-full-table">
-                        <thead>
-                            <tr>
-                                <th>Poste Comptable &amp; Soldes de Gestion</th>
-                                <th style="text-align: center; width: 140px;">Réf. SYSCOHADA</th>
-                                <th style="text-align: right; width: 180px;">Montant (FCFA)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultatTableBody">
-                            <!-- Rempli dynamiquement par l'algorithme -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========================================================================= -->
-        <!-- MODULE 4 : TABLEAU DES FLUX DE TRÉSORERIE (TFT SYSCOHADA)                -->
-        <!-- ========================================================================= -->
-        <div id="viewTFT" style="display: none;">
-            <div class="mb-3 flex items-center justify-between">
-                <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
-                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
-                    <span>Retour au Journal des écritures</span>
-                </button>
-                <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
-                    <span>Vue active : <b class="text-slate-800">TAFIRE (Flux de Trésorerie)</b></span>
-                </span>
-            </div>
-            <div class="comptable-statement-card">
-                <div class="statement-header">
-                    <div class="statement-title-wrap">
-                        <h2><i class="fa-solid fa-money-bill-transfer" style="color: #a0d9d2;"></i> Tableau des Flux de Trésorerie (TFT)</h2>
-                        <p id="tftSubtitle">Flux opérationnels, investissements et financements certifiés</p>
-                    </div>
-                    <div class="statement-actions">
-                        <button type="button" class="btn-statement-export" onclick="alert('Export du TFT SYSCOHADA en cours...')">
-                            <i class="fa-solid fa-file-arrow-down"></i> Télécharger TFT (PDF)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- SECTION 1 : ACTIVITÉS OPÉRATIONNELLES -->
-                <div class="tft-section-box">
-                    <div class="tft-section-head">
-                        <span><i class="fa-solid fa-cart-shopping" style="color: #a0d9d2; margin-right: 8px;"></i> A. Flux de trésorerie provenant des activités opérationnelles</span>
-                        <span id="tftTotalActivite" style="font-family: monospace;">0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Encaissements reçus des clients (Wave, Orange Money, Espèces, Chèques)</span>
-                        <span id="tftEncaissementsClients" style="color: #a0d9d2; font-weight: 700;">+0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Sommes versées aux fournisseurs (Achats de stocks &amp; marchandises)</span>
-                        <span id="tftAchatsStocks" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Rémunérations et charges de personnel versées</span>
-                        <span id="tftSalaires" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Autres services extérieurs et charges décaissées (Transports, loyers, télécoms)</span>
-                        <span id="tftServices" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Impôts, taxes et droits assimilés payés (BRS, TVA, patente)</span>
-                        <span id="tftImpots" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
-                    </div>
-                </div>
-
-                <!-- SECTION 2 : INVESTISSEMENTS -->
-                <div class="tft-section-box">
-                    <div class="tft-section-head">
-                        <span><i class="fa-solid fa-building" style="color: #a0d9d2; margin-right: 8px;"></i> B. Flux de trésorerie provenant des opérations d'investissement</span>
-                        <span id="tftTotalInvestissement" style="font-family: monospace;">0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Décaissements sur acquisitions d'immobilisations (Matériel, locaux, ordinateurs)</span>
-                        <span id="tftAcquisitionsImmo" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Encaissements sur cessions d'actifs immobilisés</span>
-                        <span style="color: #64748b; font-weight: 600;">0 FCFA</span>
-                    </div>
-                </div>
-
-                <!-- SECTION 3 : FINANCEMENT -->
-                <div class="tft-section-box">
-                    <div class="tft-section-head">
-                        <span><i class="fa-solid fa-vault" style="color: #a0d9d2; margin-right: 8px;"></i> C. Flux de trésorerie provenant des opérations de financement</span>
-                        <span id="tftTotalFinancement" style="font-family: monospace;">0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Augmentations de capital et apports en numéraire</span>
-                        <span id="tftApportsCapital" style="color: #a0d9d2; font-weight: 700;">+0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Emprunts bancaires et financements obtenus</span>
-                        <span id="tftEmpruntsObtenus" style="color: #a0d9d2; font-weight: 700;">+0 FCFA</span>
-                    </div>
-                    <div class="tft-row">
-                        <span>Remboursements d'emprunts et dettes financières</span>
-                        <span id="tftRemboursementsDettes" style="color: #0f172a; font-weight: 700;">-0 FCFA</span>
-                    </div>
-                </div>
-
-                <!-- SYNTHÈSE VARIATION FINALE -->
-                <div class="tft-total-pill">
-                    <span><i class="fa-solid fa-chart-pie" style="color: #a0d9d2; margin-right: 10px;"></i> VARIATION NETTE DE TRÉSORERIE (A + B + C)</span>
-                    <span id="tftVariationNetteVal" style="color: #a0d9d2;">0 FCFA</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========================================================================= -->
-        <!-- MODULE 5 : NOTES ANNEXES & CONFORMITÉ FISCALE DGID                       -->
-        <!-- ========================================================================= -->
-        <div id="viewAnnexes" style="display: none;">
-            <div class="mb-3 flex items-center justify-between">
-                <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
-                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
-                    <span>Retour au Journal des écritures</span>
-                </button>
-                <span class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#168078]"></span>
-                    <span>Vue active : <b class="text-slate-800">Notes &amp; Annexes DGID</b></span>
-                </span>
-            </div>
-            <div class="comptable-statement-card">
-                <div class="statement-header">
-                    <div class="statement-title-wrap">
-                        <h2><i class="fa-solid fa-file-invoice" style="color: #a0d9d2;"></i> Notes Annexes &amp; Liasse Fiscale SYSCOHADA</h2>
-                        <p id="annexesSubtitle">Documentation légale, méthodes d'évaluation et tableau de rapprochement</p>
-                    </div>
-                    <div class="statement-actions">
-                        <button type="button" class="btn-statement-export" onclick="alert('Export de la Liasse Fiscale & Déclarations DGID en cours...')">
-                            <i class="fa-solid fa-file-pdf"></i> Télécharger Liasse Fiscale (PDF)
-                        </button>
-                    </div>
-                </div>
-
-                <div class="annexes-cards-grid">
-                    <div class="annexe-card-item">
-                        <h4><i class="fa-solid fa-certificate" style="color: #a0d9d2;"></i> Règle Comptable Appliquée</h4>
-                        <p>Système Minimal de Trésorerie (SMT) et Système Normal sous l'Acte Uniforme OHADA portant organisation et harmonisation des comptabilités des entreprises.</p>
-                    </div>
-                    <div class="annexe-card-item">
-                        <h4><i class="fa-solid fa-shield-halved" style="color: #a0d9d2;"></i> Valeur Probante des Preuves</h4>
-                        <p>100% des écritures Wave et Orange Money sont scellées par webhook certifié. Les reçus physiques sont indexés avec horodatage immuable.</p>
-                    </div>
-                    <div class="annexe-card-item">
-                        <h4><i class="fa-solid fa-landmark" style="color: #a0d9d2;"></i> Déclarations Fiscales (DGID)</h4>
-                        <p>Conforme aux obligations de l'impôt synthétique (CGU), BRS 5% et TVA sénégalaise. Prêt pour transmission directe à l'administration fiscale.</p>
-                    </div>
-                </div>
-
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px 22px;">
-                    <h3 style="font-size: 14px; font-weight: 800; color: #0a2540; margin: 0 0 12px 0;">
-                        <i class="fa-solid fa-list-check" style="color: #a0d9d2; margin-right: 8px;"></i>
-                        Tableau de Rapprochement des Soldes de Trésorerie
-                    </h3>
-                    <div id="annexesRapprochementTable">
-                        <!-- Rempli dynamiquement -->
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px 24px; box-shadow: 0 1px 3px rgba(11, 18, 34, 0.03);">
+                        <h3 style="font-size: 14px; font-weight: 800; color: #14362b; margin: 0 0 14px 0; display: flex; align-items: center; gap: 8px;">
+                            <span class="material-symbols-outlined notranslate text-[18px] text-[#168078]" translate="no">account_balance_wallet</span>
+                            <span>Tableau de Rapprochement des Soldes de Trésorerie</span>
+                        </h3>
+                        <div id="annexesRapprochementTable">
+                            <!-- Rempli dynamiquement -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         <!-- CONTENU 2 : VOIR À QUEL PRÊT VOUS ÊTES ÉLIGIBLE (AVEC AGENCES PARTENAIRES & DOSSIERS) -->
         <div id="viewPrets" style="display: none;">
@@ -11935,7 +12085,7 @@
                     <tr class="row-detail"><td>Capital social &amp; compte de l'exploitant (101/103)</td><td style="text-align: right; font-weight: 700;">${fmt(b.passif.capital)}</td></tr>
                     <tr class="row-detail" style="background: rgba(160, 217, 210, 0.08);">
                         <td><strong>Résultat Net de l'exercice (Bénéfice/Perte)</strong></td>
-                        <td style="text-align: right; font-weight: 800; color: ${b.passif.resultatNet >= 0 ? '#0a2540' : '#b91c1c'};">${fmt(b.passif.resultatNet)}</td>
+                        <td style="text-align: right; font-weight: 800; color: ${b.passif.resultatNet >= 0 ? '#14362b' : '#b91c1c'};">${fmt(b.passif.resultatNet)}</td>
                     </tr>
                     <tr class="row-rubrique"><td colspan="2">DETTES FINANCIÈRES (Classe 16)</td></tr>
                     <tr class="row-detail"><td>Emprunts &amp; dettes auprès des banques</td><td style="text-align: right; font-weight: 700;">${fmt(b.passif.dettesFinancieres)}</td></tr>
@@ -11956,38 +12106,38 @@
             if (!tbody) return;
 
             tbody.innerHTML = `
-                <tr><td>+ Ventes de marchandises</td><td style="text-align: center; color: #64748b;">701</td><td style="text-align: right; font-weight: 700; color: #0a2540;">${fmt(r.ventes)}</td></tr>
-                <tr><td>+ Prestations de services vendues</td><td style="text-align: center; color: #64748b;">706</td><td style="text-align: right; font-weight: 700; color: #0a2540;">${fmt(r.prestations)}</td></tr>
-                <tr><td>- Achats de marchandises &amp; fournitures</td><td style="text-align: center; color: #64748b;">601</td><td style="text-align: right; font-weight: 700; color: #0f172a;">-${fmt(r.achats)}</td></tr>
-                
+                <tr><td>+ Ventes de marchandises</td><td style="text-align: center;"><span class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-100 text-slate-600 border border-slate-200">701</span></td><td style="text-align: right; font-weight: 700; font-family: ui-monospace, monospace; color: #14362b;">${fmt(r.ventes)}</td></tr>
+                <tr><td>+ Prestations de services vendues</td><td style="text-align: center;"><span class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-100 text-slate-600 border border-slate-200">706</span></td><td style="text-align: right; font-weight: 700; font-family: ui-monospace, monospace; color: #14362b;">${fmt(r.prestations)}</td></tr>
+                <tr><td>- Achats de marchandises &amp; fournitures</td><td style="text-align: center;"><span class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-100 text-slate-600 border border-slate-200">601</span></td><td style="text-align: right; font-weight: 700; font-family: ui-monospace, monospace; color: #0f172a;">-${fmt(r.achats)}</td></tr>
+
                 <tr class="sig-row">
                     <td><strong>= MARGE BRUTE COMMERCIALE</strong></td>
-                    <td style="text-align: center; font-weight: 800;">SIG 1</td>
+                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#14362b] text-[#a0d9d2]">SIG 1</span></td>
                     <td style="text-align: right;" class="sig-badge-val">${fmt(r.marge)}</td>
                 </tr>
 
-                <tr><td>- Transports de biens &amp; personnes</td><td style="text-align: center; color: #64748b;">624</td><td style="text-align: right;">-${fmt(r.transports)}</td></tr>
-                <tr><td>- Autres charges &amp; services extérieurs (loyers, télécoms)</td><td style="text-align: center; color: #64748b;">62x</td><td style="text-align: right;">-${fmt(r.services)}</td></tr>
+                <tr><td>- Transports de biens &amp; personnes</td><td style="text-align: center;"><span class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-100 text-slate-600 border border-slate-200">624</span></td><td style="text-align: right; font-family: ui-monospace, monospace;">-${fmt(r.transports)}</td></tr>
+                <tr><td>- Autres charges &amp; services extérieurs (loyers, télécoms)</td><td style="text-align: center;"><span class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-100 text-slate-600 border border-slate-200">62x</span></td><td style="text-align: right; font-family: ui-monospace, monospace;">-${fmt(r.services)}</td></tr>
 
                 <tr class="sig-row">
                     <td><strong>= VALEUR AJOUTÉE (VA)</strong></td>
-                    <td style="text-align: center; font-weight: 800;">SIG 2</td>
+                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#14362b] text-[#a0d9d2]">SIG 2</span></td>
                     <td style="text-align: right;" class="sig-badge-val">${fmt(r.va)}</td>
                 </tr>
 
-                <tr><td>- Charges de personnel &amp; rémunérations</td><td style="text-align: center; color: #64748b;">661</td><td style="text-align: right;">-${fmt(r.personnel)}</td></tr>
-                <tr><td>- Impôts, taxes et versements assimilés</td><td style="text-align: center; color: #64748b;">64</td><td style="text-align: right;">-${fmt(r.impots)}</td></tr>
+                <tr><td>- Charges de personnel &amp; rémunérations</td><td style="text-align: center;"><span class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-100 text-slate-600 border border-slate-200">661</span></td><td style="text-align: right; font-family: ui-monospace, monospace;">-${fmt(r.personnel)}</td></tr>
+                <tr><td>- Impôts, taxes et versements assimilés</td><td style="text-align: center;"><span class="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-100 text-slate-600 border border-slate-200">64</span></td><td style="text-align: right; font-family: ui-monospace, monospace;">-${fmt(r.impots)}</td></tr>
 
                 <tr class="sig-row">
                     <td><strong>= EXCÉDENT BRUT D'EXPLOITATION (EBE)</strong></td>
-                    <td style="text-align: center; font-weight: 800;">SIG 3</td>
+                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#14362b] text-[#a0d9d2]">SIG 3</span></td>
                     <td style="text-align: right;" class="sig-badge-val">${fmt(r.ebe)}</td>
                 </tr>
 
                 <tr class="sig-row-net">
-                    <td><i class="fa-solid fa-trophy" style="color: #a0d9d2; margin-right: 8px;"></i> <strong>RÉSULTAT NET DE L'EXERCICE (Bénéfice Net)</strong></td>
-                    <td style="text-align: center; color: #a0d9d2; font-weight: 900;">RÉSULTAT</td>
-                    <td style="text-align: right; color: #a0d9d2 !important; font-size: 15px; font-weight: 900;">${fmt(r.net)}</td>
+                    <td><div class="flex items-center gap-2"><span class="material-symbols-outlined notranslate text-[18px] text-[#a0d9d2]" translate="no">workspace_premium</span> <strong>RÉSULTAT NET DE L'EXERCICE (Bénéfice Net)</strong></div></td>
+                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#a0d9d2] text-[#14362b]">RÉSULTAT</span></td>
+                    <td style="text-align: right; color: #a0d9d2 !important; font-size: 15px; font-weight: 900; font-family: ui-monospace, monospace;">${fmt(r.net)}</td>
                 </tr>
             `;
         }
@@ -12138,11 +12288,16 @@
                 if (isEquilibre) {
                     badgeEq.innerHTML = '<i class="fa-solid fa-circle-check"></i> BILAN CERTIFIÉ ÉQUILIBRÉ';
                     badgeEq.style.background = '#a0d9d2';
-                    badgeEq.style.color = '#0b1222';
+                    badgeEq.style.color = '#14362b';
+                    badgeEq.style.border = 'none';
+                    badgeEq.style.fontWeight = '800';
                 } else {
                     badgeEq.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ÉCART DÉTECTÉ (' + fmt(diffBilan) + ')';
-                    badgeEq.style.background = '#fee2e2';
+                    badgeEq.style.background = '#ffffff';
                     badgeEq.style.color = '#991b1b';
+                    badgeEq.style.border = '1.5px solid #fca5a5';
+                    badgeEq.style.fontWeight = '800';
+                    badgeEq.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
                 }
             }
             if (subEq) {
@@ -12264,22 +12419,22 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
             if (!tableEl) return;
 
             tableEl.innerHTML = `
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px;">
-                    <div style="background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                        <span style="font-size: 11px; color: #64748b; display: block;">Wave Business</span>
-                        <strong style="font-size: 14px; color: #0a2540;">${fmt(b.actif.wave)}</strong>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 10px;">
+                    <div style="background: #f8fafc; padding: 14px 16px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 3px solid #168078;">
+                        <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 4px;">Wave Business</span>
+                        <strong style="font-size: 15px; font-weight: 900; color: #14362b; font-family: ui-monospace, monospace;">${fmt(b.actif.wave)}</strong>
                     </div>
-                    <div style="background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                        <span style="font-size: 11px; color: #64748b; display: block;">Orange Money</span>
-                        <strong style="font-size: 14px; color: #0a2540;">${fmt(b.actif.orange)}</strong>
+                    <div style="background: #f8fafc; padding: 14px 16px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 3px solid #168078;">
+                        <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 4px;">Orange Money</span>
+                        <strong style="font-size: 15px; font-weight: 900; color: #14362b; font-family: ui-monospace, monospace;">${fmt(b.actif.orange)}</strong>
                     </div>
-                    <div style="background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                        <span style="font-size: 11px; color: #64748b; display: block;">Comptes Bancaires</span>
-                        <strong style="font-size: 14px; color: #0a2540;">${fmt(b.actif.banque)}</strong>
+                    <div style="background: #f8fafc; padding: 14px 16px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 3px solid #168078;">
+                        <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 4px;">Comptes Bancaires</span>
+                        <strong style="font-size: 15px; font-weight: 900; color: #14362b; font-family: ui-monospace, monospace;">${fmt(b.actif.banque)}</strong>
                     </div>
-                    <div style="background: #ffffff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                        <span style="font-size: 11px; color: #64748b; display: block;">Caisse Espèces FCFA</span>
-                        <strong style="font-size: 14px; color: #0a2540;">${fmt(b.actif.caisse)}</strong>
+                    <div style="background: #f8fafc; padding: 14px 16px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 3px solid #168078;">
+                        <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 4px;">Caisse Espèces FCFA</span>
+                        <strong style="font-size: 15px; font-weight: 900; color: #14362b; font-family: ui-monospace, monospace;">${fmt(b.actif.caisse)}</strong>
                     </div>
                 </div>
             `;
