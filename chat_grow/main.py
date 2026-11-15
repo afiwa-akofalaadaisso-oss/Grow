@@ -1,3 +1,4 @@
+import time
 import os
 import json
 import base64
@@ -451,12 +452,49 @@ async def telecharger_carte():
     return HTMLResponse("Image non trouvée", status_code=404)
 
 
+# =========================================================================
+# CACHE HAUTE PERFORMANCE & RÉSILIENCE TABLEAU DE BORD (ANTI-TIMEOUT)
+# =========================================================================
+_DASHBOARD_DATA_CACHE = {}  # key: (phone, entreprise_id) -> (timestamp, data)
+_CACHE_TTL_SECONDS = 12.0
+
+def invalidate_dashboard_cache(phone: str = None, entreprise_id: str = None):
+    global _DASHBOARD_DATA_CACHE
+    if not phone and not entreprise_id:
+        _DASHBOARD_DATA_CACHE.clear()
+        return
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip() if phone else ""
+    keys_to_del = []
+    for k in list(_DASHBOARD_DATA_CACHE.keys()):
+        k_phone, k_ent = k
+        if (clean_p and k_phone and clean_p in k_phone) or (entreprise_id and k_ent == str(entreprise_id)):
+            keys_to_del.append(k)
+    for k in keys_to_del:
+        _DASHBOARD_DATA_CACHE.pop(k, None)
+
+
 @app.get("/api/dashboard-data")
 async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
-    """Fournit les données réelles et isolées d'une entreprise et ses transactions depuis Supabase."""
+    """Fournit les données réelles et isolées d'une entreprise et ses transactions avec cache haute performance & résilience."""
+    global _DASHBOARD_DATA_CACHE
+    clean_phone = phone.replace("+", "").replace(" ", "").strip() if phone else ""
+    cache_key = (clean_phone, str(entreprise_id or ""))
+    now_ts = time.time()
+
+    # 1. Vérifier si un cache valide et récent existe (évite de spammer Supabase toutes les 10s)
+    cached_entry = _DASHBOARD_DATA_CACHE.get(cache_key)
+    if cached_entry:
+        cached_ts, cached_data = cached_entry
+        if now_ts - cached_ts < _CACHE_TTL_SECONDS:
+            print(f'[CACHE HIT] phone={clean_phone} age={now_ts - cached_ts:.2f}s')
+            return cached_data
+    print(f'[CACHE MISS] phone={clean_phone} querying Supabase...')
+
     sp = get_supabase()
     if not sp:
-        return {"error": "Base de données non disponible", "entreprises": [], "entreprise": None, "transactions": []}
+        if cached_entry:
+            return cached_entry[1]
+        return {"error": "Base de données momentanément indisponible", "entreprises": [], "entreprise": None, "transactions": []}
 
     try:
         # Récupérer la liste des entreprises enregistrées
@@ -473,7 +511,6 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 if res.data:
                     target_ent = res.data[0]
         elif phone:
-            clean_phone = phone.replace("+", "").replace(" ", "").strip()
             for e in all_ents:
                 if e.get("telephone_whatsapp") and clean_phone in str(e.get("telephone_whatsapp")):
                     target_ent = e
@@ -506,7 +543,7 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 target_ent = all_ents[0]
 
         if not target_ent:
-            return {
+            empty_res = {
                 "entreprise": {
                     "id": "",
                     "nom_entreprise": "En attente du 1er client WhatsApp",
@@ -524,6 +561,8 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                     "solde_net": 0
                 }
             }
+            _DASHBOARD_DATA_CACHE[cache_key] = (now_ts, empty_res)
+            return empty_res
 
         ent_id = target_ent.get("id")
 
@@ -560,10 +599,7 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
         score_base = 50 + (30 if solde_net > 0 else 10) + int(20 * taux_preuve)
         score_financier = min(98, max(50, score_base)) if raw_txs else 70
 
-        # Permettre au cabinet comptable de voir et basculer entre toutes les entreprises en base
-        # (tout en ciblant target_ent pour les écritures et totaux actifs)
-
-        return {
+        res_data = {
             "entreprise": target_ent,
             "entreprises": all_ents,
             "transactions": raw_txs,
@@ -580,8 +616,14 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 "solde_net": solde_net
             }
         }
+        # Mise en cache mémoire immédiate
+        _DASHBOARD_DATA_CACHE[cache_key] = (now_ts, res_data)
+        return res_data
+
     except Exception as e:
-        print(f"Erreur API dashboard-data: {e}")
+        print(f"Erreur API dashboard-data (fallback sur cache): {e}")
+        if cached_entry:
+            return cached_entry[1]
         return {"error": str(e), "entreprises": [], "transactions": []}
 
 

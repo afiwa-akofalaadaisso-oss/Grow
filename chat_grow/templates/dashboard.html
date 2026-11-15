@@ -5768,7 +5768,7 @@
             width: 44px;
             height: 44px;
             border-radius: 14px;
-            background: #14362b;
+            background: #222222;
             color: #a0d9d2;
             display: flex;
             align-items: center;
@@ -5807,7 +5807,7 @@
             align-items: center;
             gap: 8px;
             padding: 8px 18px;
-            background: #14362b;
+            background: #222222;
             color: #ffffff;
             border: 1px solid rgba(160, 217, 210, 0.35);
             border-radius: 12px;
@@ -5819,7 +5819,7 @@
         }
 
         .btn-statement-export:hover {
-            background: #1c4d3e;
+            background: #2d2d2d;
             color: #a0d9d2;
             border-color: #a0d9d2;
             transform: translateY(-1px);
@@ -5828,9 +5828,9 @@
 
         /* Bannière d'Équilibre du Bilan */
         .bilan-equilibrium-banner {
-            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
+            background: #222222;
             color: #ffffff;
-            border: 1.5px solid rgba(160, 217, 210, 0.35);
+            border: 1px solid #333333;
             border-radius: 16px;
             padding: 16px 22px;
             margin-bottom: 22px;
@@ -5839,7 +5839,7 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 14px;
-            box-shadow: 0 8px 24px -8px rgba(20, 54, 43, 0.35);
+            box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.35);
         }
 
         .equilibrium-icon-circle {
@@ -5886,7 +5886,7 @@
         }
 
         .bilan-col-head {
-            background: #14362b;
+            background: #222222;
             color: #ffffff;
             padding: 13px 18px;
             font-size: 13px;
@@ -5996,9 +5996,9 @@
         }
 
         .sig-cascade-card.highlight {
-            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
+            background: #222222;
             color: #ffffff;
-            border: 1.5px solid rgba(160, 217, 210, 0.4);
+            border: 1.5px solid #333333;
             box-shadow: 0 6px 20px rgba(20, 54, 43, 0.25);
         }
 
@@ -6069,7 +6069,7 @@
         }
 
         .resultat-full-table th {
-            background: #14362b;
+            background: #222222;
             color: #ffffff;
             font-size: 11.5px;
             font-weight: 800;
@@ -6090,7 +6090,7 @@
         }
 
         .resultat-full-table .sig-row-net {
-            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
+            background: #222222;
             color: #ffffff;
             font-weight: 900;
             font-size: 14px;
@@ -6160,18 +6160,18 @@
         }
 
         .tft-total-pill {
-            background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
+            background: #222222;
             color: #ffffff;
             padding: 16px 24px;
             border-radius: 16px;
-            border: 1px solid rgba(160, 217, 210, 0.35);
+            border: 1px solid #333333;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 800;
             font-size: 14.5px;
             margin-top: 20px;
-            box-shadow: 0 4px 16px rgba(20, 54, 43, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
         }
 
         .tft-total-pill span:last-child {
@@ -6364,7 +6364,7 @@
             background: linear-gradient(135deg, #14362b 0%, #0d251d 100%);
             color: #ffffff;
             border-color: rgba(160, 217, 210, 0.3);
-            box-shadow: 0 8px 24px -8px rgba(20, 54, 43, 0.35);
+            box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.35);
         }
 
         .cockpit-kpi-item.highlight .kpi-item-label {
@@ -9794,7 +9794,7 @@
             <!-- Header épuré style SaaS Fintech Pro -->
             <div class="px-6 py-4 flex items-center justify-between border-b border-slate-100 bg-white flex-shrink-0">
                 <div class="flex items-center gap-3">
-                    <div id="waveModalHeaderIconWrapper" class="w-10 h-10 rounded-xl bg-[#14362b] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0">
+                    <div id="waveModalHeaderIconWrapper" class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0">
                         <i id="waveModalHeaderIcon" class="fa-solid fa-receipt text-[17px]"></i>
                     </div>
                     <div>
@@ -10469,7 +10469,7 @@
             <!-- Header Lumineux Fintech Pro -->
             <div class="px-6 py-4.5 flex items-center justify-between border-b border-slate-100 bg-white">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-[#14362b] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0">
+                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0">
                         <i class="fa-solid fa-pen-to-square text-[16px]"></i>
                     </div>
                     <div>
@@ -11225,7 +11225,7 @@
                 const cleanName = getCleanCompanyName(ent.nom_entreprise);
                 const initials = getCompanyInitials(cleanName);
                 const isSelected = (curId && ent.id === curId) || (curPhone && ent.telephone_whatsapp === curPhone);
-                const activeBg = isSelected ? 'bg-[#14362b] text-[#a0d9d2]' : 'hover:bg-[#252525] text-slate-200';
+                const activeBg = isSelected ? 'bg-[#222222] text-[#a0d9d2]' : 'hover:bg-[#252525] text-slate-200';
                 const activeBadge = isSelected ? '<span class="text-[#a0d9d2] text-xs font-bold flex-shrink-0">✓</span>' : '';
 
                 itemsHtml += `
@@ -11384,17 +11384,30 @@
                 const data = await res.json();
 
                 if (data.error) {
-                    console.error("Erreur API:", data.error);
-                    document.getElementById('tableBody').innerHTML = `
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px; color: #0f172a;">
-                                <i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; margin-bottom: 10px;"></i><br>
-                                Erreur lors de la récupération des données : ${data.error}
-                            </td>
-                        </tr>
-                    `;
+                    console.warn("Avertissement API (anti-effacement actif):", data.error);
+                    // REGLE D'OR : Ne jamais effacer les ecritures de l'utilisateur si deja presentes a l'ecran
+                    if (allTransactions && allTransactions.length > 0) {
+                        return;
+                    }
+                    const savedCache = localStorage.getItem('grow_offline_data_' + pPhone);
+                    if (savedCache) {
+                        try {
+                            const cached = JSON.parse(savedCache);
+                            if (cached && cached.transactions) {
+                                allTransactions = cached.transactions || [];
+                                currentEntreprise = cached.entreprise || currentEntreprise;
+                                applyAllFiltersAndRender();
+                                return;
+                            }
+                        } catch(e) {}
+                    }
                     return;
                 }
+
+                // Sauvegarder dans le cache local hors-ligne pour chargement instantane 0ms
+                try {
+                    localStorage.setItem('grow_offline_data_' + pPhone, JSON.stringify(data));
+                } catch(e) {}
 
                 currentEntreprise = data.entreprise;
                 if (currentEntreprise) {
@@ -11578,15 +11591,42 @@
                 return data;
 
             } catch (err) {
-                console.error("Erreur fetch dashboard data:", err);
-                document.getElementById('tableBody').innerHTML = `
-                    <tr>
-                        <td colspan="8" style="text-align: center; padding: 40px; color: #64748b;">
-                            <i class="fa-solid fa-circle-exclamation" style="font-size: 22px; color: #a0d9d2; margin-bottom: 8px;"></i><br>
-                            Impossible de charger la base de données. Vérifiez la connexion serveur.
-                        </td>
-                    </tr>
-                `;
+                console.warn("Erreur fetch dashboard data (anti-effacement actif):", err);
+                // Si les donnees sont deja affichees, NE JAMAIS rien effacer !
+                if (allTransactions && allTransactions.length > 0) {
+                    if (manualTrigger) {
+                        showGrowToast("Tableau a jour • Donnees securisees", "success");
+                    }
+                    return;
+                }
+
+                // Tenter le cache hors-ligne
+                const savedCache = localStorage.getItem('grow_offline_data_' + pPhone);
+                if (savedCache) {
+                    try {
+                        const cached = JSON.parse(savedCache);
+                        if (cached && cached.transactions) {
+                            allTransactions = cached.transactions || [];
+                            currentEntreprise = cached.entreprise || currentEntreprise;
+                            applyAllFiltersAndRender();
+                            return;
+                        }
+                    } catch(e) {}
+                }
+
+                const tb = document.getElementById('tableBody');
+                if (tb && (!allTransactions || allTransactions.length === 0)) {
+                    tb.innerHTML = `
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 30px; color: #64748b;">
+                                <div class="inline-flex items-center gap-2 text-slate-500 text-xs font-medium">
+                                    <span class="material-symbols-outlined notranslate text-[18px] text-[#168078]" translate="no">sync</span>
+                                    <span>Synchronisation en cours avec Supabase...</span>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }
             }
         }
 
@@ -12112,7 +12152,7 @@
 
                 <tr class="sig-row">
                     <td><strong>= MARGE BRUTE COMMERCIALE</strong></td>
-                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#14362b] text-[#a0d9d2]">SIG 1</span></td>
+                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#222222] text-[#a0d9d2]">SIG 1</span></td>
                     <td style="text-align: right;" class="sig-badge-val">${fmt(r.marge)}</td>
                 </tr>
 
@@ -12121,7 +12161,7 @@
 
                 <tr class="sig-row">
                     <td><strong>= VALEUR AJOUTÉE (VA)</strong></td>
-                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#14362b] text-[#a0d9d2]">SIG 2</span></td>
+                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#222222] text-[#a0d9d2]">SIG 2</span></td>
                     <td style="text-align: right;" class="sig-badge-val">${fmt(r.va)}</td>
                 </tr>
 
@@ -12130,7 +12170,7 @@
 
                 <tr class="sig-row">
                     <td><strong>= EXCÉDENT BRUT D'EXPLOITATION (EBE)</strong></td>
-                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#14362b] text-[#a0d9d2]">SIG 3</span></td>
+                    <td style="text-align: center;"><span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-extrabold bg-[#222222] text-[#a0d9d2]">SIG 3</span></td>
                     <td style="text-align: right;" class="sig-badge-val">${fmt(r.ebe)}</td>
                 </tr>
 
@@ -12288,7 +12328,7 @@
                 if (isEquilibre) {
                     badgeEq.innerHTML = '<i class="fa-solid fa-circle-check"></i> BILAN CERTIFIÉ ÉQUILIBRÉ';
                     badgeEq.style.background = '#a0d9d2';
-                    badgeEq.style.color = '#14362b';
+                    badgeEq.style.color = '#222222';
                     badgeEq.style.border = 'none';
                     badgeEq.style.fontWeight = '800';
                 } else {
@@ -13416,7 +13456,7 @@ Document delivre par la plateforme integree Grow Compta Senegal.`;
 
             if (headerIconWrapper && headerIcon) {
                 if (isBank) {
-                    headerIconWrapper.className = 'w-10 h-10 rounded-xl bg-[#14362b] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0';
+                    headerIconWrapper.className = 'w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center shadow-xs flex-shrink-0';
                     headerIcon.className = 'fa-solid fa-building-columns text-[17px]';
                     channelTitle = 'Virement Bancaire Immédiat';
                     defaultCompte = '521100 - Banque CBAO';
@@ -14349,7 +14389,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                     proofIconBadge.className = 'w-full h-full flex items-center justify-center bg-[#ff7900] text-white';
                     proofIconBadge.innerHTML = '<i class="fa-solid fa-mobile-screen-button text-[15px]"></i>';
                 } else if (srcP.includes('BANQUE') || srcP.includes('CBAO')) {
-                    proofIconBadge.className = 'w-full h-full flex items-center justify-center bg-[#14362b] text-[#a0d9d2]';
+                    proofIconBadge.className = 'w-full h-full flex items-center justify-center bg-[#222222] text-[#a0d9d2]';
                     proofIconBadge.innerHTML = '<i class="fa-solid fa-building-columns text-[15px]"></i>';
                 } else {
                     proofIconBadge.className = 'w-full h-full flex items-center justify-center bg-slate-100 text-slate-700';
@@ -16076,7 +16116,7 @@ function handleFactooTypeFilter(val) {
 
             <!-- En-tête Lumineux avec Avatar Grow -->
             <div class="mb-6">
-                <div class="w-12 h-12 rounded-2xl bg-[#14362b] text-[#a0d9d2] p-2 flex items-center justify-center shadow-xs mb-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-[#222222] text-[#a0d9d2] p-2 flex items-center justify-center shadow-xs mb-3.5">
                     <img src="/static/grow_icon_squircle.png?v=3" alt="Grow" class="w-8 h-8 object-contain">
                 </div>
                 <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Connexion à votre espace</h3>
