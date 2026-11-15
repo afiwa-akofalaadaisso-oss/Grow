@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 import zoneinfo
 import httpx
 import anthropic
-from fastapi import FastAPI, Request, HTTPException, Query, Body
+from fastapi import FastAPI, Request, HTTPException, Query, Body, File, UploadFile
 from fastapi.responses import PlainTextResponse, HTMLResponse, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
@@ -1113,6 +1113,75 @@ async def api_enregistrer_transaction(payload: dict = Body(...)):
         return {"status": "error", "message": str(e)}
 
 
+@app.post("/api/upload-justificatif")
+async def api_upload_justificatif(
+    request: Request
+):
+    """Téléverse un justificatif probant (image PNG/JPG/WebP ou PDF), calcule son hash SHA-256 et le stocke."""
+    uploads_dir = os.path.join(STATIC_DIR, "uploads", "preuves")
+    os.makedirs(uploads_dir, exist_ok=True)
+
+    file_bytes = b""
+    original_filename = "justificatif.jpg"
+
+    content_type = request.headers.get("content-type", "")
+    if "multipart/form-data" in content_type:
+        form = await request.form()
+        uploaded_file = form.get("file")
+        if uploaded_file and hasattr(uploaded_file, "read"):
+            original_filename = uploaded_file.filename or "justificatif.jpg"
+            file_bytes = await uploaded_file.read()
+    else:
+        try:
+            body = await request.json()
+            if body and "base64" in body:
+                b64_str = body["base64"]
+                if "," in b64_str:
+                    b64_str = b64_str.split(",")[1]
+                file_bytes = base64.b64decode(b64_str)
+                original_filename = body.get("filename", "justificatif.jpg")
+            elif body and "url" in body:
+                raw_u = body["url"]
+                return {
+                    "status": "success",
+                    "url": raw_u,
+                    "filename": body.get("filename", "justificatif"),
+                    "hash_sha256": hashlib.sha256(raw_u.encode("utf-8")).hexdigest()
+                }
+        except Exception:
+            pass
+
+    if not file_bytes:
+        return {"status": "error", "message": "Aucun fichier ni donnée reçue"}
+
+    ext = os.path.splitext(original_filename)[1].lower()
+    if not ext:
+        ext = ".jpg"
+    safe_name = f"preuve_{int(time.time())}_{uuid.uuid4().hex[:8]}{ext}"
+    dest_path = os.path.join(uploads_dir, safe_name)
+
+    with open(dest_path, "wb") as f:
+        f.write(file_bytes)
+
+    sha_hash = hashlib.sha256(file_bytes).hexdigest()
+    public_url = f"/static/uploads/preuves/{safe_name}"
+
+    try:
+        sp = get_supabase_client()
+        if sp:
+            mime = "application/pdf" if ext == ".pdf" else "image/jpeg"
+            sp.storage.from_("preuves").upload(safe_name, file_bytes, {"content-type": mime})
+    except Exception:
+        pass
+
+    return {
+        "status": "success",
+        "url": public_url,
+        "filename": original_filename,
+        "hash_sha256": sha_hash
+    }
+
+
 @app.post("/api/modifier-transaction")
 async def api_modifier_transaction(payload: dict = Body(...)):
     """Modifie une transaction existante avec résilience totale (SQLite local immédiat + Supabase)."""
@@ -1140,6 +1209,22 @@ async def api_modifier_transaction(payload: dict = Body(...)):
         update_fields["statut_validation"] = str(payload["statut_validation"]).strip()
     if "reference_externe" in payload and payload["reference_externe"]:
         update_fields["reference_externe"] = str(payload["reference_externe"]).strip()
+    if "justificatif_url" in payload and payload["justificatif_url"]:
+        j_url = str(payload["justificatif_url"]).strip()
+        update_fields["justificatif_url"] = j_url
+        try:
+            sp = get_supabase_client()
+            if sp:
+                sha_hash = hashlib.sha256(j_url.encode("utf-8")).hexdigest()
+                is_img = any(ext in j_url.lower() for ext in [".jpg", ".jpeg", ".png", ".webp"])
+                sp.table("preuves_numeriques").insert({
+                    "transaction_id": tx_id,
+                    "type_preuve": "PHOTO_RECU" if is_img else "DOCUMENT_PDF",
+                    "url_stockage_s3": j_url,
+                    "hash_sha256": sha_hash
+                }).execute()
+        except Exception as pe:
+            print(f"Info insert preuve Supabase: {pe}")
 
     try:
         res = update_transaction_resilient(tx_id, update_fields)

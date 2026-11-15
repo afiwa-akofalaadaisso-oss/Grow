@@ -110,6 +110,14 @@ def init_local_sqlite():
     """)
 
     conn.commit()
+
+    # Migration résiliente : colonne justificatif_url
+    try:
+        cur.execute("ALTER TABLE transactions ADD COLUMN justificatif_url TEXT")
+        conn.commit()
+    except Exception:
+        pass
+
     conn.close()
     print("[DB INIT] Base de données locale SQLite initialisée avec succès.")
 
@@ -204,6 +212,14 @@ def mirror_entreprises_to_sqlite(rows: List[Dict[str, Any]]):
             now_str
         ))
     conn.commit()
+
+    # Migration résiliente : colonne justificatif_url
+    try:
+        cur.execute("ALTER TABLE transactions ADD COLUMN justificatif_url TEXT")
+        conn.commit()
+    except Exception:
+        pass
+
     conn.close()
 
 
@@ -253,6 +269,14 @@ def mirror_transactions_to_sqlite(rows: List[Dict[str, Any]]):
             now_str
         ))
     conn.commit()
+
+    # Migration résiliente : colonne justificatif_url
+    try:
+        cur.execute("ALTER TABLE transactions ADD COLUMN justificatif_url TEXT")
+        conn.commit()
+    except Exception:
+        pass
+
     conn.close()
 
 
@@ -322,7 +346,11 @@ def get_transactions_resilient(entreprise_id: str) -> List[Dict[str, Any]]:
     rows = [dict(r) for r in cur.fetchall()]
     conn.close()
     for r in rows:
-        r["preuves_numeriques"] = []
+        j_url = r.get("justificatif_url")
+        if j_url:
+            r["preuves_numeriques"] = [{"url": j_url, "type_preuve": "PHOTO_RECU"}]
+        else:
+            r["preuves_numeriques"] = []
     return rows
 
 
@@ -461,7 +489,7 @@ def update_transaction_resilient(tx_id: str, update_fields: Dict[str, Any]) -> D
     params = [now_str]
 
     for k, v in update_fields.items():
-        if k in ["libelle", "compte_syscohada", "type_flux", "source_paiement", "date_operation", "statut_validation", "reference_externe"]:
+        if k in ["libelle", "compte_syscohada", "type_flux", "source_paiement", "date_operation", "statut_validation", "reference_externe", "justificatif_url"]:
             set_clauses.append(f"{k} = ?")
             params.append(str(v))
         elif k == "montant_fcfa":

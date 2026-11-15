@@ -10722,6 +10722,60 @@
                     </div>
                 </div>
 
+                <!-- 6. PIÈCE JOINTE & JUSTIFICATIF NUMÉRIQUE (IMAGE OU DOCUMENT PDF) -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center gap-1.5 text-slate-800 text-[11.5px] font-bold">
+                            <span class="material-symbols-outlined notranslate text-[#168078] text-[17px]" translate="no">receipt_long</span>
+                            <span>Justificatif numérique (Image ou PDF)</span>
+                        </label>
+                        <span class="text-[9.5px] font-bold text-[#168078] bg-[#168078]/10 border border-[#168078]/25 px-2 py-0.5 rounded-full">Scellement SYSCOHADA</span>
+                    </div>
+
+                    <!-- Zone de prévisualisation si un document est déjà présent ou sélectionné -->
+                    <div id="editTxProofPreviewArea" class="hidden items-center justify-between p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center flex-shrink-0" id="editTxProofThumbBox">
+                                <img id="editTxProofThumbImg" src="" alt="Preuve" class="w-full h-full object-cover hidden">
+                                <span id="editTxProofThumbIcon" class="material-symbols-outlined notranslate text-slate-400 text-[20px]" translate="no">description</span>
+                            </div>
+                            <div class="min-w-0">
+                                <div id="editTxProofFileName" class="font-bold text-slate-900 text-[11.5px] truncate max-w-[200px]">justificatif.jpg</div>
+                                <div id="editTxProofFileType" class="text-[10px] text-emerald-600 font-semibold truncate flex items-center gap-1">
+                                    <span class="material-symbols-outlined notranslate text-[12px]" translate="no">verified</span>
+                                    <span>Pièce jointe active</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            <button type="button" onclick="previewCurrentEditProof()" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-[#168078] text-slate-700 hover:text-white text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer">
+                                <span class="material-symbols-outlined notranslate text-[13px]" translate="no">visibility</span>
+                                <span>Voir</span>
+                            </button>
+                            <button type="button" onclick="removeCurrentEditProof()" class="w-7 h-7 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-600 flex items-center justify-center transition-colors cursor-pointer" title="Retirer">
+                                <span class="material-symbols-outlined notranslate text-[15px]" translate="no">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bouton pour importer / prendre en photo un fichier -->
+                    <input type="file" id="editTxFileInput" accept="image/*,application/pdf" class="hidden" onchange="handleEditProofFileSelected(event)">
+                    <input type="hidden" id="editTxProofFinalUrl" value="">
+
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="document.getElementById('editTxFileInput').click()" class="flex-1 py-2 px-3 rounded-xl border border-dashed border-slate-300 hover:border-[#168078] bg-white hover:bg-teal-50/40 text-slate-700 hover:text-[#14362b] text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs group">
+                            <span class="material-symbols-outlined notranslate text-slate-400 group-hover:text-[#168078] text-[18px]" translate="no">add_a_photo</span>
+                            <span id="editTxUploadBtnText">Joindre une image ou un PDF</span>
+                        </button>
+                    </div>
+
+                    <!-- Champ pour coller un lien direct ou URL d'image -->
+                    <div class="relative">
+                        <input type="url" id="editTxProofUrl" placeholder="Ou coller un lien direct (https://... / facture / reçu)" class="w-full pl-7 pr-3 py-1.5 rounded-lg bg-white border border-slate-200 focus:outline-none focus:border-[#168078] text-[11px] text-slate-800 placeholder:text-slate-400 transition-colors" oninput="handleEditProofUrlInput(this.value)">
+                        <span class="material-symbols-outlined notranslate text-slate-400 text-[14px] absolute left-2 top-2" translate="no">link</span>
+                    </div>
+                </div>
+
                 <!-- Footer Actions -->
                 <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                     <button type="button" onclick="closeModalModifierEcriture()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-semibold text-[12.5px] transition-colors cursor-pointer">
@@ -11015,109 +11069,6 @@
 
                 <!-- Boutons d'action -->
                 <div class="pt-3 flex items-center gap-2">
-                    <button type="button" onclick="closeModalTxDetail()" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors text-center cursor-pointer">
-                        Fermer
-                    </button>
-                    <button type="button" id="btnVoirPreuveDetailAction" class="flex-1 py-2.5 px-4 rounded-xl text-[12px] font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-colors text-center cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
-                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">receipt_long</span>
-                        Voir le reçu
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========================================================================= -->
-    <!-- MODALE DU CODE QR D'ACCÈS INSTANTANÉ À GROW                              -->
-    <!-- ========================================================================= -->
-        <!-- ========================================================================= -->
-    <!-- MODALE DU VISA & SCELLEMENT NUMÉRIQUE ONECCA SÉNÉGAL                      -->
-    <!-- ========================================================================= -->
-    <div id="modalVisaOnecca" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 3000;" onclick="closeModalVisaOnecca()">
-        <div class="modal-box" style="max-width: 580px; width: 95%; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 60px -15px rgba(11, 18, 34, 0.4); border: 1.5px solid #e2e8f0;" onclick="event.stopPropagation()">
-            <div style="background: linear-gradient(135deg, #0b1222 0%, #060d1a 100%); color: #ffffff; padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #a0d9d2;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(160, 217, 210, 0.15); border: 1px solid rgba(160, 217, 210, 0.4); color: #a0d9d2; display: flex; align-items: center; justify-content: center; font-size: 20px;">
-                        <i class="fa-solid fa-stamp"></i>
-                    </div>
-                    <div>
-                        <div style="font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.2px;">Visa de Clôture &amp; Scellement ONECCA</div>
-                        <div style="font-size: 11px; color: #a0d9d2; font-weight: 600;">Ordre National des Experts Comptables et Comptables Agréés du Sénégal</div>
-                    </div>
-                </div>
-                <button type="button" onclick="closeModalVisaOnecca()" style="background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; line-height: 1;">&times;</button>
-            </div>
-
-            <div style="padding: 24px 24px; background: #ffffff;">
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; margin-bottom: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                        <div>
-                            <span style="font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 800; letter-spacing: 0.5px;">Dossier d'entreprise certifié</span>
-                            <div style="font-size: 16px; font-weight: 800; color: #0b1222;" id="modalVisaEntrepriseName">Le Nom De Mon Entreprise Est Cglt</div>
-                        </div>
-                        <span style="display: inline-flex; align-items: center; gap: 6px; background: #a0d9d2; color: #0b1222; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px;">
-                            <i class="fa-solid fa-check-circle"></i> CONFORME ONECCA
-                        </span>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
-                        <div><span style="color: #64748b;">NINEA :</span> <strong id="modalVisaNinea">00802996</strong></div>
-                        <div><span style="color: #64748b;">N° Attestation :</span> <strong id="modalVisaCertNum">SN-DKR-2026-EXP-7721</strong></div>
-                        <div><span style="color: #64748b;">Référentiel :</span> <strong>SYSCOHADA Révisé</strong></div>
-                        <div><span style="color: #64748b;">Horodatage :</span> <strong id="modalVisaTimestamp">13/11/2026 à 20:00</strong></div>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <label style="font-size: 11.5px; font-weight: 800; color: #0b1222; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">
-                        <i class="fa-solid fa-fingerprint" style="color: #a0d9d2; margin-right: 6px;"></i> Empreinte Cryptographique du Grand Livre (SHA-256)
-                    </label>
-                    <div style="background: #0b1222; color: #a0d9d2; font-family: monospace; font-size: 11.5px; padding: 12px; border-radius: 10px; word-break: break-all; border: 1px solid rgba(160, 217, 210, 0.3);" id="modalVisaHash">
-                        e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-                    </div>
-                    <span style="font-size: 10.5px; color: #64748b; margin-top: 5px; display: block;">
-                        Ce hash garantit l'immutabilité absolue des écritures comptables selon les normes de l'ONECCA et du Code Général des Impôts du Sénégal.
-                    </span>
-                </div>
-
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" onclick="telechargerAttestationVisaPDF()" style="flex: 1; background: #0b1222; color: #ffffff; border: 1.5px solid #0b1222; padding: 12px; border-radius: 999px; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(11, 18, 34, 0.25);">
-                        <i class="fa-solid fa-file-pdf" style="color: #a0d9d2;"></i> Télécharger Attestation Officielle (PDF)
-                    </button>
-                    <button type="button" onclick="closeModalVisaOnecca()" style="background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; padding: 12px 20px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer;">
-                        Fermer
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<div id="modalQRAccesGrow" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 3000;" onclick="closeModalQRAccesGrow()">
-        <div class="modal-box modal-qr-box" style="background: radial-gradient(circle at 50% 0%, #262c35 0%, #171b20 100%); border-radius: 26px; overflow: hidden; max-width: 420px; width: 92%; box-shadow: 0 25px 60px -15px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1); border: none;" onclick="event.stopPropagation()">
-            
-            <!-- En-tête Designer Minimaliste (discutez avec grow sur whatsapp) -->
-            <div style="padding: 26px 22px 16px; text-align: center; position: relative;">
-                <button type="button" onclick="closeModalQRAccesGrow()" style="position: absolute; right: 16px; top: 16px; background: rgba(255, 255, 255, 0.1); border: none; width: 32px; height: 32px; border-radius: 50%; color: #cbd5e1; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; transition: background 0.15s ease;">&times;</button>
-                
-                <div style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.4px; line-height: 1.25;">
-                    discutez avec <span style="color: #a0d9d2; font-weight: 900; display: inline-flex; align-items: center; gap: 3px;">grow <i class="fa-solid fa-seedling" style="font-size: 15px;"></i></span>
-                </div>
-                <div style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.4px; line-height: 1.25; margin-top: 2px;">
-                    sur <span style="color: #25D366; font-weight: 900;">whatsapp</span>
-                </div>
-            </div>
-
-            <!-- Corps du Modal avec la Carte Blanche QR Code du Designer -->
-            <div style="padding: 0 24px 26px; text-align: center;">
-                <div style="background: #ffffff; padding: 18px; border-radius: 22px; display: inline-block; box-shadow: 0 12px 36px rgba(0,0,0,0.4); margin-bottom: 16px; position: relative;">
-                    <img src="/static/qr_code_whatsapp.png" alt="Code QR WhatsApp Grow" style="width: 210px; height: 210px; border-radius: 12px; display: block;" />
-                    <div style="position: absolute; bottom: 8px; right: 8px; width: 28px; height: 28px; border-radius: 6px; background: rgba(15, 23, 42, 0.06); display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 12px; border: 1px solid rgba(15, 23, 42, 0.08);">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 16px;">
-                    <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); padding: 5px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #ffffff; margin-bottom: 6px;">
                         <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> +221 78 877 38 27
                     </div>
                     <div style="font-size: 11px; color: #94a3b8; line-height: 1.4;">
@@ -16892,6 +16843,111 @@ function handleFactooTypeFilter(val) {
             }
         });
 
+        let currentEditTxProofUrl = '';
+
+        function handleEditProofFileSelected(e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            const btnText = document.getElementById('editTxUploadBtnText');
+            if (btnText) btnText.textContent = 'Téléversement en cours...';
+
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const base64Data = event.target.result;
+                displayProofInEditModal(base64Data, file.name);
+
+                try {
+                    const res = await fetch('/api/upload-justificatif', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ base64: base64Data, filename: file.name })
+                    });
+                    const data = await res.json();
+                    if (data.status === 'success' && data.url) {
+                        currentEditTxProofUrl = data.url;
+                        const finalInput = document.getElementById('editTxProofFinalUrl');
+                        if (finalInput) finalInput.value = data.url;
+                        if (btnText) btnText.textContent = 'Remplacer l\'image ou le PDF';
+                    }
+                } catch(err) {
+                    console.warn('Upload fallback base64 local:', err);
+                    currentEditTxProofUrl = base64Data;
+                    const finalInput = document.getElementById('editTxProofFinalUrl');
+                    if (finalInput) finalInput.value = base64Data;
+                    if (btnText) btnText.textContent = 'Remplacer l\'image ou le PDF';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleEditProofUrlInput(val) {
+            const clean = (val || '').trim();
+            if (clean && (clean.startsWith('http://') || clean.startsWith('https://') || clean.startsWith('/'))) {
+                currentEditTxProofUrl = clean;
+                const finalInput = document.getElementById('editTxProofFinalUrl');
+                if (finalInput) finalInput.value = clean;
+                displayProofInEditModal(clean, 'Justificatif lié (URL)');
+            } else if (!clean) {
+                removeCurrentEditProof();
+            }
+        }
+
+        function displayProofInEditModal(url, filename = 'justificatif.jpg') {
+            const previewArea = document.getElementById('editTxProofPreviewArea');
+            const thumbImg = document.getElementById('editTxProofThumbImg');
+            const thumbIcon = document.getElementById('editTxProofThumbIcon');
+            const nameEl = document.getElementById('editTxProofFileName');
+            const finalInput = document.getElementById('editTxProofFinalUrl');
+
+            if (!previewArea) return;
+            currentEditTxProofUrl = url;
+            if (finalInput) finalInput.value = url;
+
+            const isImg = url.startsWith('data:image') || /\.(jpg|jpeg|png|webp|gif)($|\?)/i.test(url);
+            if (isImg && thumbImg) {
+                thumbImg.src = url;
+                thumbImg.classList.remove('hidden');
+                if (thumbIcon) thumbIcon.classList.add('hidden');
+            } else {
+                if (thumbImg) thumbImg.classList.add('hidden');
+                if (thumbIcon) thumbIcon.classList.remove('hidden');
+            }
+
+            if (nameEl) nameEl.textContent = filename;
+            previewArea.classList.remove('hidden');
+            previewArea.classList.add('flex');
+            const btnText = document.getElementById('editTxUploadBtnText');
+            if (btnText) btnText.textContent = 'Remplacer l\'image ou le PDF';
+        }
+
+        function removeCurrentEditProof() {
+            currentEditTxProofUrl = '';
+            const finalInput = document.getElementById('editTxProofFinalUrl');
+            if (finalInput) finalInput.value = '';
+            const fileInput = document.getElementById('editTxFileInput');
+            if (fileInput) fileInput.value = '';
+            const urlInput = document.getElementById('editTxProofUrl');
+            if (urlInput) urlInput.value = '';
+            const previewArea = document.getElementById('editTxProofPreviewArea');
+            if (previewArea) {
+                previewArea.classList.add('hidden');
+                previewArea.classList.remove('flex');
+            }
+            const btnText = document.getElementById('editTxUploadBtnText');
+            if (btnText) btnText.textContent = 'Joindre une image ou un PDF';
+        }
+
+        function previewCurrentEditProof() {
+            if (!currentEditTxProofUrl) return;
+            const ref = document.getElementById('editTxRef')?.value || 'RÉF-JUSTIFICATIF';
+            const lib = document.getElementById('editTxLibelle')?.value || 'Opération';
+            const mont = document.getElementById('editTxMontant')?.value || '0';
+            const date = document.getElementById('editTxDate')?.value || 'Aujourd\'hui';
+            const src = document.getElementById('editTxSource')?.value || 'WAVE';
+            openWaveProofModal(ref, lib, mont + ' FCFA', date, src, currentEditTxProofUrl);
+        }
+
         function ouvrirModalModifierEcriture(tx) {
             if (!tx) return;
             const m = document.getElementById('modalModifierEcriture');
@@ -16921,6 +16977,16 @@ function handleFactooTypeFilter(val) {
             document.getElementById('editTxRef').value = tx.reference_externe || '';
             const statVal = tx.statut_validation || (tx.statut === 'VALIDE' ? 'VALIDE_PME' : 'VALIDE_PME');
             setEditTxStatut(statVal);
+
+            // 7. Pièce justificative existante (Image / Facture / PDF)
+            const existingProof = (tx.preuves_numeriques && tx.preuves_numeriques.length > 0 && tx.preuves_numeriques[0].url && !tx.preuves_numeriques[0].url.includes('mock_wave')) ? tx.preuves_numeriques[0].url : (tx.justificatif_url || '');
+            if (existingProof) {
+                displayProofInEditModal(existingProof, tx.reference_externe || 'Justificatif existant');
+                const urlInp = document.getElementById('editTxProofUrl');
+                if (urlInp) urlInp.value = existingProof.startsWith('http') ? existingProof : '';
+            } else {
+                removeCurrentEditProof();
+            }
 
             m.style.display = 'flex';
         }
@@ -16959,6 +17025,7 @@ function handleFactooTypeFilter(val) {
             const source = document.getElementById('editTxSource').value;
             const ref = document.getElementById('editTxRef').value.trim();
             const statut = document.getElementById('editTxStatut').value;
+            const justificatifUrl = (document.getElementById('editTxProofFinalUrl')?.value || currentEditTxProofUrl || '').trim();
 
             const btn = document.getElementById('btnSubmitModifierEcriture');
             const oldHtml = btn ? btn.innerHTML : '';
@@ -16978,7 +17045,8 @@ function handleFactooTypeFilter(val) {
                     source_paiement: source,
                     date_operation: dateOp,
                     reference_externe: ref,
-                    statut_validation: statut
+                    statut_validation: statut,
+                    justificatif_url: justificatifUrl
                 };
 
                 await fetch('/api/modifier-transaction', {
@@ -16999,9 +17067,14 @@ function handleFactooTypeFilter(val) {
                     item.date_operation = dateOp;
                     item.reference_externe = ref;
                     item.statut_validation = statut;
+                    if (justificatifUrl) {
+                        item.justificatif_url = justificatifUrl;
+                        item.preuves_numeriques = [{ url: justificatifUrl, type_preuve: 'PHOTO_RECU' }];
+                    }
                 }
 
                 closeModalModifierEcriture();
+                applyAllFiltersAndRender();
                 applyAllFactooFilters();
 
                 // Notification discrète

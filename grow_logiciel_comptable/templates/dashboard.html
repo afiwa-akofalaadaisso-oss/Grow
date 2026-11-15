@@ -10722,6 +10722,60 @@
                     </div>
                 </div>
 
+                <!-- 6. PIÈCE JOINTE & JUSTIFICATIF NUMÉRIQUE (IMAGE OU DOCUMENT PDF) -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center gap-1.5 text-slate-800 text-[11.5px] font-bold">
+                            <span class="material-symbols-outlined notranslate text-[#168078] text-[17px]" translate="no">receipt_long</span>
+                            <span>Justificatif numérique (Image ou PDF)</span>
+                        </label>
+                        <span class="text-[9.5px] font-bold text-[#168078] bg-[#168078]/10 border border-[#168078]/25 px-2 py-0.5 rounded-full">Scellement SYSCOHADA</span>
+                    </div>
+
+                    <!-- Zone de prévisualisation si un document est déjà présent ou sélectionné -->
+                    <div id="editTxProofPreviewArea" class="hidden items-center justify-between p-2 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center flex-shrink-0" id="editTxProofThumbBox">
+                                <img id="editTxProofThumbImg" src="" alt="Preuve" class="w-full h-full object-cover hidden">
+                                <span id="editTxProofThumbIcon" class="material-symbols-outlined notranslate text-slate-400 text-[20px]" translate="no">description</span>
+                            </div>
+                            <div class="min-w-0">
+                                <div id="editTxProofFileName" class="font-bold text-slate-900 text-[11.5px] truncate max-w-[200px]">justificatif.jpg</div>
+                                <div id="editTxProofFileType" class="text-[10px] text-emerald-600 font-semibold truncate flex items-center gap-1">
+                                    <span class="material-symbols-outlined notranslate text-[12px]" translate="no">verified</span>
+                                    <span>Pièce jointe active</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            <button type="button" onclick="previewCurrentEditProof()" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-[#168078] text-slate-700 hover:text-white text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer">
+                                <span class="material-symbols-outlined notranslate text-[13px]" translate="no">visibility</span>
+                                <span>Voir</span>
+                            </button>
+                            <button type="button" onclick="removeCurrentEditProof()" class="w-7 h-7 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-600 flex items-center justify-center transition-colors cursor-pointer" title="Retirer">
+                                <span class="material-symbols-outlined notranslate text-[15px]" translate="no">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bouton pour importer / prendre en photo un fichier -->
+                    <input type="file" id="editTxFileInput" accept="image/*,application/pdf" class="hidden" onchange="handleEditProofFileSelected(event)">
+                    <input type="hidden" id="editTxProofFinalUrl" value="">
+
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="document.getElementById('editTxFileInput').click()" class="flex-1 py-2 px-3 rounded-xl border border-dashed border-slate-300 hover:border-[#168078] bg-white hover:bg-teal-50/40 text-slate-700 hover:text-[#14362b] text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs group">
+                            <span class="material-symbols-outlined notranslate text-slate-400 group-hover:text-[#168078] text-[18px]" translate="no">add_a_photo</span>
+                            <span id="editTxUploadBtnText">Joindre une image ou un PDF</span>
+                        </button>
+                    </div>
+
+                    <!-- Champ pour coller un lien direct ou URL d'image -->
+                    <div class="relative">
+                        <input type="url" id="editTxProofUrl" placeholder="Ou coller un lien direct (https://... / facture / reçu)" class="w-full pl-7 pr-3 py-1.5 rounded-lg bg-white border border-slate-200 focus:outline-none focus:border-[#168078] text-[11px] text-slate-800 placeholder:text-slate-400 transition-colors" oninput="handleEditProofUrlInput(this.value)">
+                        <span class="material-symbols-outlined notranslate text-slate-400 text-[14px] absolute left-2 top-2" translate="no">link</span>
+                    </div>
+                </div>
+
                 <!-- Footer Actions -->
                 <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                     <button type="button" onclick="closeModalModifierEcriture()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-semibold text-[12.5px] transition-colors cursor-pointer">
@@ -16892,6 +16946,111 @@ function handleFactooTypeFilter(val) {
             }
         });
 
+        let currentEditTxProofUrl = '';
+
+        function handleEditProofFileSelected(e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            const btnText = document.getElementById('editTxUploadBtnText');
+            if (btnText) btnText.textContent = 'Téléversement en cours...';
+
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const base64Data = event.target.result;
+                displayProofInEditModal(base64Data, file.name);
+
+                try {
+                    const res = await fetch('/api/upload-justificatif', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ base64: base64Data, filename: file.name })
+                    });
+                    const data = await res.json();
+                    if (data.status === 'success' && data.url) {
+                        currentEditTxProofUrl = data.url;
+                        const finalInput = document.getElementById('editTxProofFinalUrl');
+                        if (finalInput) finalInput.value = data.url;
+                        if (btnText) btnText.textContent = 'Remplacer l\'image ou le PDF';
+                    }
+                } catch(err) {
+                    console.warn('Upload fallback base64 local:', err);
+                    currentEditTxProofUrl = base64Data;
+                    const finalInput = document.getElementById('editTxProofFinalUrl');
+                    if (finalInput) finalInput.value = base64Data;
+                    if (btnText) btnText.textContent = 'Remplacer l\'image ou le PDF';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleEditProofUrlInput(val) {
+            const clean = (val || '').trim();
+            if (clean && (clean.startsWith('http://') || clean.startsWith('https://') || clean.startsWith('/'))) {
+                currentEditTxProofUrl = clean;
+                const finalInput = document.getElementById('editTxProofFinalUrl');
+                if (finalInput) finalInput.value = clean;
+                displayProofInEditModal(clean, 'Justificatif lié (URL)');
+            } else if (!clean) {
+                removeCurrentEditProof();
+            }
+        }
+
+        function displayProofInEditModal(url, filename = 'justificatif.jpg') {
+            const previewArea = document.getElementById('editTxProofPreviewArea');
+            const thumbImg = document.getElementById('editTxProofThumbImg');
+            const thumbIcon = document.getElementById('editTxProofThumbIcon');
+            const nameEl = document.getElementById('editTxProofFileName');
+            const finalInput = document.getElementById('editTxProofFinalUrl');
+
+            if (!previewArea) return;
+            currentEditTxProofUrl = url;
+            if (finalInput) finalInput.value = url;
+
+            const isImg = url.startsWith('data:image') || /\.(jpg|jpeg|png|webp|gif)($|\?)/i.test(url);
+            if (isImg && thumbImg) {
+                thumbImg.src = url;
+                thumbImg.classList.remove('hidden');
+                if (thumbIcon) thumbIcon.classList.add('hidden');
+            } else {
+                if (thumbImg) thumbImg.classList.add('hidden');
+                if (thumbIcon) thumbIcon.classList.remove('hidden');
+            }
+
+            if (nameEl) nameEl.textContent = filename;
+            previewArea.classList.remove('hidden');
+            previewArea.classList.add('flex');
+            const btnText = document.getElementById('editTxUploadBtnText');
+            if (btnText) btnText.textContent = 'Remplacer l\'image ou le PDF';
+        }
+
+        function removeCurrentEditProof() {
+            currentEditTxProofUrl = '';
+            const finalInput = document.getElementById('editTxProofFinalUrl');
+            if (finalInput) finalInput.value = '';
+            const fileInput = document.getElementById('editTxFileInput');
+            if (fileInput) fileInput.value = '';
+            const urlInput = document.getElementById('editTxProofUrl');
+            if (urlInput) urlInput.value = '';
+            const previewArea = document.getElementById('editTxProofPreviewArea');
+            if (previewArea) {
+                previewArea.classList.add('hidden');
+                previewArea.classList.remove('flex');
+            }
+            const btnText = document.getElementById('editTxUploadBtnText');
+            if (btnText) btnText.textContent = 'Joindre une image ou un PDF';
+        }
+
+        function previewCurrentEditProof() {
+            if (!currentEditTxProofUrl) return;
+            const ref = document.getElementById('editTxRef')?.value || 'RÉF-JUSTIFICATIF';
+            const lib = document.getElementById('editTxLibelle')?.value || 'Opération';
+            const mont = document.getElementById('editTxMontant')?.value || '0';
+            const date = document.getElementById('editTxDate')?.value || 'Aujourd\'hui';
+            const src = document.getElementById('editTxSource')?.value || 'WAVE';
+            openWaveProofModal(ref, lib, mont + ' FCFA', date, src, currentEditTxProofUrl);
+        }
+
         function ouvrirModalModifierEcriture(tx) {
             if (!tx) return;
             const m = document.getElementById('modalModifierEcriture');
@@ -16921,6 +17080,16 @@ function handleFactooTypeFilter(val) {
             document.getElementById('editTxRef').value = tx.reference_externe || '';
             const statVal = tx.statut_validation || (tx.statut === 'VALIDE' ? 'VALIDE_PME' : 'VALIDE_PME');
             setEditTxStatut(statVal);
+
+            // 7. Pièce justificative existante (Image / Facture / PDF)
+            const existingProof = (tx.preuves_numeriques && tx.preuves_numeriques.length > 0 && tx.preuves_numeriques[0].url && !tx.preuves_numeriques[0].url.includes('mock_wave')) ? tx.preuves_numeriques[0].url : (tx.justificatif_url || '');
+            if (existingProof) {
+                displayProofInEditModal(existingProof, tx.reference_externe || 'Justificatif existant');
+                const urlInp = document.getElementById('editTxProofUrl');
+                if (urlInp) urlInp.value = existingProof.startsWith('http') ? existingProof : '';
+            } else {
+                removeCurrentEditProof();
+            }
 
             m.style.display = 'flex';
         }
@@ -16959,6 +17128,7 @@ function handleFactooTypeFilter(val) {
             const source = document.getElementById('editTxSource').value;
             const ref = document.getElementById('editTxRef').value.trim();
             const statut = document.getElementById('editTxStatut').value;
+            const justificatifUrl = (document.getElementById('editTxProofFinalUrl')?.value || currentEditTxProofUrl || '').trim();
 
             const btn = document.getElementById('btnSubmitModifierEcriture');
             const oldHtml = btn ? btn.innerHTML : '';
@@ -16978,7 +17148,8 @@ function handleFactooTypeFilter(val) {
                     source_paiement: source,
                     date_operation: dateOp,
                     reference_externe: ref,
-                    statut_validation: statut
+                    statut_validation: statut,
+                    justificatif_url: justificatifUrl
                 };
 
                 await fetch('/api/modifier-transaction', {
@@ -16999,9 +17170,14 @@ function handleFactooTypeFilter(val) {
                     item.date_operation = dateOp;
                     item.reference_externe = ref;
                     item.statut_validation = statut;
+                    if (justificatifUrl) {
+                        item.justificatif_url = justificatifUrl;
+                        item.preuves_numeriques = [{ url: justificatifUrl, type_preuve: 'PHOTO_RECU' }];
+                    }
                 }
 
                 closeModalModifierEcriture();
+                applyAllFiltersAndRender();
                 applyAllFactooFilters();
 
                 // Notification discrète
