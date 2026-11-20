@@ -300,6 +300,50 @@ def save_onboarding_states(states: dict):
         print(f"Erreur sauvegarde onboarding states : {e}")
 
 
+DEV_TEST_PHONES = ["221788773827", "221764093183", "221774093183"]
+
+def is_phone_dev_exempt(phone: str) -> bool:
+    clean = str(phone).replace("+", "").replace(" ", "").strip()
+    return any(p in clean for p in DEV_TEST_PHONES)
+
+def is_greeting(text: str) -> bool:
+    if not text:
+        return False
+    t = text.lower().strip()
+    t_clean = re.sub(r"[!?,.;:\-_\(\)]", " ", t).strip()
+    words = t_clean.split()
+    if not words:
+        return False
+    
+    greeting_exact = {
+        "bonjour", "salut", "bonsoir", "hello", "hi", "hey", "coucou",
+        "salam", "salaam", "salamou", "salamalekum", "salaamaleekum", "as-salamu",
+        "nanga", "nangadef", "nanga def", "nanga deff", "jaam", "diam",
+        "commencer", "start", "demarrer", "démarrer", "accueil"
+    }
+    
+    if t_clean in greeting_exact or "salam aleykoum" in t_clean or "salam alaykoum" in t_clean or "as salamou" in t_clean:
+        return True
+    if "nanga def" in t_clean or "na nga def" in t_clean or "jaam nga am" in t_clean or "diam nga am" in t_clean:
+        return True
+    if words[0] in ["bonjour", "salut", "bonsoir", "hello", "hi", "hey", "coucou", "salam", "salaam", "nanga"]:
+        return True
+        
+    return False
+
+def is_paiement_keyword(text: str) -> bool:
+    if not text:
+        return False
+    t = text.lower().strip()
+    keywords = [
+        "j'ai payé", "jai paye", "j'ai paye", "jai payé",
+        "fey naa", "feyna", "fey na", "feynaa", "payer", "paye", "payé",
+        "c'est payé", "cest paye", "paiement validé", "paiement valide",
+        "je viens de payer", "abonnement payé", "abonnement valide"
+    ]
+    return any(k in t for k in keywords)
+
+
 def get_onboarding_state(phone: str) -> dict:
     clean_p = str(phone).replace("+", "").replace(" ", "").strip()
     states = load_onboarding_states()
@@ -333,7 +377,8 @@ def get_onboarding_state(phone: str) -> dict:
                         "equipements_photo_validee": donnees.get("equipements_valides_par_preuve", False),
                         "statut": "COMPLET" if est_termine else "EN_COURS",
                         "abonnement_valide": True,
-                        "premier_contact_effectue": True
+                        "premier_contact_effectue": True,
+                        "plan_abonnement": "Starter"
                     }
                     loaded_from_db = True
             except Exception as e:
@@ -357,14 +402,14 @@ def get_onboarding_state(phone: str) -> dict:
                 "valeur_equipements_fcfa": None,
                 "equipements_photo_validee": False,
                 "statut": "EN_COURS",
-                "abonnement_valide": True,
-                "premier_contact_effectue": False
+                "abonnement_valide": is_phone_dev_exempt(clean_p),
+                "premier_contact_effectue": False,
+                "plan_abonnement": "Starter"
             }
         save_onboarding_states(states)
     else:
-        # S'assurer que le premier contact et l'abonnement ne sont jamais perdus
-        if states[clean_p].get("statut") in ["EN_COURS", "COMPLET"]:
-            states[clean_p]["premier_contact_effectue"] = True
+        # S'assurer que les numéros dev de test restent exempts
+        if is_phone_dev_exempt(clean_p):
             states[clean_p]["abonnement_valide"] = True
 
     return states[clean_p]
@@ -1500,12 +1545,15 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
     phone = payload.get("phone")
     operateur = payload.get("operateur", "WAVE")
     montant = payload.get("montant", 10000)
+    plan = payload.get("plan", "Starter")
 
     if not phone:
         return {"status": "error", "message": "Numéro de téléphone requis"}
 
     clean_p = str(phone).replace("+", "").replace(" ", "").strip()
     update_onboarding_state(clean_p, "abonnement_valide", True)
+    update_onboarding_state(clean_p, "plan_abonnement", plan)
+    update_onboarding_state(clean_p, "montant_abonnement", montant)
     update_onboarding_state(clean_p, "statut", "EN_COURS")
 
     sp = get_supabase()
@@ -1517,25 +1565,49 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
                 # Anti-doublon : un seul débit d'abonnement par mois (évite les clics répétés)
                 debut_mois = datetime.now().strftime("%Y-%m-01")
                 deja = sp.table("transactions").select("id").eq("entreprise_id", ent_id) \
-                    .ilike("libelle", "Paiement abonnement mensuel Growth%") \
+                    .ilike("libelle", f"Paiement abonnement mensuel Growth {plan}%") \
                     .gte("created_at", debut_mois).limit(1).execute()
-                if deja.data:
-                    return {"status": "success", "phone": clean_p, "operateur": operateur,
-                            "montant": montant, "deja_enregistre": True}
-                sp.table("transactions").insert({
-                    "entreprise_id": ent_id,
-                    "libelle": f"Paiement abonnement mensuel Growth ({operateur})",
-                    "compte_syscohada": "658",
-                    "type_flux": "SORTIE",
-                    "est_professionnel": True,
-                    "montant_fcfa": montant,
-                    "source_paiement": operateur.upper().replace(" ", "_"),
-                    "statut_validation": "VALIDE_PME"
-                }).execute()
+                if not deja.data:
+                    sp.table("transactions").insert({
+                        "entreprise_id": ent_id,
+                        "libelle": f"Paiement abonnement mensuel Growth {plan} ({operateur})",
+                        "compte_syscohada": "658",
+                        "type_flux": "SORTIE",
+                        "est_professionnel": True,
+                        "montant_fcfa": montant,
+                        "source_paiement": operateur.upper().replace(" ", "_"),
+                        "statut_validation": "VALIDE_PME"
+                    }).execute()
         except Exception as e:
             print(f"Info enregistrement transaction abonnement : {e}")
 
-    return {"status": "success", "phone": clean_p, "operateur": operateur, "montant": montant}
+    # Envoi AUTOMATIQUE du message de confirmation de paiement sur WhatsApp
+    try:
+        onboarding = get_onboarding_state(clean_p)
+        etape = onboarding.get("etape", "PHASE_1_ACCUEIL")
+        
+        msg_felicitations = (
+            f"🎉 *Paiement {operateur} Validé avec Succès !*\n\n"
+            f"Félicitations ! Votre abonnement Growth *Pack {plan}* ({montant:,.0f} FCFA / mois) est désormais activé 24h/24 ! 🚀\n\n"
+            "Votre copilote comptable et financier SYSCOHADA est 100% débloqué.\n\n"
+        )
+        if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"] or not onboarding.get("mode_communication"):
+            msg_felicitations += (
+                "Comment préférez-vous échanger avec moi au quotidien ?\n"
+                "1) Par Note vocale 🎙️ (Growth vous répondra en notes vocales)\n"
+                "2) Par Écrit ✍️ (Messages textes classiques)\n\n"
+                "👉 Répondez simplement 1 ou 2 pour démarrer !"
+            )
+        elif etape != "TERMINE":
+            msg_felicitations += "Reprenons la configuration : vous pouvez m'envoyer dès maintenant votre première vente, dépense ou note vocale !"
+        else:
+            msg_felicitations += "Votre espace est opérationnel ! Vous pouvez m'envoyer dès maintenant vos ventes, dépenses, reçus Wave/OM ou notes vocales."
+
+        asyncio.create_task(deliver_whatsapp_response(clean_p, msg_felicitations))
+    except Exception as e_wa:
+        print(f"Erreur envoi notification WhatsApp abonnement : {e_wa}")
+
+    return {"status": "success", "phone": clean_p, "operateur": operateur, "montant": montant, "plan": plan}
 
 
 # =========================================================================
@@ -1846,15 +1918,97 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     etape = onboarding.get("etape") or "PHASE_1_ACCUEIL"
     statut = onboarding.get("statut", "EN_COURS")
     base_url = get_public_base_url()
+    clean_p = str(sender_phone).replace("+", "").replace(" ", "").strip()
+    is_exempt = is_phone_dev_exempt(clean_p)
+    is_abonne = onboarding.get("abonnement_valide", False) or is_exempt
+    premier_contact = onboarding.get("premier_contact_effectue", False)
 
     # Détection réinitialisation explicite
     if user_text and user_text.lower().strip() in ["recommencer", "reset", "redemarrer", "redémarrer", "nouveau"]:
         update_onboarding_state(sender_phone, "etape", "PHASE_1_ACCUEIL")
         update_onboarding_state(sender_phone, "mode_communication", None)
         update_onboarding_state(sender_phone, "statut", "EN_COURS")
-        update_onboarding_state(sender_phone, "abonnement_valide", True)
+        update_onboarding_state(sender_phone, "abonnement_valide", is_exempt)
+        update_onboarding_state(sender_phone, "premier_contact_effectue", False)
         onboarding = get_onboarding_state(sender_phone)
         etape = "PHASE_1_ACCUEIL"
+
+    # GESTION PAIEMENT INSTANTANÉ SUR MOT-CLÉ (« J'ai payé », « Fey naa », etc.)
+    if user_text and is_paiement_keyword(user_text):
+        update_onboarding_state(sender_phone, "abonnement_valide", True)
+        update_onboarding_state(sender_phone, "statut", "EN_COURS")
+        onboarding = get_onboarding_state(sender_phone)
+        is_abonne = True
+        plan_actuel = onboarding.get("plan_abonnement", "Starter")
+        
+        msg_confirm = (
+            f"🎉 *Paiement Validé avec Succès !*\n\n"
+            f"Félicitations, votre abonnement Growth *Pack {plan_actuel}* est désormais activé 24h/24 ! 🚀\n\n"
+            "Votre copilote comptable et financier SYSCOHADA est entièrement débloqué.\n\n"
+        )
+        if not onboarding.get("mode_communication"):
+            msg_confirm += (
+                "Comment préférez-vous échanger avec moi au quotidien ?\n"
+                "1) Par Note vocale 🎙️ (Growth vous répondra en notes vocales)\n"
+                "2) Par Écrit ✍️ (Messages textes classiques)\n\n"
+                "👉 Répondez simplement 1 ou 2 pour continuer !"
+            )
+            return msg_confirm
+        else:
+            msg_confirm += "Vous pouvez m'envoyer dès maintenant votre première vente, dépense ou note vocale !"
+            return msg_confirm
+
+    # PAYWALL INTELLIGENT (FREEMIUM SALUTATION & VERROUILLAGE SÉCURISÉ)
+    if not is_abonne:
+        lien_abo = f"{base_url}/abonnement?phone={clean_p}"
+        
+        # 1. PREMIER MESSAGE D'UN NOUVEAU CLIENT
+        if not premier_contact:
+            update_onboarding_state(sender_phone, "premier_contact_effectue", True)
+            
+            # Si le premier message est une salutation ("Bonjour", "Salam", "Nanga def", etc.) : C'EST GRATUIT !
+            if user_text and is_greeting(user_text):
+                # On déroule l'accueil chaleureux normal et la demande de choix de mode (1 ou 2)
+                return await process_onboarding_step(sender_phone, user_text, media_tuple, onboarding, contact_name)
+            else:
+                # Le premier message n'est PAS une salutation (il envoie direct un chiffre, un reçu ou une question)
+                return (
+                    "🌿 Bonjour ! Bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA certifié.\n\n"
+                    "🔒 Pour activer votre copilote 24h/24, enregistrer vos opérations et certifier vos bilans bancaires, veuillez activer votre abonnement :\n\n"
+                    "⭐ *Pack Starter* (10 000 FCFA / mois) : Assistant WhatsApp 24h/24, rapprochement Wave & OM, bilans SYSCOHADA.\n"
+                    "🚀 *Pack Pro* (25 000 FCFA / mois) : Tout Starter + Dossiers bancaires certifiés ONECCA, multi-caisses & Webhooks instantanés.\n\n"
+                    f"👉 *Activez votre accès en 1 clic via Wave ou Orange Money :*\n{lien_abo}\n\n"
+                    "💡 Dès votre paiement validé, vous recevrez une confirmation immédiate et nous commencerons aussitôt !"
+                )
+        
+        # 2. MESSAGES SUIVANTS TANT QU'IL N'EST PAS ABONNÉ
+        u_low = (user_text or "").strip().lower()
+        choix_vocal = any(k in u_low for k in ["1", "vocal", "voix", "audio", "parler", "micro", "note vocale"])
+        choix_ecrit = any(k in u_low for k in ["2", "ecrit", "écrit", "texte", "message", "clavier"])
+        
+        # S'il répond 1 ou 2 pour choisir son mode
+        if choix_vocal or choix_ecrit:
+            mode = "VOCAL" if choix_vocal else "ECRIT"
+            update_onboarding_state(sender_phone, "mode_communication", mode)
+            mode_desc = "Note vocale 🎙️" if mode == "VOCAL" else "Messages textes ✍️"
+            return (
+                f"✅ Votre mode d'échange ({mode_desc}) est bien enregistré !\n\n"
+                "🔒 Pour débloquer votre copilote financier Growth 24h/24 et commencer à enregistrer vos opérations au bilan SYSCOHADA, activez votre abonnement via Wave ou Orange Money :\n\n"
+                "⭐ *Pack Starter* : 10 000 FCFA / mois\n"
+                "🚀 *Pack Pro* : 25 000 FCFA / mois (Dossiers bancaires ONECCA & Multi-boutiques)\n\n"
+                f"👉 *Cliquez ici pour régler par Wave ou Orange Money :*\n{lien_abo}\n\n"
+                "💡 Dès que votre règlement est fait, vous recevrez la confirmation et nous démarrerons immédiatement (ou répondez simplement *« J'ai payé »*) !"
+            )
+        
+        # S'il envoie des chiffres, opérations, reçus ou messages sans être abonné
+        return (
+            "🔒 *Espace Growth en attente d'activation*\n\n"
+            "Pour que je puisse traiter vos opérations, certifier votre comptabilité SYSCOHADA et constituer vos dossiers de crédit bancaire, veuillez souscrire à l'un de nos forfaits :\n\n"
+            "⭐ *Pack Starter* : 10 000 FCFA / mois\n"
+            "🚀 *Pack Pro* : 25 000 FCFA / mois (Certification ONECCA & multi-caisses)\n\n"
+            f"👉 *Régler en 1 clic via Wave ou Orange Money :*\n{lien_abo}\n\n"
+            "💡 Si vous avez déjà effectué votre paiement, répondez simplement *« J'ai payé »* pour débloquer votre compte instantanément."
+        )
 
     # 1. Si les 4 premières phases ne sont pas encore terminées, on déroule le tunnel obligatoire
     if etape != "TERMINE" and statut not in ["COMPLET"]:
