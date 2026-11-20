@@ -1,120 +1,325 @@
 """
-Grow MVP - Superviseur Conversationnel Intelligent (Anthropic Claude)
-Gère le suivi de la conversation, les relances, les questions et les réponses ambiguës
-sans JAMAIS toucher aux extractions déterministes ni réinitialiser le tunnel d'onboarding.
-Normes : SYSCOHADA, Sénégal (Dakar), 0 émojis, courtoisie et rigueur comptable.
+Grow MVP - Superviseur Conversationnel Intelligent & Souplesse Humaine (Gemini 3.1 Flash Lite)
+Permet à Growth de dialoguer avec la finesse, la pédagogie et la liberté de réflexion de ChatGPT :
+- Comprendre et expliquer n'importe quelle question comptable, juridique ou technique (NINEA, SYSCOHADA, Wave, tarifs, sécurité).
+- Corriger et modifier une information passée sans réinitialiser ni bloquer.
+- Sauter une étape ou reporter à plus tard sans insister.
+- Comprendre le Wolof, le Français et le mélange des deux naturellement.
 """
 
 import os
 import re
+import json
+import asyncio
 from dotenv import load_dotenv
-import anthropic
 
 load_dotenv(override=True)
 
-MODEL_CLAUDE = "claude-haiku-4-5-20251001"
-FALLBACK_CLAUDE = "claude-haiku-4-5-20251001"
 
-
-def remove_all_emojis(text: str) -> str:
-    """Supprime absolument tous les émojis et symboles non professionnels."""
-    if not text:
-        return ""
-    emoji_pattern = re.compile(
-        "["
-        "\U0001F600-\U0001F64F"  # emoticons
-        "\U0001F300-\U0001F5FF"  # symbols & pictographs
-        "\U0001F680-\U0001F6FF"  # transport & map
-        "\U0001F1E0-\U0001F1FF"  # flags (iOS)
-        "\U00002702-\U000027B0"
-        "\U000024C2-\U0001F251"
-        "\U0001F900-\U0001F9FF"  # supplemental symbols
-        "\U0001FA70-\U0001FAFF"  # symbols and pictographs extended-a
-        "]+",
-        flags=re.UNICODE,
-    )
-    return emoji_pattern.sub("", text).strip()
-
-
-def get_anthropic_client():
-    api_key = os.getenv("ANTHROPIC_API_KEY")
-    if not api_key:
-        return None
+def get_gemini_client():
+    """Initialise le client Google GenAI."""
     try:
-        return anthropic.Anthropic(api_key=api_key)
+        from google import genai
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            return None
+        return genai.Client(api_key=api_key)
     except Exception as e:
-        print(f"Erreur initialisation Anthropic: {e}")
+        print(f"Erreur initialisation Gemini: {e}")
         return None
 
 
-def get_contexte_etape(etape: str, onboarding: dict) -> str:
-    """Retourne la description précise de l'étape active pour orienter Claude."""
-    nom = onboarding.get("nom_entreprise") or onboarding.get("nom_personne_physique") or "l'entreprise"
-    ninea = onboarding.get("ninea") or "en attente"
-    equipe = onboarding.get("nombre_employes") or "en attente"
-    ops = onboarding.get("operateurs") or "en attente"
-    immos = onboarding.get("immobilisations") or "en attente"
+def get_description_etape(etape: str, onboarding: dict) -> str:
+    """Fournit une description contextuelle précise de l'étape active pour le LLM."""
+    nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or "votre entreprise"
 
-    if etape == "DEMANDE_NOM_COMMERCIAL":
+    if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
         return (
-            f"ÉTAPE ACTUELLE : DEMANDE DU NOM COMMERCIAL DE L'ENTREPRISE.\n"
-            f"L'attestation NINEA officielle a été reçue et validée au nom de « {onboarding.get('nom_personne_physique', 'l exploitant')} ».\n"
-            "Comme il s'agit d'une Entreprise Individuelle, cette dénomination est le nom de la personne physique.\n"
-            "On attend que le commerçant donne le NOM COMMERCIAL ou l'enseigne de sa boutique/atelier (ex: « Boutique Keur Fatou », « Ets Diallo »).\n"
-            "Objectif : Acknowledge poliment, et demander clairement quel est le nom commercial de son entreprise."
+            "ÉTAPE : ACCUEIL ET CHOIX DU MODE D'ÉCHANGE.\n"
+            "Action attendue : Choisir entre 1) Note vocale ou 2) Écrit (ou envoyer un numéro de magasin)."
+        )
+    if etape == "PHASE_2_NUMERO_SECONDAIRE":
+        return (
+            f"ÉTAPE : RACCORDEMENT DU DEUXIÈME OPÉRATEUR (Entreprise: {nom_ent}).\n"
+            "Action attendue : Donner son numéro Orange Money ou dire 'Non, Wave seulement'."
+        )
+    if etape in ["PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
+        return (
+            f"ÉTAPE : IDENTITÉ OFFICIELLE & NINEA/RCCM (Entreprise: {nom_ent}).\n"
+            "Action attendue : Envoyer la photo du NINEA/RCCM ou dire simplement 'Non' / 'Pas encore' (c'est 100% optionnel)."
+        )
+    if etape == "PHASE_2_CAPITAL_INITIAL":
+        return (
+            f"ÉTAPE : CAPITAL DE DÉPART DE L'ENTREPRISE (Entreprise: {nom_ent}).\n"
+            "Action attendue : Indiquer le montant approximatif du capital investi en FCFA (ex: 500 000 FCFA ou dire 'Zéro')."
+        )
+    if etape in ["PHASE_3_RELEVE", "PHASE_3_BILAN_DEPART"]:
+        return (
+            f"ÉTAPE : RECONSTITUTION TRÉSORERIE DE DÉPART (Entreprise: {nom_ent}).\n"
+            "Action attendue : Envoyer capture d'écran Wave/OM/banque ou déclarer ses soldes actuels (Wave, Orange, espèces)."
+        )
+    if etape == "PHASE_3_STOCK":
+        return (
+            f"ÉTAPE : VALEUR ESTIMÉE DU STOCK (Entreprise: {nom_ent}).\n"
+            "Action attendue : Indiquer la valeur estimée des marchandises en FCFA (ou dire '0' / 'aucun stock')."
+        )
+    if etape == "PHASE_3_MATERIEL":
+        return (
+            f"ÉTAPE : MATÉRIEL ET ÉQUIPEMENTS PROFESSIONNELS (Entreprise: {nom_ent}).\n"
+            "Action attendue : Citer ses machines/outils/véhicules (ou dire 'aucun' / 'non')."
+        )
+    if etape == "PHASE_3_DETTES":
+        return (
+            f"ÉTAPE : DETTES FOURNISSEURS & CRÉANCES CLIENTS (Entreprise: {nom_ent}).\n"
+            "Action attendue : Indiquer ses dettes ou créances en cours (ou dire 'aucune' / 'rien')."
+        )
+    if etape == "PHASE_4_RAPPEL_JOURNEE":
+        return (
+            f"ÉTAPE : VALIDATION DU RITUEL DE CLÔTURE DU SOIR À 21H (Entreprise: {nom_ent}).\n"
+            "Action attendue : Confirmer qu'on est prêt à démarrer en disant 'Oui' ou 'Prêt'."
+        )
+    return f"ÉTAPE : ACCOMPAGNEMENT PERMANENT (Entreprise: {nom_ent})."
+
+
+def prompt_rappel_etape(etape: str, onboarding: dict) -> str:
+    """Retourne la question de l'étape active formulée avec courtoisie pour relancer après une explication."""
+    nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or "votre entreprise"
+
+    if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
+        return (
+            "Pour continuer, comment préférez-vous échanger avec moi au quotidien ?\n"
+            "1) Par Note vocale 🎙️\n"
+            "2) Par Écrit ✍️\n\n"
+            "👉 Répondez simplement 1 ou 2."
+        )
+    if etape == "PHASE_2_NUMERO_SECONDAIRE":
+        return (
+            "Avez-vous également un numéro pour **Orange Money** à relier à votre compte ?\n"
+            "• Si oui, écrivez-moi simplement votre numéro,\n"
+            "• Si vous n'utilisez que Wave, dites simplement « Non, Wave seulement »."
+        )
+    if etape in ["PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
+        return (
+            "Avez-vous un document NINEA ou Registre de Commerce (RCCM) pour votre entreprise ?\n"
+            "(Si vous n'en avez pas, dites simplement « Non » ou « Pas encore », ce n'est pas obligatoire pour commencer)."
+        )
+    if etape in ["PHASE_3_RELEVE", "PHASE_3_BILAN_DEPART"]:
+        return (
+            "Pour votre bilan de départ, combien avez-vous actuellement sur votre compte Wave / Orange Money et dans votre caisse en espèces ?\n"
+            "(Ou envoyez simplement une capture d'écran de votre solde)."
+        )
+    if etape == "PHASE_3_STOCK":
+        return (
+            "Quelle est la valeur estimée de votre stock de marchandises actuel ?\n"
+            "(Si vous n'avez pas de stock ou si vous faites du service, dites simplement « Zéro »)."
+        )
+    if etape == "PHASE_3_MATERIEL":
+        return (
+            "Avez-vous du matériel professionnel ou des équipements (machines, véhicules, frigos, ordinateurs) ?\n"
+            "(Si vous n'en avez pas, dites simplement « Non »)."
+        )
+    if etape == "PHASE_3_DETTES":
+        return (
+            "Avez-vous des dettes fournisseurs à payer ou des créances clients à récupérer ?\n"
+            "(Si vous n'en avez pas, dites simplement « Aucune »)."
+        )
+    if etape == "PHASE_4_RAPPEL_JOURNEE":
+        return (
+            "Êtes-vous prêt pour vos rappels de clôture chaque soir à 21h00 ?\n"
+            "👉 Répondez simplement « Oui » ou « Prêt » pour valider !"
+        )
+    return "Je reste à votre écoute pour enregistrer vos opérations au quotidien !"
+
+
+def sauter_vers_etape_suivante(etape_actuelle: str, onboarding: dict) -> tuple[str, str]:
+    """
+    Détermine l'étape suivante lorsque l'utilisateur demande de sauter ou reporter.
+    Retourne (nouvelle_etape, message_transition).
+    """
+    nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or "votre entreprise"
+
+    if etape_actuelle in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
+        return "PHASE_2_CREATION_ENTREPRISE", (
+            "Pas de problème, nous utiliserons les messages écrits par défaut (vous pourrez changer pour les notes vocales à tout moment).\n\n"
+            + prompt_rappel_etape("PHASE_2_CREATION_ENTREPRISE", onboarding)
+        )
+    if etape_actuelle == "PHASE_2_NUMERO_SECONDAIRE":
+        return "PHASE_2_CREATION_ENTREPRISE", (
+            "C'est noté, nous restons configurés sur vos encaissements Wave Business actuels !\n\n"
+            + prompt_rappel_etape("PHASE_2_CREATION_ENTREPRISE", onboarding)
+        )
+    if etape_actuelle in ["PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
+        return "PHASE_3_RELEVE", (
+            "Très bien, on met le NINEA de côté pour le moment. Vous pourrez le rattacher plus tard quand vous le souhaiterez !\n\n"
+            + prompt_rappel_etape("PHASE_3_RELEVE", onboarding)
+        )
+    if etape_actuelle in ["PHASE_3_RELEVE", "PHASE_3_BILAN_DEPART"]:
+        return "PHASE_3_STOCK", (
+            "D'accord, nous partons avec une trésorerie initiale à zéro et nous enregistrerons vos flux au fur et à mesure.\n\n"
+            + prompt_rappel_etape("PHASE_3_STOCK", onboarding)
+        )
+    if etape_actuelle == "PHASE_3_STOCK":
+        return "PHASE_3_MATERIEL", (
+            "C'est noté, stock fixé à 0 FCFA pour le moment.\n\n"
+            + prompt_rappel_etape("PHASE_3_MATERIEL", onboarding)
+        )
+    if etape_actuelle == "PHASE_3_MATERIEL":
+        return "PHASE_3_DETTES", (
+            "C'est noté, aucun équipement lourd enregistré pour le moment.\n\n"
+            + prompt_rappel_etape("PHASE_3_DETTES", onboarding)
+        )
+    if etape_actuelle == "PHASE_3_DETTES":
+        return "PHASE_4_RAPPEL_JOURNEE", (
+            "C'est noté, aucune dette ni créance de départ.\n\n"
+            + prompt_rappel_etape("PHASE_4_RAPPEL_JOURNEE", onboarding)
+        )
+    if etape_actuelle == "PHASE_4_RAPPEL_JOURNEE":
+        return "TERMINE", (
+            f"Félicitations ! « {nom_ent} » entre officiellement dans la Phase 5 de Growth : votre copilote financier et comptable permanent.\n\n"
+            "Vous pouvez dès à présent m'envoyer vos ventes, vos dépenses ou vos questions financières."
         )
 
-    if etape == "DEMANDE_NINEA":
-        return (
-            "ÉTAPE ACTUELLE : ÉTAPE 1/5 - IDENTITÉ DE L'ENTREPRISE (ATTESTATION NINEA).\n"
-            "On attend OBLIGATOIREMENT la photo ou le document PDF de l'attestation papier officielle NINEA.\n"
-            "Sans cette pièce justificative, Grow ne peut pas certifier le NINEA, le RCCM, la forme juridique et le capital.\n"
-            "Si le commerçant écrit juste du texte, dit 'Choisi', pose une question ou hésite, explique avec courtoisie pourquoi cette pièce est indispensable et demande-lui d'envoyer la photo."
-        )
+    return "TERMINE", "C'est bien noté, nous passons à la suite !"
 
-    if etape == "DEMANDE_EQUIPE":
-        return (
-            f"ÉTAPE ACTUELLE : ÉTAPE 2/5 - NOMBRE D'EMPLOYÉS (Entreprise: {nom}).\n"
-            "On attend le nombre exact de personnes travaillant dans la structure (salariés, apprentis, associés, ou 'moi seul').\n"
-            "Si la réponse de l'utilisateur est vague, demande-lui de préciser en un chiffre ou une phrase simple combien de personnes travaillent avec lui."
-        )
 
-    if etape == "DEMANDE_OPERATEURS":
-        return (
-            f"ÉTAPE ACTUELLE : ÉTAPE 3/5 - MOYENS DE PAIEMENT & OPÉRATEURS (Entreprise: {nom}).\n"
-            "On attend la liste des moyens de paiement utilisés au quotidien (exemples : Wave, Orange Money, Caisse Espèces, Compte Bancaire, Free Money).\n"
-            "ATTENTION : Si l'utilisateur a écrit 'Choisi', 'Les normaux', ou une réponse floue, il n'a PAS précisé ses opérateurs !\n"
-            "Rapproche-toi de lui en disant avec tact : vous avez écrit 'Choisi', mais veuillez me citer concrètement les moyens que vous utilisez (Wave, Orange Money, Caisse Espèces, etc.)."
-        )
+async def superviser_message_onboarding(
+    sender_phone: str,
+    user_text: str,
+    etape_actuelle: str,
+    onboarding: dict,
+    contact_name: str = None
+) -> dict:
+    """
+    Cerveau Conversationnel Intelligent (Gemini 3.1 Flash Lite) :
+    Analyse le message de l'utilisateur avec toute la souplesse, la finesse d'esprit
+    et la pédagogie de ChatGPT.
+    """
+    if not user_text or not user_text.strip():
+        return {"action": "PASSTHROUGH_REPONSE_ETAPE"}
 
-    if etape == "DEMANDE_IMMOBILISATIONS":
-        val_notee = onboarding.get("valeur_equipements_fcfa")
-        immo_notee = onboarding.get("immobilisations")
-        return (
-            f"ÉTAPE ACTUELLE : ÉTAPE 4/5 - ÉQUIPEMENTS & IMMOBILISATIONS (Entreprise: {nom}).\n"
-            f"Matériels déjà mentionnés : {immo_notee or 'aucun pour le moment'}.\n"
-            f"Valeur estimée notée : {val_notee or 'aucune pour le moment'}.\n"
-            "EXIGENCE STRICTE GROW : Pour valider cette étape, il faut OBLIGATOIREMENT :\n"
-            "1. La description des matériels\n"
-            "2. La valeur estimée globale en FCFA\n"
-            "3. La photo justificative des équipements en boutique ou la facture d'achat.\n"
-            "Si l'utilisateur a listé du matériel sans valeur ni photo, remercie-le, confirme le matériel noté, et demande-lui la valeur en FCFA et la photo."
-        )
+    u_txt = user_text.strip()
+    u_low = u_txt.lower()
 
-    if etape == "DEMANDE_TRESORERIE_INITIALE":
-        ops_configures = onboarding.get("liste_operateurs_cles") or ["Wave", "Caisse Espèces"]
-        ops_txt = " et ".join(ops_configures)
-        return (
-            f"ÉTAPE ACTUELLE : ÉTAPE 5/5 - TRÉSORERIE DISPONIBLE T0 (Entreprise: {nom}).\n"
-            f"Opérateurs choisis à l'étape 3 : {ops_txt}.\n"
-            "EXIGENCE STRICTE GROW : L'utilisateur doit OBLIGATOIREMENT fournir la capture d'écran de son solde Wave/Orange Money/Banque (ou la photo de sa caisse espèces).\n"
-            "Sans cette capture, Grow refuse de valider la trésorerie de départ (principe de justification probatoire SYSCOHADA).\n"
-            f"Rappelle-lui d'envoyer la capture d'écran du solde de ses comptes ({ops_txt})."
-        )
+    # Raccourcis directs évidents (ex: juste "1", "2", ou un numéro pur de 9 chiffres)
+    if etape_actuelle in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
+        if u_low in ["1", "1)", "1.", "vocal", "2", "2)", "2.", "ecrit", "écrit"]:
+            return {"action": "PASSTHROUGH_REPONSE_ETAPE"}
+        chiffres = re.sub(r"[^\d]", "", u_txt)
+        if len(chiffres) >= 9 and len(u_txt.split()) <= 2:
+            return {"action": "PASSTHROUGH_REPONSE_ETAPE"}
 
-    return (
-        f"L'entreprise est en cours de configuration. Étape : {etape}."
-    )
+    client = get_gemini_client()
+    if not client:
+        return {"action": "PASSTHROUGH_REPONSE_ETAPE"}
+
+    contexte_etape = get_description_etape(etape_actuelle, onboarding)
+    nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or "Entreprise"
+
+    system_prompt = f"""Tu es Growth, le copilote financier et comptable intelligent (SYSCOHADA) pour les PME et commerçants au Sénégal (Dakar).
+Tu es doté d'une intelligence conversationnelle vivante, bienveillante, respectueuse (Teranga sénégalaise) et pédagogique, EXACTEMENT COMME CHATGPT.
+Tu t'exprimes avec clarté, sans jargon inutile, et tu comprends parfaitement le Wolof urbain dakarois, le Français, et le mélange des deux.
+
+RÈGLES FONDAMENTALES :
+1. Bannissement absolu du mot "boutique" : utilise toujours "entreprise", "atelier", "activité" ou "commerce".
+2. Bannissement du mot "pré-comptable" : utilise "comptable" ou "copilote financier".
+3. Tu ne dois JAMAIS être un robot rigide. Si le commerçant :
+   - Pose une question (ex: "C'est quoi le NINEA ?", "Pourquoi vous me demandez ça ?", "C'est payant ?", "Est-ce sécurisé ?", "Qui êtes-vous ?"), réponds avec pédagogie, empathie et précision.
+   - Veut modifier ou corriger quelque chose du passé (ex: "Je me suis trompé sur le nom, mets plutôt Keur Fatou", "Je préfère les notes vocales", "Change mon numéro"), comprends et extrait la correction.
+   - Veut sauter l'étape ou remettre à plus tard (ex: "On verra plus tard", "Saute ça", "Passe à la suite", "Je sais pas", "Dinaa ko def ëllëk"), accepte avec bienveillance sans bloquer.
+   - Salue poliment ("Bonjour comment tu vas", "Merci beaucoup"), réponds chaleureusement.
+   - Répond normalement à l'étape en cours, identifie qu'il s'agit d'une réponse valide.
+
+CONTEXTE ACTUEL :
+- Nom de l'entreprise : {nom_ent}
+- Étape active dans l'onboarding : {etape_actuelle}
+- Description de l'étape :
+{contexte_etape}
+
+Réponds STRICTEMENT au format JSON valide suivant :
+{{
+  "intention": "QUESTION_EXPLICATION" | "CORRECTION_RETOUR" | "SAUTER_ETAPE" | "REPONSE_ETAPE" | "SALUTATION_COURTOISIE",
+  "langue": "fr" | "wo",
+  "explication_pedagogique": "Ta réponse explicative détaillée, humaine, rassurante et chaleureuse si l'utilisateur a posé une question ou salué. Sinon null.",
+  "correction_champ": "nom_entreprise" | "mode_communication" | "numero_magasin" | "numero_orange_money" | "stock" | "tresorerie" | null,
+  "valeur_corrigee": "nouvelle valeur propre extraite si correction demandée, sinon null",
+  "reponse_etape_extraite": "valeur propre extraite si l'utilisateur répondait à l'étape active dans une phrase complète, sinon null"
+}}"""
+
+    user_query = f"""Message de l'utilisateur ({sender_phone}) :
+« {u_txt} »
+
+Analyse ce message et génère le JSON strict :"""
+
+    try:
+        response = await asyncio.to_thread(
+            client.models.generate_content,
+            model="gemini-3.1-flash-lite",
+            contents=[system_prompt, user_query]
+        )
+        raw_text = response.text.strip()
+        m = re.search(r'\{.*\}', raw_text, re.DOTALL)
+        if not m:
+            return {"action": "PASSTHROUGH_REPONSE_ETAPE"}
+
+        res = json.loads(m.group(0))
+        intention = res.get("intention")
+
+        # 1. CAS QUESTION_EXPLICATION ou SALUTATION_COURTOISIE
+        if intention in ["QUESTION_EXPLICATION", "SALUTATION_COURTOISIE"]:
+            explication = res.get("explication_pedagogique") or ""
+            rappel = prompt_rappel_etape(etape_actuelle, onboarding)
+            
+            # Formuler la réponse humaine complète : Explication + Relance douce
+            msg_final = f"{explication}\n\n👉 {rappel}"
+            return {
+                "action": "REPONDRE_ET_REORIENTER",
+                "message_reponse": msg_final
+            }
+
+        # 2. CAS CORRECTION_RETOUR
+        if intention == "CORRECTION_RETOUR":
+            champ = res.get("correction_champ")
+            valeur = res.get("valeur_corrigee")
+            champs_corriges = {}
+            msg_confirm = "C'est bien noté, la modification a été prise en compte !"
+
+            if champ and valeur:
+                champs_corriges[champ] = valeur
+                if champ == "nom_entreprise":
+                    msg_confirm = f"✅ C'est corrigé ! Le nom officiel de votre entreprise est désormais *{valeur}*."
+                elif champ == "mode_communication":
+                    mode_aff = "Notes vocales 🎙️" if str(valeur).upper() in ["VOCAL", "AUDIO", "VOIX"] else "Messages écrits ✍️"
+                    msg_confirm = f"✅ C'est bien noté ! Votre préférence d'échange est maintenant fixée sur : *{mode_aff}*."
+                elif champ in ["numero_magasin", "numero_orange_money"]:
+                    msg_confirm = f"✅ Votre numéro a été mis à jour : `{valeur}`."
+                else:
+                    msg_confirm = f"✅ Votre correction pour {champ} a bien été enregistrée : *{valeur}*."
+
+            rappel = prompt_rappel_etape(etape_actuelle, onboarding)
+            return {
+                "action": "APPLIQUER_CORRECTION",
+                "message_reponse": f"{msg_confirm}\n\n{rappel}",
+                "champs_corriges": champs_corriges
+            }
+
+        # 3. CAS SAUTER_ETAPE
+        if intention == "SAUTER_ETAPE":
+            nouvelle_etape, msg_suivante = sauter_vers_etape_suivante(etape_actuelle, onboarding)
+            return {
+                "action": "SAUTER_ETAPE",
+                "nouvelle_etape": nouvelle_etape,
+                "message_reponse": msg_suivante
+            }
+
+        # 4. CAS REPONSE_ETAPE
+        return {
+            "action": "PASSTHROUGH_REPONSE_ETAPE",
+            "entite_extraite": res.get("reponse_etape_extraite")
+        }
+
+    except Exception as e:
+        print(f"Erreur supervision Gemini: {e}")
+        return {"action": "PASSTHROUGH_REPONSE_ETAPE"}
 
 
 async def superviser_conversation_claude(
@@ -123,55 +328,8 @@ async def superviser_conversation_claude(
     onboarding: dict,
     historique_recente: str = ""
 ) -> str:
-    """
-    Appelle Anthropic Claude pour répondre intelligemment à un message imprévu,
-    ambigu ou conversationnel, sans jamais réinitialiser l'onboarding.
-    """
-    client = get_anthropic_client()
-    if not client:
-        return None
-
-    etape = onboarding.get("etape", "DEMANDE_NINEA")
-    contexte_etape = get_contexte_etape(etape, onboarding)
-    nom_client = onboarding.get("nom_personne_physique") or onboarding.get("nom_entreprise") or "Cher partenaire"
-
-    system_prompt = f"""Tu es l'assistant pré-comptable officiel de Grow (Fintech basée à Dakar, Sénégal).
-Tu assistes les commerçants, artisans et dirigeants de PME sénégalais pour tenir leur comptabilité conforme aux normes SYSCOHADA et préparer leurs bilans fiscaux.
-
-CONSIGNES STRICTES DE STYLE ET DE FORME :
-1. AUCUN EMOJI. STRICTEMENT ZÉRO EMOJI dans toutes tes réponses. N'utilise jamais de symboles emoji ni de smileys.
-2. Ton : Professionnel, chaleureux, courtois, respectueux de la culture sénégalaise (TERANGA), clair et précis.
-3. RÔLE : Tu es le CERVEAU DE SUIVI CONVERSATIONNEL. Tu ne fais pas les écritures comptables toi-même ici, tu gères la conversation pour que le commerçant ne soit jamais perdu, confus ou bloqué.
-4. RÈGLE D'OR : Ne JAMAIS réinitialiser la session, ne jamais lui redemander de s'abonner (son abonnement est déjà actif et payé), et ne jamais faire comme si tu le voyais pour la première fois !
-5. OBJECTIF IMMÉDIAT : Répondre avec pertinence à ce que vient de dire le commerçant (par exemple s'il a écrit « Choisi », s'il demande « Pourquoi », s'il est hésitant ou s'il fait une remarque), dissiper son doute avec bienveillance, puis LE RÉORIENTER DIRECTEMENT ET CLAIREMENT vers l'action attendue pour l'étape en cours.
-
-{contexte_etape}
-"""
-
-    prompt_user = f"""Le commerçant (numéro {sender_phone}) vient de t'envoyer ce message :
-« {user_text} »
-
-Rédige une réponse courte (3 à 5 phrases maximum), claire, sans aucun emoji :
-1. Réagis à son message avec courtoisie et intelligence.
-2. Rappelle-lui exactement ce qui est attendu pour l'étape active afin de continuer la configuration de son entreprise.
-Termine par la ligne de contact standard :
-Pour toute assistance, contactez le service Grow au 78 877 38 27."""
-
-    models_to_try = [MODEL_CLAUDE, FALLBACK_CLAUDE]
-    for model_name in models_to_try:
-        try:
-            res = client.messages.create(
-                model=model_name,
-                max_tokens=1000,
-                system=system_prompt,
-                messages=[{"role": "user", "content": prompt_user}]
-            )
-            reponse = "".join(b.text for b in res.content if hasattr(b, "text")).strip()
-            reponse = remove_all_emojis(reponse)
-            if reponse:
-                return reponse
-        except Exception as e:
-            print(f"Erreur appel Anthropic Claude ({model_name}): {e}")
-
-    return None
+    """Rétrocompatibilité : superviseur conversationnel unifié."""
+    etape = onboarding.get("etape", "PHASE_1_ACCUEIL")
+    res = await superviser_message_onboarding(sender_phone, user_text, etape, onboarding)
+    return res.get("message_reponse")
 

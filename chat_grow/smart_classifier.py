@@ -125,7 +125,7 @@ def enregistrer_fournisseur_memoire(entreprise_id: str, nom_ou_id: str, compte: 
 
 def classifier_operation_automatiquement(direction: str, montant: int, description: str, tiers_nom: str, entreprise_id: str) -> dict:
     """
-    Algorithme de Classification Intelligent Grow :
+    Algorithme de Classification Intelligent Growth :
     1. Encaissements (80-90% du flux) -> Compte 701 (Chiffre d'Affaires) d'office. Zéro question.
     2. Fournisseurs déjà appris dans la mémoire PME -> Compte appris d'office. Zéro question.
     3. Services nationaux & grandes enseignes -> Compte dédié d'office. Zéro question.
@@ -135,14 +135,17 @@ def classifier_operation_automatiquement(direction: str, montant: int, descripti
     direction_norm = (direction or "CREDIT").upper()
     is_entree = direction_norm in ["CREDIT", "IN", "ENTREE", "RECEIVED"]
     
-    # RÈGLE 1 : TOUS LES ENCAISSEMENTS MARCHANDS = CHIFFRE D'AFFAIRES D'OFFICE (Compte 701)
+    # RÈGLE 1 : TOUS LES ENCAISSEMENTS = CHIFFRE D'AFFAIRES (Compte 706 si Services, sinon 701 Marchandises)
     if is_entree:
+        desc_low = f"{description or ''} {tiers_nom or ''}".lower()
+        is_service = any(k in desc_low for k in ["service", "prestation", "honoraires", "consulting", "coiffure", "course", "livraison", "reparation", "formation", "nettoyage", "devis", "maintenance", "agence", "cabinet", "freelance"])
+        cpt_ca = "706" if is_service else "701"
         return {
-            "compte_syscohada": "701",
+            "compte_syscohada": cpt_ca,
             "libelle": description or f"Encaissement client - {tiers_nom}",
             "statut_validation": "VALIDE_PME",
             "besoin_question_immediate": False,
-            "methode_resolution": "AUTO_ENCAISSEMENT_CA"
+            "methode_resolution": "AUTO_ENCAISSEMENT_SERVICES" if is_service else "AUTO_ENCAISSEMENT_CA"
         }
 
     # Pour les décaissements (SORTIES d'argent) :
@@ -224,7 +227,7 @@ def generer_message_rituel_soir(nom_entreprise: str, txs_du_jour: list, treso_st
         )
     else:
         msg += (
-            f"Intelligence Grow : {nb_auto} sur {total_tx} opérations validées d'office.\n"
+            f"Intelligence Growth : {nb_auto} sur {total_tx} opérations validées d'office.\n"
             f"Il ne reste que {len(en_attente)} dépense(s) à préciser pour parfaire votre journal :\n\n"
         )
         for i, tx in enumerate(en_attente[:5], 1):
@@ -235,7 +238,7 @@ def generer_message_rituel_soir(nom_entreprise: str, txs_du_jour: list, treso_st
         msg += (
             "\nPour tout valider d'un coup, envoyez simplement une note vocale ou un court message "
             "(exemple : « Le 1 c'est du carburant, le 2 c'est le taxi »).\n"
-            "Grow mémorise automatiquement vos fournisseurs pour vos prochaines opérations !"
+            "Growth mémorise automatiquement vos fournisseurs pour vos prochaines opérations !"
         )
 
     return msg
@@ -292,7 +295,7 @@ def generer_message_matin_6h(nom_entreprise: str, txs_nuit: list, treso_stats: t
             lignes_nuit.append(f"  • {flux_signe}{m:,.0f} FCFA via {src} ({lib})")
         resume_nuit = "\n".join(lignes_nuit)
         bilan_nuit_txt = (
-            f"Pendant votre nuit, Grow a intercepté et certifié {len(txs_nuit)} opération(s) :\n"
+            f"Pendant votre nuit, Growth a intercepté et certifié {len(txs_nuit)} opération(s) :\n"
             f"{resume_nuit}\n"
             f"Total encaissé cette nuit : +{total_nuit_in:,.0f} FCFA\n\n"
         )
@@ -308,6 +311,6 @@ def generer_message_matin_6h(nom_entreprise: str, txs_nuit: list, treso_stats: t
         f"• Compte Orange Money : {om:,.0f} FCFA\n"
         f"• Caisse Espèces : {especes:,.0f} FCFA\n"
         f"• Total Trésorerie de départ : {total_dispo:,.0f} FCFA\n\n"
-        f"Grow est en veille continue. Bonne journée de vente et de prospérité !"
+        f"Growth est en veille continue. Bonne journée de vente et de prospérité !"
     )
 

@@ -1,5 +1,5 @@
 """
-Grow MVP - Module Vocal Haute Précision (Speech-to-Text & Text-to-Speech Trilingue)
+Growth MVP - Module Vocal Haute Précision (Speech-to-Text & Text-to-Speech Trilingue)
 - Entrant : Groq Whisper ultra-rapide (Français, Wolof, Anglais) avec fallback OpenAI
 - Sortant : Synthèse vocale phonétiquement adaptée pour une élocution 100% naturelle :
   * Wolof authentique (transcription phonétique dakaroise : "tchi", "djaaye", "Wèyve", etc.)
@@ -307,13 +307,27 @@ def extraire_phrase_orale(texte: str, langue: str = "fr") -> str:
             amt = _fmt_amt(m_depense.group(1))
             return f"Votre dépense de {amt} francs CFA a bien été enregistrée dans vos comptes."
 
-    # Pour les réponses générales ou conseils : garder les 1 à 2 premières phrases nettoyées
-    lignes = [
-        l.strip() for l in t.split("\n")
-        if l.strip() and not l.strip().startswith(("•", "-", "*", "#", "RÉSUMÉ", "RESUME", "http"))
-    ]
-    phrase = " ".join(lignes[:2])
-    return phrase[:260]
+    # Pour les réponses générales, phases d'onboarding ou explications :
+    # Formater un texte oral naturel, complet (autoriser 1 à 2 minutes de parole, sans coupure artificielle)
+    t_oral = t
+    # Retrait des liens web
+    t_oral = re.sub(r'https?://\S+', '', t_oral)
+    # Remplacement des puces par des virgules ou pauses
+    t_oral = re.sub(r'^[•\-\*]\s*', '', t_oral, flags=re.MULTILINE)
+    # Nettoyage markdown
+    t_oral = re.sub(r'\*{1,3}([^*]+)\*{1,3}', r'\1', t_oral)
+    t_oral = re.sub(r'#{1,6}\s*', '', t_oral)
+    # Nettoyage des emojis
+    t_oral = re.sub(r'[\U00010000-\U0010ffff]', '', t_oral)
+    t_oral = re.sub(r'[\u2000-\u32ff]', '', t_oral)
+    # Nettoyage des retours multiples
+    t_oral = re.sub(r'\n+', '. ', t_oral)
+    t_oral = re.sub(r'\s+', ' ', t_oral).strip()
+    # Supprimer les répétitions de points
+    t_oral = re.sub(r'\.{2,}', '.', t_oral)
+
+    # Limite généreuse à 4000 caractères (environ 3 minutes de voix fluide et naturelle)
+    return t_oral[:4000]
 
 
 def adapter_phonetique_wolof(texte_wolof: str) -> str:
@@ -584,6 +598,10 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
     - 'fr' : fr-FR-VivienneMultilingualNeural (Studio Français)
     - 'en' : en-US-JennyNeural (Studio Anglais)
     """
+    # Forcer Français pur par défaut (sauf si explicitement Wolof)
+    if langue != "wo":
+        langue = "fr"
+
     # 1. Extraction d'une phrase orale naturelle (concise, 1 à 2 phrases max, sans tableaux ni puces)
     phrase_orale = extraire_phrase_orale(texte, langue=langue)
     if not phrase_orale:
@@ -651,7 +669,7 @@ def convertir_mp3_en_ogg_opus(mp3_path: str) -> str:
     Convertit un MP3 en OGG OPUS (codec natif WhatsApp pour les vraies Notes Vocales).
     Sur WhatsApp, les fichiers MP3 affichent une icône générique casque jaune,
     alors que les fichiers OGG OPUS s'affichent comme de véritables Notes Vocales
-    avec le logo officiel Grow du profil et l'onde sonore verte.
+    avec le logo officiel Growth du profil et l'onde sonore verte.
     """
     ogg_path = mp3_path.rsplit(".", 1)[0] + ".ogg"
     try:
@@ -688,7 +706,7 @@ def convertir_mp3_en_ogg_opus(mp3_path: str) -> str:
 
 def integrer_logo_mp3(filepath: str):
     """
-    Intègre le logo officiel Grow dans les métadonnées ID3v2 (Cover Art APIC) du fichier MP3.
+    Intègre le logo officiel Growth dans les métadonnées ID3v2 (Cover Art APIC) du fichier MP3.
     """
     try:
         from mutagen.mp3 import MP3
@@ -713,14 +731,14 @@ def integrer_logo_mp3(filepath: str):
                     encoding=3,
                     mime="image/jpeg",
                     type=3,  # 3 = cover image front
-                    desc="Grow Official Logo",
+                    desc="Growth Official Logo",
                     data=logo_data
                 )
             )
-            audio.tags.add(TIT2(encoding=3, text="Grow Assistant Pré-Comptable"))
-            audio.tags.add(TPE1(encoding=3, text="Grow Dakar"))
+            audio.tags.add(TIT2(encoding=3, text="Growth Assistant Comptable"))
+            audio.tags.add(TPE1(encoding=3, text="Growth Dakar"))
             audio.save()
-            print(f"[COVER ART LOGO GROW INTÉGRÉ] : {os.path.basename(filepath)}")
+            print(f"[COVER ART LOGO GROWTH INTÉGRÉ] : {os.path.basename(filepath)}")
     except Exception as e:
         print(f"Info intégration logo MP3 : {e}")
 
@@ -761,5 +779,5 @@ def detecter_langue_texte(texte: str) -> str:
     if any(re.search(pat, t_lower) for pat in en_patterns):
         return "en"
 
-    # Langue par défaut des affaires et de la pré-comptabilité au Sénégal
+    # Langue par défaut des affaires et de la comptabilité au Sénégal
     return "fr"

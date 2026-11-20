@@ -1,0 +1,28 @@
+[
+  {
+    "id": "c97ecb15-f17e-4ae6-becf-6234b522006f",
+    "entreprise_id": "af3f08b5-1c4a-4812-8e2d-23b7944f7b27",
+    "date_operation": "2026-11-13",
+    "libelle": "Paiement abonnement mensuel Grow (Wave)",
+    "compte_syscohada": "658",
+    "type_flux": "SORTIE",
+    "est_professionnel": true,
+    "montant_fcfa": 10000,
+    "source_paiement": "WAVE",
+    "statut_validation": "VALIDE_PME",
+    "created_at": "2026-11-13T13:49:43.354773+00:00"
+  },
+  {
+    "id": "7f63e39f-e022-4163-b378-a29952ca7bec",
+    "entreprise_id": "af3f08b5-1c4a-4812-8e2d-23b7944f7b27",
+    "date_operation": "2026-11-13",
+    "libelle": "Paiement abonnement mensuel Grow (Wave)",
+    "compte_syscohada": "658",
+    "type_flux": "SORTIE",
+    "est_professionnel": true,
+    "montant_fcfa": 10000,
+    "source_paiement": "WAVE",
+    "statut_validation": "VALIDE_PME",
+    "created_at": "2026-11-13T14:14:57.789294+00:00"
+  }
+]

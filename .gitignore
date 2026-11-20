@@ -31,9 +31,21 @@ wheels/
 
 # Audio temporaires et tests
 *.mp3
+*.ogg
 chat_grow/static/audio/*.mp3
+chat_grow/static/audio/*.ogg
 !chat_grow/static/audio/.gitkeep
 test_*.mp3
+
+# Bases de données locales et gros exécutables
+*.db
+*.sqlite
+*.sqlite3
+chat_grow/*.db
+chat_grow/backups/
+cloudflared.exe
+chat_grow/cloudflared.exe
+chat_grow/static/uploads/preuves/
 
 # Logs & temp
 *.log

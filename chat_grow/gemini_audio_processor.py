@@ -33,7 +33,7 @@ MODELS_PRIORITAIRES = [
     "gemini-3.5-flash-lite"
 ]
 
-_SYSTEM_PROMPT = """Tu es Grow, l'assistant pre-comptable expert du secteur informel a Dakar (Senegal).
+_SYSTEM_PROMPT = """Tu es Grow, l'assistant comptable expert du secteur informel a Dakar (Senegal).
 Tu analyses des notes vocales commerciales envoyees sur WhatsApp par des commercants dakarois.
 La langue est soit le Wolof, soit le Francais, soit un melange naturel des deux (Wolof urbain de Dakar).
 
@@ -178,10 +178,14 @@ async def analyser_audio_gemini(
             raw_text = response.text.strip()
             print(f"[GEMINI AUDIO ({model_name})] Reponse brute : {raw_text[:250]}")
 
-            raw_text = re.sub(r'^```(?:json)?\s*', '', raw_text)
-            raw_text = re.sub(r'\s*```$', '', raw_text)
+            m_json = re.search(r'\{.*\}', raw_text, re.DOTALL)
+            if m_json:
+                result = json.loads(m_json.group(0))
+            else:
+                raw_text_clean = re.sub(r'^```(?:json)?\s*', '', raw_text)
+                raw_text_clean = re.sub(r'\s*```$', '', raw_text_clean)
+                result = json.loads(raw_text_clean)
 
-            result = json.loads(raw_text)
             result["source"] = f"gemini_{model_name}"
 
             transcription = result.get("transcription", "")
@@ -200,8 +204,12 @@ async def analyser_audio_gemini(
             try:
                 raw = response.text.strip() if 'response' in dir() else ""
                 if raw:
+                    # Tenter d'extraire le champ transcription propre par regex
+                    m_tr = re.search(r'"transcription"\s*:\s*"([^"]+)"', raw)
+                    clean_transcription = m_tr.group(1) if m_tr else raw
+                    clean_transcription = re.sub(r'[\{\}\[\]"]', '', clean_transcription).strip()
                     return {
-                        "transcription": raw[:400],
+                        "transcription": clean_transcription[:400],
                         "langue_detectee": "fr",
                         "operation": None,
                         "reponse_wolof": "",

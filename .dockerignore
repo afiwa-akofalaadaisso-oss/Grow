@@ -1,0 +1,16 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.gitignore
+.env
+.env.local
+chat_grow/__pycache__
+chat_grow/backups/*.db
+chat_grow/scratch
+archive_anciens_modules
+node_modules
+local_growth.db
+*.exe
+

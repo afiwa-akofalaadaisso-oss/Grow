@@ -4,6 +4,7 @@ Assure un fonctionnement 100% ininterrompu même en cas de latence, coupure rés
 """
 
 import os
+import re
 import json
 import sqlite3
 import uuid
@@ -32,6 +33,12 @@ def sanitize_payload_for_supabase(table: str, payload: Dict[str, Any]) -> Dict[s
                 clean["montant_fcfa"] = int(round(float(clean["montant_fcfa"])))
             except (ValueError, TypeError):
                 clean["montant_fcfa"] = 0
+        if "date_operation" in clean and clean["date_operation"]:
+            d_str = str(clean["date_operation"]).strip()
+            m_date = re.match(r"^(\d{1,2})/(\d{1,2})/(\d{4})$", d_str)
+            if m_date:
+                day, month, year = m_date.groups()
+                clean["date_operation"] = f"{year}-{int(month):02d}-{int(day):02d}"
         return clean
     elif table == "entreprises":
         return {k: v for k, v in payload.items() if k not in ["updated_at"] and v is not None}
@@ -317,10 +324,24 @@ def get_all_entreprises_resilient() -> List[Dict[str, Any]]:
 
 
 def get_transactions_resilient(entreprise_id: str) -> List[Dict[str, Any]]:
-    """Récupère les transactions d'une entreprise avec fallback SQLite instantané."""
+    """Récupère les transactions d'une entreprise en fusionnant Supabase et le cache local SQLite."""
     if not entreprise_id or str(entreprise_id).startswith("new_"):
         return []
 
+    # 1. Lecture locale SQLite immédiate (<1ms)
+    conn = get_sqlite_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM transactions WHERE entreprise_id = ? ORDER BY date_operation DESC, created_at DESC", (str(entreprise_id),))
+    sqlite_rows = [dict(r) for r in cur.fetchall()]
+    conn.close()
+    for r in sqlite_rows:
+        j_url = r.get("justificatif_url")
+        if j_url:
+            r["preuves_numeriques"] = [{"url": j_url, "type_preuve": "PHOTO_RECU"}]
+        else:
+            r["preuves_numeriques"] = []
+
+    # 2. Interrogation Supabase si configuré
     sp = get_supabase_client()
     if sp:
         def fetch_sp():
@@ -331,31 +352,26 @@ def get_transactions_resilient(entreprise_id: str) -> List[Dict[str, Any]]:
                 res = sp.table("transactions").select("*").eq("entreprise_id", entreprise_id).order("date_operation", desc=True).order("created_at", desc=True).execute()
                 return res.data or []
 
-        data = run_with_timeout(fetch_sp, timeout_seconds=5.0, fallback=None)
-        if data is not None and len(data) > 0:
+        sp_data = run_with_timeout(fetch_sp, timeout_seconds=3.0, fallback=None)
+        if sp_data is not None:
             try:
-                mirror_transactions_to_sqlite(data)
+                mirror_transactions_to_sqlite(sp_data)
             except Exception as e:
                 print(f"[MIRROR TX ERROR] {e}")
-            return data
 
-    # Fallback local SQLite immédiat (<1ms)
-    conn = get_sqlite_conn()
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM transactions WHERE entreprise_id = ? ORDER BY date_operation DESC, created_at DESC", (str(entreprise_id),))
-    rows = [dict(r) for r in cur.fetchall()]
-    conn.close()
-    for r in rows:
-        j_url = r.get("justificatif_url")
-        if j_url:
-            r["preuves_numeriques"] = [{"url": j_url, "type_preuve": "PHOTO_RECU"}]
-        else:
-            r["preuves_numeriques"] = []
-    return rows
+            # Fusionner les transactions par ID pour garantir la présence des transactions locales et distantes
+            tx_map = {str(r["id"]): r for r in sqlite_rows}
+            for s in sp_data:
+                tx_map[str(s["id"])] = s
+            merged = list(tx_map.values())
+            merged.sort(key=lambda x: (str(x.get("date_operation") or ""), str(x.get("created_at") or "")), reverse=True)
+            return merged
+
+    return sqlite_rows
 
 
 def get_entreprise_by_phone_resilient(phone: str) -> Optional[Dict[str, Any]]:
-    """Recherche une entreprise par téléphone avec fallback local."""
+    """Recherche une entreprise par téléphone principal ou numéros secondaires (Wave, OM) avec fallback local."""
     clean_p = str(phone).replace("+", "").replace(" ", "").strip()
     if not clean_p:
         return None
@@ -364,7 +380,27 @@ def get_entreprise_by_phone_resilient(phone: str) -> Optional[Dict[str, Any]]:
     if sp:
         def fetch_sp():
             res = sp.table("entreprises").select("*").ilike("telephone_whatsapp", f"%{clean_p}%").limit(1).execute()
-            return res.data[0] if res.data else None
+            if res.data:
+                return res.data[0]
+            
+            # Recherche multi-numéros (Wave Business ou Orange Money secondaire dans donnees_onboarding)
+            try:
+                res_all = sp.table("entreprises").select("*").execute()
+                for e in res_all.data or []:
+                    d_onb = e.get("donnees_onboarding") or {}
+                    if isinstance(d_onb, str):
+                        try:
+                            d_onb = json.loads(d_onb)
+                        except Exception:
+                            d_onb = {}
+                    if (clean_p in str(d_onb.get("numero_wave", "")) or 
+                        clean_p in str(d_onb.get("numero_om", "")) or 
+                        clean_p in str(d_onb.get("numero_orange_money", "")) or
+                        clean_p in str(d_onb.get("telephone_secondaire", ""))):
+                        return e
+            except Exception as e_sc:
+                print(f"Info recherche multi-numéros: {e_sc}")
+            return None
 
         data = run_with_timeout(fetch_sp, timeout_seconds=2.0, fallback=None)
         if data is not None:
@@ -374,10 +410,10 @@ def get_entreprise_by_phone_resilient(phone: str) -> Optional[Dict[str, Any]]:
                 pass
             return data
 
-    # Fallback local SQLite
+    # Fallback local SQLite (recherche sur téléphone whatsapp ou dans donnees_onboarding)
     conn = get_sqlite_conn()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM entreprises WHERE telephone_whatsapp LIKE ? LIMIT 1", (f"%{clean_p}%",))
+    cur.execute("SELECT * FROM entreprises WHERE telephone_whatsapp LIKE ? OR donnees_onboarding LIKE ? LIMIT 1", (f"%{clean_p}%", f"%{clean_p}%"))
     row = cur.fetchone()
     conn.close()
     if row:
@@ -599,8 +635,13 @@ def flush_sync_queue():
         except Exception as err:
             cur.execute("UPDATE sync_queue SET attempts = attempts + 1, last_error = ? WHERE id = ?", (str(err)[:250], item_id))
             conn.commit()
+            # Si plus de 5 tentatives échouées consécutives, archiver/supprimer pour ne jamais bloquer la file
+            if item.get("attempts", 0) >= 4:
+                cur.execute("DELETE FROM sync_queue WHERE id = ?", (item_id,))
+                conn.commit()
+                print(f"[SYNC QUEUE] Élément corrompu {item_id} retiré de la file après 5 tentatives.")
             print(f"[SYNC QUEUE RETRY] Erreur pour {item_id}: {err}")
-            break  # Supabase est probablement inaccessible, attendre le prochain cycle
+            break
 
     conn.close()
     return flushed_count

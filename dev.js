@@ -1,5 +1,5 @@
 /**
- * Grow MVP — Lanceur Universel de Développement
+ * Growth MVP — Lanceur Universel de Développement
  * Déclenchement en 1 commande : npm run dev
  */
 
@@ -48,7 +48,7 @@ const ngrokStaticDomain = envVars.NGROK_STATIC_DOMAIN || process.env.NGROK_STATI
 
 console.clear();
 console.log('\x1b[36m%s\x1b[0m', '======================================================================');
-console.log('\x1b[1m\x1b[32m%s\x1b[0m', ' 🌿 GROW MVP — COPILOTE FINANCIER & ASSISTANT PRÉ-COMPTABLE');
+console.log('\x1b[1m\x1b[32m%s\x1b[0m', ' 🌿 GROWTH MVP — COPILOTE FINANCIER & ASSISTANT PRÉ-COMPTABLE');
 console.log('\x1b[36m%s\x1b[0m', '======================================================================');
 console.log(' 💻 \x1b[1mLogiciel Web Comptable\x1b[0m : \x1b[34mhttp://localhost:8000/dashboard?portal=1\x1b[0m');
 console.log(' 📱 \x1b[1mWebhook WhatsApp Meta\x1b[0m  : \x1b[34m' + (ngrokStaticDomain ? ngrokStaticDomain + '/webhook' : 'http://localhost:8000/webhook') + '\x1b[0m');
@@ -69,7 +69,7 @@ const isTunnelOnly = process.argv.includes('--tunnel-only');
 let uvicornProcess = null;
 
 if (!isTunnelOnly) {
-    console.log('\x1b[90m[Grow Backend] Démarrage du serveur Uvicorn sur le port 8000...\x1b[0m');
+    console.log('\x1b[90m[Growth Backend] Démarrage du serveur Uvicorn sur le port 8000...\x1b[0m');
     uvicornProcess = spawn('python', ['-m', 'uvicorn', 'main:app', '--host', '0.0.0.0', '--port', '8000', '--reload'], {
         cwd: chatGrowDir,
         stdio: ['inherit', 'pipe', 'pipe'],
@@ -92,7 +92,7 @@ let tunnelProcess = null;
 let foundTunnelUrl = false;
 
 if (ngrokStaticDomain) {
-    console.log('\x1b[90m[Grow Tunnel] Connexion ngrok sur le domaine statique scellé à vie...\x1b[0m');
+    console.log('\x1b[90m[Growth Tunnel] Connexion ngrok sur le domaine statique scellé à vie...\x1b[0m');
     tunnelProcess = spawn('ngrok', ['http', '8000', `--url=${ngrokStaticDomain}`, '--log=stdout'], {
         stdio: ['inherit', 'pipe', 'pipe'],
         shell: true
@@ -111,7 +111,7 @@ if (ngrokStaticDomain) {
         tunnelArgs = ['tunnel', '--url', 'http://localhost:8000'];
     }
 
-    console.log('\x1b[90m[Grow Tunnel] Connexion du tunnel Cloudflare...\x1b[0m');
+    console.log('\x1b[90m[Growth Tunnel] Connexion du tunnel Cloudflare...\x1b[0m');
     tunnelProcess = spawn(cloudflaredBin, tunnelArgs, {
         stdio: ['inherit', 'pipe', 'pipe'],
         shell: true
@@ -137,7 +137,7 @@ if (ngrokStaticDomain) {
 
 // Gestion de l'arrêt propre
 function cleanExit() {
-    console.log('\n\x1b[33m[Grow] Arrêt des processus en cours...\x1b[0m');
+    console.log('\n\x1b[33m[Growth] Arrêt des processus en cours...\x1b[0m');
     if (uvicornProcess) {
         try { uvicornProcess.kill(); } catch (e) {}
     }

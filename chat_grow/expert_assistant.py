@@ -101,6 +101,10 @@ KNOWLEDGE_BASE = [
 def repondre_question_theorique_locale(question: str) -> Optional[str]:
     """Recherche dans la base de connaissances métier locale."""
     q_lower = question.lower()
+    # Si l'utilisateur demande une rédaction de message ou une assistance personnalisée, laisser le LLM composer
+    if any(k in q_lower for k in ["rédige", "redige", "écris", "ecris", "message", "relance mon client", "relancer mon client", "aide-moi", "aide moi", "comment je"]):
+        return None
+
     for item in KNOWLEDGE_BASE:
         for kw in item["keywords"]:
             if re.search(kw, q_lower):
@@ -114,25 +118,70 @@ def repondre_question_theorique_locale(question: str) -> Optional[str]:
 
 def executer_consultation_donnees_locale(user_text: str, entreprise_id: str, sp) -> Optional[str]:
     """
-    Interroge la base de données Supabase pour répondre aux questions sur les soldes,
-    les ventes du jour ou les dettes en cours.
+    Interroge la base de données pour répondre aux questions sur les soldes,
+    les ventes du jour ou l'assistance d'automatisation Wave.
     100% Local - 0 Crédit API.
     """
-    if not sp or not entreprise_id:
+    if not user_text:
         return None
 
     clean = user_text.lower().strip()
 
+    # 0. Assistance spéciale : Automatisation Wave en attendant l'API officielle
+    mots_guide_wave = [
+        "sans api", "attendant lapi", "attendant l'api", "connecter wave", "automatiser wave",
+        "passerelle wave", "relais wave", "relais sms", "sms forwarder", "comment relier wave",
+        "ameliorer mon agent", "en attendant wave"
+    ]
+    if any(k in clean for k in mots_guide_wave):
+        return (
+            "📱 COMMENT AUTOMATISER VOS ENCAISSEMENTS WAVE (Sans attendre l'API) :\n\n"
+            "En attendant l'activation de votre contrat Wave Business Merchant, vous avez 3 méthodes 100% opérationnelles dès aujourd'hui :\n\n"
+            "1. 💬 LE TRANSFERT DE SMS (Le plus simple) :\n"
+            "Dès que vous recevez un SMS Wave (« Vous avez reçu 15.000F de... »), transférez-le ou collez-le directement ici sur WhatsApp. "
+            "Growth vérifie l'absence de faux SMS/doublon et enregistre automatiquement la vente au compte SYSCOHADA 571.\n\n"
+            "2. 📸 LA CAPTURE D'ÉCRAN OU LE RELEVÉ PDF :\n"
+            "Prenez une capture d'écran de l'application Wave ou téléchargez votre relevé mensuel Wave (PDF/CSV) et envoyez-le ici. "
+            "Notre IA visuelle Gemini extrait 100% des transactions en 2 secondes.\n\n"
+            "3. ⚡ LE RELAIS SMS AUTOMATIQUE ANDROID (0 Action requise) :\n"
+            "Installez l'application gratuite 'SMS Forwarder' sur votre téléphone Android. Configurez-la pour renvoyer chaque SMS du contact 'Wave' "
+            "vers notre passerelle sécurisée : https://rascal-legible-unsheathe.ngrok-free.dev/api/sms-gateway\n"
+            "Chaque paiement de client en boutique est ainsi scellé instantanément en tâche de fond !\n\n"
+            "Voulez-vous que je vous guide pas à pas sur l'une de ces 3 options ?"
+        )
+
+    if not entreprise_id:
+        return None
+
     # 1. Consultation du Solde / De la Trésorerie en cours (Français & Wolof)
     mots_solde = [
         "mon solde", "mes soldes", "solde en caisse", "combien j'ai", "combien jai",
-        "argent disponible", "ma tresorerie", "ma trésorerie",
+        "argent disponible", "ma tresorerie", "ma trésorerie", "solde wave", "wave solde",
+        "combien sur wave", "combien j'ai sur wave", "combien jai sur wave", "mon wave",
+        "solde om", "solde orange", "solde caisse", "sama wave", "compte wave", "argent wave",
         "ana sama solde", "ana sama xalis", "ana sama xaalis", "wax ma solde",
-        "solde bi", "kom-kom bi", "kom kom", "xaalis bi"
+        "solde bi", "kom-kom bi", "kom kom", "xaalis bi", "solde", "mes comptes", "tresorerie", "trésorerie"
     ]
     if any(k in clean for k in mots_solde):
         try:
-            txs = sp.table("transactions").select("source_paiement, type_flux, montant_fcfa").eq("entreprise_id", entreprise_id).execute().data or []
+            txs = []
+            if sp and entreprise_id:
+                try:
+                    txs = sp.table("transactions").select("source_paiement, type_flux, montant_fcfa").eq("entreprise_id", entreprise_id).execute().data or []
+                except Exception:
+                    pass
+            if not txs:
+                try:
+                    from database import get_sqlite_conn
+                    conn = get_sqlite_conn()
+                    cur = conn.cursor()
+                    cur.execute("SELECT source_paiement, type_flux, montant_fcfa FROM transactions WHERE entreprise_id = ?", (entreprise_id,))
+                    rows = cur.fetchall()
+                    txs = [{"source_paiement": r["source_paiement"], "type_flux": r["type_flux"], "montant_fcfa": r["montant_fcfa"]} for r in rows]
+                    conn.close()
+                except Exception as e_sql:
+                    print(f"Info sqlite solde: {e_sql}")
+
             soldes = {"WAVE": 0, "ORANGE_MONEY": 0, "ESPECES": 0, "BANQUE": 0}
             for t in txs:
                 src = t.get("source_paiement", "ESPECES")
@@ -177,7 +226,24 @@ def executer_consultation_donnees_locale(user_text: str, entreprise_id: str, sp)
     if any(k in clean for k in mots_ventes_jour):
         try:
             today_str = datetime.now().strftime("%Y-%m-%d")
-            txs = sp.table("transactions").select("montant_fcfa, source_paiement, libelle").eq("entreprise_id", entreprise_id).eq("type_flux", "ENTREE").gte("created_at", f"{today_str}T00:00:00").execute().data or []
+            txs = []
+            if sp and entreprise_id:
+                try:
+                    txs = sp.table("transactions").select("montant_fcfa, source_paiement, libelle").eq("entreprise_id", entreprise_id).eq("type_flux", "ENTREE").gte("created_at", f"{today_str}T00:00:00").execute().data or []
+                except Exception:
+                    pass
+            if not txs:
+                try:
+                    from database import get_sqlite_conn
+                    conn = get_sqlite_conn()
+                    cur = conn.cursor()
+                    cur.execute("SELECT montant_fcfa, source_paiement, libelle FROM transactions WHERE entreprise_id = ? AND type_flux = 'ENTREE' AND date_operation = ?", (entreprise_id, today_str))
+                    rows = cur.fetchall()
+                    txs = [{"montant_fcfa": r["montant_fcfa"], "source_paiement": r["source_paiement"], "libelle": r["libelle"]} for r in rows]
+                    conn.close()
+                except Exception as e_sql:
+                    print(f"Info sqlite ventes: {e_sql}")
+
             total_ventes = sum(int(t.get("montant_fcfa") or 0) for t in txs)
             nb_ventes = len(txs)
             is_wolof = any(w in clean for w in ["jaay", "tey", "niaata", "laa", "dug"])
@@ -198,7 +264,8 @@ def executer_consultation_donnees_locale(user_text: str, entreprise_id: str, sp)
             print(f"Erreur consultation ventes jour : {e}")
 
     # 3. Consultation des Dettes & Créances
-    if any(k in clean for k in ["mes dettes", "qui me doit", "mes creances", "mes créances", "argent dehors", "combien je dois", "liste des dettes"]):
+    is_redaction = any(k in clean for k in ["rédige", "redige", "écris", "ecris", "message", "relance", "relancer"])
+    if not is_redaction and any(k in clean for k in ["mes dettes", "qui me doit", "mes creances", "mes créances", "argent dehors", "combien je dois", "liste des dettes"]):
         try:
             dettes = sp.table("dettes_creances").select("*").eq("entreprise_id", entreprise_id).neq("statut", "SOLDE").execute().data or []
             creances_clients = [d for d in dettes if d.get("type") == "CREANCE_CLIENT"]
@@ -247,6 +314,10 @@ def gerer_dette_creance_locale(user_text: str, entreprise_id: str, sp) -> Option
         return None
 
     clean = user_text.lower().strip()
+    # Si l'utilisateur demande une rédaction de relance, laisser le copilote IA composer le message
+    if any(k in clean for k in ["rédige", "redige", "écris", "ecris", "message", "relance", "relancer"]):
+        return None
+
     from local_extractor import parse_montant_fcfa
     montant = parse_montant_fcfa(clean)
 

@@ -122,6 +122,48 @@ FORMES_JURIDIQUES = [
 ]
 
 
+def nettoyer_nom_entreprise(texte: str) -> str:
+    """
+    Nettoie rigoureusement le nom d'entreprise en éliminant toutes les phrases
+    conversationnelles d'introduction ('mon entreprise est nghy' -> 'Nghy').
+    """
+    if not texte:
+        return ""
+    t = texte.strip().strip("\"'«»“”")
+    
+    # 0. Salutations
+    t = re.sub(r"^(?:bonjour|salut|bonsoir|hello|merci|ok|d['’]accord|svp|s['’]il\s+vous\s+pla[îi]t)\s*[,!;:.]?\s*", "", t, flags=re.IGNORECASE).strip()
+    
+    # A. Formules "le nom (de ...)? (est|c'est|cest|c est|c|:)"
+    t = re.sub(r"^(?:le\s+nom(?:\s+commercial)?(?:\s+(?:de\s+|d['’])(?:mon\s+|ma\s+|notre\s+|la\s+|l['’])?\s*(?:entreprise|soci[ée]t[ée]|boutique|commerce|magasin|atelier|agence|bo[îi]te))?\s*(?:est|c['’\s]?est|\bc\b|:))\s*", "", t, flags=re.IGNORECASE).strip()
+    
+    # B. "(mon|ma|notre|l'|la)\s*(entreprise|société|boutique|commerce|magasin|atelier|agence|boîte|enseigne)\s*(est|c'est|cest|c est|c|s'appelle|se nomme)?\s*:?"
+    t = re.sub(r"^(?:(?:mon|ma|notre|l['’\s]?|la)\s*(?:entreprise|soci[ée]t[ée]|boutique|commerce|magasin|atelier|agence|bo[îi]te|enseigne))\s*(?:est|c['’\s]?est|\bc\b|s['’\s]?appelle|se\s+nomme)?\s*:?\s*", "", t, flags=re.IGNORECASE).strip()
+    
+    # C. "c'est X", "cest X", "c est X", "il s'agit de X", "il sagit de X", "nom: X", "nom X"
+    t = re.sub(r"^(?:c['’\s]?est|\bc\b|il\s+s['’\s]?agit\s+de|je\s+m['’\s]?appelle|nous\s+sommes|nom\s*:?)\s*", "", t, flags=re.IGNORECASE).strip()
+    
+    # D. Répétition si enchaîné (ex: "est X", "c'est X")
+    t = re.sub(r"^(?:est|c['’\s]?est|\bc\b|:)\s*", "", t, flags=re.IGNORECASE).strip()
+    
+    # D2. Normaliser 'la/le/l' boutique X' -> 'Boutique X'
+    t = re.sub(r"^(?:la|le|l['’\s]?)\s+(boutique|magasin|atelier|commerce|agence|soci[ée]t[ée]|bo[îi]te)\b", r"\1", t, flags=re.IGNORECASE).strip()
+    
+    # E. Supprimer les guillemets et ponctuations
+    t = t.strip("\"'«»“”.,:;!?-").strip()
+    
+    if t.isupper() and len(t) <= 8:
+        return t
+    mots = t.split()
+    mots_propres = []
+    for m in mots:
+        if m.isupper() and len(m) <= 6:
+            mots_propres.append(m)
+        else:
+            mots_propres.append(m.capitalize())
+    return " ".join(mots_propres)
+
+
 def extract_business_identity_local(texte: str, sender_phone: str = "", contact_name: str = "") -> Dict[str, Any]:
     """
     Extrait déterministement l'identité légale de l'entreprise :
@@ -177,12 +219,22 @@ def extract_business_identity_local(texte: str, sender_phone: str = "", contact_
 
     # E. Nom de l'entreprise
     nom = None
+    # 0. Détection directe phrases : "mon entreprise est nghy", "le nom de mon entreprise est nghy"
+    phrase_directe = re.search(r'(?:(?:le\s+nom\s+(?:de\s+(?:mon|ma|notre|la|l[\'’])?\s*(?:entreprise|soci[ée]t[ée]|boutique|commerce|magasin|atelier|agence|bo[îi]te))?\s*(?:est|c[\'’\s]?est|\bc\b|:))|(?:(?:mon|ma|notre|l[\'’\s]?|la)\s*(?:entreprise|soci[ée]t[ée]|boutique|commerce|magasin|atelier|agence|bo[îi]te|enseigne)\s*(?:est|c[\'’\s]?est|\bc\b|s[\'’\s]?appelle|se\s+nomme)?\s*:?))\s*([A-Za-z0-9\s\-]+?)(?:,|\.|\bet\b|\bavec\b|\bninea\b|\bcapital\b|$)', clean, re.IGNORECASE)
+    if phrase_directe:
+        cand = phrase_directe.group(1).strip()
+        cand_clean = nettoyer_nom_entreprise(cand)
+        if len(cand_clean) >= 2:
+            nom = cand_clean
+
     # 1. Label explicite : nom de l'entreprise, nom commercial, enseigne (JAMAIS le nom personnel)
-    nom_label = re.search(r'(?:nom\s*(?:de\s*(?:l[\'’])?\s*(?:entreprise|société|societe|boutique|magasin))|nom\s*commercial|enseigne)\s*(?:est|:)?\s*([A-Za-z0-9\s\-]+?)(?:,|\.|\bet\b|\bavec\b|\bninea\b|\bcapital\b|$)', clean, re.IGNORECASE)
-    if nom_label:
-        cand = nom_label.group(1).strip()
-        if len(cand) >= 2 and cand.lower() not in ['est', 'de', 'mon', 'le', 'la', 'un', 'notre', 'la personne', 'personne']:
-            nom = cand.title()
+    if not nom:
+        nom_label = re.search(r'(?:nom\s*(?:de\s*(?:mon|ma|notre|l[\'’])?\s*(?:entreprise|société|societe|boutique|magasin))|nom\s*commercial|enseigne)\s*(?:est|:)?\s*([A-Za-z0-9\s\-]+?)(?:,|\.|\bet\b|\bavec\b|\bninea\b|\bcapital\b|$)', clean, re.IGNORECASE)
+        if nom_label:
+            cand = nom_label.group(1).strip()
+            cand_clean = nettoyer_nom_entreprise(cand)
+            if len(cand_clean) >= 2 and cand_clean.lower() not in ['est', 'de', 'mon', 'le', 'la', 'un', 'notre', 'la personne', 'personne']:
+                nom = cand_clean
 
     # 2. Préfixe commercial sénégalais (Boutique, Chez, Société, SARL, SUARL, Ets, Magasin, Atelier, Salon, Pharmacie, etc.)
     if not nom:
@@ -203,8 +255,9 @@ def extract_business_identity_local(texte: str, sender_phone: str = "", contact_
         nom_fb = re.search(r'\b(?:entreprise|société|societe)\s*:\s*([A-Za-z0-9\s\-]+?)(?:,|\.|\bet\b|\bavec\b|\bninea\b|\bcapital\b|$)', clean, re.IGNORECASE)
         if nom_fb:
             cand = nom_fb.group(1).strip()
-            if len(cand) >= 2:
-                nom = cand.title()
+            cand_clean = nettoyer_nom_entreprise(cand)
+            if len(cand_clean) >= 2:
+                nom = cand_clean
 
     return {
         "nom_entreprise": nom,
@@ -263,10 +316,22 @@ def parse_operator_sms_local(sms_text: str) -> Optional[Dict[str, Any]]:
     else:
         montant = parse_montant_fcfa(clean)
 
+    # 2.bis Frais de transfert / retrait (Wave / OM)
+    frais_match = re.search(r'(?:frais\s*:?|frais\s+de)\s*(\d[\d\s\.]{1,6})\s*(?:f|fcfa|frs|cfa)?', lower)
+    if frais_match:
+        try:
+            frais = int(re.sub(r'[^\d]', '', frais_match.group(1)))
+        except Exception:
+            frais = 0
+
     # 3. Référence de transaction
     ref_match = re.search(r'(?:réf|ref|id|transaction)\s*:?\s*([A-Za-z0-9\.\-_]+)', clean, re.IGNORECASE)
     if ref_match:
         reference = ref_match.group(1).strip()
+    elif "w-" in lower or "t_" in lower or "m_" in lower:
+        code_match = re.search(r'\b([TMWhW][_\-][A-Za-z0-9]+)\b', clean)
+        if code_match:
+            reference = code_match.group(1).strip()
 
     # 4. Tiers (Nom et Téléphone)
     phone_match = re.search(r'\b((?:221)?\s*(?:77|78|76|70|75)\s*\d{3}\s*\d{2}\s*\d{2})\b', clean)
@@ -482,3 +547,73 @@ def parse_soldes_multi_operateurs(texte: str, default_solde: int = 0, default_op
             soldes[default_op] = val_total
 
     return soldes
+
+
+# ==============================================================================
+# 6. PARSEUR LOCAL DES PAIEMENTS MIXTES (WAVE + CASH / OM + CASH)
+# ==============================================================================
+
+def parse_paiement_mixte_local(texte: str) -> Optional[Dict[str, Any]]:
+    """
+    Détecte et ventile les paiements mixtes courants au Sénégal :
+    - Exemples :
+      * "Vente de 35 000 : 15 000 en espèces et 20 000 par Wave"
+      * "Vente 50000 : 30000 wave et 20000 cash"
+      * "Client bi fey na 45 000 : 25 000 ci wave ak 20 000 ci loxo"
+      * "Achat marchandise 60 000 : 40 000 wave et 20 000 espèces"
+    """
+    if not texte:
+        return None
+    clean = normaliser_texte(texte)
+    lower = clean.lower()
+
+    # Doit contenir à la fois un moyen digital (Wave/OM) ET du cash/espèces
+    has_digital = any(k in lower for k in ["wave", "orange money", "om", "free money"])
+    has_cash = any(k in lower for k in ["espece", "espèces", "cash", "liquide", "caisse", "loxo", "ci loxo"])
+
+    if not (has_digital and has_cash):
+        return None
+
+    part_wave = 0
+    part_om = 0
+    part_cash = 0
+
+    # 1. Motif Wave
+    m_wave = re.search(r'(\d[\d\s\.]{1,8})\s*(?:k|mille)?\s*(?:sur|par|ci\s+|via)?\s*wave|wave\D*(\d[\d\s\.]{1,8})', lower)
+    if m_wave:
+        raw_w = m_wave.group(1) or m_wave.group(2)
+        part_wave = parse_montant_fcfa(raw_w)
+
+    # 2. Motif Orange Money
+    m_om = re.search(r'(\d[\d\s\.]{1,8})\s*(?:k|mille)?\s*(?:sur|par|ci\s+|via)?\s*(?:om|orange\s+money)|(?:om|orange\s+money)\D*(\d[\d\s\.]{1,8})', lower)
+    if m_om:
+        raw_om = m_om.group(1) or m_om.group(2)
+        part_om = parse_montant_fcfa(raw_om)
+
+    # 3. Motif Cash / Espèces
+    m_cash = re.search(r'(\d[\d\s\.]{1,8})\s*(?:k|mille)?\s*(?:en\s+|ci\s+)?(?:espece|espèces|cash|liquide|loxo)|(?:espece|espèces|cash|liquide|loxo)\D*(\d[\d\s\.]{1,8})', lower)
+    if m_cash:
+        raw_c = m_cash.group(1) or m_cash.group(2)
+        part_cash = parse_montant_fcfa(raw_c)
+
+    if (part_wave > 0 or part_om > 0) and part_cash > 0:
+        total = part_wave + part_om + part_cash
+        
+        # Détection type de flux
+        mots_achats = ["achat", "acheté", "achete", "dépense", "depense", "fournisseur", "jënd", "jend", "payé", "frais"]
+        is_sortie = any(k in lower for k in mots_achats)
+        type_flux = "SORTIE" if is_sortie else "ENTREE"
+        compte = "601" if is_sortie else "701"
+
+        return {
+            "is_mixte": True,
+            "type_flux": type_flux,
+            "total_fcfa": total,
+            "part_wave": part_wave,
+            "part_om": part_om,
+            "part_cash": part_cash,
+            "compte_syscohada": compte,
+            "libelle": f"{'Vente' if type_flux == 'ENTREE' else 'Achat'} mixte ({f'{part_wave:,.0f} Wave' if part_wave else ''} {f'+ {part_om:,.0f} OM' if part_om else ''} + {part_cash:,.0f} Espèces)"
+        }
+
+    return None
