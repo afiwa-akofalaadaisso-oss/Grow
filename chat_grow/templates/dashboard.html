@@ -8150,6 +8150,36 @@
                                     <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('year_prev')">Année 2025</button>
                                 </div>
 
+                                <!-- SAISIE D'INTERVALLE DE TEMPS PRÉCIS (AU JOUR PRÈS) -->
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; background: #f8fafc; padding: 9px 11px; border-radius: 11px; border: 1px solid #e2e8f0;">
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 4px;">
+                                            <span class="material-symbols-outlined notranslate text-[11px] text-[#168078]" translate="no">play_arrow</span> Date Début
+                                        </div>
+                                        <input type="text" id="factooCalInputDebut" placeholder="01/05/2026" maxlength="10" oninput="onFactooManualDateInput()"
+                                            style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 7px; padding: 5px 8px; font-size: 11.5px; font-weight: 700; color: #222222; background: #ffffff; outline: none; font-family: monospace; box-sizing: border-box;">
+                                    </div>
+                                    <div style="color: #94a3b8; font-weight: 800; font-size: 13px; margin-top: 14px;">→</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 9.5px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 4px;">
+                                            <span class="material-symbols-outlined notranslate text-[11px] text-[#168078]" translate="no">flag</span> Date Fin
+                                        </div>
+                                        <input type="text" id="factooCalInputFin" placeholder="31/05/2026" maxlength="10" oninput="onFactooManualDateInput()"
+                                            style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 7px; padding: 5px 8px; font-size: 11.5px; font-weight: 700; color: #222222; background: #ffffff; outline: none; font-family: monospace; box-sizing: border-box;">
+                                    </div>
+                                </div>
+
+                                <!-- BANDEAU ARCHIVAGE LÉGAL 10 ANS SYSCOHADA -->
+                                <div style="margin-bottom: 12px; padding: 7px 10px; background: #f0fdfa; border: 1px solid #a0d9d2; border-radius: 9px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
+                                        <span style="font-size: 9.5px; font-weight: 800; color: #0f766e; text-transform: uppercase; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 4px;">
+                                            <span class="material-symbols-outlined notranslate text-[12px] text-[#168078]" translate="no">archive</span> Archives Légales 10 Ans (SYSCOHADA)
+                                        </span>
+                                        <span style="font-size: 9px; color: #134e4a; font-weight: 700;">2016 — 2026</span>
+                                    </div>
+                                    <div style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 3px;" id="factooYearArchivePills"></div>
+                                </div>
+
                                 <!-- En-tête mois & année noble avec chevrons (ZÉRO balise select native OS) -->
                                 <div class="cal-header flex items-center justify-between gap-1 mb-2.5">
                                     <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)" title="Mois précédent">
@@ -17004,6 +17034,7 @@ function handleFactooTypeFilter(val) {
                 pop.style.opacity = '1';
                 if (chev) chev.style.transform = 'rotate(180deg)';
                 renderFactooCalendar();
+                renderFactooYearArchivePills();
             }
         }
 
@@ -17030,12 +17061,81 @@ function handleFactooTypeFilter(val) {
             factooCalCurrentMonth.setMonth(factooCalCurrentMonth.getMonth() + delta);
             renderFactooCalendar();
             renderFactooMonthGrid();
+            renderFactooYearArchivePills();
         }
 
         function changeFactooCalendarYear(delta) {
-            factooCalCurrentMonth.setFullYear(factooCalCurrentMonth.getFullYear() + delta);
+            const newY = factooCalCurrentMonth.getFullYear() + delta;
+            if (newY >= 2016 && newY <= 2030) {
+                factooCalCurrentMonth.setFullYear(newY);
+                renderFactooCalendar();
+                renderFactooMonthGrid();
+                renderFactooYearArchivePills();
+            }
+        }
+
+        function renderFactooYearArchivePills() {
+            const container = document.getElementById('factooYearArchivePills');
+            if (!container) return;
+            container.innerHTML = '';
+            const currentSelectedYear = factooCalCurrentMonth.getFullYear();
+            for (let y = 2026; y >= 2016; y--) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                const isSelected = (y === currentSelectedYear && factooStartDate === `${y}-01-01` && factooEndDate === `${y}-12-31`);
+                btn.className = 'cal-preset-pill' + (isSelected ? ' active' : '');
+                btn.style.whiteSpace = 'nowrap';
+                btn.style.fontSize = '10px';
+                btn.style.padding = '3px 8px';
+                btn.textContent = `Exercice ${y}`;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    selectFactooCalendarExerciseYear(y);
+                };
+                container.appendChild(btn);
+            }
+        }
+
+        function selectFactooCalendarExerciseYear(year) {
+            factooStartDate = `${year}-01-01`;
+            factooEndDate = `${year}-12-31`;
+            factooCalCurrentMonth = new Date(year, 0, 1);
             renderFactooCalendar();
-            renderFactooMonthGrid();
+            renderFactooYearArchivePills();
+            applyFactooCalendarFilter();
+        }
+
+        function onFactooManualDateInput() {
+            const inpDebut = document.getElementById('factooCalInputDebut');
+            const inpFin = document.getElementById('factooCalInputFin');
+            if (!inpDebut || !inpFin) return;
+
+            const parseToISO = (str) => {
+                if (!str) return null;
+                const parts = str.trim().split(/[\/\-.]/);
+                if (parts.length === 3) {
+                    if (parts[0].length <= 2 && parts[2].length === 4) {
+                        return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                    }
+                    if (parts[0].length === 4 && parts[2].length <= 2) {
+                        return `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
+                    }
+                }
+                return null;
+            };
+
+            const isoDebut = parseToISO(inpDebut.value);
+            const isoFin = parseToISO(inpFin.value);
+
+            if (isoDebut) {
+                factooStartDate = isoDebut;
+                const [y, m] = isoDebut.split('-');
+                factooCalCurrentMonth = new Date(parseInt(y, 10), parseInt(m, 10) - 1, 1);
+            }
+            if (isoFin) {
+                factooEndDate = isoFin;
+            }
+            renderFactooCalendar();
         }
 
         function toggleFactooMonthYearPicker() {
@@ -17157,22 +17257,36 @@ function handleFactooTypeFilter(val) {
 
         function updateFactooCalSummary() {
             const sum = document.getElementById('factooCalSummary');
-            if (!sum) return;
+            const inpDebut = document.getElementById('factooCalInputDebut');
+            const inpFin = document.getElementById('factooCalInputFin');
+
             if (factooStartDate && factooEndDate) {
                 const [y1, m1, d1] = factooStartDate.split('-');
                 const [y2, m2, d2] = factooEndDate.split('-');
-                if (factooStartDate === `${y1}-01-01` && factooEndDate === `${y1}-12-31`) {
-                    sum.textContent = `Année complète ${y1} (Exercice comptable)`;
-                } else if (factooStartDate === factooEndDate) {
-                    sum.textContent = `Date : ${d1}/${m1}/${y1}`;
-                } else {
-                    sum.textContent = `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                if (inpDebut) inpDebut.value = `${d1}/${m1}/${y1}`;
+                if (inpFin) inpFin.value = `${d2}/${m2}/${y2}`;
+                if (sum) {
+                    if (factooStartDate === `${y1}-01-01` && factooEndDate === `${y1}-12-31`) {
+                        sum.innerHTML = `<span style="color: #168078; font-weight: 800;">✓ Exercice comptable complet ${y1}</span> (${d1}/${m1}/${y1} au ${d2}/${m2}/${y2})`;
+                    } else if (factooStartDate === factooEndDate) {
+                        sum.innerHTML = `<span style="color: #168078; font-weight: 800;">✓ Date unique :</span> ${d1}/${m1}/${y1}`;
+                    } else {
+                        sum.innerHTML = `<span style="color: #168078; font-weight: 800;">✓ Intervalle :</span> Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                    }
                 }
             } else if (factooStartDate) {
                 const [y1, m1, d1] = factooStartDate.split('-');
-                sum.textContent = `Début : ${d1}/${m1}/${y1} (choisissez la date de fin)`;
+                if (inpDebut) inpDebut.value = `${d1}/${m1}/${y1}`;
+                if (inpFin) inpFin.value = '';
+                if (sum) {
+                    sum.innerHTML = `<span><strong>Date Début :</strong> ${d1}/${m1}/${y1}</span> <span style="color: #168078; font-weight: 700;">→ Cliquez la date de fin</span>`;
+                }
             } else {
-                sum.textContent = `Cliquez pour choisir une date ou période`;
+                if (inpDebut) inpDebut.value = '';
+                if (inpFin) inpFin.value = '';
+                if (sum) {
+                    sum.textContent = `Cliquez pour choisir une date ou période`;
+                }
             }
         }
 
