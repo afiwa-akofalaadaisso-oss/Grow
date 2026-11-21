@@ -125,6 +125,13 @@
                     <span id="dakarClock">Dakar 00:00 (GMT)</span>
                 </div>
 
+                <!-- Bouton Enregistrer Sortie de Caisse -->
+                <button type="button" onclick="openDepenseModal()"
+                    class="px-3 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/35 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs">
+                    <span class="material-symbols-outlined notranslate text-[16px]" translate="no">arrow_outward</span>
+                    <span>💸 Enregistrer Sortie</span>
+                </button>
+
                 <!-- Bouton Encaisser Abonnement -->
                 <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
                     class="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-xs">
@@ -163,18 +170,19 @@
                 <div class="mt-1.5 text-[11px] text-slate-400">Total entreprises sur la plateforme</div>
             </div>
 
-            <!-- 2. Caisse Perso & Abonnements Growth (Revenus du Créateur) -->
+            <!-- 2. Trésorerie & Caisse Dirigeant (Moi Dirigeant : Entrées Abos - Sorties Dépenses) -->
             <div class="growth-card p-4 sm:p-5 relative overflow-hidden group">
                 <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                    <span>Caisse Perso &amp; Abonnements</span>
-                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]" translate="no">payments</span>
+                    <span>Trésorerie &amp; Caisse Dirigeant</span>
+                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]" translate="no">account_balance_wallet</span>
                 </div>
                 <div class="mt-2.5 flex items-baseline gap-2">
                     <span class="text-2xl sm:text-3xl font-black font-mono text-[#a0d9d2]" id="kpiCaisseAbonnements">0 FCFA</span>
+                    <span class="text-[11px] text-slate-400 font-semibold" id="kpiCaisseStatut">Solde net</span>
                 </div>
                 <div class="mt-1.5 text-[11px] text-slate-400 flex items-center justify-between">
-                    <span><strong class="text-white font-mono" id="kpiAbonnesActifs">0</strong> abonné(s) payant(s)</span>
-                    <span class="text-[10.5px] text-emerald-400 font-mono font-semibold" id="kpiMrrRatio">MRR : 0 F</span>
+                    <span id="kpiEntreesSortiesDetail" class="font-mono text-[10.5px]">🟢 +0 F abos · 🔴 -0 F sorties</span>
+                    <span class="text-[10.5px] text-emerald-400 font-mono font-semibold" id="kpiAbonnesActifs">0 abonné(s)</span>
                 </div>
             </div>
 
@@ -215,17 +223,22 @@
                 <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-black/30 text-white font-mono" id="tabBadgeUsersCount">0</span>
             </button>
 
-            <!-- Onglet 2 : Caisse & Abonnements Perso -->
+            <!-- Onglet 2 : Caisse & Trésorerie Dirigeant -->
             <button type="button" onclick="switchCockpitTab('abonnements')" id="tabBtnAbonnements"
                 class="px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer flex-shrink-0">
-                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">paid</span>
-                <span>Caisse Abonnements &amp; Revenus</span>
+                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">account_balance_wallet</span>
+                <span>Caisse &amp; Trésorerie Growth</span>
                 <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-mono" id="tabBadgeCaisseCount">0 F</span>
             </button>
 
             <!-- Onglet 3 : Active Learning IA -->
             <button type="button" onclick="switchCockpitTab('learning')" id="tabBtnLearning"
                 class="px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer flex-shrink-0">
+                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">psychology</span>
+                <span>Apprentissage Continu IA</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-mono" id="tabBadgeLearningCount">0</span>
+            </button>
+        </div>
                 <span class="material-symbols-outlined notranslate text-[18px]" translate="no">psychology</span>
                 <span>Apprentissage Continu IA</span>
                 <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-mono" id="tabBadgeLearningCount">0</span>
@@ -281,50 +294,102 @@
         </section>
 
         <!-- ========================================================================= -->
-        <!-- SECTION 2 : CAISSE PERSO & ABONNEMENTS DU CRÉATEUR                       -->
+        <!-- SECTION 2 : CAISSE PERSO & TRÉSORERIE DU CRÉATEUR (ENTRÉES & SORTIES)      -->
         <!-- ========================================================================= -->
-        <section id="cockpitSectionAbonnements" class="space-y-4 hidden">
+        <section id="cockpitSectionAbonnements" class="space-y-5 hidden">
             
-            <!-- 3 Mini Cartes Récap Caisse Créateur -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                <!-- Caisse Wave -->
+            <!-- 4 Cartes Synthèse Trésorerie Growth -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                <!-- Solde Net Disponible -->
+                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-[#a0d9d2]/30">
+                    <div class="flex items-center justify-between text-slate-400 text-xs">
+                        <span class="font-bold uppercase tracking-wider text-[#a0d9d2]">Solde Net en Caisse</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#a0d9d2]/20 text-[#a0d9d2]">DISPONIBLE</span>
+                    </div>
+                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSoldeNet">0 FCFA</div>
+                    <div class="text-[11px] text-slate-400 mt-1">Trésorerie nette disponible pour le créateur</div>
+                </div>
+
+                <!-- Total Entrées Abonnements -->
                 <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-emerald-500/20">
                     <div class="flex items-center justify-between text-slate-400 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-emerald-400">Encaissements Wave</span>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300">WAVE</span>
+                        <span class="font-bold uppercase tracking-wider text-emerald-400">🟢 Entrées Abonnements</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300" id="caisseAbonnesCountBadge">0 abo(s)</span>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseWaveTotal">0 FCFA</div>
-                    <div class="text-[11px] text-slate-400 mt-1">Reçus directement sur votre compte Wave</div>
+                    <div class="text-xl sm:text-2xl font-black font-mono text-emerald-300 mt-2" id="caisseEntreesTotal">+0 FCFA</div>
+                    <div class="text-[11px] text-slate-400 mt-1" id="caisseEntreesSources">Wave: 0 F · OM: 0 F · Cash: 0 F</div>
                 </div>
 
-                <!-- Caisse Orange Money -->
-                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-orange-500/20">
+                <!-- Total Sorties & Dépenses -->
+                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-rose-500/20">
                     <div class="flex items-center justify-between text-slate-400 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-orange-400">Encaissements OM</span>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-orange-500/20 text-orange-300">OM</span>
+                        <span class="font-bold uppercase tracking-wider text-rose-400">🔴 Sorties &amp; Dépenses</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300" id="caisseSortiesCountBadge">0 sortie(s)</span>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseOmTotal">0 FCFA</div>
-                    <div class="text-[11px] text-slate-400 mt-1">Reçus sur Orange Money Sénégal</div>
+                    <div class="text-xl sm:text-2xl font-black font-mono text-rose-300 mt-2" id="caisseSortiesTotal">-0 FCFA</div>
+                    <div class="text-[11px] text-slate-400 mt-1" id="caisseSortiesSources">Wave: 0 F · OM: 0 F · Cash: 0 F</div>
                 </div>
 
-                <!-- Caisse Espèces / Direct -->
-                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-white/10">
-                    <div class="flex items-center justify-between text-slate-400 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-[#a0d9d2]">Caisse Espèces / Direct</span>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#a0d9d2]/20 text-[#a0d9d2]">CASH</span>
+                <!-- Actions Rapides Trésorerie -->
+                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-white/10 flex flex-col justify-between">
+                    <div class="text-slate-400 text-xs font-bold uppercase tracking-wider">Mouvements de Trésorerie</div>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <button type="button" onclick="openDepenseModal()"
+                            class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 flex items-center justify-center gap-1 cursor-pointer transition-all">
+                            <span class="material-symbols-outlined text-[14px]">arrow_outward</span>
+                            <span>Sortie</span>
+                        </button>
+                        <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
+                            class="btn-mint px-2.5 py-2 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1 cursor-pointer transition-all">
+                            <span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+                            <span>Entrée</span>
+                        </button>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseCashTotal">0 FCFA</div>
-                    <div class="text-[11px] text-slate-400 mt-1">Paiements physiques en main propre</div>
                 </div>
             </div>
 
-            <!-- REGISTRE DES ENCAISSEMENTS D'ABONNEMENTS -->
-            <div class="growth-card shadow-xl overflow-hidden">
+            <!-- TABLEAU 1 : REGISTRE DES SORTIES D'ARGENT ("POURQUOI C'EST SORTI") -->
+            <div class="growth-card shadow-xl overflow-hidden border border-rose-500/20">
                 <div class="px-5 py-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-black/30">
                     <div>
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[18px]">receipt_long</span>
-                            <span>Journal de Caisse des Abonnements Growth</span>
+                            <span class="material-symbols-outlined notranslate text-rose-400 text-[18px]">payments</span>
+                            <span>Sorties d'Argent &amp; Dépenses de l'Entreprise Growth</span>
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Traçabilité stricte : chaque FCFA sorti avec son <strong>motif explicite (« Pourquoi c'est sorti »)</strong> et sa catégorie</p>
+                    </div>
+                    <button type="button" onclick="openDepenseModal()"
+                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 flex items-center gap-1.5 cursor-pointer shadow-sm self-start sm:self-auto transition-all">
+                        <span class="material-symbols-outlined notranslate text-[16px]">add</span>
+                        <span>Enregistrer une Sortie</span>
+                    </button>
+                </div>
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-black/40 text-slate-400 text-[10.5px] uppercase font-bold tracking-wider border-b border-white/10">
+                                <th class="py-3 px-4">Date &amp; Heure</th>
+                                <th class="py-3 px-4">Pourquoi c'est sorti (Motif détaillé)</th>
+                                <th class="py-3 px-3">Catégorie</th>
+                                <th class="py-3 px-3 text-right">Montant Décaissé</th>
+                                <th class="py-3 px-3 text-center">Moyen Paiement</th>
+                                <th class="py-3 px-4">Bénéficiaire / Prestataire</th>
+                            </tr>
+                        </thead>
+                        <tbody id="depensesTableBody" class="divide-y divide-white/5 text-slate-300">
+                            <!-- Rempli par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TABLEAU 2 : JOURNAL DES ENCAISSEMENTS D'ABONNEMENTS -->
+            <div class="growth-card shadow-xl overflow-hidden border border-emerald-500/20">
+                <div class="px-5 py-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-black/30">
+                    <div>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined notranslate text-emerald-400 text-[18px]">receipt_long</span>
+                            <span>Journal des Entrées &amp; Abonnements Commerçants</span>
                         </h3>
                         <p class="text-[11px] text-slate-400 mt-0.5">Historique de tous les commerçants ayant payé leur abonnement mensuel</p>
                     </div>
@@ -510,6 +575,86 @@
     </div>
 
     <!-- ========================================================================= -->
+    <!-- MODALE 2BIS : ENREGISTRER UNE SORTIE D'ARGENT / DÉPENSE (POURQUOI C'EST SORTI) -->
+    <!-- ========================================================================= -->
+    <div id="modalEnregistrerDepense" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        style="display: none;">
+        <div class="growth-card max-w-lg w-full overflow-hidden shadow-2xl border border-rose-500/30">
+            <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined notranslate text-rose-400 text-[20px]" translate="no">payments</span>
+                    <h4 class="text-sm font-bold text-white">Enregistrer une Sortie d'Argent (Dépense Growth)</h4>
+                </div>
+                <button type="button" onclick="closeDepenseModal()" class="text-slate-400 hover:text-white cursor-pointer">
+                    <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
+                </button>
+            </div>
+            <div class="p-5 space-y-3.5">
+                <div>
+                    <label class="block text-[10.5px] uppercase font-bold text-rose-300 tracking-wider mb-1">
+                        Pourquoi c'est sorti ? (Motif obligatoire) *
+                    </label>
+                    <input type="text" id="depenseMotif" placeholder="Ex: Popote midi du fondateur, Hébergement Render, Forfait Free pro..."
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-rose-500/30 focus:border-rose-400 outline-none text-white font-medium">
+                    <span class="text-[10px] text-slate-400 mt-0.5 block">Indiquez la raison exacte du décaissement pour votre comptabilité.</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Montant Décaissé (FCFA) *</label>
+                        <input type="number" id="depenseMontant" placeholder="Ex: 5000"
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white font-mono font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Moyen de Paiement *</label>
+                        <select id="depenseSource"
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white cursor-pointer">
+                            <option value="WAVE">Wave Sénégal</option>
+                            <option value="ORANGE_MONEY">Orange Money</option>
+                            <option value="ESPECES">Espèces / Cash</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Catégorie de Dépense</label>
+                        <select id="depenseCategorie"
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white cursor-pointer">
+                            <option value="RETRAIT_FONDATEUR">🍲 Prélèvement Fondateur / Popote midi</option>
+                            <option value="SERVEURS_CLOUD">💻 Serveurs &amp; Hébergement (Render, Cloud)</option>
+                            <option value="API_IA">🤖 APIs IA &amp; Meta WhatsApp (Gemini, Meta)</option>
+                            <option value="TELECOMS">📱 Télécoms &amp; Forfaits Internet (Free, Orange)</option>
+                            <option value="MARKETING">📢 Publicité &amp; Marketing</option>
+                            <option value="AUTRE">🛠️ Autre frais général</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Bénéficiaire / Prestataire</label>
+                        <input type="text" id="depenseBeneficiaire" placeholder="Ex: Keur Yoff, Render, Sonatel, Fondateur"
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Note explicative / Justificatif (optionnel)</label>
+                    <input type="text" id="depenseNote" placeholder="Ex: Reçu n° 481, Facture mensuelle novembre..."
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-slate-300">
+                </div>
+            </div>
+            <div class="px-5 py-3 border-t border-white/10 bg-black/40 flex items-center justify-end gap-2">
+                <button type="button" onclick="closeDepenseModal()"
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">Annuler</button>
+                <button type="button" onclick="submitEnregistrerDepense()"
+                    class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-500 hover:bg-rose-600 text-white flex items-center gap-1.5 cursor-pointer shadow-md shadow-rose-500/20 transition-all">
+                    <span class="material-symbols-outlined notranslate text-[16px]" translate="no">check_circle</span>
+                    <span>Valider &amp; Décaisser</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
     <!-- MODALE 3 : ENSEIGNER LA RÉPONSE PARFAITE (ACTIVE LEARNING)               -->
     <!-- ========================================================================= -->
     <div id="modalTeach" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
@@ -618,12 +763,15 @@
                     document.getElementById('kpiTotalUsers').textContent = s.total_utilisateurs || 0;
                     document.getElementById('kpiActifsJour').textContent = `${s.actifs_aujourdhui || 0} actif(s) auj.`;
                     
-                    // Caisse Abonnements du Créateur
-                    const caisseMontant = s.caisse_abonnements_fcfa || 0;
-                    document.getElementById('kpiCaisseAbonnements').textContent = `${caisseMontant.toLocaleString('fr-FR')} FCFA`;
-                    document.getElementById('kpiAbonnesActifs').textContent = s.abonnes_actifs_count || 0;
-                    document.getElementById('kpiMrrRatio').textContent = `MRR : ${(s.mrr_mensuel_fcfa || 0).toLocaleString('fr-FR')} F`;
-                    document.getElementById('tabBadgeCaisseCount').textContent = `${caisseMontant.toLocaleString('fr-FR')} F`;
+                    // Caisse & Trésorerie du Créateur (Entrées - Sorties)
+                    const soldeNet = s.solde_caisse_net_fcfa !== undefined ? s.solde_caisse_net_fcfa : (s.caisse_abonnements_fcfa || 0);
+                    const totalEntrees = s.total_entrees_abos_fcfa !== undefined ? s.total_entrees_abos_fcfa : (s.caisse_abonnements_fcfa || 0);
+                    const totalSorties = s.total_sorties_depenses_fcfa || 0;
+
+                    document.getElementById('kpiCaisseAbonnements').textContent = `${soldeNet.toLocaleString('fr-FR')} FCFA`;
+                    document.getElementById('kpiEntreesSortiesDetail').textContent = `🟢 +${totalEntrees.toLocaleString('fr-FR')} F · 🔴 -${totalSorties.toLocaleString('fr-FR')} F`;
+                    document.getElementById('kpiAbonnesActifs').textContent = `${s.abonnes_actifs_count || 0} abonné(s)`;
+                    document.getElementById('tabBadgeCaisseCount').textContent = `Solde: ${soldeNet.toLocaleString('fr-FR')} F`;
 
                     document.getElementById('kpiSatisfaction').textContent = `${s.satisfaction_ia_pct || 100}%`;
                     document.getElementById('kpiVotesCounts').textContent = `👍 ${s.likes || 0} / 👎 ${s.dislikes || 0}`;
@@ -639,13 +787,21 @@
                     renderUsersTable(allUsersData);
                 }
 
-                // 3. Caisse & Abonnements détaillés
+                // 3. Caisse & Trésorerie détaillées (Entrées Abonnements & Sorties Dépenses)
                 const resAbo = await fetch('/api/createur/caisse-abonnements');
                 if (resAbo.ok) {
                     caisseData = await resAbo.json();
-                    document.getElementById('caisseWaveTotal').textContent = `${(caisseData.encaisse_wave || 0).toLocaleString('fr-FR')} FCFA`;
-                    document.getElementById('caisseOmTotal').textContent = `${(caisseData.encaisse_om || 0).toLocaleString('fr-FR')} FCFA`;
-                    document.getElementById('caisseCashTotal').textContent = `${(caisseData.encaisse_especes || 0).toLocaleString('fr-FR')} FCFA`;
+                    const solde = caisseData.solde_net_fcfa !== undefined ? caisseData.solde_net_fcfa : ((caisseData.total_encaisse_fcfa || 0) - (caisseData.total_sorties_fcfa || 0));
+                    document.getElementById('caisseSoldeNet').textContent = `${solde.toLocaleString('fr-FR')} FCFA`;
+                    document.getElementById('caisseEntreesTotal').textContent = `+${(caisseData.total_encaisse_fcfa || 0).toLocaleString('fr-FR')} FCFA`;
+                    document.getElementById('caisseSortiesTotal').textContent = `-${(caisseData.total_sorties_fcfa || 0).toLocaleString('fr-FR')} FCFA`;
+                    document.getElementById('caisseAbonnesCountBadge').textContent = `${caisseData.total_abonnes_actifs || 0} abo(s)`;
+                    document.getElementById('caisseSortiesCountBadge').textContent = `${(caisseData.depenses || []).length} sortie(s)`;
+
+                    document.getElementById('caisseEntreesSources').textContent = `Wave: ${(caisseData.encaisse_wave || 0).toLocaleString('fr-FR')} F · OM: ${(caisseData.encaisse_om || 0).toLocaleString('fr-FR')} F · Cash: ${(caisseData.encaisse_especes || 0).toLocaleString('fr-FR')} F`;
+                    document.getElementById('caisseSortiesSources').textContent = `Wave: ${(caisseData.sorties_wave || 0).toLocaleString('fr-FR')} F · OM: ${(caisseData.sorties_om || 0).toLocaleString('fr-FR')} F · Cash: ${(caisseData.sorties_especes || 0).toLocaleString('fr-FR')} F`;
+
+                    renderDepensesTable(caisseData.depenses || []);
                     renderCaisseTable(caisseData.paiements || []);
                 }
 
@@ -747,6 +903,125 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        // Rendu du tableau des dépenses et sorties d'argent ("Pourquoi c'est sorti")
+        function renderDepensesTable(items) {
+            const tbody = document.getElementById('depensesTableBody');
+            if (!tbody) return;
+
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-12 text-center text-slate-400">
+                            <span class="material-symbols-outlined notranslate text-[30px] text-slate-500 block mb-2" translate="no">receipt_long</span>
+                            <span>Aucune sortie d'argent enregistrée pour le moment. Votre trésorerie est intacte.</span>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            const catMap = {
+                'RETRAIT_FONDATEUR': { label: '🍲 Prélèvement Fondateur / Popote', cls: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
+                'SERVEURS_CLOUD': { label: '💻 Serveurs & Cloud', cls: 'bg-blue-500/15 text-blue-300 border-blue-500/30' },
+                'API_IA': { label: '🤖 APIs IA & WhatsApp', cls: 'bg-purple-500/15 text-purple-300 border-purple-500/30' },
+                'TELECOMS': { label: '📱 Télécoms & Net', cls: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30' },
+                'MARKETING': { label: '📢 Marketing & Pub', cls: 'bg-pink-500/15 text-pink-300 border-pink-500/30' },
+                'AUTRE': { label: '🛠️ Autre Dépense', cls: 'bg-slate-500/15 text-slate-300 border-slate-500/30' }
+            };
+
+            tbody.innerHTML = items.map(d => {
+                const dateStr = d.date_depense ? new Date(d.date_depense).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '--';
+                const catInfo = catMap[d.categorie] || { label: d.categorie, cls: 'bg-white/5 text-slate-300 border-white/10' };
+                let opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300">WAVE</span>';
+                if ((d.source_paiement || '').includes('ORANGE') || (d.source_paiement || '').includes('OM')) {
+                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-orange-500/20 text-orange-300">OM</span>';
+                } else if ((d.source_paiement || '').includes('ESPECES') || (d.source_paiement || '').includes('CASH')) {
+                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#a0d9d2]/20 text-[#a0d9d2]">CASH</span>';
+                }
+
+                return `
+                    <tr class="hover:bg-white/[0.02] transition-colors">
+                        <td class="py-3 px-4 font-mono text-[11px] text-slate-300 whitespace-nowrap">${dateStr}</td>
+                        <td class="py-3 px-4">
+                            <div class="font-bold text-white text-xs text-rose-200">${d.motif}</div>
+                            ${d.justificatif_note ? `<div class="text-[10px] text-slate-400 mt-0.5">${d.justificatif_note}</div>` : ''}
+                        </td>
+                        <td class="py-3 px-3">
+                            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold border ${catInfo.cls}">${catInfo.label}</span>
+                        </td>
+                        <td class="py-3 px-3 text-right font-mono font-black text-rose-400 text-xs whitespace-nowrap">
+                            -${(d.montant_fcfa || 0).toLocaleString('fr-FR')} FCFA
+                        </td>
+                        <td class="py-3 px-3 text-center">
+                            ${opBadge}
+                        </td>
+                        <td class="py-3 px-4 text-slate-300 text-[11.5px]">
+                            ${d.beneficiaire || '--'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Modale Sortie de Caisse / Dépense
+        function openDepenseModal() {
+            document.getElementById('depenseMotif').value = '';
+            document.getElementById('depenseMontant').value = '';
+            document.getElementById('depenseCategorie').value = 'RETRAIT_FONDATEUR';
+            document.getElementById('depenseSource').value = 'WAVE';
+            document.getElementById('depenseBeneficiaire').value = '';
+            document.getElementById('depenseNote').value = '';
+            document.getElementById('modalEnregistrerDepense').style.display = 'flex';
+        }
+
+        function closeDepenseModal() {
+            document.getElementById('modalEnregistrerDepense').style.display = 'none';
+        }
+
+        async function submitEnregistrerDepense() {
+            const motif = document.getElementById('depenseMotif').value.trim();
+            const montant = parseFloat(document.getElementById('depenseMontant').value || 0);
+            const categorie = document.getElementById('depenseCategorie').value;
+            const source = document.getElementById('depenseSource').value;
+            const beneficiaire = document.getElementById('depenseBeneficiaire').value.trim();
+            const note = document.getElementById('depenseNote').value.trim();
+
+            if (!motif) {
+                alert("Veuillez indiquer le motif obligatoire (« Pourquoi l'argent est sorti ? »).");
+                return;
+            }
+            if (montant <= 0) {
+                alert("Veuillez saisir un montant supérieur à 0 FCFA.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/createur/enregistrer-depense', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        motif: motif,
+                        montant_fcfa: montant,
+                        categorie: categorie,
+                        source_paiement: source,
+                        beneficiaire: beneficiaire,
+                        justificatif_note: note
+                    })
+                });
+
+                if (res.ok) {
+                    closeDepenseModal();
+                    alert(`✅ Sortie de ${montant.toLocaleString('fr-FR')} FCFA enregistrée avec succès :\n"${motif}"`);
+                    refreshCockpitData();
+                } else {
+                    const err = await res.json();
+                    alert(`Erreur: ${err.detail || 'Impossible d enregistrer la dépense.'}`);
+                }
+            } catch (err) {
+                alert("Erreur de connexion.");
+            }
         }
 
         // Rendu du tableau des encaissements d'abonnements

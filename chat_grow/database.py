@@ -172,6 +172,21 @@ def init_local_sqlite():
     """)
     cur.execute("CREATE INDEX IF NOT EXISTS idx_abo_phone ON abonnements_growth(telephone, id DESC)")
 
+    # Table des sorties et dépenses de la plateforme Growth (Pourquoi c'est sorti / Caisse Créateur)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS depenses_createur_growth (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        motif TEXT NOT NULL,
+        categorie TEXT NOT NULL DEFAULT 'AUTRE',
+        montant_fcfa REAL NOT NULL DEFAULT 0.0,
+        source_paiement TEXT NOT NULL DEFAULT 'WAVE',
+        beneficiaire TEXT,
+        date_depense TEXT NOT NULL,
+        justificatif_note TEXT
+    )
+    """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_depense_date ON depenses_createur_growth(date_depense DESC)")
+
     conn.commit()
 
     # Migration résiliente : colonne justificatif_url
@@ -1077,8 +1092,10 @@ def obtenir_stats_globales_createur() -> dict:
         except Exception as e_sptx:
             print(f"Info stats_globales Supabase tx: {e_sptx}")
 
-    # Caisse Abonnements du Créateur (Revenus réels de la plateforme Growth)
+    # Caisse Abonnements et Dépenses du Créateur (Trésorerie réelle de la plateforme Growth)
     caisse_abos = 0.0
+    total_sorties = 0.0
+    solde_caisse_net = 0.0
     abonnes_actifs_count = 0
     mrr_mensuel = 0.0
     try:
@@ -1090,6 +1107,14 @@ def obtenir_stats_globales_createur() -> dict:
             caisse_abos = float(r_caisse[0] or 0.0)
             abonnes_actifs_count = int(r_caisse[1] or 0)
             mrr_mensuel = caisse_abos
+
+        # Total des sorties et dépenses de Growth (Pourquoi c'est sorti)
+        cur.execute("SELECT COALESCE(SUM(montant_fcfa), 0) FROM depenses_createur_growth")
+        r_dep = cur.fetchone()
+        if r_dep:
+            total_sorties = float(r_dep[0] or 0.0)
+
+        solde_caisse_net = caisse_abos - total_sorties
         conn.close()
     except Exception as e_caisse:
         print(f"Info caisse_abos SQLite: {e_caisse}")
@@ -1106,7 +1131,10 @@ def obtenir_stats_globales_createur() -> dict:
         "taux_activite_pct": round((actifs_jour / total_u * 100), 1) if total_u > 0 else 0.0,
         "total_transactions": total_tx,
         "volume_total_fcfa": volume_total,
-        "caisse_abonnements_fcfa": caisse_abos,
+        "caisse_abonnements_fcfa": solde_caisse_net,
+        "total_entrees_abos_fcfa": caisse_abos,
+        "total_sorties_depenses_fcfa": total_sorties,
+        "solde_caisse_net_fcfa": solde_caisse_net,
         "abonnes_actifs_count": abonnes_actifs_count,
         "mrr_mensuel_fcfa": mrr_mensuel,
         "satisfaction_ia_pct": stats_feedback.get("satisfaction_pct", 100.0),
@@ -1118,7 +1146,7 @@ def obtenir_stats_globales_createur() -> dict:
 
 
 def obtenir_stats_caisse_abonnements() -> dict:
-    """Retourne l'état complet de la caisse abonnements du créateur et le registre des paiements."""
+    """Retourne l'état complet de la caisse créateur : entrées abonnements, sorties dépenses et solde net."""
     total_encaisse = 0.0
     encaisse_wave = 0.0
     encaisse_om = 0.0
@@ -1126,9 +1154,16 @@ def obtenir_stats_caisse_abonnements() -> dict:
     total_abonnes = 0
     paiements = []
 
+    total_sorties = 0.0
+    sorties_wave = 0.0
+    sorties_om = 0.0
+    sorties_especes = 0.0
+    depenses = []
+
     try:
         conn = get_sqlite_conn()
         cur = conn.cursor()
+        # 1. Entrées d'abonnements
         cur.execute("""
             SELECT id, telephone, nom_entreprise, plan, montant_fcfa, operateur, date_paiement, statut, reference
             FROM abonnements_growth
@@ -1159,17 +1194,53 @@ def obtenir_stats_caisse_abonnements() -> dict:
         r_cnt = cur.fetchone()
         if r_cnt:
             total_abonnes = int(r_cnt[0] or 0)
+
+        # 2. Sorties d'argent et dépenses du créateur (Pourquoi c'est sorti)
+        cur.execute("""
+            SELECT id, motif, categorie, montant_fcfa, source_paiement, beneficiaire, date_depense, justificatif_note
+            FROM depenses_createur_growth
+            ORDER BY id DESC
+        """)
+        for r in cur.fetchall():
+            m = float(r[3] or 0.0)
+            op = str(r[4] or "WAVE").upper()
+            total_sorties += m
+            if "WAVE" in op:
+                sorties_wave += m
+            elif "ORANGE" in op or "OM" in op:
+                sorties_om += m
+            else:
+                sorties_especes += m
+            depenses.append({
+                "id": r[0],
+                "motif": r[1],
+                "categorie": r[2],
+                "montant_fcfa": m,
+                "source_paiement": r[4],
+                "beneficiaire": r[5] or "--",
+                "date_depense": r[6],
+                "justificatif_note": r[7] or ""
+            })
+
         conn.close()
     except Exception as e:
         print(f"Erreur obtenir_stats_caisse_abonnements: {e}")
 
+    solde_net = total_encaisse - total_sorties
+
     return {
+        "solde_net_fcfa": solde_net,
         "total_encaisse_fcfa": total_encaisse,
+        "total_sorties_fcfa": total_sorties,
         "total_abonnes_actifs": total_abonnes,
         "encaisse_wave": encaisse_wave,
         "encaisse_om": encaisse_om,
         "encaisse_especes": encaisse_especes,
-        "paiements": paiements
+        "sorties_wave": sorties_wave,
+        "sorties_om": sorties_om,
+        "sorties_especes": sorties_especes,
+        "paiements": paiements,
+        "depenses": depenses
     }
 
 
@@ -1192,6 +1263,60 @@ def enregistrer_paiement_abonnement(telephone: str, nom_entreprise: str = "", pl
         return {"status": "error", "message": str(e)}
 
 
+def enregistrer_depense_createur(motif: str, montant_fcfa: float, categorie: str = "RETRAIT_FONDATEUR", source_paiement: str = "WAVE", beneficiaire: str = "", justificatif_note: str = "") -> dict:
+    """
+    Enregistre une sortie d'argent de l'entreprise Growth avec motif obligatoire (Pourquoi c'est sorti).
+    Catégories : RETRAIT_FONDATEUR, SERVEURS_CLOUD, API_IA, TELECOMS, MARKETING, AUTRE.
+    """
+    if not motif or not motif.strip():
+        return {"status": "error", "message": "Le motif de la sortie (pourquoi l'argent est sorti) est obligatoire."}
+    if float(montant_fcfa or 0.0) <= 0:
+        return {"status": "error", "message": "Le montant de la sortie doit être supérieur à 0 FCFA."}
+
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO depenses_createur_growth (motif, categorie, montant_fcfa, source_paiement, beneficiaire, date_depense, justificatif_note)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (motif.strip(), categorie.strip().upper(), float(montant_fcfa), source_paiement.strip().upper(), beneficiaire.strip() if beneficiaire else None, now_str, justificatif_note.strip() if justificatif_note else None))
+        conn.commit()
+        conn.close()
+        return {"status": "success", "message": f"Sortie de {float(montant_fcfa):,.0f} FCFA enregistrée : {motif.strip()}"}
+    except Exception as e:
+        print(f"Erreur enregistrer_depense_createur: {e}")
+        return {"status": "error", "message": str(e)}
+
+
+def obtenir_registre_depenses_createur() -> list:
+    """Retourne la liste complète de toutes les dépenses et sorties d'argent avec leurs motifs."""
+    depenses = []
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT id, motif, categorie, montant_fcfa, source_paiement, beneficiaire, date_depense, justificatif_note
+            FROM depenses_createur_growth
+            ORDER BY id DESC
+        """)
+        for r in cur.fetchall():
+            depenses.append({
+                "id": r[0],
+                "motif": r[1],
+                "categorie": r[2],
+                "montant_fcfa": float(r[3] or 0.0),
+                "source_paiement": r[4],
+                "beneficiaire": r[5] or "--",
+                "date_depense": r[6],
+                "justificatif_note": r[7] or ""
+            })
+        conn.close()
+    except Exception as e:
+        print(f"Erreur obtenir_registre_depenses_createur: {e}")
+    return depenses
+
+
 def reinitialiser_donnees_plateforme_a_zero() -> dict:
     """
     Réinitialise complètement la base SQLite locale et la base Supabase à zéro (Clean Slate)
@@ -1200,7 +1325,7 @@ def reinitialiser_donnees_plateforme_a_zero() -> dict:
     try:
         conn = get_sqlite_conn()
         cur = conn.cursor()
-        for t in ["transactions", "entreprises", "conversation_messages", "ai_feedback", "ai_learning_backlog", "sync_queue", "abonnements_growth"]:
+        for t in ["transactions", "entreprises", "conversation_messages", "ai_feedback", "ai_learning_backlog", "sync_queue", "abonnements_growth", "depenses_createur_growth"]:
             try:
                 cur.execute(f"DELETE FROM {t}")
             except Exception:

@@ -1765,7 +1765,7 @@ async def api_createur_reinitialiser_donnees():
 
 @app.get("/api/createur/caisse-abonnements")
 async def api_createur_caisse_abonnements():
-    """Détail complet de la caisse abonnements du créateur et registre des encaissements."""
+    """Détail complet de la caisse abonnements du créateur, sorties de caisse et solde net."""
     from chat_grow.database import obtenir_stats_caisse_abonnements
     return obtenir_stats_caisse_abonnements()
 
@@ -1790,6 +1790,36 @@ async def api_createur_encaisser_abonnement(payload: dict = Body(...)):
     update_onboarding_state(clean_p, "plan_abonnement", plan)
     update_onboarding_state(clean_p, "montant_abonnement", montant)
     return res
+
+
+@app.post("/api/createur/enregistrer-depense")
+async def api_createur_enregistrer_depense(payload: dict = Body(...)):
+    """
+    Enregistre une sortie d'argent de l'entreprise Growth avec motif obligatoire (Pourquoi c'est sorti).
+    Exemples : Popote midi, Hébergement Render, Crédit IA Gemini, Forfait Free pro.
+    """
+    from chat_grow.database import enregistrer_depense_createur
+    motif = str(payload.get("motif") or "").strip()
+    montant = float(payload.get("montant_fcfa") or 0.0)
+    categorie = str(payload.get("categorie") or "AUTRE").strip()
+    source = str(payload.get("source_paiement") or "WAVE").strip()
+    beneficiaire = str(payload.get("beneficiaire") or "").strip()
+    note = str(payload.get("justificatif_note") or "").strip()
+
+    if not motif:
+        raise HTTPException(status_code=400, detail="Le motif de la sortie d'argent est obligatoire.")
+    if montant <= 0:
+        raise HTTPException(status_code=400, detail="Le montant de la dépense doit être supérieur à 0 FCFA.")
+
+    res = enregistrer_depense_createur(motif, montant, categorie, source, beneficiaire, note)
+    return res
+
+
+@app.get("/api/createur/depenses")
+async def api_createur_depenses():
+    """Retourne la liste complète de toutes les sorties et dépenses avec motifs."""
+    from chat_grow.database import obtenir_registre_depenses_createur
+    return obtenir_registre_depenses_createur()
 
 
 @app.get("/abonnement", response_class=HTMLResponse)
