@@ -594,6 +594,42 @@
             justify-content: space-between;
             align-items: center;
         }
+
+        /* Onglets commutateurs au sein de la modale des 4 états */
+        .modal-report-nav {
+            display: flex;
+            gap: 8px;
+            padding: 10px 24px;
+            background: #0f1f33;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            overflow-x: auto;
+        }
+        .tab-rep-btn {
+            padding: 7px 13px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .tab-rep-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+        .tab-rep-btn.active {
+            background: #0e7647 !important;
+            color: #ffffff !important;
+            border-color: #0e7647 !important;
+            box-shadow: 0 2px 8px rgba(14, 118, 71, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -705,6 +741,9 @@
                     </button>
                     <button onclick="openReport('annexes')" class="btn-statement">
                         <i class="fa-solid fa-file-lines" style="color: #0e7647;"></i> Notes Annexes
+                    </button>
+                    <button onclick="openReport('tout')" class="btn-statement" style="background: #0e7647; color: white; border-color: #0e7647; font-weight: 800; box-shadow: 0 2px 8px rgba(14, 118, 71, 0.25);">
+                        <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> 📋 Liasse Complète (Les 4 États)
                     </button>
                 </div>
 
@@ -1219,6 +1258,9 @@
                     <button onclick="openReport('annexes')" class="btn-statement">
                         <i class="fa-solid fa-file-lines" style="color: #0e7647;"></i> Notes Annexes
                     </button>
+                    <button onclick="openReport('tout')" class="btn-statement" style="background: #0e7647; color: white; border-color: #0e7647; font-weight: 800; box-shadow: 0 2px 8px rgba(14, 118, 71, 0.25);">
+                        <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> 📋 Liasse Complète (Les 4 États)
+                    </button>
                 </div>
 
                 <!-- Grille des 6 Ratios Prudentiels du Cabinet -->
@@ -1707,14 +1749,37 @@
     <div id="reportModal" class="modal-report-overlay" onclick="closeReport()">
         <div class="modal-report-card" onclick="event.stopPropagation()">
             <div class="modal-report-header">
-                <h3 id="repTitle">État Financier SYSCOHADA SMT</h3>
-                <button onclick="closeReport()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
+                <div>
+                    <h3 id="repTitle" style="margin: 0; font-size: 16px; font-weight: 800;">État Financier SYSCOHADA SMT</h3>
+                    <p style="margin: 3px 0 0 0; font-size: 11.5px; color: #a0d9d2; font-weight: 600;">Dossier PME : Établissement Mamadou Diop &bull; Clôture Mensuelle 31/05/2026</p>
+                </div>
+                <button onclick="closeReport()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; line-height: 1;">&times;</button>
+            </div>
+            <!-- SÉLECTEUR RAPIDE POUR LES 4 ÉTATS & LA LIASSE COMPLÈTE -->
+            <div class="modal-report-nav">
+                <button type="button" onclick="openReport('bilan')" id="tabRepBilan" class="tab-rep-btn">
+                    <i class="fa-solid fa-scale-balanced"></i> 1. Bilan (Actif / Passif)
+                </button>
+                <button type="button" onclick="openReport('resultat')" id="tabRepResultat" class="tab-rep-btn">
+                    <i class="fa-solid fa-chart-pie"></i> 2. Compte de Résultat
+                </button>
+                <button type="button" onclick="openReport('flux')" id="tabRepFlux" class="tab-rep-btn">
+                    <i class="fa-solid fa-money-bill-transfer"></i> 3. Flux de Trésorerie
+                </button>
+                <button type="button" onclick="openReport('annexes')" id="tabRepAnnexes" class="tab-rep-btn">
+                    <i class="fa-solid fa-file-lines"></i> 4. Notes Annexes
+                </button>
+                <button type="button" onclick="openReport('tout')" id="tabRepTout" class="tab-rep-btn">
+                    <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> 📋 Liasse Complète (Les 4 États)
+                </button>
             </div>
             <div class="modal-report-body" id="repBody"></div>
             <div class="modal-report-footer">
-                <span style="font-size: 12px; font-weight: 700; color: #0e7647;">Visa Cabinet Comptable Agréé &bull; Certifié Conforme SYSCOHADA</span>
+                <span style="font-size: 12px; font-weight: 700; color: #0e7647;"><i class="fa-solid fa-certificate"></i> Visa Cabinet Comptable Agréé &bull; Certifié Conforme SYSCOHADA</span>
                 <div>
-                    <button onclick="window.print()" style="padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; font-weight: 600; cursor: pointer; margin-right: 8px;">Imprimer</button>
+                    <button onclick="window.print()" style="padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; font-weight: 600; cursor: pointer; margin-right: 8px;">
+                        <i class="fa-solid fa-print"></i> Imprimer
+                    </button>
                     <button onclick="closeReport()" style="padding: 8px 14px; border: none; border-radius: 6px; background: #0e7647; color: white; font-weight: 700; cursor: pointer;">Fermer</button>
                 </div>
             </div>
@@ -1916,6 +1981,22 @@
             const t = document.getElementById('repTitle');
             const b = document.getElementById('repBody');
 
+            // Mise à jour de la surbrillance des onglets de la modale
+            ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepTout'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            const tabMap = {
+                'bilan': 'tabRepBilan',
+                'resultat': 'tabRepResultat',
+                'flux': 'tabRepFlux',
+                'annexes': 'tabRepAnnexes',
+                'tout': 'tabRepTout'
+            };
+            if (tabMap[type] && document.getElementById(tabMap[type])) {
+                document.getElementById(tabMap[type]).classList.add('active');
+            }
+
             if (type === 'bilan') {
                 t.textContent = "1. Bilan Réglementaire SYSCOHADA SMT (Actif & Passif)";
                 b.innerHTML = `
@@ -1958,7 +2039,80 @@
                     <div style="font-size: 13px; line-height: 1.6; color: #334155;">
                         <p style="margin-bottom: 12px;"><strong>Note 1 :</strong> États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA.</p>
                         <p style="margin-bottom: 12px;"><strong>Note 2 :</strong> Amortissement des immobilisations calculé sur 5 ans en mode linéaire conforme.</p>
-                        <p><strong>Note 3 :</strong> 100% des pièces justificatives supérieures à 100 000 FCFA sont numérisées et certifiées pour transmission bancaire.</p>
+                        <p style="margin-bottom: 12px;"><strong>Note 3 :</strong> 100% des pièces justificatives supérieures à 100 000 FCFA sont numérisées et certifiées pour transmission bancaire.</p>
+                        <p><strong>Note 4 :</strong> Événements postérieurs : Aucun litige commercial ni risque de défaut constaté à la date d'arrêté des comptes.</p>
+                    </div>
+                `;
+            } else if (type === 'tout') {
+                t.textContent = "Liasse Financière Complète SYSCOHADA SMT (Les 4 États Réunis)";
+                b.innerHTML = `
+                    <div style="margin-bottom: 18px; padding: 12px 16px; background: #f0fdf4; border-left: 4px solid #0e7647; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: #0e7647; font-size: 13.5px;">📋 Liasse Annuelle &amp; Trimestrielle Consolidée</strong>
+                            <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">Dossier certifié prêt pour déclaration fiscale DGID et comités de crédit bancaires.</div>
+                        </div>
+                        <span style="font-size: 11.5px; font-weight: 800; background: #0e7647; color: white; padding: 4px 10px; border-radius: 6px;">4 / 4 ÉTATS CONFORMES</span>
+                    </div>
+
+                    <!-- 1. BILAN -->
+                    <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                        <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
+                            <span>⚖️ ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
+                            <span style="color: #a0d9d2;">TOTAL ÉQUILIBRÉ : 9 560 000 FCFA</span>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
+                            <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">ACTIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th><th style="padding: 8px 12px; text-align: left;">PASSIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Immobilisations corporelles</td><td style="padding: 8px 12px; text-align: right;">3 500 000</td><td style="padding: 8px 12px;">Capital NINEA</td><td style="padding: 8px 12px; text-align: right;">5 000 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Stocks de marchandises</td><td style="padding: 8px 12px; text-align: right;">3 100 000</td><td style="padding: 8px 12px;">Résultat net du mois (Bénéfice)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">+2 820 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Créances clients</td><td style="padding: 8px 12px; text-align: right;">1 110 000</td><td style="padding: 8px 12px;">Dettes Fournisseurs</td><td style="padding: 8px 12px; text-align: right;">1 450 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Trésorerie Wave &amp; Caisse</td><td style="padding: 8px 12px; text-align: right;">1 850 000</td><td style="padding: 8px 12px;">Dettes fiscales</td><td style="padding: 8px 12px; text-align: right;">290 000</td></tr>
+                            <tr style="background: #f0fdf4; font-weight: bold;"><td style="padding: 10px 12px; color: #0e7647;">TOTAL ACTIF</td><td style="padding: 10px 12px; text-align: right; color: #0e7647;">9 560 000 FCFA</td><td style="padding: 10px 12px; color: #0e7647;">TOTAL PASSIF</td><td style="padding: 10px 12px; text-align: right; color: #0e7647;">9 560 000 FCFA</td></tr>
+                        </table>
+                    </div>
+
+                    <!-- 2. COMPTE DE RÉSULTAT -->
+                    <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                        <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
+                            <span>📊 ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
+                            <span style="color: #4ade80;">BÉNÉFICE NET : +2 820 000 FCFA</span>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
+                            <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7)</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; font-weight: bold;">Chiffre d'Affaires (Ventes 701100)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">+14 500 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; color: #64748b;">- Achats de marchandises (601100)</td><td style="padding: 8px 12px; text-align: right; color: #e11d48;">-9 200 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9; font-weight: bold; background: #f8fafc;"><td style="padding: 8px 12px;">Marge Commerciale Brute</td><td style="padding: 8px 12px; text-align: right;">5 300 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; color: #64748b;">- Autres charges externes (Transport, Énergie)</td><td style="padding: 8px 12px; text-align: right; color: #e11d48;">-930 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; color: #64748b;">- Salaires et charges de personnel</td><td style="padding: 8px 12px; text-align: right; color: #e11d48;">-1 550 000</td></tr>
+                            <tr style="background: #0a2540; color: #4ade80; font-weight: bold;"><td style="padding: 10px 12px;">RÉSULTAT NET COMPTABLE (BÉNÉFICE)</td><td style="padding: 10px 12px; text-align: right;">+2 820 000 FCFA</td></tr>
+                        </table>
+                    </div>
+
+                    <!-- 3. FLUX DE TRÉSORERIE -->
+                    <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                        <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
+                            <span>💵 ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
+                            <span style="color: #a0d9d2;">TRÉSORERIE FINALE : 1 850 000 FCFA</span>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
+                            <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">Flux de Trésorerie</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; font-weight: bold;">Trésorerie de départ au 01/05/2026</td><td style="padding: 8px 12px; text-align: right;">1 200 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">+ Encaissements reçus (Wave + OM + Espèces)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">+13 850 000</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">- Décaissements payés (Fournisseurs + Salaires)</td><td style="padding: 8px 12px; text-align: right; color: #e11d48;">-13 200 000</td></tr>
+                            <tr style="background: #0e7647; color: white; font-weight: bold;"><td style="padding: 10px 12px;">TRÉSORERIE DE CLÔTURE AU 31/05/2026</td><td style="padding: 10px 12px; text-align: right;">1 850 000 FCFA</td></tr>
+                        </table>
+                    </div>
+
+                    <!-- 4. NOTES ANNEXES -->
+                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                        <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800;">
+                            <span>📝 ÉTAT 4 : NOTES ANNEXES &amp; MENTIONS LÉGALES</span>
+                        </div>
+                        <div style="padding: 16px; font-size: 12.5px; line-height: 1.6; color: #334155; background: #ffffff;">
+                            <p style="margin-bottom: 8px;"><strong>Note 1 — Référentiel Comptable :</strong> États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA (UEMOA).</p>
+                            <p style="margin-bottom: 8px;"><strong>Note 2 — Immobilisations :</strong> Amortissement des immobilisations corporelles calculé sur 5 ans en mode linéaire conforme.</p>
+                            <p style="margin-bottom: 8px;"><strong>Note 3 — Numérisation &amp; Valeur Probante :</strong> 100% des pièces justificatives supérieures à 100 000 FCFA sont numérisées et certifiées pour transmission bancaire.</p>
+                            <p><strong>Note 4 — Événements Postérieurs :</strong> Aucun litige commercial ni risque de défaut constaté à la date d'arrêté des comptes.</p>
+                        </div>
                     </div>
                 `;
             }
