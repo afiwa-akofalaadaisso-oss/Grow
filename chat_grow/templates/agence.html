@@ -335,42 +335,42 @@
         .financial-statements-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 10px 16px;
-            margin-bottom: 16px;
+            padding: 7px 12px;
+            margin-bottom: 14px;
             align-items: center;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
         }
 
         .statements-bar-label {
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 800;
-            color: #222222;
+            color: #475569;
             text-transform: uppercase;
             letter-spacing: 0.3px;
-            margin-right: 6px;
+            margin-right: 4px;
             white-space: nowrap;
             flex-shrink: 0;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .btn-statement {
-            padding: 7px 12px;
+            padding: 5px 9px;
             background: #f8fafc;
             border: 1.5px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 11.5px;
+            border-radius: 7px;
+            font-size: 11px;
             font-weight: 700;
             color: #1e293b;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             white-space: nowrap;
             flex-shrink: 0;
             transition: all 0.15s;
@@ -1478,26 +1478,27 @@
                 <!-- ONGLET 1 : TABLEAU DE BORD (VALIDATION PRÉ-COMPTABLE) -->
                 <div id="sectionTableau" class="agency-tab-pane" style="display: none;">
                     <div>
-                        <!-- BARRE DES 4 BOUTONS OFFICIELS ÉTATS FINANCIERS + LIASSE (100% SUR UNE SEULE LIGNE) -->
+                        <!-- BARRE DES 4 BOUTONS OFFICIELS ÉTATS FINANCIERS + LIASSE (COMPACTE, FLUIDE & ANTI-COUPURE) -->
                         <div class="financial-statements-bar">
                             <span class="statements-bar-label">
-                                <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> États Financiers :
+                                <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> États :
                             </span>
-                            <button onclick="openReport('bilan')" class="btn-statement">
-                                <i class="fa-solid fa-scale-balanced" style="color: #168078;"></i> Bilan (Actif / Passif)
+                            <button onclick="openReport('bilan')" class="btn-statement" title="1. Bilan Réglementaire (Actif / Passif)">
+                                <i class="fa-solid fa-scale-balanced" style="color: #168078;"></i> Bilan
                             </button>
-                            <button onclick="openReport('resultat')" class="btn-statement">
-                                <i class="fa-solid fa-chart-pie" style="color: #168078;"></i> Compte de Résultat
+                            <button onclick="openReport('resultat')" class="btn-statement" title="2. Compte de Résultat (Produits & Charges)">
+                                <i class="fa-solid fa-chart-pie" style="color: #168078;"></i> Résultat
                             </button>
-                            <button onclick="openReport('flux')" class="btn-statement">
-                                <i class="fa-solid fa-money-bill-transfer" style="color: #168078;"></i> Flux de Trésorerie
+                            <button onclick="openReport('flux')" class="btn-statement" title="3. Tableau des Flux de Trésorerie">
+                                <i class="fa-solid fa-money-bill-transfer" style="color: #168078;"></i> Flux
                             </button>
-                            <button onclick="openReport('annexes')" class="btn-statement">
-                                <i class="fa-solid fa-file-lines" style="color: #168078;"></i> Notes Annexes
+                            <button onclick="openReport('annexes')" class="btn-statement" title="4. Notes Annexes & Rapprochement">
+                                <i class="fa-solid fa-file-lines" style="color: #168078;"></i> Notes
                             </button>
                             <button onclick="openReport('tout')" class="btn-statement"
-                                style="background: #222222; color: #ffffff; border-color: #222222; font-weight: 800; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
-                                <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (4 États)
+                                style="background: #168078; color: #ffffff; border-color: #168078; font-weight: 800; box-shadow: 0 2px 6px rgba(22, 128, 120, 0.25);"
+                                title="Liasse Complète SYSCOHADA (Les 4 États Réunis)">
+                                <i class="fa-solid fa-layer-group" style="color: #ffffff;"></i> Liasse Complète
                             </button>
                         </div>
 
@@ -2527,24 +2528,27 @@
             </div>
             <h1 class="content-title">Reporting Financier &amp; Ratios Prudentiels</h1>
 
-            <!-- Boutons d'accès direct aux 4 états financiers -->
+            <!-- Boutons d'accès direct aux 4 états financiers (Format Compact & Fluide) -->
             <div class="financial-statements-bar" style="margin-top: 15px;">
-                <span class="statements-bar-label">États de Synthèse Officiels :</span>
-                <button onclick="openReport('bilan')" class="btn-statement">
-                    <i class="fa-solid fa-scale-balanced" style="color: #168078;"></i> Bilan (Actif / Passif)
+                <span class="statements-bar-label">
+                    <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> États :
+                </span>
+                <button onclick="openReport('bilan')" class="btn-statement" title="1. Bilan Réglementaire (Actif / Passif)">
+                    <i class="fa-solid fa-scale-balanced" style="color: #168078;"></i> Bilan
                 </button>
-                <button onclick="openReport('resultat')" class="btn-statement">
-                    <i class="fa-solid fa-chart-pie" style="color: #168078;"></i> Compte de Résultat
+                <button onclick="openReport('resultat')" class="btn-statement" title="2. Compte de Résultat (Produits & Charges)">
+                    <i class="fa-solid fa-chart-pie" style="color: #168078;"></i> Résultat
                 </button>
-                <button onclick="openReport('flux')" class="btn-statement">
-                    <i class="fa-solid fa-money-bill-transfer" style="color: #168078;"></i> Flux de Trésorerie
+                <button onclick="openReport('flux')" class="btn-statement" title="3. Tableau des Flux de Trésorerie">
+                    <i class="fa-solid fa-money-bill-transfer" style="color: #168078;"></i> Flux
                 </button>
-                <button onclick="openReport('annexes')" class="btn-statement">
-                    <i class="fa-solid fa-file-lines" style="color: #168078;"></i> Notes Annexes
+                <button onclick="openReport('annexes')" class="btn-statement" title="4. Notes Annexes & Rapprochement">
+                    <i class="fa-solid fa-file-lines" style="color: #168078;"></i> Notes
                 </button>
                 <button onclick="openReport('tout')" class="btn-statement"
-                    style="background: #222222; color: #ffffff; border-color: #222222; font-weight: 800; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
-                    <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (4 États)
+                    style="background: #168078; color: #ffffff; border-color: #168078; font-weight: 800; box-shadow: 0 2px 6px rgba(22, 128, 120, 0.25);"
+                    title="Liasse Complète SYSCOHADA (Les 4 États Réunis)">
+                    <i class="fa-solid fa-layer-group" style="color: #ffffff;"></i> Liasse Complète
                 </button>
             </div>
 
@@ -3419,9 +3423,9 @@
                     </div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                     <!-- Commutateur discret des 4 états -->
-                    <div style="display: flex; align-items: center; gap: 4px; background: #f1f5f9; padding: 3px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="display: flex; align-items: center; gap: 3px; background: #f1f5f9; padding: 3px; border-radius: 8px; border: 1px solid #e2e8f0;">
                         <button type="button" onclick="openReport('bilan')" id="tabRepBilan" class="tab-rep-btn-light">
                             1. Bilan
                         </button>
@@ -3439,6 +3443,13 @@
                         </button>
                     </div>
 
+                    <!-- Bouton Déplier les options de personnalisation -->
+                    <button type="button" onclick="toggleCustomDocFields()" id="btnToggleCustomDoc"
+                        style="padding: 6px 12px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 11.5px; font-weight: 700; color: #475569; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s;"
+                        onmouseover="this.style.borderColor='#168078'; this.style.color='#168078';" onmouseout="this.style.borderColor='#cbd5e1'; this.style.color='#475569';">
+                        <i class="fa-solid fa-sliders" style="color: #168078;"></i> <span id="customDocToggleText">Personnaliser mentions</span>
+                    </button>
+
                     <button type="button" onclick="imprimerLiasse()"
                         style="padding: 7px 14px; background: #168078; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.15s;"
                         onmouseover="this.style.background='#0f766e';" onmouseout="this.style.background='#168078';">
@@ -3451,74 +3462,140 @@
                 </div>
             </div>
 
-            <!-- VOLET DE PERSONNALISATION POUR L'EXPERT-COMPTABLE -->
+            <!-- VOLET DE PERSONNALISATION PRO (MASQUÉ PAR DÉFAUT POUR UNE VISIONNEUSE 100% PROPRE) -->
             <div class="customization-bar" id="customizationBar"
-                style="background: #f8fafc; border-bottom: 1.5px solid #e2e8f0; padding: 12px 24px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div
-                        style="font-size: 11.5px; font-weight: 800; color: #222222; text-transform: uppercase; display: flex; align-items: center; gap: 7px;">
-                        <i class="fa-solid fa-pen-to-square" style="color: #0e7647;"></i> Personnaliser le document
-                        &amp; Mentions de l'Expert-Comptable (Modifiables en direct)
+                style="display: none; background: #ffffff; border-bottom: 2px solid #e2e8f0; padding: 18px 24px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); animation: fadeInDrop 0.2s ease-out;">
+                
+                <!-- En-tête du volet -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-sliders" style="color: #168078;"></i> Personnalisation des Mentions de l'Expert-Comptable (Attestation &amp; Visa)
+                        </div>
+                        <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                            Configurez la destination du document, vos formules d'attestation et vos observations personnalisées avant impression.
+                        </div>
                     </div>
                     <button type="button" onclick="toggleCustomDocFields()"
-                        style="background: none; border: none; font-size: 11px; font-weight: 700; color: #0e7647; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                        <span id="customDocToggleText">Réduire les options</span> <i class="fa-solid fa-chevron-up"
-                            id="customDocChevron"></i>
+                        style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 700; color: #475569; cursor: pointer;">
+                        &times; Masquer le volet
                     </button>
                 </div>
 
-                <div id="customDocFields"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-top: 10px;">
+                <!-- 1. Destination Officielle & Modèles en 1 Clic -->
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 10.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.4px;">
+                        Destination officielle du document (Cliquez pour pré-remplir l'attestation appropriée) :
+                    </label>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button type="button" onclick="appliquerModeleObservation('banque')"
+                            style="padding: 6px 11px; background: #f0fdfa; border: 1.5px solid #a0d9d2; border-radius: 7px; font-size: 11px; font-weight: 700; color: #0f766e; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-building-columns"></i> 🏦 Dossier Crédit Bancaire
+                        </button>
+                        <button type="button" onclick="appliquerModeleObservation('dgid')"
+                            style="padding: 6px 11px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 7px; font-size: 11px; font-weight: 700; color: #334155; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-landmark"></i> 🏛️ Dépôt Fiscal DGID
+                        </button>
+                        <button type="button" onclick="appliquerModeleObservation('presentation')"
+                            style="padding: 6px 11px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 7px; font-size: 11px; font-weight: 700; color: #334155; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-file-signature"></i> 🔍 Mission de Présentation des Comptes
+                        </button>
+                        <button type="button" onclick="appliquerModeleObservation('interne')"
+                            style="padding: 6px 11px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 7px; font-size: 11px; font-weight: 700; color: #334155; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-chart-line"></i> 📈 Rapport de Gestion Interne / AG
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Grille de Saisie Aérée & Spacieuse -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px;">
                     <div>
-                        <label
-                            style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">Nom
-                            du Cabinet Comptable</label>
+                        <label style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 3px;">
+                            Nom du Cabinet Comptable
+                        </label>
                         <input type="text" id="customCabNom" value="Cabinet d'Expertise Comptable &amp; Audit Agréé"
                             oninput="mettreAJourDocPreview()"
-                            style="width: 100%; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; color: #0f172a; background: #ffffff;">
+                            style="width: 100%; font-size: 12px; font-weight: 700; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 7px; color: #0f172a; background: #ffffff; box-sizing: border-box;">
                     </div>
                     <div>
-                        <label
-                            style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">Signataire
-                            / Expert &amp; N° Agrément</label>
+                        <label style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 3px;">
+                            Signataire / Expert Référent &amp; N° Agrément ONECCA
+                        </label>
                         <input type="text" id="customSignataire"
                             value="M. Amadou Sow, Expert-Comptable (Agrément N° 2026-DK-98402)"
                             oninput="mettreAJourDocPreview()"
-                            style="width: 100%; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; color: #0f172a; background: #ffffff;">
+                            style="width: 100%; font-size: 12px; font-weight: 700; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 7px; color: #0f172a; background: #ffffff; box-sizing: border-box;">
                     </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 320px 1fr; gap: 14px; margin-bottom: 12px;">
                     <div>
-                        <label
-                            style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">Formule
-                            d'Attestation Officielle</label>
+                        <label style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 3px;">
+                            Formule d'Attestation Officielle
+                        </label>
                         <div class="relative inline-block" style="width: 100%; position: relative;">
                             <button type="button" id="attestationCustomBtn" onclick="toggleAttestationMenu(event)"
-                                style="width: 100%; font-size: 11.5px; font-weight: 700; padding: 7px 10px; border: 1.5px solid #a0d9d2; border-radius: 7px; color: #168078; background: #f0fdfa; display: flex; align-items: center; justify-content: space-between; cursor: pointer; text-align: left;">
+                                style="width: 100%; font-size: 11.5px; font-weight: 700; padding: 8px 12px; border: 1.5px solid #a0d9d2; border-radius: 7px; color: #168078; background: #f0fdfa; display: flex; align-items: center; justify-content: space-between; cursor: pointer; text-align: left; box-sizing: border-box;">
                                 <span id="attestationCustomLabel">Attestation sans réserve (Conforme SYSCOHADA)</span>
                                 <i class="fa-solid fa-chevron-down" style="font-size: 10px; opacity: 0.6;"></i>
                             </button>
                             <div id="attestationCustomMenu" style="display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.12); z-index: 2000; padding: 4px;">
-                                <div class="acc-option active" style="padding: 6px 8px; border-radius: 6px; cursor: pointer;" onclick="selectAttestationType('sans_reserve', 'Attestation sans réserve (Conforme SYSCOHADA)')">Attestation sans réserve (Conforme SYSCOHADA)</div>
-                                <div class="acc-option" style="padding: 6px 8px; border-radius: 6px; cursor: pointer;" onclick="selectAttestationType('coherence', 'Attestation de sincérité et cohérence des flux')">Attestation de sincérité et cohérence des flux</div>
-                                <div class="acc-option" style="padding: 6px 8px; border-radius: 6px; cursor: pointer;" onclick="selectAttestationType('presentation', 'Rapport de mission de présentation des comptes')">Rapport de mission de présentation des comptes</div>
-                                <div class="acc-option" style="padding: 6px 8px; border-radius: 6px; cursor: pointer;" onclick="selectAttestationType('reserve_stock', 'Visa avec réserve d\'inventaire physique')">Visa avec réserve d'inventaire physique</div>
+                                <div class="acc-option active" style="padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 11.5px;" onclick="selectAttestationType('sans_reserve', 'Attestation sans réserve (Conforme SYSCOHADA)')">Attestation sans réserve (Conforme SYSCOHADA)</div>
+                                <div class="acc-option" style="padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 11.5px;" onclick="selectAttestationType('coherence', 'Attestation de sincérité et cohérence des flux')">Attestation de sincérité et cohérence des flux</div>
+                                <div class="acc-option" style="padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 11.5px;" onclick="selectAttestationType('presentation', 'Rapport de mission de présentation des comptes')">Rapport de mission de présentation des comptes</div>
+                                <div class="acc-option" style="padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 11.5px;" onclick="selectAttestationType('reserve_stock', 'Visa avec réserve d\'inventaire physique')">Visa avec réserve d'inventaire physique</div>
                             </div>
                             <input type="hidden" id="customTypeAttestation" value="sans_reserve">
                         </div>
                     </div>
-                    <div style="grid-column: 1 / -1;">
-                        <label
-                            style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">Observations
-                            libres &amp; Conseils du Comptable (Imprimé sur le document)</label>
+
+                    <div>
+                        <label style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 3px;">
+                            Observations Libres &amp; Conseils du Comptable (Imprimé sur le document)
+                        </label>
                         <textarea id="customObservations" oninput="mettreAJourDocPreview()" rows="2"
                             placeholder="Écrivez ici toute remarque, conseil fiscal, appréciation pour la banque ou la DGID..."
-                            style="width: 100%; font-size: 11.5px; padding: 7px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; color: #1e293b; background: #ffffff; font-family: inherit;">Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.</textarea>
+                            style="width: 100%; font-size: 11.5px; padding: 7px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; color: #1e293b; background: #ffffff; font-family: inherit; box-sizing: border-box;">Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.</textarea>
                     </div>
-                    <div style="grid-column: 1 / -1; display: flex; gap: 8px;">
-                        <input type="text" id="customNoteExtra"
-                            placeholder="+ Ajouter une note annexe personnalisée (ex: Note 5 : Convention d'avance de trésorerie...)"
-                            oninput="mettreAJourDocPreview()"
-                            style="flex: 1; font-size: 11.5px; padding: 6px 10px; border: 1.5px dashed #cbd5e1; border-radius: 6px; background: #ffffff; color: #0f172a;">
+                </div>
+
+                <!-- 3. Notes Annexes Complémentaires Spécifiques (Raccourcis 1 Clic) -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label style="font-size: 10.5px; font-weight: 800; color: #475569; text-transform: uppercase;">
+                            Ajouter une Note Annexe Complémentaire (Explicatif OHADA SMT) :
+                        </label>
+                        <div style="display: flex; gap: 6px;">
+                            <button type="button" onclick="ajouterNotePredefinie('Note 5 — Compte Courant d\'Associé : Avance de trésorerie de 2 000 000 FCFA consentie par le dirigeant, sans intérêt et bloquée pour 12 mois.')"
+                                style="font-size: 10px; font-weight: 700; color: #168078; background: #ffffff; border: 1px solid #a0d9d2; padding: 2px 7px; border-radius: 4px; cursor: pointer;">
+                                + Avance Compte Courant
+                            </button>
+                            <button type="button" onclick="ajouterNotePredefinie('Note 5 — Concours Bancaire : Ligne de facilité de caisse de 3 000 000 FCFA accordée par la banque pour financer les approvisionnements.')"
+                                style="font-size: 10px; font-weight: 700; color: #168078; background: #ffffff; border: 1px solid #a0d9d2; padding: 2px 7px; border-radius: 4px; cursor: pointer;">
+                                + Ligne de Crédit
+                            </button>
+                            <button type="button" onclick="ajouterNotePredefinie('Note 5 — Cautions & Engagements : Garantie personnelle du gérant à hauteur de 5 000 000 FCFA en couverture du crédit d\'exploitation.')"
+                                style="font-size: 10px; font-weight: 700; color: #168078; background: #ffffff; border: 1px solid #a0d9d2; padding: 2px 7px; border-radius: 4px; cursor: pointer;">
+                                + Cautions
+                            </button>
+                        </div>
                     </div>
+                    <input type="text" id="customNoteExtra"
+                        placeholder="Ex: Note 5 : Convention d'avance de trésorerie ou litige en cours..."
+                        oninput="mettreAJourDocPreview()"
+                        style="width: 100%; font-size: 11.5px; padding: 7px 10px; border: 1.5px dashed #cbd5e1; border-radius: 6px; background: #ffffff; color: #0f172a; box-sizing: border-box;">
+                </div>
+
+                <!-- 4. Boutons d'Action du Volet -->
+                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                    <button type="button" onclick="toggleCustomDocFields()"
+                        style="padding: 7px 14px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 7px; font-size: 11.5px; font-weight: 700; color: #475569; cursor: pointer;">
+                        Fermer sans changer
+                    </button>
+                    <button type="button" onclick="toggleCustomDocFields(); showToast('Mentions officielles appliquées avec succès !');"
+                        style="padding: 7px 16px; background: #168078; color: #ffffff; border: none; border-radius: 7px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <i class="fa-solid fa-check"></i> Appliquer au Document
+                    </button>
                 </div>
             </div>
 
@@ -3528,8 +3605,9 @@
                     Visa Cabinet Comptable Agréé &bull; Certifié Conforme SYSCOHADA</span>
                 <div>
                     <button type="button" onclick="imprimerLiasse()"
-                        style="padding: 9px 18px; border: none; border-radius: 8px; background: #222222; color: #ffffff; font-weight: 800; font-size: 12.5px; cursor: pointer; margin-right: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: background 0.15s;">
-                        <i class="fa-solid fa-print" style="color: #a0d9d2; font-size: 13px;"></i> Imprimer la Liasse
+                        style="padding: 9px 18px; border: none; border-radius: 8px; background: #168078; color: #ffffff; font-weight: 800; font-size: 12.5px; cursor: pointer; margin-right: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 6px rgba(22,128,120,0.25); transition: background 0.15s;"
+                        onmouseover="this.style.background='#0f766e';" onmouseout="this.style.background='#168078';">
+                        <i class="fa-solid fa-print" style="color: #ffffff; font-size: 13px;"></i> Imprimer la Liasse
                         Officielle (A4 / PDF)
                     </button>
                     <button type="button" onclick="closeReport()"
@@ -6358,18 +6436,53 @@
 
         // 3. PERSONNALISATION DU DOCUMENT PAR L'EXPERT-COMPTABLE
         function toggleCustomDocFields() {
-            const f = document.getElementById('customDocFields');
-            const chev = document.getElementById('customDocChevron');
+            const bar = document.getElementById('customizationBar');
             const txt = document.getElementById('customDocToggleText');
-            if (!f) return;
-            if (f.style.display === 'none') {
-                f.style.display = 'grid';
-                if (chev) chev.className = 'fa-solid fa-chevron-up';
-                if (txt) txt.textContent = 'Réduire les options';
+            if (!bar) return;
+            if (bar.style.display === 'none' || !bar.style.display) {
+                bar.style.display = 'block';
+                if (txt) txt.textContent = 'Masquer options';
             } else {
-                f.style.display = 'none';
-                if (chev) chev.className = 'fa-solid fa-chevron-down';
-                if (txt) txt.textContent = 'Personnaliser le document (Cabinet, Signataire, Observations)';
+                bar.style.display = 'none';
+                if (txt) txt.textContent = 'Personnaliser mentions';
+            }
+        }
+
+        function appliquerModeleObservation(type) {
+            const obs = document.getElementById('customObservations');
+            const attLabel = document.getElementById('attestationCustomLabel');
+            const attVal = document.getElementById('customTypeAttestation');
+
+            if (type === 'banque') {
+                if (obs) obs.value = "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.";
+                if (attLabel) attLabel.textContent = "Attestation sans réserve (Conforme SYSCOHADA)";
+                if (attVal) attVal.value = "sans_reserve";
+                showToast("Modèle « Dossier Crédit Bancaire » appliqué !");
+            } else if (type === 'dgid') {
+                if (obs) obs.value = "États financiers certifiés conformes au Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA (UEMOA). Rapprochement contradictoire effectué entre relevés Wave Business, caisse espèces et pièces justificatives archivées pour les déclarations fiscales DGID.";
+                if (attLabel) attLabel.textContent = "Attestation sans réserve (Conforme SYSCOHADA)";
+                if (attVal) attVal.value = "sans_reserve";
+                showToast("Modèle « Dépôt Fiscal DGID » appliqué !");
+            } else if (type === 'presentation') {
+                if (obs) obs.value = "Rapport de mission de présentation des comptes établi à partir des pièces comptables et justificatifs transmis par le dirigeant. Aucune anomalie matérielle constatée.";
+                if (attLabel) attLabel.textContent = "Rapport de mission de présentation des comptes";
+                if (attVal) attVal.value = "presentation";
+                showToast("Modèle « Mission de Présentation » appliqué !");
+            } else if (type === 'interne') {
+                if (obs) obs.value = "Comptes annuels de synthèse établis pour les besoins de gestion interne et présentation à l'Assemblée Générale. Trésorerie d'exploitation excédentaire.";
+                if (attLabel) attLabel.textContent = "Attestation sans réserve (Conforme SYSCOHADA)";
+                if (attVal) attVal.value = "sans_reserve";
+                showToast("Modèle « Gestion Interne / AG » appliqué !");
+            }
+            mettreAJourDocPreview();
+        }
+
+        function ajouterNotePredefinie(texte) {
+            const noteInput = document.getElementById('customNoteExtra');
+            if (noteInput) {
+                noteInput.value = texte;
+                mettreAJourDocPreview();
+                showToast("Note annexe ajoutée au document !");
             }
         }
 
