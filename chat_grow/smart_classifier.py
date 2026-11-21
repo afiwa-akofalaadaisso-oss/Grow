@@ -281,55 +281,49 @@ def generer_point_flash_journee(nom_entreprise: str, txs_du_jour: list, treso_st
 
     if 7 <= h_int <= 11:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Point d'Étape du Berger (Matin & Démarrage)* 📋 :\n"
-            "Pour alimenter votre Bilan comptable en direct dès l'ouverture :\n"
-            "1. 📦 *Arrivage Stock (601)* : Avez-vous reçu ou acheté de la marchandise ce matin ?\n"
-            "2. 💼 *Dette Grossiste (401)* : Avez-vous pris du stock chez un fournisseur sans payer comptant ?\n"
-            "3. 🏗️ *Matériel & Équipements (244)* : Achat, réparation ou installation d'un outil pro (balance, frigo, étagère) ?\n"
-            "4. 🚗 *Frais du Matin (605/624)* : Transport, dockers ou carburant payés pour le réassort ?\n\n"
-            "👉 Dictez-le moi en 1 seule note vocale rapide !"
+            "\n\n🐑 *Point d'Étape du Berger (Matin)* 📋 :\n"
+            "1. 📦 Stock (601) : Arrivage de marchandise ce matin ?\n"
+            "2. 💼 Dette Fournisseur (401) : Stock pris à crédit ?\n"
+            "3. 🏗️ Matériel (244) : Achat ou réparation d'équipement ?\n"
+            "4. 🚗 Frais (605/624) : Transport, taxi ou dockers ?\n"
+            "👉 Dictez tout en 1 vocal rapide !"
         )
     elif 12 <= h_int <= 14:
         berger_nouvelles_bilan = (
             "\n\n🐑 *Point d'Étape du Berger (Mi-journée)* 📋 :\n"
-            "Pour que rien n'échappe à votre Bilan et vos comptes du jour :\n"
-            "1. 🍲 *Popote & Dépenses Maison (104)* : Avez-vous pris du cash dans la caisse pour le repas de midi ou la famille ?\n"
-            "2. 🤝 *Crédits Clients (411)* : Un client est-il parti avec de la marchandise sans payer comptant ?\n"
-            "3. 📦 *Stock & Réassort (601)* : Avez-vous acheté du stock ou payé un livreur ce midi ?\n"
-            "4. ⚡ *Charges Cash (605/661)* : Avez-vous payé des manutentionnaires, un taxi ou du carburant ?\n"
-            "5. ⚠️ *Avaries & Pertes (654)* : Marchandise abîmée, cassée ou périmée ce matin ?\n\n"
-            "👉 Un simple vocal suffit (ex: « Pris 5000 popote, Modou doit 12000, et payé 2000 taxi ») !"
+            "1. 🍲 Popote/Maison (104) : Retrait pour le repas de midi ?\n"
+            "2. 🤝 Crédits Clients (411) : Marchandise donnée à crédit ?\n"
+            "3. 📦 Stock (601) : Achat de stock payé ce midi ?\n"
+            "4. ⚡ Charges Cash (605/661) : Transport, taxi ou dockers ?\n"
+            "5. ⚠️ Avaries (654) : Marchandise abîmée ou perdue ?\n"
+            "👉 Dictez tout en 1 vocal (ex : « 5000 popote, Modou doit 12000 ») !"
         )
     elif 15 <= h_int <= 17:
         berger_nouvelles_bilan = (
             "\n\n🐑 *Point d'Étape du Berger (Après-midi)* 📋 :\n"
-            "Point de contrôle intermédiaire avant la fin de journée :\n"
-            "1. 💼 *Dettes Fournisseurs (401)* : Devez-vous de l'argent à un grossiste pour du stock pris aujourd'hui ?\n"
-            "2. 🤝 *Crédits Clients (411)* : D'autres clients ont-ils pris de la marchandise à crédit cet après-midi ?\n"
-            "3. 💳 *Règlements reçus (411)* : Un client vous a-t-il remboursé une ancienne dette ?\n"
-            "4. 🏦 *Dépôts & Trésorerie (585)* : Avez-vous versé du cash de la caisse vers votre compte Wave ou Banque ?\n\n"
-            "👉 Dites-moi tout pour ajuster immédiatement votre trésorerie et vos créances."
+            "1. 💼 Dettes Grossistes (401) : Facture en attente ?\n"
+            "2. 🤝 Crédits Clients (411) : Nouveaux crédits accordés ?\n"
+            "3. 💳 Règlements reçus (411) : Dette client remboursée ?\n"
+            "4. 🏦 Trésorerie (585) : Dépôt caisse vers Wave/Banque ?\n"
+            "👉 Un mot rapide pour ajuster votre situation en direct."
         )
     else:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Point d'Étape du Berger (Clôture & Bilan du Soir)* 📋 :\n"
-            "Avant de fermer définitivement la caisse ce soir :\n"
-            "1. 💵 *Caisse Physique (571)* : Combien avez-vous de cash réel compté dans votre tiroir ?\n"
-            "2. 🍲 *Total Popote (104)* : Y a-t-il eu d'autres sorties d'argent pour la maison ?\n"
-            "3. 🤝 *Total Crédits (411)* : Tous les clients partis avec de la marchandise sont-ils notés ?\n"
-            "4. 📸 *Justificatifs & Factures* : Avez-vous des reçus de dépenses du jour à photographier ?\n\n"
-            "👉 Validez votre caisse pour que votre Bilan bancaire soit certifié conforme aux normes SYSCOHADA !"
+            "\n\n🐑 *Point d'Étape du Berger (Clôture & Bilan)* 📋 :\n"
+            "1. 💵 Caisse Physique (571) : Cash réel compté au tiroir ?\n"
+            "2. 🍲 Total Popote (104) : Autres retraits pour la maison ?\n"
+            "3. 🤝 Crédits (411) : Tous les impayés du jour notés ?\n"
+            "4. 📸 Justificatifs : Reçus ou factures à photographier ?\n"
+            "👉 Validez votre caisse pour certifier votre Bilan !"
         )
 
     return (
         f"POINT FLASH DE {heure_actuelle} - {nom_entreprise.upper()}\n\n"
-        f"Voici la situation en direct de votre trésorerie aujourd'hui :\n\n"
+        f"Situation trésorerie en direct :\n"
         f"{wave_info_line}"
-        f"• Total recettes enregistrées : {total_in:,.0f} FCFA ({len(tx_in)} opération(s))\n"
-        f"• Total dépenses sorties : {total_out:,.0f} FCFA\n"
-        f"• Trésorerie disponible : {total_dispo:,.0f} FCFA\n"
-        f"  (Wave : {wave:,.0f} FCFA | Espèces : {especes:,.0f} FCFA" + (f" | OM : {om:,.0f} FCFA" if om > 0 else "") + ")\n"
-        f"• Certification SYSCOHADA : Flux conformes et imputés en temps réel.{berger_nouvelles_bilan}{dash_line}"
+        f"• Recettes : {total_in:,.0f} FCFA ({len(tx_in)} op.) | Dépenses : {total_out:,.0f} FCFA\n"
+        f"• Disponible : {total_dispo:,.0f} FCFA (Wave : {wave:,.0f} | Espèces : {especes:,.0f}" + (f" | OM : {om:,.0f}" if om > 0 else "") + ")\n"
+        f"• Statut : Conforme SYSCOHADA{berger_nouvelles_bilan}{dash_line}"
     )
 
 

@@ -1902,19 +1902,8 @@ async def deliver_whatsapp_response(to_phone: str, reply_text: str, with_feedbac
         # En cas d'indisponibilité audio absolue
         await send_whatsapp_message(clean_p, reply_text)
     else:
-        # Envoi texte enrichi avec boutons interactifs de feedback si le texte tient sous 950 caractères
-        buttons_feedback = [
-            {"id": "feedback_like", "title": "👍 Utile"},
-            {"id": "feedback_dislike", "title": "👎 À corriger"}
-        ]
-        if with_feedback_buttons and len(reply_text) <= 950:
-            try:
-                await send_whatsapp_interactive_buttons(clean_p, reply_text, buttons_feedback)
-                return
-            except Exception as e_btn:
-                print(f"Fallback texte sans boutons : {e_btn}")
-
-        await send_whatsapp_message(clean_p, reply_text)
+        # Envoi texte enrichi avec boutons interactifs de feedback systématiques
+        await send_whatsapp_message(clean_p, reply_text, with_buttons=with_feedback_buttons)
 
 
 @app.post("/")
@@ -4695,21 +4684,38 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
         return f"Growth a bien noté votre message : '{user_text}'. Merci !"
 
 
-async def send_whatsapp_message(to_phone: str, text: str):
-    """Envoi d'un message sur WhatsApp via l'API Cloud de Meta (robuste via urllib)."""
+DEFAULT_FEEDBACK_BUTTONS = [
+    {"id": "feedback_like", "title": "👍 Utile"},
+    {"id": "feedback_dislike", "title": "👎 À corriger"}
+]
+
+
+async def send_whatsapp_message(to_phone: str, text: str, with_buttons: bool = True):
+    """
+    Envoi d'un message sur WhatsApp via l'API Cloud de Meta (robuste via urllib).
+    Par défaut, attache SYSTÉMATIQUEMENT les boutons interactifs [👍 Utile] et [👎 À corriger]
+    pour permettre l'évaluation continue par le commerçant et l'Active Learning du créateur.
+    """
     load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
     phone_id = os.getenv("PHONE_NUMBER_ID")
 
-    if not token or not phone_id:
+    if not token or not phone_id or not to_phone or not text:
         return
 
+    formatted_text = format_grow_message(text)
+
+    # 1. Si les boutons sont demandés et que le texte tient dans la limite Meta (<= 1000 caractères)
+    if with_buttons and len(formatted_text) <= 1000:
+        await send_whatsapp_interactive_buttons(to_phone, formatted_text, DEFAULT_FEEDBACK_BUTTONS)
+        return
+
+    # 2. Envoi du texte via l'API standard texte de Meta
     url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json; charset=utf-8"
     }
-    formatted_text = format_grow_message(text)
     payload = {
         "messaging_product": "whatsapp",
         "to": to_phone,
@@ -4730,6 +4736,15 @@ async def send_whatsapp_message(to_phone: str, text: str):
             print(f"Erreur lors de l'envoi WhatsApp vers {to_phone} : {e}")
 
     await asyncio.to_thread(_sync_send)
+
+    # 3. Si le texte dépasse 1000 caractères et qu'on demandait des boutons,
+    # envoyer immédiatement une invitation de feedback avec les 2 boutons interactifs
+    if with_buttons and len(formatted_text) > 1000:
+        await send_whatsapp_interactive_buttons(
+            to_phone,
+            "📊 Évaluez cette réponse de Growth :",
+            DEFAULT_FEEDBACK_BUTTONS
+        )
 
 
 async def mark_whatsapp_message_as_read(message_id: str):
@@ -4789,7 +4804,7 @@ async def send_whatsapp_interactive_buttons(to_phone: str, text: str, buttons: l
     token = os.getenv("WHATSAPP_TOKEN")
     phone_id = os.getenv("PHONE_NUMBER_ID")
 
-    if not token or not phone_id:
+    if not token or not phone_id or not to_phone or not text:
         return
 
     url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
@@ -4837,7 +4852,22 @@ async def send_whatsapp_interactive_buttons(to_phone: str, text: str, buttons: l
                 print(f"Boutons interactifs envoyés vers {to_phone} : {resp.status}")
         except Exception as e:
             print(f"Erreur envoi boutons interactifs : {e}, repli texte")
-            asyncio.run(send_whatsapp_message(to_phone, text))
+            try:
+                raw_payload = {
+                    "messaging_product": "whatsapp",
+                    "to": to_phone,
+                    "type": "text",
+                    "text": {"body": body_text}
+                }
+                req_fallback = urllib.request.Request(
+                    url,
+                    data=json.dumps(raw_payload, ensure_ascii=False).encode("utf-8"),
+                    headers=headers
+                )
+                with urllib.request.urlopen(req_fallback, timeout=25) as resp_fb:
+                    print(f"Repli texte envoyé vers {to_phone} : {resp_fb.status}")
+            except Exception as e_fb:
+                print(f"Erreur repli texte : {e_fb}")
 
     await asyncio.to_thread(_sync_send)
 
