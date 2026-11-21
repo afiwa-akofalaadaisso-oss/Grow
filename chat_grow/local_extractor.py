@@ -402,6 +402,69 @@ def parse_operation_financiere_locale(user_text: str) -> Optional[Dict[str, Any]
     elif any(k in lower for k in ["espece", "espèces", "cash", "loxo", "ci loxo"]):
         source = "ESPECES"
 
+    # 0.bis Prélèvements personnels de l'exploitant / Popote / Famille / Maison (SYSCOHADA Compte 104)
+    # Important : Dépenses non déductibles de l'entreprise mais imputées sur la caisse privée de l'exploitant
+    mots_perso = [
+        "popote", "dépense personnelle", "depense personnelle", "dépenses personnelles",
+        "argent popote", "perso", "sama bopp", "sama bop", "pour la maison", "kër", "keur",
+        "famille", "ordonnance", "pharmacie maison", "dépense maison", "depense maison",
+        "frais maison", "scolarité", "scolarite", "fourniture scolaire", "retrait personnel",
+        "retrait perso", "khalsou kër", "xalissu kër"
+    ]
+    if any(k in lower for k in mots_perso) and not any(k in lower for k in ["loyer", "bail"]):
+        return {
+            "is_transaction": True,
+            "type_flux": "SORTIE",
+            "montant_fcfa": montant,
+            "source_paiement": source,
+            "compte_syscohada": "104",
+            "est_professionnel": False,
+            "libelle": f"Prélèvement personnel exploitant / Popote ({source})",
+            "besoin_justificatif": False
+        }
+
+    # 0.ter Virements internes de trésorerie (SYSCOHADA Compte 585)
+    # Important : Transfert neutre de compte à compte (ex: Wave vers Caisse ou Orange vers Wave)
+    mots_virement_interne = [
+        "virement interne", "transfert interne", "retrait wave pour caisse", "retrait wave pour la caisse",
+        "wave vers caisse", "caisse vers wave", "orange vers caisse", "retrait om pour caisse",
+        "alimenter la caisse", "alimenter caisse", "vers compte bancaire", "vers banque",
+        "retrait pour la caisse", "transfert de compte"
+    ]
+    is_virement = any(k in lower for k in mots_virement_interne) or (
+        any(k in lower for k in ["retrait", "virement", "transfert"]) and any(k in lower for k in ["pour la caisse", "pour caisse", "vers caisse", "vers wave", "vers orange", "alimenter caisse", "alimenter la caisse", "interne"])
+    )
+    if is_virement:
+        return {
+            "is_transaction": True,
+            "type_flux": "VIREMENT_INTERNE",
+            "montant_fcfa": montant,
+            "source_paiement": source,
+            "compte_syscohada": "585",
+            "est_professionnel": True,
+            "libelle": f"Virement interne de trésorerie ({source})",
+            "besoin_justificatif": False
+        }
+
+    # 0.quater Pertes sur stocks, avaries, vol et marchandises périmées (SYSCOHADA Compte 654)
+    mots_perte_stock = [
+        "perte de stock", "pertes de stock", "perte stock", "pertes stock", "marchandise pourrie",
+        "marchandise avariée", "marchandise abîmée", "marchandises avariées", "stock avarié",
+        "stock pourri", "produits périmés", "produit périmé", "produit perime", "jeté à la poubelle",
+        "stock jeté", "yakhou", "yakhou na", "volé", "vol de marchandise", "casse de stock"
+    ]
+    if any(k in lower for k in mots_perte_stock):
+        return {
+            "is_transaction": True,
+            "type_flux": "PERTE_STOCK",
+            "montant_fcfa": montant,
+            "source_paiement": source,
+            "compte_syscohada": "654",
+            "est_professionnel": True,
+            "libelle": f"Pertes sur stocks et avaries (SYSCOHADA 654)",
+            "besoin_justificatif": False
+        }
+
     # Type de flux & Affectation SYSCOHADA (Français & Wolof)
     # 1. Ventes (Entrées) : vente, vendu, encaissement, reçu, jaay, jaay naa, dug na, jot naa
     mots_ventes = [
@@ -617,3 +680,28 @@ def parse_paiement_mixte_local(texte: str) -> Optional[Dict[str, Any]]:
         }
 
     return None
+
+
+# ==============================================================================
+# 7. DÉTECTION DE RUPTURE DE STOCK & MARCHANDISES ÉPUISÉES (Sénégal & Wolof)
+# ==============================================================================
+
+def detecter_declaration_rupture_stock(texte: str) -> bool:
+    """
+    Détecte les déclarations d'épuisement ou de rupture de stock en Français ou Wolof :
+    - 'le stock est fini', 'plus de stock', 'rupture de stock', 'stock vide', 'stock à zéro'
+    - 'marchandise bi diekh na', 'diekh na', 'amul stock', 'stock bi diekh na'
+    """
+    if not texte:
+        return False
+    lower = normaliser_texte(texte).lower()
+    
+    mots_rupture = [
+        "le stock est fini", "stock est fini", "stock fini", "plus de stock",
+        "rupture de stock", "en rupture", "stock vide", "stock à zéro", "stock a zero",
+        "on a plus de marchandise", "je n'ai plus de stock", "il n'y a plus de stock",
+        "diekh na", "jex na", "marchandise bi diekh na", "stock bi diekh na", "amul stock",
+        "amul marchandise", "stock bi diekh"
+    ]
+    return any(k in lower for k in mots_rupture)
+

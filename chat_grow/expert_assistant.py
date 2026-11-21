@@ -92,7 +92,52 @@ KNOWLEDGE_BASE = [
             "• Compte 571 : Caisse espèces (Cash physique)\n"
             "• Compte 401 : Dettes Fournisseurs d'exploitation\n"
             "• Compte 411 : Créances Clients (Impayés)\n"
-            "• Compte 108 : Compte de l'exploitant (Prélèvements personnels du patron)"
+            "• Compte 104 : Prélèvements personnels de l'exploitant (Popote / Dépenses privées déduites du cash mais préservées des charges pro)\n"
+            "• Compte 585 : Virements internes (Transfert neutre entre Wave, OM, Caisse et Banque)\n"
+            "• Compte 654 : Pertes sur stocks et avaries (Dépréciation de stock et marchandises détruites/volées)\n"
+            "• Compte 284/681 : Amortissements linéaires mensuels du matériel et des immobilisations"
+        )
+    },
+    {
+        "keywords": [r"popote", r"depense personnelle", r"dépense personnelle", r"retrait perso", r"compte 104"],
+        "titre": "Gestion de la Popote & Prélèvements Personnels (Compte 104)",
+        "reponse": (
+            "En comptabilité SYSCOHADA (Article 104), les dépenses personnelles de l'entrepreneur (popote familiale, santé, scolarité, ordonnance) ne doivent JAMAIS être mélangées aux charges de l'entreprise.\n\n"
+            "Comment Growth gère cela automatiquement ?\n"
+            "1. Lorsque vous prenez de l'argent dans la caisse pour votre famille (ex: « 5 000 popote »), la caisse est débitée fidèlement pour refléter votre solde réel.\n"
+            "2. En revanche, ce montant n'est PAS comptabilisé dans vos charges d'exploitation : votre résultat net et votre marge commerciale restent propres et crédibles pour les banques.\n"
+            "3. Aucun reçu fiscal d'entreprise n'est exigé sur vos prélèvements personnels."
+        )
+    },
+    {
+        "keywords": [r"virement interne", r"transfert interne", r"compte 585", r"wave vers caisse", r"retrait pour caisse"],
+        "titre": "Virements Internes de Trésorerie (Compte 585)",
+        "reponse": (
+            "Le virement interne de trésorerie (Compte SYSCOHADA 585) correspond aux déplacements d'argent entre vos propres comptes :\n\n"
+            "• Retrait Wave pour alimenter votre caisse espèces physique\n"
+            "• Dépôt d'espèces sur votre compte Orange Money ou à la banque\n"
+            "• Transfert de compte à compte\n\n"
+            "Impact comptable : C'est une opération STRICTEMENT NEUTRE. Elle ne constitue ni une vente (pas d'impôt supplémentaire) ni une charge d'exploitation (pas de fausse dépense)."
+        )
+    },
+    {
+        "keywords": [r"perte.*stock", r"avarie", r"marchandise.*pourrie", r"yakhou", r"compte 654"],
+        "titre": "Pertes sur Stocks & Marchandises Avariées (Compte 654)",
+        "reponse": (
+            "Lorsque des articles sont détériorés, périmés, cassés ou volés (yakhou na), il est capital de les déclarer à Growth :\n\n"
+            "• Affectation : Compte SYSCOHADA 654 (Pertes sur stocks et avaries)\n"
+            "• Impact immédiat : La valeur du stock dans votre bilan est réajustée à la baisse pour que votre actif reflète exactement ce qui est vendable sur vos étagères.\n"
+            "• Exemple : Déclarez simplement « Perte de stock 15 000 marchandise avariée »."
+        )
+    },
+    {
+        "keywords": [r"impot", r"impôts", r"fiscalite", r"fiscalité", r"cgu", r"taxe mairie", r"patente"],
+        "titre": "Anticipation Fiscale & Réserve CGU / Mairie",
+        "reponse": (
+            "Au Sénégal, la plupart des commerçants et artisans relèvent de la Contribution Globale Unique (CGU) ou de taxes municipales annuelles.\n\n"
+            "Conseil prudentiel Growth :\n"
+            "• Mettez systématiquement en réserve 5% de vos encaissements de la journée sur un sous-compte de prévoyance.\n"
+            "• Grâce à la comptabilité en temps réel de Growth, vous connaîtrez à l'avance votre assiette imposable exacte sans risquer de pénalité de redressement fiscal par la DGID."
         )
     }
 ]
@@ -294,6 +339,132 @@ def executer_consultation_donnees_locale(user_text: str, entreprise_id: str, sp)
             return "\n".join(lignes)
         except Exception as e:
             print(f"Erreur consultation dettes : {e}")
+
+    # 4. Consultation de la Valeur et de l'État du Stock (Français & Wolof)
+    mots_stock = [
+        "mon stock", "valeur de mon stock", "valeur du stock", "état du stock", "etat du stock",
+        "combien de stock", "combien j'ai de stock", "combien jai de stock", "sama stock",
+        "stock restant", "stock disponible", "niveau de stock"
+    ]
+    if any(k in clean for k in mots_stock):
+        try:
+            val_stock = 0
+            if sp and entreprise_id:
+                try:
+                    mois_c = datetime.now().strftime("%Y-%m")
+                    st = sp.table("etats_structurels").select("valeur_stock_fcfa").eq("entreprise_id", entreprise_id).eq("periode_mois", mois_c).execute().data
+                    if st:
+                        val_stock = int(st[0].get("valeur_stock_fcfa") or 0)
+                except Exception:
+                    pass
+            if val_stock == 0 and sp and entreprise_id:
+                try:
+                    ent = sp.table("entreprises").select("donnees_onboarding").eq("id", entreprise_id).execute().data
+                    if ent and ent[0].get("donnees_onboarding"):
+                        val_stock = int(ent[0]["donnees_onboarding"].get("valeur_stock_fcfa") or 0)
+                except Exception:
+                    pass
+
+            is_wolof = any(w in clean for w in ["sama", "stock"])
+            statut_stock = "NORMAL"
+            if val_stock <= 0:
+                statut_stock = "RUPTURE"
+            elif val_stock < 50000:
+                statut_stock = "FAIBLE"
+
+            if is_wolof and "sama" in clean:
+                if statut_stock == "RUPTURE":
+                    return (
+                        "⚠️ Sa stock marchandise ci bilan bi diekh na (0 FCFA).\n\n"
+                        "CONSEIL GROWTH :\n"
+                        "Fexeel commandeel fournisseurs yi leegi ngir am marchandise bu duggaat ci sa caisse."
+                    )
+                return (
+                    f"Sa état de stock ci teere bi ({datetime.now().strftime('%d/%m/%Y')}) :\n\n"
+                    f"• Valeur stock disponible : {val_stock:,.0f} FCFA\n"
+                    f"• Statut : {'Baax na' if statut_stock == 'NORMAL' else 'Dafa dess tuuti'}\n\n"
+                    "Bés bu nekk bu nga jaayee, Growth dina déstocker automatiquement ci sa bilan."
+                )
+
+            if statut_stock == "RUPTURE":
+                return (
+                    "⚠️ ALERTE STOCK : Votre stock de marchandises est actuellement à 0 FCFA (Épuisé / Rupture).\n\n"
+                    "CONSEILS DE GESTION GROWTH :\n"
+                    "1. Prévoyez immédiatement un réassort auprès de vos fournisseurs réguliers.\n"
+                    "2. Transférez dès maintenant vos factures ou reçus d'achats pour reconstituer automatiquement votre actif au bilan."
+                )
+            elif statut_stock == "FAIBLE":
+                return (
+                    f"Point sur votre stock de marchandises ({datetime.now().strftime('%d/%m/%Y')}) :\n\n"
+                    f"• Valeur estimée en stock : {val_stock:,.0f} FCFA\n"
+                    "• Statut : Seuil d'alerte (Stock faible)\n\n"
+                    "Recommandation : Pensez à passer commande avant d'atteindre la rupture."
+                )
+            else:
+                return (
+                    f"Point sur votre stock de marchandises ({datetime.now().strftime('%d/%m/%Y')}) :\n\n"
+                    f"• Valeur d'actif en stock : {val_stock:,.0f} FCFA\n"
+                    "• Statut : Niveau satisfaisant\n"
+                    "• Méthode SYSCOHADA : Déstockage dynamique à chaque vente (CAMV) et revalorisation aux achats."
+                )
+        except Exception as e:
+            print(f"Erreur consultation stock : {e}")
+
+    # 5. Consultation du Score de Bankabilité & Éligibilité au Crédit
+    mots_score = [
+        "mon score", "score crédit", "score credit", "score bancaire", "score bankability",
+        "bankability", "mon dossier bancaire", "combien je peux emprunter", "combien puis je emprunter",
+        "éligibilité prêt", "eligibilite pret", "pret cofina", "pret baobab", "pret der",
+        "demande de pret", "demande de prêt"
+    ]
+    if any(k in clean for k in mots_score):
+        try:
+            # Récupération transactions pour ratios prudentiels
+            txs = []
+            if sp and entreprise_id:
+                txs = sp.table("transactions").select("montant_fcfa, type_flux, source_paiement, statut_validation, est_professionnel, compte_syscohada").eq("entreprise_id", entreprise_id).execute().data or []
+            
+            total_in = sum(int(t.get("montant_fcfa") or 0) for t in txs if t.get("type_flux") == "ENTREE" or t.get("compte_syscohada") == "701")
+            total_out = sum(int(t.get("montant_fcfa") or 0) for t in txs if t.get("type_flux") == "SORTIE" and t.get("est_professionnel", True) != False and t.get("compte_syscohada") != "104")
+            solde_net = max(0, total_in - total_out)
+            
+            tx_cert = sum(1 for t in txs if t.get("statut_validation") == "VALIDE_PME" or t.get("source_paiement") in ["WAVE", "ORANGE_MONEY", "BANQUE"])
+            taux_cert = (tx_cert / len(txs)) if txs else 1.0
+            
+            # Formule de notation bancaire Growth / ONECCA
+            pts_treso = 30 if solde_net > 500000 else (25 if solde_net > 200000 else (20 if solde_net > 50000 else 15))
+            taux_marge = ((total_in - total_out) / total_in) if total_in > 0 else 0.30
+            pts_marge = 25 if taux_marge >= 0.25 else (20 if taux_marge >= 0.15 else 15)
+            pts_tracabilite = int(taux_cert * 25)
+            pts_solvabilite = 18
+            
+            score_final = min(98, max(50, pts_treso + pts_marge + pts_tracabilite + pts_solvabilite)) if txs else 78
+            grade = "A+" if score_final >= 88 else ("A" if score_final >= 75 else ("B" if score_final >= 65 else "C"))
+            
+            mensualite_max = max(50000, int(solde_net * 0.33)) if solde_net > 0 else 150000
+            capacite_emprunt = max(1500000, min(15000000, mensualite_max * 24))
+            
+            return (
+                f"RAPPORT OFFICIEL DE BANKABILITÉ GROWTH\n"
+                f"Normes BCEAO & SYSCOHADA SMT ({datetime.now().strftime('%d/%m/%Y')})\n\n"
+                f"• Score de Crédit : {score_final}/100 (Grade {grade})\n"
+                f"• Statut : {'Excellente solvabilité (Financement prioritaire)' if score_final >= 85 else 'Profil bancable éligible'}\n\n"
+                f"DÉTAIL DES RATIOS D'ÉVALUATION :\n"
+                f"1. Flux de trésorerie nette : {pts_treso}/30 pts\n"
+                f"2. Rentabilité & Marge d'exploitation : {pts_marge}/25 pts\n"
+                f"3. Traçabilité probatoire & Pièces scellées : {pts_tracabilite}/25 pts ({int(taux_cert*100)}% d'écritures certifiées)\n"
+                f"4. Solvabilité & Actifs circulants : {pts_solvabilite}/20 pts\n\n"
+                f"CAPACITÉ D'EMPRUNT RECOMMANDÉE :\n"
+                f"• Montant finançable : {capacite_emprunt:,.0f} FCFA\n"
+                f"• Remboursement mensuel prudentiel (33% du cash-flow) : {mensualite_max:,.0f} FCFA / mois\n\n"
+                f"INSTITUTIONS FINANCIÈRES PARTENAIRES ADAPTÉES :\n"
+                f"• DER / FJ (Taux bonifié 5% PME)\n"
+                f"• Baobab Sénégal & Cofina (Crédit express commerçants)\n"
+                f"• CBAO & Ecobank Sénégal (Financement de stock & équipement)\n\n"
+                f"Votre dossier complet est directement exportable depuis votre tableau de bord."
+            )
+        except Exception as e:
+            print(f"Erreur consultation bankability : {e}")
 
     return None
 

@@ -219,7 +219,8 @@
     "valeur_stock_fcfa": 300000,
     "stock_description_attente": "J'ai du tissu, des pagnes et des robes",
     "materiel_description_attente": "Oui des ordinateurs",
-    "immobilisations_fcfa": 400000
+    "immobilisations_fcfa": 400000,
+    "dernier_message_envoye": "Avez-vous une visibilite sur vos ventes des 30 derniers jours ?"
   },
   "221764093183": {
     "etape": "PHASE_2_CREATION_ENTREPRISE",
@@ -240,5 +241,29 @@
     "statut": "EN_COURS",
     "abonnement_valide": true,
     "premier_contact_effectue": true
+  },
+  "221990001122": {
+    "etape": "PHASE_1_ACCUEIL",
+    "langue_preferee": null,
+    "mode_communication": "ECRIT",
+    "ninea": null,
+    "nom_entreprise": null,
+    "nom_personne_physique": null,
+    "capital": null,
+    "date_creation": null,
+    "adresse_siege": null,
+    "nombre_employes": null,
+    "operateurs": null,
+    "liste_operateurs_cles": null,
+    "immobilisations": null,
+    "valeur_equipements_fcfa": null,
+    "equipements_photo_validee": false,
+    "statut": "EN_COURS",
+    "abonnement_valide": true,
+    "premier_contact_effectue": true,
+    "plan_abonnement": "Pro",
+    "montant_abonnement": 25000,
+    "nom_entreprise_detecte": "1122",
+    "statut_operateurs": "INCONNU"
   }
 }
