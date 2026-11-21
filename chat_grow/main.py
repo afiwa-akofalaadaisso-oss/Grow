@@ -4208,6 +4208,20 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
             "Assistance Growth Dakar : 78 877 38 27 (6j/7)."
         )
 
+    # 1.6 LA CHECKLIST DU BERGER GROWTH (Contrôle proactif des flux vitaux)
+    if any(k in txt_clean for k in ["checklist", "berger", "mouton", "moutons", "pointage", "verif", "vérif", "que verifier", "que vérifier"]):
+        return (
+            "🐑 *LA CHECKLIST DU BERGER GROWTH* 📋\n\n"
+            "Comme un berger qui rassemble tous ses moutons avant la nuit, Growth veille à ce qu'aucun franc CFA n'échappe à votre bilan :\n\n"
+            "1. 💵 *Caisse physique* : Avez-vous compté le cash réel dans votre tiroir ?\n"
+            "2. 🍲 *Popote & Maison (104)* : Avez-vous pris de l'argent pour la famille aujourd'hui ?\n"
+            "3. 🤝 *Crédits Clients (411)* : Un client est-il parti avec de la marchandise sans payer ?\n"
+            "4. 📦 *Achats & Réassort (601)* : Avez-vous acheté du stock ou payé un fournisseur ?\n"
+            "5. ⚠️ *Avaries & Pertes (654)* : Avez-vous eu de la casse, du vol ou des produits avariés ?\n"
+            "6. 📸 *Preuves en attente* : Avez-vous une facture ou un reçu de dépense à photographier ?\n\n"
+            "👉 *Vous pouvez tout me dicter en 1 seule petite note vocale rapide* (ou par écrit) et Growth enregistre tout directement !"
+        )
+
     # 2. Salutations et présentations générales (ponctuation nettoyée)
     clean_no_punct = re.sub(r'[^\w\s]', '', txt_clean).strip()
     if clean_no_punct in ["bonjour", "salut", "bonsoir", "coucou", "qui es tu", "qui est tu", "cest quoi grow", "tu es qui", "aide", "help", "merci"]:
@@ -4298,6 +4312,16 @@ RÔLE D'ÉLITE EN CONSEIL DE GESTION & MENTOR D'AFFAIRES (DAKAR & SÉNÉGAL) :
   Explique-lui plutôt avec bienveillance comment Growth va l'aider concrètement (ex: "Ce n'est pas grave du tout, c'est justement la mission de Growth ! Pour que je vous calcule votre chiffre d'affaires et votre visibilité sur 30 jours, écrivez-moi simplement vos ventes ou transférez vos SMS Wave/Orange Money").
 - Si l'utilisateur demande un message pour relancer un client qui lui doit de l'argent :
   Rédige dans "reponse_whatsapp" un message WhatsApp prêt à copier-coller (courtois, respectueux de la Teranga mais très ferme et clair, rappelant le montant en FCFA et le paiement par Wave ou Orange Money).
+
+POSTURE PROACTIVE DU BERGER (POUSSER LE CLIENT À RENSEIGNER SES FLUX VITAUX) :
+- Ne reste JAMAIS passif à simplement attendre les messages du commerçant.
+- Tu agis comme un berger vigilant qui veille sur son troupeau : ton rôle est de t'assurer qu'aucun franc CFA n'échappe au bilan.
+- Si le commerçant clôture sa journée, demande un bilan ou termine un échange, relance-le avec tact et bienveillance sur la "Checklist du Berger" :
+  1. Le cash physique réel compté dans le tiroir de caisse (571)
+  2. Les prélèvements personnels pour la popote / maison / famille (104)
+  3. Les crédits accordés aux clients (411) ou dettes fournisseurs (401)
+  4. Les achats de stock réassort (601) ou avaries/pertes de marchandises (654)
+- Rappelle-lui toujours qu'en renseignant ces flux, son bilan bancaire sera 100% propre, sincère et prêt pour les banques.
 
 Retourne STRICTEMENT un objet JSON valide suivant ce format :
 {

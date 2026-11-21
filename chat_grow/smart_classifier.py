@@ -222,8 +222,7 @@ def generer_message_rituel_soir(nom_entreprise: str, txs_du_jour: list, treso_st
     if not en_attente:
         msg += (
             "Certification 100% réussie :\n"
-            f"L'intégralité de vos opérations du jour est qualifiée, justifiée et conforme aux normes SYSCOHADA.\n\n"
-            "Vos comptes sont parfaitement à jour. Bonne nuit et bon repos !"
+            f"L'intégralité de vos opérations du jour est qualifiée, justifiée et conforme aux normes SYSCOHADA.\n"
         )
     else:
         msg += (
@@ -238,8 +237,17 @@ def generer_message_rituel_soir(nom_entreprise: str, txs_du_jour: list, treso_st
         msg += (
             "\nPour tout valider d'un coup, envoyez simplement une note vocale ou un court message "
             "(exemple : « Le 1 c'est du carburant, le 2 c'est le taxi »).\n"
-            "Growth mémorise automatiquement vos fournisseurs pour vos prochaines opérations !"
         )
+
+    msg += (
+        "\n🐑 *LE POINTAGE DU BERGER (Rien ne doit échapper au bilan)* :\n"
+        "Avant de clôturer définitivement vos comptes ce soir :\n"
+        "1. 💵 *Caisse physique* : Votre cash réel en main correspond-il au solde ?\n"
+        "2. 🍲 *Popote / Famille (104)* : Avez-vous pris de l'argent dans la caisse pour la maison ?\n"
+        "3. 🤝 *Crédits clients (411)* : Quelqu'un est-il parti avec de la marchandise sans payer ?\n"
+        "4. 📦 *Stock & Pertes (601/654)* : Achat de nouveau stock ou marchandise abîmée aujourd'hui ?\n\n"
+        "👉 *Une seule petite note vocale rapide suffit* (ex: « Caisse 45 000, pris 5 000 popote, et Modou me doit 10 000 ») !"
+    )
 
     return msg
 
