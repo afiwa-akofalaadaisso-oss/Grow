@@ -879,4 +879,154 @@ def perfectionner_reponse_ia(cas_id: int, reponse_parfaite: str) -> bool:
         return False
 
 
+# ==============================================================================
+# COCKPIT CRÉATEUR & DIRECTION GROWTH : SUPERVISION UTILISATEURS & ACTIVITÉ
+# ==============================================================================
+
+def obtenir_liste_utilisateurs_createur() -> list:
+    """
+    Retourne la liste complète de tous les commerçants inscrits avec leur statut d'activité
+    en temps réel (Actif aujourd'hui, Inactif > 24h, Inactif > 3 jours) et leur volume de saisies.
+    Résilient : fusionne SQLite local et Cloud Supabase.
+    """
+    utilisateurs_map = {}
+    today_str = datetime.now().strftime("%Y-%m-%d")
+
+    # 1. Source SQLite Locale avec agrégation précise des écritures par téléphone
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT e.telephone_whatsapp,
+                   MAX(e.nom_entreprise) as nom_entreprise,
+                   MIN(COALESCE(e.date_inscription, '2026-11-21')) as date_inscription,
+                   COUNT(t.id) as total_ecritures,
+                   SUM(CASE WHEN t.created_at LIKE ? OR t.date_operation LIKE ? THEN 1 ELSE 0 END) as ecritures_jour,
+                   MAX(COALESCE(t.created_at, t.date_operation)) as dernier_flux
+            FROM entreprises e
+            LEFT JOIN transactions t ON e.id = t.entreprise_id
+            WHERE e.telephone_whatsapp IS NOT NULL AND e.telephone_whatsapp != ''
+            GROUP BY e.telephone_whatsapp
+        """, (f"{today_str}%", f"{today_str}%"))
+
+        for r in cur.fetchall():
+            tel = str(r[0]).strip()
+            utilisateurs_map[tel] = {
+                "telephone": tel,
+                "nom_entreprise": r[1] or f"Commerce {tel[-4:]}",
+                "date_inscription": r[2],
+                "total_ecritures": r[3] or 0,
+                "ecritures_jour": r[4] or 0,
+                "dernier_flux": r[5],
+                "statut_activite": "INACTIF",
+                "statut_libelle": "Inactif (> 3j)"
+            }
+        conn.close()
+    except Exception as e_sql:
+        print(f"Info obtenir_liste_utilisateurs_createur SQLite: {e_sql}")
+
+    # 2. Source Cloud Supabase (si disponible pour enrichir de nouveaux commerçants)
+    try:
+        sp = get_supabase_client()
+        if sp:
+            res = sp.table("entreprises").select("*").execute()
+            for ent in res.data or []:
+                tel = str(ent.get("telephone_whatsapp") or "").strip()
+                if not tel:
+                    continue
+                if tel not in utilisateurs_map:
+                    utilisateurs_map[tel] = {
+                        "telephone": tel,
+                        "nom_entreprise": ent.get("nom_entreprise") or f"Commerce {tel[-4:]}",
+                        "date_inscription": ent.get("created_at") or today_str,
+                        "total_ecritures": 0,
+                        "ecritures_jour": 0,
+                        "dernier_flux": None,
+                        "statut_activite": "INACTIF",
+                        "statut_libelle": "Inactif (> 3j)"
+                    }
+                else:
+                    nom_actuel = utilisateurs_map[tel].get("nom_entreprise", "")
+                    if not nom_actuel or "Commerce" in nom_actuel:
+                        utilisateurs_map[tel]["nom_entreprise"] = ent.get("nom_entreprise") or nom_actuel
+    except Exception as e_sp:
+        print(f"Info obtenir_liste_utilisateurs_createur Supabase: {e_sp}")
+
+    # 3. Calcul précis des statuts d'activité
+    now = datetime.now()
+    liste_triee = []
+    for tel, u in utilisateurs_map.items():
+        dernier = u.get("dernier_flux")
+        ecritures_jour = u.get("ecritures_jour", 0)
+
+        if ecritures_jour > 0:
+            u["statut_activite"] = "ACTIF"
+            u["statut_libelle"] = "🟢 Actif aujourd'hui"
+        elif dernier:
+            try:
+                dt = datetime.fromisoformat(str(dernier).replace("Z", "+00:00").split("+")[0])
+                delta_heures = (now - dt).total_seconds() / 3600
+                if delta_heures <= 36:
+                    u["statut_activite"] = "ATTENTION"
+                    u["statut_libelle"] = "🟡 Inactif (24h)"
+                else:
+                    u["statut_activite"] = "INACTIF"
+                    u["statut_libelle"] = "🔴 Inactif (> 3j)"
+            except Exception:
+                u["statut_activite"] = "INACTIF"
+                u["statut_libelle"] = "🔴 Inactif (> 3j)"
+        else:
+            u["statut_activite"] = "INACTIF"
+            u["statut_libelle"] = "🔴 Jamais actif"
+
+        liste_triee.append(u)
+
+    # Trier : d'abord par nombre d'écritures total décroissant, puis par statut
+    liste_triee.sort(key=lambda x: (-x["total_ecritures"], 0 if x["statut_activite"] != "ACTIF" else 1))
+    return liste_triee
+
+
+def obtenir_stats_globales_createur() -> dict:
+    """Calcule tous les KPIs globaux pour le Cockpit Créateur / Fondateur de Growth."""
+    utilisateurs = obtenir_liste_utilisateurs_createur()
+    total_u = len(utilisateurs)
+    actifs_jour = sum(1 for u in utilisateurs if u["statut_activite"] == "ACTIF")
+    inactifs = sum(1 for u in utilisateurs if u["statut_activite"] != "ACTIF")
+
+    total_tx = 0
+    volume_total = 0.0
+
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*), COALESCE(SUM(montant_fcfa), 0) FROM transactions")
+        row = cur.fetchone()
+        if row:
+            total_tx = row[0]
+            volume_total = float(row[1] or 0.0)
+        conn.close()
+    except Exception as e:
+        print(f"Info stats_globales SQLite: {e}")
+
+    stats_feedback = obtenir_stats_feedback()
+    cas_amelioration = obtenir_backlog_amelioration_ia(limit=100)
+    cas_a_ameliorer = sum(1 for c in cas_amelioration if c.get("statut") != "PERFECTIONNE")
+    cas_perfectionnes = sum(1 for c in cas_amelioration if c.get("statut") == "PERFECTIONNE")
+
+    return {
+        "total_utilisateurs": total_u,
+        "actifs_aujourdhui": actifs_jour,
+        "inactifs_a_relancer": inactifs,
+        "taux_activite_pct": round((actifs_jour / total_u * 100), 1) if total_u > 0 else 0.0,
+        "total_transactions": total_tx,
+        "volume_total_fcfa": volume_total,
+        "satisfaction_ia_pct": stats_feedback.get("satisfaction_pct", 100.0),
+        "likes": stats_feedback.get("likes", 0),
+        "dislikes": stats_feedback.get("dislikes", 0),
+        "cas_a_ameliorer": cas_a_ameliorer,
+        "cas_perfectionnes": cas_perfectionnes
+    }
+
+
+
 

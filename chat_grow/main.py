@@ -94,7 +94,9 @@ from database import (
     obtenir_stats_feedback,
     enregistrer_cas_amelioration_ia,
     obtenir_backlog_amelioration_ia,
-    perfectionner_reponse_ia
+    perfectionner_reponse_ia,
+    obtenir_liste_utilisateurs_createur,
+    obtenir_stats_globales_createur
 )
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -1684,10 +1686,71 @@ async def api_historique_injecter(payload: dict = Body(...)):
 
 
 @app.get("/agence", response_class=HTMLResponse)
-async def serve_agence_dashboard(request: Request, phone: str = None, id: str = None):
-    """Espace réservé à l'Expert-Comptable / Agence ONECCA (redirection directe vers le tableau de bord en direct)."""
-    target_phone = phone or request.query_params.get("phone") or "221788773827"
-    return RedirectResponse(url=f"/dashboard?phone={target_phone}", status_code=302)
+@app.get("/comptable", response_class=HTMLResponse)
+async def serve_agence_dashboard(request: Request):
+    """
+    Espace réservé exclusivement à l'Expert-Comptable / Agence ONECCA :
+    Accès aux dossiers comptables, liasses SYSCOHADA, grand livre et exports FEC (sans accès cockpit créateur).
+    """
+    html_path = os.path.join(TEMPLATES_DIR, "agence.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Portail Expert-Comptable en cours de chargement...</h1>", status_code=200)
+
+
+@app.get("/cockpit", response_class=HTMLResponse)
+@app.get("/admin", response_class=HTMLResponse)
+@app.get("/createur", response_class=HTMLResponse)
+async def serve_cockpit_createur():
+    """
+    Cockpit Direction & Supervision réservé exclusivement au Créateur / Fondateur de Growth.
+    Contient le suivi de l'activité des utilisateurs, la relance WhatsApp en 1 clic et l'Active Learning IA.
+    """
+    html_path = os.path.join(TEMPLATES_DIR, "cockpit_createur.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Cockpit Créateur en cours de chargement...</h1>", status_code=200)
+
+
+@app.get("/api/createur/stats")
+async def api_createur_stats():
+    """Statistiques globales de direction pour le Cockpit Créateur."""
+    return obtenir_stats_globales_createur()
+
+
+@app.get("/api/createur/utilisateurs")
+async def api_createur_utilisateurs():
+    """Liste de tous les commerçants inscrits et leur niveau d'activité en temps réel."""
+    return obtenir_liste_utilisateurs_createur()
+
+
+@app.post("/api/createur/relancer-utilisateur")
+async def api_createur_relancer_utilisateur(payload: dict = Body(...)):
+    """
+    Permet au créateur de relancer un commerçant inactif en lui envoyant
+    un message WhatsApp chaleureux du berger avec boutons interactifs.
+    """
+    telephone = str(payload.get("telephone") or "").strip()
+    nom = str(payload.get("nom_entreprise") or "Commerçant").strip()
+    message = str(payload.get("message") or "").strip()
+
+    if not telephone:
+        raise HTTPException(status_code=400, detail="Numéro de téléphone requis")
+
+    if not message:
+        message = (
+            f"🐑 Bonjour {nom} ! C'est Growth, votre copilote financier.\n\n"
+            f"Je prends de vos nouvelles : avez-vous eu des ventes, achats de stock ou dépenses aujourd'hui ?\n\n"
+            f"👉 Dictez-moi simplement une petite note vocale rapide ou écrivez vos montants pour que votre Bilan soit parfaitement à jour ce soir !"
+        )
+
+    await send_whatsapp_message(telephone, message, with_buttons=True)
+    return {
+        "status": "success",
+        "message": f"Message de relance envoyé avec succès à {nom} (+{telephone})"
+    }
 
 
 @app.get("/abonnement", response_class=HTMLResponse)
