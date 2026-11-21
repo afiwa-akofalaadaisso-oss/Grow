@@ -1763,6 +1763,35 @@ async def api_createur_reinitialiser_donnees():
     return reinitialiser_donnees_plateforme_a_zero()
 
 
+@app.get("/api/createur/caisse-abonnements")
+async def api_createur_caisse_abonnements():
+    """Détail complet de la caisse abonnements du créateur et registre des encaissements."""
+    from chat_grow.database import obtenir_stats_caisse_abonnements
+    return obtenir_stats_caisse_abonnements()
+
+
+@app.post("/api/createur/encaisser-abonnement")
+async def api_createur_encaisser_abonnement(payload: dict = Body(...)):
+    """Permet au créateur d'enregistrer et valider l'abonnement d'un client (Wave, OM, Cash)."""
+    from chat_grow.database import enregistrer_paiement_abonnement
+    phone = str(payload.get("telephone") or "").strip()
+    nom = str(payload.get("nom_entreprise") or "").strip()
+    plan = str(payload.get("plan") or "Starter").strip()
+    montant = float(payload.get("montant_fcfa") or 10000.0)
+    operateur = str(payload.get("operateur") or "WAVE").strip()
+    reference = str(payload.get("reference") or "ENCAISSEMENT_MANUEL").strip()
+
+    if not phone:
+        raise HTTPException(status_code=400, detail="Numéro de téléphone requis")
+
+    clean_p = phone.replace("+", "").replace(" ", "").strip()
+    res = enregistrer_paiement_abonnement(clean_p, nom, plan, montant, operateur, reference)
+    update_onboarding_state(clean_p, "abonnement_valide", True)
+    update_onboarding_state(clean_p, "plan_abonnement", plan)
+    update_onboarding_state(clean_p, "montant_abonnement", montant)
+    return res
+
+
 @app.get("/abonnement", response_class=HTMLResponse)
 async def serve_abonnement():
     """Page de souscription et paiement d'abonnement Growth avec template externe conforme à la charte."""
@@ -1789,6 +1818,12 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
     update_onboarding_state(clean_p, "plan_abonnement", plan)
     update_onboarding_state(clean_p, "montant_abonnement", montant)
     update_onboarding_state(clean_p, "statut", "EN_COURS")
+
+    try:
+        from chat_grow.database import enregistrer_paiement_abonnement
+        enregistrer_paiement_abonnement(clean_p, "", plan, float(montant), operateur, "WEB_ABONNEMENT")
+    except Exception as e_abo_db:
+        print(f"Info enregistrer abonnement: {e_abo_db}")
 
     sp = get_supabase()
     if sp:

@@ -156,6 +156,22 @@ def init_local_sqlite():
     """)
     cur.execute("CREATE INDEX IF NOT EXISTS idx_learn_statut ON ai_learning_backlog(statut, id DESC)")
 
+    # Table des abonnements et encaissements de la plateforme Growth (Caisse Créateur)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS abonnements_growth (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        telephone TEXT NOT NULL,
+        nom_entreprise TEXT,
+        plan TEXT NOT NULL DEFAULT 'Starter',
+        montant_fcfa REAL NOT NULL DEFAULT 10000.0,
+        operateur TEXT NOT NULL DEFAULT 'WAVE',
+        date_paiement TEXT NOT NULL,
+        statut TEXT NOT NULL DEFAULT 'PAYE',
+        reference TEXT
+    )
+    """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_abo_phone ON abonnements_growth(telephone, id DESC)")
+
     conn.commit()
 
     # Migration résiliente : colonne justificatif_url
@@ -967,13 +983,37 @@ def obtenir_liste_utilisateurs_createur() -> list:
                             utilisateurs_map[tel]["ecritures_jour"] += 1
                         if d_op and (not utilisateurs_map[tel]["dernier_flux"] or d_op > utilisateurs_map[tel]["dernier_flux"]):
                             utilisateurs_map[tel]["dernier_flux"] = d_op
+        # 3. Enrichissement avec les abonnements Growth
+        try:
+            conn = get_sqlite_conn()
+            cur = conn.cursor()
+            cur.execute("""
+                SELECT telephone, plan, montant_fcfa, date_paiement
+                FROM abonnements_growth
+                WHERE statut = 'PAYE'
+                ORDER BY id DESC
+            """)
+            for row_abo in cur.fetchall():
+                t_abo = str(row_abo[0]).strip()
+                if t_abo in utilisateurs_map and not utilisateurs_map[t_abo].get("abonnement_paye"):
+                    utilisateurs_map[t_abo]["abonnement_paye"] = True
+                    utilisateurs_map[t_abo]["abonnement_plan"] = row_abo[1]
+                    utilisateurs_map[t_abo]["abonnement_montant"] = float(row_abo[2] or 10000.0)
+                    utilisateurs_map[t_abo]["abonnement_date"] = row_abo[3]
+            conn.close()
+        except Exception:
+            pass
     except Exception as e_sp:
         print(f"Info obtenir_liste_utilisateurs_createur Supabase: {e_sp}")
 
-    # 3. Calcul précis des statuts d'activité
+    # 4. Calcul précis des statuts d'activité
     now = datetime.now()
     liste_triee = []
     for tel, u in utilisateurs_map.items():
+        if "abonnement_paye" not in u:
+            u["abonnement_paye"] = False
+            u["abonnement_plan"] = "En attente"
+            u["abonnement_montant"] = 0.0
         dernier = u.get("dernier_flux")
         ecritures_jour = u.get("ecritures_jour", 0)
 
@@ -1037,6 +1077,23 @@ def obtenir_stats_globales_createur() -> dict:
         except Exception as e_sptx:
             print(f"Info stats_globales Supabase tx: {e_sptx}")
 
+    # Caisse Abonnements du Créateur (Revenus réels de la plateforme Growth)
+    caisse_abos = 0.0
+    abonnes_actifs_count = 0
+    mrr_mensuel = 0.0
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT COALESCE(SUM(montant_fcfa), 0), COUNT(DISTINCT telephone) FROM abonnements_growth WHERE statut='PAYE'")
+        r_caisse = cur.fetchone()
+        if r_caisse:
+            caisse_abos = float(r_caisse[0] or 0.0)
+            abonnes_actifs_count = int(r_caisse[1] or 0)
+            mrr_mensuel = caisse_abos
+        conn.close()
+    except Exception as e_caisse:
+        print(f"Info caisse_abos SQLite: {e_caisse}")
+
     stats_feedback = obtenir_stats_feedback()
     cas_amelioration = obtenir_backlog_amelioration_ia(limit=100)
     cas_a_ameliorer = sum(1 for c in cas_amelioration if c.get("statut") != "PERFECTIONNE")
@@ -1049,12 +1106,90 @@ def obtenir_stats_globales_createur() -> dict:
         "taux_activite_pct": round((actifs_jour / total_u * 100), 1) if total_u > 0 else 0.0,
         "total_transactions": total_tx,
         "volume_total_fcfa": volume_total,
+        "caisse_abonnements_fcfa": caisse_abos,
+        "abonnes_actifs_count": abonnes_actifs_count,
+        "mrr_mensuel_fcfa": mrr_mensuel,
         "satisfaction_ia_pct": stats_feedback.get("satisfaction_pct", 100.0),
         "likes": stats_feedback.get("likes", 0),
         "dislikes": stats_feedback.get("dislikes", 0),
         "cas_a_ameliorer": cas_a_ameliorer,
         "cas_perfectionnes": cas_perfectionnes
     }
+
+
+def obtenir_stats_caisse_abonnements() -> dict:
+    """Retourne l'état complet de la caisse abonnements du créateur et le registre des paiements."""
+    total_encaisse = 0.0
+    encaisse_wave = 0.0
+    encaisse_om = 0.0
+    encaisse_especes = 0.0
+    total_abonnes = 0
+    paiements = []
+
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT id, telephone, nom_entreprise, plan, montant_fcfa, operateur, date_paiement, statut, reference
+            FROM abonnements_growth
+            ORDER BY id DESC
+        """)
+        for r in cur.fetchall():
+            m = float(r[4] or 0.0)
+            op = str(r[5] or "WAVE").upper()
+            total_encaisse += m
+            if "WAVE" in op:
+                encaisse_wave += m
+            elif "ORANGE" in op or "OM" in op:
+                encaisse_om += m
+            else:
+                encaisse_especes += m
+            paiements.append({
+                "id": r[0],
+                "telephone": r[1],
+                "nom_entreprise": r[2] or f"Commerce {r[1][-4:]}",
+                "plan": r[3],
+                "montant_fcfa": m,
+                "operateur": r[5],
+                "date_paiement": r[6],
+                "statut": r[7],
+                "reference": r[8] or "--"
+            })
+        cur.execute("SELECT COUNT(DISTINCT telephone) FROM abonnements_growth WHERE statut='PAYE'")
+        r_cnt = cur.fetchone()
+        if r_cnt:
+            total_abonnes = int(r_cnt[0] or 0)
+        conn.close()
+    except Exception as e:
+        print(f"Erreur obtenir_stats_caisse_abonnements: {e}")
+
+    return {
+        "total_encaisse_fcfa": total_encaisse,
+        "total_abonnes_actifs": total_abonnes,
+        "encaisse_wave": encaisse_wave,
+        "encaisse_om": encaisse_om,
+        "encaisse_especes": encaisse_especes,
+        "paiements": paiements
+    }
+
+
+def enregistrer_paiement_abonnement(telephone: str, nom_entreprise: str = "", plan: str = "Starter", montant_fcfa: float = 10000.0, operateur: str = "WAVE", reference: str = "") -> dict:
+    """Enregistre un encaissement d'abonnement dans la caisse du créateur."""
+    clean_p = str(telephone).replace("+", "").replace(" ", "").strip()
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO abonnements_growth (telephone, nom_entreprise, plan, montant_fcfa, operateur, date_paiement, statut, reference)
+            VALUES (?, ?, ?, ?, ?, ?, 'PAYE', ?)
+        """, (clean_p, nom_entreprise, plan, float(montant_fcfa), operateur.upper(), now_str, reference))
+        conn.commit()
+        conn.close()
+        return {"status": "success", "message": f"Abonnement {plan} de {montant_fcfa:,.0f} FCFA encaissé avec succès."}
+    except Exception as e:
+        print(f"Erreur enregistrer_paiement_abonnement: {e}")
+        return {"status": "error", "message": str(e)}
 
 
 def reinitialiser_donnees_plateforme_a_zero() -> dict:
@@ -1065,7 +1200,7 @@ def reinitialiser_donnees_plateforme_a_zero() -> dict:
     try:
         conn = get_sqlite_conn()
         cur = conn.cursor()
-        for t in ["transactions", "entreprises", "conversation_messages", "ai_feedback", "ai_learning_backlog", "sync_queue"]:
+        for t in ["transactions", "entreprises", "conversation_messages", "ai_feedback", "ai_learning_backlog", "sync_queue", "abonnements_growth"]:
             try:
                 cur.execute(f"DELETE FROM {t}")
             except Exception:
