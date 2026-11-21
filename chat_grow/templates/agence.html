@@ -210,7 +210,7 @@
             padding: 20px 16px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             gap: 20px;
             position: sticky;
             top: 0;
@@ -822,6 +822,25 @@
                         <i class="fa-solid fa-user-shield" style="font-size: 13px;"></i>
                         <span>Accès Sécurisé</span>
                     </a>
+                </div>
+            </div>
+
+            <!-- Entreprise Active Sélectionnée (Coin inférieur de la Sidebar) -->
+            <div id="sidebarActivePmeCard" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px; margin-top: auto;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="font-size: 10px; font-weight: 800; color: #0e7647; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px;">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+                        Dossier Actif
+                    </span>
+                    <a href="javascript:void(0)" onclick="switchAgencyTab('pme')" style="font-size: 11px; color: #0e7647; font-weight: 700; text-decoration: none;" title="Changer d'entreprise">
+                        Changer
+                    </a>
+                </div>
+                <div id="sidebarActivePmeName" style="font-size: 13px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="Établissement Mamadou Diop">
+                    Établissement Mamadou Diop
+                </div>
+                <div id="sidebarActivePmeDetails" style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                    SYSCOHADA SMT &bull; Marché Sandaga
                 </div>
             </div>
         </aside>
@@ -2753,9 +2772,26 @@
             }
         }
 
+        const PMES_CONFIG = {
+            'Établissement Mamadou Diop': { regime: 'SYSCOHADA SMT', ville: 'Marché Sandaga' },
+            'Boutique Touba Électronique': { regime: 'SYSCOHADA SMT', ville: 'Colobane' },
+            'Pressing Moderne Dakar': { regime: 'SYSCOHADA SMT', ville: 'Almadies' },
+            'Atelier Fatou Ndiaye Couture': { regime: 'SYSCOHADA SMT', ville: 'Médina' },
+            'Transports Express Yoff SARL': { regime: 'SYSCOHADA NORMAL', ville: 'Yoff Tonghor' }
+        };
+
         function selectionnerPmeDossier(nom) {
-            alert(`📂 Dossier « ${nom} » chargé dans votre espace de validation.`);
             switchAgencyTab('tableau');
+            const sideName = document.getElementById('sidebarActivePmeName');
+            if (sideName) {
+                sideName.textContent = nom;
+                sideName.title = nom;
+            }
+            const sideDetails = document.getElementById('sidebarActivePmeDetails');
+            if (sideDetails) {
+                const conf = PMES_CONFIG[nom] || { regime: 'SYSCOHADA SMT', ville: 'Dakar' };
+                sideDetails.innerHTML = `${conf.regime} &bull; ${conf.ville}`;
+            }
             const selector = document.querySelector('.pme-badge-selector');
             if (selector) {
                 selector.innerHTML = `Nom de la PME : <strong style="color: #0e7647;">${nom}</strong> &bull; Mai 2026`;
