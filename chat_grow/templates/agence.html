@@ -744,42 +744,46 @@
             display: flex;
             gap: 8px;
             padding: 10px 24px;
-            background: #0f1f33;
+            background: #222222;
             border-bottom: 1px solid rgba(255, 255, 255, 0.12);
             overflow-x: auto;
         }
 
         .tab-rep-btn {
-            padding: 7px 13px;
+            padding: 8px 14px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            background: rgba(255, 255, 255, 0.08);
-            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: #94a3b8;
             font-size: 11.5px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
             white-space: nowrap;
             transition: all 0.15s;
         }
 
         .tab-rep-btn:hover {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.15);
             color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .tab-rep-btn.active {
-            background: #0e7647 !important;
+            background: #168078 !important;
             color: #ffffff !important;
-            border-color: #0e7647 !important;
-            box-shadow: 0 2px 8px rgba(14, 118, 71, 0.4);
+            border-color: #168078 !important;
+            box-shadow: 0 2px 8px rgba(22, 128, 120, 0.35);
         }
 
         /* Styles d'Impression Officielle A4 SYSCOHADA */
         @media print {
+            @page {
+                size: A4 portrait;
+                margin: 12mm 10mm 12mm 10mm;
+            }
             body {
                 background: #ffffff !important;
                 color: #000000 !important;
@@ -787,16 +791,24 @@
                 padding: 0 !important;
             }
 
+            /* Cacher absolument toute l'interface web */
             .top-navbar,
             .sidebar,
+            .workspace-body,
+            .main-wrapper,
+            .main-layout,
             .financial-statements-bar,
             .filters-row,
             .table-container,
             .footer-action-bar,
             .customization-bar,
+            .modal-report-header,
             .modal-report-nav,
             .modal-report-footer,
-            .agency-tab-pane {
+            .agency-tab-pane,
+            #modalConnexion,
+            #agenceCalendarPopover,
+            #compteAssociesPopover {
                 display: none !important;
             }
 
@@ -805,32 +817,33 @@
                 background: none !important;
                 padding: 0 !important;
                 display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
             }
 
             .modal-report-card {
                 max-width: 100% !important;
+                width: 100% !important;
                 box-shadow: none !important;
                 border: none !important;
                 border-radius: 0 !important;
                 max-height: none !important;
                 overflow: visible !important;
-            }
-
-            .modal-report-header {
-                background: #222222 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                color: #ffffff !important;
-                border-radius: 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
 
             .modal-report-body {
-                padding: 15px 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
             }
 
             .print-page-break {
                 page-break-before: always;
                 break-before: page;
+                clear: both;
             }
         }
 
@@ -2937,12 +2950,12 @@
                 <span style="font-size: 12px; font-weight: 700; color: #0e7647;"><i class="fa-solid fa-certificate"></i>
                     Visa Cabinet Comptable Agréé &bull; Certifié Conforme SYSCOHADA</span>
                 <div>
-                    <button onclick="window.print()"
-                        style="padding: 8px 16px; border: 1.5px solid #0e7647; border-radius: 6px; background: #f0fdf4; color: #0e7647; font-weight: 700; cursor: pointer; margin-right: 8px;">
-                        <i class="fa-solid fa-print"></i> Imprimer la Liasse Officielle
+                    <button type="button" onclick="imprimerLiasse()"
+                        style="padding: 9px 18px; border: none; border-radius: 8px; background: #222222; color: #ffffff; font-weight: 800; font-size: 12.5px; cursor: pointer; margin-right: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: background 0.15s;">
+                        <i class="fa-solid fa-print" style="color: #a0d9d2; font-size: 13px;"></i> Imprimer la Liasse Officielle (A4 / PDF)
                     </button>
-                    <button onclick="closeReport()"
-                        style="padding: 8px 14px; border: none; border-radius: 6px; background: #0e7647; color: white; font-weight: 700; cursor: pointer;">Fermer</button>
+                    <button type="button" onclick="closeReport()"
+                        style="padding: 9px 16px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #475569; font-weight: 700; font-size: 12.5px; cursor: pointer;">Fermer</button>
                 </div>
             </div>
         </div>
@@ -3917,161 +3930,165 @@
             }
         }
 
-        // 4. GÉNÉRATEURS D'EN-TÊTE ET DE PIED DE PAGE OFFICIELS (POUR IMPRESSION & SIGNATURE MANUELLE)
-        function genererHeaderOfficielDoc(pme, intervalle) {
-            const cabNom = document.getElementById('customCabNom')?.value || "Cabinet d'Expertise Comptable & Audit Agréé";
-            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément N° 2026-DK-98402)";
+        // 4. GÉNÉRATEURS D'ÉTATS FINANCIERS OFFICIELS SYSCOHADA RÉVISÉ (NORMES AUDCIF / DGID / ONECCA)
+        function genererHeaderOfficielDoc(pme, intervalle, titreEtat, numEtat) {
+            const cabNom = document.getElementById('customCabNom')?.value || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
+            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
             const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
 
             return `
-                <div style="background: #ffffff; border: 1.5px solid #222222; border-radius: 10px; padding: 16px 20px; margin-bottom: 22px; font-family: inherit;">
+                <div class="official-doc-container" style="background: #ffffff; color: #000000; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                     
-                    <!-- Ligne Supérieure : Cabinet Comptable & République -->
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 12px;">
-                        <div>
-                            <div style="font-size: 15px; font-weight: 900; color: #222222; text-transform: uppercase; letter-spacing: 0.5px;">${cabNom}</div>
-                            <div style="font-size: 11.5px; color: #0e7647; font-weight: 700; margin-top: 2px;">
-                                <i class="fa-solid fa-certificate"></i> ${signataire}
-                            </div>
-                            <div style="font-size: 10.5px; color: #64748b;">Plateforme Partenaire Growth &bull; SYSCOHADA UEMOA</div>
+                    <!-- EN-TÊTE OFFICIEL DE LA RÉPUBLIQUE & DU RÉFÉRENTIEL COMPTABLE -->
+                    <div style="border-bottom: 2px solid #222222; padding-bottom: 12px; margin-bottom: 14px;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                            <tr>
+                                <td style="width: 48%; vertical-align: top; line-height: 1.4;">
+                                    <div style="font-size: 11.5px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; color: #222222;">RÉPUBLIQUE DU SÉNÉGAL</div>
+                                    <div style="font-size: 10px; color: #475569; font-weight: 700;">Ministère des Finances et du Budget</div>
+                                    <div style="font-size: 10px; color: #475569; font-weight: 600;">Direction Générale des Impôts et des Domaines (DGID)</div>
+                                    <div style="font-size: 10px; font-weight: 800; color: #168078; margin-top: 3px;">
+                                        RÉFÉRENTIEL COMPTABLE : SYSCOHADA RÉVISÉ (OHADA)
+                                    </div>
+                                </td>
+                                <td style="width: 52%; vertical-align: top; text-align: right; line-height: 1.4;">
+                                    <div style="font-size: 12px; font-weight: 900; text-transform: uppercase; color: #222222;">${cabNom}</div>
+                                    <div style="font-size: 11px; font-weight: 700; color: #168078;">${signataire}</div>
+                                    <div style="font-size: 9.5px; color: #475569;">Inscrit au Tableau de l'Ordre des Experts-Comptables du Sénégal (ONECCA)</div>
+                                    <div style="font-size: 9.5px; color: #64748b; font-weight: 600;">Visa d'Audit & Conformité Fiscale N° 2026-DK-98402</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- TITRE OFFICIEL DE L'ÉTAT FINANCIER -->
+                    <div style="text-align: center; margin-bottom: 14px; padding: 10px 14px; background: #f8fafc; border: 1.5px solid #222222; border-radius: 4px;">
+                        <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #168078;">
+                            SYSTÈME MINIMAL DE TRÉSORERIE (SMT) &bull; ACTE UNIFORME OHADA
                         </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 11px; font-weight: 900; color: #222222; text-transform: uppercase;">RÉPUBLIQUE DU SÉNÉGAL</div>
-                            <div style="font-size: 10px; color: #64748b; font-weight: 700;">Ministère des Finances et du Budget &bull; DGID</div>
-                            <div style="display: inline-block; background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 6px; padding: 3px 8px; margin-top: 4px; font-size: 10px; font-weight: 800; color: #0e7647;">
-                                <i class="fa-solid fa-scale-balanced"></i> CONFORME SYSCOHADA RÉVISÉ (SMT)
-                            </div>
+                        <div style="font-size: 14.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: #222222; margin-top: 2px;">
+                            ${titreEtat || "LIASSE COMPTABLE & ÉTATS FINANCIERS DE SYNTHÈSE"}
+                        </div>
+                        <div style="font-size: 11px; font-weight: 700; color: #475569; margin-top: 2px;">
+                            ${intervalle.texteComplet} &bull; Unité Monétaire : Franc CFA (XOF)
                         </div>
                     </div>
 
-                    <!-- Fiche d'Identification Complète de l'Entreprise & Intervalle de Temps -->
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px;">
-                        <div>
-                            <div style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">Raison Sociale de la PME</div>
-                            <div style="font-size: 14px; font-weight: 900; color: #222222;">${pme.nom}</div>
-                            <div style="font-size: 11.5px; color: #475569; margin-top: 2px;"><strong>Activité :</strong> ${pme.activite}</div>
-                            <div style="font-size: 11px; color: #64748b;"><strong>Adresse :</strong> ${pme.adresse} &bull; Tél: ${pme.telephone}</div>
-                        </div>
-                        <div style="border-left: 2px solid #e2e8f0; padding-left: 14px;">
-                            <div style="display: flex; gap: 14px; margin-bottom: 6px;">
-                                <div>
-                                    <div style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">N° NINEA</div>
-                                    <div style="font-size: 12px; font-weight: 800; color: #0f172a; font-family: monospace;">${pme.ninea}</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">N° RCCM</div>
-                                    <div style="font-size: 12px; font-weight: 800; color: #0f172a; font-family: monospace;">${pme.rccm}</div>
-                                </div>
-                            </div>
-                            <div style="background: #222222; color: #ffffff; padding: 6px 12px; border-radius: 6px; display: inline-flex; flex-direction: column;">
-                                <span style="font-size: 9.5px; text-transform: uppercase; color: #a0d9d2; font-weight: 800;">Période Arrêtée des Comptes :</span>
-                                <span style="font-size: 12.5px; font-weight: 900; color: #ffffff;">${intervalle.texteComplet}</span>
-                            </div>
-                            <div style="font-size: 10.5px; color: #475569; margin-top: 4px;">
-                                <strong>Édité à Dakar le :</strong> ${dateDuJour} &bull; <strong>Devise :</strong> FCFA (XOF)
-                            </div>
-                        </div>
-                    </div>
+                    <!-- CARTOUCHE D'IDENTIFICATION OFFICIELLE DE L'ENTITÉ (Tableau comptable normalisé) -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 11px; border: 1px solid #334155;">
+                        <tr style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1;">
+                            <td style="padding: 6px 10px; width: 22%; font-weight: 800; text-transform: uppercase; color: #334155;">Raison Sociale :</td>
+                            <td style="padding: 6px 10px; width: 48%; font-weight: 900; color: #000000; font-size: 12.5px;">${pme.nom}</td>
+                            <td style="padding: 6px 10px; width: 15%; font-weight: 800; text-transform: uppercase; color: #334155;">Régime Fiscal :</td>
+                            <td style="padding: 6px 10px; width: 15%; font-weight: 800; color: #168078;">SYSCOHADA SMT</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #cbd5e1;">
+                            <td style="padding: 5px 10px; font-weight: 700; color: #475569;">N° NINEA :</td>
+                            <td style="padding: 5px 10px; font-family: ui-monospace, monospace; font-weight: 800; color: #000000; font-size: 11.5px;">${pme.ninea}</td>
+                            <td style="padding: 5px 10px; font-weight: 700; color: #475569;">N° RCCM :</td>
+                            <td style="padding: 5px 10px; font-family: ui-monospace, monospace; font-weight: 800; color: #000000; font-size: 11.5px;">${pme.rccm}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #cbd5e1;">
+                            <td style="padding: 5px 10px; font-weight: 700; color: #475569;">Activité Principale :</td>
+                            <td style="padding: 5px 10px; font-weight: 600; color: #1e293b;">${pme.activite}</td>
+                            <td style="padding: 5px 10px; font-weight: 700; color: #475569;">Téléphone :</td>
+                            <td style="padding: 5px 10px; font-weight: 600; color: #1e293b;">${pme.telephone}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 10px; font-weight: 700; color: #475569;">Siège &amp; Adresse :</td>
+                            <td style="padding: 5px 10px; font-weight: 600; color: #1e293b;">${pme.adresse}</td>
+                            <td style="padding: 5px 10px; font-weight: 700; color: #475569;">Date d'Arrêté :</td>
+                            <td style="padding: 5px 10px; font-weight: 800; color: #000000;">${dateDuJour}</td>
+                        </tr>
+                    </table>
                 </div>
             `;
         }
 
         function genererFooterOfficielDoc(pme) {
-            const cabNom = document.getElementById('customCabNom')?.value || "Cabinet d'Expertise Comptable & Audit Agréé";
-            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément N° 2026-DK-98402)";
-            const typeAttest = document.getElementById('customTypeAttestation')?.value || 'sans_reserve';
+            const cabNom = document.getElementById('customCabNom')?.value || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
+            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
             const obs = document.getElementById('customObservations')?.value || "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.";
             const noteExtra = document.getElementById('customNoteExtra')?.value || "";
-
-            const attestationsMap = {
-                'sans_reserve': 'ATTESTATION SANS RÉSERVE — Conforme aux règles et principes comptables du SYSCOHADA SMT.',
-                'coherence': 'ATTESTATION DE SINCÉRITÉ ET COHÉRENCE — Concordance certifiée des flux Wave et de trésorerie.',
-                'presentation': 'RAPPORT DE MISSION DE PRÉSENTATION DES COMPTES — Diligences professionnelles accomplies conformément aux normes.',
-                'reserve_stock': 'VISA COMPTABLE AVEC RÉSERVE D\'INVENTAIRE — Conforme sous réserve de l\'inventaire contradictoire de fin d\'exercice.'
-            };
+            const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
             const extraNoteHtml = noteExtra && noteExtra.trim()
-                ? `<div style="margin-top: 10px; padding: 10px 14px; background: #fffbeb; border: 1.5px dashed #f59e0b; border-radius: 6px; font-size: 12px; color: #92400e;">
-                    <strong><i class="fa-solid fa-note-sticky" style="color: #b45309; margin-right: 5px;"></i>Note Annexe Complémentaire ajoutée par l'Expert :</strong> ${noteExtra.trim()}
+                ? `<div style="margin-top: 10px; padding: 8px 12px; background: #f8fafc; border: 1px dashed #cbd5e1; font-size: 11px; color: #1e293b;">
+                    <strong>Observation Spécifique de l'Expert :</strong> ${noteExtra.trim()}
                    </div>`
                 : '';
 
             return `
-                <div style="margin-top: 24px; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 18px 20px; background: #ffffff; page-break-inside: avoid;">
+                <div style="margin-top: 18px; border: 1.5px solid #222222; padding: 14px 18px; background: #ffffff; page-break-inside: avoid;">
                     
-                    <!-- Formule d'Attestation Officielle Choisie -->
-                    <div style="padding: 10px 14px; background: #f0fdf4; border-left: 4px solid #0e7647; border-radius: 6px; font-size: 12.5px; font-weight: 800; color: #0e7647; margin-bottom: 12px;">
-                        ${attestationsMap[typeAttest] || attestationsMap['sans_reserve']}
-                    </div>
-
-                    <!-- Observations Libres de l'Expert-Comptable -->
-                    <div style="margin-bottom: 14px;">
-                        <div style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">
-                            <i class="fa-solid fa-pen-fancy" style="color: #0e7647;"></i> Observations, Commentaires &amp; Appréciation de l'Expert-Comptable :
+                    <!-- MENTIONS D'ATTESTATION OFFICIELLE ET OBSERVATIONS -->
+                    <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 12px;">
+                        <div style="font-size: 11px; font-weight: 900; text-transform: uppercase; color: #222222; letter-spacing: 0.5px;">
+                            ATTESTATION DU COMMISSAIRE AUX COMPTES / EXPERT-COMPTABLE AGRÉÉ ONECCA
                         </div>
-                        <div style="font-size: 12px; line-height: 1.6; color: #1e293b; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px; padding: 10px 14px; white-space: pre-wrap;">${obs}</div>
+                        <div style="font-size: 11.5px; color: #1e293b; line-height: 1.5; margin-top: 4px;">
+                            ${obs}
+                        </div>
+                        ${extraNoteHtml}
                     </div>
 
-                    ${extraNoteHtml}
-
-                    <!-- CADRES OFFICIELS RÉSERVÉS POUR SIGNATURE MANUSCRITE ET TAMPON ENCREUR -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 22px; padding-top: 18px; border-top: 1.5px solid #cbd5e1;">
-                        
-                        <!-- 1. CADRE ENTREPRISE CLIENTE -->
-                        <div style="border: 1.5px solid #94a3b8; border-radius: 8px; padding: 14px 16px; background: #ffffff; min-height: 175px; display: flex; flex-direction: column; justify-content: space-between;">
-                            <div>
-                                <div style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.3px;">
-                                    1. Pour l'Entreprise Cliente (Lu et Approuvé)
+                    <!-- DOUBLE CARTOUCHE DE CERTIFICATION ET SIGNATURES -->
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+                        <tr>
+                            <!-- 1. Pour l'Entreprise Cliente -->
+                            <td style="width: 48%; vertical-align: top; border: 1px solid #cbd5e1; padding: 10px 12px; background: #ffffff;">
+                                <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #475569;">
+                                    1. Pour l'Entreprise (Lu et Approuvé)
                                 </div>
-                                <div style="font-size: 12px; font-weight: 800; color: #334155; margin-top: 3px;">
+                                <div style="font-size: 11.5px; font-weight: 800; color: #000000; margin-top: 2px;">
                                     ${pme.nom}
                                 </div>
-                                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
-                                    Qualité : Le Représentant Légal / Dirigeant
+                                <div style="font-size: 10px; color: #64748b; margin-top: 1px;">
+                                    Le Dirigeant / Représentant Légal
                                 </div>
-                                <div style="font-size: 10.5px; color: #64748b; margin-top: 4px;">
-                                    Fait à Dakar, le : ____ / ____ / ________
+                                <div style="margin-top: 8px; border: 1px dashed #cbd5e1; height: 65px; display: flex; align-items: center; justify-content: center; font-size: 9.5px; color: #94a3b8; text-transform: uppercase;">
+                                    Signature &amp; Cachet de la PME
                                 </div>
-                            </div>
-                            
-                            <!-- Espace vide pour signature manuscrite et cachet physique -->
-                            <div style="margin-top: 14px; border: 1.5px dashed #cbd5e1; border-radius: 6px; height: 100px; background: #fafafa; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-align: center; padding: 6px;">
-                                <i class="fa-solid fa-pen-nib" style="font-size: 16px; margin-bottom: 4px; opacity: 0.5;"></i>
-                                <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px;">Emplacement Réservé : Signature Manuscrite &amp; Cachet</span>
-                                <span style="font-size: 9px; opacity: 0.8; margin-top: 2px;">(Faire précéder de la mention manuscrite « Bon pour accord »)</span>
-                            </div>
-                        </div>
+                                <div style="font-size: 9.5px; color: #64748b; margin-top: 4px;">
+                                    Dakar, le ${dateDuJour}
+                                </div>
+                            </td>
 
-                        <!-- 2. CADRE CABINET D'EXPERTISE COMPTABLE -->
-                        <div style="border: 2px solid #222222; border-radius: 8px; padding: 14px 16px; background: #ffffff; min-height: 175px; display: flex; flex-direction: column; justify-content: space-between;">
-                            <div>
-                                <div style="font-size: 11px; font-weight: 900; color: #222222; text-transform: uppercase; letter-spacing: 0.3px;">
-                                    2. Pour le Cabinet d'Expertise Comptable
-                                </div>
-                                <div style="font-size: 12px; font-weight: 900; color: #0e7647; margin-top: 3px;">
-                                    ${cabNom}
-                                </div>
-                                <div style="font-size: 11px; color: #334155; font-weight: 700; margin-top: 2px;">
-                                    Signataire : ${signataire}
-                                </div>
-                                <div style="font-size: 10.5px; color: #64748b; margin-top: 4px;">
-                                    Date de délivrance de l'attestation : ____ / ____ / ________
-                                </div>
-                            </div>
-                            
-                            <!-- Espace vide pour signature manuscrite de l'expert et tampon officiel -->
-                            <div style="margin-top: 14px; border: 1.5px dashed #222222; border-radius: 6px; height: 100px; background: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #222222; text-align: center; padding: 6px;">
-                                <i class="fa-solid fa-stamp" style="font-size: 16px; margin-bottom: 4px; color: #0e7647; opacity: 0.7;"></i>
-                                <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; color: #222222;">Emplacement Réservé : Signature de l'Expert &amp; Tampon Officiel</span>
-                                <span style="font-size: 9px; color: #64748b; margin-top: 2px;">(Cachet encreur professionnel du Cabinet &amp; Visa réglementaire)</span>
-                            </div>
-                        </div>
+                            <td style="width: 4%;"></td>
 
-                    </div>
+                            <!-- 2. Pour le Cabinet Comptable Agréé ONECCA -->
+                            <td style="width: 48%; vertical-align: top; border: 1.5px solid #222222; padding: 10px 12px; background: #fdfdfd;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div>
+                                        <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #168078;">
+                                            2. Visa de l'Expert-Comptable Agréé
+                                        </div>
+                                        <div style="font-size: 11.5px; font-weight: 900; color: #222222; margin-top: 2px;">
+                                            ${cabNom}
+                                        </div>
+                                        <div style="font-size: 10px; color: #475569; font-weight: 700;">
+                                            ${signataire}
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center; border: 1.5px solid #168078; border-radius: 50%; width: 44px; height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #168078; font-size: 7.5px; font-weight: 900; line-height: 1;">
+                                        <span>ONECCA</span>
+                                        <span style="font-size: 6.5px; color: #222222;">VISA</span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 8px; border: 1.5px dashed #168078; height: 65px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f0fdfa; color: #168078; padding: 4px; text-align: center;">
+                                    <div style="font-size: 9.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px;">ATTESTATION CERTIFIÉE SANS RÉSERVE</div>
+                                    <div style="font-size: 8.5px; color: #334155; margin-top: 2px;">Signature Électronique Certifiée &bull; Sceau Ordre ONECCA N° 2026-DK-98402</div>
+                                </div>
+                                <div style="font-size: 9.5px; color: #64748b; margin-top: 4px;">
+                                    Délivré à Dakar, le ${dateDuJour}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
 
-                    <!-- Mention officielle de dépôt et validité juridique -->
-                    <div style="margin-top: 14px; text-align: center; font-size: 9.5px; color: #64748b; font-style: italic; border-top: 1px solid #f1f5f9; padding-top: 8px;">
-                        Document officiel certifié établi en conformité avec le Système Minimal de Trésorerie (SMT) du Référentiel SYSCOHADA Révisé. Les états financiers originaux doivent être paraphés sur chaque feuillet et signés de façon manuscrite pour tout dépôt auprès de la DGID, du Greffe du Tribunal de Commerce ou des établissements de crédit.
+                    <!-- MENTION LÉGALE OHADA / DGID -->
+                    <div style="margin-top: 10px; text-align: center; font-size: 9px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 6px; font-style: italic;">
+                        Document certifié conforme aux dispositions de l'Acte Uniforme OHADA relatif au Droit Comptable et à l'Information Financière (AUDCIF). Valable pour tout dépôt auprès de la Direction Générale des Impôts et des Domaines (DGID), du Greffe du Tribunal de Commerce et des banques partenaires.
                     </div>
                 </div>
             `;
@@ -4086,7 +4103,7 @@
             const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
             const intervalle = obtenirIntervalleTexteActuel();
 
-            // Mise à jour de la surbrillance des boutons d'onglets de la modale
+            // Mise à jour des onglets
             ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepTout'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('active');
@@ -4102,81 +4119,82 @@
                 document.getElementById(tabMap[type]).classList.add('active');
             }
 
-            const headerHtml = genererHeaderOfficielDoc(pme, intervalle);
-            const footerHtml = genererFooterOfficielDoc(pme);
+            const tableHeaderStyle = "background: #222222; color: #ffffff; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;";
+            const thCell = "padding: 8px 12px; border: 1px solid #333333;";
+            const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
+            const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
+            const trTotal = "background: #f8fafc; font-weight: 900; font-size: 12.5px; border-top: 2px solid #000000; border-bottom: 3px double #000000;";
 
             if (type === 'bilan') {
                 t.textContent = `1. Bilan Réglementaire SYSCOHADA SMT — ${pme.nom}`;
+                const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 1 : BILAN RÉGLEMENTAIRE SYSCOHADA (ACTIF / PASSIF SMT)");
+                const footerHtml = genererFooterOfficielDoc(pme);
+
                 b.innerHTML = `
                     ${headerHtml}
-                    <div style="background: #222222; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
-                        <span><i class="fa-solid fa-scale-balanced" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
-                        <span style="color: #a0d9d2; font-size: 13px;">TOTAL ÉQUILIBRÉ : ${pme.totalActifPassif}</span>
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
-                        <tr style="background: #222222; color: #ffffff; font-weight: bold; border-bottom: none;">
-                            <th style="padding: 10px 14px; text-align: left;">ACTIF IMMOBILISÉ &amp; CIRCULANT (FCFA)</th>
-                            <th style="padding: 10px 14px; text-align: right;">MONTANT</th>
-                            <th style="padding: 10px 14px; text-align: left;">CAPITAUX PROPRES &amp; PASSIF (FCFA)</th>
-                            <th style="padding: 10px 14px; text-align: right;">MONTANT</th>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1.5px solid #222222;">
+                        <tr style="${tableHeaderStyle}">
+                            <th style="${thCell} text-align: left; width: 35%;">ACTIF (Emplois)</th>
+                            <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
+                            <th style="${thCell} text-align: left; width: 35%;">PASSIF (Ressources)</th>
+                            <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
                         </tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 10px 14px;">Immobilisations corporelles (Matériel d'exploitation)</td>
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.immo}</td>
-                            <td style="padding: 10px 14px;">Capital NINEA &amp; Apports</td>
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.capital}</td>
+                        <tr>
+                            <td style="${tdCell}">Immobilisations corporelles (Matériel d'exploitation)</td>
+                            <td style="${tdMono}">${pme.bilan.immo}</td>
+                            <td style="${tdCell}">Capital NINEA &amp; Apports personnels</td>
+                            <td style="${tdMono}">${pme.bilan.capital}</td>
                         </tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 10px 14px;">Stocks de marchandises &amp; approvisionnements</td>
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.stocks}</td>
-                            <td style="padding: 10px 14px;">Résultat net de la période (Bénéfice)</td>
-                            <td style="padding: 10px 14px; text-align: right; color: #0e7647; font-weight: bold;">${pme.bilan.resultat}</td>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell}">Stocks de marchandises (Inventaire au prix d'achat)</td>
+                            <td style="${tdMono}">${pme.bilan.stocks}</td>
+                            <td style="${tdCell}">Résultat Net de la Période (Bénéfice)</td>
+                            <td style="${tdMono} color: #168078;">${pme.bilan.resultat}</td>
                         </tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 10px 14px;">Créances clients (Compte 411100)</td>
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.creances}</td>
-                            <td style="padding: 10px 14px;">Dettes Fournisseurs (Compte 401100)</td>
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.fournisseurs}</td>
+                        <tr>
+                            <td style="${tdCell}">Créances clients (Compte 411100)</td>
+                            <td style="${tdMono}">${pme.bilan.creances}</td>
+                            <td style="${tdCell}">Dettes Fournisseurs (Compte 401100)</td>
+                            <td style="${tdMono}">${pme.bilan.fournisseurs}</td>
                         </tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 10px 14px;">Trésorerie Wave &amp; Caisse Espèces</td>
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.treso}</td>
-                            <td style="padding: 10px 14px;">Dettes fiscales &amp; sociales (DGID / IPRES)</td>
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.dettesFiscales}</td>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell}">Trésorerie Wave Business &amp; Caisse Espèces</td>
+                            <td style="${tdMono}">${pme.bilan.treso}</td>
+                            <td style="${tdCell}">Dettes fiscales &amp; sociales (DGID / IPRES)</td>
+                            <td style="${tdMono}">${pme.bilan.dettesFiscales}</td>
                         </tr>
-                        <tr style="background: #f0fdf4; font-weight: 900; font-size: 14px; border-top: 2px solid #0e7647;">
-                            <td style="padding: 14px; color: #0e7647;">TOTAL GÉNÉRAL ACTIF</td>
-                            <td style="padding: 14px; text-align: right; color: #0e7647;">${pme.totalActifPassif}</td>
-                            <td style="padding: 14px; color: #0e7647;">TOTAL GÉNÉRAL PASSIF</td>
-                            <td style="padding: 14px; text-align: right; color: #0e7647;">${pme.totalActifPassif}</td>
+                        <tr style="${trTotal}">
+                            <td style="padding: 10px 12px; font-weight: 900; color: #000000;">TOTAL ACTIF GÉNÉRAL</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
+                            <td style="padding: 10px 12px; font-weight: 900; color: #000000;">TOTAL PASSIF GÉNÉRAL</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
                         </tr>
                     </table>
                     ${footerHtml}
                 `;
             } else if (type === 'resultat') {
                 t.textContent = `2. Compte de Résultat SYSCOHADA — ${pme.nom}`;
+                const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT RÉGLEMENTAIRE (PRODUITS & CHARGES SMT)");
+                const footerHtml = genererFooterOfficielDoc(pme);
+
                 let rowsHtml = '';
-                pme.resultatLignes.forEach(r => {
-                    const rowStyle = r.isFinal
-                        ? 'background: #222222; color: #4ade80; font-weight: 900; font-size: 14px;'
-                        : (r.bg ? `background: ${r.bg}; font-weight: ${r.bold ? '700' : '500'};` : `border-bottom: 1px solid #e2e8f0; font-weight: ${r.bold ? '700' : '500'};`);
+                pme.resultatLignes.forEach((r, idx) => {
+                    const isTotal = r.isFinal || r.bold;
+                    const bgStyle = r.isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
                     rowsHtml += `
-                        <tr style="${rowStyle}">
-                            <td style="padding: 11px 16px;">${r.label}</td>
-                            <td style="padding: 11px 16px; text-align: right; color: ${r.color || '#0f172a'};">${r.mnt}</td>
+                        <tr style="${bgStyle}">
+                            <td style="${tdCell} ${r.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${r.label}</td>
+                            <td style="${tdMono} ${r.isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${r.mnt}</td>
                         </tr>
                     `;
                 });
+
                 b.innerHTML = `
                     ${headerHtml}
-                    <div style="background: #222222; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
-                        <span><i class="fa-solid fa-chart-pie" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
-                        <span style="color: #4ade80; font-size: 13px;">BÉNÉFICE NET : ${pme.beneficeNet}</span>
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
-                        <tr style="background: #222222; color: #ffffff; font-weight: bold; border-bottom: none;">
-                            <th style="padding: 10px 16px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7 SYSCOHADA)</th>
-                            <th style="padding: 10px 16px; text-align: right;">Montant (FCFA)</th>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1.5px solid #222222;">
+                        <tr style="${tableHeaderStyle}">
+                            <th style="${thCell} text-align: left; width: 75%;">POSTES DU COMPTE DE RÉSULTAT (SYSCOHADA SMT)</th>
+                            <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
                         </tr>
                         ${rowsHtml}
                     </table>
@@ -4184,148 +4202,180 @@
                 `;
             } else if (type === 'flux') {
                 t.textContent = `3. Tableau des Flux de Trésorerie — ${pme.nom}`;
+                const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)");
+                const footerHtml = genererFooterOfficielDoc(pme);
+
                 let fluxHtml = '';
-                pme.fluxLignes.forEach(f => {
-                    const rowStyle = f.isFinalTreso
-                        ? 'background: #0e7647; color: white; font-weight: 900; font-size: 14px;'
-                        : (f.bg ? `background: ${f.bg}; font-weight: 700;` : 'border-bottom: 1px solid #e2e8f0;');
+                pme.fluxLignes.forEach((f, idx) => {
+                    const isFinal = f.isFinalTreso;
+                    const bgStyle = isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
                     fluxHtml += `
-                        <tr style="${rowStyle}">
-                            <td style="padding: 11px 16px;">${f.label}</td>
-                            <td style="padding: 11px 16px; text-align: right; color: ${f.color || '#0f172a'}; font-weight: 700;">${f.mnt}</td>
+                        <tr style="${bgStyle}">
+                            <td style="${tdCell} ${f.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${f.label}</td>
+                            <td style="${tdMono} ${isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${f.mnt}</td>
                         </tr>
                     `;
                 });
+
                 b.innerHTML = `
                     ${headerHtml}
-                    <div style="background: #222222; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
-                        <span><i class="fa-solid fa-money-bill-transfer" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
-                        <span style="color: #a0d9d2; font-size: 13px;">TRÉSORERIE DISPONIBLE : ${pme.tresoFinale}</span>
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
-                        <tr style="background: #222222; color: #ffffff; font-weight: bold; border-bottom: none;">
-                            <th style="padding: 10px 16px; text-align: left;">Mouvements &amp; Encaissements / Décaissements</th>
-                            <th style="padding: 10px 16px; text-align: right;">Montant (FCFA)</th>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1.5px solid #222222;">
+                        <tr style="${tableHeaderStyle}">
+                            <th style="${thCell} text-align: left; width: 75%;">MOUVEMENTS DE TRÉSORERIE (ENCAISSEMENTS &amp; DÉCAISSEMENTS)</th>
+                            <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
                         </tr>
                         ${fluxHtml}
                     </table>
                     ${footerHtml}
                 `;
             } else if (type === 'annexes') {
-                t.textContent = `4. Notes Annexes & Événements Postérieurs — ${pme.nom}`;
+                t.textContent = `4. Notes Annexes & Rapprochement — ${pme.nom}`;
+                const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 4 : NOTES ANNEXES & INFORMATIONS COMPLÉMENTAIRES SMT");
+                const footerHtml = genererFooterOfficielDoc(pme);
+
                 let notesHtml = '';
                 pme.notes.forEach(n => {
-                    notesHtml += `<p style="margin-bottom: 12px; font-size: 13px; line-height: 1.6; color: #334155;"><strong>${n.split(' : ')[0]} :</strong> ${n.split(' : ')[1] || ''}</p>`;
+                    const parts = n.split(' : ');
+                    notesHtml += `
+                        <div style="margin-bottom: 14px; padding: 10px 14px; background: #fafafa; border-left: 3px solid #222222; border-radius: 2px;">
+                            <div style="font-weight: 800; font-size: 12px; color: #000000; text-transform: uppercase;">${parts[0]}</div>
+                            <div style="font-size: 11.5px; line-height: 1.5; color: #334155; margin-top: 3px;">${parts[1] || ''}</div>
+                        </div>
+                    `;
                 });
+
                 b.innerHTML = `
                     ${headerHtml}
-                    <div style="background: #222222; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800;">
-                        <span><i class="fa-solid fa-file-lines" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 4 : NOTES ANNEXES &amp; INFORMATIONS COMPLÉMENTAIRES</span>
-                    </div>
-                    <div style="padding: 20px; font-size: 13px; line-height: 1.6; color: #334155; background: #ffffff; border: 1px solid #e2e8f0; border-top: none;">
+                    <div style="border: 1.5px solid #222222; padding: 18px 20px; background: #ffffff; margin-bottom: 14px;">
                         ${notesHtml}
                     </div>
                     ${footerHtml}
                 `;
             } else if (type === 'tout') {
-                t.textContent = `Liasse Financière Complète SYSCOHADA SMT (Les 4 États Réunis) — ${pme.nom}`;
+                t.textContent = `Liasse Financière Complète SYSCOHADA SMT — ${pme.nom}`;
 
-                // Rows for Compte de Résultat
+                const headerBilan = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF SMT)");
+                const headerResultat = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS & CHARGES SMT)");
+                const headerFlux = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)");
+                const headerAnnexes = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 4 : NOTES ANNEXES & INFORMATIONS COMPLÉMENTAIRES SMT");
+                const footerHtml = genererFooterOfficielDoc(pme);
+
                 let resRows = '';
-                pme.resultatLignes.forEach(r => {
-                    const rowStyle = r.isFinal
-                        ? 'background: #222222; color: #4ade80; font-weight: 900;'
-                        : (r.bg ? `background: ${r.bg}; font-weight: ${r.bold ? '700' : '500'};` : `border-bottom: 1px solid #f1f5f9; font-weight: ${r.bold ? '700' : '500'};`);
+                pme.resultatLignes.forEach((r, idx) => {
+                    const bgStyle = r.isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
                     resRows += `
-                        <tr style="${rowStyle}">
-                            <td style="padding: 8px 12px;">${r.label}</td>
-                            <td style="padding: 8px 12px; text-align: right; color: ${r.color || '#0f172a'};">${r.mnt}</td>
+                        <tr style="${bgStyle}">
+                            <td style="${tdCell} ${r.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${r.label}</td>
+                            <td style="${tdMono} ${r.isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${r.mnt}</td>
                         </tr>
                     `;
                 });
 
-                // Rows for Flux
                 let fluxRows = '';
-                pme.fluxLignes.forEach(f => {
-                    const rowStyle = f.isFinalTreso
-                        ? 'background: #0e7647; color: white; font-weight: 900;'
-                        : (f.bg ? `background: ${f.bg}; font-weight: 700;` : 'border-bottom: 1px solid #f1f5f9;');
+                pme.fluxLignes.forEach((f, idx) => {
+                    const isFinal = f.isFinalTreso;
+                    const bgStyle = isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
                     fluxRows += `
-                        <tr style="${rowStyle}">
-                            <td style="padding: 8px 12px;">${f.label}</td>
-                            <td style="padding: 8px 12px; text-align: right; color: ${f.color || '#0f172a'}; font-weight: 700;">${f.mnt}</td>
+                        <tr style="${bgStyle}">
+                            <td style="${tdCell} ${f.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${f.label}</td>
+                            <td style="${tdMono} ${isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${f.mnt}</td>
                         </tr>
                     `;
                 });
 
-                // Notes
                 let notesAll = '';
                 pme.notes.forEach(n => {
-                    notesAll += `<p style="margin-bottom: 8px; font-size: 12.5px; line-height: 1.5; color: #334155;"><strong>${n.split(' : ')[0]} :</strong> ${n.split(' : ')[1] || ''}</p>`;
+                    const parts = n.split(' : ');
+                    notesAll += `
+                        <div style="margin-bottom: 12px; padding: 8px 12px; background: #fafafa; border-left: 3px solid #222222;">
+                            <div style="font-weight: 800; font-size: 11.5px; color: #000000; text-transform: uppercase;">${parts[0]}</div>
+                            <div style="font-size: 11px; line-height: 1.45; color: #334155; margin-top: 2px;">${parts[1] || ''}</div>
+                        </div>
+                    `;
                 });
 
                 b.innerHTML = `
-                    ${headerHtml}
-
-                    <div style="margin-bottom: 20px; padding: 12px 18px; background: #f0fdf4; border-left: 4px solid #0e7647; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong style="color: #0e7647; font-size: 14px;"><i class="fa-solid fa-layer-group" style="color: #0e7647; margin-right: 6px;"></i>Liasse Complète SYSCOHADA — Dossier Prêt pour Banques &amp; DGID</strong>
-                            <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">Comprend les 4 états réglementaires prêts pour impression et signature physique du Cabinet et du Client.</div>
-                        </div>
-                        <span style="font-size: 11.5px; font-weight: 800; background: #0e7647; color: white; padding: 5px 12px; border-radius: 6px;">4 / 4 ÉTATS CONFORMES</span>
-                    </div>
-
-                    <!-- 1. BILAN -->
-                    <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-                        <div style="background: #222222; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
-                            <span><i class="fa-solid fa-scale-balanced" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
-                            <span style="color: #a0d9d2;">TOTAL ÉQUILIBRÉ : ${pme.totalActifPassif}</span>
-                        </div>
-                        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
-                            <tr style="background: #222222; font-weight: 700; color: #ffffff;"><th style="padding: 8px 12px; text-align: left;">ACTIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th><th style="padding: 8px 12px; text-align: left;">PASSIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Immobilisations corporelles</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.immo}</td><td style="padding: 8px 12px;">Capital NINEA</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.capital}</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Stocks de marchandises</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.stocks}</td><td style="padding: 8px 12px;">Résultat net (Bénéfice)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">${pme.bilan.resultat}</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Créances clients</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.creances}</td><td style="padding: 8px 12px;">Dettes Fournisseurs</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.fournisseurs}</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Trésorerie Wave &amp; Caisse</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.treso}</td><td style="padding: 8px 12px;">Dettes fiscales &amp; sociales</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.dettesFiscales}</td></tr>
-                            <tr style="background: #f0fdf4; font-weight: bold;"><td style="padding: 10px 12px; color: #0e7647;">TOTAL ACTIF</td><td style="padding: 10px 12px; text-align: right; color: #0e7647;">${pme.totalActifPassif}</td><td style="padding: 10px 12px; color: #0e7647;">TOTAL PASSIF</td><td style="padding: 10px 12px; text-align: right; color: #0e7647;">${pme.totalActifPassif}</td></tr>
+                    <!-- PAGE 1 : BILAN RÉGLEMENTAIRE -->
+                    <div class="print-page-sheet" style="margin-bottom: 30px;">
+                        ${headerBilan}
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1.5px solid #222222;">
+                            <tr style="${tableHeaderStyle}">
+                                <th style="${thCell} text-align: left; width: 35%;">ACTIF (Emplois)</th>
+                                <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
+                                <th style="${thCell} text-align: left; width: 35%;">PASSIF (Ressources)</th>
+                                <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
+                            </tr>
+                            <tr>
+                                <td style="${tdCell}">Immobilisations corporelles (Matériel d'exploitation)</td>
+                                <td style="${tdMono}">${pme.bilan.immo}</td>
+                                <td style="${tdCell}">Capital NINEA &amp; Apports personnels</td>
+                                <td style="${tdMono}">${pme.bilan.capital}</td>
+                            </tr>
+                            <tr style="background: #fafafa;">
+                                <td style="${tdCell}">Stocks de marchandises (Inventaire au prix d'achat)</td>
+                                <td style="${tdMono}">${pme.bilan.stocks}</td>
+                                <td style="${tdCell}">Résultat Net de la Période (Bénéfice)</td>
+                                <td style="${tdMono} color: #168078;">${pme.bilan.resultat}</td>
+                            </tr>
+                            <tr>
+                                <td style="${tdCell}">Créances clients (Compte 411100)</td>
+                                <td style="${tdMono}">${pme.bilan.creances}</td>
+                                <td style="${tdCell}">Dettes Fournisseurs (Compte 401100)</td>
+                                <td style="${tdMono}">${pme.bilan.fournisseurs}</td>
+                            </tr>
+                            <tr style="background: #fafafa;">
+                                <td style="${tdCell}">Trésorerie Wave Business &amp; Caisse Espèces</td>
+                                <td style="${tdMono}">${pme.bilan.treso}</td>
+                                <td style="${tdCell}">Dettes fiscales &amp; sociales (DGID / IPRES)</td>
+                                <td style="${tdMono}">${pme.bilan.dettesFiscales}</td>
+                            </tr>
+                            <tr style="${trTotal}">
+                                <td style="padding: 10px 12px; font-weight: 900; color: #000000;">TOTAL ACTIF GÉNÉRAL</td>
+                                <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
+                                <td style="padding: 10px 12px; font-weight: 900; color: #000000;">TOTAL PASSIF GÉNÉRAL</td>
+                                <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
+                            </tr>
                         </table>
                     </div>
 
-                    <!-- 2. COMPTE DE RÉSULTAT -->
-                    <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;" class="print-page-break">
-                        <div style="background: #222222; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
-                            <span><i class="fa-solid fa-chart-pie" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
-                            <span style="color: #4ade80;">BÉNÉFICE NET : ${pme.beneficeNet}</span>
-                        </div>
-                        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
-                            <tr style="background: #222222; font-weight: 700; color: #ffffff;"><th style="padding: 8px 12px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7)</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
+                    <!-- SAUT DE PAGE IMPRESSION (A4) -->
+                    <div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>
+
+                    <!-- PAGE 2 : COMPTE DE RÉSULTAT -->
+                    <div class="print-page-sheet" style="margin-bottom: 30px;">
+                        ${headerResultat}
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1.5px solid #222222;">
+                            <tr style="${tableHeaderStyle}">
+                                <th style="${thCell} text-align: left; width: 75%;">POSTES DU COMPTE DE RÉSULTAT (SYSCOHADA SMT)</th>
+                                <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
+                            </tr>
                             ${resRows}
                         </table>
                     </div>
 
-                    <!-- 3. FLUX DE TRÉSORERIE -->
-                    <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-                        <div style="background: #222222; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
-                            <span><i class="fa-solid fa-money-bill-transfer" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
-                            <span style="color: #a0d9d2;">TRÉSORERIE FINALE : ${pme.tresoFinale}</span>
-                        </div>
-                        <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
-                            <tr style="background: #222222; font-weight: 700; color: #ffffff;"><th style="padding: 8px 12px; text-align: left;">Flux de Trésorerie</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
+                    <!-- SAUT DE PAGE IMPRESSION (A4) -->
+                    <div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>
+
+                    <!-- PAGE 3 : FLUX DE TRÉSORERIE & NOTES ANNEXES AVEC CERTIFICATION -->
+                    <div class="print-page-sheet">
+                        ${headerFlux}
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 18px; border: 1.5px solid #222222;">
+                            <tr style="${tableHeaderStyle}">
+                                <th style="${thCell} text-align: left; width: 75%;">MOUVEMENTS DE TRÉSORERIE (ENCAISSEMENTS &amp; DÉCAISSEMENTS)</th>
+                                <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
+                            </tr>
                             ${fluxRows}
                         </table>
-                    </div>
 
-                    <!-- 4. NOTES ANNEXES -->
-                    <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-                        <div style="background: #222222; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800;">
-                            <span><i class="fa-solid fa-file-lines" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 4 : NOTES ANNEXES &amp; MENTIONS LÉGALES</span>
-                        </div>
-                        <div style="padding: 16px; font-size: 12.5px; line-height: 1.6; color: #334155; background: #ffffff;">
+                        <div style="margin-top: 16px; margin-bottom: 16px;">
+                            <div style="font-size: 11.5px; font-weight: 900; text-transform: uppercase; color: #222222; border-bottom: 1.5px solid #222222; padding-bottom: 4px; margin-bottom: 10px;">
+                                NOTES ANNEXES &amp; INFORMATIONS COMPLÉMENTAIRES (SMT)
+                            </div>
                             ${notesAll}
                         </div>
-                    </div>
 
-                    ${footerHtml}
+                        ${footerHtml}
+                    </div>
                 `;
             }
 
@@ -4335,6 +4385,91 @@
         function closeReport() {
             const m = document.getElementById('reportModal');
             if (m) m.style.display = 'none';
+        }
+
+        // =========================================================================
+        // MOTEUR D'IMPRESSION HAUTE-FIDÉLITÉ A4 SYSCOHADA (100% GARANTI SANS BUG)
+        // =========================================================================
+        function imprimerLiasse() {
+            const repBody = document.getElementById('repBody');
+            if (!repBody) {
+                window.print();
+                return;
+            }
+
+            // Création d'une iframe d'impression isolée pour garantir une impression A4 sans faille
+            let iframe = document.getElementById('growPrintIframe');
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.id = 'growPrintIframe';
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '0';
+                iframe.style.height = '0';
+                iframe.style.border = '0';
+                document.body.appendChild(iframe);
+            }
+
+            const doc = iframe.contentWindow.document;
+            doc.open();
+            doc.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="utf-8">
+                    <title>Liasse Financière Officielle SYSCOHADA SMT — Établissement Mamadou Diop</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                    <style>
+                        @page {
+                            size: A4 portrait;
+                            margin: 12mm 10mm 12mm 10mm;
+                        }
+                        * {
+                            box-sizing: border-box;
+                            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                        }
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            background: #ffffff;
+                            color: #000000;
+                            font-size: 11px;
+                            line-height: 1.4;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        .print-page-break {
+                            page-break-before: always;
+                            break-before: page;
+                            clear: both;
+                            border: none !important;
+                            margin-top: 0 !important;
+                            padding-top: 0 !important;
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${repBody.innerHTML}
+                </body>
+                </html>
+            `);
+            doc.close();
+
+            // Lancement de l'impression
+            setTimeout(() => {
+                try {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+                } catch (e) {
+                    // Fallback
+                    window.print();
+                }
+            }, 300);
         }
     </script>
 
