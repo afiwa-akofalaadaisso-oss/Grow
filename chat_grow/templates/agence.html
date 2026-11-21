@@ -437,22 +437,42 @@
         }
 
         .pop-icon-box {
-            width: 28px;
-            height: 28px;
-            border-radius: 7px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 13px;
             flex-shrink: 0;
+            background: #f0fdfa !important;
+            color: #168078 !important;
+            border: 1px solid rgba(22, 128, 120, 0.2) !important;
+            transition: all 0.15s ease;
+        }
+
+        .compte-pop-item:hover .pop-icon-box {
+            background: #222222 !important;
+            color: #a0d9d2 !important;
+            border-color: #222222 !important;
         }
 
         .pop-badge {
             font-size: 10.5px;
             font-weight: 800;
-            font-family: monospace;
-            padding: 2px 7px;
-            border-radius: 5px;
+            font-family: ui-monospace, monospace;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #f1f5f9 !important;
+            color: #222222 !important;
+            border: 1px solid #e2e8f0 !important;
+            transition: all 0.15s ease;
+        }
+
+        .compte-pop-item:hover .pop-badge {
+            background: #222222 !important;
+            color: #ffffff !important;
+            border-color: #222222 !important;
         }
 
         .custom-popover-scroll::-webkit-scrollbar {
@@ -1355,7 +1375,7 @@
                                             onclick="selectCompteFilter('ALL', 'Comptes associés : Tous les comptes')"
                                             data-label="tous les comptes ecritures associes all">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #f1f5f9; color: #0e7647;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-list-check"></i>
                                                 </div>
                                                 <div>
@@ -1365,8 +1385,7 @@
                                                         des écritures</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #f1f5f9; color: #475569;">Tous</span>
+                                            <span class="pop-badge">Tous</span>
                                         </div>
 
                                         <!-- SECTION 1 : ACTIVITÉ & EXPLOITATION -->
@@ -1376,7 +1395,7 @@
                                             onclick="selectCompteFilter('601', 'Classe 6 : Achats de marchandises (601)')"
                                             data-label="classe 6 achats marchandises stock riz 601100">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #fee2e2; color: #dc2626;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-cart-shopping"></i>
                                                 </div>
                                                 <div>
@@ -1386,15 +1405,14 @@
                                                         (Compte 601100)</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #fee2e2; color: #b91c1c;">601</span>
+                                            <span class="pop-badge">601</span>
                                         </div>
 
                                         <div class="compte-pop-item"
                                             onclick="selectCompteFilter('701', 'Classe 7 : Ventes & Produits (701)')"
                                             data-label="classe 7 ventes produits prestations chiffre affaires 701100">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #dcfce7; color: #16a34a;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-receipt"></i>
                                                 </div>
                                                 <div>
@@ -1404,15 +1422,14 @@
                                                         factures (Compte 701100)</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #dcfce7; color: #15803d;">701</span>
+                                            <span class="pop-badge">701</span>
                                         </div>
 
                                         <div class="compte-pop-item"
                                             onclick="selectCompteFilter('605', 'Classe 6 : Énergie, Eau & Fournitures (605)')"
                                             data-label="classe 6 energie eau sénélec seneau fournitures 605100">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #fef3c7; color: #d97706;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-bolt"></i>
                                                 </div>
                                                 <div>
@@ -1422,15 +1439,14 @@
                                                         (Compte 605100)</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #fef3c7; color: #b45309;">605</span>
+                                            <span class="pop-badge">605</span>
                                         </div>
 
                                         <div class="compte-pop-item"
                                             onclick="selectCompteFilter('612', 'Classe 6 : Transports & Services (612)')"
                                             data-label="classe 6 transports livraison logistique 612000">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #f1f5f9; color: #475569;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-truck"></i>
                                                 </div>
                                                 <div>
@@ -1440,8 +1456,7 @@
                                                         transport (Compte 612000)</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #f1f5f9; color: #334155;">612</span>
+                                            <span class="pop-badge">612</span>
                                         </div>
 
                                         <!-- SECTION 2 : TRÉSORERIE & RÈGLEMENTS -->
@@ -1451,7 +1466,7 @@
                                             onclick="selectCompteFilter('521', 'Classe 5 : Wave Sénégal (5213)')"
                                             data-label="classe 5 wave senegal mobile money qr code 521100 521300">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #e0f2fe; color: #0284c7;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-mobile-screen"></i>
                                                 </div>
                                                 <div>
@@ -1461,15 +1476,14 @@
                                                         banques (Compte 521100)</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #e0f2fe; color: #0369a1;">521</span>
+                                            <span class="pop-badge">521</span>
                                         </div>
 
                                         <div class="compte-pop-item"
                                             onclick="selectCompteFilter('571', 'Classe 5 : Caisse Espèces Physique (571)')"
                                             data-label="classe 5 caisse especes physique cash livre 571100">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #ecfdf5; color: #059669;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-money-bill-1-wave"></i>
                                                 </div>
                                                 <div>
@@ -1479,8 +1493,7 @@
                                                         physique (Compte 571100)</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #ecfdf5; color: #047857;">571</span>
+                                            <span class="pop-badge">571</span>
                                         </div>
 
                                         <!-- SECTION 3 : TIERS & COMPTES DU BILAN -->
@@ -1490,7 +1503,7 @@
                                             onclick="selectCompteFilter('401', 'Classe 4 : Dettes Fournisseurs (401)')"
                                             data-label="classe 4 dettes fournisseurs factures a payer 401100">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #fdf2f8; color: #db2777;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-handshake"></i>
                                                 </div>
                                                 <div>
@@ -1500,15 +1513,14 @@
                                                         régler (Compte 401100)</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #fdf2f8; color: #be185d;">401</span>
+                                            <span class="pop-badge">401</span>
                                         </div>
 
                                         <div class="compte-pop-item"
                                             onclick="selectCompteFilter('411', 'Classe 4 : Créances Clients (411)')"
                                             data-label="classe 4 creances clients credits accordes 411100">
                                             <div style="display: flex; align-items: center; gap: 9px;">
-                                                <div class="pop-icon-box" style="background: #f5f3ff; color: #7c3aed;">
+                                                <div class="pop-icon-box">
                                                     <i class="fa-solid fa-user-tag"></i>
                                                 </div>
                                                 <div>
@@ -1518,8 +1530,7 @@
                                                         recouvrer (Compte 411100)</div>
                                                 </div>
                                             </div>
-                                            <span class="pop-badge"
-                                                style="background: #f5f3ff; color: #6d28d9;">411</span>
+                                            <span class="pop-badge">411</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1973,7 +1984,7 @@
                             style="background: white; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
                             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
                                 <div
-                                    style="width: 40px; height: 40px; border-radius: 10px; background: #eff6ff; color: #1d4ed8; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                                    style="width: 40px; height: 40px; border-radius: 10px; background: #f0fdfa; color: #168078; border: 1px solid rgba(22, 128, 120, 0.2); display: flex; align-items: center; justify-content: center; font-size: 18px;">
                                     <i class="fa-solid fa-file-code"></i>
                                 </div>
                                 <div>
@@ -2002,7 +2013,7 @@
                                 </li>
                             </ul>
                             <button type="button" onclick="telechargerFec('Établissement Mamadou Diop')"
-                                style="width: 100%; padding: 10px 14px; background: #1e40af; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                style="width: 100%; padding: 10px 14px; background: #222222; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                                 <i class="fa-solid fa-download"></i>
                                 <span>Télécharger Fichier FEC (.txt DGID)</span>
                             </button>
@@ -2013,7 +2024,7 @@
                             style="background: white; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
                             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
                                 <div
-                                    style="width: 40px; height: 40px; border-radius: 10px; background: #fffbeb; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                                    style="width: 40px; height: 40px; border-radius: 10px; background: #f0fdfa; color: #168078; border: 1px solid rgba(22, 128, 120, 0.2); display: flex; align-items: center; justify-content: center; font-size: 18px;">
                                     <i class="fa-solid fa-building-columns"></i>
                                 </div>
                                 <div>
@@ -2039,7 +2050,7 @@
                             style="background: white; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
                             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
                                 <div
-                                    style="width: 40px; height: 40px; border-radius: 10px; background: #fdf2f8; color: #be185d; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                                    style="width: 40px; height: 40px; border-radius: 10px; background: #f0fdfa; color: #168078; border: 1px solid rgba(22, 128, 120, 0.2); display: flex; align-items: center; justify-content: center; font-size: 18px;">
                                     <i class="fa-solid fa-book"></i>
                                 </div>
                                 <div>
@@ -2153,7 +2164,7 @@
                         <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px;">
                             <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
                                 Poids des Charges d'Exploitation</div>
-                            <div style="font-size: 26px; font-weight: 900; color: #7c3aed; margin: 6px 0;">14.8%</div>
+                            <div style="font-size: 26px; font-weight: 900; color: #222222; margin: 6px 0;">14.8%</div>
                             <div style="font-size: 11.5px; color: #16a34a; font-weight: 600;">Charges optimisées</div>
                             <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Loyer, transport, électricité
                                 Senelec et salaires proportionnés</p>
@@ -2605,7 +2616,7 @@
                                         style="padding: 12px 16px; text-align: right; font-family: monospace; font-weight: 800; color: #0e7647;">
                                         360 000 F</td>
                                     <td style="padding: 12px 16px; text-align: center;"><span
-                                            style="background: #fffbeb; color: #b45309; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">Stock
+                                            style="background: #f0fdfa; color: #168078; border: 1px solid rgba(22, 128, 120, 0.2); padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">Stock
                                             Moyen</span></td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid #f1f5f9;">
