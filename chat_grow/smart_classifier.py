@@ -281,35 +281,44 @@ def generer_point_flash_journee(nom_entreprise: str, txs_du_jour: list, treso_st
 
     if 7 <= h_int <= 11:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Prendre des Nouvelles pour votre Bilan (Matin)* :\n"
-            "Pour alimenter votre Bilan comptable en direct :\n"
-            "• Avez-vous reçu un arrivage de nouveau stock ce matin (601) ?\n"
-            "• Avez-vous acheté ou fait réparer du matériel ou équipement pour le commerce (Actif Immobilisé 244) ?\n"
-            "👉 Un simple vocal ou message suffit : « Reçu 5 cartons » ou « Acheté frigo 150 000 » !"
+            "\n\n🐑 *Point d'Étape du Berger (Matin & Démarrage)* 📋 :\n"
+            "Pour alimenter votre Bilan comptable en direct dès l'ouverture :\n"
+            "1. 📦 *Arrivage Stock (601)* : Avez-vous reçu ou acheté de la marchandise ce matin ?\n"
+            "2. 💼 *Dette Grossiste (401)* : Avez-vous pris du stock chez un fournisseur sans payer comptant ?\n"
+            "3. 🏗️ *Matériel & Équipements (244)* : Achat, réparation ou installation d'un outil pro (balance, frigo, étagère) ?\n"
+            "4. 🚗 *Frais du Matin (605/624)* : Transport, dockers ou carburant payés pour le réassort ?\n\n"
+            "👉 Dictez-le moi en 1 seule note vocale rapide !"
         )
     elif 12 <= h_int <= 14:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Prendre des Nouvelles pour votre Bilan (Mi-journée)* :\n"
-            "Pour que rien n'échappe à votre bilan :\n"
-            "• Avez-vous pris de l'argent dans la caisse pour la popote de midi (Compte 104) ?\n"
-            "• Un client est-il parti avec de la marchandise à crédit sans payer (Créance 411) ?\n"
-            "👉 Dictez-le moi tout de suite en 5 secondes avant d'oublier !"
+            "\n\n🐑 *Point d'Étape du Berger (Mi-journée)* 📋 :\n"
+            "Pour que rien n'échappe à votre Bilan et vos comptes du jour :\n"
+            "1. 🍲 *Popote & Dépenses Maison (104)* : Avez-vous pris du cash dans la caisse pour le repas de midi ou la famille ?\n"
+            "2. 🤝 *Crédits Clients (411)* : Un client est-il parti avec de la marchandise sans payer comptant ?\n"
+            "3. 📦 *Stock & Réassort (601)* : Avez-vous acheté du stock ou payé un livreur ce midi ?\n"
+            "4. ⚡ *Charges Cash (605/661)* : Avez-vous payé des manutentionnaires, un taxi ou du carburant ?\n"
+            "5. ⚠️ *Avaries & Pertes (654)* : Marchandise abîmée, cassée ou périmée ce matin ?\n\n"
+            "👉 Un simple vocal suffit (ex: « Pris 5000 popote, Modou doit 12000, et payé 2000 taxi ») !"
         )
     elif 15 <= h_int <= 17:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Prendre des Nouvelles pour votre Bilan (Après-midi)* :\n"
-            "Point de contrôle dettes fournisseurs & stocks :\n"
-            "• Avez-vous pris de la marchandise chez un grossiste sans la régler immédiatement (Dette Fournisseur 401) ?\n"
-            "• Avez-vous eu de la casse, avarie ou marchandise perdue (Compte 654) ?\n"
-            "👉 Donnez-moi les montants pour ajuster immédiatement votre résultat net et vos dettes."
+            "\n\n🐑 *Point d'Étape du Berger (Après-midi)* 📋 :\n"
+            "Point de contrôle intermédiaire avant la fin de journée :\n"
+            "1. 💼 *Dettes Fournisseurs (401)* : Devez-vous de l'argent à un grossiste pour du stock pris aujourd'hui ?\n"
+            "2. 🤝 *Crédits Clients (411)* : D'autres clients ont-ils pris de la marchandise à crédit cet après-midi ?\n"
+            "3. 💳 *Règlements reçus (411)* : Un client vous a-t-il remboursé une ancienne dette ?\n"
+            "4. 🏦 *Dépôts & Trésorerie (585)* : Avez-vous versé du cash de la caisse vers votre compte Wave ou Banque ?\n\n"
+            "👉 Dites-moi tout pour ajuster immédiatement votre trésorerie et vos créances."
         )
     else:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Prendre des Nouvelles pour votre Bilan (Clôture de Caisse)* :\n"
+            "\n\n🐑 *Point d'Étape du Berger (Clôture & Bilan du Soir)* 📋 :\n"
             "Avant de fermer définitivement la caisse ce soir :\n"
-            "• Combien avez-vous de cash physique réel compté dans votre tiroir (Compte 571) ?\n"
-            "• Avez-vous une facture de dépense ou un reçu de transport à photographier ?\n"
-            "👉 Un mot pour valider la caisse et votre Bilan est certifié conforme pour les banques !"
+            "1. 💵 *Caisse Physique (571)* : Combien avez-vous de cash réel compté dans votre tiroir ?\n"
+            "2. 🍲 *Total Popote (104)* : Y a-t-il eu d'autres sorties d'argent pour la maison ?\n"
+            "3. 🤝 *Total Crédits (411)* : Tous les clients partis avec de la marchandise sont-ils notés ?\n"
+            "4. 📸 *Justificatifs & Factures* : Avez-vous des reçus de dépenses du jour à photographier ?\n\n"
+            "👉 Validez votre caisse pour que votre Bilan bancaire soit certifié conforme aux normes SYSCOHADA !"
         )
 
     return (

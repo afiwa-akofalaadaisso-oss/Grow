@@ -4258,14 +4258,15 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
         "infos bilan", "informations bilan", "que donner", "quoi donner"
     ]):
         return (
-            "🐑 *LE POINT DU BERGER : CE QUE GROWTH UTILISE POUR VOTRE BILAN* 📋\n\n"
-            "Comme un berger attentif qui rassemble ses moutons tout au long de la journée, Growth recueille 5 éléments vitaux pour que votre Bilan SYSCOHADA soit certifié pour les banques :\n\n"
-            "1. 🏗️ *Actif Immobilisé (244)* : Avez-vous acheté, remplacé ou réparé du matériel ou équipement (ex: congélateur, étagère, balance, moto de livraison, aménagement) ?\n"
-            "2. 📦 *Stocks & Réassort (601)* : Avez-vous reçu un arrivage de marchandise ou acheté du stock ?\n"
-            "3. 🤝 *Créances Clients (411)* : Un client est-il parti avec de la marchandise à crédit en promettant de payer plus tard ?\n"
-            "4. 💼 *Dettes Fournisseurs (401)* : Avez-vous pris du stock chez un grossiste sans le régler immédiatement ?\n"
-            "5. 💵 *Caisse Physique & Popote (571 / 104)* : Combien avez-vous de cash réel en main ? Avez-vous pris de l'argent pour la famille ?\n\n"
-            "👉 *Dès qu'une de ces 5 opérations arrive dans votre journée, dictez-la moi en 1 seconde par vocal ou texte* (ex : « Acheté congélateur 180 000 » ou « Moussa me doit 15 000 ») !"
+            "🐑 *LE POINTAGE DU BERGER : TOUS LES FLUX DE VOTRE BILAN* 📋\n\n"
+            "Comme un berger attentif qui rassemble ses moutons tout au long de la journée, Growth veille sur les 6 flux vitaux de votre commerce pour construire votre Bilan SYSCOHADA :\n\n"
+            "1. 🍲 *Popote & Maison (Compte 104)* : Avez-vous pris de l'argent dans la caisse pour le repas de midi ou la famille ?\n"
+            "2. 🤝 *Crédits Clients (Compte 411)* : Un client est-il parti avec de la marchandise sans payer comptant ?\n"
+            "3. 📦 *Stocks & Réassort (Compte 601)* : Avez-vous reçu un arrivage ou acheté du stock ?\n"
+            "4. 💼 *Dettes Fournisseurs (Compte 401)* : Avez-vous pris de la marchandise chez un grossiste sans la régler tout de suite ?\n"
+            "5. 🏗️ *Matériel & Équipements Pro (Compte 244)* : Achat, réparation ou aménagement pour le local (congélateur, étagère, balance, moto) ?\n"
+            "6. ⚡ *Charges du Jour (Comptes 605/624/661)* : Transport, dockers, carburant ou factures payés en espèces ?\n\n"
+            "👉 *Dès qu'une de ces opérations a lieu, dictez-la moi en 1 note vocale ou message rapide* (ex : « Pris 5 000 popote, Moussa doit 15 000, et acheté 1 étagère à 30 000 ») !"
         )
 
     # 2. Salutations et présentations générales (ponctuation nettoyée)
