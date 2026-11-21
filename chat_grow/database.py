@@ -140,6 +140,22 @@ def init_local_sqlite():
     """)
     cur.execute("CREATE INDEX IF NOT EXISTS idx_fb_phone ON ai_feedback(phone, id DESC)")
 
+    # Table du backlog d'apprentissage continu & auto-critique de l'IA
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS ai_learning_backlog (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        phone TEXT,
+        question_utilisateur TEXT,
+        reponse_growth TEXT,
+        score_confiance REAL,
+        motif TEXT,
+        statut TEXT DEFAULT 'A_AMELIORER',
+        reponse_amelioree TEXT,
+        created_at TEXT
+    )
+    """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_learn_statut ON ai_learning_backlog(statut, id DESC)")
+
     conn.commit()
 
     # Migration résiliente : colonne justificatif_url
@@ -794,5 +810,73 @@ def obtenir_stats_feedback() -> dict:
     except Exception as e:
         print(f"Erreur obtenir_stats_feedback : {e}")
         return {"likes": 0, "dislikes": 0, "total": 0, "satisfaction_pct": 100.0}
+
+
+def enregistrer_cas_amelioration_ia(phone: str, question: str, reponse: str, score_confiance: float = 0.5, motif: str = "") -> int:
+    """Enregistre un cas où l'IA a douté ou reçu un retour négatif, pour apprentissage continu par l'équipe."""
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip() if phone else ""
+    now_iso = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO ai_learning_backlog (phone, question_utilisateur, reponse_growth, score_confiance, motif, statut, created_at) VALUES (?, ?, ?, ?, ?, 'A_AMELIORER', ?)",
+            (clean_p, question, reponse, float(score_confiance), motif, now_iso)
+        )
+        new_id = cur.lastrowid
+        conn.commit()
+        conn.close()
+        return new_id
+    except Exception as e:
+        print(f"Erreur enregistrement apprentissage IA : {e}")
+        return 0
+
+
+def obtenir_backlog_amelioration_ia(limit: int = 50) -> list:
+    """Récupère les questions où l'IA a besoin de l'équipe pour se perfectionner."""
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT id, phone, question_utilisateur, reponse_growth, score_confiance, motif, statut, reponse_amelioree, created_at FROM ai_learning_backlog ORDER BY id DESC LIMIT ?",
+            (limit,)
+        )
+        rows = cur.fetchall()
+        conn.close()
+        return [
+            {
+                "id": r[0],
+                "phone": r[1],
+                "question": r[2],
+                "reponse_actuelle": r[3],
+                "score_confiance": r[4],
+                "motif": r[5],
+                "statut": r[6],
+                "reponse_amelioree": r[7],
+                "date": r[8]
+            }
+            for r in rows
+        ]
+    except Exception as e:
+        print(f"Erreur obtenir_backlog_amelioration_ia : {e}")
+        return []
+
+
+def perfectionner_reponse_ia(cas_id: int, reponse_parfaite: str) -> bool:
+    """Permet à l'équipe d'enseigner la réponse parfaite à Growth pour un cas donné."""
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "UPDATE ai_learning_backlog SET reponse_amelioree = ?, statut = 'PERFECTIONNE' WHERE id = ?",
+            (reponse_parfaite, cas_id)
+        )
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"Erreur perfectionner_reponse_ia : {e}")
+        return False
+
 
 

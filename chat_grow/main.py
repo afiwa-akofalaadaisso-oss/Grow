@@ -91,7 +91,10 @@ from database import (
     get_chat_history,
     format_chat_history_for_llm,
     enregistrer_feedback_utilisateur,
-    obtenir_stats_feedback
+    obtenir_stats_feedback,
+    enregistrer_cas_amelioration_ia,
+    obtenir_backlog_amelioration_ia,
+    perfectionner_reponse_ia
 )
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -1841,6 +1844,33 @@ async def api_feedback_stats():
     return obtenir_stats_feedback()
 
 
+@app.get("/api/ai-learning-backlog")
+async def api_ai_learning_backlog(limit: int = 50):
+    """
+    Retourne la liste des questions complexes, ambiguës ou ayant reçu un feedback négatif
+    afin que l'équipe humaine puisse perfectionner les futures réponses de Growth.
+    """
+    backlog = obtenir_backlog_amelioration_ia(limit=limit)
+    return {
+        "status": "success",
+        "total_a_ameliorer": len([b for b in backlog if b.get("statut") == "A_AMELIORER"]),
+        "backlog": backlog
+    }
+
+
+@app.post("/api/ai-learning-teach")
+async def api_ai_learning_teach(payload: dict = Body(...)):
+    """
+    Permet à l'équipe d'enseigner la réponse parfaite à Growth pour un cas signalé.
+    """
+    cas_id = int(payload.get("cas_id") or 0)
+    reponse_parfaite = str(payload.get("reponse_parfaite") or "").strip()
+    if not cas_id or not reponse_parfaite:
+        raise HTTPException(status_code=400, detail="cas_id et reponse_parfaite sont obligatoires")
+    succes = perfectionner_reponse_ia(cas_id, reponse_parfaite)
+    return {"status": "success" if succes else "error", "cas_id": cas_id}
+
+
 
 async def deliver_whatsapp_response(to_phone: str, reply_text: str, with_feedback_buttons: bool = True):
     """
@@ -1956,6 +1986,16 @@ async def receive_message(request: Request):
                     rating = "LIKE" if btn_id == "feedback_like" else "DISLIKE"
                     # 1. Enregistrement silencieux du feedback pour évaluer les réponses de Growth
                     enregistrer_feedback_utilisateur(sender_phone, rating, ref_msg_id)
+
+                    # 1.bis Si dépréciation (👎 À corriger) : signalement immédiat dans le backlog d'apprentissage continu
+                    if rating == "DISLIKE":
+                        enregistrer_cas_amelioration_ia(
+                            sender_phone,
+                            "Interaction évaluée négativement",
+                            f"Le commerçant a cliqué sur 👎 À corriger sur la réponse (Réf msg: {ref_msg_id})",
+                            0.2,
+                            "Dépréciation directe par le commerçant via bouton WhatsApp"
+                        )
 
                     # 2. Réaction emoji sur la bulle cliquée (silencieux, AUCUN message texte envoyé)
                     reaction_emoji = "👍" if rating == "LIKE" else "👌"
@@ -4354,6 +4394,12 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
     "montant_fcfa": nombre entier ou null
   },
 
+  "auto_evaluation": {
+    "score_confiance": 0.0 à 1.0 (évalue si ta réponse est parfaitement certaine, complète et adaptée au contexte),
+    "a_signaler_pour_amelioration": true/false (mets true si la question est complexe, ambiguë ou si tu manques de règles précises pour que l'équipe humaine perfectionne tes connaissances),
+    "motif_amelioration": "Raison brève de l'incertitude ou axe d'amélioration pour l'équipe (ou null)"
+  },
+
   "reponse_whatsapp": "Message de confirmation sobre et clair. Si l'operation est claire, confirme l'enregistrement au journal avec son compte SYSCOHADA. Si le motif d'une sortie Wave/OM est flou, demande une precision en proposant les 4 choix sans emoji."
 }
 """
@@ -4615,7 +4661,27 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
             except Exception as e:
                 print(f"Info consultation dettes : {e}")
 
-        return parsed.get("reponse_whatsapp", "Message bien reçu par Growth !")
+        reponse_finale = parsed.get("reponse_whatsapp", "Message bien reçu par Growth !")
+
+        # 6. Auto-évaluation continue & signalement proactif des cas à perfectionner
+        try:
+            auto_eval = parsed.get("auto_evaluation") or {}
+            score_conf = float(auto_eval.get("score_confiance") or 1.0)
+            a_signaler = bool(auto_eval.get("a_signaler_pour_amelioration", False))
+            if a_signaler or score_conf < 0.70:
+                motif = auto_eval.get("motif_amelioration") or "Confiance modérée de l'IA"
+                enregistrer_cas_amelioration_ia(
+                    sender_phone,
+                    user_text,
+                    reponse_finale,
+                    score_conf,
+                    motif
+                )
+                print(f"[AUTO-APPRENTISSAGE] Question signalée pour amélioration continue ({motif})")
+        except Exception as e_appr:
+            print(f"Info auto-apprentissage : {e_appr}")
+
+        return reponse_finale
 
     except Exception as e:
         print(f"Erreur process_text_with_ai : {e}")
