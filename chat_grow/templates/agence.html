@@ -870,8 +870,8 @@
                 </a>
             </div>
             <ul class="nav-links">
-                <li><a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" id="navLinkTableau" class="active">Tableau de Bord</a></li>
                 <li><a href="javascript:void(0)" onclick="switchAgencyTab('pme')" id="navLinkPme">PME Clientes</a></li>
+                <li><a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" id="navLinkTableau" class="active">Gestion du Bilan &amp; Écritures</a></li>
                 <li><a href="javascript:void(0)" onclick="switchAgencyTab('documents')" id="navLinkDocuments">Documents</a></li>
                 <li><a href="javascript:void(0)" onclick="switchAgencyTab('reporting')" id="navLinkReporting">Reporting</a></li>
             </ul>
@@ -899,13 +899,13 @@
         <!-- Sidebar Gauche -->
         <aside class="sidebar">
             <div class="sidebar-menu">
-                <a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" class="menu-item active" id="sideLinkDashboard">
-                    <i class="fa-solid fa-house" style="font-size: 13px;"></i>
-                    <span>Dashboard</span>
-                </a>
                 <a href="javascript:void(0)" onclick="switchAgencyTab('pme')" class="menu-item" id="sideLinkPme">
                     <i class="fa-solid fa-users" style="font-size: 13px;"></i>
                     <span>PME Clientes</span>
+                </a>
+                <a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" class="menu-item active" id="sideLinkDashboard">
+                    <i class="fa-solid fa-scale-balanced" style="font-size: 13px;"></i>
+                    <span>Gestion du Bilan &amp; Écritures</span>
                 </a>
                 <a href="javascript:void(0)" onclick="switchAgencyTab('reporting')" class="menu-item" id="sideLinkReporting">
                     <i class="fa-solid fa-chart-line" style="font-size: 13px;"></i>
@@ -916,8 +916,8 @@
                     <span>Documents &amp; Liasses</span>
                 </a>
                 <a href="javascript:void(0)" onclick="openReport('tout')" class="menu-item" id="sideLinkBilan">
-                    <i class="fa-solid fa-scale-balanced" style="font-size: 13px;"></i>
-                    <span>Bilan SYSCOHADA</span>
+                    <i class="fa-solid fa-file-invoice" style="font-size: 13px;"></i>
+                    <span>Liasse SYSCOHADA</span>
                 </a>
                 <a href="javascript:void(0)" onclick="ouvrirModalConnexion()" class="menu-item" id="sideLinkAcces">
                     <i class="fa-solid fa-user-shield" style="font-size: 13px;"></i>
@@ -977,7 +977,7 @@
             <div id="sectionTableau" class="agency-tab-pane">
             <div>
                 <div class="content-header-tag">Portail Cabinets Comptables &bull; Tout Cabinet Comptable &amp; Commissariat</div>
-                <h1 class="content-title">Validation des écritures pré-comptables SYSCOHADA</h1>
+                <h1 class="content-title">Gestion du Bilan &amp; Validation des Écritures SYSCOHADA</h1>
 
                 <!-- BARRE DES 4 BOUTONS OFFICIELS ÉTATS FINANCIERS DEMANDÉS PAR LE CLIENT -->
                 <div class="financial-statements-bar">
