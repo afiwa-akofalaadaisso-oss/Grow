@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full bg-slate-900">
+<html lang="fr" class="h-full bg-[#0b1222]">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GROWTH &bull; Cockpit Dirigeant &amp; Apprentissage Continu IA</title>
+    <title>GROWTH &bull; Cockpit Fondateur &amp; Direction</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="apple-touch-icon" href="/static/grow_logo.png">
+
+    <!-- Typographie Officielle Growth (Plus Jakarta Sans, Inter, JetBrains Mono) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -15,14 +26,18 @@
                 extend: {
                     colors: {
                         grow: {
-                            dark: '#14362b',
+                            dark: '#0b1222',
+                            card: '#111a2e',
+                            forest: '#14362b',
                             primary: '#168078',
                             mint: '#a0d9d2',
-                            accent: '#25D366'
+                            'mint-hover': '#8ecfc7',
+                            wa: '#25D366'
                         }
                     },
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace']
                     }
                 }
@@ -30,38 +45,103 @@
         }
     </script>
     <style>
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 9999px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+        * {
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #0b1222;
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(160, 217, 210, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(20, 54, 43, 0.35) 0%, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(160, 217, 210, 0.2);
+            border-radius: 9999px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(160, 217, 210, 0.4);
+        }
+
+        .growth-card {
+            background: #111a2e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .growth-card:hover {
+            border-color: rgba(160, 217, 210, 0.28);
+        }
+
+        .btn-mint {
+            background: #a0d9d2;
+            color: #0b1222;
+            font-weight: 800;
+            transition: all 0.15s ease;
+        }
+
+        .btn-mint:hover {
+            background: #8ecfc7;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(160, 217, 210, 0.3);
+        }
     </style>
 </head>
-<body class="h-full bg-[#0d1311] text-slate-100 font-sans flex flex-col overflow-x-hidden antialiased">
 
-    <!-- BARRE SUPÉRIEURE DIRECTION / FONDATEUR -->
-    <header class="bg-[#14201c] border-b border-[#21352e] sticky top-0 z-40 px-4 sm:px-8 py-3.5 shadow-lg backdrop-blur-md">
+<body class="text-slate-100 flex flex-col overflow-x-hidden antialiased">
+
+    <!-- ========================================================================= -->
+    <!-- BARRE SUPÉRIEURE DE DIRECTION / FONDATEUR                                -->
+    <!-- ========================================================================= -->
+    <header class="bg-[#111a2e]/90 border-b border-white/10 sticky top-0 z-40 px-4 sm:px-8 py-3.5 shadow-lg backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            <!-- Logo & Badge Fondateur -->
+            
+            <!-- Logo Growth Officiel & Titre Cockpit -->
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#14362b] via-[#168078] to-[#a0d9d2] flex items-center justify-center shadow-md shadow-[#168078]/20">
-                    <span class="material-symbols-outlined notranslate text-white text-[20px]" translate="no">monitoring</span>
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#0b1222] via-[#14362b] to-[#a0d9d2] flex items-center justify-center shadow-md shadow-[#a0d9d2]/15 border border-[#a0d9d2]/30 flex-shrink-0">
+                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]" translate="no">monitoring</span>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-extrabold text-sm sm:text-base tracking-tight text-white">GROWTH</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#a0d9d2]/20 text-[#a0d9d2] border border-[#a0d9d2]/30 uppercase tracking-wider">Cockpit Fondateur</span>
+                        <span class="font-extrabold text-base sm:text-lg tracking-tight text-white font-sans">GROWTH</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#a0d9d2]/15 text-[#a0d9d2] border border-[#a0d9d2]/30 uppercase tracking-wider">Cockpit Fondateur</span>
                     </div>
-                    <p class="text-[11px] text-slate-400 hidden sm:block">Supervision Utilisateurs &bull; Relance Commerçants &bull; Active Learning IA</p>
+                    <p class="text-[11px] text-slate-400 font-body hidden sm:block">Supervision Utilisateurs &bull; Relance Commerçants &bull; Active Learning IA</p>
                 </div>
             </div>
 
-            <!-- Actions Rapides & Heure Dakar -->
-            <div class="flex items-center gap-3">
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/40 border border-white/5 text-xs font-mono text-slate-300">
+            <!-- Actions Rapides & Horloge Dakar -->
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                <!-- Horloge Dakar -->
+                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs font-mono text-slate-300">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="dakarClock">Dakar 00:00</span>
+                    <span id="dakarClock">Dakar 00:00 (GMT)</span>
                 </div>
-                <button type="button" onclick="refreshCockpitData()" class="px-3.5 py-1.5 rounded-xl bg-[#168078] hover:bg-[#19948b] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
+
+                <!-- Bouton Réinitialiser à zéro (Utile pour vider les tests) -->
+                <button type="button" onclick="confirmerReinitialisationZero()"
+                    class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 border border-white/10 hover:border-rose-500/30 text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer" title="Remettre la plateforme à zéro">
+                    <span class="material-symbols-outlined notranslate text-[16px]" translate="no">restart_alt</span>
+                    <span class="hidden sm:inline">Remise à zéro</span>
+                </button>
+
+                <!-- Bouton Actualiser -->
+                <button type="button" onclick="refreshCockpitData()"
+                    class="btn-mint px-3.5 py-1.5 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer shadow-sm">
                     <span class="material-symbols-outlined notranslate text-[16px]" translate="no">sync</span>
                     <span>Actualiser</span>
                 </button>
@@ -69,71 +149,76 @@
         </div>
     </header>
 
-    <!-- CONTENU PRINCIPAL -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 space-y-6">
+    <!-- ========================================================================= -->
+    <!-- CONTENU PRINCIPAL                                                         -->
+    <!-- ========================================================================= -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 space-y-6 font-body">
 
-        <!-- 4 CARTES KPIS STRATÉGIQUES DE GROWTH -->
+        <!-- 4 CARTES KPIS STRATÉGIQUES (PALETTE GROWTH) -->
         <section class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-            <!-- 1. Utilisateurs Inscrits -->
-            <div class="p-4 rounded-2xl bg-[#14201c] border border-[#21352e] shadow-md relative overflow-hidden group">
+            
+            <!-- 1. Commerçants Inscrits -->
+            <div class="growth-card p-4 sm:p-5 relative overflow-hidden group">
                 <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider">
                     <span>Commerçants Inscrits</span>
-                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[20px]" translate="no">storefront</span>
+                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]" translate="no">storefront</span>
                 </div>
-                <div class="mt-2 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiTotalUsers">--</span>
-                    <span class="text-[11px] text-emerald-400 font-bold" id="kpiActifsJour">-- actifs auj.</span>
+                <div class="mt-2.5 flex items-baseline gap-2">
+                    <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiTotalUsers">0</span>
+                    <span class="text-[11px] text-[#a0d9d2] font-bold" id="kpiActifsJour">0 actif auj.</span>
                 </div>
-                <div class="mt-1 text-[11px] text-slate-400">Total entreprises sur la plateforme</div>
+                <div class="mt-1.5 text-[11px] text-slate-400">Total entreprises sur la plateforme</div>
             </div>
 
             <!-- 2. Volume Financier Tracé -->
-            <div class="p-4 rounded-2xl bg-[#14201c] border border-[#21352e] shadow-md relative overflow-hidden group">
+            <div class="growth-card p-4 sm:p-5 relative overflow-hidden group">
                 <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider">
                     <span>Volume Comptabilisé</span>
-                    <span class="material-symbols-outlined notranslate text-emerald-400 text-[20px]" translate="no">account_balance_wallet</span>
+                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]" translate="no">account_balance_wallet</span>
                 </div>
-                <div class="mt-2 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-[#a0d9d2]" id="kpiVolumeTotal">-- FCFA</span>
+                <div class="mt-2.5 flex items-baseline gap-2">
+                    <span class="text-2xl sm:text-3xl font-black font-mono text-[#a0d9d2]" id="kpiVolumeTotal">0 FCFA</span>
                 </div>
-                <div class="mt-1 text-[11px] text-slate-400"><span id="kpiTotalEcritures">--</span> écritures certifiées</div>
+                <div class="mt-1.5 text-[11px] text-slate-400"><span id="kpiTotalEcritures">0</span> écriture certifiée</div>
             </div>
 
             <!-- 3. Satisfaction IA -->
-            <div class="p-4 rounded-2xl bg-[#14201c] border border-[#21352e] shadow-md relative overflow-hidden group">
+            <div class="growth-card p-4 sm:p-5 relative overflow-hidden group">
                 <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider">
                     <span>Satisfaction IA</span>
-                    <span class="material-symbols-outlined notranslate text-amber-400 text-[20px]" translate="no">thumb_up</span>
+                    <span class="material-symbols-outlined notranslate text-amber-300 text-[22px]" translate="no">thumb_up</span>
                 </div>
-                <div class="mt-2 flex items-baseline gap-2">
+                <div class="mt-2.5 flex items-baseline gap-2">
                     <span class="text-2xl sm:text-3xl font-black font-mono text-amber-300" id="kpiSatisfaction">100%</span>
                     <span class="text-[11px] text-slate-400 font-mono" id="kpiVotesCounts">👍 0 / 👎 0</span>
                 </div>
-                <div class="mt-1 text-[11px] text-slate-400">Évaluation des réponses WhatsApp</div>
+                <div class="mt-1.5 text-[11px] text-slate-400">Évaluation des réponses WhatsApp</div>
             </div>
 
-            <!-- 4. Commerçants à Relancer -->
-            <div class="p-4 rounded-2xl bg-[#14201c] border border-[#21352e] shadow-md relative overflow-hidden group">
+            <!-- 4. Commerçants Inactifs à Relancer -->
+            <div class="growth-card p-4 sm:p-5 relative overflow-hidden group">
                 <div class="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider">
                     <span>Inactifs à Relancer</span>
-                    <span class="material-symbols-outlined notranslate text-rose-400 text-[20px]" translate="no">notification_important</span>
+                    <span class="material-symbols-outlined notranslate text-rose-400 text-[22px]" translate="no">notifications_active</span>
                 </div>
-                <div class="mt-2 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-rose-400" id="kpiInactifs">--</span>
-                    <span class="text-[11px] text-rose-300 font-semibold">&gt; 24h sans écriture</span>
+                <div class="mt-2.5 flex items-baseline gap-2">
+                    <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiInactifs">0</span>
+                    <span class="text-[11px] text-slate-400 font-semibold" id="kpiInactifsLabel">&gt; 24h sans écriture</span>
                 </div>
-                <div class="mt-1 text-[11px] text-slate-400">Prêts pour réactivation WhatsApp</div>
+                <div class="mt-1.5 text-[11px] text-slate-400">Prêts pour réactivation WhatsApp</div>
             </div>
         </section>
 
         <!-- NAVIGATION PAR ONGLETS DU COCKPIT -->
-        <div class="flex items-center gap-2 border-b border-[#21352e] pb-1">
-            <button type="button" onclick="switchCockpitTab('utilisateurs')" id="tabBtnUsers" class="px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#168078] text-white shadow-xs cursor-pointer">
+        <div class="flex items-center gap-2 border-b border-white/10 pb-2">
+            <button type="button" onclick="switchCockpitTab('utilisateurs')" id="tabBtnUsers"
+                class="px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#a0d9d2] text-[#0b1222] shadow-md shadow-[#a0d9d2]/15 cursor-pointer">
                 <span class="material-symbols-outlined notranslate text-[18px]" translate="no">groups</span>
                 <span>Suivi &amp; Relance des Utilisateurs</span>
-                <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-black/30 font-mono" id="tabBadgeUsersCount">0</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-black/30 text-white font-mono" id="tabBadgeUsersCount">0</span>
             </button>
-            <button type="button" onclick="switchCockpitTab('learning')" id="tabBtnLearning" class="px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">
+            <button type="button" onclick="switchCockpitTab('learning')" id="tabBtnLearning"
+                class="px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">
                 <span class="material-symbols-outlined notranslate text-[18px]" translate="no">psychology</span>
                 <span>Apprentissage Continu IA (Active Learning)</span>
                 <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-mono" id="tabBadgeLearningCount">0</span>
@@ -144,26 +229,34 @@
         <!-- SECTION 1 : SUIVI & RELANCE DES UTILISATEURS                            -->
         <!-- ========================================================================= -->
         <section id="cockpitSectionUsers" class="space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#14201c] p-4 rounded-2xl border border-[#21352e]">
+            
+            <!-- Barre de Recherche & Filtres d'Activité -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 growth-card p-4">
                 <div class="relative flex-1 max-w-md">
                     <span class="material-symbols-outlined notranslate absolute left-3 top-2.5 text-slate-400 text-[18px]" translate="no">search</span>
-                    <input type="text" id="searchUserInput" onkeyup="filterUsersTable()" placeholder="Rechercher par nom de commerce ou numéro WhatsApp..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-black/40 border border-[#2b443b] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#a0d9d2] transition-colors">
+                    <input type="text" id="searchUserInput" onkeyup="filterUsersTable()"
+                        placeholder="Rechercher par nom de commerce ou numéro WhatsApp..."
+                        class="w-full pl-9 pr-4 py-2 rounded-xl bg-[#0b1222] border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#a0d9d2] focus:ring-1 focus:ring-[#a0d9d2] transition-colors">
                 </div>
-                <div class="flex items-center gap-2 text-xs">
+                <div class="flex items-center gap-2 text-xs flex-wrap">
                     <span class="text-slate-400 font-semibold">Filtre :</span>
-                    <button type="button" onclick="setUserFilter('ALL')" id="filterAll" class="px-2.5 py-1 rounded-lg bg-white/10 text-white font-bold cursor-pointer">Tous</button>
-                    <button type="button" onclick="setUserFilter('ACTIF')" id="filterActif" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">🟢 Actifs</button>
-                    <button type="button" onclick="setUserFilter('ATTENTION')" id="filterAttention" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">🟡 Inactifs 24h</button>
-                    <button type="button" onclick="setUserFilter('INACTIF')" id="filterInactif" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">🔴 Inactifs &gt; 3j</button>
+                    <button type="button" onclick="setUserFilter('ALL')" id="filterAll"
+                        class="px-2.5 py-1 rounded-lg bg-[#a0d9d2] text-[#0b1222] font-bold cursor-pointer">Tous</button>
+                    <button type="button" onclick="setUserFilter('ACTIF')" id="filterActif"
+                        class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">🟢 Actifs</button>
+                    <button type="button" onclick="setUserFilter('ATTENTION')" id="filterAttention"
+                        class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">🟡 Inactifs 24h</button>
+                    <button type="button" onclick="setUserFilter('INACTIF')" id="filterInactif"
+                        class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">🔴 Inactifs &gt; 3j</button>
                 </div>
             </div>
 
             <!-- TABLEAU DES COMMERÇANTS -->
-            <div class="bg-[#14201c] rounded-2xl border border-[#21352e] shadow-xl overflow-hidden">
+            <div class="growth-card shadow-xl overflow-hidden">
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="bg-black/40 text-slate-400 text-[10.5px] uppercase font-bold tracking-wider border-b border-[#21352e]">
+                            <tr class="bg-black/40 text-slate-400 text-[10.5px] uppercase font-bold tracking-wider border-b border-white/10">
                                 <th class="py-3 px-4">Commerce &amp; Contact WhatsApp</th>
                                 <th class="py-3 px-3 text-center">Écritures (Auj. / Total)</th>
                                 <th class="py-3 px-3 text-center">Statut d'Activité</th>
@@ -171,13 +264,8 @@
                                 <th class="py-3 px-4 text-center">Action Dirigeant</th>
                             </tr>
                         </thead>
-                        <tbody id="usersTableBody" class="divide-y divide-[#21352e]/60 text-slate-300">
-                            <tr>
-                                <td colspan="5" class="py-12 text-center text-slate-400">
-                                    <span class="material-symbols-outlined notranslate text-[32px] text-slate-500 animate-spin block mb-2" translate="no">progress_activity</span>
-                                    <span>Chargement de la liste des commerçants...</span>
-                                </td>
-                            </tr>
+                        <tbody id="usersTableBody" class="divide-y divide-white/5 text-slate-300">
+                            <!-- Rempli par JavaScript (ou état vide si 0 client) -->
                         </tbody>
                     </table>
                 </div>
@@ -189,23 +277,24 @@
         <!-- ========================================================================= -->
         <section id="cockpitSectionLearning" class="space-y-4 hidden">
             <!-- CARTE BANNIÈRE EXPLICATIVE -->
-            <div class="bg-gradient-to-r from-[#14201c] via-[#1a2d27] to-[#14362b] rounded-2xl p-5 border border-[#21352e]">
+            <div class="growth-card p-5 bg-gradient-to-r from-[#111a2e] via-[#14362b]/40 to-[#111a2e]">
                 <div class="flex items-center gap-2 text-[#a0d9d2] text-[10px] font-extrabold uppercase tracking-wider mb-1">
                     <span class="material-symbols-outlined notranslate text-[14px]" translate="no">psychology</span>
                     <span>Auto-Critique &amp; Enseignement IA</span>
                 </div>
-                <h3 class="text-lg font-black text-white">Journal des Questions &amp; Hésitations de Growth</h3>
+                <h3 class="text-base sm:text-lg font-black text-white">Journal des Questions &amp; Hésitations de Growth</h3>
                 <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                    Dès que Growth a un doute ou qu'un commerçant clique sur 👎 À corriger, le cas est répertorié ici. Rédigez la réponse parfaite pour enrichir l'intelligence de votre copilote sans redévelopper de code.
+                    Dès que Growth a un doute ou qu'un commerçant clique sur 👎 À corriger, le cas est répertorié ici.
+                    Rédigez la réponse parfaite pour enrichir l'intelligence de votre copilote sans redévelopper de code.
                 </p>
             </div>
 
             <!-- TABLEAU DU BACKLOG D'APPRENTISSAGE -->
-            <div class="bg-[#14201c] rounded-2xl border border-[#21352e] shadow-xl overflow-hidden">
+            <div class="growth-card shadow-xl overflow-hidden">
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="bg-black/40 text-slate-400 text-[10.5px] uppercase font-bold tracking-wider border-b border-[#21352e]">
+                            <tr class="bg-black/40 text-slate-400 text-[10.5px] uppercase font-bold tracking-wider border-b border-white/10">
                                 <th class="py-3 px-3 w-[120px]">Date &amp; Client</th>
                                 <th class="py-3 px-3 min-w-[200px]">Question posée par le commerçant</th>
                                 <th class="py-3 px-3 min-w-[220px]">Réponse fournie par Growth</th>
@@ -215,13 +304,8 @@
                                 <th class="py-3 px-3 text-center w-[120px]">Action Créateur</th>
                             </tr>
                         </thead>
-                        <tbody id="learningTableBody" class="divide-y divide-[#21352e]/60 text-slate-300">
-                            <tr>
-                                <td colspan="7" class="py-12 text-center text-slate-400">
-                                    <span class="material-symbols-outlined notranslate text-[32px] text-emerald-400 block mb-2" translate="no">verified</span>
-                                    <span>Toutes les réponses sont conformes et maîtrisées.</span>
-                                </td>
-                            </tr>
+                        <tbody id="learningTableBody" class="divide-y divide-white/5 text-slate-300">
+                            <!-- Rempli par JavaScript (ou état vide si vierge) -->
                         </tbody>
                     </table>
                 </div>
@@ -233,9 +317,10 @@
     <!-- ========================================================================= -->
     <!-- MODALE 1 : RELANCER LE COMMERÇANT SUR WHATSAPP                          -->
     <!-- ========================================================================= -->
-    <div id="modalRelance" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs" style="display: none;">
-        <div class="bg-[#14201c] rounded-2xl border border-[#2b443b] max-w-lg w-full overflow-hidden shadow-2xl">
-            <div class="px-5 py-4 border-b border-[#21352e] flex items-center justify-between bg-black/30">
+    <div id="modalRelance" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        style="display: none;">
+        <div class="growth-card max-w-lg w-full overflow-hidden shadow-2xl border border-white/15">
+            <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-black/40">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined notranslate text-[#25D366] text-[20px]" translate="no">send</span>
                     <h4 class="text-sm font-bold text-white">Relance WhatsApp du Berger</h4>
@@ -247,13 +332,14 @@
             <div class="p-5 space-y-4">
                 <input type="hidden" id="relancePhone" value="">
                 <input type="hidden" id="relanceNom" value="">
-                
+
                 <div class="p-3 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between">
                     <div>
                         <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Destinataire</span>
                         <div class="text-xs font-bold text-white mt-0.5" id="relanceDestinataireLabel">--</div>
                     </div>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30" id="relanceStatusBadge">Inactif</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30"
+                        id="relanceStatusBadge">Inactif</span>
                 </div>
 
                 <div>
@@ -261,12 +347,15 @@
                         <span>Message de relance (Personnalisable)</span>
                         <span class="text-[10px] text-slate-400 font-normal">Envoyé avec boutons 👍 / 👎</span>
                     </label>
-                    <textarea id="relanceMessageText" rows="5" class="w-full text-xs p-3 rounded-xl bg-black/40 border border-[#2b443b] focus:border-[#a0d9d2] outline-none text-white leading-relaxed font-sans"></textarea>
+                    <textarea id="relanceMessageText" rows="5"
+                        class="w-full text-xs p-3 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white leading-relaxed font-sans"></textarea>
                 </div>
             </div>
-            <div class="px-5 py-3 border-t border-[#21352e] bg-black/30 flex items-center justify-end gap-2">
-                <button type="button" onclick="closeRelanceModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">Annuler</button>
-                <button type="button" onclick="submitRelanceWhatsapp()" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#25D366] text-black hover:bg-[#20b858] transition-all shadow-md flex items-center gap-1.5 cursor-pointer">
+            <div class="px-5 py-3 border-t border-white/10 bg-black/40 flex items-center justify-end gap-2">
+                <button type="button" onclick="closeRelanceModal()"
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">Annuler</button>
+                <button type="button" onclick="submitRelanceWhatsapp()"
+                    class="px-4 py-2 rounded-xl text-xs font-bold bg-[#25D366] text-black hover:bg-[#20b858] transition-all shadow-md flex items-center gap-1.5 cursor-pointer">
                     <span class="material-symbols-outlined notranslate text-[16px]" translate="no">send</span>
                     <span>Envoyer sur WhatsApp</span>
                 </button>
@@ -277,9 +366,10 @@
     <!-- ========================================================================= -->
     <!-- MODALE 2 : ENSEIGNER LA RÉPONSE PARFAITE (ACTIVE LEARNING)               -->
     <!-- ========================================================================= -->
-    <div id="modalTeach" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs" style="display: none;">
-        <div class="bg-[#14201c] rounded-2xl border border-[#2b443b] max-w-lg w-full overflow-hidden shadow-2xl">
-            <div class="px-5 py-4 border-b border-[#21352e] flex items-center justify-between bg-black/30">
+    <div id="modalTeach" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        style="display: none;">
+        <div class="growth-card max-w-lg w-full overflow-hidden shadow-2xl border border-white/15">
+            <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-black/40">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[20px]" translate="no">school</span>
                     <h4 class="text-sm font-bold text-white">Enseigner la Réponse Parfaite à Growth</h4>
@@ -292,28 +382,36 @@
                 <input type="hidden" id="teachCasId" value="">
                 <div>
                     <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider mb-1">Question du commerçant</span>
-                    <div class="p-2.5 rounded-xl bg-black/40 border border-white/5 text-xs text-white italic" id="teachQuestionDisplay">--</div>
+                    <div class="p-2.5 rounded-xl bg-black/40 border border-white/5 text-xs text-white italic"
+                        id="teachQuestionDisplay">--</div>
                 </div>
                 <div>
                     <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider mb-1">Réponse initiale de Growth</span>
-                    <div class="p-2.5 rounded-xl bg-black/40 border border-white/5 text-xs text-slate-400 line-clamp-3" id="teachResponseDisplay">--</div>
+                    <div class="p-2.5 rounded-xl bg-black/40 border border-white/5 text-xs text-slate-400 line-clamp-3"
+                        id="teachResponseDisplay">--</div>
                 </div>
                 <div>
                     <label class="block text-[10.5px] uppercase font-bold text-[#a0d9d2] tracking-wider mb-1">Votre réponse d'expert définitive (Règle métier permanente)</label>
-                    <textarea id="teachInputText" rows="4" class="w-full text-xs p-3 rounded-xl bg-black/40 border border-[#2b443b] focus:border-[#a0d9d2] outline-none text-white leading-relaxed" placeholder="Rédigez la réponse d'élite que Growth doit désormais mémoriser pour ce cas..."></textarea>
+                    <textarea id="teachInputText" rows="4"
+                        class="w-full text-xs p-3 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white leading-relaxed"
+                        placeholder="Rédigez la réponse d'élite que Growth doit désormais mémoriser pour ce cas..."></textarea>
                 </div>
             </div>
-            <div class="px-5 py-3 border-t border-[#21352e] bg-black/30 flex items-center justify-end gap-2">
-                <button type="button" onclick="closeTeachModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">Annuler</button>
-                <button type="button" onclick="submitTeachAi()" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#168078] text-white hover:bg-[#19948b] transition-all shadow-md flex items-center gap-1.5 cursor-pointer">
+            <div class="px-5 py-3 border-t border-white/10 bg-black/40 flex items-center justify-end gap-2">
+                <button type="button" onclick="closeTeachModal()"
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">Annuler</button>
+                <button type="button" onclick="submitTeachAi()"
+                    class="btn-mint px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer">
                     <span class="material-symbols-outlined notranslate text-[16px]" translate="no">save</span>
-                    <span>Enregistrer dans la Mémoire Growth</span>
+                    <span>Enregistrer dans la Mémoire</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT DU COCKPIT -->
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT DU COCKPIT                                                    -->
+    <!-- ========================================================================= -->
     <script>
         let allUsersData = [];
         let allLearningData = [];
@@ -339,12 +437,12 @@
             if (tab === 'users' || tab === 'utilisateurs') {
                 secUsers.classList.remove('hidden');
                 secLearning.classList.add('hidden');
-                btnUsers.className = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#168078] text-white shadow-xs cursor-pointer";
+                btnUsers.className = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#a0d9d2] text-[#0b1222] shadow-md shadow-[#a0d9d2]/15 cursor-pointer";
                 btnLearning.className = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer";
             } else {
                 secUsers.classList.add('hidden');
                 secLearning.classList.remove('hidden');
-                btnLearning.className = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#168078] text-white shadow-xs cursor-pointer";
+                btnLearning.className = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#a0d9d2] text-[#0b1222] shadow-md shadow-[#a0d9d2]/15 cursor-pointer";
                 btnUsers.className = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer";
             }
         }
@@ -386,13 +484,34 @@
             }
         }
 
-        // Rendu du tableau des utilisateurs
+        // Rendu du tableau des utilisateurs avec bel État Vide (Empty State)
         function renderUsersTable(items) {
             const tbody = document.getElementById('usersTableBody');
             if (!tbody) return;
 
             if (!items || items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-500">Aucun commerçant trouvé.</td></tr>`;
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-16 px-4 text-center">
+                            <div class="max-w-md mx-auto flex flex-col items-center justify-center">
+                                <div class="w-16 h-16 rounded-2xl bg-[#a0d9d2]/10 border border-[#a0d9d2]/25 flex items-center justify-center text-[#a0d9d2] mb-3.5 shadow-inner">
+                                    <span class="material-symbols-outlined notranslate text-[32px]" translate="no">storefront</span>
+                                </div>
+                                <h3 class="text-base font-black text-white tracking-tight">Plateforme prête pour le lancement (0 client)</h3>
+                                <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                                    Toutes les données de test ont été réinitialisées à zéro. Dès qu'un premier commerçant vous écrit ou dicte un vocal sur WhatsApp, son commerce apparaîtra ici en temps réel avec son niveau d'activité et ses écritures certifiées.
+                                </p>
+                                <div class="mt-5 flex items-center gap-2.5">
+                                    <a href="https://wa.me/221788773827?text=Bonjour%20Growth%20!" target="_blank"
+                                        class="btn-mint px-4 py-2 rounded-xl text-xs flex items-center gap-2 cursor-pointer shadow-md">
+                                        <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chat</span>
+                                        <span>Tester le 1er Onboarding sur WhatsApp</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
 
@@ -446,7 +565,7 @@
             ['filterAll', 'filterActif', 'filterAttention', 'filterInactif'].forEach(id => {
                 document.getElementById(id).className = "px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer";
             });
-            if (filter === 'ALL') document.getElementById('filterAll').className = "px-2.5 py-1 rounded-lg bg-white/10 text-white font-bold cursor-pointer";
+            if (filter === 'ALL') document.getElementById('filterAll').className = "px-2.5 py-1 rounded-lg bg-[#a0d9d2] text-[#0b1222] font-bold cursor-pointer";
             if (filter === 'ACTIF') document.getElementById('filterActif').className = "px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold cursor-pointer";
             if (filter === 'ATTENTION') document.getElementById('filterAttention').className = "px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-bold cursor-pointer";
             if (filter === 'INACTIF') document.getElementById('filterInactif').className = "px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 font-bold cursor-pointer";
@@ -464,20 +583,34 @@
             renderUsersTable(filtered);
         }
 
-        // Rendu du tableau d'apprentissage IA
+        // Rendu du tableau d'apprentissage IA avec bel État Vide
         function renderLearningTable(items) {
             const tbody = document.getElementById('learningTableBody');
             if (!tbody) return;
 
             if (!items || items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Aucun cas en attente : Growth répond avec un niveau d'excellence maximal !</td></tr>`;
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="py-14 text-center">
+                            <div class="max-w-md mx-auto flex flex-col items-center justify-center">
+                                <div class="w-14 h-14 rounded-2xl bg-[#a0d9d2]/10 border border-[#a0d9d2]/25 flex items-center justify-center text-[#a0d9d2] mb-3">
+                                    <span class="material-symbols-outlined notranslate text-[28px]" translate="no">verified</span>
+                                </div>
+                                <h4 class="text-sm font-bold text-white">Journal d'apprentissage vierge</h4>
+                                <p class="text-xs text-slate-400 mt-1 max-w-sm">
+                                    Aucun cas à corriger pour le moment. Dès qu'un doute est détecté ou qu'un utilisateur clique sur 👎 À corriger, vous pourrez lui enseigner la règle d'élite ici.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
 
             tbody.innerHTML = items.map(c => {
                 const confPct = Math.round((c.score_confiance != null ? c.score_confiance : 0.85) * 100);
                 const isPerfectionne = c.statut === 'PERFECTIONNE';
-                const statusBadge = isPerfectionne 
+                const statusBadge = isPerfectionne
                     ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Perfectionné</span>`
                     : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20 animate-pulse">À corriger</span>`;
 
@@ -510,7 +643,7 @@
                             ${statusBadge}
                         </td>
                         <td class="py-3 px-3 text-center align-top">
-                            <button type="button" onclick="openTeachModal(${c.id})" class="px-2.5 py-1.5 rounded-xl ${isPerfectionne ? 'bg-white/10 hover:bg-white/15 text-slate-300' : 'bg-[#168078] hover:bg-[#19948b] text-white shadow-xs'} text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1">
+                            <button type="button" onclick="openTeachModal(${c.id})" class="px-2.5 py-1.5 rounded-xl ${isPerfectionne ? 'bg-white/10 hover:bg-white/15 text-slate-300' : 'btn-mint'} text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1">
                                 <span class="material-symbols-outlined notranslate text-[14px]" translate="no">${isPerfectionne ? 'edit' : 'school'}</span>
                                 <span>${isPerfectionne ? 'Modifier' : 'Enseigner'}</span>
                             </button>
@@ -520,7 +653,28 @@
             }).join('');
         }
 
-        // Modale Relance
+        // Remise à zéro de la plateforme avec confirmation
+        async function confirmerReinitialisationZero() {
+            const ok = confirm("⚠️ Êtes-vous sûr de vouloir remettre la plateforme à zéro ?\n\nToutes les données de test (commerces, écritures, feedbacks) seront purgées pour démarrer votre entreprise sur un état vierge officiel.");
+            if (!ok) return;
+
+            try {
+                const res = await fetch('/api/createur/reinitialiser-donnees-test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                if (res.ok) {
+                    alert("✅ Plateforme Growth réinitialisée à zéro avec succès !");
+                    refreshCockpitData();
+                } else {
+                    alert("Erreur lors de la remise à zéro.");
+                }
+            } catch (err) {
+                alert("Erreur réseau lors de la remise à zéro.");
+            }
+        }
+
+        // Modale Relance WhatsApp
         function openRelanceModal(phone, nom, statutLibelle) {
             document.getElementById('relancePhone').value = phone;
             document.getElementById('relanceNom').value = nom;
@@ -612,4 +766,5 @@
         });
     </script>
 </body>
+
 </html>

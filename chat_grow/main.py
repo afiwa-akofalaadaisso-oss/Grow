@@ -1753,6 +1753,16 @@ async def api_createur_relancer_utilisateur(payload: dict = Body(...)):
     }
 
 
+@app.post("/api/createur/reinitialiser-donnees-test")
+async def api_createur_reinitialiser_donnees():
+    """
+    Permet au créateur de réinitialiser la plateforme à zéro (Clean Slate)
+    pour démarrer l'exploitation commerciale sans clients de test.
+    """
+    from chat_grow.database import reinitialiser_donnees_plateforme_a_zero
+    return reinitialiser_donnees_plateforme_a_zero()
+
+
 @app.get("/abonnement", response_class=HTMLResponse)
 async def serve_abonnement():
     """Page de souscription et paiement d'abonnement Growth avec template externe conforme à la charte."""

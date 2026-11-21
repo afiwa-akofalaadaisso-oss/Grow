@@ -1057,5 +1057,47 @@ def obtenir_stats_globales_createur() -> dict:
     }
 
 
+def reinitialiser_donnees_plateforme_a_zero() -> dict:
+    """
+    Réinitialise complètement la base SQLite locale et la base Supabase à zéro (Clean Slate)
+    pour démarrer l'exploitation commerciale sans aucune donnée de test résiduelle.
+    """
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        for t in ["transactions", "entreprises", "conversation_messages", "ai_feedback", "ai_learning_backlog", "sync_queue"]:
+            try:
+                cur.execute(f"DELETE FROM {t}")
+            except Exception:
+                pass
+        conn.commit()
+        conn.close()
+    except Exception as e_sql:
+        print(f"Erreur purge SQLite: {e_sql}")
+
+    sp_status = False
+    try:
+        sp = get_supabase_client()
+        if sp:
+            try:
+                sp.table("transactions").delete().neq("id", "00000000-0000-0000-0000-000000000000").execute()
+            except Exception:
+                pass
+            try:
+                sp.table("entreprises").delete().neq("id", "00000000-0000-0000-0000-000000000000").execute()
+            except Exception:
+                pass
+            sp_status = True
+    except Exception as e_sp:
+        print(f"Erreur purge Supabase: {e_sp}")
+
+    return {
+        "status": "success",
+        "message": "Plateforme Growth réinitialisée à zéro avec succès (Clean Slate de lancement).",
+        "supabase_purged": sp_status
+    }
+
+
+
 
 
