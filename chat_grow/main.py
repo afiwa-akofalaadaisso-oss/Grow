@@ -3149,11 +3149,13 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         return (
             f"🌿 Bonjour *{nom_ent}* !\n"
             "Bienvenue sur Growth, votre copilote financier et comptable SYSCOHADA.\n\n"
+            "🐑 *Ma mission auprès de vous* : agir comme un berger vigilant pour votre entreprise. "
+            "Je m'assure qu'aucun franc CFA ne vous échappe et que votre bilan soit toujours prêt pour les banques.\n\n"
             f"{msg_op}\n\n"
             "Comment préférez-vous échanger avec moi au quotidien ?\n"
             "1) Par Note vocale 🎙️ (Growth vous répondra en notes vocales)\n"
             "2) Par Écrit ✍️ (Messages textes classiques)\n\n"
-            "👉 Répondez simplement 1 ou 2."
+            "👉 Répondez simplement 1 ou 2 pour commencer."
         )
 
     # 1.5. PHASE 2.1 : RACCORDEMENT DU DEUXIÈME NUMÉRO MARCHAND
@@ -4954,8 +4956,8 @@ async def daily_ritual_check():
     try:
         res = sp.table("entreprises").select("*").execute()
         for ent in res.data or []:
-            # Heure par défaut à 21:00 heure de Dakar
-            heure_conf = (ent.get("heure_rappel_quotidien") or "21:00")[:5]
+            # Heure par défaut à 19:00 heure de Dakar (fermeture du commerce, avant que le commerçant ne rentre ou ne dorme)
+            heure_conf = (ent.get("heure_rappel_quotidien") or "19:00")[:5]
             if heure_conf == now_hm:
                 phone = ent.get("telephone_whatsapp")
                 ent_id = ent.get("id")

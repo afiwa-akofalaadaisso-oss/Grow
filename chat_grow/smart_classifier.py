@@ -270,6 +270,16 @@ def generer_point_flash_journee(nom_entreprise: str, txs_du_jour: list, treso_st
 
     dash_line = f"\n\nConsultez votre journal financier en direct :\n{dashboard_url}" if dashboard_url else ""
 
+    # Point d'étape du Berger à la mi-journée (pour ne pas attendre le soir si la personne dort)
+    berger_mi_journee = ""
+    if any(h in heure_actuelle for h in ["12", "13", "14", "15"]):
+        berger_mi_journee = (
+            "\n\n🐑 *Point d'Étape du Berger (Mi-journée)* :\n"
+            "• Avez-vous pris de l'argent dans la caisse pour la popote de midi (104) ?\n"
+            "• Avez-vous acheté du stock ce matin (601) ?\n"
+            "👉 Un simple mot ou petit vocal suffit pour que rien ne s'échappe !"
+        )
+
     return (
         f"POINT FLASH DE {heure_actuelle} - {nom_entreprise.upper()}\n\n"
         f"Voici la situation en direct de votre trésorerie aujourd'hui :\n\n"
@@ -278,7 +288,7 @@ def generer_point_flash_journee(nom_entreprise: str, txs_du_jour: list, treso_st
         f"• Total dépenses sorties : {total_out:,.0f} FCFA\n"
         f"• Trésorerie disponible : {total_dispo:,.0f} FCFA\n"
         f"  (Wave : {wave:,.0f} FCFA | Espèces : {especes:,.0f} FCFA" + (f" | OM : {om:,.0f} FCFA" if om > 0 else "") + ")\n"
-        f"• Certification SYSCOHADA : Flux conformes et imputés en temps réel.{dash_line}"
+        f"• Certification SYSCOHADA : Flux conformes et imputés en temps réel.{berger_mi_journee}{dash_line}"
     )
 
 
@@ -319,6 +329,9 @@ def generer_message_matin_6h(nom_entreprise: str, txs_nuit: list, treso_stats: t
         f"• Compte Orange Money : {om:,.0f} FCFA\n"
         f"• Caisse Espèces : {especes:,.0f} FCFA\n"
         f"• Total Trésorerie de départ : {total_dispo:,.0f} FCFA\n\n"
-        f"Growth est en veille continue. Bonne journée de vente et de prospérité !"
+        f"🐑 *Rattrapage du Berger* :\n"
+        f"Si vous vous êtes endormi hier soir avant le pointage final, pas d'inquiétude ! "
+        f"Dictez-moi rapidement votre caisse de fermeture ou vos crédits d'hier en 1 note vocale avant votre première vente.\n\n"
+        f"Growth est à vos côtés. Bonne journée de vente et de prospérité !"
     )
 
