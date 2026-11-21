@@ -138,6 +138,31 @@
             font-weight: 700;
         }
 
+        .cal-month-grid-btn {
+            padding: 8px 6px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.12s;
+            text-align: center;
+            font-family: inherit;
+        }
+        .cal-month-grid-btn:hover {
+            background: #f0fdfa;
+            border-color: #a0d9d2;
+            color: #168078;
+        }
+        .cal-month-grid-btn.active {
+            background: #222222 !important;
+            border-color: #222222 !important;
+            color: #ffffff !important;
+            font-weight: 800;
+        }
+
                         /* Barre de recherche accordéon animée */
         #expandableSearchBox {
             width: 38px;
@@ -8125,43 +8150,33 @@
                                     <button type="button" class="cal-preset-pill" onclick="selectFactooCalendarPreset('year_prev')">Année 2025</button>
                                 </div>
 
-                                <!-- En-tête mois & année avec chevrons et sélecteurs déroulants directs -->
+                                <!-- En-tête mois & année noble avec chevrons (ZÉRO balise select native OS) -->
                                 <div class="cal-header flex items-center justify-between gap-1 mb-2.5">
                                     <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(-1)" title="Mois précédent">
                                         <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_left</span>
                                     </button>
-                                    <div class="flex items-center gap-1.5 flex-1 justify-center">
-                                        <!-- Sélecteur de Mois -->
-                                        <select id="factooCalMonthSelect" onchange="onFactooMonthYearSelectChange()" class="text-xs font-bold text-[#222222] bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 cursor-pointer focus:outline-none focus:border-[#168078]">
-                                            <option value="0">Janvier</option>
-                                            <option value="1">Février</option>
-                                            <option value="2">Mars</option>
-                                            <option value="3">Avril</option>
-                                            <option value="4">Mai</option>
-                                            <option value="5">Juin</option>
-                                            <option value="6">Juillet</option>
-                                            <option value="7">Août</option>
-                                            <option value="8">Septembre</option>
-                                            <option value="9">Octobre</option>
-                                            <option value="10">Novembre</option>
-                                            <option value="11">Décembre</option>
-                                        </select>
-                                        <!-- Sélecteur d'Année -->
-                                        <select id="factooCalYearSelect" onchange="onFactooMonthYearSelectChange()" class="text-xs font-bold text-[#222222] bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 cursor-pointer focus:outline-none focus:border-[#168078]">
-                                            <option value="2022">2022</option>
-                                            <option value="2023">2023</option>
-                                            <option value="2024">2024</option>
-                                            <option value="2025">2025</option>
-                                            <option value="2026">2026</option>
-                                            <option value="2027">2027</option>
-                                            <option value="2028">2028</option>
-                                            <option value="2029">2029</option>
-                                            <option value="2030">2030</option>
-                                        </select>
-                                    </div>
+                                    <button type="button" id="factooCalMonthYearTitleBtn" onclick="toggleFactooMonthYearPicker()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-extrabold text-[#222222] cursor-pointer transition-all shadow-2xs select-none" title="Changer rapidement de mois ou d'année">
+                                        <span class="material-symbols-outlined notranslate text-[14px] text-[#168078]" translate="no">calendar_month</span>
+                                        <span id="factooCalMonthYearTitle" class="capitalize">Mai 2026</span>
+                                        <span class="material-symbols-outlined notranslate text-[14px] text-slate-400 transition-transform duration-200" id="factooCalPickerChevron" translate="no">expand_more</span>
+                                    </button>
                                     <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarMonth(1)" title="Mois suivant">
                                         <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_right</span>
                                     </button>
+                                </div>
+
+                                <!-- Sélecteur Custom de Mois & Année (HTML/CSS épuré, sans aucun élément natif) -->
+                                <div id="factooMonthYearPickerView" style="display: none; padding: 10px 6px 8px; border-bottom: 1px solid #f1f5f9; margin-bottom: 12px; background: #fafbfc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding: 0 4px;">
+                                        <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarYear(-1)" title="Année précédente">
+                                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_left</span>
+                                        </button>
+                                        <span id="factooCalYearDisplay" style="font-size: 13.5px; font-weight: 800; color: #222222; letter-spacing: 0.5px;">2026</span>
+                                        <button type="button" class="cal-nav-btn" onclick="changeFactooCalendarYear(1)" title="Année suivante">
+                                            <span class="material-symbols-outlined notranslate text-[16px]" translate="no">chevron_right</span>
+                                        </button>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;" id="factooCalMonthsGrid"></div>
                                 </div>
 
                                 <!-- Jours de semaine -->
@@ -17002,44 +17017,84 @@ function handleFactooTypeFilter(val) {
             if (chev) chev.style.transform = 'rotate(0deg)';
         }
 
+        const FACTOO_MONTH_NAMES = [
+            'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+            'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+        ];
+        const FACTOO_MONTH_SHORT = [
+            'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
+            'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'
+        ];
+
         function changeFactooCalendarMonth(delta) {
             factooCalCurrentMonth.setMonth(factooCalCurrentMonth.getMonth() + delta);
             renderFactooCalendar();
+            renderFactooMonthGrid();
         }
 
-        function onFactooMonthYearSelectChange() {
-            const mSel = document.getElementById('factooCalMonthSelect');
-            const ySel = document.getElementById('factooCalYearSelect');
-            if (!mSel || !ySel) return;
-            const m = parseInt(mSel.value, 10);
-            const y = parseInt(ySel.value, 10);
-            factooCalCurrentMonth = new Date(y, m, 1);
+        function changeFactooCalendarYear(delta) {
+            factooCalCurrentMonth.setFullYear(factooCalCurrentMonth.getFullYear() + delta);
             renderFactooCalendar();
+            renderFactooMonthGrid();
+        }
+
+        function toggleFactooMonthYearPicker() {
+            const pickerView = document.getElementById('factooMonthYearPickerView');
+            const chev = document.getElementById('factooCalPickerChevron');
+            if (!pickerView) return;
+            const isHidden = pickerView.style.display === 'none' || !pickerView.style.display;
+            if (isHidden) {
+                pickerView.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+                renderFactooMonthGrid();
+            } else {
+                pickerView.style.display = 'none';
+                if (chev) chev.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function selectFactooMonth(monthIndex) {
+            factooCalCurrentMonth.setMonth(monthIndex);
+            const pickerView = document.getElementById('factooMonthYearPickerView');
+            const chev = document.getElementById('factooCalPickerChevron');
+            if (pickerView) pickerView.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+            renderFactooCalendar();
+        }
+
+        function renderFactooMonthGrid() {
+            const grid = document.getElementById('factooCalMonthsGrid');
+            const yrDisplay = document.getElementById('factooCalYearDisplay');
+            if (!grid) return;
+            const curY = factooCalCurrentMonth.getFullYear();
+            const curM = factooCalCurrentMonth.getMonth();
+            if (yrDisplay) yrDisplay.textContent = curY;
+
+            grid.innerHTML = '';
+            FACTOO_MONTH_SHORT.forEach((shortName, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'cal-month-grid-btn' + (idx === curM ? ' active' : '');
+                btn.textContent = shortName;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    selectFactooMonth(idx);
+                };
+                grid.appendChild(btn);
+            });
         }
 
         function renderFactooCalendar() {
             const y = factooCalCurrentMonth.getFullYear();
             const m = factooCalCurrentMonth.getMonth();
 
-            // Synchronisation dynamique des menus déroulants Mois et Année
-            const mSel = document.getElementById('factooCalMonthSelect');
-            const ySel = document.getElementById('factooCalYearSelect');
-            if (mSel) mSel.value = String(m);
-            if (ySel) {
-                let optExists = false;
-                for (let i = 0; i < ySel.options.length; i++) {
-                    if (parseInt(ySel.options[i].value, 10) === y) {
-                        optExists = true;
-                        break;
-                    }
-                }
-                if (!optExists) {
-                    const opt = document.createElement('option');
-                    opt.value = y;
-                    opt.textContent = y;
-                    ySel.appendChild(opt);
-                }
-                ySel.value = String(y);
+            const titleEl = document.getElementById('factooCalMonthYearTitle');
+            if (titleEl) {
+                titleEl.textContent = `${FACTOO_MONTH_NAMES[m]} ${y}`;
+            }
+            const yrDisplay = document.getElementById('factooCalYearDisplay');
+            if (yrDisplay) {
+                yrDisplay.textContent = y;
             }
 
             const grid = document.getElementById('factooCalDaysGrid');
