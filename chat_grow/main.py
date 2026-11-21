@@ -236,13 +236,11 @@ def remove_all_emojis(text: str) -> str:
 
 
 def format_grow_message(body_text: str) -> str:
-    """Structure Growth : Pas d'emoji, corps clair et sobre, pied de page assistance."""
+    """Structure Growth : Pas d'emoji, corps clair, fluide et sobre sans répétition de pied de page."""
     clean_body = remove_all_emojis(body_text)
     # Suppression absolue de tout séparateur tirets ou barres
     clean_body = re.sub(r'[-=─━_]{2,}', '', clean_body)
-    footer = "Pour toute assistance, contactez le service Growth au 78 877 38 27."
-
-    return f"{clean_body.strip()}\n\n{footer}"
+    return clean_body.strip()
 
 
 def get_tresorerie_stats(sp, entreprise_id: str):
@@ -1664,6 +1662,7 @@ async def deliver_whatsapp_response(to_phone: str, reply_text: str):
         return
 
     clean_p = str(to_phone).replace("+", "").replace(" ", "").strip()
+    update_onboarding_state(clean_p, "dernier_message_envoye", reply_text[:300])
     st = get_onboarding_state(clean_p)
     mode = (st.get("mode_communication") or "").upper()
 
@@ -3967,6 +3966,9 @@ Les commerçants de Dakar s'expriment très régulièrement en Wolof ou mélange
 RÔLE D'ÉLITE EN CONSEIL DE GESTION & MENTOR D'AFFAIRES (DAKAR & SÉNÉGAL) :
 - Si l'utilisateur pose une question de gestion financière (calcul de marge, fixation de prix, gestion de stock, impôts sénégalais CGU/TVA, préparation d'un dossier de crédit Cofina/Baobab/DER/Pamecas) :
   Rédige dans "reponse_whatsapp" un conseil d'expert-comptable d'élite : ultra-clair, concret, avec un exemple chiffré simple en FCFA.
+- Si tu as précédemment posé une question au commerçant (par exemple : "Avez-vous une visibilité sur vos ventes des 30 derniers jours ?") et qu'il répond "non", "pas tout à fait", "oui", "un peu" ou "je ne sais pas" :
+  C'EST UNE RÉPONSE DIRECTE À TA QUESTION ! INTERDICTION STRICTE DE T'EXCUSER POUR UNE "INCOMPRÉHENSION" !
+  Explique-lui plutôt avec bienveillance comment Growth va l'aider concrètement (ex: "Ce n'est pas grave du tout, c'est justement la mission de Growth ! Pour que je vous calcule votre chiffre d'affaires et votre visibilité sur 30 jours, écrivez-moi simplement vos ventes ou transférez vos SMS Wave/Orange Money").
 - Si l'utilisateur demande un message pour relancer un client qui lui doit de l'argent :
   Rédige dans "reponse_whatsapp" un message WhatsApp prêt à copier-coller (courtois, respectueux de la Teranga mais très ferme et clair, rappelant le montant en FCFA et le paiement par Wave ou Orange Money).
 
@@ -4006,6 +4008,10 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
 """
 
     parsed = None
+    onboarding = get_onboarding_state(sender_phone)
+    dernier_msg_g = onboarding.get("dernier_message_envoye") or ""
+    contexte_dialogue = f"Question ou message précédent que Growth venait d'envoyer au commerçant : « {dernier_msg_g} »\n\n" if dernier_msg_g else ""
+
     # 1. Tentative prioritaire avec Gemini 3.1 Flash Lite (ultra-rapide, quota généreux)
     if gemini_key:
         try:
@@ -4013,7 +4019,7 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
             client_gem = genai.Client(api_key=gemini_key)
             res_gem = client_gem.models.generate_content(
                 model="gemini-3.1-flash-lite",
-                contents=[system_prompt, f"Message de l'utilisateur : « {user_text} »\nJSON :"]
+                contents=[system_prompt, f"{contexte_dialogue}Message actuel de l'utilisateur : « {user_text} »\nJSON :"]
             )
             raw = (res_gem.text or "").strip()
             m_j = re.search(r'\{.*\}', raw, re.DOTALL)
@@ -4030,7 +4036,7 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
                 model="claude-haiku-4-5-20251001",
                 max_tokens=900,
                 system=system_prompt,
-                messages=[{"role": "user", "content": user_text}]
+                messages=[{"role": "user", "content": f"{contexte_dialogue}Message de l'utilisateur : {user_text}"}]
             )
             raw = "".join(b.text for b in res.content if hasattr(b, "text")).strip()
             m_j = re.search(r'\{.*\}', raw, re.DOTALL)

@@ -214,15 +214,26 @@ async def superviser_message_onboarding(
 
     contexte_etape = get_description_etape(etape_actuelle, onboarding)
     nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or "Entreprise"
+    dernier_msg_growth = onboarding.get("dernier_message_envoye") or ""
+
+    contexte_dialogue = ""
+    if dernier_msg_growth:
+        contexte_dialogue = f"\n- Question ou message précédent envoyé par Growth au commerçant : « {dernier_msg_growth} »"
 
     system_prompt = f"""Tu es Growth, le copilote financier et comptable intelligent (SYSCOHADA) pour les PME et commerçants au Sénégal (Dakar).
 Tu es doté d'une intelligence conversationnelle vivante, bienveillante, respectueuse (Teranga sénégalaise) et pédagogique, EXACTEMENT COMME CHATGPT.
 Tu t'exprimes avec clarté, sans jargon inutile, et tu comprends parfaitement le Wolof urbain dakarois, le Français, et le mélange des deux.
 
 RÈGLES FONDAMENTALES :
-1. Bannissement absolu du mot "boutique" : utilise toujours "entreprise", "atelier", "activité" ou "commerce".
-2. Bannissement du mot "pré-comptable" : utilise "comptable" ou "copilote financier".
-3. Tu ne dois JAMAIS être un robot rigide. Si le commerçant :
+1. CONTINUITÉ DU DIALOGUE & INTERDICTION D'EXCUSES INUTILES :
+   - Si Growth a précédemment posé une question au commerçant (par exemple : sur ses ventes, sa visibilité, son stock ou sa trésorerie) et que le commerçant répond simplement "non", "pas tout à fait", "oui", "un peu", ou "je ne sais pas" :
+     C'EST UNE RÉPONSE DIRECTE À LA QUESTION DE GROWTH !
+     INTERDICTION ABSOLUE de t'excuser pour une "incompréhension" ou de demander "quel point n'est pas clair" !
+     Poursuis la conversation avec empathie et conseille-le positivement :
+     Exemple : "Ce n'est pas grave du tout, c'est justement la mission de Growth ! Pour que je vous calcule votre visibilité et votre chiffre d'affaires, envoyez-moi simplement vos premières ventes ou transférez vos SMS Wave / Orange Money."
+2. Bannissement absolu du mot "boutique" : utilise toujours "entreprise", "atelier", "activité" ou "commerce".
+3. Bannissement du mot "pré-comptable" : utilise "comptable" ou "copilote financier".
+4. Tu ne dois JAMAIS être un robot rigide. Si le commerçant :
    - Pose une question (ex: "C'est quoi le NINEA ?", "Pourquoi vous me demandez ça ?", "C'est payant ?", "Est-ce sécurisé ?", "Qui êtes-vous ?"), réponds avec pédagogie, empathie et précision.
    - Veut modifier ou corriger quelque chose du passé (ex: "Je me suis trompé sur le nom, mets plutôt Keur Fatou", "Je préfère les notes vocales", "Change mon numéro"), comprends et extrait la correction.
    - Veut sauter l'étape ou remettre à plus tard (ex: "On verra plus tard", "Saute ça", "Passe à la suite", "Je sais pas", "Dinaa ko def ëllëk"), accepte avec bienveillance sans bloquer.
@@ -231,7 +242,7 @@ RÈGLES FONDAMENTALES :
 
 CONTEXTE ACTUEL :
 - Nom de l'entreprise : {nom_ent}
-- Étape active dans l'onboarding : {etape_actuelle}
+- Étape active dans l'onboarding : {etape_actuelle}{contexte_dialogue}
 - Description de l'étape :
 {contexte_etape}
 
@@ -248,7 +259,7 @@ Réponds STRICTEMENT au format JSON valide suivant :
     user_query = f"""Message de l'utilisateur ({sender_phone}) :
 « {u_txt} »
 
-Analyse ce message et génère le JSON strict :"""
+Analyse ce message en tenant compte du dialogue précédent et génère le JSON strict :"""
 
     try:
         response = await asyncio.to_thread(
