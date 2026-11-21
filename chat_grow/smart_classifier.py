@@ -245,7 +245,8 @@ def generer_message_rituel_soir(nom_entreprise: str, txs_du_jour: list, treso_st
         "1. 💵 *Caisse physique* : Votre cash réel en main correspond-il au solde ?\n"
         "2. 🍲 *Popote / Famille (104)* : Avez-vous pris de l'argent dans la caisse pour la maison ?\n"
         "3. 🤝 *Crédits clients (411)* : Quelqu'un est-il parti avec de la marchandise sans payer ?\n"
-        "4. 📦 *Stock & Pertes (601/654)* : Achat de nouveau stock ou marchandise abîmée aujourd'hui ?\n\n"
+        "4. 📦 *Stock & Pertes (601/654)* : Achat de nouveau stock ou marchandise abîmée aujourd'hui ?\n"
+        "5. 🏗️ *Matériel & Équipements (244)* : Avez-vous acheté, réparé ou installé du matériel pour le commerce ?\n\n"
         "👉 *Une seule petite note vocale rapide suffit* (ex: « Caisse 45 000, pris 5 000 popote, et Modou me doit 10 000 ») !"
     )
 
@@ -270,14 +271,45 @@ def generer_point_flash_journee(nom_entreprise: str, txs_du_jour: list, treso_st
 
     dash_line = f"\n\nConsultez votre journal financier en direct :\n{dashboard_url}" if dashboard_url else ""
 
-    # Point d'étape du Berger à la mi-journée (pour ne pas attendre le soir si la personne dort)
-    berger_mi_journee = ""
-    if any(h in heure_actuelle for h in ["12", "13", "14", "15"]):
-        berger_mi_journee = (
-            "\n\n🐑 *Point d'Étape du Berger (Mi-journée)* :\n"
-            "• Avez-vous pris de l'argent dans la caisse pour la popote de midi (104) ?\n"
-            "• Avez-vous acheté du stock ce matin (601) ?\n"
-            "👉 Un simple mot ou petit vocal suffit pour que rien ne s'échappe !"
+    # Point d'étape du Berger au fil de la journée : prise de nouvelles pour alimenter le Bilan SYSCOHADA
+    h_int = 12
+    try:
+        h_str = heure_actuelle.split(":")[0].strip()
+        h_int = int(h_str)
+    except Exception:
+        pass
+
+    if 7 <= h_int <= 11:
+        berger_nouvelles_bilan = (
+            "\n\n🐑 *Prendre des Nouvelles pour votre Bilan (Matin)* :\n"
+            "Pour alimenter votre Bilan comptable en direct :\n"
+            "• Avez-vous reçu un arrivage de nouveau stock ce matin (601) ?\n"
+            "• Avez-vous acheté ou fait réparer du matériel ou équipement pour le commerce (Actif Immobilisé 244) ?\n"
+            "👉 Un simple vocal ou message suffit : « Reçu 5 cartons » ou « Acheté frigo 150 000 » !"
+        )
+    elif 12 <= h_int <= 14:
+        berger_nouvelles_bilan = (
+            "\n\n🐑 *Prendre des Nouvelles pour votre Bilan (Mi-journée)* :\n"
+            "Pour que rien n'échappe à votre bilan :\n"
+            "• Avez-vous pris de l'argent dans la caisse pour la popote de midi (Compte 104) ?\n"
+            "• Un client est-il parti avec de la marchandise à crédit sans payer (Créance 411) ?\n"
+            "👉 Dictez-le moi tout de suite en 5 secondes avant d'oublier !"
+        )
+    elif 15 <= h_int <= 17:
+        berger_nouvelles_bilan = (
+            "\n\n🐑 *Prendre des Nouvelles pour votre Bilan (Après-midi)* :\n"
+            "Point de contrôle dettes fournisseurs & stocks :\n"
+            "• Avez-vous pris de la marchandise chez un grossiste sans la régler immédiatement (Dette Fournisseur 401) ?\n"
+            "• Avez-vous eu de la casse, avarie ou marchandise perdue (Compte 654) ?\n"
+            "👉 Donnez-moi les montants pour ajuster immédiatement votre résultat net et vos dettes."
+        )
+    else:
+        berger_nouvelles_bilan = (
+            "\n\n🐑 *Prendre des Nouvelles pour votre Bilan (Clôture de Caisse)* :\n"
+            "Avant de fermer définitivement la caisse ce soir :\n"
+            "• Combien avez-vous de cash physique réel compté dans votre tiroir (Compte 571) ?\n"
+            "• Avez-vous une facture de dépense ou un reçu de transport à photographier ?\n"
+            "👉 Un mot pour valider la caisse et votre Bilan est certifié conforme pour les banques !"
         )
 
     return (
@@ -288,7 +320,7 @@ def generer_point_flash_journee(nom_entreprise: str, txs_du_jour: list, treso_st
         f"• Total dépenses sorties : {total_out:,.0f} FCFA\n"
         f"• Trésorerie disponible : {total_dispo:,.0f} FCFA\n"
         f"  (Wave : {wave:,.0f} FCFA | Espèces : {especes:,.0f} FCFA" + (f" | OM : {om:,.0f} FCFA" if om > 0 else "") + ")\n"
-        f"• Certification SYSCOHADA : Flux conformes et imputés en temps réel.{berger_mi_journee}{dash_line}"
+        f"• Certification SYSCOHADA : Flux conformes et imputés en temps réel.{berger_nouvelles_bilan}{dash_line}"
     )
 
 

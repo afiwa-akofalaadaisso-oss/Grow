@@ -4250,31 +4250,34 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
             "Assistance Growth Dakar : 78 877 38 27 (6j/7)."
         )
 
-    # 1.6 LA CHECKLIST DU BERGER GROWTH (Contrôle proactif des flux vitaux)
-    if any(k in txt_clean for k in ["checklist", "berger", "mouton", "moutons", "pointage", "verif", "vérif", "que verifier", "que vérifier"]):
+    # 1.6 LA CHECKLIST DU BERGER GROWTH & NOUVELLES DE L'ACTIVITÉ POUR LE BILAN
+    if any(k in txt_clean for k in [
+        "checklist", "berger", "mouton", "moutons", "pointage", "verif", "vérif", "que verifier", "que vérifier",
+        "nouvelles", "nouvelle", "bilan", "besoin pour le bilan", "besoin bilan", "donner pour le bilan",
+        "utiliser pour le bilan", "utilise pour le bilan", "utilises pour le bilan", "ce qui va pour le bilan",
+        "infos bilan", "informations bilan", "que donner", "quoi donner"
+    ]):
         return (
-            "🐑 *LA CHECKLIST DU BERGER GROWTH* 📋\n\n"
-            "Comme un berger qui rassemble tous ses moutons avant la nuit, Growth veille à ce qu'aucun franc CFA n'échappe à votre bilan :\n\n"
-            "1. 💵 *Caisse physique* : Avez-vous compté le cash réel dans votre tiroir ?\n"
-            "2. 🍲 *Popote & Maison (104)* : Avez-vous pris de l'argent pour la famille aujourd'hui ?\n"
-            "3. 🤝 *Crédits Clients (411)* : Un client est-il parti avec de la marchandise sans payer ?\n"
-            "4. 📦 *Achats & Réassort (601)* : Avez-vous acheté du stock ou payé un fournisseur ?\n"
-            "5. ⚠️ *Avaries & Pertes (654)* : Avez-vous eu de la casse, du vol ou des produits avariés ?\n"
-            "6. 📸 *Preuves en attente* : Avez-vous une facture ou un reçu de dépense à photographier ?\n\n"
-            "👉 *Vous pouvez tout me dicter en 1 seule petite note vocale rapide* (ou par écrit) et Growth enregistre tout directement !"
+            "🐑 *LE POINT DU BERGER : CE QUE GROWTH UTILISE POUR VOTRE BILAN* 📋\n\n"
+            "Comme un berger attentif qui rassemble ses moutons tout au long de la journée, Growth recueille 5 éléments vitaux pour que votre Bilan SYSCOHADA soit certifié pour les banques :\n\n"
+            "1. 🏗️ *Actif Immobilisé (244)* : Avez-vous acheté, remplacé ou réparé du matériel ou équipement (ex: congélateur, étagère, balance, moto de livraison, aménagement) ?\n"
+            "2. 📦 *Stocks & Réassort (601)* : Avez-vous reçu un arrivage de marchandise ou acheté du stock ?\n"
+            "3. 🤝 *Créances Clients (411)* : Un client est-il parti avec de la marchandise à crédit en promettant de payer plus tard ?\n"
+            "4. 💼 *Dettes Fournisseurs (401)* : Avez-vous pris du stock chez un grossiste sans le régler immédiatement ?\n"
+            "5. 💵 *Caisse Physique & Popote (571 / 104)* : Combien avez-vous de cash réel en main ? Avez-vous pris de l'argent pour la famille ?\n\n"
+            "👉 *Dès qu'une de ces 5 opérations arrive dans votre journée, dictez-la moi en 1 seconde par vocal ou texte* (ex : « Acheté congélateur 180 000 » ou « Moussa me doit 15 000 ») !"
         )
 
     # 2. Salutations et présentations générales (ponctuation nettoyée)
     clean_no_punct = re.sub(r'[^\w\s]', '', txt_clean).strip()
     if clean_no_punct in ["bonjour", "salut", "bonsoir", "coucou", "qui es tu", "qui est tu", "cest quoi grow", "tu es qui", "aide", "help", "merci"]:
         return (
-            "Bonjour ! Je suis Growth, votre assistant comptable officiel sur WhatsApp certifié aux normes SYSCOHADA.\n\n"
-            "Je vous accompagne au quotidien pour :\n"
-            "• Enregistrer automatiquement vos ventes Wave, Orange Money et espèces\n"
-            "• Récupérer vos justificatifs de dépenses et de stock avec preuves\n"
-            "• Suivre vos dettes fournisseurs et vos créances clients\n"
-            "• Vous fournir chaque soir un bilan consolidé certifié conforme SYSCOHADA\n\n"
-            "Comment puis-je vous aider aujourd'hui ?"
+            "Bonjour ! Je suis Growth, votre copilote comptable et berger vigilant de votre entreprise.\n\n"
+            "Comment se passe votre journée d'activité ? Pour alimenter votre Bilan en direct :\n"
+            "• 📦 Avez-vous reçu du stock ou acheté du matériel aujourd'hui ?\n"
+            "• 🤝 Avez-vous accordé un crédit client (411) ou pris du stock chez un fournisseur sans payer (401) ?\n"
+            "• 🍲 Avez-vous retiré de l'argent pour la popote de midi (104) ?\n\n"
+            "Dictez-moi tout simplement en une petite note vocale ou envoyez vos reçus !"
         )
 
     # 3. Base de connaissances théorique & juridique (SYSCOHADA, NINEA, Preuves, Agences, Rituel)
@@ -4355,15 +4358,16 @@ RÔLE D'ÉLITE EN CONSEIL DE GESTION & MENTOR D'AFFAIRES (DAKAR & SÉNÉGAL) :
 - Si l'utilisateur demande un message pour relancer un client qui lui doit de l'argent :
   Rédige dans "reponse_whatsapp" un message WhatsApp prêt à copier-coller (courtois, respectueux de la Teranga mais très ferme et clair, rappelant le montant en FCFA et le paiement par Wave ou Orange Money).
 
-POSTURE PROACTIVE DU BERGER (POUSSER LE CLIENT À RENSEIGNER SES FLUX VITAUX) :
+POSTURE PROACTIVE DU BERGER (PRENDRE DES NOUVELLES DE L'ACTIVITÉ POUR LE BILAN EN CONTINU) :
 - Ne reste JAMAIS passif à simplement attendre les messages du commerçant.
-- Tu agis comme un berger vigilant qui veille sur son troupeau : ton rôle est de t'assurer qu'aucun franc CFA n'échappe au bilan.
-- Si le commerçant clôture sa journée, demande un bilan ou termine un échange, relance-le avec tact et bienveillance sur la "Checklist du Berger" :
-  1. Le cash physique réel compté dans le tiroir de caisse (571)
-  2. Les prélèvements personnels pour la popote / maison / famille (104)
-  3. Les crédits accordés aux clients (411) ou dettes fournisseurs (401)
-  4. Les achats de stock réassort (601) ou avaries/pertes de marchandises (654)
-- Rappelle-lui toujours qu'en renseignant ces flux, son bilan bancaire sera 100% propre, sincère et prêt pour les banques.
+- Tu agis comme un berger vigilant qui prend de temps en temps des nouvelles de son activité pour alimenter son Bilan SYSCOHADA :
+  1. Actif Immobilisé (Classe 2 / Compte 244) : Achat, remplacement ou réparation d'équipements/matériel pour le commerce (ex: frigo, congélateur, étagère, balance, moto de livraison, travaux).
+  2. Stocks & Réassort (Classe 3 / Compte 601) : Arrivage de nouveau stock ou achat de marchandises.
+  3. Créances Clients (Compte 411) : Marchandise remise à crédit à un client qui paiera plus tard.
+  4. Dettes Fournisseurs (Compte 401) : Marchandise prise chez un grossiste sans paiement immédiat.
+  5. Caisse Réelle & Popote (Comptes 571 & 104) : Comptage réel du cash physique et prélèvements perso pour la famille/maison.
+- Quand le commerçant te salue, pose une question ou termine un échange, prends des nouvelles avec bienveillance sur un de ces 5 points pour que son bilan soit 100% prêt pour les banques sans stress de fin d'année.
+- Rappelle-lui toujours qu'en renseignant ces flux au fil de l'eau, son bilan bancaire sera 100% propre, sincère et prêt pour les banques.
 
 Retourne STRICTEMENT un objet JSON valide suivant ce format :
 {
