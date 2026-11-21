@@ -805,6 +805,47 @@
             border-color: #0e7647 !important;
             box-shadow: 0 2px 8px rgba(14, 118, 71, 0.4);
         }
+
+        /* Styles d'Impression Officielle A4 SYSCOHADA */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .top-navbar, .sidebar, .financial-statements-bar, .filters-row, .table-container, .footer-action-bar, .customization-bar, .modal-report-nav, .modal-report-footer, .agency-tab-pane {
+                display: none !important;
+            }
+            .modal-report-overlay {
+                position: static !important;
+                background: none !important;
+                padding: 0 !important;
+                display: block !important;
+            }
+            .modal-report-card {
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+                max-height: none !important;
+                overflow: visible !important;
+            }
+            .modal-report-header {
+                background: #0a2540 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color: #ffffff !important;
+                border-radius: 0 !important;
+            }
+            .modal-report-body {
+                padding: 15px 0 !important;
+            }
+            .print-page-break {
+                page-break-before: always;
+                break-before: page;
+            }
+        }
     </style>
 </head>
 <body>
@@ -886,14 +927,14 @@
                         <div class="pme-status-pill">
                             <span class="pulse-dot"></span> Dossier Actif
                         </div>
-                        <div class="pme-name-title" title="Établissement Mamadou Diop">Mamadou Diop</div>
+                        <div class="pme-name-title" id="sidePmeName" title="Établissement Mamadou Diop">Mamadou Diop</div>
                     </div>
                 </div>
 
                 <!-- Chiffre d'Affaires Net sans césure brutale -->
                 <div class="pme-kpi-block">
-                    <span class="pme-kpi-label">Chiffre d'Affaires (Mai)</span>
-                    <div class="pme-kpi-value">
+                    <span class="pme-kpi-label" id="sidePmeCaLabel">Chiffre d'Affaires</span>
+                    <div class="pme-kpi-value" id="sidePmeCa">
                         3 850 000 <span class="pme-kpi-curr">FCFA</span>
                     </div>
                 </div>
@@ -902,14 +943,14 @@
                 <div class="pme-mini-grid">
                     <div class="pme-mini-box">
                         <span class="pme-mini-label">Santé Fin.</span>
-                        <div class="pme-mini-val green">
+                        <div class="pme-mini-val green" id="sidePmeScore">
                             <i class="fa-solid fa-shield-check" style="font-size: 11px;"></i> 92/100
                         </div>
                     </div>
                     <div class="pme-mini-box">
-                        <span class="pme-mini-label">Stock PMP</span>
-                        <div class="pme-mini-val blue">
-                            <i class="fa-solid fa-boxes-stacked" style="font-size: 11px;"></i> 85%
+                        <span class="pme-mini-label">Régularité</span>
+                        <div class="pme-mini-val blue" id="sidePmeStock">
+                            <i class="fa-solid fa-boxes-stacked" style="font-size: 11px;"></i> 98.5%
                         </div>
                     </div>
                 </div>
@@ -950,9 +991,48 @@
                     </button>
                 </div>
 
-                <!-- Sélecteur PME & Menu Filtre Comptes Associés (Style Fintech Pro Épuré) -->
-                <div class="filters-row" style="position: relative;">
-                    <div class="pme-badge-selector">Nom de la PME : <strong style="color: #0e7647;">Établissement Mamadou Diop</strong> &bull; Mai 2026</div>
+                <!-- BARRE DE SÉLECTION PME, PÉRIODE & COMPTES ASSOCIÉS -->
+                <div class="filters-row" style="position: relative; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; margin-bottom: 16px;">
+                    
+                    <!-- 1. SÉLECTION DE L'ENTREPRISE PME -->
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.4px; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-building" style="color: #0e7647;"></i> Entreprise :
+                        </span>
+                        <select id="pmeEntrepriseSelect" onchange="changerPmeActive(this.value)"
+                            style="font-size: 12.5px; font-weight: 800; color: #0e7647; background: #f0fdf4; border: 1.5px solid #a7f3d0; border-radius: 8px; padding: 7px 12px; outline: none; cursor: pointer; max-width: 290px;">
+                            <option value="diop" selected>🏪 Établissement Mamadou Diop (Keur Yoff)</option>
+                            <option value="touba">⚡ Boutique Touba Électronique (Dakar)</option>
+                            <option value="pressing">👔 Pressing Moderne Dakar (Médina)</option>
+                            <option value="fatou">👗 Atelier Fatou Ndiaye Couture (Point E)</option>
+                            <option value="sahel">🚚 Transports Express Sahel (Mbao)</option>
+                        </select>
+                    </div>
+
+                    <!-- 2. SÉLECTION DE L'INTERVALLE DE TEMPS DU BILAN -->
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.4px; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-calendar-days" style="color: #0e7647;"></i> Période du Bilan :
+                        </span>
+                        <select id="periodePresetSelect" onchange="changerPeriodePreset(this.value)"
+                            style="font-size: 12px; font-weight: 700; color: #1e293b; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 7px 10px; outline: none; cursor: pointer;">
+                            <option value="mois_actuel" selected>📅 Mois de Mai 2026</option>
+                            <option value="mois_precedent">📅 Mois d'Avril 2026</option>
+                            <option value="t1_2026">📊 1er Trimestre 2026 (Janv - Mars)</option>
+                            <option value="t2_2026">📊 2ème Trimestre 2026 (Avril - Juin)</option>
+                            <option value="annee_2025">🏛️ Exercice Annuel 2025 (Clos 31/12)</option>
+                            <option value="annee_2026">🏛️ Exercice en cours 2026</option>
+                            <option value="custom">✏️ Période Personnalisée...</option>
+                        </select>
+                        <div id="datesContainer" style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 11px; color: #64748b; font-weight: 700;">Du</span>
+                            <input type="date" id="dateBilanDebut" value="2026-05-01" onchange="mettreAJourIntervalleTexte()"
+                                style="font-size: 11.5px; font-weight: 700; color: #0f172a; border: 1.5px solid #cbd5e1; border-radius: 7px; padding: 5px 8px; outline: none; background: #ffffff;">
+                            <span style="font-size: 11px; color: #64748b; font-weight: 700;">Au</span>
+                            <input type="date" id="dateBilanFin" value="2026-05-31" onchange="mettreAJourIntervalleTexte()"
+                                style="font-size: 11.5px; font-weight: 700; color: #0f172a; border: 1.5px solid #cbd5e1; border-radius: 7px; padding: 5px 8px; outline: none; background: #ffffff;">
+                        </div>
+                    </div>
                     
                     <!-- MENU DÉROULANT FINTECH DES COMPTES ASSOCIÉS -->
                     <div class="relative inline-block" id="compteAssociesWrapper" style="position: relative;">
@@ -2102,12 +2182,58 @@
                     <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> 📋 Liasse Complète (Les 4 États)
                 </button>
             </div>
+
+            <!-- VOLET DE PERSONNALISATION POUR L'EXPERT-COMPTABLE -->
+            <div class="customization-bar" id="customizationBar" style="background: #f8fafc; border-bottom: 1.5px solid #e2e8f0; padding: 12px 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 11.5px; font-weight: 800; color: #0a2540; text-transform: uppercase; display: flex; align-items: center; gap: 7px;">
+                        <i class="fa-solid fa-pen-to-square" style="color: #0e7647;"></i> Personnaliser le document &amp; Mentions de l'Expert-Comptable (Modifiables en direct)
+                    </div>
+                    <button type="button" onclick="toggleCustomDocFields()" style="background: none; border: none; font-size: 11px; font-weight: 700; color: #0e7647; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                        <span id="customDocToggleText">Réduire les options</span> <i class="fa-solid fa-chevron-up" id="customDocChevron"></i>
+                    </button>
+                </div>
+                
+                <div id="customDocFields" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-top: 10px;">
+                    <div>
+                        <label style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">Nom du Cabinet Comptable</label>
+                        <input type="text" id="customCabNom" value="Cabinet d'Expertise Comptable &amp; Audit Agréé" oninput="mettreAJourDocPreview()"
+                            style="width: 100%; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; color: #0f172a; background: #ffffff;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">Signataire / Expert &amp; N° Agrément</label>
+                        <input type="text" id="customSignataire" value="M. Amadou Sow, Expert-Comptable (Agrément N° 2026-DK-98402)" oninput="mettreAJourDocPreview()"
+                            style="width: 100%; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; color: #0f172a; background: #ffffff;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">Formule d'Attestation Officielle</label>
+                        <select id="customTypeAttestation" onchange="mettreAJourDocPreview()"
+                            style="width: 100%; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border: 1.5px solid #a7f3d0; border-radius: 6px; color: #0e7647; background: #f0fdf4;">
+                            <option value="sans_reserve" selected>✅ Attestation sans réserve (Conforme SYSCOHADA)</option>
+                            <option value="coherence">📑 Attestation de sincérité et cohérence des flux</option>
+                            <option value="presentation">💼 Rapport de mission de présentation des comptes</option>
+                            <option value="reserve_stock">⚠️ Visa avec réserve d'inventaire physique</option>
+                        </select>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label style="display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px;">Observations libres &amp; Conseils du Comptable (Imprimé sur le document)</label>
+                        <textarea id="customObservations" oninput="mettreAJourDocPreview()" rows="2"
+                            placeholder="Écrivez ici toute remarque, conseil fiscal, appréciation pour la banque ou la DGID..."
+                            style="width: 100%; font-size: 11.5px; padding: 7px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; color: #1e293b; background: #ffffff; font-family: inherit;">Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.</textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1; display: flex; gap: 8px;">
+                        <input type="text" id="customNoteExtra" placeholder="+ Ajouter une note annexe personnalisée (ex: Note 5 : Convention d'avance de trésorerie...)" oninput="mettreAJourDocPreview()"
+                            style="flex: 1; font-size: 11.5px; padding: 6px 10px; border: 1.5px dashed #cbd5e1; border-radius: 6px; background: #ffffff; color: #0f172a;">
+                    </div>
+                </div>
+            </div>
+
             <div class="modal-report-body" id="repBody"></div>
             <div class="modal-report-footer">
                 <span style="font-size: 12px; font-weight: 700; color: #0e7647;"><i class="fa-solid fa-certificate"></i> Visa Cabinet Comptable Agréé &bull; Certifié Conforme SYSCOHADA</span>
                 <div>
-                    <button onclick="window.print()" style="padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; font-weight: 600; cursor: pointer; margin-right: 8px;">
-                        <i class="fa-solid fa-print"></i> Imprimer
+                    <button onclick="window.print()" style="padding: 8px 16px; border: 1.5px solid #0e7647; border-radius: 6px; background: #f0fdf4; color: #0e7647; font-weight: 700; cursor: pointer; margin-right: 8px;">
+                        <i class="fa-solid fa-print"></i> Imprimer la Liasse Officielle
                     </button>
                     <button onclick="closeReport()" style="padding: 8px 14px; border: none; border-radius: 6px; background: #0e7647; color: white; font-weight: 700; cursor: pointer;">Fermer</button>
                 </div>
@@ -2382,12 +2508,585 @@
             }
         }
 
+                // =========================================================================
+        // BASE DE DONNÉES MULTI-PME ET LOGIQUE COMPTABLE COMPLÈTE
+        // =========================================================================
+        let currentPmeKey = 'diop';
+        let currentReportType = 'bilan';
+
+        const PME_DATABASE = {
+            diop: {
+                id: 'diop',
+                nom: "Établissement Mamadou Diop",
+                activite: "Commerce Général & Distribution Alimentaire",
+                adresse: "Marché Keur Yoff, Dakar",
+                telephone: "+221 78 877 38 27",
+                ninea: "005489210 2Y3",
+                rccm: "SN-DKR-2022-B-4819",
+                regime: "SYSCOHADA SMT (Système Minimal de Trésorerie)",
+                ca: "3 850 000 FCFA",
+                score: "92/100",
+                tauxValidation: "98.5%",
+                totalActifPassif: "9 560 000 FCFA",
+                beneficeNet: "+2 820 000 FCFA",
+                tresoFinale: "1 850 000 FCFA",
+                bilan: {
+                    immo: "3 500 000",
+                    stocks: "3 100 000",
+                    creances: "1 110 000",
+                    treso: "1 850 000",
+                    capital: "5 000 000",
+                    resultat: "+2 820 000",
+                    fournisseurs: "1 450 000",
+                    dettesFiscales: "290 000",
+                    total: "9 560 000"
+                },
+                resultatLignes: [
+                    { label: "Chiffre d'Affaires (Ventes 701100)", mnt: "+14 500 000", color: "#0e7647", bold: true },
+                    { label: "- Achats de marchandises (601100)", mnt: "-9 200 000", color: "#e11d48", bold: false },
+                    { label: "Marge Commerciale Brute", mnt: "5 300 000", color: "#0f172a", bold: true, bg: "#f8fafc" },
+                    { label: "- Autres charges externes (Transport Keur Yoff, Énergie)", mnt: "-930 000", color: "#e11d48", bold: false },
+                    { label: "- Salaires et charges de personnel", mnt: "-1 550 000", color: "#e11d48", bold: false },
+                    { label: "RÉSULTAT NET COMPTABLE (BÉNÉFICE)", mnt: "+2 820 000 FCFA", color: "#4ade80", bold: true, isFinal: true }
+                ],
+                fluxLignes: [
+                    { label: "Trésorerie de départ en début de période", mnt: "1 200 000 FCFA", bold: true },
+                    { label: "+ Encaissements reçus (Wave Business + Caisse Espèces)", mnt: "+13 850 000 FCFA", color: "#0e7647", bold: true },
+                    { label: "- Décaissements Fournisseurs & Salaires", mnt: "-13 200 000 FCFA", color: "#e11d48", bold: false },
+                    { label: "FLUX NET DE TRÉSORERIE DE LA PÉRIODE", mnt: "+650 000 FCFA", color: "#0e7647", bold: true, bg: "#f8fafc" },
+                    { label: "TRÉSORERIE DE CLÔTURE", mnt: "1 850 000 FCFA", color: "#ffffff", bold: true, isFinalTreso: true }
+                ],
+                notes: [
+                    "Note 1 — Référentiel Comptable : États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA (UEMOA).",
+                    "Note 2 — Immobilisations : Matériel et congélateurs amortis sur 5 ans en mode linéaire conforme.",
+                    "Note 3 — Numérisation & Rapprochement : 100% des flux supérieurs à 100 000 FCFA rapprochés avec relevés Wave et bons de caisse.",
+                    "Note 4 — Événements Postérieurs : Aucun litige commercial ni risque de défaut constaté à la date d'arrêté des comptes."
+                ],
+                ecritures: [
+                    { id: 1, date: "12/05/2026", libelle: "Achat Stock Riz Keur Yoff", compte: "601100 - Achats", debit: "185 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "✓ Preuve", hasValBtn: true },
+                    { id: 2, date: "12/05/2026", libelle: "Vente Journalière Espèces", compte: "701100 - Ventes", debit: "-", credit: "240 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 3, date: "12/05/2026", libelle: "Achat Stock Riz Keur Yoff (Descompte)", compte: "601100 - Achats", debit: "185 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "numerique", statutLabel: "✓ Numérique", hasValBtn: false },
+                    { id: 4, date: "12/05/2026", libelle: "Vente Journalière Espèces Boutique", compte: "701100 - Ventes", debit: "-", credit: "240 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
+                ]
+            },
+            touba: {
+                id: 'touba',
+                nom: "Boutique Touba Électronique",
+                activite: "Vente Matériel Informatique & Électronique",
+                adresse: "Avenue Blaise Diagne, Dakar Plateau",
+                telephone: "+221 77 654 32 10",
+                ninea: "007891234 1P4",
+                rccm: "SN-DKR-2021-B-3102",
+                regime: "SYSCOHADA SMT (Système Minimal de Trésorerie)",
+                ca: "6 420 000 FCFA",
+                score: "88/100",
+                tauxValidation: "95.0%",
+                totalActifPassif: "14 800 000 FCFA",
+                beneficeNet: "+3 950 000 FCFA",
+                tresoFinale: "3 200 000 FCFA",
+                bilan: {
+                    immo: "5 200 000",
+                    stocks: "5 800 000",
+                    creances: "1 600 000",
+                    treso: "3 200 000",
+                    capital: "8 000 000",
+                    resultat: "+3 950 000",
+                    fournisseurs: "2 350 000",
+                    dettesFiscales: "500 000",
+                    total: "14 800 000"
+                },
+                resultatLignes: [
+                    { label: "Chiffre d'Affaires (Ventes Électronique 701100)", mnt: "+22 400 000", color: "#0e7647", bold: true },
+                    { label: "- Achats ordinateurs, écrans & accessoires (601100)", mnt: "-14 100 000", color: "#e11d48", bold: false },
+                    { label: "Marge Commerciale Brute", mnt: "8 300 000", color: "#0f172a", bold: true, bg: "#f8fafc" },
+                    { label: "- Loyer Plateau & Électricité Senelec", mnt: "-1 650 000", color: "#e11d48", bold: false },
+                    { label: "- Salaires techniciens & vendeurs", mnt: "-2 700 000", color: "#e11d48", bold: false },
+                    { label: "RÉSULTAT NET COMPTABLE (BÉNÉFICE)", mnt: "+3 950 000 FCFA", color: "#4ade80", bold: true, isFinal: true }
+                ],
+                fluxLignes: [
+                    { label: "Trésorerie de départ en début de période", mnt: "2 100 000 FCFA", bold: true },
+                    { label: "+ Encaissements Ventes Wave & TPE", mnt: "+21 800 000 FCFA", color: "#0e7647", bold: true },
+                    { label: "- Décaissements Fournisseurs & Salaires", mnt: "-20 700 000 FCFA", color: "#e11d48", bold: false },
+                    { label: "FLUX NET DE TRÉSORERIE DE LA PÉRIODE", mnt: "+1 100 000 FCFA", color: "#0e7647", bold: true, bg: "#f8fafc" },
+                    { label: "TRÉSORERIE DE CLÔTURE", mnt: "3 200 000 FCFA", color: "#ffffff", bold: true, isFinalTreso: true }
+                ],
+                notes: [
+                    "Note 1 — Référentiel Comptable : États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA.",
+                    "Note 2 — Stocks de matériel électronique : Inventaire physique valorisé selon la méthode FIFO (Premier entré, premier sorti).",
+                    "Note 3 — Encaissements digitaux : Flux Wave et virements bancaires rapprochés à 99% sans anomalie.",
+                    "Note 4 — Ligne de crédit : Prêt de trésorerie en cours de remboursement régulier auprès de la CBAO."
+                ],
+                ecritures: [
+                    { id: 1, date: "11/05/2026", libelle: "Achat Lot Smartphones & Câbles USB-C", compte: "601100 - Achats", debit: "750 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "✓ Preuve", hasValBtn: true },
+                    { id: 2, date: "11/05/2026", libelle: "Vente Téléphones Samsung (Wave Business)", compte: "701100 - Ventes", debit: "-", credit: "980 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 3, date: "10/05/2026", libelle: "Facture Électricité Senelec Agence Plateau", compte: "605100 - Frais", debit: "125 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 4, date: "09/05/2026", libelle: "Vente Accessoires Informatiques Cash", compte: "701100 - Ventes", debit: "-", credit: "340 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
+                ]
+            },
+            pressing: {
+                id: 'pressing',
+                nom: "Pressing Moderne Dakar",
+                activite: "Blanchisserie Industrielle & Nettoyage à Sec",
+                adresse: "Rue 6 x Blaise Diagne, Médina, Dakar",
+                telephone: "+221 76 543 21 09",
+                ninea: "006543219 3R2",
+                rccm: "SN-DKR-2023-B-1194",
+                regime: "SYSCOHADA SMT (Système Minimal de Trésorerie)",
+                ca: "2 150 000 FCFA",
+                score: "95/100",
+                tauxValidation: "100%",
+                totalActifPassif: "8 900 000 FCFA",
+                beneficeNet: "+1 420 000 FCFA",
+                tresoFinale: "1 950 000 FCFA",
+                bilan: {
+                    immo: "5 500 000",
+                    stocks: "850 000",
+                    creances: "600 000",
+                    treso: "1 950 000",
+                    capital: "6 000 000",
+                    resultat: "+1 420 000",
+                    fournisseurs: "1 180 000",
+                    dettesFiscales: "300 000",
+                    total: "8 900 000"
+                },
+                resultatLignes: [
+                    { label: "Chiffre d'Affaires (Prestations Nettoyage 701100)", mnt: "+7 850 000", color: "#0e7647", bold: true },
+                    { label: "- Produits lessiviels, solvants & housses (601100)", mnt: "-2 350 000", color: "#e11d48", bold: false },
+                    { label: "Marge sur Prestations de Services", mnt: "5 500 000", color: "#0f172a", bold: true, bg: "#f8fafc" },
+                    { label: "- Eau Sen'Eau & Électricité Senelec Médina", mnt: "-1 880 000", color: "#e11d48", bold: false },
+                    { label: "- Salaires des repasseurs & opérateurs", mnt: "-2 200 000", color: "#e11d48", bold: false },
+                    { label: "RÉSULTAT NET COMPTABLE (BÉNÉFICE)", mnt: "+1 420 000 FCFA", color: "#4ade80", bold: true, isFinal: true }
+                ],
+                fluxLignes: [
+                    { label: "Trésorerie de départ en début de période", mnt: "980 000 FCFA", bold: true },
+                    { label: "+ Encaissements Clients (Wave & Espèces)", mnt: "+7 700 000 FCFA", color: "#0e7647", bold: true },
+                    { label: "- Décaissements Fournisseurs & Charges opérationnelles", mnt: "-6 730 000 FCFA", color: "#e11d48", bold: false },
+                    { label: "FLUX NET DE TRÉSORERIE DE LA PÉRIODE", mnt: "+970 000 FCFA", color: "#0e7647", bold: true, bg: "#f8fafc" },
+                    { label: "TRÉSORERIE DE CLÔTURE", mnt: "1 950 000 FCFA", color: "#ffffff", bold: true, isFinalTreso: true }
+                ],
+                notes: [
+                    "Note 1 — Référentiel Comptable : États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA.",
+                    "Note 2 — Machines à sec & Séchoirs professionnels : Amortis sur 7 ans en mode linéaire conforme.",
+                    "Note 3 — Régularité fiscale : Déclarations trimestrielles VRS et TVA conformes à la DGID.",
+                    "Note 4 — Trésorerie disponible : Compte Wave Business certifié sans écart de rapprochement."
+                ],
+                ecritures: [
+                    { id: 1, date: "12/05/2026", libelle: "Achat Solvants & Lessive Industrielle", compte: "601100 - Achats", debit: "140 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 2, date: "12/05/2026", libelle: "Prestations Nettoyage Hôtels (Wave)", compte: "701100 - Ventes", debit: "-", credit: "380 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 3, date: "10/05/2026", libelle: "Facture Eau Sen'Eau Médina", compte: "605100 - Frais", debit: "85 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 4, date: "09/05/2026", libelle: "Encaissement Comptant Particuliers", compte: "701100 - Ventes", debit: "-", credit: "195 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
+                ]
+            },
+            fatou: {
+                id: 'fatou',
+                nom: "Atelier Fatou Ndiaye Couture",
+                activite: "Haute Couture & Confection Textile Artisanale",
+                adresse: "Avenue Cheikh Anta Diop, Point E, Dakar",
+                telephone: "+221 77 890 12 34",
+                ninea: "009124567 4M1",
+                rccm: "SN-DKR-2022-A-8741",
+                regime: "SYSCOHADA SMT (Système Minimal de Trésorerie)",
+                ca: "4 200 000 FCFA",
+                score: "94/100",
+                tauxValidation: "97.0%",
+                totalActifPassif: "11 200 000 FCFA",
+                beneficeNet: "+2 680 000 FCFA",
+                tresoFinale: "2 450 000 FCFA",
+                bilan: {
+                    immo: "4 100 000",
+                    stocks: "3 800 000",
+                    creances: "850 000",
+                    treso: "2 450 000",
+                    capital: "6 500 000",
+                    resultat: "+2 680 000",
+                    fournisseurs: "1 620 000",
+                    dettesFiscales: "400 000",
+                    total: "11 200 000"
+                },
+                resultatLignes: [
+                    { label: "Chiffre d'Affaires (Créations & Confections 701100)", mnt: "+16 800 000", color: "#0e7647", bold: true },
+                    { label: "- Achats de Tissus Bazin, Soie & Fournitures (601100)", mnt: "-8 400 000", color: "#e11d48", bold: false },
+                    { label: "Marge Commerciale & Façon", mnt: "8 400 000", color: "#0f172a", bold: true, bg: "#f8fafc" },
+                    { label: "- Loyer atelier Point E & Frais logistiques", mnt: "-2 120 000", color: "#e11d48", bold: false },
+                    { label: "- Salaires maîtres tailleurs & couturières", mnt: "-3 600 000", color: "#e11d48", bold: false },
+                    { label: "RÉSULTAT NET COMPTABLE (BÉNÉFICE)", mnt: "+2 680 000 FCFA", color: "#4ade80", bold: true, isFinal: true }
+                ],
+                fluxLignes: [
+                    { label: "Trésorerie de départ en début de période", mnt: "1 500 000 FCFA", bold: true },
+                    { label: "+ Encaissements Acomptes & Soldes Commandes (Wave)", mnt: "+16 100 000 FCFA", color: "#0e7647", bold: true },
+                    { label: "- Décaissements Tissus, Fournitures & Salaires", mnt: "-15 150 000 FCFA", color: "#e11d48", bold: false },
+                    { label: "FLUX NET DE TRÉSORERIE DE LA PÉRIODE", mnt: "+950 000 FCFA", color: "#0e7647", bold: true, bg: "#f8fafc" },
+                    { label: "TRÉSORERIE DE CLÔTURE", mnt: "2 450 000 FCFA", color: "#ffffff", bold: true, isFinalTreso: true }
+                ],
+                notes: [
+                    "Note 1 — Référentiel Comptable : États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA.",
+                    "Note 2 — Machines à coudre industrielles & Brodeuses : Amorties sur 5 ans en mode linéaire conforme.",
+                    "Note 3 — Stocks : Tissus importés répertoriés avec fiches d'inventaire contradictoires.",
+                    "Note 4 — Rapprochement Wave Business : 100% des règlements d'acomptes clients validés."
+                ],
+                ecritures: [
+                    { id: 1, date: "12/05/2026", libelle: "Achat Rouleaux Bazin Riche Getzner", compte: "601100 - Achats", debit: "350 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "✓ Preuve", hasValBtn: true },
+                    { id: 2, date: "12/05/2026", libelle: "Acompte Commande Cérémonie (Wave)", compte: "701100 - Ventes", debit: "-", credit: "500 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 3, date: "11/05/2026", libelle: "Achat Fils, Boutons & Fermetures Éclair", compte: "601100 - Achats", debit: "45 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 4, date: "10/05/2026", libelle: "Solde Robes Prêt-à-porter Cash", compte: "701100 - Ventes", debit: "-", credit: "280 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
+                ]
+            },
+            sahel: {
+                id: 'sahel',
+                nom: "Transports Express Sahel",
+                activite: "Logistique Urbaine & Transport Marchandises",
+                adresse: "Route Nationale 1, Mbao, Dakar",
+                telephone: "+221 77 123 45 67",
+                ninea: "008341902 5T7",
+                rccm: "SN-DKR-2020-B-9920",
+                regime: "SYSCOHADA SMT (Système Minimal de Trésorerie)",
+                ca: "7 800 000 FCFA",
+                score: "91/100",
+                tauxValidation: "96.5%",
+                totalActifPassif: "22 500 000 FCFA",
+                beneficeNet: "+4 100 000 FCFA",
+                tresoFinale: "4 850 000 FCFA",
+                bilan: {
+                    immo: "14 000 000",
+                    stocks: "1 200 000",
+                    creances: "2 450 000",
+                    treso: "4 850 000",
+                    capital: "12 000 000",
+                    resultat: "+4 100 000",
+                    fournisseurs: "5 400 000",
+                    dettesFiscales: "1 000 000",
+                    total: "22 500 000"
+                },
+                resultatLignes: [
+                    { label: "Chiffre d'Affaires (Prestations de Fret 701100)", mnt: "+31 500 000", color: "#0e7647", bold: true },
+                    { label: "- Carburant Diesel & Péages Autoroute (601100)", mnt: "-13 200 000", color: "#e11d48", bold: false },
+                    { label: "Marge Opérationnelle Brute", mnt: "18 300 000", color: "#0f172a", bold: true, bg: "#f8fafc" },
+                    { label: "- Entretien flotte camions, assurances & pneumatiques", mnt: "-6 400 000", color: "#e11d48", bold: false },
+                    { label: "- Salaires chauffeurs routiers & mécaniciens", mnt: "-7 800 000", color: "#e11d48", bold: false },
+                    { label: "RÉSULTAT NET COMPTABLE (BÉNÉFICE)", mnt: "+4 100 000 FCFA", color: "#4ade80", bold: true, isFinal: true }
+                ],
+                fluxLignes: [
+                    { label: "Trésorerie de départ en début de période", mnt: "3 400 000 FCFA", bold: true },
+                    { label: "+ Encaissements Virements Clients & Chèques Fret", mnt: "+30 200 000 FCFA", color: "#0e7647", bold: true },
+                    { label: "- Décaissements Carburant, Réparations & Salaires", mnt: "-28 750 000 FCFA", color: "#e11d48", bold: false },
+                    { label: "FLUX NET DE TRÉSORERIE DE LA PÉRIODE", mnt: "+1 450 000 FCFA", color: "#0e7647", bold: true, bg: "#f8fafc" },
+                    { label: "TRÉSORERIE DE CLÔTURE", mnt: "4 850 000 FCFA", color: "#ffffff", bold: true, isFinalTreso: true }
+                ],
+                notes: [
+                    "Note 1 — Référentiel Comptable : États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA.",
+                    "Note 2 — Flotte de véhicules utilitaires & Camions : Amortissement linéaire sur 5 ans conforme.",
+                    "Note 3 — Régularité sociale & fiscale : Déclarations trimestrielles IPRES, CSS et TVA à jour au 31/05/2026.",
+                    "Note 4 — Suivi carburant & Télématique : Consommations contrôlées par cartes accréditées."
+                ],
+                ecritures: [
+                    { id: 1, date: "12/05/2026", libelle: "Plein Carburant Flotte Camions Total", compte: "601100 - Achats", debit: "420 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "✓ Preuve", hasValBtn: true },
+                    { id: 2, date: "12/05/2026", libelle: "Prestation Transport Conteneurs Port (Virement)", compte: "701100 - Ventes", debit: "-", credit: "1 250 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 3, date: "11/05/2026", libelle: "Remplacement Pneumatiques Essieu", compte: "605100 - Frais", debit: "280 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
+                    { id: 4, date: "09/05/2026", libelle: "Course Livraison Express Mbao-Dakar", compte: "701100 - Ventes", debit: "-", credit: "160 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
+                ]
+            }
+        };
+
+        // 1. CHANGEMENT D'ENTREPRISE PME
+        function changerPmeActive(pmeKey) {
+            if (!PME_DATABASE[pmeKey]) return;
+            currentPmeKey = pmeKey;
+            const pme = PME_DATABASE[pmeKey];
+
+            // Mise à jour de la sidebar PME
+            const sideName = document.getElementById('sidePmeName');
+            const sideCa = document.getElementById('sidePmeCa');
+            const sideScore = document.getElementById('sidePmeScore');
+            const sideStock = document.getElementById('sidePmeStock');
+            if (sideName) {
+                sideName.textContent = pme.nom.replace('Établissement ', '').replace('Boutique ', '').replace('Atelier ', '');
+                sideName.title = pme.nom;
+            }
+            if (sideCa) {
+                sideCa.innerHTML = `${pme.ca.replace(' FCFA', '')} <span class="pme-kpi-curr">FCFA</span>`;
+            }
+            if (sideScore) {
+                sideScore.innerHTML = `<i class="fa-solid fa-shield-check" style="font-size: 11px;"></i> ${pme.score}`;
+            }
+            if (sideStock) {
+                sideStock.innerHTML = `<i class="fa-solid fa-boxes-stacked" style="font-size: 11px;"></i> ${pme.tauxValidation}`;
+            }
+
+            // Mise à jour du sélecteur d'entreprise si nécessaire
+            const selectEl = document.getElementById('pmeEntrepriseSelect');
+            if (selectEl && selectEl.value !== pmeKey) {
+                selectEl.value = pmeKey;
+            }
+
+            // Mise à jour du tableau des écritures
+            remplirTableauEcritures(pme);
+
+            // Si la modale des états est ouverte, la rafraîchir en direct
+            const m = document.getElementById('reportModal');
+            if (m && m.style.display === 'flex') {
+                openReport(currentReportType);
+            }
+        }
+
+        // Remplissage dynamique du tableau des écritures
+        function remplirTableauEcritures(pme) {
+            const tbody = document.getElementById('table-body');
+            if (!tbody) return;
+
+            let html = '';
+            pme.ecritures.forEach(ec => {
+                const proofHtml = ec.preuve 
+                    ? `<img src="${ec.preuve}" alt="Preuve" class="proof-thumbnail" onclick="zoomImage('${ec.preuve}')">`
+                    : '';
+                const btnVal = ec.hasValBtn 
+                    ? `<button class="btn-validate" id="btn-val-${ec.id}" onclick="validateRow(${ec.id})">Valider</button>`
+                    : '';
+                const badgeClass = ec.statut === 'validee' ? 'badge-validee' : (ec.statut === 'numerique' ? 'badge-numerique' : 'badge-preuve');
+
+                html += `
+                    <tr id="row-${ec.id}">
+                        <td style="font-weight: 500; color: #475569;">${ec.date}</td>
+                        <td>
+                            <div class="td-libelle-compte">
+                                <span class="libelle-name">${ec.libelle}</span>
+                                <span style="font-size: 11px; color: #0e7647; font-weight: 700;">(${ec.compte})</span>
+                            </div>
+                        </td>
+                        <td style="text-align: right; font-weight: 700; color: #0f172a;">${ec.debit}</td>
+                        <td style="text-align: right; font-weight: 700; color: #0e7647;">${ec.credit}</td>
+                        <td>
+                            <div class="proof-cell" style="justify-content: center; gap: 6px;">
+                                ${proofHtml}
+                                <span class="badge-status ${badgeClass}">${ec.statutLabel}</span>
+                                ${btnVal}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        // 2. GESTION DE L'INTERVALLE DE TEMPS DU BILAN
+        function changerPeriodePreset(preset) {
+            const debEl = document.getElementById('dateBilanDebut');
+            const finEl = document.getElementById('dateBilanFin');
+            if (!debEl || !finEl) return;
+
+            if (preset === 'mois_actuel') {
+                debEl.value = '2026-05-01';
+                finEl.value = '2026-05-31';
+            } else if (preset === 'mois_precedent') {
+                debEl.value = '2026-04-01';
+                finEl.value = '2026-04-30';
+            } else if (preset === 't1_2026') {
+                debEl.value = '2026-01-01';
+                finEl.value = '2026-03-31';
+            } else if (preset === 't2_2026') {
+                debEl.value = '2026-04-01';
+                finEl.value = '2026-06-30';
+            } else if (preset === 'annee_2025') {
+                debEl.value = '2025-01-01';
+                finEl.value = '2025-12-31';
+            } else if (preset === 'annee_2026') {
+                debEl.value = '2026-01-01';
+                finEl.value = '2026-12-31';
+            }
+            mettreAJourIntervalleTexte();
+        }
+
+        function mettreAJourIntervalleTexte() {
+            mettreAJourDocPreview();
+        }
+
+        function formaterDateFR(str) {
+            if (!str) return '';
+            const p = str.split('-');
+            if (p.length === 3) return `${p[2]}/${p[1]}/${p[0]}`;
+            return str;
+        }
+
+        function obtenirIntervalleTexteActuel() {
+            const deb = document.getElementById('dateBilanDebut')?.value || '2026-05-01';
+            const fin = document.getElementById('dateBilanFin')?.value || '2026-05-31';
+            const annee = fin.split('-')[0] || '2026';
+            return {
+                debut: formaterDateFR(deb),
+                fin: formaterDateFR(fin),
+                annee: annee,
+                texteComplet: `Période du ${formaterDateFR(deb)} au ${formaterDateFR(fin)} (Exercice ${annee})`
+            };
+        }
+
+        // 3. PERSONNALISATION DU DOCUMENT PAR L'EXPERT-COMPTABLE
+        function toggleCustomDocFields() {
+            const f = document.getElementById('customDocFields');
+            const chev = document.getElementById('customDocChevron');
+            const txt = document.getElementById('customDocToggleText');
+            if (!f) return;
+            if (f.style.display === 'none') {
+                f.style.display = 'grid';
+                if (chev) chev.className = 'fa-solid fa-chevron-up';
+                if (txt) txt.textContent = 'Réduire les options';
+            } else {
+                f.style.display = 'none';
+                if (chev) chev.className = 'fa-solid fa-chevron-down';
+                if (txt) txt.textContent = 'Personnaliser le document (Cabinet, Signataire, Observations)';
+            }
+        }
+
+        function mettreAJourDocPreview() {
+            const m = document.getElementById('reportModal');
+            if (m && m.style.display === 'flex') {
+                openReport(currentReportType);
+            }
+        }
+
+        // 4. GÉNÉRATEURS D'EN-TÊTE ET DE PIED DE PAGE OFFICIELS CERTIFIÉS
+        function genererHeaderOfficielDoc(pme, intervalle) {
+            const cabNom = document.getElementById('customCabNom')?.value || "Cabinet d'Expertise Comptable & Audit Agréé";
+            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé";
+            const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+            return `
+                <div style="background: #ffffff; border: 1.5px solid #0a2540; border-radius: 10px; padding: 16px 20px; margin-bottom: 22px; font-family: inherit;">
+                    
+                    <!-- Ligne Supérieure : Cabinet Comptable & République -->
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 12px;">
+                        <div>
+                            <div style="font-size: 15px; font-weight: 900; color: #0a2540; text-transform: uppercase; letter-spacing: 0.5px;">${cabNom}</div>
+                            <div style="font-size: 11.5px; color: #0e7647; font-weight: 700; margin-top: 2px;">
+                                <i class="fa-solid fa-certificate"></i> ${signataire}
+                            </div>
+                            <div style="font-size: 10.5px; color: #64748b;">Plateforme Partenaire GROWTH &bull; SYSCOHADA UEMOA</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 11px; font-weight: 900; color: #0a2540; text-transform: uppercase;">RÉPUBLIQUE DU SÉNÉGAL</div>
+                            <div style="font-size: 10px; color: #64748b; font-weight: 700;">Ministère des Finances et du Budget &bull; DGID</div>
+                            <div style="display: inline-block; background: #f0fdf4; border: 1px solid #a7f3d0; border-radius: 6px; padding: 3px 8px; margin-top: 4px; font-size: 10px; font-weight: 800; color: #0e7647;">
+                                <i class="fa-solid fa-scale-balanced"></i> CONFORME SYSCOHADA RÉVISÉ (SMT)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fiche d'Identification Complète de l'Entreprise & Intervalle de Temps -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px;">
+                        <div>
+                            <div style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">Raison Sociale de la PME</div>
+                            <div style="font-size: 14px; font-weight: 900; color: #0a2540;">${pme.nom}</div>
+                            <div style="font-size: 11.5px; color: #475569; margin-top: 2px;"><strong>Activité :</strong> ${pme.activite}</div>
+                            <div style="font-size: 11px; color: #64748b;"><strong>Adresse :</strong> ${pme.adresse} &bull; Tél: ${pme.telephone}</div>
+                        </div>
+                        <div style="border-left: 2px solid #e2e8f0; padding-left: 14px;">
+                            <div style="display: flex; gap: 14px; margin-bottom: 6px;">
+                                <div>
+                                    <div style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">N° NINEA</div>
+                                    <div style="font-size: 12px; font-weight: 800; color: #0f172a; font-family: monospace;">${pme.ninea}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">N° RCCM</div>
+                                    <div style="font-size: 12px; font-weight: 800; color: #0f172a; font-family: monospace;">${pme.rccm}</div>
+                                </div>
+                            </div>
+                            <div style="background: #0a2540; color: #ffffff; padding: 6px 12px; border-radius: 6px; display: inline-flex; flex-direction: column;">
+                                <span style="font-size: 9.5px; text-transform: uppercase; color: #a0d9d2; font-weight: 800;">Période Arrêtée des Comptes :</span>
+                                <span style="font-size: 12.5px; font-weight: 900; color: #ffffff;">${intervalle.texteComplet}</span>
+                            </div>
+                            <div style="font-size: 10.5px; color: #475569; margin-top: 4px;">
+                                <strong>Édité à Dakar le :</strong> ${dateDuJour} &bull; <strong>Devise :</strong> FCFA (XOF)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function genererFooterOfficielDoc(pme) {
+            const cabNom = document.getElementById('customCabNom')?.value || "Cabinet d'Expertise Comptable & Audit Agréé";
+            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé";
+            const typeAttest = document.getElementById('customTypeAttestation')?.value || 'sans_reserve';
+            const obs = document.getElementById('customObservations')?.value || "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.";
+            const noteExtra = document.getElementById('customNoteExtra')?.value || "";
+
+            const attestationsMap = {
+                'sans_reserve': '✅ ATTESTATION SANS RÉSERVE — Conforme aux règles et principes comptables du SYSCOHADA SMT.',
+                'coherence': '📑 ATTESTATION DE SINCÉRITÉ ET COHÉRENCE — Concordance certifiée des flux Wave et de trésorerie.',
+                'presentation': '💼 RAPPORT DE MISSION DE PRÉSENTATION DES COMPTES — Diligences professionnelles accomplies conformément aux normes.',
+                'reserve_stock': '⚠️ VISA COMPTABLE AVEC RÉSERVE D\'INVENTAIRE — Conforme sous réserve de l\'inventaire contradictoire de fin d\'exercice.'
+            };
+
+            const extraNoteHtml = noteExtra && noteExtra.trim() 
+                ? `<div style="margin-top: 10px; padding: 10px 14px; background: #fffbeb; border: 1px dashed #f59e0b; border-radius: 6px; font-size: 12px; color: #92400e;">
+                    <strong>📌 Note Annexe Complémentaire ajoutée par l'Expert :</strong> ${noteExtra.trim()}
+                   </div>`
+                : '';
+
+            return `
+                <div style="margin-top: 24px; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 18px 20px; background: #ffffff; page-break-inside: avoid;">
+                    
+                    <!-- Formule d'Attestation Officielle Choisie -->
+                    <div style="padding: 10px 14px; background: #f0fdf4; border-left: 4px solid #0e7647; border-radius: 6px; font-size: 12.5px; font-weight: 800; color: #0e7647; margin-bottom: 12px;">
+                        ${attestationsMap[typeAttest] || attestationsMap['sans_reserve']}
+                    </div>
+
+                    <!-- Observations Libres de l'Expert-Comptable -->
+                    <div style="margin-bottom: 14px;">
+                        <div style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">
+                            <i class="fa-solid fa-pen-fancy" style="color: #0e7647;"></i> Observations, Commentaires &amp; Appréciation du Cabinet Comptable :
+                        </div>
+                        <div style="font-size: 12px; line-height: 1.6; color: #1e293b; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px; padding: 10px 14px; white-space: pre-wrap;">${obs}</div>
+                    </div>
+
+                    ${extraNoteHtml}
+
+                    <!-- Signatures & Cachet Officiel Numérique -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; padding-top: 16px; border-top: 1.5px dashed #cbd5e1;">
+                        
+                        <!-- Signature Dirigeant PME -->
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; background: #f8fafc; text-align: center;">
+                            <div style="font-size: 10.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Pour l'Entreprise Cliente (Lu et approuvé)</div>
+                            <div style="font-size: 12px; font-weight: 800; color: #0a2540; margin-top: 4px;">Le Dirigeant / Gérant Statutaire</div>
+                            <div style="font-size: 11px; color: #475569; font-weight: 700;">${pme.nom}</div>
+                            <div style="height: 60px; display: flex; align-items: center; justify-content: center; font-family: cursive; font-size: 16px; color: #0a2540;">
+                                Bon pour accord &amp; arrêté des comptes
+                            </div>
+                        </div>
+
+                        <!-- Signature & Cachet de l'Expert-Comptable -->
+                        <div style="border: 1.5px solid #0e7647; border-radius: 8px; padding: 12px 14px; background: #f0fdf4; position: relative;">
+                            <div style="font-size: 10.5px; font-weight: 800; color: #0e7647; text-transform: uppercase;">Pour le Cabinet d'Expertise Comptable</div>
+                            <div style="font-size: 12.5px; font-weight: 900; color: #0a2540; margin-top: 2px;">${signataire}</div>
+                            <div style="font-size: 10.5px; color: #475569;">${cabNom}</div>
+                            
+                            <!-- Cachet Numérique Visuel -->
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+                                <div style="font-family: cursive; font-size: 15px; color: #0e7647; font-weight: bold;">
+                                    Amadou Sow
+                                    <div style="font-family: inherit; font-size: 9px; color: #64748b;">Signé numériquement via GROWTH</div>
+                                </div>
+                                <div style="width: 70px; height: 70px; border: 2.5px dashed #0e7647; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-10deg); color: #0e7647; text-align: center; font-size: 7.5px; font-weight: 900; padding: 2px; background: rgba(240, 253, 244, 0.9);">
+                                    <span>★ EXPERTISE ★</span>
+                                    <span style="font-size: 7px; color: #0a2540;">SYSCOHADA</span>
+                                    <span>CERTIFIÉ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        // 5. FONCTION PRINCIPALE : OUVERTURE DU RAPPORT
         function openReport(type) {
+            currentReportType = type;
             const m = document.getElementById('reportModal');
             const t = document.getElementById('repTitle');
             const b = document.getElementById('repBody');
+            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+            const intervalle = obtenirIntervalleTexteActuel();
 
-            // Mise à jour de la surbrillance des onglets de la modale
+            // Mise à jour de la surbrillance des boutons d'onglets de la modale
             ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepTout'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('active');
@@ -2403,93 +3102,204 @@
                 document.getElementById(tabMap[type]).classList.add('active');
             }
 
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle);
+            const footerHtml = genererFooterOfficielDoc(pme);
+
             if (type === 'bilan') {
-                t.textContent = "1. Bilan Réglementaire SYSCOHADA SMT (Actif & Passif)";
+                t.textContent = `1. Bilan Réglementaire SYSCOHADA SMT — ${pme.nom}`;
                 b.innerHTML = `
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                        <tr style="background: #0a2540; color: white; font-weight: bold;"><th style="padding: 10px; text-align: left;">ACTIF (FCFA)</th><th style="padding: 10px; text-align: right;">MONTANT</th><th style="padding: 10px; text-align: left;">PASSIF (FCFA)</th><th style="padding: 10px; text-align: right;">MONTANT</th></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px;">Immobilisations corporelles</td><td style="padding: 10px; text-align: right;">3 500 000</td><td style="padding: 10px;">Capital NINEA</td><td style="padding: 10px; text-align: right;">5 000 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px;">Stocks de marchandises</td><td style="padding: 10px; text-align: right;">3 100 000</td><td style="padding: 10px;">Résultat net du mois (Bénéfice)</td><td style="padding: 10px; text-align: right; color: #0e7647; font-weight: bold;">+2 820 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px;">Créances clients</td><td style="padding: 10px; text-align: right;">1 110 000</td><td style="padding: 10px;">Dettes Fournisseurs</td><td style="padding: 10px; text-align: right;">1 450 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px;">Trésorerie Wave &amp; Caisse</td><td style="padding: 10px; text-align: right;">1 850 000</td><td style="padding: 10px;">Dettes fiscales</td><td style="padding: 10px; text-align: right;">290 000</td></tr>
-                        <tr style="background: #f0fdf4; font-weight: bold; font-size: 14px;"><td style="padding: 12px; color: #0e7647;">TOTAL ACTIF</td><td style="padding: 12px; text-align: right; color: #0e7647;">9 560 000 FCFA</td><td style="padding: 12px; color: #0e7647;">TOTAL PASSIF</td><td style="padding: 12px; text-align: right; color: #0e7647;">9 560 000 FCFA</td></tr>
+                    ${headerHtml}
+                    <div style="background: #0a2540; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
+                        <span>⚖️ ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
+                        <span style="color: #a0d9d2; font-size: 13px;">TOTAL ÉQUILIBRÉ : ${pme.totalActifPassif}</span>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
+                        <tr style="background: #f8fafc; color: #475569; font-weight: bold; border-bottom: 2px solid #cbd5e1;">
+                            <th style="padding: 10px 14px; text-align: left;">ACTIF IMMOBILISÉ &amp; CIRCULANT (FCFA)</th>
+                            <th style="padding: 10px 14px; text-align: right;">MONTANT</th>
+                            <th style="padding: 10px 14px; text-align: left;">CAPITAUX PROPRES &amp; PASSIF (FCFA)</th>
+                            <th style="padding: 10px 14px; text-align: right;">MONTANT</th>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 10px 14px;">Immobilisations corporelles (Matériel d'exploitation)</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.immo}</td>
+                            <td style="padding: 10px 14px;">Capital NINEA &amp; Apports</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.capital}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 10px 14px;">Stocks de marchandises &amp; approvisionnements</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.stocks}</td>
+                            <td style="padding: 10px 14px;">Résultat net de la période (Bénéfice)</td>
+                            <td style="padding: 10px 14px; text-align: right; color: #0e7647; font-weight: bold;">${pme.bilan.resultat}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 10px 14px;">Créances clients (Compte 411100)</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.creances}</td>
+                            <td style="padding: 10px 14px;">Dettes Fournisseurs (Compte 401100)</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.fournisseurs}</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 10px 14px;">Trésorerie Wave &amp; Caisse Espèces</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.treso}</td>
+                            <td style="padding: 10px 14px;">Dettes fiscales &amp; sociales (DGID / IPRES)</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 600;">${pme.bilan.dettesFiscales}</td>
+                        </tr>
+                        <tr style="background: #f0fdf4; font-weight: 900; font-size: 14px; border-top: 2px solid #0e7647;">
+                            <td style="padding: 14px; color: #0e7647;">TOTAL GÉNÉRAL ACTIF</td>
+                            <td style="padding: 14px; text-align: right; color: #0e7647;">${pme.totalActifPassif}</td>
+                            <td style="padding: 14px; color: #0e7647;">TOTAL GÉNÉRAL PASSIF</td>
+                            <td style="padding: 14px; text-align: right; color: #0e7647;">${pme.totalActifPassif}</td>
+                        </tr>
                     </table>
+                    ${footerHtml}
                 `;
             } else if (type === 'resultat') {
-                t.textContent = "2. Compte de Résultat SYSCOHADA (Produits & Charges)";
+                t.textContent = `2. Compte de Résultat SYSCOHADA — ${pme.nom}`;
+                let rowsHtml = '';
+                pme.resultatLignes.forEach(r => {
+                    const rowStyle = r.isFinal 
+                        ? 'background: #0a2540; color: #4ade80; font-weight: 900; font-size: 14px;' 
+                        : (r.bg ? `background: ${r.bg}; font-weight: ${r.bold ? '700' : '500'};` : `border-bottom: 1px solid #e2e8f0; font-weight: ${r.bold ? '700' : '500'};`);
+                    rowsHtml += `
+                        <tr style="${rowStyle}">
+                            <td style="padding: 11px 16px;">${r.label}</td>
+                            <td style="padding: 11px 16px; text-align: right; color: ${r.color || '#0f172a'};">${r.mnt}</td>
+                        </tr>
+                    `;
+                });
                 b.innerHTML = `
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                        <tr style="background: #0a2540; color: white; font-weight: bold;"><th style="padding: 10px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7)</th><th style="padding: 10px; text-align: right;">Montant (FCFA)</th></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: bold;">Chiffre d'Affaires (Ventes 701100)</td><td style="padding: 10px; text-align: right; color: #0e7647; font-weight: bold;">+14 500 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; color: #64748b;">- Achats de marchandises (601100)</td><td style="padding: 10px; text-align: right; color: #e11d48;">-9 200 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0; font-weight: bold; background: #f8fafc;"><td style="padding: 10px;">Marge Commerciale Brute</td><td style="padding: 10px; text-align: right;">5 300 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; color: #64748b;">- Autres charges externes (Transport, Énergie)</td><td style="padding: 10px; text-align: right; color: #e11d48;">-930 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; color: #64748b;">- Salaires et charges de personnel</td><td style="padding: 10px; text-align: right; color: #e11d48;">-1 550 000</td></tr>
-                        <tr style="background: #0a2540; color: #4ade80; font-weight: bold; font-size: 14px;"><td style="padding: 12px;">RÉSULTAT NET COMPTABLE (BÉNÉFICE)</td><td style="padding: 12px; text-align: right;">+2 820 000 FCFA</td></tr>
+                    ${headerHtml}
+                    <div style="background: #0a2540; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
+                        <span>📊 ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
+                        <span style="color: #4ade80; font-size: 13px;">BÉNÉFICE NET : ${pme.beneficeNet}</span>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
+                        <tr style="background: #f8fafc; color: #475569; font-weight: bold; border-bottom: 2px solid #cbd5e1;">
+                            <th style="padding: 10px 16px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7 SYSCOHADA)</th>
+                            <th style="padding: 10px 16px; text-align: right;">Montant (FCFA)</th>
+                        </tr>
+                        ${rowsHtml}
                     </table>
+                    ${footerHtml}
                 `;
             } else if (type === 'flux') {
-                t.textContent = "3. Tableau des Flux de Trésorerie (Méthode Directe)";
+                t.textContent = `3. Tableau des Flux de Trésorerie — ${pme.nom}`;
+                let fluxHtml = '';
+                pme.fluxLignes.forEach(f => {
+                    const rowStyle = f.isFinalTreso 
+                        ? 'background: #0e7647; color: white; font-weight: 900; font-size: 14px;' 
+                        : (f.bg ? `background: ${f.bg}; font-weight: 700;` : 'border-bottom: 1px solid #e2e8f0;');
+                    fluxHtml += `
+                        <tr style="${rowStyle}">
+                            <td style="padding: 11px 16px;">${f.label}</td>
+                            <td style="padding: 11px 16px; text-align: right; color: ${f.color || '#0f172a'}; font-weight: 700;">${f.mnt}</td>
+                        </tr>
+                    `;
+                });
                 b.innerHTML = `
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                        <tr style="background: #0a2540; color: white; font-weight: bold;"><th style="padding: 10px; text-align: left;">Flux de Trésorerie</th><th style="padding: 10px; text-align: right;">Montant (FCFA)</th></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: bold;">Trésorerie de départ au 01/05/2026</td><td style="padding: 10px; text-align: right;">1 200 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px;">+ Encaissements reçus (Wave + OM + Espèces)</td><td style="padding: 10px; text-align: right; color: #0e7647; font-weight: bold;">+13 850 000</td></tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px;">- Décaissements payés (Fournisseurs + Salaires)</td><td style="padding: 10px; text-align: right; color: #e11d48;">-13 200 000</td></tr>
-                        <tr style="background: #0e7647; color: white; font-weight: bold; font-size: 14px;"><td style="padding: 12px;">TRÉSORERIE DE CLÔTURE AU 31/05/2026</td><td style="padding: 12px; text-align: right;">1 850 000 FCFA</td></tr>
+                    ${headerHtml}
+                    <div style="background: #0a2540; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
+                        <span>💵 ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
+                        <span style="color: #a0d9d2; font-size: 13px;">TRÉSORERIE DISPONIBLE : ${pme.tresoFinale}</span>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
+                        <tr style="background: #f8fafc; color: #475569; font-weight: bold; border-bottom: 2px solid #cbd5e1;">
+                            <th style="padding: 10px 16px; text-align: left;">Mouvements &amp; Encaissements / Décaissements</th>
+                            <th style="padding: 10px 16px; text-align: right;">Montant (FCFA)</th>
+                        </tr>
+                        ${fluxHtml}
                     </table>
+                    ${footerHtml}
                 `;
             } else if (type === 'annexes') {
-                t.textContent = "4. Notes Annexes & Événements Postérieurs";
+                t.textContent = `4. Notes Annexes & Événements Postérieurs — ${pme.nom}`;
+                let notesHtml = '';
+                pme.notes.forEach(n => {
+                    notesHtml += `<p style="margin-bottom: 12px; font-size: 13px; line-height: 1.6; color: #334155;"><strong>${n.split(' : ')[0]} :</strong> ${n.split(' : ')[1] || ''}</p>`;
+                });
                 b.innerHTML = `
-                    <div style="font-size: 13px; line-height: 1.6; color: #334155;">
-                        <p style="margin-bottom: 12px;"><strong>Note 1 :</strong> États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA.</p>
-                        <p style="margin-bottom: 12px;"><strong>Note 2 :</strong> Amortissement des immobilisations calculé sur 5 ans en mode linéaire conforme.</p>
-                        <p style="margin-bottom: 12px;"><strong>Note 3 :</strong> 100% des pièces justificatives supérieures à 100 000 FCFA sont numérisées et certifiées pour transmission bancaire.</p>
-                        <p><strong>Note 4 :</strong> Événements postérieurs : Aucun litige commercial ni risque de défaut constaté à la date d'arrêté des comptes.</p>
+                    ${headerHtml}
+                    <div style="background: #0a2540; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800;">
+                        <span>📝 ÉTAT 4 : NOTES ANNEXES &amp; INFORMATIONS COMPLÉMENTAIRES</span>
                     </div>
+                    <div style="padding: 20px; font-size: 13px; line-height: 1.6; color: #334155; background: #ffffff; border: 1px solid #e2e8f0; border-top: none;">
+                        ${notesHtml}
+                    </div>
+                    ${footerHtml}
                 `;
             } else if (type === 'tout') {
-                t.textContent = "Liasse Financière Complète SYSCOHADA SMT (Les 4 États Réunis)";
+                t.textContent = `Liasse Financière Complète SYSCOHADA SMT (Les 4 États Réunis) — ${pme.nom}`;
+                
+                // Rows for Compte de Résultat
+                let resRows = '';
+                pme.resultatLignes.forEach(r => {
+                    const rowStyle = r.isFinal 
+                        ? 'background: #0a2540; color: #4ade80; font-weight: 900;' 
+                        : (r.bg ? `background: ${r.bg}; font-weight: ${r.bold ? '700' : '500'};` : `border-bottom: 1px solid #f1f5f9; font-weight: ${r.bold ? '700' : '500'};`);
+                    resRows += `
+                        <tr style="${rowStyle}">
+                            <td style="padding: 8px 12px;">${r.label}</td>
+                            <td style="padding: 8px 12px; text-align: right; color: ${r.color || '#0f172a'};">${r.mnt}</td>
+                        </tr>
+                    `;
+                });
+
+                // Rows for Flux
+                let fluxRows = '';
+                pme.fluxLignes.forEach(f => {
+                    const rowStyle = f.isFinalTreso 
+                        ? 'background: #0e7647; color: white; font-weight: 900;' 
+                        : (f.bg ? `background: ${f.bg}; font-weight: 700;` : 'border-bottom: 1px solid #f1f5f9;');
+                    fluxRows += `
+                        <tr style="${rowStyle}">
+                            <td style="padding: 8px 12px;">${f.label}</td>
+                            <td style="padding: 8px 12px; text-align: right; color: ${f.color || '#0f172a'}; font-weight: 700;">${f.mnt}</td>
+                        </tr>
+                    `;
+                });
+
+                // Notes
+                let notesAll = '';
+                pme.notes.forEach(n => {
+                    notesAll += `<p style="margin-bottom: 8px; font-size: 12.5px; line-height: 1.5; color: #334155;"><strong>${n.split(' : ')[0]} :</strong> ${n.split(' : ')[1] || ''}</p>`;
+                });
+
                 b.innerHTML = `
-                    <div style="margin-bottom: 18px; padding: 12px 16px; background: #f0fdf4; border-left: 4px solid #0e7647; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                    ${headerHtml}
+
+                    <div style="margin-bottom: 20px; padding: 12px 18px; background: #f0fdf4; border-left: 4px solid #0e7647; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <strong style="color: #0e7647; font-size: 13.5px;">📋 Liasse Annuelle &amp; Trimestrielle Consolidée</strong>
-                            <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">Dossier certifié prêt pour déclaration fiscale DGID et comités de crédit bancaires.</div>
+                            <strong style="color: #0e7647; font-size: 14px;">📋 Liasse Complète SYSCOHADA — Dossier Prêt pour Banques &amp; DGID</strong>
+                            <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">Comprend les 4 états réglementaires certifiés par l'Expert-Comptable Agréé.</div>
                         </div>
-                        <span style="font-size: 11.5px; font-weight: 800; background: #0e7647; color: white; padding: 4px 10px; border-radius: 6px;">4 / 4 ÉTATS CONFORMES</span>
+                        <span style="font-size: 11.5px; font-weight: 800; background: #0e7647; color: white; padding: 5px 12px; border-radius: 6px;">4 / 4 ÉTATS CONFORMES</span>
                     </div>
 
                     <!-- 1. BILAN -->
                     <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
                         <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
                             <span>⚖️ ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
-                            <span style="color: #a0d9d2;">TOTAL ÉQUILIBRÉ : 9 560 000 FCFA</span>
+                            <span style="color: #a0d9d2;">TOTAL ÉQUILIBRÉ : ${pme.totalActifPassif}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
                             <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">ACTIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th><th style="padding: 8px 12px; text-align: left;">PASSIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Immobilisations corporelles</td><td style="padding: 8px 12px; text-align: right;">3 500 000</td><td style="padding: 8px 12px;">Capital NINEA</td><td style="padding: 8px 12px; text-align: right;">5 000 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Stocks de marchandises</td><td style="padding: 8px 12px; text-align: right;">3 100 000</td><td style="padding: 8px 12px;">Résultat net du mois (Bénéfice)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">+2 820 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Créances clients</td><td style="padding: 8px 12px; text-align: right;">1 110 000</td><td style="padding: 8px 12px;">Dettes Fournisseurs</td><td style="padding: 8px 12px; text-align: right;">1 450 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Trésorerie Wave &amp; Caisse</td><td style="padding: 8px 12px; text-align: right;">1 850 000</td><td style="padding: 8px 12px;">Dettes fiscales</td><td style="padding: 8px 12px; text-align: right;">290 000</td></tr>
-                            <tr style="background: #f0fdf4; font-weight: bold;"><td style="padding: 10px 12px; color: #0e7647;">TOTAL ACTIF</td><td style="padding: 10px 12px; text-align: right; color: #0e7647;">9 560 000 FCFA</td><td style="padding: 10px 12px; color: #0e7647;">TOTAL PASSIF</td><td style="padding: 10px 12px; text-align: right; color: #0e7647;">9 560 000 FCFA</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Immobilisations corporelles</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.immo}</td><td style="padding: 8px 12px;">Capital NINEA</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.capital}</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Stocks de marchandises</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.stocks}</td><td style="padding: 8px 12px;">Résultat net (Bénéfice)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">${pme.bilan.resultat}</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Créances clients</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.creances}</td><td style="padding: 8px 12px;">Dettes Fournisseurs</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.fournisseurs}</td></tr>
+                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Trésorerie Wave &amp; Caisse</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.treso}</td><td style="padding: 8px 12px;">Dettes fiscales &amp; sociales</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.dettesFiscales}</td></tr>
+                            <tr style="background: #f0fdf4; font-weight: bold;"><td style="padding: 10px 12px; color: #0e7647;">TOTAL ACTIF</td><td style="padding: 10px 12px; text-align: right; color: #0e7647;">${pme.totalActifPassif}</td><td style="padding: 10px 12px; color: #0e7647;">TOTAL PASSIF</td><td style="padding: 10px 12px; text-align: right; color: #0e7647;">${pme.totalActifPassif}</td></tr>
                         </table>
                     </div>
 
                     <!-- 2. COMPTE DE RÉSULTAT -->
-                    <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                    <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;" class="print-page-break">
                         <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
                             <span>📊 ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
-                            <span style="color: #4ade80;">BÉNÉFICE NET : +2 820 000 FCFA</span>
+                            <span style="color: #4ade80;">BÉNÉFICE NET : ${pme.beneficeNet}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
                             <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7)</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; font-weight: bold;">Chiffre d'Affaires (Ventes 701100)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">+14 500 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; color: #64748b;">- Achats de marchandises (601100)</td><td style="padding: 8px 12px; text-align: right; color: #e11d48;">-9 200 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9; font-weight: bold; background: #f8fafc;"><td style="padding: 8px 12px;">Marge Commerciale Brute</td><td style="padding: 8px 12px; text-align: right;">5 300 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; color: #64748b;">- Autres charges externes (Transport, Énergie)</td><td style="padding: 8px 12px; text-align: right; color: #e11d48;">-930 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; color: #64748b;">- Salaires et charges de personnel</td><td style="padding: 8px 12px; text-align: right; color: #e11d48;">-1 550 000</td></tr>
-                            <tr style="background: #0a2540; color: #4ade80; font-weight: bold;"><td style="padding: 10px 12px;">RÉSULTAT NET COMPTABLE (BÉNÉFICE)</td><td style="padding: 10px 12px; text-align: right;">+2 820 000 FCFA</td></tr>
+                            ${resRows}
                         </table>
                     </div>
 
@@ -2497,14 +3307,11 @@
                     <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
                         <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
                             <span>💵 ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
-                            <span style="color: #a0d9d2;">TRÉSORERIE FINALE : 1 850 000 FCFA</span>
+                            <span style="color: #a0d9d2;">TRÉSORERIE FINALE : ${pme.tresoFinale}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
                             <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">Flux de Trésorerie</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px; font-weight: bold;">Trésorerie de départ au 01/05/2026</td><td style="padding: 8px 12px; text-align: right;">1 200 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">+ Encaissements reçus (Wave + OM + Espèces)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">+13 850 000</td></tr>
-                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">- Décaissements payés (Fournisseurs + Salaires)</td><td style="padding: 8px 12px; text-align: right; color: #e11d48;">-13 200 000</td></tr>
-                            <tr style="background: #0e7647; color: white; font-weight: bold;"><td style="padding: 10px 12px;">TRÉSORERIE DE CLÔTURE AU 31/05/2026</td><td style="padding: 10px 12px; text-align: right;">1 850 000 FCFA</td></tr>
+                            ${fluxRows}
                         </table>
                     </div>
 
@@ -2514,19 +3321,20 @@
                             <span>📝 ÉTAT 4 : NOTES ANNEXES &amp; MENTIONS LÉGALES</span>
                         </div>
                         <div style="padding: 16px; font-size: 12.5px; line-height: 1.6; color: #334155; background: #ffffff;">
-                            <p style="margin-bottom: 8px;"><strong>Note 1 — Référentiel Comptable :</strong> États financiers établis selon le Système Minimal de Trésorerie (SMT) du droit comptable révisé SYSCOHADA (UEMOA).</p>
-                            <p style="margin-bottom: 8px;"><strong>Note 2 — Immobilisations :</strong> Amortissement des immobilisations corporelles calculé sur 5 ans en mode linéaire conforme.</p>
-                            <p style="margin-bottom: 8px;"><strong>Note 3 — Numérisation &amp; Valeur Probante :</strong> 100% des pièces justificatives supérieures à 100 000 FCFA sont numérisées et certifiées pour transmission bancaire.</p>
-                            <p><strong>Note 4 — Événements Postérieurs :</strong> Aucun litige commercial ni risque de défaut constaté à la date d'arrêté des comptes.</p>
+                            ${notesAll}
                         </div>
                     </div>
+
+                    ${footerHtml}
                 `;
             }
+
             m.style.display = 'flex';
         }
 
         function closeReport() {
-            document.getElementById('reportModal').style.display = 'none';
+            const m = document.getElementById('reportModal');
+            if (m) m.style.display = 'none';
         }
     </script>
 
