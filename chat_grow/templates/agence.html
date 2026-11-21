@@ -202,13 +202,14 @@
 
         /* Sidebar Gauche 100% hauteur */
         .sidebar {
-            width: 240px;
+            width: 260px;
             background: #ffffff;
             border-right: 1px solid #e2e8f0;
             padding: 24px 16px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            gap: 20px;
         }
 
         .sidebar-menu {
@@ -248,35 +249,167 @@
             border-radius: 10px;
         }
 
-        /* Encadré Bas Sidebar : Statistiques PME */
+        /* Widget PME Stylé Fintech Pro */
         .pme-stats-card {
-            background: #f8fafc;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.2s ease;
         }
-        .pme-stats-card h4 {
+        .pme-stats-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+        }
+
+        .pme-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pme-avatar-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: #e8f5e9;
+            color: #0e7647;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 13px;
+            flex-shrink: 0;
+            border: 1px solid #c8e6c9;
+        }
+        .pme-header-info {
+            min-width: 0;
+            flex: 1;
+        }
+        .pme-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #0e7647;
+            margin-bottom: 2px;
+        }
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #16a34a;
+            display: inline-block;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+            animation: pulse-dot-anim 2s infinite;
+        }
+        @keyframes pulse-dot-anim {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.6; }
+        }
+        .pme-name-title {
+            font-size: 12px;
             font-weight: 800;
             color: #0f172a;
-            margin-bottom: 10px;
-            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
         }
-        .pme-stat-line {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 6px;
+
+        /* Bloc CA mis en valeur sans retour à la ligne cassé */
+        .pme-kpi-block {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 9px 11px;
         }
-        .pme-stat-label {
+        .pme-kpi-label {
+            display: block;
+            font-size: 9.5px;
+            font-weight: 800;
             color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 3px;
         }
-        .pme-stat-val {
-            font-weight: 700;
+        .pme-kpi-value {
+            font-size: 16px;
+            font-weight: 900;
             color: #0f172a;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            white-space: nowrap;
         }
-        .pme-stat-val.green {
+        .pme-kpi-curr {
+            font-size: 10.5px;
+            font-weight: 700;
             color: #0e7647;
+        }
+
+        /* Mini-métriques en 2 colonnes */
+        .pme-mini-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .pme-mini-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 8px;
+            text-align: left;
+        }
+        .pme-mini-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .pme-mini-val {
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .pme-mini-val.green {
+            color: #0e7647;
+        }
+        .pme-mini-val.blue {
+            color: #0284c7;
+        }
+
+        .btn-pme-switch {
+            width: 100%;
+            padding: 7px 10px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #334155;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+        .btn-pme-switch:hover {
+            border-color: #0e7647;
+            color: #0e7647;
+            background: #f0fdf4;
         }
 
         /* Zone de travail droite */
@@ -743,21 +876,49 @@
                 </a>
             </div>
 
-            <!-- Box Statistiques PME (Mamadou Diop) -->
+            <!-- Widget Dossier PME Sélectionné (Fintech Pro Épuré) -->
             <div class="pme-stats-card">
-                <h4>Statistiques PME<br>(Mamadou Diop)</h4>
-                <div class="pme-stat-line">
-                    <span class="pme-stat-label">Chiffre d'Affaires :</span>
-                    <span class="pme-stat-val">3 850 000 FCFA</span>
+                <div class="pme-card-header">
+                    <div class="pme-avatar-badge">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+                    <div class="pme-header-info">
+                        <div class="pme-status-pill">
+                            <span class="pulse-dot"></span> Dossier Actif
+                        </div>
+                        <div class="pme-name-title" title="Établissement Mamadou Diop">Mamadou Diop</div>
+                    </div>
                 </div>
-                <div class="pme-stat-line">
-                    <span class="pme-stat-label">Score de Santé :</span>
-                    <span class="pme-stat-val green">92%</span>
+
+                <!-- Chiffre d'Affaires Net sans césure brutale -->
+                <div class="pme-kpi-block">
+                    <span class="pme-kpi-label">Chiffre d'Affaires (Mai)</span>
+                    <div class="pme-kpi-value">
+                        3 850 000 <span class="pme-kpi-curr">FCFA</span>
+                    </div>
                 </div>
-                <div class="pme-stat-line">
-                    <span class="pme-stat-label">Niveau de Stock :</span>
-                    <span class="pme-stat-val">85%</span>
+
+                <!-- Score de Santé & Niveau de Stock -->
+                <div class="pme-mini-grid">
+                    <div class="pme-mini-box">
+                        <span class="pme-mini-label">Santé Fin.</span>
+                        <div class="pme-mini-val green">
+                            <i class="fa-solid fa-shield-check" style="font-size: 11px;"></i> 92/100
+                        </div>
+                    </div>
+                    <div class="pme-mini-box">
+                        <span class="pme-mini-label">Stock PMP</span>
+                        <div class="pme-mini-val blue">
+                            <i class="fa-solid fa-boxes-stacked" style="font-size: 11px;"></i> 85%
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Action Directe : Voir Portefeuille & Changer de PME -->
+                <button type="button" class="btn-pme-switch" onclick="switchAgencyTab('pme')">
+                    <i class="fa-solid fa-users-viewfinder" style="color: #0e7647;"></i>
+                    <span>Changer de PME (5)</span>
+                </button>
             </div>
         </aside>
 
@@ -2169,6 +2330,11 @@
             const selector = document.querySelector('.pme-badge-selector');
             if (selector) {
                 selector.innerHTML = `Nom de la PME : <strong style="color: #0e7647;">${nom}</strong> &bull; Mai 2026`;
+            }
+            const sideTitle = document.querySelector('.pme-name-title');
+            if (sideTitle) {
+                sideTitle.textContent = nom;
+                sideTitle.title = nom;
             }
         }
 
