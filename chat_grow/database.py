@@ -116,6 +116,18 @@ def init_local_sqlite():
     )
     """)
 
+    # Table de mémoire longue durée des conversations (Support 50+ messages et persistance intégrale)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS conversation_messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        phone TEXT,
+        role TEXT,
+        message_text TEXT,
+        created_at TEXT
+    )
+    """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_conv_phone ON conversation_messages(phone, id DESC)")
+
     conn.commit()
 
     # Migration résiliente : colonne justificatif_url
@@ -649,3 +661,61 @@ def flush_sync_queue():
 
 # Initialiser la base locale à l'importation
 init_local_sqlite()
+
+
+# =========================================================================
+# GESTION DE LA MÉMOIRE LONGUE DURÉE DES MESSAGES (50+ MESSAGES PAR CLIENT)
+# =========================================================================
+
+def save_chat_message(phone: str, role: str, text: str):
+    """Enregistre un message dans l'historique longue durée (mémoire 50+ messages)."""
+    if not phone or not text:
+        return
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    now_iso = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO conversation_messages (phone, role, message_text, created_at) VALUES (?, ?, ?, ?)",
+            (clean_p, role, text, now_iso)
+        )
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Erreur save_chat_message : {e}")
+
+
+def get_chat_history(phone: str, limit: int = 50) -> list:
+    """Récupère les derniers messages échangés (par défaut jusqu'à 50 messages)."""
+    if not phone:
+        return []
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT role, message_text, created_at FROM conversation_messages WHERE phone = ? ORDER BY id DESC LIMIT ?",
+            (clean_p, limit)
+        )
+        rows = cur.fetchall()
+        conn.close()
+        # Remettre dans l'ordre chronologique
+        messages = [{"role": r[0], "text": r[1], "date": r[2]} for r in reversed(rows)]
+        return messages
+    except Exception as e:
+        print(f"Erreur get_chat_history : {e}")
+        return []
+
+
+def format_chat_history_for_llm(phone: str, limit: int = 50) -> str:
+    """Formate l'historique des 50 derniers messages pour l'IA Gemini."""
+    history = get_chat_history(phone, limit=limit)
+    if not history:
+        return ""
+    lines = []
+    for m in history:
+        author = "Commerçant" if m["role"] == "user" else "Growth"
+        lines.append(f"{author} : « {m['text']} »")
+    return "\n".join(lines)
+

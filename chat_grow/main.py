@@ -84,7 +84,10 @@ from database import (
     update_transaction_resilient,
     save_or_update_entreprise_resilient,
     flush_sync_queue,
-    get_supabase_client
+    get_supabase_client,
+    save_chat_message,
+    get_chat_history,
+    format_chat_history_for_llm
 )
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -1662,6 +1665,7 @@ async def deliver_whatsapp_response(to_phone: str, reply_text: str):
         return
 
     clean_p = str(to_phone).replace("+", "").replace(" ", "").strip()
+    save_chat_message(clean_p, "growth", reply_text)
     update_onboarding_state(clean_p, "dernier_message_envoye", reply_text[:300])
     st = get_onboarding_state(clean_p)
     mode = (st.get("mode_communication") or "").upper()
@@ -1854,6 +1858,8 @@ def is_question_hors_cadre_grow(text: str) -> bool:
 
 async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple, contact_name: str = None) -> str:
     """Aiguille entre le premier message exclusif de bienvenue, le tunnel d'Onboarding en 5 étapes, la vérification d'abonnement et le fonctionnement normal de l'IA."""
+    if user_text:
+        save_chat_message(sender_phone, "user", user_text)
     # 0. TRANSCRIPTION DES NOTES VOCALES WHATSAPP VIA OPENAI WHISPER
     if media_tuple and media_tuple[0] == "AUDIO":
         media_type, media_id = media_tuple
@@ -4010,7 +4016,13 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
     parsed = None
     onboarding = get_onboarding_state(sender_phone)
     dernier_msg_g = onboarding.get("dernier_message_envoye") or ""
-    contexte_dialogue = f"Question ou message précédent que Growth venait d'envoyer au commerçant : « {dernier_msg_g} »\n\n" if dernier_msg_g else ""
+    history_50 = format_chat_history_for_llm(sender_phone, limit=50)
+
+    contexte_dialogue = ""
+    if history_50:
+        contexte_dialogue = f"=== HISTORIQUE COMPLET DES ÉCHANGES (50 DERNIERS MESSAGES) ===\n{history_50}\n========================================================================\n\n"
+    elif dernier_msg_g:
+        contexte_dialogue = f"Question ou message précédent que Growth venait d'envoyer au commerçant : « {dernier_msg_g} »\n\n"
 
     # 1. Tentative prioritaire avec Gemini 3.1 Flash Lite (ultra-rapide, quota généreux)
     if gemini_key:

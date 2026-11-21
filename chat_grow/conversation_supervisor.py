@@ -216,8 +216,16 @@ async def superviser_message_onboarding(
     nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or "Entreprise"
     dernier_msg_growth = onboarding.get("dernier_message_envoye") or ""
 
+    try:
+        from database import format_chat_history_for_llm
+        history_50 = format_chat_history_for_llm(sender_phone, limit=50)
+    except Exception:
+        history_50 = ""
+
     contexte_dialogue = ""
-    if dernier_msg_growth:
+    if history_50:
+        contexte_dialogue = f"\n- Historique complet des échanges avec ce commerçant (50 derniers messages) :\n{history_50}\n"
+    elif dernier_msg_growth:
         contexte_dialogue = f"\n- Question ou message précédent envoyé par Growth au commerçant : « {dernier_msg_growth} »"
 
     system_prompt = f"""Tu es Growth, le copilote financier et comptable intelligent (SYSCOHADA) pour les PME et commerçants au Sénégal (Dakar).
