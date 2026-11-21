@@ -1321,26 +1321,17 @@
             <div id="sectionPme" class="agency-tab-pane" style="display: none;">
 
                 <!-- Barre d'outils PME Clientes -->
-                <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
-                    <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 280px;">
-                        <div style="position: relative; width: 100%; max-width: 360px;">
-                            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #94a3b8; font-size: 13px;"></i>
-                            <input type="text" id="searchPmeInput" onkeyup="filtrerPmeTable()" placeholder="Rechercher une PME, un gérant ou un NINEA..."
-                                style="width: 100%; padding: 8px 12px 8px 34px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12.5px; outline: none; background: #f8fafc;">
-                        </div>
-                        <select onchange="filtrerPmeRegime(this.value)" style="padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12.5px; background: white; outline: none; cursor: pointer;">
-                            <option value="ALL">Tous les Régimes</option>
-                            <option value="SMT">Régime SMT (Système Minimal)</option>
-                            <option value="NORMAL">Régime Normal SYSCOHADA</option>
-                        </select>
+                <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; flex-wrap: wrap;">
+                    <div style="position: relative; width: 100%; max-width: 360px;">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 11px; color: #94a3b8; font-size: 13px;"></i>
+                        <input type="text" id="searchPmeInput" onkeyup="filtrerPmeTable()" placeholder="Rechercher une PME, un gérant ou un NINEA..."
+                            style="width: 100%; padding: 8px 12px 8px 34px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12.5px; outline: none; background: #f8fafc;">
                     </div>
-
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <button type="button" onclick="ajouterPmeModal()" style="background: #0e7647; color: white; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; font-size: 12.5px; display: flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(14, 118, 71, 0.2);">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>Nouveau Dossier PME</span>
-                        </button>
-                    </div>
+                    <select onchange="filtrerPmeRegime(this.value)" style="padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12.5px; background: white; outline: none; cursor: pointer;">
+                        <option value="ALL">Tous les Régimes</option>
+                        <option value="SMT">Régime SMT (Système Minimal)</option>
+                        <option value="NORMAL">Régime Normal SYSCOHADA</option>
+                    </select>
                 </div>
 
                 <!-- Tableau du Portefeuille PME Clientes -->
