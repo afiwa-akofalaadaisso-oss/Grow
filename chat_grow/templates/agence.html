@@ -799,11 +799,11 @@
 
                 <!-- Menu de navigation vertical -->
                 <div class="sidebar-menu">
-                    <a href="javascript:void(0)" onclick="switchAgencyTab('pme')" class="menu-item" id="sideLinkPme">
+                    <a href="javascript:void(0)" onclick="switchAgencyTab('pme')" class="menu-item active" id="sideLinkPme">
                         <i class="fa-solid fa-users" style="font-size: 13px;"></i>
                         <span>PME Clientes</span>
                     </a>
-                    <a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" class="menu-item active"
+                    <a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" class="menu-item"
                         id="sideLinkDashboard">
                         <i class="fa-solid fa-scale-balanced" style="font-size: 13px;"></i>
                         <span>Gestion du Bilan &amp; Écritures</span>
@@ -868,7 +868,7 @@
             <!-- Zone de Travail Principale -->
             <main class="main-content">
                 <!-- ONGLET 1 : TABLEAU DE BORD (VALIDATION PRÉ-COMPTABLE) -->
-                <div id="sectionTableau" class="agency-tab-pane">
+                <div id="sectionTableau" class="agency-tab-pane" style="display: none;">
                     <div>
                         <div class="content-header-tag">Portail Cabinets Comptables &bull; Tout Cabinet Comptable &amp;
                             Commissariat</div>
@@ -1267,7 +1267,7 @@
                 <!-- ========================================================================= -->
                 <!-- ONGLET 2 : PORTEFEUILLE DES PME CLIENTES DU CABINET COMPTABLE             -->
                 <!-- ========================================================================= -->
-                <div id="sectionPme" class="agency-tab-pane" style="display: none;">
+                <div id="sectionPme" class="agency-tab-pane">
 
                     <!-- Barre d'outils PME Clientes Moderne & Épurée -->
                     <div
@@ -2695,6 +2695,13 @@
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && ['tableau', 'pme', 'documents', 'reporting', 'comptes', 'scoring', 'inventaires', 'parametres', 'notifications'].includes(hash)) {
+                switchAgencyTab(hash);
+            }
+        });
 
         // Fonctions pour Comptes
         function filtrerComptesTable() {
