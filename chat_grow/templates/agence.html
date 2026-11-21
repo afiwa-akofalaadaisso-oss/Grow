@@ -6637,58 +6637,56 @@
                 : '';
 
             return `
-                <div style="margin-top: 18px; border: 1px solid #cbd5e1; border-radius: 6px; padding: 14px 18px; background: #ffffff; page-break-inside: avoid;">
+                <div style="margin-top: 24px; padding-top: 14px; border-top: 1px solid #e2e8f0; background: #ffffff; page-break-inside: avoid;">
                     
                     <!-- MENTIONS D'ATTESTATION OFFICIELLE ET OBSERVATIONS -->
-                    <div style="border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 12px;">
-                        <div style="font-size: 11px; font-weight: 900; text-transform: uppercase; color: #0f172a; letter-spacing: 0.5px;">
-                            ATTESTATION DU COMMISSAIRE AUX COMPTES / EXPERT-COMPTABLE AGRÉÉ ONECCA
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #0f172a; letter-spacing: 0.5px;">
+                            Attestation du Commissaire aux Comptes / Expert-Comptable Agréé ONECCA
                         </div>
-                        <div style="font-size: 11.5px; color: #1e293b; line-height: 1.5; margin-top: 4px;">
+                        <div style="font-size: 11px; color: #334155; line-height: 1.5; margin-top: 4px;">
                             ${obs}
                         </div>
                         ${extraNoteHtml}
                     </div>
 
-                    <!-- DOUBLE CARTOUCHE DE SIGNATURES MANUSCRITES (AU BIC & CACHET) -->
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <!-- SIGNATURES MANUSCRITES (FORMAT LETTRE OFFICIELLE SANS AUCUN CARRÉ NI ENCADRÉ) -->
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
                         <tr>
                             <!-- 1. Pour l'Entreprise Cliente -->
-                            <td style="width: 48%; vertical-align: top; border: 1px solid #cbd5e1; padding: 12px 14px; background: #ffffff; border-radius: 6px;">
-                                <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px;">
-                                    1. Pour l'Entreprise (Lu et Approuvé)
+                            <td style="width: 48%; vertical-align: top; border: none; padding: 0;">
+                                <div style="font-size: 11px; font-weight: 700; color: #0f172a;">
+                                    Pour l'Entreprise (Lu et Approuvé)
                                 </div>
-                                <div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 3px;">
+                                <div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 2px;">
                                     ${pme.nom}
                                 </div>
-                                <div style="font-size: 10px; color: #64748b; margin-top: 1px;">
+                                <div style="font-size: 10.5px; color: #475569; margin-top: 1px;">
                                     Le Dirigeant / Représentant Légal
                                 </div>
-                                <div style="margin-top: 10px; border: 1px dashed #cbd5e1; height: 75px; border-radius: 4px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; background: #fafafa;">
-                                    <span style="font-size: 9px; color: #94a3b8; font-style: italic;">(Signature manuscrite au bic &amp; Cachet PME)</span>
-                                </div>
-                                <div style="font-size: 9.5px; color: #64748b; margin-top: 6px;">
+                                <!-- Espace blanc naturel pour signature manuscrite au bic et cachet -->
+                                <div style="height: 60px;"></div>
+                                <div style="font-size: 10px; color: #64748b;">
                                     Fait à Dakar, le ${dateDuJour}
                                 </div>
                             </td>
 
-                            <td style="width: 4%;"></td>
+                            <td style="width: 4%; border: none;"></td>
 
                             <!-- 2. Pour le Cabinet Comptable Agréé ONECCA -->
-                            <td style="width: 48%; vertical-align: top; border: 1px solid #cbd5e1; padding: 12px 14px; background: #ffffff; border-radius: 6px;">
-                                <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: #168078; letter-spacing: 0.5px;">
-                                    2. Pour le Cabinet d'Expertise Comptable
+                            <td style="width: 48%; vertical-align: top; border: none; padding: 0;">
+                                <div style="font-size: 11px; font-weight: 700; color: #0f172a;">
+                                    Pour le Cabinet d'Expertise Comptable
                                 </div>
-                                <div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 3px;">
+                                <div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 2px;">
                                     ${cabNom}
                                 </div>
-                                <div style="font-size: 10px; color: #475569; font-weight: 700; margin-top: 1px;">
+                                <div style="font-size: 10.5px; color: #475569; margin-top: 1px;">
                                     ${signataire}
                                 </div>
-                                <div style="margin-top: 10px; border: 1px dashed #cbd5e1; height: 75px; border-radius: 4px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; background: #fafafa;">
-                                    <span style="font-size: 9px; color: #94a3b8; font-style: italic;">(Signature manuscrite au bic &amp; Cachet de l'Expert)</span>
-                                </div>
-                                <div style="font-size: 9.5px; color: #64748b; margin-top: 6px;">
+                                <!-- Espace blanc naturel pour signature manuscrite au bic et cachet -->
+                                <div style="height: 60px;"></div>
+                                <div style="font-size: 10px; color: #64748b;">
                                     Délivré à Dakar, le ${dateDuJour}
                                 </div>
                             </td>
@@ -6696,7 +6694,7 @@
                     </table>
 
                     <!-- MENTION LÉGALE OHADA / DGID -->
-                    <div style="margin-top: 10px; text-align: center; font-size: 9px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 6px; font-style: italic;">
+                    <div style="margin-top: 20px; font-size: 8.5px; color: #94a3b8; font-style: italic; line-height: 1.4; border-top: 1px solid #f1f5f9; padding-top: 6px;">
                         Document certifié conforme aux dispositions de l'Acte Uniforme OHADA relatif au Droit Comptable et à l'Information Financière (AUDCIF). Valable pour tout dépôt auprès de la Direction Générale des Impôts et des Domaines (DGID), du Greffe du Tribunal de Commerce et des banques partenaires.
                     </div>
                 </div>
