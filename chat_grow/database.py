@@ -925,20 +925,23 @@ def obtenir_liste_utilisateurs_createur() -> list:
     except Exception as e_sql:
         print(f"Info obtenir_liste_utilisateurs_createur SQLite: {e_sql}")
 
-    # 2. Source Cloud Supabase (si disponible pour enrichir de nouveaux commerçants)
+    # 2. Source Cloud Supabase (enrichissement des commerçants et des transactions)
     try:
         sp = get_supabase_client()
         if sp:
-            res = sp.table("entreprises").select("*").execute()
+            res = sp.table("entreprises").select("id, nom_entreprise, telephone_whatsapp, date_inscription").execute()
+            ent_by_id = {}
             for ent in res.data or []:
+                ent_id = ent.get("id")
                 tel = str(ent.get("telephone_whatsapp") or "").strip()
                 if not tel:
                     continue
+                ent_by_id[ent_id] = tel
                 if tel not in utilisateurs_map:
                     utilisateurs_map[tel] = {
                         "telephone": tel,
                         "nom_entreprise": ent.get("nom_entreprise") or f"Commerce {tel[-4:]}",
-                        "date_inscription": ent.get("created_at") or today_str,
+                        "date_inscription": ent.get("date_inscription") or today_str,
                         "total_ecritures": 0,
                         "ecritures_jour": 0,
                         "dernier_flux": None,
@@ -949,6 +952,21 @@ def obtenir_liste_utilisateurs_createur() -> list:
                     nom_actuel = utilisateurs_map[tel].get("nom_entreprise", "")
                     if not nom_actuel or "Commerce" in nom_actuel:
                         utilisateurs_map[tel]["nom_entreprise"] = ent.get("nom_entreprise") or nom_actuel
+
+            # Si SQLite local n'a pas les transactions (ex: nouveau déploiement Render), on lit Supabase
+            total_ecritures_locales = sum(u["total_ecritures"] for u in utilisateurs_map.values())
+            if total_ecritures_locales == 0 and ent_by_id:
+                res_tx = sp.table("transactions").select("id, entreprise_id, montant_fcfa, created_at, date_operation").execute()
+                for tx in res_tx.data or []:
+                    e_id = tx.get("entreprise_id")
+                    tel = ent_by_id.get(e_id)
+                    if tel and tel in utilisateurs_map:
+                        utilisateurs_map[tel]["total_ecritures"] += 1
+                        d_op = str(tx.get("date_operation") or tx.get("created_at") or "")
+                        if d_op.startswith(today_str):
+                            utilisateurs_map[tel]["ecritures_jour"] += 1
+                        if d_op and (not utilisateurs_map[tel]["dernier_flux"] or d_op > utilisateurs_map[tel]["dernier_flux"]):
+                            utilisateurs_map[tel]["dernier_flux"] = d_op
     except Exception as e_sp:
         print(f"Info obtenir_liste_utilisateurs_createur Supabase: {e_sp}")
 
@@ -1007,6 +1025,17 @@ def obtenir_stats_globales_createur() -> dict:
         conn.close()
     except Exception as e:
         print(f"Info stats_globales SQLite: {e}")
+
+    if total_tx == 0:
+        try:
+            sp = get_supabase_client()
+            if sp:
+                res_tx = sp.table("transactions").select("montant_fcfa").execute()
+                if res_tx.data:
+                    total_tx = len(res_tx.data)
+                    volume_total = sum(float(r.get("montant_fcfa") or 0.0) for r in res_tx.data)
+        except Exception as e_sptx:
+            print(f"Info stats_globales Supabase tx: {e_sptx}")
 
     stats_feedback = obtenir_stats_feedback()
     cas_amelioration = obtenir_backlog_amelioration_ia(limit=100)
