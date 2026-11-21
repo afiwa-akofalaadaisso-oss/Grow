@@ -128,6 +128,18 @@ def init_local_sqlite():
     """)
     cur.execute("CREATE INDEX IF NOT EXISTS idx_conv_phone ON conversation_messages(phone, id DESC)")
 
+    # Table des appréciations (👍 LIKE) et dépréciations (👎 DISLIKE) des réponses de Growth
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS ai_feedback (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        phone TEXT,
+        rating TEXT,
+        message_id TEXT,
+        created_at TEXT
+    )
+    """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_fb_phone ON ai_feedback(phone, id DESC)")
+
     conn.commit()
 
     # Migration résiliente : colonne justificatif_url
@@ -718,4 +730,69 @@ def format_chat_history_for_llm(phone: str, limit: int = 50) -> str:
         author = "Commerçant" if m["role"] == "user" else "Growth"
         lines.append(f"{author} : « {m['text']} »")
     return "\n".join(lines)
+
+
+def enregistrer_feedback_utilisateur(phone: str, rating: str, message_id: str = None) -> bool:
+    """Enregistre silencieusement une appréciation (LIKE 👍) ou dépréciation (DISLIKE 👎) d'une réponse de Growth."""
+    if not phone or not rating:
+        return False
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    now_iso = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    r_upper = rating.upper().strip()
+    r_clean = "DISLIKE" if "DIS" in r_upper else "LIKE"
+
+    # 1. Sauvegarde locale SQLite
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO ai_feedback (phone, rating, message_id, created_at) VALUES (?, ?, ?, ?)",
+            (clean_p, r_clean, message_id or "", now_iso)
+        )
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Erreur enregistrement feedback local : {e}")
+
+    # 2. Sauvegarde Cloud Supabase si connectée
+    try:
+        sp = get_supabase_client()
+        if sp:
+            sp.table("ai_feedback").insert({
+                "telephone_whatsapp": clean_p,
+                "rating": r_clean,
+                "message_id": message_id or "",
+                "created_at": now_iso
+            }).execute()
+    except Exception:
+        pass
+
+    return True
+
+
+def obtenir_stats_feedback() -> dict:
+    """Calcule les statistiques globales des appréciations (👍) et dépréciations (👎) des utilisateurs."""
+    try:
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT rating, COUNT(*) FROM ai_feedback GROUP BY rating")
+        rows = cur.fetchall()
+        conn.close()
+
+        counts = {"LIKE": 0, "DISLIKE": 0}
+        for r, cnt in rows:
+            if r in counts:
+                counts[r] = cnt
+        total = counts["LIKE"] + counts["DISLIKE"]
+        pct = round((counts["LIKE"] / total) * 100, 1) if total > 0 else 100.0
+        return {
+            "likes": counts["LIKE"],
+            "dislikes": counts["DISLIKE"],
+            "total": total,
+            "satisfaction_pct": pct
+        }
+    except Exception as e:
+        print(f"Erreur obtenir_stats_feedback : {e}")
+        return {"likes": 0, "dislikes": 0, "total": 0, "satisfaction_pct": 100.0}
+
 

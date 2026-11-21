@@ -8829,6 +8829,13 @@
                         <span class="text-[10px] uppercase font-bold text-slate-400">NINEA</span>
                         <span class="font-mono font-bold text-emerald-400 text-xs sm:text-[12.5px]" id="kpiTauxPreuve">100% Conforme</span>
                     </div>
+
+                    <!-- 5. Appréciation IA & Satisfaction Utilisateurs -->
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#222826] border border-[#2e3734] shadow-2xs" title="Évaluation des réponses de Growth par les utilisateurs (👍 Utile / 👎 À corriger)">
+                        <span class="text-[10px] uppercase font-bold text-slate-400">Satisfaction IA</span>
+                        <span class="font-mono font-bold text-[#a0d9d2] text-xs sm:text-[12.5px]" id="kpiSatisfactionIA">100%</span>
+                        <span class="text-[10px] text-slate-400 font-mono" id="kpiFeedbackCounts">(👍 0 / 👎 0)</span>
+                    </div>
                 </div>
             </div>
 
@@ -11958,6 +11965,14 @@
                     const pct = totalTx > 0 ? Math.round((withProof / totalTx) * 100) : 100;
                     const elTaux = document.getElementById('kpiTauxPreuve');
                     if (elTaux) elTaux.textContent = pct + '%';
+                }
+
+                // 2.bis Statistiques Satisfaction IA & Feedbacks Utilisateurs
+                if (data.feedback) {
+                    const elSat = document.getElementById('kpiSatisfactionIA');
+                    const elCounts = document.getElementById('kpiFeedbackCounts');
+                    if (elSat) elSat.textContent = `${data.feedback.satisfaction_pct}%`;
+                    if (elCounts) elCounts.textContent = `(👍 ${data.feedback.likes} / 👎 ${data.feedback.dislikes})`;
                 }
 
                 // 3. Remplir le Menu Déroulant Filtre d'Entreprises sur l'Avatar

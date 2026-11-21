@@ -89,7 +89,9 @@ from database import (
     get_supabase_client,
     save_chat_message,
     get_chat_history,
-    format_chat_history_for_llm
+    format_chat_history_for_llm,
+    enregistrer_feedback_utilisateur,
+    obtenir_stats_feedback
 )
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -839,7 +841,8 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 "solde_net": solde_net,
                 "details": bankability.get("details_points", {})
             },
-            "bankability": bankability
+            "bankability": bankability,
+            "feedback": obtenir_stats_feedback()
         }
         # Mise en cache mémoire immédiate
         _DASHBOARD_DATA_CACHE[cache_key] = (now_ts, res_data)
@@ -1829,6 +1832,15 @@ async def api_bankability_score(entreprise_id: str = None, phone: str = None):
     return calculer_bankability_score_detaille(target_ent_id, sp=sp)
 
 
+@app.get("/api/feedback-stats")
+async def api_feedback_stats():
+    """
+    Retourne le bilan des appréciations (likes 👍) et dépréciations (dislikes 👎) des réponses de Growth.
+    Permet d'évaluer la qualité perçue et le taux de satisfaction des commerçants.
+    """
+    return obtenir_stats_feedback()
+
+
 
 async def deliver_whatsapp_response(to_phone: str, reply_text: str, with_feedback_buttons: bool = True):
     """
@@ -1936,14 +1948,20 @@ async def receive_message(request: Request):
                 btn_reply = interactive.get("button_reply", {})
                 btn_id = btn_reply.get("id", "")
                 btn_title = btn_reply.get("title", "")
-                print(f"[BOUTON INTERACTIF] Clic de {sender_phone} : {btn_id} ('{btn_title}')")
+                context = message.get("context", {})
+                ref_msg_id = context.get("id") or message.get("id")
+                print(f"[BOUTON INTERACTIF] Clic de {sender_phone} : {btn_id} ('{btn_title}') sur msg {ref_msg_id}")
 
-                if btn_id == "feedback_like":
-                    msg_merci = "Merci pour votre appréciation positive ! Growth reste à vos côtés 24h/24 pour certifier votre comptabilité."
-                    await send_whatsapp_message(sender_phone, msg_merci)
-                elif btn_id == "feedback_dislike":
-                    msg_corr = "Merci pour votre franchise. N'hésitez pas à me dire ce qui doit être précisé ou corrigé pour votre entreprise."
-                    await send_whatsapp_message(sender_phone, msg_corr)
+                if btn_id in ["feedback_like", "feedback_dislike"]:
+                    rating = "LIKE" if btn_id == "feedback_like" else "DISLIKE"
+                    # 1. Enregistrement silencieux du feedback pour évaluer les réponses de Growth
+                    enregistrer_feedback_utilisateur(sender_phone, rating, ref_msg_id)
+
+                    # 2. Réaction emoji sur la bulle cliquée (silencieux, AUCUN message texte envoyé)
+                    reaction_emoji = "👍" if rating == "LIKE" else "👌"
+                    if ref_msg_id:
+                        asyncio.create_task(send_whatsapp_reaction(sender_phone, ref_msg_id, reaction_emoji))
+                    print(f"[FEEDBACK IA] Évaluation enregistrée pour {sender_phone} : {rating} (Réaction {reaction_emoji} posée)")
                 else:
                     reply_text = await handle_incoming_message(sender_phone, btn_title or btn_id, None, contact_name)
                     await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=True)
