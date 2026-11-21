@@ -1399,7 +1399,7 @@
                             <div style="text-align: left; line-height: 1.25;">
                                 <div
                                     style="font-size: 12px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 5px;">
-                                    <span>Cabinet Diallo &amp; Associés</span>
+                                    <span id="navCabinetName">Cabinet Diallo &amp; Associés</span>
                                     <i class="fa-solid fa-circle-check" style="font-size: 11px; color: #0e7647;"
                                         title="Cabinet Agréé ONECCA"></i>
                                 </div>
@@ -1416,9 +1416,9 @@
                         <div id="comptableDropdownMenu"
                             style="display: none; position: absolute; right: 0; top: calc(100% + 8px); width: 260px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000; overflow: hidden; font-family: inherit;">
                             <div style="padding: 14px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-                                <div style="font-size: 13px; font-weight: 800; color: #0f172a;">Cabinet Diallo &amp;
+                                <div id="navMenuCabinetName" style="font-size: 13px; font-weight: 800; color: #0f172a;">Cabinet Diallo &amp;
                                     Associés</div>
-                                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">contact@cabinet-diallo.sn
+                                <div id="navMenuCabinetEmail" style="font-size: 11px; color: #64748b; margin-top: 2px;">contact@cabinet-diallo.sn
                                 </div>
                                 <div style="margin-top: 8px;">
                                     <span
@@ -3795,6 +3795,9 @@
             if (hash && ['tableau', 'pme', 'documents', 'reporting', 'comptes', 'scoring', 'inventaires', 'parametres', 'notifications'].includes(hash)) {
                 switchAgencyTab(hash);
             }
+            // Initialisation dynamique du Cabinet Comptable connecté
+            initialiserIdentiteCabinet();
+
             // Chargement initial des 100 opérations d'Établissement Mamadou Diop
             if (typeof PME_DATABASE !== 'undefined' && PME_DATABASE.diop) {
                 remplirTableauEcritures(PME_DATABASE.diop);
@@ -3878,7 +3881,58 @@
         function sauvegarderParametresCabinet(e) {
             e.preventDefault();
             const nom = document.getElementById('cabNom')?.value || 'Cabinet Comptable';
-            showToast(`Paramètres enregistrés pour « ${nom} » !`);
+            const resp = document.getElementById('cabResponsable')?.value || '';
+            const email = document.getElementById('cabEmail')?.value || '';
+            const phone = document.getElementById('cabPhone')?.value || '';
+            appliquerIdentiteCabinet(nom, resp, email, phone, true);
+            showToast(`Profil mis à jour : « ${nom} » est désormais le cabinet actif !`);
+        }
+
+        function initialiserIdentiteCabinet() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const cabParam = urlParams.get('cabinet');
+                const storedNom = cabParam || localStorage.getItem('growth_cabinet_nom') || "Cabinet Diallo & Associés";
+                const storedResp = localStorage.getItem('growth_cabinet_expert') || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
+                const storedEmail = localStorage.getItem('growth_cabinet_email') || "contact@cabinet-diallo.sn";
+                const storedPhone = localStorage.getItem('growth_cabinet_phone') || "+221 78 877 38 27";
+                appliquerIdentiteCabinet(storedNom, storedResp, storedEmail, storedPhone, false);
+            } catch (err) {
+                console.error("Erreur initialisation cabinet :", err);
+            }
+        }
+
+        function appliquerIdentiteCabinet(nom, resp, email, phone, save = false) {
+            if (!nom) return;
+            if (save) {
+                localStorage.setItem('growth_cabinet_nom', nom);
+                if (resp) localStorage.setItem('growth_cabinet_expert', resp);
+                if (email) localStorage.setItem('growth_cabinet_email', email);
+                if (phone) localStorage.setItem('growth_cabinet_phone', phone);
+            }
+            // 1. Mise à jour de la barre supérieure (Navbar)
+            const navNom = document.getElementById('navCabinetName');
+            if (navNom) navNom.textContent = nom;
+            const menuNom = document.getElementById('navMenuCabinetName');
+            if (menuNom) menuNom.textContent = nom;
+            const menuEmail = document.getElementById('navMenuCabinetEmail');
+            if (menuEmail && email) menuEmail.textContent = email;
+
+            // 2. Mise à jour des champs du formulaire Paramètres
+            const cabNomInput = document.getElementById('cabNom');
+            if (cabNomInput) cabNomInput.value = nom;
+            const cabRespInput = document.getElementById('cabResponsable');
+            if (cabRespInput && resp) cabRespInput.value = resp;
+            const cabEmailInput = document.getElementById('cabEmail');
+            if (cabEmailInput && email) cabEmailInput.value = email;
+            const cabPhoneInput = document.getElementById('cabPhone');
+            if (cabPhoneInput && phone) cabPhoneInput.value = phone;
+
+            // 3. Mise à jour des champs de personnalisation des documents officiels
+            const customCab = document.getElementById('customCabNom');
+            if (customCab) customCab.value = nom.toUpperCase();
+            const customSign = document.getElementById('customSignataire');
+            if (customSign && resp) customSign.value = resp;
         }
 
         function marquerToutLu() {
@@ -6328,8 +6382,8 @@
 
         // 4. GÉNÉRATEURS D'ÉTATS FINANCIERS OFFICIELS SYSCOHADA RÉVISÉ (NORMES AUDCIF / DGID / ONECCA)
         function genererHeaderOfficielDoc(pme, intervalle, titreEtat, inclureEnteteComplet = true) {
-            const cabNom = document.getElementById('customCabNom')?.value || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
-            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
+            const cabNom = document.getElementById('customCabNom')?.value || localStorage.getItem('growth_cabinet_nom') || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
+            const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
             const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
 
             if (!inclureEnteteComplet) {
@@ -6424,8 +6478,8 @@
         }
 
         function genererFooterOfficielDoc(pme) {
-            const cabNom = document.getElementById('customCabNom')?.value || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
-            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
+            const cabNom = document.getElementById('customCabNom')?.value || localStorage.getItem('growth_cabinet_nom') || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
+            const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
             const obs = document.getElementById('customObservations')?.value || "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.";
             const noteExtra = document.getElementById('customNoteExtra')?.value || "";
             const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
