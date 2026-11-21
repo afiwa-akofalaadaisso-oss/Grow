@@ -214,7 +214,7 @@
             padding: 20px 16px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             gap: 20px;
             position: sticky;
             top: 0;
@@ -937,51 +937,6 @@
                         <span>Accès Sécurisé</span>
                     </a>
                 </div>
-            </div>
-
-            <!-- Widget Dossier PME Sélectionné (Fintech Pro Épuré) -->
-            <div class="pme-stats-card">
-                <div class="pme-card-header">
-                    <div class="pme-avatar-badge">
-                        <i class="fa-solid fa-store"></i>
-                    </div>
-                    <div class="pme-header-info">
-                        <div class="pme-status-pill">
-                            <span class="pulse-dot"></span> Dossier Actif
-                        </div>
-                        <div class="pme-name-title" id="sidePmeName" title="Établissement Mamadou Diop">Mamadou Diop</div>
-                    </div>
-                </div>
-
-                <!-- Chiffre d'Affaires Net sans césure brutale -->
-                <div class="pme-kpi-block">
-                    <span class="pme-kpi-label">Chiffre d'Affaires (Mai)</span>
-                    <div class="pme-kpi-value" id="sidePmeCa">
-                        3 850 000 <span class="pme-kpi-curr">FCFA</span>
-                    </div>
-                </div>
-
-                <!-- Score de Santé & Niveau de Stock -->
-                <div class="pme-mini-grid">
-                    <div class="pme-mini-box">
-                        <span class="pme-mini-label">Santé Fin.</span>
-                        <div class="pme-mini-val green" id="sidePmeScore">
-                            <i class="fa-solid fa-shield-check" style="font-size: 11px;"></i> 92/100
-                        </div>
-                    </div>
-                    <div class="pme-mini-box">
-                        <span class="pme-mini-label">Stock PMP</span>
-                        <div class="pme-mini-val blue" id="sidePmeStock">
-                            <i class="fa-solid fa-boxes-stacked" style="font-size: 11px;"></i> 98.5%
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Directe : Voir Portefeuille & Changer de PME -->
-                <button type="button" class="btn-pme-switch" onclick="switchAgencyTab('pme')">
-                    <i class="fa-solid fa-users-viewfinder" style="color: #0e7647;"></i>
-                    <span>Changer de PME (5)</span>
-                </button>
             </div>
         </aside>
 
