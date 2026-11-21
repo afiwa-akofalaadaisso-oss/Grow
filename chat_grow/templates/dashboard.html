@@ -8294,6 +8294,13 @@
                                         </div>
                                         <span class="px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-amber-50 text-amber-700 border border-amber-200/80">Score 98%</span>
                                     </button>
+                                    <button type="button" onclick="selectFactooView('learning')" data-view-target="learning" class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-50 active:bg-slate-100 transition-all text-left font-medium cursor-pointer group border border-transparent">
+                                        <div class="flex items-center gap-2.5 min-w-0">
+                                            <span class="material-symbols-outlined notranslate text-[#168078] text-[18px]" translate="no">psychology</span>
+                                            <span class="text-xs font-semibold text-slate-900">Cockpit Créateur &amp; Apprentissage IA</span>
+                                        </div>
+                                        <span class="px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-[#a0d9d2]/30 text-[#14362b] border border-[#a0d9d2]/60" id="popoverLearningBadge">Active Learning</span>
+                                    </button>
                                 </div>
 
                                 <div class="border-t border-slate-100 my-1.5"></div>
@@ -8830,11 +8837,12 @@
                         <span class="font-mono font-bold text-emerald-400 text-xs sm:text-[12.5px]" id="kpiTauxPreuve">100% Conforme</span>
                     </div>
 
-                    <!-- 5. Appréciation IA & Satisfaction Utilisateurs -->
-                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#222826] border border-[#2e3734] shadow-2xs" title="Évaluation des réponses de Growth par les utilisateurs (👍 Utile / 👎 À corriger)">
-                        <span class="text-[10px] uppercase font-bold text-slate-400">Satisfaction IA</span>
+                    <!-- 5. Appréciation IA & Satisfaction Utilisateurs (Clic pour ouvrir le Cockpit Apprentissage) -->
+                    <div onclick="selectFactooView('learning')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#222826] border border-[#2e3734] hover:border-[#a0d9d2]/60 shadow-2xs cursor-pointer transition-all group" title="Cliquez pour ouvrir le Cockpit Créateur & Apprentissage IA">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 group-hover:text-[#a0d9d2] transition-colors">Satisfaction IA</span>
                         <span class="font-mono font-bold text-[#a0d9d2] text-xs sm:text-[12.5px]" id="kpiSatisfactionIA">100%</span>
                         <span class="text-[10px] text-slate-400 font-mono" id="kpiFeedbackCounts">(👍 0 / 👎 0)</span>
+                        <span class="material-symbols-outlined notranslate text-[13px] text-slate-500 group-hover:text-[#a0d9d2] transition-colors" translate="no">north_east</span>
                     </div>
                 </div>
             </div>
@@ -9939,6 +9947,150 @@
                         </div>
                         <a href="/abonnement" class="w-full text-center py-2 rounded-xl bg-[#1c1c1c] text-white hover:bg-black text-xs font-bold transition-all">Gérer les Dossiers</a>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VUE COCKPIT CRÉATEUR : APPRENTISSAGE CONTINU & AUTO-CRITIQUE IA          -->
+        <!-- ========================================================================= -->
+        <div id="viewLearning" style="display: none;" class="w-full pb-16">
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <button type="button" onclick="selectFactooView('journal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold shadow-xs transition-all cursor-pointer">
+                    <span class="material-symbols-outlined notranslate text-[16px] text-[#168078]" translate="no">arrow_back</span>
+                    <span>Retour au Journal des écritures</span>
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-700 font-medium px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Cockpit Fondateur : <b class="text-[#14362b]">Apprentissage Continu IA (Active Learning)</b></span>
+                    </span>
+                    <button type="button" onclick="loadAiLearningBacklog()" class="px-3 py-1.5 rounded-xl bg-[#14362b] text-white hover:bg-[#168078] text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer">
+                        <span class="material-symbols-outlined notranslate text-[15px]" translate="no">refresh</span>
+                        <span>Actualiser</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARTE BANNIÈRE EXPLICATIVE FONDATEUR -->
+            <div class="bg-gradient-to-r from-[#1c1c1c] via-[#222826] to-[#14362b] rounded-2xl p-5 sm:p-6 text-white shadow-xl mb-5 border border-[#333333]">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#a0d9d2]/20 text-[#a0d9d2] text-[10px] font-black uppercase tracking-wider mb-2">
+                            <span class="material-symbols-outlined notranslate text-[13px]" translate="no">psychology</span>
+                            <span>Supervision IA Active Learning</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">Centre de Contrôle &amp; Perfectionnement de Growth</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                            Vous dirigez votre entreprise depuis ce cockpit. Dès que Growth a un doute (confiance &lt; 70%) ou qu'un commerçant clique sur 👎 À corriger, le cas apparaît ici. Enseignez la réponse parfaite pour faire grimper le score d'intelligence de Growth.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4 METRIQUES CLÉS FONDATEUR -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5 pt-4 border-t border-white/10">
+                    <div class="bg-black/30 backdrop-blur-md rounded-xl p-3 border border-white/5">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Satisfaction Clients</span>
+                        <div class="text-xl sm:text-2xl font-black font-mono text-[#a0d9d2] mt-0.5" id="learnStatSatisfaction">100%</div>
+                        <span class="text-[10.5px] text-slate-400 font-mono" id="learnStatVotes">👍 0 &bull; 👎 0</span>
+                    </div>
+                    <div class="bg-black/30 backdrop-blur-md rounded-xl p-3 border border-white/5">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Confiance Moyenne IA</span>
+                        <div class="text-xl sm:text-2xl font-black font-mono text-emerald-400 mt-0.5" id="learnStatConfiance">95.0%</div>
+                        <span class="text-[10.5px] text-slate-400 font-medium">Auto-critique continue</span>
+                    </div>
+                    <div class="bg-black/30 backdrop-blur-md rounded-xl p-3 border border-white/5">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Cas à Perfectionner</span>
+                        <div class="text-xl sm:text-2xl font-black font-mono text-amber-400 mt-0.5" id="learnStatAMeliorer">0</div>
+                        <span class="text-[10.5px] text-amber-300 font-medium">Nécessite votre validation</span>
+                    </div>
+                    <div class="bg-black/30 backdrop-blur-md rounded-xl p-3 border border-white/5">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Cas Perfectionnés</span>
+                        <div class="text-xl sm:text-2xl font-black font-mono text-white mt-0.5" id="learnStatPerfectionnes">0</div>
+                        <span class="text-[10.5px] text-emerald-300 font-medium">Validés par vous</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLEAU DES CAS D'APPRENTISSAGE (QUESTIONS REÇUES, RÉPONSES, DOUTES) -->
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+                <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                            <span class="material-symbols-outlined notranslate text-[#168078] text-[18px]" translate="no">history_edu</span>
+                            <span>Journal des Questions &amp; Auto-Critique de l'IA</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Toutes les questions où Growth a hésité ou reçu un retour utilisateur.</p>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#a0d9d2]/20 text-[#14362b] border border-[#a0d9d2]/40" id="learnTableCountBadge">0 signalement(s)</span>
+                </div>
+
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-100/70 text-slate-700 text-[10.5px] font-bold uppercase tracking-wider">
+                                <th class="py-3 px-3 w-[110px]">Date &amp; Client</th>
+                                <th class="py-3 px-3 min-w-[200px]">Question du Commerçant</th>
+                                <th class="py-3 px-3 min-w-[220px]">Réponse fournie par Growth</th>
+                                <th class="py-3 px-2 text-center w-[90px]">Confiance</th>
+                                <th class="py-3 px-3 w-[160px]">Motif du Doute</th>
+                                <th class="py-3 px-2 text-center w-[110px]">Statut</th>
+                                <th class="py-3 px-3 text-center w-[120px]">Action Créateur</th>
+                            </tr>
+                        </thead>
+                        <tbody id="learnBacklogTableBody" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="7" class="py-12 text-center text-slate-400">
+                                    <span class="material-symbols-outlined notranslate text-[36px] text-slate-300 block mb-1" translate="no">verified</span>
+                                    <span>Aucun cas en attente : Growth répond avec un niveau d'excellence maximal !</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL D'ENSEIGNEMENT & PERFECTIONNEMENT IA -->
+        <div id="modalTeachAi" class="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs" style="display: none;">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
+                <div class="px-5 py-4 border-b border-slate-100 bg-[#1c1c1c] text-white flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[20px]" translate="no">school</span>
+                        <h4 class="text-sm font-bold text-white">Enseigner la Réponse Parfaite à Growth</h4>
+                    </div>
+                    <button type="button" onclick="closeTeachModal()" class="text-slate-400 hover:text-white transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
+                    </button>
+                </div>
+                <div class="p-5 space-y-4">
+                    <input type="hidden" id="teachCasId" value="">
+                    <div>
+                        <label class="block text-[10.5px] uppercase font-bold text-slate-400 tracking-wider mb-1">Question du commerçant</label>
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 font-medium italic" id="teachQuestionDisplay">
+                            --
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10.5px] uppercase font-bold text-slate-400 tracking-wider mb-1">Réponse initiale de Growth</label>
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 line-clamp-3" id="teachResponseDisplay">
+                            --
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10.5px] uppercase font-bold text-[#14362b] tracking-wider mb-1 flex items-center justify-between">
+                            <span>Votre réponse parfaite / Règle métier à appliquer</span>
+                            <span class="text-emerald-700 font-bold lowercase">permanente</span>
+                        </label>
+                        <textarea id="teachInputText" rows="4" class="w-full text-xs p-3 rounded-xl border border-slate-300 focus:border-[#168078] focus:ring-1 focus:ring-[#168078] outline-none text-slate-900" placeholder="Rédigez la réponse d'expert que Growth doit désormais fournir pour ce type de question..."></textarea>
+                    </div>
+                </div>
+                <div class="px-5 py-3 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeTeachModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer">Annuler</button>
+                    <button type="button" onclick="submitAiTeach()" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#14362b] text-white hover:bg-[#168078] transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+                        <span class="material-symbols-outlined notranslate text-[16px] text-[#a0d9d2]" translate="no">save</span>
+                        <span>Enregistrer &amp; Enseigner à Growth</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -11496,8 +11648,9 @@
             const viewAbout = document.getElementById('viewAbout');
             const viewPaiement = document.getElementById('viewPaiement');
             const viewAbonnement = document.getElementById('viewAbonnement');
+            const viewLearning = document.getElementById('viewLearning');
 
-            [viewJournal, viewBilan, viewResultat, viewTFT, viewAnnexes, viewPrets, viewAbout, viewPaiement, viewAbonnement].forEach(v => {
+            [viewJournal, viewBilan, viewResultat, viewTFT, viewAnnexes, viewPrets, viewAbout, viewPaiement, viewAbonnement, viewLearning].forEach(v => {
                 if (v) v.style.display = 'none';
             });
 
@@ -11558,6 +11711,218 @@
                 if (viewAbout) viewAbout.style.display = 'block';
                 applyActiveTabStyle('navItemAbout');
                 if (breadTitle) breadTitle.textContent = (window.innerWidth < 768 ? 'Growth' : 'À Propos de GROWTH');
+            } else if (tabName === 'learning' || tabName === 'ia') {
+                if (viewLearning) viewLearning.style.display = 'block';
+                if (breadTitle) breadTitle.textContent = 'Cockpit Créateur & Apprentissage IA';
+                if (typeof loadAiLearningBacklog === 'function') loadAiLearningBacklog();
+            }
+        }
+
+        // =========================================================================
+        // COCKPIT CRÉATEUR : APPRENTISSAGE CONTINU & AUTO-CRITIQUE IA
+        // =========================================================================
+        let aiLearningBacklogData = [];
+
+        async function loadAiLearningBacklog() {
+            try {
+                // 1. Fetch Feedback Stats (Likes / Dislikes)
+                const statsRes = await fetch('/api/feedback-stats');
+                if (statsRes.ok) {
+                    const stats = await statsRes.json();
+                    const kpiSat = document.getElementById('kpiSatisfactionIA');
+                    const kpiVotes = document.getElementById('kpiFeedbackCounts');
+                    const learnSat = document.getElementById('learnStatSatisfaction');
+                    const learnVotes = document.getElementById('learnStatVotes');
+
+                    const satText = `${stats.satisfaction_pct}%`;
+                    const votesText = `👍 ${stats.likes} • 👎 ${stats.dislikes}`;
+                    const kpiVotesText = `(👍 ${stats.likes} / 👎 ${stats.dislikes})`;
+
+                    if (kpiSat) kpiSat.textContent = satText;
+                    if (kpiVotes) kpiVotes.textContent = kpiVotesText;
+                    if (learnSat) learnSat.textContent = satText;
+                    if (learnVotes) learnVotes.textContent = votesText;
+                }
+
+                // 2. Fetch Backlog des questions à perfectionner
+                const backlogRes = await fetch('/api/ai-learning-backlog');
+                if (backlogRes.ok) {
+                    const data = await backlogRes.json();
+                    aiLearningBacklogData = data.backlog || [];
+
+                    let countAMeliorer = 0;
+                    let countPerfectionnes = 0;
+                    let totalConfidence = 0;
+
+                    aiLearningBacklogData.forEach(item => {
+                        if (item.statut === 'PERFECTIONNE') {
+                            countPerfectionnes++;
+                        } else {
+                            countAMeliorer++;
+                        }
+                        totalConfidence += (item.score_confiance != null ? item.score_confiance : 0.85);
+                    });
+
+                    const avgConf = aiLearningBacklogData.length > 0
+                        ? Math.round((totalConfidence / aiLearningBacklogData.length) * 100)
+                        : 96;
+
+                    const elAMel = document.getElementById('learnStatAMeliorer');
+                    const elPerf = document.getElementById('learnStatPerfectionnes');
+                    const elConf = document.getElementById('learnStatConfiance');
+                    const elBadge = document.getElementById('learnTableCountBadge');
+                    const popoverBadge = document.getElementById('popoverLearningBadge');
+
+                    if (elAMel) elAMel.textContent = countAMeliorer;
+                    if (elPerf) elPerf.textContent = countPerfectionnes;
+                    if (elConf) elConf.textContent = `${avgConf}%`;
+                    if (elBadge) elBadge.textContent = `${aiLearningBacklogData.length} cas répertorié(s)`;
+                    if (popoverBadge) {
+                        popoverBadge.textContent = countAMeliorer > 0 ? `${countAMeliorer} à corriger` : '100% Maîtrisé';
+                        if (countAMeliorer > 0) {
+                            popoverBadge.className = "px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-amber-50 text-amber-700 border border-amber-200/80";
+                        } else {
+                            popoverBadge.className = "px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-[#a0d9d2]/30 text-[#14362b] border border-[#a0d9d2]/60";
+                        }
+                    }
+
+                    renderAiLearningTable(aiLearningBacklogData);
+                }
+            } catch (err) {
+                console.error("Erreur chargement learning backlog:", err);
+            }
+        }
+
+        function renderAiLearningTable(items) {
+            const tbody = document.getElementById('learnBacklogTableBody');
+            if (!tbody) return;
+
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="py-12 text-center text-slate-400">
+                            <span class="material-symbols-outlined notranslate text-[36px] text-emerald-500 block mb-1" translate="no">verified</span>
+                            <span class="font-semibold text-slate-700">Toutes les réponses de Growth sont conformes et maîtrisées.</span>
+                            <div class="text-[11px] text-slate-400 mt-1">Dès qu'un doute survient ou qu'un commerçant clique sur 👎, le cas apparaîtra ici.</div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = items.map(c => {
+                const confPct = Math.round((c.score_confiance != null ? c.score_confiance : 0.85) * 100);
+                const confColor = confPct >= 80 ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : (confPct >= 60 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-rose-700 bg-rose-50 border-rose-200');
+                
+                const isPerfectionne = c.statut === 'PERFECTIONNE';
+                const statusBadge = isPerfectionne 
+                    ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Perfectionné</span>`
+                    : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>À corriger</span>`;
+
+                const dateStr = c.created_at ? new Date(c.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Récent';
+                const phoneStr = c.phone ? (c.phone.length > 8 ? c.phone.substring(0, 4) + '***' + c.phone.slice(-3) : c.phone) : 'Commerçant';
+
+                const safeQuestion = (c.question_utilisateur || '').replace(/"/g, '&quot;');
+                const safeReponse = (c.reponse_growth || '').replace(/"/g, '&quot;');
+
+                return `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="py-3 px-3 align-top">
+                            <div class="font-bold text-slate-800 text-[11px]">${dateStr}</div>
+                            <div class="font-mono text-[10.5px] text-slate-400 mt-0.5">${phoneStr}</div>
+                        </td>
+                        <td class="py-3 px-3 align-top">
+                            <div class="font-semibold text-slate-900 leading-snug" title="${safeQuestion}">
+                                « ${c.question_utilisateur || '--'} »
+                            </div>
+                        </td>
+                        <td class="py-3 px-3 align-top">
+                            <div class="text-slate-600 leading-snug text-[11.5px]" title="${safeReponse}">
+                                ${c.reponse_growth || '--'}
+                            </div>
+                            ${isPerfectionne && c.reponse_amelioree ? `
+                                <div class="mt-2 p-2 rounded-xl bg-emerald-50/90 border border-emerald-200 text-[11px] text-emerald-900">
+                                    <div class="font-bold text-emerald-800 flex items-center gap-1 mb-0.5">
+                                        <span class="material-symbols-outlined notranslate text-[13px] text-emerald-600" translate="no">verified</span>
+                                        <span>Votre enseignement validé :</span>
+                                    </div>
+                                    <div>${c.reponse_amelioree}</div>
+                                </div>
+                            ` : ''}
+                        </td>
+                        <td class="py-3 px-2 text-center align-top">
+                            <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-bold border ${confColor}">${confPct}%</span>
+                        </td>
+                        <td class="py-3 px-3 align-top">
+                            <span class="text-slate-600 text-[11px] leading-tight block">${c.motif || 'Auto-critique'}</span>
+                        </td>
+                        <td class="py-3 px-2 text-center align-top">
+                            ${statusBadge}
+                        </td>
+                        <td class="py-3 px-3 text-center align-top">
+                            <button type="button" onclick="openTeachModal(${c.id})" class="px-2.5 py-1.5 rounded-xl ${isPerfectionne ? 'bg-slate-100 hover:bg-slate-200 text-slate-700' : 'bg-[#14362b] hover:bg-[#168078] text-white shadow-xs'} text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1">
+                                <span class="material-symbols-outlined notranslate text-[14px]" translate="no">${isPerfectionne ? 'edit' : 'school'}</span>
+                                <span>${isPerfectionne ? 'Modifier' : 'Enseigner'}</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openTeachModal(casId) {
+            const cas = aiLearningBacklogData.find(x => x.id === casId);
+            if (!cas) return;
+
+            document.getElementById('teachCasId').value = cas.id;
+            document.getElementById('teachQuestionDisplay').textContent = cas.question_utilisateur || '--';
+            document.getElementById('teachResponseDisplay').textContent = cas.reponse_growth || '--';
+            document.getElementById('teachInputText').value = cas.reponse_amelioree || '';
+
+            const modal = document.getElementById('modalTeachAi');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeTeachModal() {
+            const modal = document.getElementById('modalTeachAi');
+            if (modal) modal.style.display = 'none';
+        }
+
+        async function submitAiTeach() {
+            const casId = document.getElementById('teachCasId').value;
+            const text = document.getElementById('teachInputText').value.trim();
+
+            if (!text) {
+                alert("Veuillez rédiger la réponse parfaite ou la règle métier que Growth doit appliquer.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/ai-learning-teach', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        cas_id: parseInt(casId),
+                        reponse_parfaite: text
+                    })
+                });
+
+                if (res.ok) {
+                    closeTeachModal();
+                    await loadAiLearningBacklog();
+                    if (typeof showFactooToast === 'function') {
+                        showFactooToast("Réponse parfaite enregistrée ! Growth appliquera désormais cette règle.");
+                    } else {
+                        alert("Enseignement mémorisé avec succès !");
+                    }
+                } else {
+                    const err = await res.json();
+                    alert("Erreur lors de l'enregistrement : " + (err.detail || "inconnue"));
+                }
+            } catch (err) {
+                alert("Erreur réseau lors de la communication avec le serveur.");
             }
         }
 
@@ -15962,7 +16327,8 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
             if (typeof renderFactooCalendar === 'function') renderFactooCalendar();
             initDatesAndPeriods();
 
-            // Initialisation de la vue Bureau / Smartphone sur ordinateur
+            // Lancement du chargement des statistiques IA et Active Learning
+            if (typeof loadAiLearningBacklog === 'function') loadAiLearningBacklog();
             const urlMode = new URLSearchParams(window.location.search).get('mode');
             const savedMode = localStorage.getItem('grow_view_mode');
             if (window.innerWidth < 768) {
@@ -16440,7 +16806,8 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                 'resultat': 'Compte de Résultat',
                 'tft': 'TAFIRE (Flux de Trésorerie)',
                 'annexes': 'Notes & Annexes DGID',
-                'prets': 'Dossier Bancaire & Prêts'
+                'prets': 'Dossier Bancaire & Prêts',
+                'learning': 'Cockpit Créateur & Apprentissage IA'
             };
             const bCurrent = document.getElementById('factooBreadcrumbCurrentTab');
             if (bCurrent) bCurrent.textContent = labels[tabName] || tabName;
