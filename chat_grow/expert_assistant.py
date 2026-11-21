@@ -144,10 +144,31 @@ KNOWLEDGE_BASE = [
 
 
 def repondre_question_theorique_locale(question: str) -> Optional[str]:
-    """Recherche dans la base de connaissances métier locale."""
-    q_lower = question.lower()
-    # Si l'utilisateur demande une rédaction de message ou une assistance personnalisée, laisser le LLM composer
-    if any(k in q_lower for k in ["rédige", "redige", "écris", "ecris", "message", "relance mon client", "relancer mon client", "aide-moi", "aide moi", "comment je"]):
+    """
+    Recherche dans la base de connaissances métier locale UNIQUEMENT pour les demandes
+    de définition formelle pures (ex: 'c'est quoi le syscohada', 'définition ninea').
+    Toutes les questions conversationnelles sont traitées directement par l'IA (Gemini / Claude)
+    pour garantir une réponse naturelle, intelligente, contextuelle et libre comme ChatGPT.
+    """
+    if not question:
+        return None
+    q_lower = question.lower().strip()
+
+    # Si c'est une question conversationnelle (point d'interrogation, question sur le copilote, dialogue)
+    # Ne JAMAIS intercepter : laisser l'IA répondre librement comme ChatGPT !
+    if (
+        "?" in question
+        or any(k in q_lower for k in [
+            "c'est toi", "cest toi", "est-ce que", "est ce que", "tu peux", "tu fais",
+            "pourquoi", "comment", "qui", "quand", "dis-moi", "dis moi", "explique",
+            "aide", "relance", "relancer", "conseil", "peux-tu", "peux tu"
+        ])
+    ):
+        return None
+
+    # Ne déclencher la base que si l'utilisateur demande explicitement une définition formelle
+    mots_definition = ["c'est quoi", "qu'est ce que", "qu'est-ce que", "definition", "définition", "c est quoi"]
+    if not any(d in q_lower for d in mots_definition):
         return None
 
     for item in KNOWLEDGE_BASE:
