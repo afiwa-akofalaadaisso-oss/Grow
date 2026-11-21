@@ -3522,7 +3522,7 @@
                             Signataire / Expert Référent &amp; N° Agrément ONECCA
                         </label>
                         <input type="text" id="customSignataire"
-                            value="M. Amadou Sow, Expert-Comptable (Agrément N° 2026-DK-98402)"
+                            value="Expert-Comptable Référent (Agrément ONECCA)"
                             oninput="mettreAJourDocPreview()"
                             style="width: 100%; font-size: 12px; font-weight: 700; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 7px; color: #0f172a; background: #ffffff; box-sizing: border-box;">
                     </div>
@@ -3971,7 +3971,7 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const cabParam = urlParams.get('cabinet');
                 const storedNom = cabParam || localStorage.getItem('growth_cabinet_nom') || "Cabinet Diallo & Associés";
-                const storedResp = localStorage.getItem('growth_cabinet_expert') || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
+                const storedResp = localStorage.getItem('growth_cabinet_expert') || "Expert-Comptable Référent (Agrément ONECCA)";
                 const storedEmail = localStorage.getItem('growth_cabinet_email') || "contact@cabinet-diallo.sn";
                 const storedPhone = localStorage.getItem('growth_cabinet_phone') || "+221 78 877 38 27";
                 appliquerIdentiteCabinet(storedNom, storedResp, storedEmail, storedPhone, false);
@@ -6028,7 +6028,7 @@
                     <div class="header">
                         <div>
                             <h1 class="title">${ref}</h1>
-                            <div style="font-size: 12px; color: #168078; font-weight: 700; margin-top: 4px;">PIÈCE COMPTABLE PROBANTE &bull; RÉPUBLIQUE DU SÉNÉGAL</div>
+                            <div style="font-size: 12px; color: #168078; font-weight: 700; margin-top: 4px;">PIÈCE COMPTABLE JUSTIFICATIVE &bull; ARCHIVAGE 10 ANS (OHADA)</div>
                         </div>
                         <div style="text-align: right; font-size: 11px; color: #64748b;">
                             Cabinet Diallo & Associés (ONECCA)<br>Plateforme Partenaire Growth
@@ -6496,17 +6496,17 @@
         // 4. GÉNÉRATEURS D'ÉTATS FINANCIERS OFFICIELS SYSCOHADA RÉVISÉ (NORMES AUDCIF / DGID / ONECCA)
         function genererHeaderOfficielDoc(pme, intervalle, titreEtat, inclureEnteteComplet = true) {
             const cabNom = document.getElementById('customCabNom')?.value || localStorage.getItem('growth_cabinet_nom') || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
-            const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
+            const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "Expert-Comptable Référent (Agrément ONECCA)";
             const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
 
             if (!inclureEnteteComplet) {
                 return `
                 <div class="official-doc-container" style="background: #ffffff; color: #000000; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-                    <!-- EN-TÊTE ÉPURÉ POUR ÉTATS SUIVANTS (PAS DE RÉPÉTITION DE L'EN-TÊTE RÉPUBLIQUE NI DU CARTOUCHE PME) -->
+                    <!-- EN-TÊTE ÉPURÉ POUR ÉTATS SUIVANTS -->
                     <div style="border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                         <div>
                             <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #168078;">
-                                SYSCOHADA RÉVISÉ (SMT) &bull; LIASSE FINANCIÈRE COMPLÈTE
+                                DROIT COMPTABLE SYSCOHADA RÉVISÉ (OHADA SMT)
                             </div>
                             <div style="font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.4px; color: #0f172a; margin-top: 2px;">
                                 ${titreEtat}
@@ -6524,23 +6524,25 @@
             return `
                 <div class="official-doc-container" style="background: #ffffff; color: #000000; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                     
-                    <!-- EN-TÊTE OFFICIEL DE LA RÉPUBLIQUE & DU RÉFÉRENTIEL COMPTABLE -->
+                    <!-- EN-TÊTE DU RÉFÉRENTIEL COMPTABLE ET DU CABINET -->
                     <div style="border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
                         <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                             <tr>
-                                <td style="width: 48%; vertical-align: top; line-height: 1.4;">
-                                    <div style="font-size: 11.5px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; color: #0f172a;">RÉPUBLIQUE DU SÉNÉGAL</div>
-                                    <div style="font-size: 10px; color: #475569; font-weight: 700;">Ministère des Finances et du Budget</div>
-                                    <div style="font-size: 10px; color: #475569; font-weight: 600;">Direction Générale des Impôts et des Domaines (DGID)</div>
+                                <td style="width: 50%; vertical-align: top; line-height: 1.45;">
+                                    <div style="font-size: 12px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; color: #0f172a;">
+                                        GROWTH &bull; ÉTATS FINANCIERS DE SYNTHÈSE
+                                    </div>
+                                    <div style="font-size: 10.5px; color: #475569; font-weight: 700; margin-top: 2px;">
+                                        Dossier PME : ${pme.nom}
+                                    </div>
                                     <div style="font-size: 10px; font-weight: 800; color: #168078; margin-top: 3px;">
-                                        RÉFÉRENTIEL COMPTABLE : SYSCOHADA RÉVISÉ (OHADA)
+                                        RÉFÉRENTIEL : DROIT COMPTABLE SYSCOHADA RÉVISÉ (OHADA SMT)
                                     </div>
                                 </td>
-                                <td style="width: 52%; vertical-align: top; text-align: right; line-height: 1.4;">
+                                <td style="width: 50%; vertical-align: top; text-align: right; line-height: 1.45;">
                                     <div style="font-size: 12px; font-weight: 900; text-transform: uppercase; color: #0f172a;">${cabNom}</div>
                                     <div style="font-size: 11px; font-weight: 700; color: #168078;">${signataire}</div>
-                                    <div style="font-size: 9.5px; color: #475569;">Inscrit au Tableau de l'Ordre des Experts-Comptables du Sénégal (ONECCA)</div>
-                                    <div style="font-size: 9.5px; color: #64748b; font-weight: 600;">Visa d'Audit &amp; Conformité Fiscale N° 2026-DK-98402</div>
+                                    <div style="font-size: 9.5px; color: #64748b; font-weight: 600;">Supervision &amp; Visa de Rapprochement Comptable</div>
                                 </td>
                             </tr>
                         </table>
@@ -6592,7 +6594,7 @@
 
         function genererFooterOfficielDoc(pme) {
             const cabNom = document.getElementById('customCabNom')?.value || localStorage.getItem('growth_cabinet_nom') || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
-            const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
+            const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "Expert-Comptable Référent (Agrément ONECCA)";
             const obs = document.getElementById('customObservations')?.value || "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.";
             const noteExtra = document.getElementById('customNoteExtra')?.value || "";
             const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
