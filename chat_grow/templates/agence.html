@@ -364,15 +364,57 @@
         }
 
         .compte-associe-select {
-            font-size: 12px;
-            font-weight: 600;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 6px 12px;
-            background: #ffffff;
-            outline: none;
+            display: none;
+        }
+
+        /* Menu Popover Comptes Associés (Style Fintech Pro comme la PME) */
+        .pop-section-hdr {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+            padding: 8px 10px 4px 10px;
+        }
+        .compte-pop-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-radius: 9px;
             cursor: pointer;
+            transition: all 0.15s;
+        }
+        .compte-pop-item:hover {
+            background: #f8fafc;
+        }
+        .compte-pop-item.active {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+        .pop-icon-box {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .pop-badge {
+            font-size: 10.5px;
+            font-weight: 800;
+            font-family: monospace;
+            padding: 2px 7px;
+            border-radius: 5px;
+        }
+        .custom-popover-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-popover-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
 
         /* Table des écritures */
@@ -747,15 +789,141 @@
                     </button>
                 </div>
 
-                <!-- Sélecteur PME -->
-                <div class="filters-row">
+                <!-- Sélecteur PME & Menu Filtre Comptes Associés (Style Fintech Pro Épuré) -->
+                <div class="filters-row" style="position: relative;">
                     <div class="pme-badge-selector">Nom de la PME : <strong style="color: #0e7647;">Établissement Mamadou Diop</strong> &bull; Mai 2026</div>
-                    <select class="compte-associe-select">
-                        <option>Compte associés</option>
-                        <option>Classe 6 : Charges d'exploitation</option>
-                        <option>Classe 7 : Ventes &amp; Produits</option>
-                        <option>Classe 5 : Trésorerie &amp; Banques</option>
-                    </select>
+                    
+                    <!-- MENU DÉROULANT FINTECH DES COMPTES ASSOCIÉS -->
+                    <div class="relative inline-block" id="compteAssociesWrapper" style="position: relative;">
+                        <button type="button" id="compteAssociesBtn" onclick="toggleCompteAssociesMenu(event)"
+                            style="padding: 8px 14px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 9px; font-size: 12px; font-weight: 700; color: #1e293b; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.15s; box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+                            <span class="material-symbols-outlined notranslate" style="font-size: 16px; color: #0e7647;" translate="no">filter_list</span>
+                            <span id="compteAssociesBtnLabel">Comptes associés : Tous les comptes</span>
+                            <i class="fa-solid fa-chevron-down" id="compteAssociesChevron" style="font-size: 11px; color: #94a3b8; transition: transform 0.2s;"></i>
+                        </button>
+                        
+                        <!-- POPOVER DROPDOWN AVEC RECHERCHE ET CATÉGORIES SYSCOHADA -->
+                        <div id="compteAssociesPopover" style="display: none; position: absolute; right: 0; top: calc(100% + 6px); width: 340px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 16px 36px rgba(15,23,42,0.18); padding: 10px; z-index: 1000; font-family: inherit;" onclick="event.stopPropagation()">
+                            
+                            <!-- Barre de recherche rapide -->
+                            <div style="display: flex; align-items: center; gap: 8px; padding: 7px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 9px; margin-bottom: 8px;">
+                                <span class="material-symbols-outlined notranslate" style="font-size: 16px; color: #94a3b8;" translate="no">search</span>
+                                <input type="text" id="compteAssociesSearch" oninput="filterCompteAssociesList(this.value)" placeholder="Rechercher un compte SYSCOHADA (ex: 601, Ventes, Wave)..."
+                                    style="border: none; outline: none; background: transparent; font-size: 11.5px; width: 100%; color: #0f172a; font-family: inherit;">
+                            </div>
+
+                            <div style="max-height: 380px; overflow-y: auto; padding-right: 2px;" class="custom-popover-scroll">
+                                <!-- Tous les comptes associés -->
+                                <div class="compte-pop-item" onclick="selectCompteFilter('ALL', 'Comptes associés : Tous les comptes')" data-label="tous les comptes ecritures associes all">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #f1f5f9; color: #0e7647;"><i class="fa-solid fa-list-check"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Tous les comptes associés</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Afficher l'ensemble des écritures</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #f1f5f9; color: #475569;">Tous</span>
+                                </div>
+
+                                <!-- SECTION 1 : ACTIVITÉ & EXPLOITATION -->
+                                <div class="pop-section-hdr">Activité &amp; Exploitation</div>
+                                
+                                <div class="compte-pop-item" onclick="selectCompteFilter('601', 'Classe 6 : Achats de marchandises (601)')" data-label="classe 6 achats marchandises stock riz 601100">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #fee2e2; color: #dc2626;"><i class="fa-solid fa-cart-shopping"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Classe 6 : Achats de marchandises</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Stocks, riz, denrées (Compte 601100)</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #fee2e2; color: #b91c1c;">601</span>
+                                </div>
+
+                                <div class="compte-pop-item" onclick="selectCompteFilter('701', 'Classe 7 : Ventes & Produits (701)')" data-label="classe 7 ventes produits prestations chiffre affaires 701100">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #dcfce7; color: #16a34a;"><i class="fa-solid fa-receipt"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Classe 7 : Ventes &amp; Produits</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Ventes journalières, factures (Compte 701100)</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #dcfce7; color: #15803d;">701</span>
+                                </div>
+
+                                <div class="compte-pop-item" onclick="selectCompteFilter('605', 'Classe 6 : Énergie, Eau & Fournitures (605)')" data-label="classe 6 energie eau sénélec seneau fournitures 605100">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-bolt"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Classe 6 : Énergie, Eau &amp; Fournitures</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Senelec, Sen'Eau (Compte 605100)</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #fef3c7; color: #b45309;">605</span>
+                                </div>
+
+                                <div class="compte-pop-item" onclick="selectCompteFilter('612', 'Classe 6 : Transports & Services (612)')" data-label="classe 6 transports livraison logistique 612000">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #f1f5f9; color: #475569;"><i class="fa-solid fa-truck"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Classe 6 : Transports &amp; Logistique</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Frais livraison, transport (Compte 612000)</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #f1f5f9; color: #334155;">612</span>
+                                </div>
+
+                                <!-- SECTION 2 : TRÉSORERIE & RÈGLEMENTS -->
+                                <div class="pop-section-hdr">Trésorerie &amp; Règlements</div>
+                                
+                                <div class="compte-pop-item" onclick="selectCompteFilter('521', 'Classe 5 : Wave Sénégal (5213)')" data-label="classe 5 wave senegal mobile money qr code 521100 521300">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-mobile-screen"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Classe 5 : Wave &amp; Banques</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Relevé Wave et banques (Compte 521100)</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #e0f2fe; color: #0369a1;">521</span>
+                                </div>
+
+                                <div class="compte-pop-item" onclick="selectCompteFilter('571', 'Classe 5 : Caisse Espèces Physique (571)')" data-label="classe 5 caisse especes physique cash livre 571100">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #ecfdf5; color: #059669;"><i class="fa-solid fa-money-bill-1-wave"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Classe 5 : Caisse Espèces Physique</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Livre de caisse physique (Compte 571100)</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #ecfdf5; color: #047857;">571</span>
+                                </div>
+
+                                <!-- SECTION 3 : TIERS & COMPTES DU BILAN -->
+                                <div class="pop-section-hdr">Tiers &amp; Bilan</div>
+                                
+                                <div class="compte-pop-item" onclick="selectCompteFilter('401', 'Classe 4 : Dettes Fournisseurs (401)')" data-label="classe 4 dettes fournisseurs factures a payer 401100">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #fdf2f8; color: #db2777;"><i class="fa-solid fa-handshake"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Classe 4 : Dettes Fournisseurs</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Fournisseurs à régler (Compte 401100)</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #fdf2f8; color: #be185d;">401</span>
+                                </div>
+
+                                <div class="compte-pop-item" onclick="selectCompteFilter('411', 'Classe 4 : Créances Clients (411)')" data-label="classe 4 creances clients credits accordes 411100">
+                                    <div style="display: flex; align-items: center; gap: 9px;">
+                                        <div class="pop-icon-box" style="background: #f5f3ff; color: #7c3aed;"><i class="fa-solid fa-user-tag"></i></div>
+                                        <div>
+                                            <div style="font-weight: 700; color: #0f172a; font-size: 12px;">Classe 4 : Créances Clients</div>
+                                            <div style="font-size: 10.5px; color: #64748b;">Crédits accordés à recouvrer (Compte 411100)</div>
+                                        </div>
+                                    </div>
+                                    <span class="pop-badge" style="background: #f5f3ff; color: #6d28d9;">411</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Table des écritures avec attribution des comptes SYSCOHADA -->
@@ -1803,6 +1971,78 @@
                 setTimeout(() => row.style.backgroundColor = '', 1000);
             }
         }
+
+        // Gestion du Menu Popover des Comptes Associés (Fintech Pro comme chez la PME)
+        function toggleCompteAssociesMenu(e) {
+            if (e) e.stopPropagation();
+            const pop = document.getElementById('compteAssociesPopover');
+            const chev = document.getElementById('compteAssociesChevron');
+            if (!pop) return;
+            const isOpen = pop.style.display === 'block';
+            pop.style.display = isOpen ? 'none' : 'block';
+            if (chev) chev.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+            if (!isOpen) {
+                setTimeout(() => {
+                    const inp = document.getElementById('compteAssociesSearch');
+                    if (inp) inp.focus();
+                }, 50);
+            }
+        }
+
+        function filterCompteAssociesList(q) {
+            const val = (q || '').toLowerCase().trim();
+            const items = document.querySelectorAll('#compteAssociesPopover .compte-pop-item');
+            items.forEach(it => {
+                const text = (it.getAttribute('data-label') || '') + ' ' + it.textContent.toLowerCase();
+                it.style.display = text.includes(val) ? 'flex' : 'none';
+            });
+        }
+
+        function selectCompteFilter(code, label) {
+            const btnLabel = document.getElementById('compteAssociesBtnLabel');
+            if (btnLabel) btnLabel.textContent = label;
+
+            // Fermeture popover
+            const pop = document.getElementById('compteAssociesPopover');
+            const chev = document.getElementById('compteAssociesChevron');
+            if (pop) pop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+
+            // Filtrage dynamique du tableau de validation des écritures
+            const rows = document.querySelectorAll('.agency-table tbody tr');
+            rows.forEach(r => {
+                if (code === 'ALL') {
+                    r.style.display = '';
+                } else {
+                    const rowText = r.textContent;
+                    const select = r.querySelector('.account-select');
+                    const selectVal = select ? select.value : '';
+                    const match = rowText.includes(code) || selectVal.startsWith(code);
+                    r.style.display = match ? '' : 'none';
+                }
+            });
+
+            // Surbrillance active
+            const items = document.querySelectorAll('#compteAssociesPopover .compte-pop-item');
+            items.forEach(it => {
+                const isSelected = it.getAttribute('onclick')?.includes(`'${code}'`);
+                if (isSelected) it.classList.add('active');
+                else it.classList.remove('active');
+            });
+        }
+
+        // Fermer le popover si on clique en dehors
+        window.addEventListener('click', function(e) {
+            const pop = document.getElementById('compteAssociesPopover');
+            const wrap = document.getElementById('compteAssociesWrapper');
+            if (pop && pop.style.display === 'block') {
+                if (wrap && !wrap.contains(e.target)) {
+                    pop.style.display = 'none';
+                    const chev = document.getElementById('compteAssociesChevron');
+                    if (chev) chev.style.transform = 'rotate(0deg)';
+                }
+            }
+        });
 
         function signBilan() {
             const btn = document.getElementById('btnSignCertify');
