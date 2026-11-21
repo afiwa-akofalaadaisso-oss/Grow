@@ -46,15 +46,16 @@
         .top-navbar {
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
-            padding: 12px 36px;
+            padding: 8px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 16px;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-            height: 58px;
+            min-height: 60px;
             box-sizing: border-box;
         }
 
@@ -201,6 +202,8 @@
         /* Sidebar Gauche 100% hauteur fixe & sticky (ne bouge jamais, logo en tête) */
         .sidebar {
             width: 268px;
+            min-width: 268px;
+            max-width: 268px;
             background: #ffffff;
             border-right: 1px solid #e2e8f0;
             padding: 20px 16px;
@@ -216,6 +219,7 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
             z-index: 200;
+            box-sizing: border-box;
         }
 
         /* Zone Principale Droite : Topbar + Contenu défilant */
@@ -224,8 +228,11 @@
             display: flex;
             flex-direction: column;
             min-width: 0;
+            width: calc(100% - 268px);
+            max-width: calc(100% - 268px);
             min-height: 100vh;
             background: #f8fafc;
+            overflow-x: hidden;
         }
 
         .sidebar::-webkit-scrollbar {
@@ -304,14 +311,17 @@
         /* Zone de travail droite : seule cette zone défile */
         .main-content {
             flex: 1;
-            padding: 24px 28px;
+            padding: 20px 24px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            gap: 20px;
+            gap: 16px;
             background: #f8fafc;
             min-width: 0;
-            min-height: calc(100vh - 58px);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         .content-header-tag {
@@ -334,7 +344,7 @@
         /* Barre des 4 états financiers + Liasse Complète fluide et responsive (anti-coupure) */
         .financial-statements-bar {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 6px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -343,6 +353,13 @@
             margin-bottom: 14px;
             align-items: center;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .financial-statements-bar::-webkit-scrollbar {
+            display: none;
         }
 
         .statements-bar-label {
@@ -487,6 +504,8 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
             margin-bottom: 24px;
             width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         table.agency-table {
@@ -1371,45 +1390,45 @@
         <div class="main-wrapper">
 
             <header class="top-navbar">
-                <div class="nav-left">
+                <div class="nav-left" style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
                     <span
-                        style="font-size: 13px; font-weight: 700; color: #64748b; display: inline-flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-briefcase" style="color: #168078;"></i>
+                        style="font-size: 13px; font-weight: 700; color: #475569; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <i class="fa-solid fa-briefcase" style="color: #168078; font-size: 14px; flex-shrink: 0;"></i>
                         <span>Portail Cabinet Comptable &bull; SYSCOHADA</span>
                     </span>
                 </div>
 
-                <div class="nav-right" style="display: flex; align-items: center; gap: 14px;">
+                <div class="nav-right" style="display: flex; align-items: center; gap: 14px; flex-shrink: 0;">
                     <!-- Profil Officiel de l'Expert-Comptable -->
                     <div style="position: relative;">
                         <button type="button" id="comptableProfileBtn" onclick="toggleComptableDropdown(event)"
-                            style="display: flex; align-items: center; gap: 10px; padding: 4px 12px 4px 6px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 99px; cursor: pointer; transition: all 0.15s; outline: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04);"
+                            style="display: flex; align-items: center; gap: 8px; padding: 4px 10px 4px 5px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 99px; cursor: pointer; transition: all 0.15s; outline: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04); flex-shrink: 0;"
                             onmouseover="this.style.borderColor='#cbd5e1'; this.style.background='#f8fafc';"
                             onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#ffffff';">
                             <!-- Avatar Expert avec indicateur en ligne -->
-                            <div style="position: relative; width: 32px; height: 32px; flex-shrink: 0;">
+                            <div style="position: relative; width: 28px; height: 28px; flex-shrink: 0;">
                                 <img src="/static/user_avatar.png" alt="Expert-Comptable"
                                     onerror="this.src='/static/grow_icon_squircle.png?v=3'"
-                                    style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #168078;">
+                                    style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid #168078;">
                                 <span
-                                    style="position: absolute; bottom: 0; right: 0; width: 8.5px; height: 8.5px; border-radius: 50%; background: #10b981; border: 1.5px solid #ffffff;"></span>
+                                    style="position: absolute; bottom: 0; right: 0; width: 7.5px; height: 7.5px; border-radius: 50%; background: #10b981; border: 1.5px solid #ffffff;"></span>
                             </div>
 
                             <!-- Identité de l'Expert-Comptable -->
-                            <div style="text-align: left; line-height: 1.25;">
+                            <div style="text-align: left; line-height: 1.2;">
                                 <div
-                                    style="font-size: 12px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 5px;">
+                                    style="font-size: 11.5px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 4px; white-space: nowrap;">
                                     <span id="navCabinetName">Cabinet Diallo &amp; Associés</span>
-                                    <i class="fa-solid fa-circle-check" style="font-size: 11px; color: #0e7647;"
+                                    <i class="fa-solid fa-circle-check" style="font-size: 10px; color: #0e7647;"
                                         title="Cabinet Agréé ONECCA"></i>
                                 </div>
-                                <div style="font-size: 10px; font-weight: 600; color: #64748b;">
+                                <div style="font-size: 9.5px; font-weight: 600; color: #64748b; white-space: nowrap;">
                                     Expert-Comptable &bull; ONECCA
                                 </div>
                             </div>
 
                             <i class="fa-solid fa-chevron-down"
-                                style="font-size: 10px; color: #94a3b8; margin-left: 3px;"></i>
+                                style="font-size: 9px; color: #94a3b8; margin-left: 2px;"></i>
                         </button>
 
                         <!-- Menu déroulant du profil comptable -->
