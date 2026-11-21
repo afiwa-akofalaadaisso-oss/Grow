@@ -331,12 +331,10 @@
             margin-bottom: 18px;
         }
 
-        /* Barre des 4 états financiers + Liasse Complète garantis sur une seule ligne */
+        /* Barre des 4 états financiers + Liasse Complète fluide et responsive (anti-coupure) */
         .financial-statements-bar {
             display: flex;
-            flex-wrap: nowrap !important;
-            white-space: nowrap !important;
-            overflow-x: auto;
+            flex-wrap: wrap;
             gap: 8px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -345,11 +343,6 @@
             margin-bottom: 16px;
             align-items: center;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-            scrollbar-width: none;
-        }
-
-        .financial-statements-bar::-webkit-scrollbar {
-            display: none;
         }
 
         .statements-bar-label {
@@ -787,8 +780,8 @@
         .modal-report-card {
             background: #ffffff;
             border-radius: 16px;
-            max-width: 820px;
-            width: 100%;
+            max-width: 960px;
+            width: 95vw;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -821,29 +814,31 @@
             align-items: center;
         }
 
-        /* Onglets commutateurs au sein de la modale des 4 états */
+        /* Onglets commutateurs au sein de la modale des 4 états (Anti-coupure : flex-wrap) */
         .modal-report-nav {
             display: flex;
-            gap: 8px;
-            padding: 10px 24px;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px 18px;
             background: #222222;
             border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            overflow-x: auto;
+            align-items: center;
         }
 
         .tab-rep-btn {
-            padding: 8px 14px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 7px;
             border: 1px solid rgba(255, 255, 255, 0.15);
             background: rgba(255, 255, 255, 0.06);
             color: #94a3b8;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            gap: 6px;
             white-space: nowrap;
+            flex-shrink: 0;
             transition: all 0.15s;
         }
 
@@ -1497,23 +1492,20 @@
                                 <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> États Financiers :
                             </span>
                             <button onclick="openReport('bilan')" class="btn-statement">
-                                <i class="fa-solid fa-scale-balanced" style="color: #168078;"></i> Bilan (Actif /
-                                Passif)
+                                <i class="fa-solid fa-scale-balanced" style="color: #168078;"></i> Bilan (Actif / Passif)
                             </button>
                             <button onclick="openReport('resultat')" class="btn-statement">
                                 <i class="fa-solid fa-chart-pie" style="color: #168078;"></i> Compte de Résultat
                             </button>
                             <button onclick="openReport('flux')" class="btn-statement">
-                                <i class="fa-solid fa-money-bill-transfer" style="color: #168078;"></i> Flux de
-                                Trésorerie
+                                <i class="fa-solid fa-money-bill-transfer" style="color: #168078;"></i> Flux de Trésorerie
                             </button>
                             <button onclick="openReport('annexes')" class="btn-statement">
                                 <i class="fa-solid fa-file-lines" style="color: #168078;"></i> Notes Annexes
                             </button>
                             <button onclick="openReport('tout')" class="btn-statement"
-                                style="background: #222222; color: white; border-color: #222222; font-weight: 800; box-shadow: 0 2px 8px rgba(20, 54, 43, 0.25);">
-                                <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (4
-                                États)
+                                style="background: #222222; color: #ffffff; border-color: #222222; font-weight: 800; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
+                                <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (4 États)
                             </button>
                         </div>
 
@@ -2536,9 +2528,8 @@
                     <i class="fa-solid fa-file-lines" style="color: #168078;"></i> Notes Annexes
                 </button>
                 <button onclick="openReport('tout')" class="btn-statement"
-                    style="background: #222222; color: white; border-color: #222222; font-weight: 800; box-shadow: 0 2px 8px rgba(20, 54, 43, 0.25);">
-                    <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (Les 4
-                    États)
+                    style="background: #222222; color: #ffffff; border-color: #222222; font-weight: 800; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
+                    <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (4 États)
                 </button>
             </div>
 
@@ -3414,19 +3405,19 @@
             <!-- SÉLECTEUR RAPIDE POUR LES 4 ÉTATS & LA LIASSE COMPLÈTE -->
             <div class="modal-report-nav">
                 <button type="button" onclick="openReport('bilan')" id="tabRepBilan" class="tab-rep-btn">
-                    <i class="fa-solid fa-scale-balanced"></i> 1. Bilan (Actif / Passif)
+                    <i class="fa-solid fa-scale-balanced"></i> 1. Bilan (Actif/Passif)
                 </button>
                 <button type="button" onclick="openReport('resultat')" id="tabRepResultat" class="tab-rep-btn">
                     <i class="fa-solid fa-chart-pie"></i> 2. Compte de Résultat
                 </button>
                 <button type="button" onclick="openReport('flux')" id="tabRepFlux" class="tab-rep-btn">
-                    <i class="fa-solid fa-money-bill-transfer"></i> 3. Flux de Trésorerie
+                    <i class="fa-solid fa-money-bill-transfer"></i> 3. Flux Trésorerie
                 </button>
                 <button type="button" onclick="openReport('annexes')" id="tabRepAnnexes" class="tab-rep-btn">
                     <i class="fa-solid fa-file-lines"></i> 4. Notes Annexes
                 </button>
                 <button type="button" onclick="openReport('tout')" id="tabRepTout" class="tab-rep-btn">
-                    <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (Les 4 États)
+                    <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (4 États)
                 </button>
             </div>
 
