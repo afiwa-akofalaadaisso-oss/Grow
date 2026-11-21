@@ -2717,24 +2717,42 @@
             });
         }
 
+        function showToast(message) {
+            let toast = document.getElementById('growGlobalToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'growGlobalToast';
+                toast.style.cssText = 'position: fixed; bottom: 24px; right: 24px; background: #0f172a; color: white; padding: 12px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.25); z-index: 99999; display: flex; align-items: center; gap: 8px; transition: all 0.25s ease; opacity: 0; transform: translateY(12px); pointer-events: none;';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> <span>${message}</span>`;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+            clearTimeout(window._toastTimeout);
+            window._toastTimeout = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(12px)';
+            }, 2500);
+        }
+
         function ajouterCompteModal() {
             const num = prompt("Numéro du sous-compte SYSCOHADA (ex: 601200) :");
             if (num && num.trim()) {
                 const lib = prompt("Intitulé du sous-compte :");
-                alert(`✅ Sous-compte ${num.trim()} - ${lib || ''} créé dans votre Plan de Comptes.`);
+                showToast(`Sous-compte ${num.trim()} - ${lib || ''} créé.`);
             }
         }
 
         function sauvegarderParametresCabinet(e) {
             e.preventDefault();
             const nom = document.getElementById('cabNom')?.value || 'Cabinet Comptable';
-            alert(`✅ Paramètres enregistrés avec succès pour :\n« ${nom} » !`);
+            showToast(`Paramètres enregistrés pour « ${nom} » !`);
         }
 
         function marquerToutLu() {
             const badge = document.getElementById('sideNotifBadge');
             if (badge) badge.style.display = 'none';
-            alert("✅ Toutes les notifications ont été marquées comme lues.");
+            showToast("Notifications marquées comme lues.");
         }
 
         // Filtre de recherche PME
@@ -2816,7 +2834,7 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            alert(`✅ Fichier FEC conforme DGID Sénégal exporté pour ${pmeName} !`);
+            showToast(`Fichier FEC conforme DGID exporté pour ${pmeName} !`);
         }
 
         function telechargerGrandLivre(pmeName) {
@@ -2833,17 +2851,17 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            alert(`✅ Grand Livre & Balance exportés avec succès pour ${pmeName} !`);
+            showToast(`Grand Livre & Balance exportés pour ${pmeName} !`);
         }
 
         function genererDossierBancaire() {
-            alert("🏦 Attestation de Solvabilité Bancaire générée avec succès !\n\nVisa apposé par le Cabinet Comptable.\nPrêt pour transmission FONGIP / BDK / CBAO.");
+            showToast("Attestation de Solvabilité Bancaire générée avec succès !");
         }
 
         function ajouterPmeModal() {
             const nom = prompt("Entrez le nom de la nouvelle PME cliente à ajouter au cabinet :");
             if (nom && nom.trim()) {
-                alert(`✅ Dossier « ${nom.trim()} » créé et rattaché à votre cabinet comptable.`);
+                showToast(`Dossier « ${nom.trim()} » créé et rattaché au cabinet.`);
             }
         }
 
