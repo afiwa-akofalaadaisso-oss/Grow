@@ -1036,18 +1036,8 @@
                     <!-- 2. SÉLECTION DE L'INTERVALLE DE TEMPS DU BILAN -->
                     <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                         <span style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.4px; display: inline-flex; align-items: center; gap: 5px;">
-                            <i class="fa-solid fa-calendar-days" style="color: #0e7647;"></i> Période du Bilan :
+                            <i class="fa-solid fa-calendar-days" style="color: #0e7647;"></i> Période :
                         </span>
-                        <select id="periodePresetSelect" onchange="changerPeriodePreset(this.value)"
-                            style="font-size: 12px; font-weight: 700; color: #1e293b; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 7px 10px; outline: none; cursor: pointer;">
-                            <option value="mois_actuel" selected>📅 Mois de Mai 2026</option>
-                            <option value="mois_precedent">📅 Mois d'Avril 2026</option>
-                            <option value="t1_2026">📊 1er Trimestre 2026 (Janv - Mars)</option>
-                            <option value="t2_2026">📊 2ème Trimestre 2026 (Avril - Juin)</option>
-                            <option value="annee_2025">🏛️ Exercice Annuel 2025 (Clos 31/12)</option>
-                            <option value="annee_2026">🏛️ Exercice en cours 2026</option>
-                            <option value="custom">✏️ Période Personnalisée...</option>
-                        </select>
                         <div id="datesContainer" style="display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 11px; color: #64748b; font-weight: 700;">Du</span>
                             <input type="date" id="dateBilanDebut" value="2026-05-01" onchange="mettreAJourIntervalleTexte()"
