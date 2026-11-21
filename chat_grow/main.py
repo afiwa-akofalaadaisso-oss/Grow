@@ -1829,17 +1829,13 @@ async def api_bankability_score(entreprise_id: str = None, phone: str = None):
 
 
 
-async def deliver_whatsapp_response(to_phone: str, reply_text: str):
+async def deliver_whatsapp_response(to_phone: str, reply_text: str, with_feedback_buttons: bool = True):
     """
-    Règle d'or de communication Growth (Exigence stricte) :
+    Règle d'or de communication Growth :
     - Si l'utilisateur a choisi VOCAL :
       Growth répond EXCLUSIVEMENT par Note Vocale WhatsApp (PTT OGG OPUS avec onde verte et logo Growth).
-      AUCUN TEXTE N'EST ENVOYÉ ! Même si le client a écrit par texte, Growth lui répond en note vocale.
-      La voix parlée est en français avec support d'audios longs de 1 min et plus (conforme pour le jury).
-    - Si l'utilisateur a choisi ECRIT :
-      Growth répond par message texte classique.
-    - Si le choix n'a pas encore été fait (Phase 1 d'accueil) :
-      Growth envoie le texte d'annonce ET la note vocale d'explication pour lui faire entendre les options.
+    - Si l'utilisateur a choisi ECRIT ou par défaut :
+      Growth répond avec message texte et boutons d'action/feedback (👍 Utile / 👎 À corriger).
     """
     if not to_phone or not reply_text:
         return
@@ -1862,10 +1858,19 @@ async def deliver_whatsapp_response(to_phone: str, reply_text: str):
             print(f"Erreur envoi note vocale à vie : {e_vocal}")
         # En cas d'indisponibilité audio absolue
         await send_whatsapp_message(clean_p, reply_text)
-    elif mode == "ECRIT":
-        await send_whatsapp_message(clean_p, reply_text)
     else:
-        # Phase d'accueil : le mode n'est pas encore choisi, envoyer UNIQUEMENT le texte propre (zéro note vocale)
+        # Envoi texte enrichi avec boutons interactifs de feedback si le texte tient sous 950 caractères
+        buttons_feedback = [
+            {"id": "feedback_like", "title": "👍 Utile"},
+            {"id": "feedback_dislike", "title": "👎 À corriger"}
+        ]
+        if with_feedback_buttons and len(reply_text) <= 950:
+            try:
+                await send_whatsapp_interactive_buttons(clean_p, reply_text, buttons_feedback)
+                return
+            except Exception as e_btn:
+                print(f"Fallback texte sans boutons : {e_btn}")
+
         await send_whatsapp_message(clean_p, reply_text)
 
 
@@ -1909,13 +1914,38 @@ async def receive_message(request: Request):
             sender_phone = message.get("from")
             msg_type = message.get("type")
 
+            # 0. Accusé de lecture immédiat (double coche bleue) et réaction "en train de rédiger" (✍️)
+            if msg_id:
+                asyncio.create_task(mark_whatsapp_message_as_read(msg_id))
+                asyncio.create_task(send_whatsapp_reaction(sender_phone, msg_id, "✍️"))
+
             # 1. MESSAGE TEXTE
             if msg_type == "text":
                 user_text = message.get("text", {}).get("body", "")
                 print(f"Message texte de {sender_phone} ({contact_name}) : '{user_text}'")
 
                 reply_text = await handle_incoming_message(sender_phone, user_text, None, contact_name)
-                await deliver_whatsapp_response(sender_phone, reply_text)
+                await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=True)
+                if msg_id:
+                    asyncio.create_task(send_whatsapp_reaction(sender_phone, msg_id, "✅"))
+
+            # 1.bis BOUTON INTERACTIF CLIQUÉ (Feedback 👍 / 👎 ou Action rapide)
+            elif msg_type == "interactive":
+                interactive = message.get("interactive", {})
+                btn_reply = interactive.get("button_reply", {})
+                btn_id = btn_reply.get("id", "")
+                btn_title = btn_reply.get("title", "")
+                print(f"[BOUTON INTERACTIF] Clic de {sender_phone} : {btn_id} ('{btn_title}')")
+
+                if btn_id == "feedback_like":
+                    msg_merci = "Merci pour votre appréciation positive ! Growth reste à vos côtés 24h/24 pour certifier votre comptabilité."
+                    await send_whatsapp_message(sender_phone, msg_merci)
+                elif btn_id == "feedback_dislike":
+                    msg_corr = "Merci pour votre franchise. N'hésitez pas à me dire ce qui doit être précisé ou corrigé pour votre entreprise."
+                    await send_whatsapp_message(sender_phone, msg_corr)
+                else:
+                    reply_text = await handle_incoming_message(sender_phone, btn_title or btn_id, None, contact_name)
+                    await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=True)
 
             # 2. IMAGE (NINEA, Reçu papier, capture Wave)
             elif msg_type == "image":
@@ -4604,6 +4634,117 @@ async def send_whatsapp_message(to_phone: str, text: str):
             print(f"Erreur lors de l'envoi WhatsApp vers {to_phone} : {e}")
 
     await asyncio.to_thread(_sync_send)
+
+
+async def mark_whatsapp_message_as_read(message_id: str):
+    """Marque le message reçu comme lu (double coche bleue instantanée)."""
+    if not message_id:
+        return
+    token = os.getenv("WHATSAPP_TOKEN")
+    phone_id = os.getenv("PHONE_NUMBER_ID")
+    if not token or not phone_id:
+        return
+    url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    payload = {"messaging_product": "whatsapp", "status": "read", "message_id": message_id}
+    def _sync():
+        try:
+            req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+            with urllib.request.urlopen(req, timeout=5) as r:
+                pass
+        except Exception as e:
+            pass
+    await asyncio.to_thread(_sync)
+
+
+async def send_whatsapp_reaction(to_phone: str, message_id: str, emoji: str):
+    """Envoie une réaction emoji (ex: ✍️ pour indiquer que Growth rédige sa réponse, ou ✅ validé)."""
+    if not to_phone or not message_id:
+        return
+    token = os.getenv("WHATSAPP_TOKEN")
+    phone_id = os.getenv("PHONE_NUMBER_ID")
+    if not token or not phone_id:
+        return
+    url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    payload = {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": to_phone,
+        "type": "reaction",
+        "reaction": {
+            "message_id": message_id,
+            "emoji": emoji
+        }
+    }
+    def _sync():
+        try:
+            req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+            with urllib.request.urlopen(req, timeout=5) as r:
+                pass
+        except Exception as e:
+            pass
+    await asyncio.to_thread(_sync)
+
+
+async def send_whatsapp_interactive_buttons(to_phone: str, text: str, buttons: list):
+    """Envoi d'un message avec boutons interactifs cliquables de feedback (👍 Utile / 👎 À corriger)."""
+    load_dotenv(override=True)
+    token = os.getenv("WHATSAPP_TOKEN")
+    phone_id = os.getenv("PHONE_NUMBER_ID")
+
+    if not token or not phone_id:
+        return
+
+    url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    formatted_text = format_grow_message(text)
+    body_text = formatted_text[:1000] if len(formatted_text) > 1000 else formatted_text
+    
+    formatted_buttons = []
+    for b in buttons[:3]:
+        formatted_buttons.append({
+            "type": "reply",
+            "reply": {
+                "id": str(b["id"])[:256],
+                "title": str(b["title"])[:20]
+            }
+        })
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": to_phone,
+        "type": "interactive",
+        "interactive": {
+            "type": "button",
+            "body": {
+                "text": body_text
+            },
+            "action": {
+                "buttons": formatted_buttons
+            }
+        }
+    }
+
+    def _sync_send():
+        try:
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                headers=headers
+            )
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                print(f"Boutons interactifs envoyés vers {to_phone} : {resp.status}")
+        except Exception as e:
+            print(f"Erreur envoi boutons interactifs : {e}, repli texte")
+            asyncio.run(send_whatsapp_message(to_phone, text))
+
+    await asyncio.to_thread(_sync_send)
+
 
 
 async def send_whatsapp_audio(to_phone: str, audio_source: str):
