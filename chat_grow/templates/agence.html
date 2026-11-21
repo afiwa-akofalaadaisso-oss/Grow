@@ -6327,10 +6327,32 @@
         }
 
         // 4. GÉNÉRATEURS D'ÉTATS FINANCIERS OFFICIELS SYSCOHADA RÉVISÉ (NORMES AUDCIF / DGID / ONECCA)
-        function genererHeaderOfficielDoc(pme, intervalle, titreEtat, numEtat) {
+        function genererHeaderOfficielDoc(pme, intervalle, titreEtat, inclureEnteteComplet = true) {
             const cabNom = document.getElementById('customCabNom')?.value || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
             const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément ONECCA N° 2026-DK-98402)";
             const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+            if (!inclureEnteteComplet) {
+                return `
+                <div class="official-doc-container" style="background: #ffffff; color: #000000; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                    <!-- EN-TÊTE ÉPURÉ POUR ÉTATS SUIVANTS (PAS DE RÉPÉTITION DE L'EN-TÊTE RÉPUBLIQUE NI DU CARTOUCHE PME) -->
+                    <div style="border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #168078;">
+                                SYSCOHADA RÉVISÉ (SMT) &bull; LIASSE FINANCIÈRE COMPLÈTE
+                            </div>
+                            <div style="font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.4px; color: #0f172a; margin-top: 2px;">
+                                ${titreEtat}
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 11.5px; font-weight: 900; color: #0f172a;">${pme.nom}</div>
+                            <div style="font-size: 10px; font-weight: 600; color: #475569;">${intervalle.texteComplet}</div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }
 
             return `
                 <div class="official-doc-container" style="background: #ffffff; color: #000000; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
@@ -6655,9 +6677,9 @@
             } else if (type === 'tout') {
                 t.textContent = `Liasse Financière Complète SYSCOHADA SMT — ${pme.nom}`;
 
-                const headerBilan = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF SMT)");
-                const headerResultat = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS & CHARGES SMT)");
-                const headerFlux = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)");
+                const headerBilan = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF SMT)", true);
+                const headerResultat = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS & CHARGES SMT)", false);
+                const headerFlux = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)", false);
                 const headerAnnexes = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 4 : NOTES ANNEXES & INFORMATIONS COMPLÉMENTAIRES SMT");
                 const footerHtml = genererFooterOfficielDoc(pme);
 
