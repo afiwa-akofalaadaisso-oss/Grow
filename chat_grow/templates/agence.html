@@ -1284,34 +1284,98 @@
                 </div>
             </div>
 
-            <!-- Entreprise Active Sélectionnée (Coin inférieur de la Sidebar) -->
-            <div id="sidebarActivePmeCard"
-                style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 13px 14px; margin-top: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                    <span
-                        style="font-size: 9.5px; font-weight: 800; color: #168078; text-transform: uppercase; letter-spacing: 0.6px; display: inline-flex; align-items: center; gap: 6px;">
-                        <span style="position: relative; display: flex; width: 7px; height: 7px;">
-                            <span
-                                style="position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background: #34d399; opacity: 0.75; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
-                            <span
-                                style="position: relative; display: inline-flex; border-radius: 50%; height: 7px; width: 7px; background: #10b981;"></span>
+            <!-- Widget Dossier Client Actif (Fintech SaaS Pro avec Sélecteur Intégré) -->
+            <div id="sidebarActivePmeCard" style="position: relative; margin-top: auto; padding-top: 10px;">
+                <div onclick="toggleSidebarPmeDropdown(event)"
+                    style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 10px 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(15,23,42,0.04); display: flex; flex-direction: column; gap: 8px;"
+                    onmouseover="this.style.borderColor='#168078'; this.style.boxShadow='0 4px 14px rgba(22,128,120,0.12)';"
+                    onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='0 2px 8px rgba(15,23,42,0.04)';">
+                    
+                    <!-- En-tête statut & action -->
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 9.5px; font-weight: 800; color: #168078; text-transform: uppercase; letter-spacing: 0.6px; display: inline-flex; align-items: center; gap: 5px;">
+                            <span style="position: relative; display: flex; width: 7px; height: 7px;">
+                                <span style="position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background: #34d399; opacity: 0.75; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
+                                <span style="position: relative; display: inline-flex; border-radius: 50%; height: 7px; width: 7px; background: #10b981;"></span>
+                            </span>
+                            Dossier Actif &bull; SYSCOHADA
                         </span>
-                        Dossier Actif
-                    </span>
-                    <a href="javascript:void(0)" onclick="switchAgencyTab('pme')"
-                        style="font-size: 11px; color: #0e7647; font-weight: 700; text-decoration: none; padding: 2.5px 8px; border-radius: 6px; background: #ecfdf5; border: 1px solid #d1fae5; transition: all 0.15s;"
-                        onmouseover="this.style.background='#d1fae5';" onmouseout="this.style.background='#ecfdf5';"
-                        title="Changer d'entreprise">
-                        Changer
-                    </a>
+                        <span style="font-size: 10.5px; font-weight: 700; color: #222222; background: #f1f5f9; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                            <span>Changer</span>
+                            <i class="fa-solid fa-chevron-up" id="sidebarPmeChevron" style="font-size: 8px; transition: transform 0.2s;"></i>
+                        </span>
+                    </div>
+
+                    <!-- Bloc Identité Entreprise -->
+                    <div style="display: flex; align-items: center; gap: 9px;">
+                        <div id="sidebarActivePmeAvatar"
+                            style="width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #222222 0%, #168078 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(22,128,120,0.25);">
+                            MD
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <div id="sidebarActivePmeName"
+                                style="font-size: 12.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 5px;"
+                                title="Établissement Mamadou Diop">
+                                <span>Établissement Mamadou Diop</span>
+                                <i class="fa-solid fa-circle-check" style="color: #168078; font-size: 10.5px;"></i>
+                            </div>
+                            <div id="sidebarActivePmeDetails"
+                                style="font-size: 10.5px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
+                                NINEA 005489210 &bull; SMT
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="sidebarActivePmeName"
-                    style="font-size: 13px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                    title="Établissement Mamadou Diop">
-                    Établissement Mamadou Diop
-                </div>
-                <div id="sidebarActivePmeDetails" style="font-size: 11px; color: #64748b; margin-top: 3px;">
-                    SYSCOHADA SMT &bull; Marché Sandaga
+
+                <!-- Popover de sélection directe de Dossier Client (Élégant, Pop-up au-dessus) -->
+                <div id="sidebarPmeDropdownMenu"
+                    style="display: none; position: absolute; bottom: calc(100% + 8px); left: 0; right: 0; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; box-shadow: 0 16px 40px rgba(15,23,42,0.2); z-index: 3000; padding: 6px; overflow: hidden; animation: fadeInDrop 0.15s ease-out;">
+                    <div style="padding: 7px 9px 5px 9px; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                        <span>Dossiers Clients Agréés</span>
+                        <span style="background: #f0fdfa; color: #0f766e; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 800;">3 PME</span>
+                    </div>
+
+                    <div style="max-height: 240px; overflow-y: auto; padding-top: 4px; display: flex; flex-direction: column; gap: 3px;">
+                        <!-- Option 1: Mamadou Diop -->
+                        <div class="sidebar-pme-option active" id="pmeOpt-diop" onclick="selectionnerPmeDepuisSidebar('diop', event)"
+                            style="display: flex; align-items: center; gap: 9px; padding: 8px 9px; border-radius: 9px; cursor: pointer; transition: all 0.12s; background: #f8fafc; border: 1px solid #e2e8f0;">
+                            <div style="width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #222222 0%, #168078 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 900; flex-shrink: 0;">MD</div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Établissement Mamadou Diop</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Commerce Général &bull; Keur Yoff</div>
+                            </div>
+                            <i class="fa-solid fa-check pme-check" style="color: #168078; font-size: 11px;"></i>
+                        </div>
+
+                        <!-- Option 2: Touba Électronique -->
+                        <div class="sidebar-pme-option" id="pmeOpt-touba" onclick="selectionnerPmeDepuisSidebar('touba', event)"
+                            style="display: flex; align-items: center; gap: 9px; padding: 8px 9px; border-radius: 9px; cursor: pointer; transition: all 0.12s;">
+                            <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 900; flex-shrink: 0;">TE</div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Boutique Touba Électronique</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Informatique & High-Tech &bull; Plateau</div>
+                            </div>
+                        </div>
+
+                        <!-- Option 3: Pressing Moderne Dakar -->
+                        <div class="sidebar-pme-option" id="pmeOpt-pressing" onclick="selectionnerPmeDepuisSidebar('pressing', event)"
+                            style="display: flex; align-items: center; gap: 9px; padding: 8px 9px; border-radius: 9px; cursor: pointer; transition: all 0.12s;">
+                            <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 900; flex-shrink: 0;">PM</div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pressing Moderne Dakar</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Services & Blanchisserie &bull; Médina</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer d'accès à la gestion complète -->
+                    <div style="border-top: 1px solid #f1f5f9; margin-top: 4px; padding-top: 5px;">
+                        <a href="javascript:void(0)" onclick="switchAgencyTab('pme'); fermerSidebarPmeDropdown();"
+                            style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px; font-size: 11px; font-weight: 700; color: #168078; text-decoration: none; border-radius: 7px; background: #f0fdfa; transition: all 0.15s;">
+                            <i class="fa-solid fa-list-check" style="font-size: 10px;"></i>
+                            <span>Voir le registre des PME</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -3610,7 +3674,42 @@
                     cMenu.style.display = 'none';
                 }
             }
+
+            // Fermeture dropdown PME sidebar
+            const pmeDrop = document.getElementById('sidebarPmeDropdownMenu');
+            const pmeCard = document.getElementById('sidebarActivePmeCard');
+            if (pmeDrop && pmeDrop.style.display === 'block') {
+                if (pmeCard && !pmeCard.contains(e.target)) {
+                    fermerSidebarPmeDropdown();
+                }
+            }
         });
+
+        // =========================================================================
+        // GESTION DU SÉLECTEUR DE DOSSIER PME DE LA SIDEBAR (POPUP SUR-MESURE PRO)
+        // =========================================================================
+        function toggleSidebarPmeDropdown(event) {
+            if (event) event.stopPropagation();
+            const menu = document.getElementById('sidebarPmeDropdownMenu');
+            const chev = document.getElementById('sidebarPmeChevron');
+            if (!menu) return;
+            const isShowing = menu.style.display === 'block';
+            menu.style.display = isShowing ? 'none' : 'block';
+            if (chev) chev.style.transform = isShowing ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        function fermerSidebarPmeDropdown() {
+            const menu = document.getElementById('sidebarPmeDropdownMenu');
+            const chev = document.getElementById('sidebarPmeChevron');
+            if (menu) menu.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function selectionnerPmeDepuisSidebar(pmeKey, event) {
+            if (event) event.stopPropagation();
+            changerPmeActive(pmeKey);
+            fermerSidebarPmeDropdown();
+        }
 
         function toggleComptableDropdown(e) {
             if (e) e.stopPropagation();
@@ -4175,6 +4274,42 @@
             }
             if (sideStock) {
                 sideStock.innerHTML = `<i class="fa-solid fa-boxes-stacked" style="font-size: 11px;"></i> ${pme.tauxValidation}`;
+            }
+
+            // Mise à jour du widget de dossier actif en bas de la sidebar
+            const pmeAvatars = {
+                diop: 'MD',
+                touba: 'TE',
+                pressing: 'PM'
+            };
+            const pmeSubtitles = {
+                diop: 'NINEA 005489210 • SMT (Keur Yoff)',
+                touba: 'NINEA 007891234 • SMT (Plateau)',
+                pressing: 'NINEA 006543219 • SMT (Médina)'
+            };
+            const av = document.getElementById('sidebarActivePmeAvatar');
+            const nm = document.getElementById('sidebarActivePmeName');
+            const dt = document.getElementById('sidebarActivePmeDetails');
+            if (av) av.textContent = pmeAvatars[pmeKey] || 'PME';
+            if (nm) nm.innerHTML = `<span>${pme.nom}</span><i class="fa-solid fa-circle-check" style="color: #168078; font-size: 10.5px;"></i>`;
+            if (dt) dt.textContent = pmeSubtitles[pmeKey] || `${pme.ninea} • ${pme.adresse}`;
+
+            // Mise à jour de la sélection visuelle dans le popover sidebar
+            document.querySelectorAll('.sidebar-pme-option').forEach(opt => {
+                opt.classList.remove('active');
+                opt.style.background = '';
+                opt.style.borderColor = 'transparent';
+                const chk = opt.querySelector('.pme-check');
+                if (chk) chk.remove();
+            });
+            const selOpt = document.getElementById(`pmeOpt-${pmeKey}`);
+            if (selOpt) {
+                selOpt.classList.add('active');
+                selOpt.style.background = '#f8fafc';
+                selOpt.style.border = '1px solid #e2e8f0';
+                if (!selOpt.querySelector('.pme-check')) {
+                    selOpt.insertAdjacentHTML('beforeend', '<i class="fa-solid fa-check pme-check" style="color: #168078; font-size: 11px;"></i>');
+                }
             }
 
             // Mise à jour du sélecteur d'entreprise si nécessaire
