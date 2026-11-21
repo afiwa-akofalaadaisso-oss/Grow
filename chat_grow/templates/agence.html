@@ -333,62 +333,57 @@
             margin-bottom: 18px;
         }
 
-        /* Barre des 4 états financiers + Liasse Complète fluide et responsive (anti-coupure) */
+        /* Barre des 4 états financiers + Liasse Complète fluide qui prend tout l'espace */
         .financial-statements-bar {
             display: flex;
-            flex-wrap: nowrap;
-            gap: 6px;
+            gap: 8px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 7px 12px;
-            margin-bottom: 14px;
+            padding: 8px 14px;
+            margin-bottom: 16px;
             align-items: center;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .financial-statements-bar::-webkit-scrollbar {
-            display: none;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .statements-bar-label {
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 800;
             color: #475569;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-right: 4px;
+            letter-spacing: 0.4px;
+            margin-right: 6px;
             white-space: nowrap;
             flex-shrink: 0;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
 
         .btn-statement {
-            padding: 5px 9px;
+            flex: 1;
+            padding: 8px 12px;
             background: #f8fafc;
             border: 1.5px solid #cbd5e1;
-            border-radius: 7px;
-            font-size: 11px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 700;
             color: #1e293b;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 7px;
             white-space: nowrap;
-            flex-shrink: 0;
             transition: all 0.15s;
         }
 
         .btn-statement:hover {
-            border-color: #0e7647;
-            color: #0e7647;
-            background: #f0fdf4;
+            border-color: #222222;
+            color: #0f172a;
+            background: #f1f5f9;
             transform: translateY(-1px);
         }
 
@@ -1489,25 +1484,27 @@
                 <!-- ONGLET 1 : TABLEAU DE BORD (VALIDATION PRÉ-COMPTABLE) -->
                 <div id="sectionTableau" class="agency-tab-pane" style="display: none;">
                     <div>
-                        <!-- BARRE DES 4 BOUTONS OFFICIELS ÉTATS FINANCIERS + LIASSE (COMPACTE, FLUIDE & ANTI-COUPURE) -->
+                        <!-- BARRE DES 4 BOUTONS OFFICIELS ÉTATS FINANCIERS + LIASSE (PREND TOUT L'ESPACE, BOUTON NOIR) -->
                         <div class="financial-statements-bar">
                             <span class="statements-bar-label">
-                                <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> États :
+                                <i class="fa-solid fa-file-invoice" style="color: #222222;"></i> États :
                             </span>
                             <button onclick="openReport('bilan')" class="btn-statement" title="1. Bilan Réglementaire (Actif / Passif)">
-                                <i class="fa-solid fa-scale-balanced" style="color: #168078;"></i> Bilan
+                                <i class="fa-solid fa-scale-balanced" style="color: #475569;"></i> Bilan
                             </button>
                             <button onclick="openReport('resultat')" class="btn-statement" title="2. Compte de Résultat (Produits & Charges)">
-                                <i class="fa-solid fa-chart-pie" style="color: #168078;"></i> Résultat
+                                <i class="fa-solid fa-chart-pie" style="color: #475569;"></i> Résultat
                             </button>
                             <button onclick="openReport('flux')" class="btn-statement" title="3. Tableau des Flux de Trésorerie">
-                                <i class="fa-solid fa-money-bill-transfer" style="color: #168078;"></i> Flux
+                                <i class="fa-solid fa-money-bill-transfer" style="color: #475569;"></i> Flux
                             </button>
                             <button onclick="openReport('annexes')" class="btn-statement" title="4. Notes Annexes & Rapprochement">
-                                <i class="fa-solid fa-file-lines" style="color: #168078;"></i> Notes
+                                <i class="fa-solid fa-file-lines" style="color: #475569;"></i> Notes
                             </button>
                             <button onclick="openReport('tout')" class="btn-statement"
-                                style="background: #168078; color: #ffffff; border-color: #168078; font-weight: 800; box-shadow: 0 2px 6px rgba(22, 128, 120, 0.25);"
+                                style="background: #222222; color: #ffffff; border-color: #222222; font-weight: 800; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);"
+                                onmouseover="this.style.background='#000000'; this.style.borderColor='#000000';"
+                                onmouseout="this.style.background='#222222'; this.style.borderColor='#222222';"
                                 title="Liasse Complète SYSCOHADA (Les 4 États Réunis)">
                                 <i class="fa-solid fa-layer-group" style="color: #ffffff;"></i> Liasse Complète
                             </button>
