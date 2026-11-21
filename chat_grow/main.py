@@ -1689,7 +1689,7 @@ async def api_historique_injecter(payload: dict = Body(...)):
 @app.get("/comptable", response_class=HTMLResponse)
 async def serve_agence_dashboard(request: Request):
     """
-    Espace réservé exclusivement à l'Expert-Comptable / Agence ONECCA :
+    Espace réservé exclusivement aux Cabinets Comptables et Experts-Comptables :
     Accès aux dossiers comptables, liasses SYSCOHADA, grand livre et exports FEC (sans accès cockpit créateur).
     """
     html_path = os.path.join(TEMPLATES_DIR, "agence.html")

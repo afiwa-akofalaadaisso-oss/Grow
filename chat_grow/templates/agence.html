@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONECCA &bull; Espace Expert-Comptable SYSCOHADA</title>
+    <title>GROWTH &bull; Espace Cabinet Comptable &bull; Validation SYSCOHADA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -598,15 +598,15 @@
 </head>
 <body>
 
-    <!-- Top Navbar ONECCA + Logo Growth -->
+    <!-- Top Navbar Espace Cabinet Comptable + Logo Growth -->
     <header class="top-navbar">
         <div class="nav-left">
-            <a href="/dashboard" class="brand-logo" title="Retour au Tableau de Bord PME" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                <img src="/static/logo_grow.jpg" alt="Logo Growth" style="width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #d4af37; object-fit: cover;">
+            <a href="/comptable" class="brand-logo" title="Portail Cabinets Comptables" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" style="width: 34px; height: 34px; border-radius: 10px; border: 1.5px solid #0e7647; object-fit: cover;">
                 <span style="font-size: 16px; font-weight: 900; color: #0e7647; letter-spacing: 0.5px;">GROWTH</span>
                 <span style="color: #cbd5e1; font-weight: 300; font-size: 18px;">|</span>
-                <div class="leaf-icon"><i class="fa-solid fa-leaf"></i></div>
-                <span class="brand-name">ONECCA</span>
+                <div class="leaf-icon"><i class="fa-solid fa-briefcase"></i></div>
+                <span class="brand-name">ESPACE CABINET COMPTABLE</span>
             </a>
             <ul class="nav-links">
                 <li><a href="#" class="active">Tableau de Bord</a></li>
@@ -626,7 +626,7 @@
                 <span>Se connecter</span>
             </button>
 <div class="user-profile" onclick="location.href='/dashboard'" title="Vue PME">
-                <img src="/static/user_avatar.png" alt="Avatar" class="user-avatar" onerror="this.src='/static/onecca_mock_badge.png'">
+                <img src="/static/user_avatar.png" alt="Avatar" class="user-avatar" onerror="this.src='/static/grow_icon_squircle.png?v=3'">
                 <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: #94a3b8;"></i>
             </div>
         </div>
@@ -686,7 +686,7 @@
         <!-- Zone de Travail Principale -->
         <main class="main-content">
             <div>
-                <div class="content-header-tag">Espace Expert-Comptable ONECCA</div>
+                <div class="content-header-tag">Portail Cabinets Comptables &bull; Tout Cabinet Comptable &amp; Commissariat</div>
                 <h1 class="content-title">Validation des écritures pré-comptables SYSCOHADA</h1>
 
                 <!-- BARRE DES 4 BOUTONS OFFICIELS ÉTATS FINANCIERS DEMANDÉS PAR LE CLIENT -->
@@ -845,7 +845,7 @@
             </div>
             <div class="modal-report-body" id="repBody"></div>
             <div class="modal-report-footer">
-                <span style="font-size: 12px; font-weight: 700; color: #0e7647;">Visa ONECCA N° 2026-DK-98402 &bull; Certifié Conforme</span>
+                <span style="font-size: 12px; font-weight: 700; color: #0e7647;">Visa Cabinet Comptable Agréé &bull; Certifié Conforme SYSCOHADA</span>
                 <div>
                     <button onclick="window.print()" style="padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; font-weight: 600; cursor: pointer; margin-right: 8px;">Imprimer</button>
                     <button onclick="closeReport()" style="padding: 8px 14px; border: none; border-radius: 6px; background: #0e7647; color: white; font-weight: 700; cursor: pointer;">Fermer</button>
@@ -876,7 +876,7 @@
             const btn = document.getElementById('btnSignCertify');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SIGNATURE NUMÉRIQUE EN COURS...';
             setTimeout(() => {
-                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> BILAN SIGNÉ &amp; HORODATÉ ONECCA';
+                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> BILAN CERTIFIÉ &amp; HORODATÉ PAR LE CABINET';
                 btn.style.backgroundColor = '#0b1c2d';
                 openReport('bilan');
             }, 1000);
