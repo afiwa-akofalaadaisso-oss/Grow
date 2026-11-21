@@ -813,6 +813,197 @@
                 break-before: page;
             }
         }
+
+        /* Popover Calendrier Moderne Pro Growth */
+        .calendar-popover-box {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 330px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 16px;
+            display: none;
+            z-index: 99999;
+            animation: fadeInDrop 0.15s ease-out;
+        }
+
+        .cal-quick-presets {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .cal-preset-pill {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.12s;
+            font-family: inherit;
+        }
+
+        .cal-preset-pill:hover,
+        .cal-preset-pill.active {
+            background: #222222;
+            border-color: #222222;
+            color: #ffffff;
+        }
+
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .cal-nav-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.12s;
+        }
+
+        .cal-nav-btn:hover {
+            background: #222222;
+            color: #ffffff;
+        }
+
+        .cal-select {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #222222;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 4px 8px;
+            cursor: pointer;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .cal-select:focus {
+            border-color: #168078;
+        }
+
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .cal-days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            margin-bottom: 12px;
+        }
+
+        .cal-day-cell {
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.12s;
+        }
+
+        .cal-day-cell:hover:not(.empty) {
+            background: #f1f5f9;
+            color: #168078;
+        }
+
+        .cal-day-cell.empty {
+            cursor: default;
+            color: #cbd5e1;
+        }
+
+        .cal-day-cell.today {
+            border: 1.5px solid #168078;
+        }
+
+        .cal-day-cell.selected-start,
+        .cal-day-cell.selected-end {
+            background: #222222 !important;
+            color: #ffffff !important;
+            font-weight: 800;
+        }
+
+        .cal-day-cell.in-range {
+            background: rgba(160, 217, 210, 0.25);
+            color: #0f172a;
+            border-radius: 0;
+        }
+
+        .cal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .cal-btn-cancel {
+            background: #f1f5f9;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+
+        .cal-btn-cancel:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .cal-btn-apply {
+            background: #222222;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #ffffff;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+
+        .cal-btn-apply:hover {
+            background: #333333;
+        }
+
     </style>
 </head>
 
@@ -1047,21 +1238,87 @@
                         <div class="filters-row"
                             style="position: relative; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; margin-bottom: 16px;">
 
-                            <!-- SÉLECTION DE L'INTERVALLE DE TEMPS DU BILAN -->
-                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <!-- SÉLECTION DE L'INTERVALLE DE TEMPS DU BILAN AVEC CALENDRIER SUR-MESURE FINTECH PRO -->
+                            <div class="relative inline-block" id="agenceDateWrapper" style="position: relative; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                 <span
                                     style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.4px; display: inline-flex; align-items: center; gap: 5px;">
-                                    <i class="fa-solid fa-calendar-days" style="color: #0e7647;"></i> Période :
+                                    <i class="fa-solid fa-calendar-days" style="color: #168078;"></i> Période :
                                 </span>
-                                <div id="datesContainer" style="display: flex; align-items: center; gap: 6px;">
-                                    <span style="font-size: 11px; color: #64748b; font-weight: 700;">Du</span>
-                                    <input type="date" id="dateBilanDebut" value="2026-05-01"
-                                        onchange="mettreAJourIntervalleTexte()"
-                                        style="font-size: 11.5px; font-weight: 700; color: #0f172a; border: 1.5px solid #cbd5e1; border-radius: 7px; padding: 5px 8px; outline: none; background: #ffffff;">
-                                    <span style="font-size: 11px; color: #64748b; font-weight: 700;">Au</span>
-                                    <input type="date" id="dateBilanFin" value="2026-05-31"
-                                        onchange="mettreAJourIntervalleTexte()"
-                                        style="font-size: 11.5px; font-weight: 700; color: #0f172a; border: 1.5px solid #cbd5e1; border-radius: 7px; padding: 5px 8px; outline: none; background: #ffffff;">
+                                <button type="button" id="agenceDateBtn" onclick="toggleAgenceCalendar(event)"
+                                    style="padding: 7px 14px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 9px; font-size: 12px; font-weight: 700; color: #1e293b; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                    <span id="agenceDateBtnLabel">Du 01/05/2026 au 31/05/2026</span>
+                                    <i class="fa-solid fa-chevron-down" id="agenceDateChevron"
+                                        style="font-size: 10px; color: #94a3b8; transition: transform 0.2s; margin-left: 4px;"></i>
+                                </button>
+                                <!-- Inputs cachés préservant la compatibilité avec toutes les fonctions existantes -->
+                                <input type="hidden" id="dateBilanDebut" value="2026-05-01">
+                                <input type="hidden" id="dateBilanFin" value="2026-05-31">
+
+                                <!-- Popover Calendrier Sur-Mesure Fintech Pro (Sans aucun popup natif OS) -->
+                                <div id="agenceCalendarPopover" class="calendar-popover-box" onclick="event.stopPropagation()">
+                                    <!-- Presets rapides pour comptables -->
+                                    <div class="cal-quick-presets">
+                                        <button type="button" class="cal-preset-pill active" onclick="selectAgenceCalendarPreset('mois_actuel')">Mois actuel</button>
+                                        <button type="button" class="cal-preset-pill" onclick="selectAgenceCalendarPreset('mois_precedent')">Mois dernier</button>
+                                        <button type="button" class="cal-preset-pill" onclick="selectAgenceCalendarPreset('t1_2026')">T1 2026</button>
+                                        <button type="button" class="cal-preset-pill" onclick="selectAgenceCalendarPreset('t2_2026')">T2 2026</button>
+                                        <button type="button" class="cal-preset-pill" onclick="selectAgenceCalendarPreset('annee_2026')">Exercice 2026</button>
+                                        <button type="button" class="cal-preset-pill" onclick="selectAgenceCalendarPreset('annee_2025')">Exercice 2025</button>
+                                    </div>
+
+                                    <!-- En-tête mois & année avec chevrons et sélecteurs déroulants -->
+                                    <div class="cal-header">
+                                        <button type="button" class="cal-nav-btn" onclick="changeAgenceCalendarMonth(-1)" title="Mois précédent">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </button>
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <select id="agenceCalMonthSelect" onchange="onAgenceMonthYearSelectChange()" class="cal-select">
+                                                <option value="0">Janvier</option>
+                                                <option value="1">Février</option>
+                                                <option value="2">Mars</option>
+                                                <option value="3">Avril</option>
+                                                <option value="4" selected>Mai</option>
+                                                <option value="5">Juin</option>
+                                                <option value="6">Juillet</option>
+                                                <option value="7">Août</option>
+                                                <option value="8">Septembre</option>
+                                                <option value="9">Octobre</option>
+                                                <option value="10">Novembre</option>
+                                                <option value="11">Décembre</option>
+                                            </select>
+                                            <select id="agenceCalYearSelect" onchange="onAgenceMonthYearSelectChange()" class="cal-select">
+                                                <option value="2022">2022</option>
+                                                <option value="2023">2023</option>
+                                                <option value="2024">2024</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026" selected>2026</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2028">2028</option>
+                                            </select>
+                                        </div>
+                                        <button type="button" class="cal-nav-btn" onclick="changeAgenceCalendarMonth(1)" title="Mois suivant">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Jours de semaine -->
+                                    <div class="cal-weekdays">
+                                        <span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span>
+                                    </div>
+
+                                    <!-- Grille des jours -->
+                                    <div class="cal-days-grid" id="agenceCalDaysGrid"></div>
+
+                                    <!-- Résumé de la période sélectionnée -->
+                                    <div style="font-size: 11px; color: #64748b; font-weight: 600; margin-bottom: 10px; text-align: center;" id="agenceCalSummary">
+                                        Du 01/05/2026 au 31/05/2026
+                                    </div>
+
+                                    <!-- Actions Annuler / Appliquer -->
+                                    <div class="cal-footer">
+                                        <button type="button" class="cal-btn-cancel" onclick="closeAgenceCalendar()">Fermer</button>
+                                        <button type="button" class="cal-btn-apply" onclick="applyAgenceCalendarFilter()">Appliquer</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -2761,6 +3018,13 @@
 
         // Fermer le popover ou menu si on clique en dehors
         window.addEventListener('click', function (e) {
+            const calPop = document.getElementById('agenceCalendarPopover');
+            const calWrap = document.getElementById('agenceDateWrapper');
+            if (calPop && calPop.style.display === 'block') {
+                if (calWrap && !calWrap.contains(e.target)) {
+                    closeAgenceCalendar();
+                }
+            }
             const pop = document.getElementById('compteAssociesPopover');
             const wrap = document.getElementById('compteAssociesWrapper');
             if (pop && pop.style.display === 'block') {
@@ -3372,32 +3636,227 @@
             tbody.innerHTML = html;
         }
 
-        // 2. GESTION DE L'INTERVALLE DE TEMPS DU BILAN
-        function changerPeriodePreset(preset) {
+        
+        // =========================================================================
+        // CALENDRIER SUR-MESURE FINTECH PRO GROWTH POUR LE PORTAIL CABINET
+        // =========================================================================
+        let agenceCalCurrentMonth = new Date(2026, 4, 1); // Mai 2026
+        let agenceStartDate = '2026-05-01';
+        let agenceEndDate = '2026-05-31';
+
+        function toggleAgenceCalendar(event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const pop = document.getElementById('agenceCalendarPopover');
+            const chev = document.getElementById('agenceDateChevron');
+            if (!pop) return;
+            const isShowing = pop.style.display === 'block';
+            if (isShowing) {
+                closeAgenceCalendar();
+            } else {
+                const compPop = document.getElementById('compteAssociesPopover');
+                if (compPop) compPop.style.display = 'none';
+                const compChev = document.getElementById('compteAssociesChevron');
+                if (compChev) compChev.style.transform = 'rotate(0deg)';
+
+                pop.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+                renderAgenceCalendar();
+            }
+        }
+
+        function closeAgenceCalendar() {
+            const pop = document.getElementById('agenceCalendarPopover');
+            const chev = document.getElementById('agenceDateChevron');
+            if (pop) pop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function changeAgenceCalendarMonth(delta) {
+            agenceCalCurrentMonth.setMonth(agenceCalCurrentMonth.getMonth() + delta);
+            renderAgenceCalendar();
+        }
+
+        function onAgenceMonthYearSelectChange() {
+            const mSel = document.getElementById('agenceCalMonthSelect');
+            const ySel = document.getElementById('agenceCalYearSelect');
+            if (!mSel || !ySel) return;
+            const m = parseInt(mSel.value, 10);
+            const y = parseInt(ySel.value, 10);
+            agenceCalCurrentMonth = new Date(y, m, 1);
+            renderAgenceCalendar();
+        }
+
+        function renderAgenceCalendar() {
+            const y = agenceCalCurrentMonth.getFullYear();
+            const m = agenceCalCurrentMonth.getMonth();
+
+            const mSel = document.getElementById('agenceCalMonthSelect');
+            const ySel = document.getElementById('agenceCalYearSelect');
+            if (mSel) mSel.value = String(m);
+            if (ySel) {
+                let optExists = false;
+                for (let i = 0; i < ySel.options.length; i++) {
+                    if (parseInt(ySel.options[i].value, 10) === y) {
+                        optExists = true;
+                        break;
+                    }
+                }
+                if (!optExists) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.textContent = y;
+                    ySel.appendChild(opt);
+                }
+                ySel.value = String(y);
+            }
+
+            const grid = document.getElementById('agenceCalDaysGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const firstDayIndex = new Date(y, m, 1).getDay();
+            const startOffset = (firstDayIndex === 0 ? 7 : firstDayIndex) - 1;
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+            for (let i = 0; i < startOffset; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'cal-day-cell empty';
+                grid.appendChild(empty);
+            }
+
+            const today = new Date();
+            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'cal-day-cell';
+                const dayStr = `${y}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                cell.textContent = day;
+
+                if (dayStr === todayStr) {
+                    cell.classList.add('today');
+                }
+
+                if (agenceStartDate && dayStr === agenceStartDate) {
+                    cell.classList.add('selected-start');
+                } else if (agenceEndDate && dayStr === agenceEndDate) {
+                    cell.classList.add('selected-end');
+                } else if (agenceStartDate && agenceEndDate && dayStr > agenceStartDate && dayStr < agenceEndDate) {
+                    cell.classList.add('in-range');
+                }
+
+                cell.onclick = (e) => {
+                    e.stopPropagation();
+                    onAgenceDayClick(dayStr);
+                };
+
+                grid.appendChild(cell);
+            }
+
+            updateAgenceCalSummary();
+        }
+
+        function onAgenceDayClick(dayStr) {
+            if (!agenceStartDate || (agenceStartDate && agenceEndDate)) {
+                agenceStartDate = dayStr;
+                agenceEndDate = '';
+            } else if (agenceStartDate && !agenceEndDate) {
+                if (dayStr < agenceStartDate) {
+                    agenceEndDate = agenceStartDate;
+                    agenceStartDate = dayStr;
+                } else {
+                    agenceEndDate = dayStr;
+                }
+            }
+            renderAgenceCalendar();
+        }
+
+        function updateAgenceCalSummary() {
+            const sum = document.getElementById('agenceCalSummary');
+            if (!sum) return;
+            if (agenceStartDate && agenceEndDate) {
+                const [y1, m1, d1] = agenceStartDate.split('-');
+                const [y2, m2, d2] = agenceEndDate.split('-');
+                if (agenceStartDate === `${y1}-01-01` && agenceEndDate === `${y1}-12-31`) {
+                    sum.textContent = `Exercice comptable complet ${y1}`;
+                } else if (agenceStartDate === agenceEndDate) {
+                    sum.textContent = `Date : ${d1}/${m1}/${y1}`;
+                } else {
+                    sum.textContent = `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                }
+            } else if (agenceStartDate) {
+                const [y1, m1, d1] = agenceStartDate.split('-');
+                sum.textContent = `Début : ${d1}/${m1}/${y1} (cliquez la date de fin)`;
+            } else {
+                sum.textContent = `Du 01/05/2026 au 31/05/2026`;
+            }
+        }
+
+        function applyAgenceCalendarFilter() {
             const debEl = document.getElementById('dateBilanDebut');
             const finEl = document.getElementById('dateBilanFin');
-            if (!debEl || !finEl) return;
+            const btnLabel = document.getElementById('agenceDateBtnLabel');
+
+            if (agenceStartDate && !agenceEndDate) {
+                agenceEndDate = agenceStartDate;
+            }
+
+            if (agenceStartDate && agenceEndDate) {
+                if (debEl) debEl.value = agenceStartDate;
+                if (finEl) finEl.value = agenceEndDate;
+                const [y1, m1, d1] = agenceStartDate.split('-');
+                const [y2, m2, d2] = agenceEndDate.split('-');
+                if (agenceStartDate === agenceEndDate) {
+                    if (btnLabel) btnLabel.textContent = `Le ${d1}/${m1}/${y1}`;
+                } else {
+                    if (btnLabel) btnLabel.textContent = `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                }
+            }
+
+            mettreAJourIntervalleTexte();
+            closeAgenceCalendar();
+        }
+
+        function selectAgenceCalendarPreset(preset) {
+            // Mise à jour de la classe active sur les pilules
+            document.querySelectorAll('.cal-preset-pill').forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
 
             if (preset === 'mois_actuel') {
-                debEl.value = '2026-05-01';
-                finEl.value = '2026-05-31';
+                agenceStartDate = '2026-05-01';
+                agenceEndDate = '2026-05-31';
+                agenceCalCurrentMonth = new Date(2026, 4, 1);
             } else if (preset === 'mois_precedent') {
-                debEl.value = '2026-04-01';
-                finEl.value = '2026-04-30';
+                agenceStartDate = '2026-04-01';
+                agenceEndDate = '2026-04-30';
+                agenceCalCurrentMonth = new Date(2026, 3, 1);
             } else if (preset === 't1_2026') {
-                debEl.value = '2026-01-01';
-                finEl.value = '2026-03-31';
+                agenceStartDate = '2026-01-01';
+                agenceEndDate = '2026-03-31';
+                agenceCalCurrentMonth = new Date(2026, 0, 1);
             } else if (preset === 't2_2026') {
-                debEl.value = '2026-04-01';
-                finEl.value = '2026-06-30';
-            } else if (preset === 'annee_2025') {
-                debEl.value = '2025-01-01';
-                finEl.value = '2025-12-31';
+                agenceStartDate = '2026-04-01';
+                agenceEndDate = '2026-06-30';
+                agenceCalCurrentMonth = new Date(2026, 3, 1);
             } else if (preset === 'annee_2026') {
-                debEl.value = '2026-01-01';
-                finEl.value = '2026-12-31';
+                agenceStartDate = '2026-01-01';
+                agenceEndDate = '2026-12-31';
+                agenceCalCurrentMonth = new Date(2026, 0, 1);
+            } else if (preset === 'annee_2025') {
+                agenceStartDate = '2025-01-01';
+                agenceEndDate = '2025-12-31';
+                agenceCalCurrentMonth = new Date(2025, 0, 1);
             }
-            mettreAJourIntervalleTexte();
+            renderAgenceCalendar();
+            applyAgenceCalendarFilter();
+        }
+
+        // 2. GESTION DE L'INTERVALLE DE TEMPS DU BILAN
+        function changerPeriodePreset(preset) {
+            selectAgenceCalendarPreset(preset);
         }
 
         function mettreAJourIntervalleTexte() {
