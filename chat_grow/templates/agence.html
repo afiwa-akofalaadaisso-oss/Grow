@@ -200,7 +200,7 @@
 
         /* Sidebar Gauche 100% hauteur fixe & sticky (ne bouge jamais, logo en tête) */
         .sidebar {
-            width: 260px;
+            width: 268px;
             background: #ffffff;
             border-right: 1px solid #e2e8f0;
             padding: 20px 16px;
@@ -235,20 +235,30 @@
         .sidebar-menu {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 11px 14px;
+            padding: 10px 14px;
             border-radius: 10px;
             font-size: 13px;
             font-weight: 600;
             color: #475569;
             text-decoration: none;
-            transition: all 0.15s;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .menu-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            transition: color 0.15s ease;
+            flex-shrink: 0;
         }
 
         .menu-item:hover {
@@ -256,9 +266,29 @@
             color: #0f172a;
         }
 
+        .menu-item:hover i {
+            color: #0e7647;
+        }
+
         .menu-item.active {
+            background: #ecfdf5;
+            color: #065f46;
+            font-weight: 700;
+        }
+
+        .menu-item.active i {
+            color: #0e7647;
+        }
+
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 7px;
+            bottom: 7px;
+            width: 3.5px;
             background: #0e7647;
-            color: #ffffff;
+            border-radius: 0 4px 4px 0;
         }
 
         .menu-item .menu-badge {
@@ -789,7 +819,7 @@
 
         <!-- Sidebar Gauche 100% Pleine Hauteur (intègre le logo en tête, aucune barre horizontale ne la traverse) -->
         <aside class="sidebar">
-            <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: flex; flex-direction: column; gap: 16px;">
                 <!-- Logo Brand Growth intégré au sommet de la barre verticale -->
                 <div style="padding: 2px 6px 14px 6px; border-bottom: 1px solid #f1f5f9;">
                     <a href="/comptable" title="Growth"
@@ -801,49 +831,68 @@
                     </a>
                 </div>
 
-                <!-- Menu de navigation vertical -->
-                <div class="sidebar-menu">
-                    <a href="javascript:void(0)" onclick="switchAgencyTab('pme')" class="menu-item active" id="sideLinkPme">
-                        <i class="fa-solid fa-users" style="font-size: 13px;"></i>
-                        <span>PME Clientes</span>
-                    </a>
-                    <a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" class="menu-item"
-                        id="sideLinkDashboard">
-                        <i class="fa-solid fa-scale-balanced" style="font-size: 13px;"></i>
-                        <span>Gestion du Bilan &amp; Écritures</span>
-                    </a>
-                    <a href="javascript:void(0)" onclick="switchAgencyTab('documents')" class="menu-item"
-                        id="sideLinkDocuments">
-                        <i class="fa-solid fa-folder-open" style="font-size: 13px;"></i>
-                        <span>Documents &amp; Liasses</span>
-                    </a>
-                    <a href="javascript:void(0)" onclick="switchAgencyTab('reporting')" class="menu-item"
-                        id="sideLinkReporting">
-                        <i class="fa-solid fa-chart-line" style="font-size: 13px;"></i>
-                        <span>Reporting &amp; Ratios</span>
-                    </a>
-                    <a href="javascript:void(0)" onclick="ouvrirModalConnexion()" class="menu-item" id="sideLinkAcces">
-                        <i class="fa-solid fa-user-shield" style="font-size: 13px;"></i>
-                        <span>Accès Sécurisé</span>
-                    </a>
+                <!-- Navigation Cabinet -->
+                <div>
+                    <div style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; padding: 0 12px 8px 12px;">
+                        Navigation
+                    </div>
+                    <div class="sidebar-menu">
+                        <a href="javascript:void(0)" onclick="switchAgencyTab('pme')" class="menu-item active" id="sideLinkPme">
+                            <i class="fa-solid fa-users"></i>
+                            <span>PME Clientes</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" class="menu-item"
+                            id="sideLinkDashboard">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            <span>Bilan &amp; Écritures</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="switchAgencyTab('documents')" class="menu-item"
+                            id="sideLinkDocuments">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span>Documents &amp; Liasses</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="switchAgencyTab('reporting')" class="menu-item"
+                            id="sideLinkReporting">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Reporting &amp; Ratios</span>
+                        </a>
+
+                        <div style="margin: 8px 10px; border-top: 1px solid #f1f5f9;"></div>
+
+                        <a href="javascript:void(0)" onclick="ouvrirModalConnexion()" class="menu-item" id="sideLinkAcces">
+                            <i class="fa-solid fa-user-shield"></i>
+                            <span>Accès Sécurisé</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <!-- Entreprise Active Sélectionnée (Coin inférieur de la Sidebar) -->
-            <div id="sidebarActivePmeCard" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px; margin-top: auto;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                    <span style="font-size: 10px; font-weight: 800; color: #0e7647; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px;">
-                        <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            <div id="sidebarActivePmeCard"
+                style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 13px 14px; margin-top: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: all 0.2s;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 9.5px; font-weight: 800; color: #047857; text-transform: uppercase; letter-spacing: 0.6px; display: inline-flex; align-items: center; gap: 6px;">
+                        <span style="position: relative; display: flex; width: 7px; height: 7px;">
+                            <span style="position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background: #34d399; opacity: 0.75; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
+                            <span style="position: relative; display: inline-flex; border-radius: 50%; height: 7px; width: 7px; background: #10b981;"></span>
+                        </span>
                         Dossier Actif
                     </span>
-                    <a href="javascript:void(0)" onclick="switchAgencyTab('pme')" style="font-size: 11px; color: #0e7647; font-weight: 700; text-decoration: none;" title="Changer d'entreprise">
+                    <a href="javascript:void(0)" onclick="switchAgencyTab('pme')"
+                        style="font-size: 11px; color: #0e7647; font-weight: 700; text-decoration: none; padding: 2.5px 8px; border-radius: 6px; background: #ecfdf5; border: 1px solid #d1fae5; transition: all 0.15s;"
+                        onmouseover="this.style.background='#d1fae5';"
+                        onmouseout="this.style.background='#ecfdf5';"
+                        title="Changer d'entreprise">
                         Changer
                     </a>
                 </div>
-                <div id="sidebarActivePmeName" style="font-size: 13px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="Établissement Mamadou Diop">
+                <div id="sidebarActivePmeName"
+                    style="font-size: 13px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                    title="Établissement Mamadou Diop">
                     Établissement Mamadou Diop
                 </div>
-                <div id="sidebarActivePmeDetails" style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                <div id="sidebarActivePmeDetails"
+                    style="font-size: 11px; color: #64748b; margin-top: 3px;">
                     SYSCOHADA SMT &bull; Marché Sandaga
                 </div>
             </div>
