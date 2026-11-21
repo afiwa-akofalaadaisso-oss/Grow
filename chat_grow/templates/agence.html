@@ -903,26 +903,25 @@
                     <i class="fa-solid fa-house" style="font-size: 13px;"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="javascript:void(0)" onclick="switchAgencyTab('comptes')" class="menu-item" id="sideLinkComptes">
-                    <i class="fa-regular fa-credit-card" style="font-size: 13px;"></i>
-                    <span>Comptes</span>
+                <a href="javascript:void(0)" onclick="switchAgencyTab('pme')" class="menu-item" id="sideLinkPme">
+                    <i class="fa-solid fa-users" style="font-size: 13px;"></i>
+                    <span>PME Clientes</span>
                 </a>
-                <a href="javascript:void(0)" onclick="switchAgencyTab('scoring')" class="menu-item" id="sideLinkScoring">
+                <a href="javascript:void(0)" onclick="switchAgencyTab('reporting')" class="menu-item" id="sideLinkReporting">
                     <i class="fa-solid fa-chart-line" style="font-size: 13px;"></i>
-                    <span>Scoring</span>
+                    <span>Reporting &amp; Ratios</span>
                 </a>
-                <a href="javascript:void(0)" onclick="switchAgencyTab('inventaires')" class="menu-item" id="sideLinkInventaires">
-                    <i class="fa-solid fa-box" style="font-size: 13px;"></i>
-                    <span>Inventaires</span>
+                <a href="javascript:void(0)" onclick="switchAgencyTab('documents')" class="menu-item" id="sideLinkDocuments">
+                    <i class="fa-solid fa-folder-open" style="font-size: 13px;"></i>
+                    <span>Documents &amp; Liasses</span>
                 </a>
-                <a href="javascript:void(0)" onclick="switchAgencyTab('parametres')" class="menu-item" id="sideLinkParametres">
-                    <i class="fa-solid fa-gear" style="font-size: 13px;"></i>
-                    <span>Paramètres</span>
+                <a href="javascript:void(0)" onclick="openReport('tout')" class="menu-item" id="sideLinkBilan">
+                    <i class="fa-solid fa-scale-balanced" style="font-size: 13px;"></i>
+                    <span>Bilan SYSCOHADA</span>
                 </a>
-                <a href="javascript:void(0)" onclick="switchAgencyTab('notifications')" class="menu-item" id="sideLinkNotifications">
-                    <i class="fa-regular fa-bell" style="font-size: 13px;"></i>
-                    <span>Notifications</span>
-                    <span class="menu-badge" id="sideNotifBadge">1</span>
+                <a href="javascript:void(0)" onclick="ouvrirModalConnexion()" class="menu-item" id="sideLinkAcces">
+                    <i class="fa-solid fa-user-shield" style="font-size: 13px;"></i>
+                    <span>Accès Sécurisé</span>
                 </a>
             </div>
 
@@ -2372,16 +2371,11 @@
             // Mise à jour active sur la sidebar
             const sideMap = {
                 'tableau': 'sideLinkDashboard',
-                'comptes': 'sideLinkComptes',
-                'scoring': 'sideLinkScoring',
-                'inventaires': 'sideLinkInventaires',
-                'parametres': 'sideLinkParametres',
-                'notifications': 'sideLinkNotifications',
-                'pme': 'sideLinkDashboard',
-                'documents': 'sideLinkDashboard',
-                'reporting': 'sideLinkDashboard'
+                'pme': 'sideLinkPme',
+                'reporting': 'sideLinkReporting',
+                'documents': 'sideLinkDocuments'
             };
-            ['sideLinkDashboard', 'sideLinkComptes', 'sideLinkScoring', 'sideLinkInventaires', 'sideLinkParametres', 'sideLinkNotifications'].forEach(id => {
+            ['sideLinkDashboard', 'sideLinkPme', 'sideLinkReporting', 'sideLinkDocuments', 'sideLinkBilan', 'sideLinkAcces'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('active');
             });
