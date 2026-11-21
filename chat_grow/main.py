@@ -1,3 +1,4 @@
+from __future__ import annotations
 import time
 import os
 import sys
@@ -13,7 +14,7 @@ import hashlib
 import asyncio
 import re
 import urllib.request
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 from datetime import datetime, timedelta
 import zoneinfo
 import httpx
