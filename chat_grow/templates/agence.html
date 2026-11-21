@@ -1889,7 +1889,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="table-body">
                                 <tr id="row-1">
                                     <td style="font-weight: 500; color: #475569;">12/05/2026</td>
                                     <td>
@@ -2065,6 +2065,29 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <!-- BARRE DE PAGINATION & COMPTEUR DES 100 ÉCRITURES -->
+                        <div id="ecrituresPaginationBar"
+                            style="display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; background: #ffffff; border-top: 1px solid #e2e8f0; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; font-size: 11.5px; color: #64748b; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                Affichage de <span id="pagStart" style="font-weight: 800; color: #0f172a;">1</span> à <span id="pagEnd" style="font-weight: 800; color: #0f172a;">20</span> sur <span id="pagTotal" style="font-weight: 800; color: #168078;">100</span> opérations comptables
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <button type="button" onclick="changerPageEcritures(-1)" id="btnPrevPage"
+                                    style="padding: 5px 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 700; color: #334155; transition: all 0.15s;">
+                                    ‹ Précédent
+                                </button>
+                                <div id="pagNumbers" style="display: flex; gap: 4px;"></div>
+                                <button type="button" onclick="changerPageEcritures(1)" id="btnNextPage"
+                                    style="padding: 5px 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 700; color: #334155; transition: all 0.15s;">
+                                    Suivant ›
+                                </button>
+                                <button type="button" onclick="toggleAfficherToutesEcritures()" id="btnToggleAllPages"
+                                    style="margin-left: 8px; padding: 5px 12px; border-radius: 6px; border: 1px solid #168078; background: #f0fdfa; color: #0f766e; cursor: pointer; font-weight: 800; transition: all 0.15s;">
+                                    Afficher les 100
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
         </div> <!-- Fin #sectionTableau -->
@@ -3765,6 +3788,10 @@
             if (hash && ['tableau', 'pme', 'documents', 'reporting', 'comptes', 'scoring', 'inventaires', 'parametres', 'notifications'].includes(hash)) {
                 switchAgencyTab(hash);
             }
+            // Chargement initial des 100 opérations d'Établissement Mamadou Diop
+            if (typeof PME_DATABASE !== 'undefined' && PME_DATABASE.diop) {
+                remplirTableauEcritures(PME_DATABASE.diop);
+            }
         });
 
         // Fonctions pour Comptes
@@ -4018,10 +4045,1306 @@
                     "Note 4 — Événements Postérieurs : Aucun litige commercial ni risque de défaut constaté à la date d'arrêté des comptes."
                 ],
                 ecritures: [
-                    { id: 1, date: "12/05/2026", libelle: "Achat Stock Riz Keur Yoff", compte: "601100 - Achats", debit: "185 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "✓ Preuve", hasValBtn: true },
-                    { id: 2, date: "12/05/2026", libelle: "Vente Journalière Espèces", compte: "701100 - Ventes", debit: "-", credit: "240 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
-                    { id: 3, date: "12/05/2026", libelle: "Achat Stock Riz Keur Yoff (Descompte)", compte: "601100 - Achats", debit: "185 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "numerique", statutLabel: "✓ Numérique", hasValBtn: false },
-                    { id: 4, date: "12/05/2026", libelle: "Vente Journalière Espèces Boutique", compte: "701100 - Ventes", debit: "-", credit: "240 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
+                                    {
+                                                        "id": 1,
+                                                        "date": "05/01/2026",
+                                                        "libelle": "Achat 50 Sacs Riz Parfumé Brisé 50kg Keur Yoff",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "925 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grand Moulin Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 2,
+                                                        "date": "06/01/2026",
+                                                        "libelle": "Vente Journalière Espèces Alimentation Générale",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "340 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 3,
+                                                        "date": "07/01/2026",
+                                                        "libelle": "Achat 20 Bidons Huile Végétale Dinor 20L",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "420 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grossiste Huilerie Sandaga",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 4,
+                                                        "date": "09/01/2026",
+                                                        "libelle": "Encaissement Wave Business Vente Demi-Gros Épicerie",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "580 000",
+                                                        "tiers": "Client Wave Supérette",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 5,
+                                                        "date": "10/01/2026",
+                                                        "libelle": "Facture Électricité Senelec Congélateurs Keur Yoff",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "145 000",
+                                                        "credit": "-",
+                                                        "tiers": "Senelec Agence Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 6,
+                                                        "date": "12/01/2026",
+                                                        "libelle": "Achat 30 Sacs Sucre Cristallisé CSS 50kg",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "660 000",
+                                                        "credit": "-",
+                                                        "tiers": "Compagnie Sucrière Sénégalaise",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 7,
+                                                        "date": "13/01/2026",
+                                                        "libelle": "Vente Journalière Espèces Boutique Yoff Village",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "285 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 8,
+                                                        "date": "14/01/2026",
+                                                        "libelle": "Transport Livraison Camionnette Marché Sandaga - Yoff",
+                                                        "compte": "612000 - Transports & Logistique",
+                                                        "debit": "35 000",
+                                                        "credit": "-",
+                                                        "tiers": "Transporteur Ndiaye Keur Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 9,
+                                                        "date": "16/01/2026",
+                                                        "libelle": "Achat 40 Cartons Lait Concentré Bonnet Rouge",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "380 000",
+                                                        "credit": "-",
+                                                        "tiers": "Distributeur Lait Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 10,
+                                                        "date": "17/01/2026",
+                                                        "libelle": "Encaissement Orange Money Ventes Clientèle",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "210 000",
+                                                        "tiers": "Client Mobile OM",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 11,
+                                                        "date": "19/01/2026",
+                                                        "libelle": "Achat 50 Cartons Tomate Pâte Double Concentré Salsa",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "290 000",
+                                                        "credit": "-",
+                                                        "tiers": "Patisen Dakar Bel-Air",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 12,
+                                                        "date": "20/01/2026",
+                                                        "libelle": "Règlement Fournisseur Grands Moulins Dakar (Chèque CBAO)",
+                                                        "compte": "401100 - Dettes Fournisseurs",
+                                                        "debit": "850 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grands Moulins de Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 13,
+                                                        "date": "22/01/2026",
+                                                        "libelle": "Facture Eau SenEau Agence Yoff",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "28 000",
+                                                        "credit": "-",
+                                                        "tiers": "SenEau Distribution Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 14,
+                                                        "date": "23/01/2026",
+                                                        "libelle": "Vente Demi-Gros Supérette Cité Biagui",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "490 000",
+                                                        "tiers": "Supérette Biagui Yoff",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 15,
+                                                        "date": "24/01/2026",
+                                                        "libelle": "Achat 15 Cartons Huile d'Olive & Vinaigre",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "165 000",
+                                                        "credit": "-",
+                                                        "tiers": "Importateur Agro-Alimentaire",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 16,
+                                                        "date": "26/01/2026",
+                                                        "libelle": "Encaissement Client Restaurant Almadies (Wave)",
+                                                        "compte": "411100 - Créances Clients",
+                                                        "debit": "-",
+                                                        "credit": "320 000",
+                                                        "tiers": "Restaurant Plage Almadies",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 17,
+                                                        "date": "27/01/2026",
+                                                        "libelle": "Achat 35 Cartons Savon Madar & Détergents Omo",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "245 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grossiste Hygiène Tilène",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 18,
+                                                        "date": "29/01/2026",
+                                                        "libelle": "Vente Journalière Espèces Comptoir Central",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "315 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 19,
+                                                        "date": "30/01/2026",
+                                                        "libelle": "Achat Emballages & Sachets Biodégradables Boutique",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "45 000",
+                                                        "credit": "-",
+                                                        "tiers": "Plastiques Modernes Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 20,
+                                                        "date": "31/01/2026",
+                                                        "libelle": "Versement Espèces Caisse sur Compte Bancaire CBAO",
+                                                        "compte": "521100 - Banque CBAO",
+                                                        "debit": "1 200 000",
+                                                        "credit": "-",
+                                                        "tiers": "Banque CBAO Agence Ngor",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 21,
+                                                        "date": "02/02/2026",
+                                                        "libelle": "Achat 25 Sacs Farine de Blé Sentenac 50kg",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "475 000",
+                                                        "credit": "-",
+                                                        "tiers": "Moulins Sentenac Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 22,
+                                                        "date": "03/02/2026",
+                                                        "libelle": "Vente Lots Produits Laitiers & Boissons Caisse",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "195 000",
+                                                        "tiers": "Clients Particuliers",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 23,
+                                                        "date": "05/02/2026",
+                                                        "libelle": "Achat 30 Cartons Bouillon Jumbo & Épices Africafé",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "210 000",
+                                                        "credit": "-",
+                                                        "tiers": "Patisen Distribution",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 24,
+                                                        "date": "06/02/2026",
+                                                        "libelle": "Encaissement Wave Vente Sacs Riz Particulier",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "115 000",
+                                                        "tiers": "Client Keur Yoff",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 25,
+                                                        "date": "08/02/2026",
+                                                        "libelle": "Maintenance Réfrigérateurs & Climatiseur Boutique",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "65 000",
+                                                        "credit": "-",
+                                                        "tiers": "Frigoriste Diallo Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 26,
+                                                        "date": "09/02/2026",
+                                                        "libelle": "Achat 50 Sacs Riz Parfumé Brisé 50kg Keur Yoff",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "925 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grand Moulin Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 27,
+                                                        "date": "10/02/2026",
+                                                        "libelle": "Vente Journalière Espèces Alimentation Générale",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "340 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 28,
+                                                        "date": "12/02/2026",
+                                                        "libelle": "Achat 20 Bidons Huile Végétale Dinor 20L",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "420 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grossiste Huilerie Sandaga",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 29,
+                                                        "date": "13/02/2026",
+                                                        "libelle": "Encaissement Wave Business Vente Demi-Gros Épicerie",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "580 000",
+                                                        "tiers": "Client Wave Supérette",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 30,
+                                                        "date": "15/02/2026",
+                                                        "libelle": "Facture Électricité Senelec Congélateurs Keur Yoff",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "145 000",
+                                                        "credit": "-",
+                                                        "tiers": "Senelec Agence Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 31,
+                                                        "date": "16/02/2026",
+                                                        "libelle": "Achat 30 Sacs Sucre Cristallisé CSS 50kg",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "660 000",
+                                                        "credit": "-",
+                                                        "tiers": "Compagnie Sucrière Sénégalaise",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 32,
+                                                        "date": "18/02/2026",
+                                                        "libelle": "Vente Journalière Espèces Boutique Yoff Village",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "285 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 33,
+                                                        "date": "19/02/2026",
+                                                        "libelle": "Transport Livraison Camionnette Marché Sandaga - Yoff",
+                                                        "compte": "612000 - Transports & Logistique",
+                                                        "debit": "35 000",
+                                                        "credit": "-",
+                                                        "tiers": "Transporteur Ndiaye Keur Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 34,
+                                                        "date": "20/02/2026",
+                                                        "libelle": "Achat 40 Cartons Lait Concentré Bonnet Rouge",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "380 000",
+                                                        "credit": "-",
+                                                        "tiers": "Distributeur Lait Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 35,
+                                                        "date": "22/02/2026",
+                                                        "libelle": "Encaissement Orange Money Ventes Clientèle",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "210 000",
+                                                        "tiers": "Client Mobile OM",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 36,
+                                                        "date": "23/02/2026",
+                                                        "libelle": "Achat 50 Cartons Tomate Pâte Double Concentré Salsa",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "290 000",
+                                                        "credit": "-",
+                                                        "tiers": "Patisen Dakar Bel-Air",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 37,
+                                                        "date": "25/02/2026",
+                                                        "libelle": "Règlement Fournisseur Grands Moulins Dakar (Chèque CBAO)",
+                                                        "compte": "401100 - Dettes Fournisseurs",
+                                                        "debit": "850 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grands Moulins de Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 38,
+                                                        "date": "26/02/2026",
+                                                        "libelle": "Facture Eau SenEau Agence Yoff",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "28 000",
+                                                        "credit": "-",
+                                                        "tiers": "SenEau Distribution Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 39,
+                                                        "date": "27/02/2026",
+                                                        "libelle": "Vente Demi-Gros Supérette Cité Biagui",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "490 000",
+                                                        "tiers": "Supérette Biagui Yoff",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 40,
+                                                        "date": "01/03/2026",
+                                                        "libelle": "Achat 15 Cartons Huile d'Olive & Vinaigre",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "165 000",
+                                                        "credit": "-",
+                                                        "tiers": "Importateur Agro-Alimentaire",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 41,
+                                                        "date": "02/03/2026",
+                                                        "libelle": "Encaissement Client Restaurant Almadies (Wave)",
+                                                        "compte": "411100 - Créances Clients",
+                                                        "debit": "-",
+                                                        "credit": "320 000",
+                                                        "tiers": "Restaurant Plage Almadies",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 42,
+                                                        "date": "04/03/2026",
+                                                        "libelle": "Achat 35 Cartons Savon Madar & Détergents Omo",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "245 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grossiste Hygiène Tilène",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 43,
+                                                        "date": "05/03/2026",
+                                                        "libelle": "Vente Journalière Espèces Comptoir Central",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "315 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 44,
+                                                        "date": "07/03/2026",
+                                                        "libelle": "Achat Emballages & Sachets Biodégradables Boutique",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "45 000",
+                                                        "credit": "-",
+                                                        "tiers": "Plastiques Modernes Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 45,
+                                                        "date": "08/03/2026",
+                                                        "libelle": "Versement Espèces Caisse sur Compte Bancaire CBAO",
+                                                        "compte": "521100 - Banque CBAO",
+                                                        "debit": "1 200 000",
+                                                        "credit": "-",
+                                                        "tiers": "Banque CBAO Agence Ngor",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 46,
+                                                        "date": "09/03/2026",
+                                                        "libelle": "Achat 25 Sacs Farine de Blé Sentenac 50kg",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "475 000",
+                                                        "credit": "-",
+                                                        "tiers": "Moulins Sentenac Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 47,
+                                                        "date": "11/03/2026",
+                                                        "libelle": "Vente Lots Produits Laitiers & Boissons Caisse",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "195 000",
+                                                        "tiers": "Clients Particuliers",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 48,
+                                                        "date": "12/03/2026",
+                                                        "libelle": "Achat 30 Cartons Bouillon Jumbo & Épices Africafé",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "210 000",
+                                                        "credit": "-",
+                                                        "tiers": "Patisen Distribution",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 49,
+                                                        "date": "14/03/2026",
+                                                        "libelle": "Encaissement Wave Vente Sacs Riz Particulier",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "115 000",
+                                                        "tiers": "Client Keur Yoff",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 50,
+                                                        "date": "15/03/2026",
+                                                        "libelle": "Maintenance Réfrigérateurs & Climatiseur Boutique",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "65 000",
+                                                        "credit": "-",
+                                                        "tiers": "Frigoriste Diallo Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 51,
+                                                        "date": "17/03/2026",
+                                                        "libelle": "Achat 50 Sacs Riz Parfumé Brisé 50kg Keur Yoff",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "925 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grand Moulin Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 52,
+                                                        "date": "18/03/2026",
+                                                        "libelle": "Vente Journalière Espèces Alimentation Générale",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "340 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 53,
+                                                        "date": "19/03/2026",
+                                                        "libelle": "Achat 20 Bidons Huile Végétale Dinor 20L",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "420 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grossiste Huilerie Sandaga",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 54,
+                                                        "date": "21/03/2026",
+                                                        "libelle": "Encaissement Wave Business Vente Demi-Gros Épicerie",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "580 000",
+                                                        "tiers": "Client Wave Supérette",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 55,
+                                                        "date": "22/03/2026",
+                                                        "libelle": "Facture Électricité Senelec Congélateurs Keur Yoff",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "145 000",
+                                                        "credit": "-",
+                                                        "tiers": "Senelec Agence Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 56,
+                                                        "date": "24/03/2026",
+                                                        "libelle": "Achat 30 Sacs Sucre Cristallisé CSS 50kg",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "660 000",
+                                                        "credit": "-",
+                                                        "tiers": "Compagnie Sucrière Sénégalaise",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 57,
+                                                        "date": "25/03/2026",
+                                                        "libelle": "Vente Journalière Espèces Boutique Yoff Village",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "285 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 58,
+                                                        "date": "26/03/2026",
+                                                        "libelle": "Transport Livraison Camionnette Marché Sandaga - Yoff",
+                                                        "compte": "612000 - Transports & Logistique",
+                                                        "debit": "35 000",
+                                                        "credit": "-",
+                                                        "tiers": "Transporteur Ndiaye Keur Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 59,
+                                                        "date": "28/03/2026",
+                                                        "libelle": "Achat 40 Cartons Lait Concentré Bonnet Rouge",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "380 000",
+                                                        "credit": "-",
+                                                        "tiers": "Distributeur Lait Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 60,
+                                                        "date": "29/03/2026",
+                                                        "libelle": "Encaissement Orange Money Ventes Clientèle",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "210 000",
+                                                        "tiers": "Client Mobile OM",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 61,
+                                                        "date": "31/03/2026",
+                                                        "libelle": "Achat 50 Cartons Tomate Pâte Double Concentré Salsa",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "290 000",
+                                                        "credit": "-",
+                                                        "tiers": "Patisen Dakar Bel-Air",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 62,
+                                                        "date": "01/04/2026",
+                                                        "libelle": "Règlement Fournisseur Grands Moulins Dakar (Chèque CBAO)",
+                                                        "compte": "401100 - Dettes Fournisseurs",
+                                                        "debit": "850 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grands Moulins de Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 63,
+                                                        "date": "03/04/2026",
+                                                        "libelle": "Facture Eau SenEau Agence Yoff",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "28 000",
+                                                        "credit": "-",
+                                                        "tiers": "SenEau Distribution Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 64,
+                                                        "date": "04/04/2026",
+                                                        "libelle": "Vente Demi-Gros Supérette Cité Biagui",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "490 000",
+                                                        "tiers": "Supérette Biagui Yoff",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 65,
+                                                        "date": "05/04/2026",
+                                                        "libelle": "Achat 15 Cartons Huile d'Olive & Vinaigre",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "165 000",
+                                                        "credit": "-",
+                                                        "tiers": "Importateur Agro-Alimentaire",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 66,
+                                                        "date": "07/04/2026",
+                                                        "libelle": "Encaissement Client Restaurant Almadies (Wave)",
+                                                        "compte": "411100 - Créances Clients",
+                                                        "debit": "-",
+                                                        "credit": "320 000",
+                                                        "tiers": "Restaurant Plage Almadies",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 67,
+                                                        "date": "08/04/2026",
+                                                        "libelle": "Achat 35 Cartons Savon Madar & Détergents Omo",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "245 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grossiste Hygiène Tilène",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 68,
+                                                        "date": "10/04/2026",
+                                                        "libelle": "Vente Journalière Espèces Comptoir Central",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "315 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 69,
+                                                        "date": "11/04/2026",
+                                                        "libelle": "Achat Emballages & Sachets Biodégradables Boutique",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "45 000",
+                                                        "credit": "-",
+                                                        "tiers": "Plastiques Modernes Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 70,
+                                                        "date": "12/04/2026",
+                                                        "libelle": "Versement Espèces Caisse sur Compte Bancaire CBAO",
+                                                        "compte": "521100 - Banque CBAO",
+                                                        "debit": "1 200 000",
+                                                        "credit": "-",
+                                                        "tiers": "Banque CBAO Agence Ngor",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 71,
+                                                        "date": "14/04/2026",
+                                                        "libelle": "Achat 25 Sacs Farine de Blé Sentenac 50kg",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "475 000",
+                                                        "credit": "-",
+                                                        "tiers": "Moulins Sentenac Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 72,
+                                                        "date": "15/04/2026",
+                                                        "libelle": "Vente Lots Produits Laitiers & Boissons Caisse",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "195 000",
+                                                        "tiers": "Clients Particuliers",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 73,
+                                                        "date": "17/04/2026",
+                                                        "libelle": "Achat 30 Cartons Bouillon Jumbo & Épices Africafé",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "210 000",
+                                                        "credit": "-",
+                                                        "tiers": "Patisen Distribution",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 74,
+                                                        "date": "18/04/2026",
+                                                        "libelle": "Encaissement Wave Vente Sacs Riz Particulier",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "115 000",
+                                                        "tiers": "Client Keur Yoff",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 75,
+                                                        "date": "20/04/2026",
+                                                        "libelle": "Maintenance Réfrigérateurs & Climatiseur Boutique",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "65 000",
+                                                        "credit": "-",
+                                                        "tiers": "Frigoriste Diallo Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 76,
+                                                        "date": "21/04/2026",
+                                                        "libelle": "Achat 50 Sacs Riz Parfumé Brisé 50kg Keur Yoff",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "925 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grand Moulin Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 77,
+                                                        "date": "22/04/2026",
+                                                        "libelle": "Vente Journalière Espèces Alimentation Générale",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "340 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 78,
+                                                        "date": "24/04/2026",
+                                                        "libelle": "Achat 20 Bidons Huile Végétale Dinor 20L",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "420 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grossiste Huilerie Sandaga",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 79,
+                                                        "date": "25/04/2026",
+                                                        "libelle": "Encaissement Wave Business Vente Demi-Gros Épicerie",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "580 000",
+                                                        "tiers": "Client Wave Supérette",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 80,
+                                                        "date": "27/04/2026",
+                                                        "libelle": "Facture Électricité Senelec Congélateurs Keur Yoff",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "145 000",
+                                                        "credit": "-",
+                                                        "tiers": "Senelec Agence Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 81,
+                                                        "date": "28/04/2026",
+                                                        "libelle": "Achat 30 Sacs Sucre Cristallisé CSS 50kg",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "660 000",
+                                                        "credit": "-",
+                                                        "tiers": "Compagnie Sucrière Sénégalaise",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 82,
+                                                        "date": "30/04/2026",
+                                                        "libelle": "Vente Journalière Espèces Boutique Yoff Village",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "285 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 83,
+                                                        "date": "01/05/2026",
+                                                        "libelle": "Transport Livraison Camionnette Marché Sandaga - Yoff",
+                                                        "compte": "612000 - Transports & Logistique",
+                                                        "debit": "35 000",
+                                                        "credit": "-",
+                                                        "tiers": "Transporteur Ndiaye Keur Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 84,
+                                                        "date": "02/05/2026",
+                                                        "libelle": "Achat 40 Cartons Lait Concentré Bonnet Rouge",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "380 000",
+                                                        "credit": "-",
+                                                        "tiers": "Distributeur Lait Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 85,
+                                                        "date": "04/05/2026",
+                                                        "libelle": "Encaissement Orange Money Ventes Clientèle",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "210 000",
+                                                        "tiers": "Client Mobile OM",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 86,
+                                                        "date": "05/05/2026",
+                                                        "libelle": "Achat 50 Cartons Tomate Pâte Double Concentré Salsa",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "290 000",
+                                                        "credit": "-",
+                                                        "tiers": "Patisen Dakar Bel-Air",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 87,
+                                                        "date": "07/05/2026",
+                                                        "libelle": "Règlement Fournisseur Grands Moulins Dakar (Chèque CBAO)",
+                                                        "compte": "401100 - Dettes Fournisseurs",
+                                                        "debit": "850 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grands Moulins de Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 88,
+                                                        "date": "08/05/2026",
+                                                        "libelle": "Facture Eau SenEau Agence Yoff",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "28 000",
+                                                        "credit": "-",
+                                                        "tiers": "SenEau Distribution Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 89,
+                                                        "date": "09/05/2026",
+                                                        "libelle": "Vente Demi-Gros Supérette Cité Biagui",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "490 000",
+                                                        "tiers": "Supérette Biagui Yoff",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 90,
+                                                        "date": "11/05/2026",
+                                                        "libelle": "Achat 15 Cartons Huile d'Olive & Vinaigre",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "165 000",
+                                                        "credit": "-",
+                                                        "tiers": "Importateur Agro-Alimentaire",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 91,
+                                                        "date": "12/05/2026",
+                                                        "libelle": "Encaissement Client Restaurant Almadies (Wave)",
+                                                        "compte": "411100 - Créances Clients",
+                                                        "debit": "-",
+                                                        "credit": "320 000",
+                                                        "tiers": "Restaurant Plage Almadies",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 92,
+                                                        "date": "14/05/2026",
+                                                        "libelle": "Achat 35 Cartons Savon Madar & Détergents Omo",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "245 000",
+                                                        "credit": "-",
+                                                        "tiers": "Grossiste Hygiène Tilène",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 93,
+                                                        "date": "15/05/2026",
+                                                        "libelle": "Vente Journalière Espèces Comptoir Central",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "315 000",
+                                                        "tiers": "Clients Caisse",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "preuve",
+                                                        "statutLabel": "✓ Preuve",
+                                                        "hasValBtn": true
+                                    },
+                                    {
+                                                        "id": 94,
+                                                        "date": "17/05/2026",
+                                                        "libelle": "Achat Emballages & Sachets Biodégradables Boutique",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "45 000",
+                                                        "credit": "-",
+                                                        "tiers": "Plastiques Modernes Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 95,
+                                                        "date": "18/05/2026",
+                                                        "libelle": "Versement Espèces Caisse sur Compte Bancaire CBAO",
+                                                        "compte": "521100 - Banque CBAO",
+                                                        "debit": "1 200 000",
+                                                        "credit": "-",
+                                                        "tiers": "Banque CBAO Agence Ngor",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 96,
+                                                        "date": "19/05/2026",
+                                                        "libelle": "Achat 25 Sacs Farine de Blé Sentenac 50kg",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "475 000",
+                                                        "credit": "-",
+                                                        "tiers": "Moulins Sentenac Dakar",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 97,
+                                                        "date": "21/05/2026",
+                                                        "libelle": "Vente Lots Produits Laitiers & Boissons Caisse",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "195 000",
+                                                        "tiers": "Clients Particuliers",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "numerique",
+                                                        "statutLabel": "✓ Numérique",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 98,
+                                                        "date": "22/05/2026",
+                                                        "libelle": "Achat 30 Cartons Bouillon Jumbo & Épices Africafé",
+                                                        "compte": "601100 - Achats de marchandises",
+                                                        "debit": "210 000",
+                                                        "credit": "-",
+                                                        "tiers": "Patisen Distribution",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 99,
+                                                        "date": "24/05/2026",
+                                                        "libelle": "Encaissement Wave Vente Sacs Riz Particulier",
+                                                        "compte": "701100 - Ventes de marchandises",
+                                                        "debit": "-",
+                                                        "credit": "115 000",
+                                                        "tiers": "Client Keur Yoff",
+                                                        "preuve": "/static/mock_wave_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    },
+                                    {
+                                                        "id": 100,
+                                                        "date": "25/05/2026",
+                                                        "libelle": "Maintenance Réfrigérateurs & Climatiseur Boutique",
+                                                        "compte": "605100 - Énergie, Eau & Fournitures",
+                                                        "debit": "65 000",
+                                                        "credit": "-",
+                                                        "tiers": "Frigoriste Diallo Yoff",
+                                                        "preuve": "/static/mock_receipt_photo.png",
+                                                        "statut": "validee",
+                                                        "statutLabel": "✓ Validée",
+                                                        "hasValBtn": false
+                                    }
                 ]
             },
             touba: {
@@ -4319,20 +5642,113 @@
             }
         }
 
-        // Remplissage dynamique du tableau des écritures
+        // =========================================================================
+        // GESTION DE LA PAGINATION DES ÉCRITURES (100 OPÉRATIONS MULTI-PAGES / VUE TOTALE)
+        // =========================================================================
+        let ecrituresCurrentPage = 1;
+        const ecrituresPerPage = 20;
+        let ecrituresShowAll = false;
+
+        function changerPageEcritures(delta) {
+            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+            const total = pme.ecritures.length;
+            const totalPages = Math.ceil(total / ecrituresPerPage) || 1;
+            const newPage = ecrituresCurrentPage + delta;
+            if (newPage >= 1 && newPage <= totalPages) {
+                ecrituresCurrentPage = newPage;
+                remplirTableauEcritures(pme);
+            }
+        }
+
+        function allerPageEcritures(page) {
+            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+            ecrituresCurrentPage = page;
+            ecrituresShowAll = false;
+            remplirTableauEcritures(pme);
+        }
+
+        function toggleAfficherToutesEcritures() {
+            ecrituresShowAll = !ecrituresShowAll;
+            const btn = document.getElementById('btnToggleAllPages');
+            if (btn) {
+                btn.textContent = ecrituresShowAll ? 'Paginer (par 20)' : 'Afficher les 100';
+            }
+            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+            remplirTableauEcritures(pme);
+        }
+
+        // Remplissage dynamique du tableau des écritures (Avec Pagination fluide)
         function remplirTableauEcritures(pme) {
             const tbody = document.getElementById('table-body');
             if (!tbody) return;
 
+            const total = pme.ecritures.length;
+            const totalPages = Math.ceil(total / ecrituresPerPage) || 1;
+
+            if (ecrituresCurrentPage > totalPages) ecrituresCurrentPage = 1;
+
+            let startIndex = 0;
+            let endIndex = total;
+            let displayList = pme.ecritures;
+
+            if (!ecrituresShowAll && total > ecrituresPerPage) {
+                startIndex = (ecrituresCurrentPage - 1) * ecrituresPerPage;
+                endIndex = Math.min(startIndex + ecrituresPerPage, total);
+                displayList = pme.ecritures.slice(startIndex, endIndex);
+            }
+
+            // Mise à jour de la barre de pagination
+            const pagBar = document.getElementById('ecrituresPaginationBar');
+            if (pagBar) {
+                if (total <= ecrituresPerPage && !ecrituresShowAll) {
+                    pagBar.style.display = 'none';
+                } else {
+                    pagBar.style.display = 'flex';
+                    const elStart = document.getElementById('pagStart');
+                    const elEnd = document.getElementById('pagEnd');
+                    const elTotal = document.getElementById('pagTotal');
+                    if (elStart) elStart.textContent = ecrituresShowAll ? '1' : (startIndex + 1);
+                    if (elEnd) elEnd.textContent = ecrituresShowAll ? total : endIndex;
+                    if (elTotal) elTotal.textContent = total;
+
+                    const prevBtn = document.getElementById('btnPrevPage');
+                    const nextBtn = document.getElementById('btnNextPage');
+                    if (prevBtn) {
+                        prevBtn.disabled = ecrituresShowAll || ecrituresCurrentPage <= 1;
+                        prevBtn.style.opacity = (ecrituresShowAll || ecrituresCurrentPage <= 1) ? '0.5' : '1';
+                        prevBtn.style.cursor = (ecrituresShowAll || ecrituresCurrentPage <= 1) ? 'not-allowed' : 'pointer';
+                    }
+                    if (nextBtn) {
+                        nextBtn.disabled = ecrituresShowAll || ecrituresCurrentPage >= totalPages;
+                        nextBtn.style.opacity = (ecrituresShowAll || ecrituresCurrentPage >= totalPages) ? '0.5' : '1';
+                        nextBtn.style.cursor = (ecrituresShowAll || ecrituresCurrentPage >= totalPages) ? 'not-allowed' : 'pointer';
+                    }
+
+                    const numsContainer = document.getElementById('pagNumbers');
+                    if (numsContainer) {
+                        if (ecrituresShowAll) {
+                            numsContainer.innerHTML = '<span style="font-weight: 800; color: #168078; padding: 4px 8px; background: #f0fdfa; border-radius: 6px; font-size: 11px;">Vue intégrale des ' + total + ' opérations</span>';
+                        } else {
+                            let numsHtml = '';
+                            for (let p = 1; p <= totalPages; p++) {
+                                const isActive = p === ecrituresCurrentPage;
+                                numsHtml += `<button type="button" onclick="allerPageEcritures(${p})" style="width: 28px; height: 28px; border-radius: 6px; border: 1px solid ${isActive ? '#168078' : '#cbd5e1'}; background: ${isActive ? '#168078' : '#ffffff'}; color: ${isActive ? '#ffffff' : '#334155'}; font-size: 11px; font-weight: ${isActive ? '800' : '600'}; cursor: pointer;">${p}</button>`;
+                            }
+                            numsContainer.innerHTML = numsHtml;
+                        }
+                    }
+                }
+            }
+
             let html = '';
-            pme.ecritures.forEach(ec => {
+            displayList.forEach(ec => {
                 const btnVal = ec.hasValBtn
                     ? `<button class="btn-validate" id="btn-val-${ec.id}" onclick="validateRow(${ec.id})">Valider</button>`
                     : '';
                 const badgeClass = ec.statut === 'validee' ? 'badge-validee' : (ec.statut === 'numerique' ? 'badge-numerique' : 'badge-preuve');
                 const safeRef = `PC-${ec.date.split('/').reverse().join('-')}-00${ec.id}`;
                 const safeImg = ec.preuve || '/static/mock_receipt_photo.png';
-                const safeTiers = pme.nom || 'Fournisseur / Client';
+                const safeTiers = ec.tiers || pme.nom || 'Fournisseur / Client';
                 const rawCpt = ec.compte || '601100 - Achats de marchandises';
                 const cptCode = rawCpt.replace(/[^0-9]/g, '').slice(0, 6) || '601100';
                 const cptPrefix = cptCode.slice(0, 3) || '601';
