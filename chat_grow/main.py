@@ -2022,46 +2022,26 @@ async def receive_message(request: Request):
 
 def is_question_hors_cadre_grow(text: str) -> bool:
     """
-    Filtre strict d'intégrité métier :
-    Intercepte toute question qui n'est pas dans le cadre de Growth (comptabilité, finances, flux, dettes, stocks, agences, bilans, salutations).
-    Répond invariablement : 'Désolé, je n'ai pas été créé pour répondre à cette demande.'
+    Filtre d'intégrité pour le jury / gouvernance :
+    Intercepte UNIQUEMENT les sujets purement récréatifs ou hors contexte (recettes de cuisine, météo, football, politique, blagues, chansons).
+    Laisse passer toute conversation, question sur le fonctionnement de Growth, gestion financière, clients, relances, etc.
     """
     if not text or len(text.strip()) < 3:
         return False
     t = text.lower().strip()
 
-    # 1. Détection prioritaire des thèmes hors-sujet évidents
+    # Thèmes purement hors-sujet / récréatifs évidents
     mots_hors_sujet = [
-        'meteo', 'météo', 'football', 'ballon', 'match', 'politique', 'president', 'président', 'election', 'élection',
-        'blague', 'poeme', 'poème', 'chanson', 'recette de', 'recette du', 'cuisine', 'film', 'serie', 'musique', 'devoir', 'cours',
-        'philosophie', 'amour', 'capitale', 'qui a gagne', 'qui a gagné', 'qui est le plus', 'qui est le président', 'thieb', 'thiéboudienne'
+        'meteo', 'météo', 'quel temps fait', 'temps fait-il', 'football', 'ballon', 'match de foot', 'championnat', 'politique', 'election', 'élection',
+        'blague', 'poeme', 'poème', 'chanson', 'recette de', 'recette du', 'cuisine un', 'faire la cuisine',
+        'philosophie', 'amour', 'capitale de', 'qui a gagne le match', 'qui est le président', 'thieboudienne', 'thiéboudienne', 'recette thieb'
     ]
-    if any(k in t for k in mots_hors_sujet):
-        return True
-
-    # 2. Mots-clés légitimes Growth / Compta / Business / Salutations / Rapprochements
-    mots_valides = [
-        'bonjour', 'salut', 'salam', 'bonsoir', 'merci', 'jerejef', 'jërejëf', 'nanga def', 'nanga',
-        'vente', 'vendu', 'achat', 'acheté', 'depense', 'dépense', 'caisse', 'espece', 'espèces', 'cash',
-        'wave', 'orange', 'om', 'free', 'banque', 'virement', 'solde', 'credit', 'crédit', 'debit', 'débit',
-        'stock', 'marchandise', 'fournisseur', 'client', 'facture', 'recu', 'reçu', 'ticket', 'preuve', 'photo',
-        'dette', 'creance', 'créance', 'emprunt', 'rembourse', 'remboursement', 'loyer', 'salaire', 'carburant',
-        'immobilisation', 'materiel', 'matériel', 'equipement', 'équipement', 'machine', 'ordinateur', 'vehicule',
-        'bilan', 'compte de resultat', 'resultat', 'tft', 'grand livre', 'journal', 'syscohada', 'impot', 'tva',
-        'grow', 'abonnement', 'tarif', 'agence', 'partenaire', 'aide', 'comment', 'ninea', 'rccm', 'entreprise',
-        'phase', 'vocal', 'ecrit', 'écrit', 'francais', 'français', 'wolof', 'anglais', 'english', '1', '2', '3', 'oui', 'non', 'ok', 'd accord'
-    ]
-    if any(re.search(r'\b' + re.escape(w) + r'\b', t) for w in mots_valides):
-        return False
-    if re.search(r'\d+', t):  # Tout texte contenant des montants ou chiffres
-        return False
-
-    # 3. Si c'est une question interrogative sans rapport avec la gestion financière
-    if '?' in t and not any(k in t for k in ['grow', 'compte', 'bilan', 'caisse', 'payer', 'argent', 'prix', 'combien']):
-        return True
-
-    # 4. Si le texte ne contient aucun mot clé financier, comptable ou de politesse
-    return True
+    for h in mots_hors_sujet:
+        if h in t:
+            # Exception si l'utilisateur parle de son activité commerciale
+            if any(biz in t for biz in ['restaurant', 'vente', 'achat', 'client', 'facture', 'dépense', 'depense', 'prix', 'fcfa', 'cfa', 'boutique', 'commerce', 'entreprise']):
+                return False
+            return True
 
     return False
 
