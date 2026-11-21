@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full bg-[#0b1222]">
+<html lang="fr" class="h-full bg-[#111a2e]">
 
 <head>
     <meta charset="UTF-8">
@@ -26,8 +26,8 @@
                 extend: {
                     colors: {
                         grow: {
-                            dark: '#0b1222',
-                            card: '#111a2e',
+                            dark: '#111a2e',
+                            card: '#16223b',
                             forest: '#14362b',
                             primary: '#168078',
                             mint: '#a0d9d2',
@@ -50,11 +50,8 @@
         }
 
         body {
-            background-color: #0b1222;
-            background-image: 
-                radial-gradient(circle at 15% 10%, rgba(160, 217, 210, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(20, 54, 43, 0.35) 0%, transparent 50%);
-            background-attachment: fixed;
+            background-color: #111a2e !important;
+            background: #111a2e !important;
             min-height: 100vh;
         }
 
@@ -77,19 +74,19 @@
         }
 
         .growth-card {
-            background: #111a2e;
+            background: #16223b !important;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 18px;
             transition: all 0.2s ease;
         }
 
         .growth-card:hover {
-            border-color: rgba(160, 217, 210, 0.28);
+            border-color: rgba(160, 217, 210, 0.32);
         }
 
         .btn-mint {
             background: #a0d9d2;
-            color: #0b1222;
+            color: #111a2e;
             font-weight: 800;
             transition: all 0.15s ease;
         }
@@ -107,12 +104,12 @@
     <!-- ========================================================================= -->
     <!-- BARRE SUPÉRIEURE DE DIRECTION / FONDATEUR                                -->
     <!-- ========================================================================= -->
-    <header class="bg-[#111a2e]/90 border-b border-white/10 sticky top-0 z-40 px-4 sm:px-8 py-3.5 shadow-lg backdrop-blur-md">
+    <header class="bg-[#0e1628]/95 border-b border-white/10 sticky top-0 z-40 px-4 sm:px-8 py-3.5 shadow-lg backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             
             <!-- Logo Growth Officiel & Titre Cockpit -->
             <div class="flex items-center gap-3">
-                <a href="/cockpit" class="w-10 h-10 rounded-2xl overflow-hidden shadow-md shadow-[#a0d9d2]/20 border border-[#a0d9d2]/30 flex-shrink-0 bg-[#0b1222] flex items-center justify-center hover:scale-105 transition-transform" title="GROWTH Cockpit">
+                <a href="/cockpit" class="w-10 h-10 rounded-2xl overflow-hidden shadow-md shadow-[#a0d9d2]/20 border border-[#a0d9d2]/30 flex-shrink-0 bg-[#0e1628] flex items-center justify-center hover:scale-105 transition-transform" title="GROWTH Cockpit">
                     <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" class="w-full h-full object-contain rounded-2xl">
                 </a>
                 <div>
@@ -223,7 +220,7 @@
         <div class="flex items-center gap-2 border-b border-white/10 pb-2 overflow-x-auto custom-scrollbar">
             <!-- Onglet 1 : Utilisateurs -->
             <button type="button" onclick="switchCockpitTab('utilisateurs')" id="tabBtnUsers"
-                class="px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#a0d9d2] text-[#0b1222] shadow-md shadow-[#a0d9d2]/15 cursor-pointer flex-shrink-0">
+                class="px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#a0d9d2] text-[#111a2e] shadow-md shadow-[#a0d9d2]/15 cursor-pointer flex-shrink-0">
                 <span class="material-symbols-outlined notranslate text-[18px]" translate="no">groups</span>
                 <span>Suivi &amp; Relance des Utilisateurs</span>
                 <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-black/30 text-white font-mono" id="tabBadgeUsersCount">0</span>
@@ -257,12 +254,12 @@
                     <span class="material-symbols-outlined notranslate absolute left-3 top-2.5 text-slate-400 text-[18px]" translate="no">search</span>
                     <input type="text" id="searchUserInput" onkeyup="filterUsersTable()"
                         placeholder="Rechercher par nom de commerce ou numéro WhatsApp..."
-                        class="w-full pl-9 pr-4 py-2 rounded-xl bg-[#0b1222] border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#a0d9d2] focus:ring-1 focus:ring-[#a0d9d2] transition-colors">
+                        class="w-full pl-9 pr-4 py-2 rounded-xl bg-[#0c1322] border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#a0d9d2] focus:ring-1 focus:ring-[#a0d9d2] transition-colors">
                 </div>
                 <div class="flex items-center gap-2 text-xs flex-wrap">
                     <span class="text-slate-400 font-semibold">Filtre :</span>
                     <button type="button" onclick="setUserFilter('ALL')" id="filterAll"
-                        class="px-2.5 py-1 rounded-lg bg-[#a0d9d2] text-[#0b1222] font-bold cursor-pointer">Tous</button>
+                        class="px-2.5 py-1 rounded-lg bg-[#a0d9d2] text-[#111a2e] font-bold cursor-pointer">Tous</button>
                     <button type="button" onclick="setUserFilter('ACTIF')" id="filterActif"
                         class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer">🟢 Actifs</button>
                     <button type="button" onclick="setUserFilter('ATTENTION')" id="filterAttention"
@@ -302,7 +299,7 @@
             <!-- 3 Mini Cartes Récap Caisse Créateur -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 <!-- Caisse Wave -->
-                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0b1222] border-emerald-500/20">
+                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-emerald-500/20">
                     <div class="flex items-center justify-between text-slate-400 text-xs">
                         <span class="font-bold uppercase tracking-wider text-emerald-400">Encaissements Wave</span>
                         <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300">WAVE</span>
@@ -312,7 +309,7 @@
                 </div>
 
                 <!-- Caisse Orange Money -->
-                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0b1222] border-orange-500/20">
+                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-orange-500/20">
                     <div class="flex items-center justify-between text-slate-400 text-xs">
                         <span class="font-bold uppercase tracking-wider text-orange-400">Encaissements OM</span>
                         <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-orange-500/20 text-orange-300">OM</span>
@@ -322,7 +319,7 @@
                 </div>
 
                 <!-- Caisse Espèces / Direct -->
-                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0b1222] border-white/10">
+                <div class="growth-card p-4 bg-gradient-to-br from-[#111a2e] to-[#0c1322] border-white/10">
                     <div class="flex items-center justify-between text-slate-400 text-xs">
                         <span class="font-bold uppercase tracking-wider text-[#a0d9d2]">Caisse Espèces / Direct</span>
                         <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#a0d9d2]/20 text-[#a0d9d2]">CASH</span>
@@ -444,7 +441,7 @@
                         <span class="text-[10px] text-slate-400 font-normal">Envoyé avec boutons 👍 / 👎</span>
                     </label>
                     <textarea id="relanceMessageText" rows="5"
-                        class="w-full text-xs p-3 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white leading-relaxed font-sans"></textarea>
+                        class="w-full text-xs p-3 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white leading-relaxed font-sans"></textarea>
                 </div>
             </div>
             <div class="px-5 py-3 border-t border-white/10 bg-black/40 flex items-center justify-end gap-2">
@@ -478,18 +475,18 @@
                 <div>
                     <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Numéro WhatsApp du commerçant</label>
                     <input type="text" id="encaisserPhone" placeholder="Ex: 221788773827"
-                        class="w-full text-xs p-2.5 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white font-mono">
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white font-mono">
                 </div>
                 <div>
                     <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Nom du commerce (optionnel)</label>
                     <input type="text" id="encaisserNom" placeholder="Ex: Boutique Moderne"
-                        class="w-full text-xs p-2.5 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white">
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Forfait</label>
                         <select id="encaisserPlan" onchange="ajusterMontantPlan(this.value)"
-                            class="w-full text-xs p-2.5 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white cursor-pointer">
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white cursor-pointer">
                             <option value="Starter">Starter (10 000 F)</option>
                             <option value="Pro">Pro (25 000 F)</option>
                             <option value="Cabinet">Cabinet (50 000 F)</option>
@@ -498,13 +495,13 @@
                     <div>
                         <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Montant Encaissé (FCFA)</label>
                         <input type="number" id="encaisserMontant" value="10000"
-                            class="w-full text-xs p-2.5 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white font-mono font-bold">
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white font-mono font-bold">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Mode de Réception des Fonds</label>
                     <select id="encaisserOperateur"
-                        class="w-full text-xs p-2.5 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white cursor-pointer">
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white cursor-pointer">
                         <option value="WAVE">Wave Sénégal</option>
                         <option value="ORANGE_MONEY">Orange Money</option>
                         <option value="ESPECES">Espèces en main propre</option>
@@ -553,7 +550,7 @@
                 <div>
                     <label class="block text-[10.5px] uppercase font-bold text-[#a0d9d2] tracking-wider mb-1">Votre réponse d'expert définitive (Règle métier permanente)</label>
                     <textarea id="teachInputText" rows="4"
-                        class="w-full text-xs p-3 rounded-xl bg-[#0b1222] border border-white/10 focus:border-[#a0d9d2] outline-none text-white leading-relaxed"
+                        class="w-full text-xs p-3 rounded-xl bg-[#0c1322] border border-white/10 focus:border-[#a0d9d2] outline-none text-white leading-relaxed"
                         placeholder="Rédigez la réponse d'élite que Growth doit désormais mémoriser pour ce cas..."></textarea>
                 </div>
             </div>
@@ -604,7 +601,7 @@
             secLearning.classList.add('hidden');
 
             const inactiveCls = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer flex-shrink-0";
-            const activeCls = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#a0d9d2] text-[#0b1222] shadow-md shadow-[#a0d9d2]/15 cursor-pointer flex-shrink-0";
+            const activeCls = "px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#a0d9d2] text-[#111a2e] shadow-md shadow-[#a0d9d2]/15 cursor-pointer flex-shrink-0";
 
             btnUsers.className = inactiveCls;
             btnAbo.className = inactiveCls;
@@ -685,7 +682,7 @@
                     <tr>
                         <td colspan="6" class="py-16 px-4 text-center">
                             <div class="max-w-md mx-auto flex flex-col items-center justify-center">
-                                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-lg shadow-[#a0d9d2]/15 border border-[#a0d9d2]/30 mb-3.5 bg-[#0b1222] p-1 flex items-center justify-center">
+                                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-lg shadow-[#a0d9d2]/15 border border-[#a0d9d2]/30 mb-3.5 bg-[#0c1322] p-1 flex items-center justify-center">
                                     <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" class="w-full h-full object-contain rounded-xl">
                                 </div>
                                 <h3 class="text-base font-black text-white tracking-tight">Plateforme prête pour le lancement (0 client)</h3>
@@ -879,7 +876,7 @@
             ['filterAll', 'filterActif', 'filterAttention', 'filterInactif'].forEach(id => {
                 document.getElementById(id).className = "px-2.5 py-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer";
             });
-            if (filter === 'ALL') document.getElementById('filterAll').className = "px-2.5 py-1 rounded-lg bg-[#a0d9d2] text-[#0b1222] font-bold cursor-pointer";
+            if (filter === 'ALL') document.getElementById('filterAll').className = "px-2.5 py-1 rounded-lg bg-[#a0d9d2] text-[#111a2e] font-bold cursor-pointer";
             if (filter === 'ACTIF') document.getElementById('filterActif').className = "px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold cursor-pointer";
             if (filter === 'ATTENTION') document.getElementById('filterAttention').className = "px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-bold cursor-pointer";
             if (filter === 'INACTIF') document.getElementById('filterInactif').className = "px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 font-bold cursor-pointer";
