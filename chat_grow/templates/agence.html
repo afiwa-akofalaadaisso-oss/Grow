@@ -1510,13 +1510,13 @@
                             </button>
                         </div>
 
-                        <!-- BARRE DE SÉLECTION PME, PÉRIODE & COMPTES ASSOCIÉS -->
+                        <!-- BARRE DE SÉLECTION PME, PÉRIODE & COMPTES ASSOCIÉS (SUR UNE SEULE LIGNE) -->
                         <div class="filters-row"
-                            style="position: relative; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; margin-bottom: 16px;">
+                            style="position: relative; display: flex; flex-wrap: nowrap; gap: 16px; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 18px; margin-bottom: 16px;">
 
                             <!-- SÉLECTION DE L'INTERVALLE DE TEMPS DU BILAN AVEC CALENDRIER SUR-MESURE FINTECH PRO -->
                             <div class="relative inline-block" id="agenceDateWrapper"
-                                style="position: relative; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                style="position: relative; display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                                 <span
                                     style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.4px; display: inline-flex; align-items: center; gap: 5px;">
                                     <i class="fa-solid fa-calendar-days" style="color: #168078;"></i> Période :
@@ -1650,27 +1650,26 @@
                                         id="agenceCalSummary">
                                         Du 01/05/2026 au 31/05/2026
                                     </div>
-                                </div>
 
-                                <!-- Actions Annuler / Appliquer -->
-                                <div class="cal-footer">
-                                    <button type="button" class="cal-btn-cancel"
-                                        onclick="closeAgenceCalendar()">Fermer</button>
-                                    <button type="button" class="cal-btn-apply"
-                                        onclick="applyAgenceCalendarFilter()">Appliquer</button>
+                                    <!-- Actions Annuler / Appliquer (Intégrées à l'intérieur du popover calendrier) -->
+                                    <div class="cal-footer">
+                                        <button type="button" class="cal-btn-cancel"
+                                            onclick="closeAgenceCalendar()">Fermer</button>
+                                        <button type="button" class="cal-btn-apply"
+                                            onclick="applyAgenceCalendarFilter()">Appliquer</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- MENU DÉROULANT FINTECH DES COMPTES ASSOCIÉS -->
-                        <div class="relative inline-block" id="compteAssociesWrapper" style="position: relative;">
-                            <button type="button" id="compteAssociesBtn" onclick="toggleCompteAssociesMenu(event)"
-                                style="padding: 8px 16px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 9px; font-size: 12.5px; font-weight: 700; color: #1e293b; display: inline-flex; align-items: center; gap: 9px; cursor: pointer; transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                                <i class="fa-solid fa-filter" style="font-size: 13px; color: #0e7647;"></i>
-                                <span id="compteAssociesBtnLabel">Comptes associés : Tous les comptes</span>
-                                <i class="fa-solid fa-chevron-down" id="compteAssociesChevron"
-                                    style="font-size: 11px; color: #94a3b8; transition: transform 0.2s; margin-left: 4px;"></i>
-                            </button>
+                            <!-- MENU DÉROULANT FINTECH DES COMPTES ASSOCIÉS (Dans .filters-row sur la même ligne) -->
+                            <div class="relative inline-block" id="compteAssociesWrapper" style="position: relative; flex-shrink: 0;">
+                                <button type="button" id="compteAssociesBtn" onclick="toggleCompteAssociesMenu(event)"
+                                    style="padding: 7px 14px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 9px; font-size: 12px; font-weight: 700; color: #1e293b; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                                    <i class="fa-solid fa-filter" style="font-size: 12px; color: #0e7647;"></i>
+                                    <span id="compteAssociesBtnLabel">Comptes associés : Tous les comptes</span>
+                                    <i class="fa-solid fa-chevron-down" id="compteAssociesChevron"
+                                        style="font-size: 10px; color: #94a3b8; transition: transform 0.2s; margin-left: 4px;"></i>
+                                </button>
 
                             <!-- POPOVER DROPDOWN AVEC RECHERCHE ET CATÉGORIES SYSCOHADA -->
                             <div id="compteAssociesPopover"
@@ -1854,8 +1853,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> <!-- Fin #compteAssociesWrapper -->
+                    </div> <!-- Fin .filters-row -->
+                </div> <!-- Fin div (1486) -->
 
                     <!-- Table des écritures avec attribution des comptes SYSCOHADA (Design SaaS Pro Clair) -->
                     <div class="table-container">
