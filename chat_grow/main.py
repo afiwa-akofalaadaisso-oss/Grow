@@ -132,21 +132,13 @@ ONBOARDING_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "onbo
 
 def get_public_base_url() -> str:
     """Retourne l'URL publique active pour les liens d'abonnement et dashboard."""
+    render_url = os.getenv("RENDER_EXTERNAL_URL", "").strip().rstrip("/")
+    if render_url:
+        return render_url
     base = os.getenv("PUBLIC_BASE_URL", "").strip().rstrip("/")
-    if base:
+    if base and "trycloudflare" not in base:
         return base
-    try:
-        import glob
-        log_files = glob.glob(r"C:\Users\new\.gemini\antigravity\brain\*\.system_generated\tasks\*.log")
-        for f in sorted(log_files, key=os.path.getmtime, reverse=True):
-            with open(f, "r", encoding="utf-8", errors="ignore") as lf:
-                content = lf.read()
-                matches = re.findall(r"https://[a-zA-Z0-9-]+\.trycloudflare\.com", content)
-                if matches:
-                    return matches[-1]
-    except Exception:
-        pass
-    return "https://wendy-hawk-spare-kissing.trycloudflare.com"
+    return "https://grow-2epo.onrender.com"
 
 
 def is_paiement_keyword(text: str) -> bool:
