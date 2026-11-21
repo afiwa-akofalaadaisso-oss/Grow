@@ -964,7 +964,7 @@
                             </button>
                             <button onclick="openReport('tout')" class="btn-statement"
                                 style="background: #0e7647; color: white; border-color: #0e7647; font-weight: 800; box-shadow: 0 2px 8px rgba(14, 118, 71, 0.25);">
-                                <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> 📋 Liasse Complète (4
+                                <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (4
                                 États)
                             </button>
                         </div>
@@ -1743,7 +1743,7 @@
                         </button>
                         <button onclick="openReport('tout')" class="btn-statement"
                             style="background: #0e7647; color: white; border-color: #0e7647; font-weight: 800; box-shadow: 0 2px 8px rgba(14, 118, 71, 0.25);">
-                            <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> 📋 Liasse Complète (Les 4
+                            <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (Les 4
                             États)
                         </button>
                     </div>
@@ -2507,7 +2507,7 @@
                     <i class="fa-solid fa-file-lines"></i> 4. Notes Annexes
                 </button>
                 <button type="button" onclick="openReport('tout')" id="tabRepTout" class="tab-rep-btn">
-                    <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> 📋 Liasse Complète (Les 4 États)
+                    <i class="fa-solid fa-layer-group" style="color: #a0d9d2;"></i> Liasse Complète (Les 4 États)
                 </button>
             </div>
 
@@ -2552,11 +2552,11 @@
                             d'Attestation Officielle</label>
                         <select id="customTypeAttestation" onchange="mettreAJourDocPreview()"
                             style="width: 100%; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border: 1.5px solid #a7f3d0; border-radius: 6px; color: #0e7647; background: #f0fdf4;">
-                            <option value="sans_reserve" selected>✅ Attestation sans réserve (Conforme SYSCOHADA)
+                            <option value="sans_reserve" selected>Attestation sans réserve (Conforme SYSCOHADA)
                             </option>
-                            <option value="coherence">📑 Attestation de sincérité et cohérence des flux</option>
-                            <option value="presentation">💼 Rapport de mission de présentation des comptes</option>
-                            <option value="reserve_stock">⚠️ Visa avec réserve d'inventaire physique</option>
+                            <option value="coherence">Attestation de sincérité et cohérence des flux</option>
+                            <option value="presentation">Rapport de mission de présentation des comptes</option>
+                            <option value="reserve_stock">Visa avec réserve d'inventaire physique</option>
                         </select>
                     </div>
                     <div style="grid-column: 1 / -1;">
@@ -3426,15 +3426,15 @@
             const noteExtra = document.getElementById('customNoteExtra')?.value || "";
 
             const attestationsMap = {
-                'sans_reserve': '✅ ATTESTATION SANS RÉSERVE — Conforme aux règles et principes comptables du SYSCOHADA SMT.',
-                'coherence': '📑 ATTESTATION DE SINCÉRITÉ ET COHÉRENCE — Concordance certifiée des flux Wave et de trésorerie.',
-                'presentation': '💼 RAPPORT DE MISSION DE PRÉSENTATION DES COMPTES — Diligences professionnelles accomplies conformément aux normes.',
-                'reserve_stock': '⚠️ VISA COMPTABLE AVEC RÉSERVE D\'INVENTAIRE — Conforme sous réserve de l\'inventaire contradictoire de fin d\'exercice.'
+                'sans_reserve': 'ATTESTATION SANS RÉSERVE — Conforme aux règles et principes comptables du SYSCOHADA SMT.',
+                'coherence': 'ATTESTATION DE SINCÉRITÉ ET COHÉRENCE — Concordance certifiée des flux Wave et de trésorerie.',
+                'presentation': 'RAPPORT DE MISSION DE PRÉSENTATION DES COMPTES — Diligences professionnelles accomplies conformément aux normes.',
+                'reserve_stock': 'VISA COMPTABLE AVEC RÉSERVE D\'INVENTAIRE — Conforme sous réserve de l\'inventaire contradictoire de fin d\'exercice.'
             };
 
             const extraNoteHtml = noteExtra && noteExtra.trim()
                 ? `<div style="margin-top: 10px; padding: 10px 14px; background: #fffbeb; border: 1.5px dashed #f59e0b; border-radius: 6px; font-size: 12px; color: #92400e;">
-                    <strong>📌 Note Annexe Complémentaire ajoutée par l'Expert :</strong> ${noteExtra.trim()}
+                    <strong><i class="fa-solid fa-note-sticky" style="color: #b45309; margin-right: 5px;"></i>Note Annexe Complémentaire ajoutée par l'Expert :</strong> ${noteExtra.trim()}
                    </div>`
                 : '';
 
@@ -3552,7 +3552,7 @@
                 b.innerHTML = `
                     ${headerHtml}
                     <div style="background: #0a2540; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
-                        <span>⚖️ ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
+                        <span><i class="fa-solid fa-scale-balanced" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
                         <span style="color: #a0d9d2; font-size: 13px;">TOTAL ÉQUILIBRÉ : ${pme.totalActifPassif}</span>
                     </div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
@@ -3612,7 +3612,7 @@
                 b.innerHTML = `
                     ${headerHtml}
                     <div style="background: #0a2540; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
-                        <span>📊 ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
+                        <span><i class="fa-solid fa-chart-pie" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
                         <span style="color: #4ade80; font-size: 13px;">BÉNÉFICE NET : ${pme.beneficeNet}</span>
                     </div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
@@ -3641,7 +3641,7 @@
                 b.innerHTML = `
                     ${headerHtml}
                     <div style="background: #0a2540; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800; display: flex; justify-content: space-between; align-items: center;">
-                        <span>💵 ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
+                        <span><i class="fa-solid fa-money-bill-transfer" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
                         <span style="color: #a0d9d2; font-size: 13px;">TRÉSORERIE DISPONIBLE : ${pme.tresoFinale}</span>
                     </div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
@@ -3662,7 +3662,7 @@
                 b.innerHTML = `
                     ${headerHtml}
                     <div style="background: #0a2540; color: white; padding: 12px 16px; border-radius: 8px 8px 0 0; font-size: 13.5px; font-weight: 800;">
-                        <span>📝 ÉTAT 4 : NOTES ANNEXES &amp; INFORMATIONS COMPLÉMENTAIRES</span>
+                        <span><i class="fa-solid fa-file-lines" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 4 : NOTES ANNEXES &amp; INFORMATIONS COMPLÉMENTAIRES</span>
                     </div>
                     <div style="padding: 20px; font-size: 13px; line-height: 1.6; color: #334155; background: #ffffff; border: 1px solid #e2e8f0; border-top: none;">
                         ${notesHtml}
@@ -3711,7 +3711,7 @@
 
                     <div style="margin-bottom: 20px; padding: 12px 18px; background: #f0fdf4; border-left: 4px solid #0e7647; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <strong style="color: #0e7647; font-size: 14px;">📋 Liasse Complète SYSCOHADA — Dossier Prêt pour Banques &amp; DGID</strong>
+                            <strong style="color: #0e7647; font-size: 14px;"><i class="fa-solid fa-layer-group" style="color: #0e7647; margin-right: 6px;"></i>Liasse Complète SYSCOHADA — Dossier Prêt pour Banques &amp; DGID</strong>
                             <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">Comprend les 4 états réglementaires prêts pour impression et signature physique du Cabinet et du Client.</div>
                         </div>
                         <span style="font-size: 11.5px; font-weight: 800; background: #0e7647; color: white; padding: 5px 12px; border-radius: 6px;">4 / 4 ÉTATS CONFORMES</span>
@@ -3720,7 +3720,7 @@
                     <!-- 1. BILAN -->
                     <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
                         <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
-                            <span>⚖️ ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
+                            <span><i class="fa-solid fa-scale-balanced" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF)</span>
                             <span style="color: #a0d9d2;">TOTAL ÉQUILIBRÉ : ${pme.totalActifPassif}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
@@ -3736,7 +3736,7 @@
                     <!-- 2. COMPTE DE RÉSULTAT -->
                     <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;" class="print-page-break">
                         <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
-                            <span>📊 ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
+                            <span><i class="fa-solid fa-chart-pie" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS &amp; CHARGES)</span>
                             <span style="color: #4ade80;">BÉNÉFICE NET : ${pme.beneficeNet}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
@@ -3748,7 +3748,7 @@
                     <!-- 3. FLUX DE TRÉSORERIE -->
                     <div style="margin-bottom: 24px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
                         <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800; display: flex; justify-content: space-between;">
-                            <span>💵 ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
+                            <span><i class="fa-solid fa-money-bill-transfer" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE)</span>
                             <span style="color: #a0d9d2;">TRÉSORERIE FINALE : ${pme.tresoFinale}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
@@ -3760,7 +3760,7 @@
                     <!-- 4. NOTES ANNEXES -->
                     <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
                         <div style="background: #0a2540; color: white; padding: 10px 14px; font-size: 13px; font-weight: 800;">
-                            <span>📝 ÉTAT 4 : NOTES ANNEXES &amp; MENTIONS LÉGALES</span>
+                            <span><i class="fa-solid fa-file-lines" style="color: #a0d9d2; margin-right: 6px;"></i>ÉTAT 4 : NOTES ANNEXES &amp; MENTIONS LÉGALES</span>
                         </div>
                         <div style="padding: 16px; font-size: 12.5px; line-height: 1.6; color: #334155; background: #ffffff;">
                             ${notesAll}
