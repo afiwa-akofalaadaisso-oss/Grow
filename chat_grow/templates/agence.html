@@ -483,16 +483,20 @@
         }
 
         table.agency-table thead th {
-            background-color: #f8fafc;
-            color: #475569;
+            background-color: #222222 !important;
+            color: #ffffff !important;
             font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 12px 14px;
+            padding: 13px 16px;
             text-align: left;
             white-space: nowrap;
-            border-bottom: 1.5px solid #e2e8f0;
+            border-bottom: none !important;
+        }
+
+        table.agency-table thead tr {
+            background-color: #222222 !important;
         }
 
         table.agency-table thead tr.pme-table-header th {
@@ -1269,12 +1273,12 @@
                         <div class="table-container">
                             <table class="agency-table">
                                 <thead>
-                                    <tr>
-                                        <th style="width: 100px;">Date</th>
-                                        <th>Libellé / Compte SYSCOHADA (Attribution)</th>
-                                        <th style="text-align: right; width: 120px;">Débit (FCFA)</th>
-                                        <th style="text-align: right; width: 120px;">Crédit (FCFA)</th>
-                                        <th style="text-align: center; width: 220px;">Justificatif &amp; Statut</th>
+                                    <tr class="pme-table-header" style="background-color: #222222 !important;">
+                                        <th style="width: 100px; border-top-left-radius: 12px; background-color: #222222 !important; color: #ffffff !important; padding: 13px 16px;">Date</th>
+                                        <th style="background-color: #222222 !important; color: #ffffff !important; padding: 13px 16px;">Libellé / Compte SYSCOHADA (Attribution)</th>
+                                        <th style="text-align: right; width: 120px; background-color: #222222 !important; color: #ffffff !important; padding: 13px 16px;">Débit (FCFA)</th>
+                                        <th style="text-align: right; width: 120px; background-color: #222222 !important; color: #ffffff !important; padding: 13px 16px;">Crédit (FCFA)</th>
+                                        <th style="text-align: center; width: 220px; border-top-right-radius: 12px; background-color: #222222 !important; color: #ffffff !important; padding: 13px 16px;">Justificatif &amp; Statut</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1966,14 +1970,14 @@
                         style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; overflow-x: auto; width: 100%;">
                         <table class="agency-table" style="width: 100%; border-collapse: collapse;">
                             <thead>
-                                <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-                                    <th style="padding: 12px 16px; text-align: left; width: 140px;">N° Compte</th>
-                                    <th style="padding: 12px 16px; text-align: left;">Intitulé Officiel SYSCOHADA</th>
-                                    <th style="padding: 12px 16px; text-align: center; width: 150px;">Classe Comptable
+                                <tr class="pme-table-header" style="background-color: #222222 !important;">
+                                    <th style="padding: 13px 16px; text-align: left; width: 140px; border-top-left-radius: 12px; background-color: #222222 !important; color: #ffffff !important;">N° Compte</th>
+                                    <th style="padding: 13px 16px; text-align: left; background-color: #222222 !important; color: #ffffff !important;">Intitulé Officiel SYSCOHADA</th>
+                                    <th style="padding: 13px 16px; text-align: center; width: 150px; background-color: #222222 !important; color: #ffffff !important;">Classe Comptable
                                     </th>
-                                    <th style="padding: 12px 16px; text-align: right; width: 150px;">Débit Cumulé</th>
-                                    <th style="padding: 12px 16px; text-align: right; width: 150px;">Crédit Cumulé</th>
-                                    <th style="padding: 12px 16px; text-align: right; width: 160px;">Solde Net</th>
+                                    <th style="padding: 13px 16px; text-align: right; width: 150px; background-color: #222222 !important; color: #ffffff !important;">Débit Cumulé</th>
+                                    <th style="padding: 13px 16px; text-align: right; width: 150px; background-color: #222222 !important; color: #ffffff !important;">Crédit Cumulé</th>
+                                    <th style="padding: 13px 16px; text-align: right; width: 160px; border-top-right-radius: 12px; background-color: #222222 !important; color: #ffffff !important;">Solde Net</th>
                                 </tr>
                             </thead>
                             <tbody id="comptesTableBody">
@@ -2299,12 +2303,12 @@
                         style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; overflow-x: auto; width: 100%;">
                         <table class="agency-table" style="width: 100%; border-collapse: collapse;">
                             <thead>
-                                <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-                                    <th style="padding: 12px 16px; text-align: left;">Article / Marchandise</th>
-                                    <th style="padding: 12px 16px; text-align: center; width: 120px;">Quantité</th>
-                                    <th style="padding: 12px 16px; text-align: right; width: 150px;">PMP Unitaire</th>
-                                    <th style="padding: 12px 16px; text-align: right; width: 160px;">Valeur Totale</th>
-                                    <th style="padding: 12px 16px; text-align: center; width: 140px;">État du Stock</th>
+                                <tr class="pme-table-header" style="background-color: #222222 !important;">
+                                    <th style="padding: 13px 16px; text-align: left; border-top-left-radius: 12px; background-color: #222222 !important; color: #ffffff !important;">Article / Marchandise</th>
+                                    <th style="padding: 13px 16px; text-align: center; width: 120px; background-color: #222222 !important; color: #ffffff !important;">Quantité</th>
+                                    <th style="padding: 13px 16px; text-align: right; width: 150px; background-color: #222222 !important; color: #ffffff !important;">PMP Unitaire</th>
+                                    <th style="padding: 13px 16px; text-align: right; width: 160px; background-color: #222222 !important; color: #ffffff !important;">Valeur Totale</th>
+                                    <th style="padding: 13px 16px; text-align: center; width: 140px; border-top-right-radius: 12px; background-color: #222222 !important; color: #ffffff !important;">État du Stock</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -3640,7 +3644,7 @@
                         <span style="color: #a0d9d2; font-size: 13px;">TOTAL ÉQUILIBRÉ : ${pme.totalActifPassif}</span>
                     </div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
-                        <tr style="background: #f8fafc; color: #475569; font-weight: bold; border-bottom: 2px solid #cbd5e1;">
+                        <tr style="background: #222222; color: #ffffff; font-weight: bold; border-bottom: none;">
                             <th style="padding: 10px 14px; text-align: left;">ACTIF IMMOBILISÉ &amp; CIRCULANT (FCFA)</th>
                             <th style="padding: 10px 14px; text-align: right;">MONTANT</th>
                             <th style="padding: 10px 14px; text-align: left;">CAPITAUX PROPRES &amp; PASSIF (FCFA)</th>
@@ -3700,7 +3704,7 @@
                         <span style="color: #4ade80; font-size: 13px;">BÉNÉFICE NET : ${pme.beneficeNet}</span>
                     </div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
-                        <tr style="background: #f8fafc; color: #475569; font-weight: bold; border-bottom: 2px solid #cbd5e1;">
+                        <tr style="background: #222222; color: #ffffff; font-weight: bold; border-bottom: none;">
                             <th style="padding: 10px 16px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7 SYSCOHADA)</th>
                             <th style="padding: 10px 16px; text-align: right;">Montant (FCFA)</th>
                         </tr>
@@ -3729,7 +3733,7 @@
                         <span style="color: #a0d9d2; font-size: 13px;">TRÉSORERIE DISPONIBLE : ${pme.tresoFinale}</span>
                     </div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #e2e8f0; border-top: none;">
-                        <tr style="background: #f8fafc; color: #475569; font-weight: bold; border-bottom: 2px solid #cbd5e1;">
+                        <tr style="background: #222222; color: #ffffff; font-weight: bold; border-bottom: none;">
                             <th style="padding: 10px 16px; text-align: left;">Mouvements &amp; Encaissements / Décaissements</th>
                             <th style="padding: 10px 16px; text-align: right;">Montant (FCFA)</th>
                         </tr>
@@ -3808,7 +3812,7 @@
                             <span style="color: #a0d9d2;">TOTAL ÉQUILIBRÉ : ${pme.totalActifPassif}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
-                            <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">ACTIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th><th style="padding: 8px 12px; text-align: left;">PASSIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th></tr>
+                            <tr style="background: #222222; font-weight: 700; color: #ffffff;"><th style="padding: 8px 12px; text-align: left;">ACTIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th><th style="padding: 8px 12px; text-align: left;">PASSIF (FCFA)</th><th style="padding: 8px 12px; text-align: right;">MONTANT</th></tr>
                             <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Immobilisations corporelles</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.immo}</td><td style="padding: 8px 12px;">Capital NINEA</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.capital}</td></tr>
                             <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Stocks de marchandises</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.stocks}</td><td style="padding: 8px 12px;">Résultat net (Bénéfice)</td><td style="padding: 8px 12px; text-align: right; color: #0e7647; font-weight: bold;">${pme.bilan.resultat}</td></tr>
                             <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 12px;">Créances clients</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.creances}</td><td style="padding: 8px 12px;">Dettes Fournisseurs</td><td style="padding: 8px 12px; text-align: right;">${pme.bilan.fournisseurs}</td></tr>
@@ -3824,7 +3828,7 @@
                             <span style="color: #4ade80;">BÉNÉFICE NET : ${pme.beneficeNet}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
-                            <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7)</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
+                            <tr style="background: #222222; font-weight: 700; color: #ffffff;"><th style="padding: 8px 12px; text-align: left;">Postes Comptables (Comptes Classes 6 &amp; 7)</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
                             ${resRows}
                         </table>
                     </div>
@@ -3836,7 +3840,7 @@
                             <span style="color: #a0d9d2;">TRÉSORERIE FINALE : ${pme.tresoFinale}</span>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
-                            <tr style="background: #f8fafc; font-weight: 700; color: #475569;"><th style="padding: 8px 12px; text-align: left;">Flux de Trésorerie</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
+                            <tr style="background: #222222; font-weight: 700; color: #ffffff;"><th style="padding: 8px 12px; text-align: left;">Flux de Trésorerie</th><th style="padding: 8px 12px; text-align: right;">Montant (FCFA)</th></tr>
                             ${fluxRows}
                         </table>
                     </div>
