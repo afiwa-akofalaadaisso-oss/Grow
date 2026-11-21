@@ -915,10 +915,6 @@
                     <i class="fa-solid fa-folder-open" style="font-size: 13px;"></i>
                     <span>Documents &amp; Liasses</span>
                 </a>
-                <a href="javascript:void(0)" onclick="openReport('tout')" class="menu-item" id="sideLinkBilan">
-                    <i class="fa-solid fa-file-invoice" style="font-size: 13px;"></i>
-                    <span>Liasse SYSCOHADA</span>
-                </a>
                 <a href="javascript:void(0)" onclick="ouvrirModalConnexion()" class="menu-item" id="sideLinkAcces">
                     <i class="fa-solid fa-user-shield" style="font-size: 13px;"></i>
                     <span>Accès Sécurisé</span>
@@ -2375,7 +2371,7 @@
                 'reporting': 'sideLinkReporting',
                 'documents': 'sideLinkDocuments'
             };
-            ['sideLinkDashboard', 'sideLinkPme', 'sideLinkReporting', 'sideLinkDocuments', 'sideLinkBilan', 'sideLinkAcces'].forEach(id => {
+            ['sideLinkDashboard', 'sideLinkPme', 'sideLinkReporting', 'sideLinkDocuments', 'sideLinkAcces'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('active');
             });
