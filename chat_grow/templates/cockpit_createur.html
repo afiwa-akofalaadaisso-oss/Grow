@@ -47,30 +47,26 @@
     <style>
         * {
             -webkit-font-smoothing: antialiased;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
         }
 
-        body {
+        html, body {
             background-color: #111a2e !important;
             background: #111a2e !important;
             min-height: 100vh;
+            overflow-x: hidden;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
         }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(160, 217, 210, 0.2);
-            border-radius: 9999px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(160, 217, 210, 0.4);
+        /* Suppression invisible de toute barre de défilement (Chrome, Edge, Safari, Firefox) */
+        ::-webkit-scrollbar,
+        *::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: transparent !important;
         }
 
         .growth-card {
