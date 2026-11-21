@@ -103,6 +103,16 @@ def prompt_rappel_etape(etape: str, onboarding: dict) -> str:
             "Avez-vous un document NINEA ou Registre de Commerce (RCCM) pour votre entreprise ?\n"
             "(Si vous n'en avez pas, dites simplement « Non » ou « Pas encore », ce n'est pas obligatoire pour commencer)."
         )
+    if etape == "PHASE_2_ACTIVITE_LOCALISATION":
+        return (
+            "Quelle est votre activité exacte (ce que vous vendez ou vos services) et où se trouve votre commerce ou magasin (quartier, marché, ville) ?\n"
+            "(Exemple : « Alimentation Générale & Riz au Marché Sandaga, Dakar »)."
+        )
+    if etape == "PHASE_2_CAPITAL_INITIAL":
+        return (
+            "Quel est le capital approximatif (en FCFA) que vous avez investi pour démarrer votre activité ?\n"
+            "(Exemple : « 500 000 FCFA », ou dites « Zéro » si vous avez démarré sans capital)."
+        )
     if etape in ["PHASE_3_RELEVE", "PHASE_3_BILAN_DEPART"]:
         return (
             "Pour votre bilan de départ, combien avez-vous actuellement sur votre compte Wave / Orange Money et dans votre caisse en espèces ?\n"

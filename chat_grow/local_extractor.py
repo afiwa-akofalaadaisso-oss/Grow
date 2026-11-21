@@ -705,3 +705,80 @@ def detecter_declaration_rupture_stock(texte: str) -> bool:
     ]
     return any(k in lower for k in mots_rupture)
 
+
+# ==============================================================================
+# 8. EXTRACTION INTELLIGENTE DU SECTEUR D'ACTIVITÉ & LOCALISATION DU COMMERCE
+# ==============================================================================
+
+def extraire_activite_et_localisation(texte: str) -> tuple:
+    """
+    Extrait l'activité principale (secteur) et l'adresse/localisation du commerce (quartier, marché, ville)
+    à partir du message ou de la note vocale du commerçant :
+    - 'Alimentation Générale & Riz, Marché Sandaga, Dakar' -> ('Alimentation Générale & Riz', 'Marché Sandaga, Dakar')
+    - 'Je vends des téléphones au marché colobane' -> ('Téléphones & Accessoires High-Tech', 'Colobane, Dakar')
+    - 'Atelier de couture situé à Médina' -> ('Atelier Couture & Stylisme', 'Médina, Dakar')
+    """
+    if not texte:
+        return ("Commerce & Services", "Dakar, Sénégal")
+    
+    t = texte.strip().strip("\"'«»“”")
+
+    # 1. Tentative avec Gemini si disponible
+    try:
+        from google import genai
+        import os, json
+        gem_key = os.getenv("GEMINI_API_KEY")
+        if gem_key:
+            client_gem = genai.Client(api_key=gem_key)
+            prompt = (
+                "Tu es un assistant comptable au Sénégal pour des PME et commerçants. "
+                "Analyse ce message et extrais en JSON brut strict :\n"
+                f'Message: "{t}"\n'
+                'Format JSON : {"secteur_activite": "Intitulé du secteur d activité soigné (ex: Alimentation Générale & Riz, Vente de Téléphones, Couture & Stylisme, Blanchisserie)", '
+                '"adresse_siege": "Quartier, Marché ou Ville (ex: Marché Sandaga, Dakar ou Colobane, Dakar)"}\n'
+                "Réponds UNIQUEMENT le JSON brut sans balises markdown."
+            )
+            res = client_gem.models.generate_content(
+                model="gemini-3.1-flash-lite",
+                contents=prompt
+            )
+            if res.text:
+                m_j = re.search(r'\{.*\}', res.text.strip(), re.DOTALL)
+                if m_j:
+                    d = json.loads(m_j.group(0))
+                    sec = d.get("secteur_activite")
+                    adr = d.get("adresse_siege")
+                    if sec and adr:
+                        return (str(sec).strip(), str(adr).strip())
+    except Exception:
+        pass
+
+    # 2. Parsing local heuristique et robuste
+    motifs_sep = [
+        r'(.*?)(?:\s*(?:,|;|\/| - )\s*|\s+(?:situ[ée]\s+)?(?:[àa]|au|aux|sur|dans|vers)\s+)(.+)',
+    ]
+    secteur = ""
+    adresse = ""
+    for m_regex in motifs_sep:
+        match = re.search(m_regex, t, re.IGNORECASE)
+        if match:
+            part1 = match.group(1).strip()
+            part2 = match.group(2).strip()
+            # Nettoyage des tournures introductives
+            part1 = re.sub(r'^(?:je fais|on fait|nous faisons|je vends|vente de|mon activit[ée] (?:c[\'’]est|est)|activit[ée]\s*:?)\s*', '', part1, flags=re.IGNORECASE).strip()
+            part2 = re.sub(r'^(?:je suis [àa]|situ[ée] [àa]|notre boutique est [àa]|magasin [àa]|au|aux|[àa])\s*', '', part2, flags=re.IGNORECASE).strip()
+            if part1 and part2:
+                secteur = part1.title()
+                adresse = part2.title()
+                break
+
+    if not secteur:
+        secteur = t.title()
+    if not adresse:
+        adresse = "Dakar, Sénégal"
+    elif not any(v in adresse.lower() for v in ["dakar", "thiès", "thies", "mbour", "saint-louis", "touba"]):
+        adresse = f"{adresse}, Dakar"
+
+    return (secteur, adresse)
+
+

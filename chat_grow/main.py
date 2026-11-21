@@ -62,7 +62,8 @@ from local_extractor import (
     parse_operation_financiere_locale,
     parse_soldes_multi_operateurs,
     parse_paiement_mixte_local,
-    detecter_declaration_rupture_stock
+    detecter_declaration_rupture_stock,
+    extraire_activite_et_localisation
 )
 
 from expert_assistant import (
@@ -3419,10 +3420,10 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         update_onboarding_state(sender_phone, "nom_entreprise", nom_propre)
         update_onboarding_state(sender_phone, "devise", "FCFA")
 
-        # A. Si le NINEA n'est pas encore fourni : on passe par la demande du capital de départ (déclaratif sans blocage)
+        # A. Si le NINEA n'est pas encore fourni : on demande l'activité et la localisation du commerce
         # et on active le rappel hebdomadaire NINEA
         if not ninea:
-            update_onboarding_state(sender_phone, "etape", "PHASE_2_CAPITAL_INITIAL")
+            update_onboarding_state(sender_phone, "etape", "PHASE_2_ACTIVITE_LOCALISATION")
             update_onboarding_state(sender_phone, "ninea_rappel_hebdo", True)
             update_onboarding_state(sender_phone, "dernier_rappel_ninea", datetime.now().isoformat())
             save_or_update_entreprise_resilient({
@@ -3433,20 +3434,25 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 "donnees_onboarding": {"ninea_en_attente": True, "rappel_hebdo": True, "date_debut": datetime.now().isoformat()}
             })
             return (
-                "C'est bien noté : pas besoin de NINEA pour commencer ! Vous pourrez nous l'envoyer plus tard et Growth vous enverra un petit rappel chaque semaine pour certifier votre dossier auprès des banques.\n\n"
+                "C'est bien noté : pas besoin de NINEA pour commencer ! Vous pourrez nous l'envoyer plus tard pour certifier vos bilans auprès des banques.\n\n"
                 f"🏬 Entreprise *{nom_propre}* bien enregistrée !\n\n"
-                "Deuxième question pour votre bilan : Quel est le capital approximatif (en FCFA) que vous avez investi pour démarrer votre activité (vos économies ou apports de départ) ?\n"
-                "(Exemple : « 500 000 FCFA », ou dites simplement « Zéro » si vous avez commencé sans capital)."
+                "👉 **Quelle est votre activité exacte (ce que vous vendez ou vos services) et où se trouve votre commerce ou atelier (quartier, marché ou ville) ?**\n\n"
+                "*(Exemple : « Alimentation Générale & Riz au Marché Sandaga, Dakar » ou « Vente de vêtements à la Médina »)*"
             )
 
         # B. Si le NINEA officiel a été validé avec succès
         update_onboarding_state(sender_phone, "etape", "PHASE_3_RELEVE")
-        save_or_update_entreprise_resilient({
+        up_ent_ninea = {
             "telephone_whatsapp": clean_phone,
             "nom_entreprise": nom_propre,
             "ninea": ninea,
             "capital_initial_fcfa": capital if capital > 0 else 500000
-        })
+        }
+        if activite_ninea:
+            up_ent_ninea["secteur_activite"] = activite_ninea
+        if adresse_ninea:
+            up_ent_ninea["adresse_siege"] = adresse_ninea
+        save_or_update_entreprise_resilient(up_ent_ninea)
 
         titre_doc = f" (NINEA : {ninea})"
         ninea_info = f"Document officiel enregistré (NINEA : {ninea}).\n\n"
@@ -3472,6 +3478,29 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             f"{ninea_info}"
             f"🏬 *{nom_propre}*{titre_doc} bien enregistrée avec succès !\n\n"
             f"{flux_prompt}"
+        )
+
+    # 2.2. PHASE 2.2 : ACTIVITÉ & LOCALISATION DU COMMERCE (SECTEUR & ADRESSE)
+    if etape == "PHASE_2_ACTIVITE_LOCALISATION":
+        u_txt = (user_text or "").strip()
+        secteur, adresse = extraire_activite_et_localisation(u_txt)
+        nom_propre = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or f"Entreprise {clean_phone[-4:]}"
+        
+        update_onboarding_state(sender_phone, "secteur_activite", secteur)
+        update_onboarding_state(sender_phone, "adresse_siege", adresse)
+        update_onboarding_state(sender_phone, "etape", "PHASE_2_CAPITAL_INITIAL")
+        
+        save_or_update_entreprise_resilient({
+            "telephone_whatsapp": clean_phone,
+            "nom_entreprise": nom_propre,
+            "secteur_activite": secteur,
+            "adresse_siege": adresse
+        })
+        
+        return (
+            f"✅ C'est parfaitement noté ! Activité : *{secteur}* • Localisation : *{adresse}* 📍\n\n"
+            "Deuxième question pour votre bilan : Quel est le capital approximatif (en FCFA) que vous avez investi pour démarrer votre activité (vos économies ou apports de départ) ?\n"
+            "(Exemple : « 500 000 FCFA », ou dites simplement « Zéro » si vous avez commencé sans capital)."
         )
 
     # 2.5. PHASE 2.5 : CAPITAL DE DÉPART (DÉCLARATIF SANS JUSTIFICATION OBLIGATOIRE)
