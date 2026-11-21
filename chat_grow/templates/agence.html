@@ -933,7 +933,7 @@
 
                 <!-- Chiffre d'Affaires Net sans césure brutale -->
                 <div class="pme-kpi-block">
-                    <span class="pme-kpi-label" id="sidePmeCaLabel">Chiffre d'Affaires</span>
+                    <span class="pme-kpi-label">Chiffre d'Affaires (Mai)</span>
                     <div class="pme-kpi-value" id="sidePmeCa">
                         3 850 000 <span class="pme-kpi-curr">FCFA</span>
                     </div>
@@ -948,7 +948,7 @@
                         </div>
                     </div>
                     <div class="pme-mini-box">
-                        <span class="pme-mini-label">Régularité</span>
+                        <span class="pme-mini-label">Stock PMP</span>
                         <div class="pme-mini-val blue" id="sidePmeStock">
                             <i class="fa-solid fa-boxes-stacked" style="font-size: 11px;"></i> 98.5%
                         </div>
@@ -1268,18 +1268,19 @@
                 </div>
             </div>
 
-            <!-- Footer Action Bar -->
-            <div class="footer-action-bar">
-                <button class="btn-certify-huge" id="btnSignCertify" onclick="signBilan()">
-                    <i class="fa-solid fa-signature"></i>
-                    <span>CERTIFIER &amp; SIGNER ÉLECTRONIQUEMENT LE BILAN</span>
+            <!-- Footer Action Bar : Génération pour Impression & Signature Manuelle -->
+            <div class="footer-action-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 20px; margin-top: 18px;">
+                <button type="button" class="btn-certify-huge" id="btnPrintLiasseDirect" onclick="openReport('tout')"
+                    style="background: #0e7647; color: white; display: inline-flex; align-items: center; gap: 10px; padding: 13px 24px; border: none; border-radius: 10px; font-size: 13.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(14, 118, 71, 0.25); transition: all 0.15s;">
+                    <i class="fa-solid fa-print" style="font-size: 16px;"></i>
+                    <span>GÉNÉRER LA LIASSE OFFICIELLE &bull; PRÊTE À IMPRIMER &amp; SIGNER</span>
                 </button>
 
-                <div class="validation-progress">
-                    <div class="progress-track">
-                        <div class="progress-bar-fill" id="progressFill"></div>
+                <div class="validation-progress" style="display: flex; align-items: center; gap: 12px;">
+                    <div class="progress-track" style="width: 140px; height: 8px; background: #e2e8f0; border-radius: 99px; overflow: hidden;">
+                        <div class="progress-bar-fill" id="progressFill" style="width: 98.5%; height: 100%; background: #0e7647;"></div>
                     </div>
-                    <div class="progress-label">Taux de Validation : <span id="progressRate" style="color: #0e7647;">98.5%</span></div>
+                    <div class="progress-label" style="font-size: 12px; font-weight: 700; color: #475569;">Écritures vérifiées : <span id="progressRate" style="color: #0e7647; font-weight: 800;">98.5%</span></div>
                 </div>
             </div>
             </div> <!-- Fin #sectionTableau -->
@@ -1731,7 +1732,7 @@
                             Toutes les écritures de la PME ont été certifiées. Vous pouvez apposer la signature électronique de votre cabinet sur la liasse financière.
                         </p>
                     </div>
-                    <button type="button" onclick="signBilan()" style="background: #0e7647; color: white; border: none; padding: 14px 26px; border-radius: 10px; font-weight: 800; font-size: 13.5px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(14, 118, 71, 0.25);">
+                    <button type="button" onclick="openReport('tout')" style="background: #0e7647; color: white; border: none; padding: 14px 26px; border-radius: 10px; font-weight: 800; font-size: 13.5px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(14, 118, 71, 0.25);">
                         <i class="fa-solid fa-signature" style="font-size: 16px;"></i>
                         <span>APPOSER LE VISA DU CABINET COMPTABLE</span>
                     </button>
@@ -2331,14 +2332,9 @@
             }
         });
 
-        function signBilan() {
-            const btn = document.getElementById('btnSignCertify');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SIGNATURE NUMÉRIQUE EN COURS...';
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> BILAN CERTIFIÉ &amp; HORODATÉ PAR LE CABINET';
-                btn.style.backgroundColor = '#0b1c2d';
-                openReport('bilan');
-            }, 1000);
+                function signBilan() {
+            openReport('tout');
+        }, 1000);
         }
 
         function zoomImage(src) {
@@ -2942,10 +2938,10 @@
             }
         }
 
-        // 4. GÉNÉRATEURS D'EN-TÊTE ET DE PIED DE PAGE OFFICIELS CERTIFIÉS
+        // 4. GÉNÉRATEURS D'EN-TÊTE ET DE PIED DE PAGE OFFICIELS (POUR IMPRESSION & SIGNATURE MANUELLE)
         function genererHeaderOfficielDoc(pme, intervalle) {
             const cabNom = document.getElementById('customCabNom')?.value || "Cabinet d'Expertise Comptable & Audit Agréé";
-            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé";
+            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément N° 2026-DK-98402)";
             const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
 
             return `
@@ -3003,7 +2999,7 @@
 
         function genererFooterOfficielDoc(pme) {
             const cabNom = document.getElementById('customCabNom')?.value || "Cabinet d'Expertise Comptable & Audit Agréé";
-            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé";
+            const signataire = document.getElementById('customSignataire')?.value || "M. Amadou Sow, Expert-Comptable Agréé (Agrément N° 2026-DK-98402)";
             const typeAttest = document.getElementById('customTypeAttestation')?.value || 'sans_reserve';
             const obs = document.getElementById('customObservations')?.value || "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.";
             const noteExtra = document.getElementById('customNoteExtra')?.value || "";
@@ -3016,7 +3012,7 @@
             };
 
             const extraNoteHtml = noteExtra && noteExtra.trim() 
-                ? `<div style="margin-top: 10px; padding: 10px 14px; background: #fffbeb; border: 1px dashed #f59e0b; border-radius: 6px; font-size: 12px; color: #92400e;">
+                ? `<div style="margin-top: 10px; padding: 10px 14px; background: #fffbeb; border: 1.5px dashed #f59e0b; border-radius: 6px; font-size: 12px; color: #92400e;">
                     <strong>📌 Note Annexe Complémentaire ajoutée par l'Expert :</strong> ${noteExtra.trim()}
                    </div>`
                 : '';
@@ -3032,46 +3028,71 @@
                     <!-- Observations Libres de l'Expert-Comptable -->
                     <div style="margin-bottom: 14px;">
                         <div style="font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">
-                            <i class="fa-solid fa-pen-fancy" style="color: #0e7647;"></i> Observations, Commentaires &amp; Appréciation du Cabinet Comptable :
+                            <i class="fa-solid fa-pen-fancy" style="color: #0e7647;"></i> Observations, Commentaires &amp; Appréciation de l'Expert-Comptable :
                         </div>
                         <div style="font-size: 12px; line-height: 1.6; color: #1e293b; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px; padding: 10px 14px; white-space: pre-wrap;">${obs}</div>
                     </div>
 
                     ${extraNoteHtml}
 
-                    <!-- Signatures & Cachet Officiel Numérique -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; padding-top: 16px; border-top: 1.5px dashed #cbd5e1;">
+                    <!-- CADRES OFFICIELS RÉSERVÉS POUR SIGNATURE MANUSCRITE ET TAMPON ENCREUR -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 22px; padding-top: 18px; border-top: 1.5px solid #cbd5e1;">
                         
-                        <!-- Signature Dirigeant PME -->
-                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; background: #f8fafc; text-align: center;">
-                            <div style="font-size: 10.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">Pour l'Entreprise Cliente (Lu et approuvé)</div>
-                            <div style="font-size: 12px; font-weight: 800; color: #0a2540; margin-top: 4px;">Le Dirigeant / Gérant Statutaire</div>
-                            <div style="font-size: 11px; color: #475569; font-weight: 700;">${pme.nom}</div>
-                            <div style="height: 60px; display: flex; align-items: center; justify-content: center; font-family: cursive; font-size: 16px; color: #0a2540;">
-                                Bon pour accord &amp; arrêté des comptes
+                        <!-- 1. CADRE ENTREPRISE CLIENTE -->
+                        <div style="border: 1.5px solid #94a3b8; border-radius: 8px; padding: 14px 16px; background: #ffffff; min-height: 175px; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <div style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    1. Pour l'Entreprise Cliente (Lu et Approuvé)
+                                </div>
+                                <div style="font-size: 12px; font-weight: 800; color: #334155; margin-top: 3px;">
+                                    ${pme.nom}
+                                </div>
+                                <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+                                    Qualité : Le Représentant Légal / Dirigeant
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748b; margin-top: 4px;">
+                                    Fait à Dakar, le : ____ / ____ / ________
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Signature & Cachet de l'Expert-Comptable -->
-                        <div style="border: 1.5px solid #0e7647; border-radius: 8px; padding: 12px 14px; background: #f0fdf4; position: relative;">
-                            <div style="font-size: 10.5px; font-weight: 800; color: #0e7647; text-transform: uppercase;">Pour le Cabinet d'Expertise Comptable</div>
-                            <div style="font-size: 12.5px; font-weight: 900; color: #0a2540; margin-top: 2px;">${signataire}</div>
-                            <div style="font-size: 10.5px; color: #475569;">${cabNom}</div>
                             
-                            <!-- Cachet Numérique Visuel -->
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
-                                <div style="font-family: cursive; font-size: 15px; color: #0e7647; font-weight: bold;">
-                                    Amadou Sow
-                                    <div style="font-family: inherit; font-size: 9px; color: #64748b;">Signé numériquement via GROWTH</div>
-                                </div>
-                                <div style="width: 70px; height: 70px; border: 2.5px dashed #0e7647; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-10deg); color: #0e7647; text-align: center; font-size: 7.5px; font-weight: 900; padding: 2px; background: rgba(240, 253, 244, 0.9);">
-                                    <span>★ EXPERTISE ★</span>
-                                    <span style="font-size: 7px; color: #0a2540;">SYSCOHADA</span>
-                                    <span>CERTIFIÉ</span>
-                                </div>
+                            <!-- Espace vide pour signature manuscrite et cachet physique -->
+                            <div style="margin-top: 14px; border: 1.5px dashed #cbd5e1; border-radius: 6px; height: 100px; background: #fafafa; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; text-align: center; padding: 6px;">
+                                <i class="fa-solid fa-pen-nib" style="font-size: 16px; margin-bottom: 4px; opacity: 0.5;"></i>
+                                <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px;">Emplacement Réservé : Signature Manuscrite &amp; Cachet</span>
+                                <span style="font-size: 9px; opacity: 0.8; margin-top: 2px;">(Faire précéder de la mention manuscrite « Bon pour accord »)</span>
                             </div>
                         </div>
 
+                        <!-- 2. CADRE CABINET D'EXPERTISE COMPTABLE -->
+                        <div style="border: 2px solid #0a2540; border-radius: 8px; padding: 14px 16px; background: #ffffff; min-height: 175px; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <div style="font-size: 11px; font-weight: 900; color: #0a2540; text-transform: uppercase; letter-spacing: 0.3px;">
+                                    2. Pour le Cabinet d'Expertise Comptable
+                                </div>
+                                <div style="font-size: 12px; font-weight: 900; color: #0e7647; margin-top: 3px;">
+                                    ${cabNom}
+                                </div>
+                                <div style="font-size: 11px; color: #334155; font-weight: 700; margin-top: 2px;">
+                                    Signataire : ${signataire}
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748b; margin-top: 4px;">
+                                    Date de délivrance de l'attestation : ____ / ____ / ________
+                                </div>
+                            </div>
+                            
+                            <!-- Espace vide pour signature manuscrite de l'expert et tampon officiel -->
+                            <div style="margin-top: 14px; border: 1.5px dashed #0a2540; border-radius: 6px; height: 100px; background: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #0a2540; text-align: center; padding: 6px;">
+                                <i class="fa-solid fa-stamp" style="font-size: 16px; margin-bottom: 4px; color: #0e7647; opacity: 0.7;"></i>
+                                <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; color: #0a2540;">Emplacement Réservé : Signature de l'Expert &amp; Tampon Officiel</span>
+                                <span style="font-size: 9px; color: #64748b; margin-top: 2px;">(Cachet encreur professionnel du Cabinet &amp; Visa réglementaire)</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Mention officielle de dépôt et validité juridique -->
+                    <div style="margin-top: 14px; text-align: center; font-size: 9.5px; color: #64748b; font-style: italic; border-top: 1px solid #f1f5f9; padding-top: 8px;">
+                        Document officiel certifié établi en conformité avec le Système Minimal de Trésorerie (SMT) du Référentiel SYSCOHADA Révisé. Les états financiers originaux doivent être paraphés sur chaque feuillet et signés de façon manuscrite pour tout dépôt auprès de la DGID, du Greffe du Tribunal de Commerce ou des établissements de crédit.
                     </div>
                 </div>
             `;
@@ -3270,7 +3291,7 @@
                     <div style="margin-bottom: 20px; padding: 12px 18px; background: #f0fdf4; border-left: 4px solid #0e7647; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong style="color: #0e7647; font-size: 14px;">📋 Liasse Complète SYSCOHADA — Dossier Prêt pour Banques &amp; DGID</strong>
-                            <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">Comprend les 4 états réglementaires certifiés par l'Expert-Comptable Agréé.</div>
+                            <div style="font-size: 11.5px; color: #475569; margin-top: 2px;">Comprend les 4 états réglementaires prêts pour impression et signature physique du Cabinet et du Client.</div>
                         </div>
                         <span style="font-size: 11.5px; font-weight: 800; background: #0e7647; color: white; padding: 5px 12px; border-radius: 6px;">4 / 4 ÉTATS CONFORMES</span>
                     </div>
