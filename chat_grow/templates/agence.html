@@ -853,13 +853,22 @@
     <!-- Top Navbar Espace Cabinet Comptable + Logo Growth -->
     <header class="top-navbar">
         <div class="nav-left">
-            <a href="/comptable" class="brand-logo" title="Portail Cabinets Comptables" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-                <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" style="width: 34px; height: 34px; border-radius: 10px; border: 1.5px solid #0e7647; object-fit: cover;">
-                <span style="font-size: 16px; font-weight: 900; color: #0e7647; letter-spacing: 0.5px;">GROWTH</span>
-                <span style="color: #cbd5e1; font-weight: 300; font-size: 18px;">|</span>
-                <div class="leaf-icon"><i class="fa-solid fa-briefcase"></i></div>
-                <span class="brand-name">ESPACE CABINET COMPTABLE</span>
-            </a>
+            <div style="display: flex; align-items: center;">
+                <a href="/dashboard" title="Retour Espace PME" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                    <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" style="width: 34px; height: 34px; border-radius: 10px; border: 1.5px solid #0e7647; object-fit: cover;">
+                    <span style="font-size: 16px; font-weight: 900; color: #0e7647; letter-spacing: 0.5px;">GROWTH</span>
+                </a>
+                
+                <!-- Séparateur aéré pour espacer et pousser l'Espace Cabinet Comptable -->
+                <span style="margin: 0 24px; color: #cbd5e1; font-weight: 300; font-size: 20px;">|</span>
+                
+                <a href="/comptable" class="brand-logo" title="Portail Cabinets Comptables" style="display: flex; align-items: center; gap: 12px; text-decoration: none; margin-left: 8px;">
+                    <div class="leaf-icon" style="width: 32px; height: 32px; border-radius: 50%; background: #0e7647; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 14px; box-shadow: 0 2px 6px rgba(14, 118, 71, 0.25);">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <span class="brand-name" style="font-size: 16px; font-weight: 900; color: #0a2540; letter-spacing: -0.2px;">ESPACE CABINET COMPTABLE</span>
+                </a>
+            </div>
             <ul class="nav-links">
                 <li><a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" id="navLinkTableau" class="active">Tableau de Bord</a></li>
                 <li><a href="javascript:void(0)" onclick="switchAgencyTab('pme')" id="navLinkPme">PME Clientes</a></li>
