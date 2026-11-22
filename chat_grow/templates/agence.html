@@ -701,9 +701,7 @@
         }
 
         .badge-preuve {
-            background: #f0fdf4;
-            color: #15803d;
-            border: 1px solid #bbf7d0;
+            display: none !important;
         }
 
         .badge-validee {
@@ -6706,6 +6704,9 @@
                     ? `<button class="btn-validate" id="btn-val-${ec.id}" onclick="validateRow(${ec.id})"><i class="fa-solid fa-check" style="font-size: 9px;"></i> Valider</button>`
                     : '';
                 const badgeClass = ec.statut === 'validee' ? 'badge-validee' : (ec.statut === 'numerique' ? 'badge-numerique' : 'badge-preuve');
+                const badgeStatusHtml = (ec.statut && ec.statut !== 'preuve' && ec.statutLabel && !ec.statutLabel.includes('Preuve'))
+                    ? `<span class="badge-status ${badgeClass}">${ec.statutLabel}</span>`
+                    : '';
                 const safeRef = `PC-${ec.date.split('/').reverse().join('-')}-00${ec.id}`;
                 const safeImg = ec.preuve || '/static/mock_receipt_photo.png';
                 const safeTiers = ec.tiers || pme.nom || 'Fournisseur / Client';
@@ -6769,7 +6770,7 @@
                                     <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> Pièce Comptable
                                 </button>
                                 <span class="badge-archive-10ans" title="Conservation garantie 10 ans selon l'Art. 24 SYSCOHADA"><i class="fa-solid fa-shield-check"></i> 10 ans</span>
-                                <span class="badge-status ${badgeClass}">${ec.statutLabel}</span>
+                                ${badgeStatusHtml}
                                 ${btnVal}
                             </div>
                         </td>
