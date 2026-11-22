@@ -1208,7 +1208,7 @@
             color: #a0d9d2;
         }
 
-        /* Badge ONECCA officiel */
+        /* Badge Conformité SYSCOHADA */
         .onecca-badge-link {
             display: flex;
             align-items: center;
@@ -8840,7 +8840,7 @@
                     </div>
                     <div>
                         <div class="text-[10px] font-bold uppercase tracking-wider text-[#a0d9d2] leading-none">Cockpit Solvabilité</div>
-                        <div class="text-[11px] text-slate-400 font-medium leading-tight mt-0.5">Ratios prudentiels BCEAO &amp; ONECCA</div>
+                        <div class="text-[11px] text-slate-400 font-medium leading-tight mt-0.5">Ratios prudentiels BCEAO &amp; SYSCOHADA</div>
                     </div>
                 </div>
 
@@ -9249,7 +9249,7 @@
                                 <div class="flex items-center justify-between text-xs p-1.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-700">
                                     <div class="flex items-center gap-1.5 truncate">
                                         <span class="material-symbols-outlined notranslate text-[14px] text-slate-400" translate="no">verified_user</span>
-                                        <span class="truncate">Visa Expert ONECCA</span>
+                                        <span class="truncate">Visa Expert-Comptable</span>
                                     </div>
                                     <span class="px-1.5 py-0.2 rounded text-[9.5px] font-bold bg-emerald-50 text-emerald-700 shrink-0">Inclus</span>
                                 </div>
@@ -9432,7 +9432,7 @@
                                 <div class="flex items-center justify-between text-xs p-1.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-700">
                                     <div class="flex items-center gap-1.5 truncate">
                                         <span class="material-symbols-outlined notranslate text-[14px] text-slate-400" translate="no">verified_user</span>
-                                        <span class="truncate">Visa pré-comptable ONECCA</span>
+                                        <span class="truncate">Visa Pré-Comptable SYSCOHADA</span>
                                     </div>
                                     <span class="px-1.5 py-0.2 rounded text-[9.5px] font-bold bg-emerald-50 text-emerald-700 shrink-0">Inclus</span>
                                 </div>
@@ -13091,8 +13091,8 @@
             const certNum = document.getElementById('modalVisaCertNum')?.textContent || 'SN-DKR-2026-EXP-7721';
             const hash = document.getElementById('modalVisaHash')?.textContent || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 
-            const docContent = `ORDRE NATIONAL DES EXPERTS COMPTABLES ET COMPTABLES AGREEES DU SENEGAL (ONECCA)
-ATTESTATION DE VISA ET DE SCELLEMENT NUMERIQUE
+            const docContent = `GROWTH COMPTA & CONSEIL SENEGAL
+ATTESTATION DE CLOTURE ET DE RAPPROCHEMENT COMPTABLE
 --------------------------------------------------------------------------------
 DOSSIER CLIENT : ${nomEnt.toUpperCase()}
 NUMERO NINEA   : ${nineaEnt}
@@ -13102,7 +13102,7 @@ REFERENTIEL    : SYSCOHADA REVISE (Systeme Normal & SMT)
 
 CONTROLE DE CONFORMITE BILANTIELLE :
 - Bilan actif / passif equilibre sans suspens
-- Grand livre certifie conforme aux normes de la DGID Senegal
+- Grand livre etabli selon les normes du droit comptable SYSCOHADA (OHADA)
 - Empreinte numerique (SHA-256) : ${hash.trim()}
 
 Le present visa atteste de la regularite formelle des ecritures comptables
@@ -13113,7 +13113,7 @@ Document delivre par la plateforme integree Growth Compta Senegal.`;
             const blob = new Blob([docContent], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `VISA_ONECCA_${nineaEnt}_2026.txt`;
+            link.download = `VISA_SYSCOHADA_${nineaEnt}_2026.txt`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -14898,7 +14898,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
         }
 
         function telechargerFicheEligibilite() {
-            alert("Génération de l'Attestation d'Éligibilité au Prêt Bancaire (PDF officiel certifié ONECCA avec calcul des ratios BCEAO)...\n\nTéléchargement en cours.");
+            alert("Génération du Dossier d'Éligibilité au Financement Bancaire (Conforme Normes SYSCOHADA / Ratios Prudentiels BCEAO)...\n\nTéléchargement en cours.");
         }
 
         // Raccourcis clavier professionnels (Ctrl+K, Cmd+K, '/')
@@ -16487,8 +16487,8 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                         <i class="fa-solid fa-stamp"></i>
                     </div>
                     <div>
-                        <div style="font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.2px;">Visa de Clôture &amp; Scellement ONECCA</div>
-                        <div style="font-size: 11px; color: #a0d9d2; font-weight: 600;">Ordre National des Experts Comptables et Comptables Agréés du Sénégal</div>
+                        <div style="font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.2px;">Visa de Clôture &amp; Rapprochement Numérique</div>
+                        <div style="font-size: 11px; color: #a0d9d2; font-weight: 600;">Conformité Droit Comptable SYSCOHADA (UEMOA / OHADA)</div>
                     </div>
                 </div>
                 <button type="button" onclick="closeModalVisaOnecca()" style="background: none; border: none; font-size: 24px; color: #cbd5e1; cursor: pointer; line-height: 1;">&times;</button>
@@ -16522,7 +16522,7 @@ Un conseiller financier dédié vous contactera au +221 ${phone} sous 24 à 48 h
                         e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
                     </div>
                     <span style="font-size: 10.5px; color: #64748b; margin-top: 5px; display: block;">
-                        Ce hash garantit l'immutabilité absolue des écritures comptables selon les normes de l'ONECCA et du Code Général des Impôts du Sénégal.
+                        Ce hash garantit l'immutabilité absolue des écritures comptables conformément aux principes de l'Acte Uniforme OHADA (AUDCIF Art. 24).
                     </span>
                 </div>
 

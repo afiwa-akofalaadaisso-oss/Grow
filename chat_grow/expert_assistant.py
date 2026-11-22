@@ -60,11 +60,11 @@ KNOWLEDGE_BASE = [
         )
     },
     {
-        "keywords": [r"agence.*partenaire", r"expert.*comptable", r"onecca", r"partenaires", r"certification"],
-        "titre": "Nos Agences Partenaires & Certification",
+        "keywords": [r"agence.*partenaire", r"expert.*comptable", r"comptabilite", r"partenaires", r"certification"],
+        "titre": "Conformité Comptable & Experts Référents",
         "reponse": (
-            "Grow collabore avec des cabinets d'expertise comptable agréés membres de l'ONECCA (Ordre National des Experts Comptables et Comptables Agréés du Sénégal) à Dakar.\n\n"
-            "Grâce à la traçabilité de vos opérations sur WhatsApp et au stockage certifié de vos preuves avec empreinte numérique SHA-256, nos agences partenaires peuvent auditer, attester et viser vos états financiers de fin d'exercice pour vos demandes de financement auprès des banques (BHS, CBAO, BOA, Ecobank, PAMECAS, ACEP)."
+            "Grow est une plateforme technologique conçue pour permettre aux PME et à leurs conseils comptables d'établir leurs états financiers conformément au Droit Comptable SYSCOHADA (Système Minimal de Trésorerie SMT).\n\n"
+            "Grâce à la traçabilité de vos opérations sur WhatsApp et à l'archivage numérique de vos justificatifs (AUDCIF Art. 24) avec empreinte SHA-256, vos données sont saines, vérifiables et prêtes pour la révision par votre professionnel comptable et la constitution de dossiers de financement bancaire (BHS, CBAO, BOA, Ecobank, PAMECAS, ACEP)."
         )
     },
     {
