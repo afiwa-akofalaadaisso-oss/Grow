@@ -7420,26 +7420,11 @@
             if (composerSelected.annexes) sel.push('Notes Annexes');
 
             let docTitre = `Liasse Fiscale SYSCOHADA SMT — ${pme.nom}`;
-            if (currentReportType === 'composer') {
-                const sel = [];
-                if (composedStates.bilan) sel.push('Bilan');
-                if (composedStates.resultat) sel.push('Résultat');
-                if (composedStates.flux) sel.push('Flux');
-                if (composedStates.annexes) sel.push('Notes Annexes');
-                docTitre = `Dossier Composé (${sel.join(' + ')}) — ${pme.nom}`;
-            } else if (currentReportType === 'bilan') {
-                docTitre = `Bilan Réglementaire SYSCOHADA — ${pme.nom}`;
-            } else if (currentReportType === 'resultat') {
-                docTitre = `Compte de Résultat SYSCOHADA — ${pme.nom}`;
-            } else if (currentReportType === 'flux') {
-                docTitre = `Tableau des Flux de Trésorerie — ${pme.nom}`;
-            } else if (currentReportType === 'annexes') {
-                docTitre = `Notes Annexes SYSCOHADA — ${pme.nom}`;
-                if (sel.length === 4) {
-                    docTitre = `Liasse Fiscale Complète SYSCOHADA SMT — ${pme.nom}`;
-                } else {
-                    docTitre = `Dossier Financier (${sel.join(' + ')}) — ${pme.nom}`;
-                }
+            if (sel.length === 4) {
+                docTitre = `Liasse Fiscale Complète SYSCOHADA SMT — ${pme.nom}`;
+            } else if (sel.length > 0) {
+                docTitre = `Dossier Financier (${sel.join(' + ')}) — ${pme.nom}`;
+            }
 
                 // Création d'une iframe d'impression isolée pour garantir une impression A4 sans faille
                 let iframe = document.getElementById('growPrintIframe');
