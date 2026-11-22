@@ -969,6 +969,17 @@
                 break-before: page;
                 clear: both;
             }
+
+            #docAttestationText {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
         }
 
         /* Popover Calendrier Moderne Pro Growth */
@@ -4327,7 +4338,24 @@
                     else opt.classList.remove('active');
                 });
             }
+
+            const templates = {
+                'sans_reserve': "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.",
+                'coherence': "Les états financiers présentent une sincérité et une cohérence probante avec les opérations bancaires, les encaissements mobiles et les justificatifs comptables examinés.",
+                'presentation': "En notre qualité d'Expert-Comptable, nous avons effectué la mission de présentation des comptes annuels conformément aux normes professionnelles de l'ONECCA. Aucune anomalie significative n'a été relevée.",
+                'reserve_stock': "Attestation avec réserve d'inventaire physique : les comptes sont certifiés réguliers et conformes, sous réserve de la validation contradictoire des inventaires physiques de fin d'exercice."
+            };
+
+            const obsTextarea = document.getElementById('customObservations');
+            if (templates[val] && obsTextarea) {
+                obsTextarea.value = templates[val];
+                try {
+                    localStorage.setItem('growth_custom_observations', templates[val]);
+                } catch (e) {}
+            }
+
             mettreAJourDocPreview();
+            showToast(`Modèle d'attestation appliqué : ${label}`);
         }
 
         function showToast(message) {
@@ -7429,6 +7457,33 @@
             `;
         }
 
+        
+        function syncDocAttestationToInput(el) {
+            const text = el.innerText || el.textContent;
+            const inp = document.getElementById('customObservations');
+            if (inp) {
+                inp.value = text.trim();
+            }
+            try {
+                localStorage.setItem('growth_custom_observations', text.trim());
+            } catch (e) {}
+        }
+
+        function focusCustomObservations() {
+            const el = document.getElementById('docAttestationText');
+            if (el) {
+                el.focus();
+                // Placer le curseur à la fin
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+                showToast("Vous pouvez taper directement votre texte d'attestation personnalisé !");
+            }
+        }
+
         function genererFooterOfficielDoc(pme) {
             const cabNom = document.getElementById('customCabNom')?.value || localStorage.getItem('growth_cabinet_nom') || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
             const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "Expert-Comptable Référent (Agrément ONECCA)";
@@ -7445,12 +7500,21 @@
             return `
                 <div style="margin-top: 24px; padding-top: 14px; border-top: 1px solid #e2e8f0; background: #ffffff; page-break-inside: avoid;">
                     
-                    <!-- MENTIONS D'ATTESTATION OFFICIELLE ET OBSERVATIONS -->
+                    <!-- MENTIONS D'ATTESTATION OFFICIELLE ET OBSERVATIONS (PERSONNALISABLE DIRECTEMENT) -->
                     <div style="margin-bottom: 20px;">
-                        <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #0f172a; letter-spacing: 0.5px;">
-                            Attestation du Commissaire aux Comptes / Expert-Comptable Agréé ONECCA
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                            <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #0f172a; letter-spacing: 0.5px;">
+                                Attestation du Commissaire aux Comptes / Expert-Comptable Agréé ONECCA
+                            </div>
+                            <span class="no-print" style="font-size: 10px; color: #168078; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 4px; background: #f0fdfa; border: 1px solid #a0d9d2;" onclick="focusCustomObservations()" title="Cliquer pour modifier ou taper directement votre texte personnalisé">
+                                <i class="fa-solid fa-pen-to-square"></i> Modifier l'attestation
+                            </span>
                         </div>
-                        <div style="font-size: 11px; color: #334155; line-height: 1.5; margin-top: 4px;">
+                        <div id="docAttestationText" contenteditable="true" oninput="syncDocAttestationToInput(this)"
+                            title="Cliquez directement ici pour taper ou personnaliser votre texte d'attestation"
+                            style="font-size: 11px; color: #334155; line-height: 1.5; padding: 4px 6px; border-radius: 5px; border: 1px dashed #cbd5e1; background: #fbfcfe; transition: all 0.15s; outline: none; cursor: text;"
+                            onfocus="this.style.borderColor='#168078'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 2px rgba(22,128,120,0.15)';"
+                            onblur="this.style.borderColor='#cbd5e1'; this.style.background='#fbfcfe'; this.style.boxShadow='none';">
                             ${obs}
                         </div>
                         ${extraNoteHtml}
