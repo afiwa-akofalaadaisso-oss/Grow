@@ -822,7 +822,7 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
         solde_net = max(0, total_credit - total_debit - total_perso_104)
 
         # Calcul du score financier officiel de bankabilité
-        bankability = calculer_bankability_score_detaille(ent_id, sp)
+        bankability = calculer_bankability_score_detaille(ent_id)
         score_financier = bankability.get("score", 78)
         capacite_emprunt = bankability.get("capacite_emprunt_fcfa", 2500000)
         mensualite_max = bankability.get("mensualite_max_fcfa", 125000)
