@@ -7552,7 +7552,6 @@
                 <div class="print-page-sheet" style="margin-bottom: 24px;">
                     ${headerHtml}
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
                         <tr style="${tableHeaderStyle}">
                             <th style="${thCell} text-align: left; width: 35%;">ACTIF (Emplois)</th>
                             <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
@@ -7584,12 +7583,10 @@
                             <td style="${tdMono}">${pme.bilan.dettesFiscales}</td>
                         </tr>
                         <tr style="${trTotal}">
-                            <td style="padding: 10px 12px; font-weight: 900; color: #000000;">TOTAL ACTIF GÉNÉRAL</td>
-                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
-                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${fmt(totActif)}</td>
-                            <td style="padding: 10px 12px; font-weight: 900; color: #000000;">TOTAL PASSIF GÉNÉRAL</td>
-                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
-                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${fmt(totPassif)}</td>
+                            <td style="padding: 10px 12px; font-weight: 900; color: #000000; border: 1px solid #cbd5e1;">TOTAL ACTIF GÉNÉRAL</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000; border: 1px solid #cbd5e1;">${fmt(totActif)}</td>
+                            <td style="padding: 10px 12px; font-weight: 900; color: #000000; border: 1px solid #cbd5e1;">TOTAL PASSIF GÉNÉRAL</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000; border: 1px solid #cbd5e1;">${fmt(totPassif)}</td>
                         </tr>
                     </table>
                     ${controleArithmHtml}
