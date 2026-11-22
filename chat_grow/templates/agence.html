@@ -2520,33 +2520,53 @@
                                         Annexes prêts pour dépôt DGID</p>
                                 </div>
                             </div>
-                            <ul style="list-style: none; padding: 0; margin-bottom: 18px; font-size: 12.5px; color: #334155;"
-                                class="space-y-2">
-                                <li
-                                    style="padding: 6px 0; border-bottom: 1px dashed #f1f5f9; display: flex; justify-content: space-between;">
-                                    <span>&bull; Bilan Actif / Passif SMT</span>
-                                    <strong style="color: #0e7647;">Certifié</strong>
-                                </li>
-                                <li
-                                    style="padding: 6px 0; border-bottom: 1px dashed #f1f5f9; display: flex; justify-content: space-between;">
-                                    <span>&bull; Compte de Résultat Officiel</span>
-                                    <strong style="color: #0e7647;">Généré</strong>
-                                </li>
-                                <li
-                                    style="padding: 6px 0; border-bottom: 1px dashed #f1f5f9; display: flex; justify-content: space-between;">
-                                    <span>&bull; Tableau des Flux Financiers</span>
-                                    <strong style="color: #0e7647;">Complet</strong>
-                                </li>
-                            </ul>
-                            <div style="display: flex; gap: 8px;">
-                                <button type="button" onclick="openReport('bilan')"
-                                    style="flex: 1; padding: 9px 12px; background: #0e7647; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">
-                                    <i class="fa-solid fa-eye"></i> Visualiser Bilan
+                            <!-- 1. Sélecteur de composition du document (comme au niveau du menu Bilan & Écritures) -->
+                            <div style="margin-bottom: 11px;">
+                                <label style="display: block; font-size: 10.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.4px;">
+                                    <i class="fa-solid fa-list-check" style="color: #168078;"></i> Composition du document :
+                                </label>
+                                <select id="docLiasseCompositionSelect" onchange="onDocLiasseCompositionChange(this.value)"
+                                    style="width: 100%; font-size: 12px; font-weight: 700; color: #0f172a; padding: 7px 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; background: #ffffff; cursor: pointer; outline: none;">
+                                    <option value="tout" selected>📑 Liasse Complète SYSCOHADA (Les 4 états réunis)</option>
+                                    <option value="bilan">⚖️ 1. Bilan Réglementaire (Actif / Passif SMT)</option>
+                                    <option value="resultat">📊 2. Compte de Résultat (Produits &amp; Charges)</option>
+                                    <option value="flux">💸 3. Tableau des Flux de Trésorerie</option>
+                                    <option value="annexes">📝 4. Notes Annexes &amp; Rapprochement</option>
+                                    <option value="composer">🧩 Composer Dossier Sur-Mesure</option>
+                                </select>
+                            </div>
+
+                            <!-- 2. Sélecteur d'intervalle de temps -->
+                            <div style="margin-bottom: 14px;">
+                                <label style="display: block; font-size: 10.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.4px;">
+                                    <i class="fa-solid fa-calendar-days" style="color: #168078;"></i> Période / Intervalle de temps :
+                                </label>
+                                <select id="docLiassePeriodeSelect" onchange="onDocLiassePeriodeChange(this.value)"
+                                    style="width: 100%; font-size: 12px; font-weight: 700; color: #0f172a; padding: 7px 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; background: #ffffff; cursor: pointer; outline: none;">
+                                    <option value="annee_2026" selected>📅 Exercice Annuel 2026 (01/01/2026 - 31/12/2026)</option>
+                                    <option value="mois_courant">🗓️ Mois en cours (Mai 2026)</option>
+                                    <option value="t1_2026">📊 1er Trimestre 2026 (Janv - Mars)</option>
+                                    <option value="t2_2026">📊 2ème Trimestre 2026 (Avr - Juin)</option>
+                                    <option value="annee_2025">📜 Exercice Précédent N-1 (2025)</option>
+                                </select>
+                            </div>
+
+                            <!-- 3. Boutons d'export en 3 formats officiels : PDF, Word, Excel -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+                                <button type="button" onclick="ouvrirLiasseDepuisDocCard()"
+                                    style="padding: 9px 6px; background: #0e7647; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 1px 3px rgba(14,118,71,0.25); transition: all 0.15s;"
+                                    title="Visualiser et Imprimer en PDF A4 officiel">
+                                    <i class="fa-solid fa-file-pdf"></i> PDF (A4)
                                 </button>
-                                <button type="button" onclick="telechargerGrandLivre()"
-                                    style="padding: 9px 14px; background: #f8fafc; border: 1px solid #cbd5e1; color: #0f172a; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer;"
-                                    title="Exporter Excel">
-                                    <i class="fa-solid fa-file-excel" style="color: #16a34a;"></i>
+                                <button type="button" onclick="exporterLiasseWord()"
+                                    style="padding: 9px 6px; background: #1d4ed8; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 1px 3px rgba(29,78,216,0.25); transition: all 0.15s;"
+                                    title="Télécharger au format Microsoft Word (.doc)">
+                                    <i class="fa-solid fa-file-word"></i> Word (.doc)
+                                </button>
+                                <button type="button" onclick="exporterLiasseExcel()"
+                                    style="padding: 9px 6px; background: #16a34a; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 1px 3px rgba(22,163,74,0.25); transition: all 0.15s;"
+                                    title="Télécharger au format Excel (.xls)">
+                                    <i class="fa-solid fa-file-excel"></i> Excel (.xls)
                                 </button>
                             </div>
                         </div>
@@ -3781,9 +3801,24 @@
                     </button>
 
                     <button type="button" onclick="imprimerLiasse()"
-                        style="padding: 7px 14px; background: #168078; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.15s;"
-                        onmouseover="this.style.background='#0f766e';" onmouseout="this.style.background='#168078';">
-                        <i class="fa-solid fa-print"></i> Imprimer (A4)
+                        style="padding: 7px 12px; background: #168078; color: #ffffff; border: none; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.15s;"
+                        onmouseover="this.style.background='#0f766e';" onmouseout="this.style.background='#168078';"
+                        title="Imprimer ou enregistrer en format PDF (A4)">
+                        <i class="fa-solid fa-file-pdf"></i> PDF (A4)
+                    </button>
+
+                    <button type="button" onclick="exporterLiasseWord()"
+                        style="padding: 7px 12px; background: #1d4ed8; color: #ffffff; border: none; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.15s;"
+                        onmouseover="this.style.background='#1e40af';" onmouseout="this.style.background='#1d4ed8';"
+                        title="Télécharger au format Word (.doc)">
+                        <i class="fa-solid fa-file-word"></i> Word (.doc)
+                    </button>
+
+                    <button type="button" onclick="exporterLiasseExcel()"
+                        style="padding: 7px 12px; background: #16a34a; color: #ffffff; border: none; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.15s;"
+                        onmouseover="this.style.background='#15803d';" onmouseout="this.style.background='#16a34a';"
+                        title="Télécharger au format Excel (.xls)">
+                        <i class="fa-solid fa-file-excel"></i> Excel (.xls)
                     </button>
 
                     <button type="button" onclick="closeReport()"
@@ -3963,13 +3998,22 @@
                     Visa Cabinet Comptable Agréé &bull; Certifié Conforme SYSCOHADA</span>
                 <div>
                     <button type="button" onclick="imprimerLiasse()"
-                        style="padding: 9px 18px; border: none; border-radius: 8px; background: #168078; color: #ffffff; font-weight: 800; font-size: 12.5px; cursor: pointer; margin-right: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 6px rgba(22,128,120,0.25); transition: background 0.15s;"
+                        style="padding: 9px 15px; border: none; border-radius: 8px; background: #168078; color: #ffffff; font-weight: 800; font-size: 12px; cursor: pointer; margin-right: 6px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(22,128,120,0.25); transition: background 0.15s;"
                         onmouseover="this.style.background='#0f766e';" onmouseout="this.style.background='#168078';">
-                        <i class="fa-solid fa-print" style="color: #ffffff; font-size: 13px;"></i> Imprimer la Liasse
-                        Officielle (A4 / PDF)
+                        <i class="fa-solid fa-file-pdf" style="color: #ffffff; font-size: 13px;"></i> Imprimer / PDF (A4)
+                    </button>
+                    <button type="button" onclick="exporterLiasseWord()"
+                        style="padding: 9px 15px; border: none; border-radius: 8px; background: #1d4ed8; color: #ffffff; font-weight: 800; font-size: 12px; cursor: pointer; margin-right: 6px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(29,78,216,0.25); transition: background 0.15s;"
+                        onmouseover="this.style.background='#1e40af';" onmouseout="this.style.background='#1d4ed8';">
+                        <i class="fa-solid fa-file-word" style="color: #ffffff; font-size: 13px;"></i> Word (.doc)
+                    </button>
+                    <button type="button" onclick="exporterLiasseExcel()"
+                        style="padding: 9px 15px; border: none; border-radius: 8px; background: #16a34a; color: #ffffff; font-weight: 800; font-size: 12px; cursor: pointer; margin-right: 6px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(22,163,74,0.25); transition: background 0.15s;"
+                        onmouseover="this.style.background='#15803d';" onmouseout="this.style.background='#16a34a';">
+                        <i class="fa-solid fa-file-excel" style="color: #ffffff; font-size: 13px;"></i> Excel (.xls)
                     </button>
                     <button type="button" onclick="closeReport()"
-                        style="padding: 9px 16px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #475569; font-weight: 700; font-size: 12.5px; cursor: pointer;">Fermer</button>
+                        style="padding: 9px 16px; border: 1px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #475569; font-weight: 700; font-size: 12px; cursor: pointer;">Fermer</button>
                 </div>
             </div>
         </div>
@@ -7849,6 +7893,154 @@
                 console.error("Erreur lors de l'impression liasse:", err);
                 window.print();
             }
+        }
+
+        // =========================================================================
+        // GESTION DYNAMIQUE DE LA LIASSE DANS DOCUMENTS & LIASSES (PDF / WORD / EXCEL)
+        // =========================================================================
+        function onDocLiassePeriodeChange(val) {
+            const debEl = document.getElementById('dateBilanDebut');
+            const finEl = document.getElementById('dateBilanFin');
+            const btnLabel = document.getElementById('agenceDateBtnLabel');
+            
+            if (val === 'annee_2026') {
+                if (debEl) debEl.value = '2026-01-01';
+                if (finEl) finEl.value = '2026-12-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2026 au 31/12/2026';
+            } else if (val === 'mois_courant') {
+                if (debEl) debEl.value = '2026-05-01';
+                if (finEl) finEl.value = '2026-05-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/05/2026 au 31/05/2026';
+            } else if (val === 't1_2026') {
+                if (debEl) debEl.value = '2026-01-01';
+                if (finEl) finEl.value = '2026-03-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2026 au 31/03/2026';
+            } else if (val === 't2_2026') {
+                if (debEl) debEl.value = '2026-04-01';
+                if (finEl) finEl.value = '2026-06-30';
+                if (btnLabel) btnLabel.textContent = 'Du 01/04/2026 au 30/06/2026';
+            } else if (val === 'annee_2025') {
+                if (debEl) debEl.value = '2025-01-01';
+                if (finEl) finEl.value = '2025-12-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2025 au 31/12/2025';
+            }
+            showToast("Période comptable mise à jour !");
+        }
+
+        function onDocLiasseCompositionChange(val) {
+            if (val === 'composer') {
+                openComposerDossierDirect();
+            }
+        }
+
+        function ouvrirLiasseDepuisDocCard() {
+            const select = document.getElementById('docLiasseCompositionSelect');
+            const type = select ? select.value : 'tout';
+            if (type === 'composer') {
+                openComposerDossierDirect();
+            } else {
+                openReport(type);
+            }
+        }
+
+        function exporterLiasseWord() {
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier PME' };
+            const intervalle = obtenirIntervalleTexteActuel();
+            const repBody = document.getElementById('repBody');
+            
+            let htmlToExport = '';
+            if (repBody && repBody.innerHTML && repBody.innerHTML.trim().length > 100) {
+                htmlToExport = repBody.innerHTML;
+            } else {
+                htmlToExport = buildSectionBilanHtml(pme, intervalle, true) +
+                    "<br><br>" + buildSectionResultatHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionFluxHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionAnnexesHtml(pme, intervalle, false) +
+                    genererFooterOfficielDoc(pme);
+            }
+
+            const wordDoc = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Liasse Fiscale SYSCOHADA - ${pme.nom}</title>
+                    <style>
+                        body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; color: #1e293b; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 16pt; }
+                        th, td { border: 1pt solid #cbd5e1; padding: 6pt 8pt; font-size: 10pt; }
+                        th { background-color: #f1f5f9; font-weight: bold; color: #0f172a; }
+                        h1, h2, h3 { color: #0f172a; }
+                    </style>
+                </head>
+                <body>
+                    ${htmlToExport}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\\ufeff' + wordDoc], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `LIASSE_SYSCOHADA_${(pme.nom || 'PME').replace(/[^a-zA-Z0-9]/g, '_')}_2026.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast(`Document Word (.doc) officiel généré pour ${pme.nom} !`);
+        }
+
+        function exporterLiasseExcel() {
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier PME' };
+            const intervalle = obtenirIntervalleTexteActuel();
+            const repBody = document.getElementById('repBody');
+            
+            let htmlToExport = '';
+            if (repBody && repBody.innerHTML && repBody.innerHTML.trim().length > 100) {
+                htmlToExport = repBody.innerHTML;
+            } else {
+                htmlToExport = buildSectionBilanHtml(pme, intervalle, true) +
+                    "<br><br>" + buildSectionResultatHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionFluxHtml(pme, intervalle, false);
+            }
+
+            const excelDoc = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                <head>
+                    <meta charset="utf-8">
+                    <!--[if gte mso 9]>
+                    <xml>
+                    <x:ExcelWorkbook>
+                        <x:ExcelWorksheets>
+                            <x:ExcelWorksheet>
+                                <x:Name>Liasse Fiscale SYSCOHADA</x:Name>
+                                <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                            </x:ExcelWorksheet>
+                        </x:ExcelWorksheets>
+                    </x:ExcelWorkbook>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        body { font-family: Arial, sans-serif; font-size: 10pt; }
+                        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+                        th { background-color: #f1f5f9; font-weight: bold; border: 0.5pt solid #cbd5e1; padding: 6px; }
+                        td { border: 0.5pt solid #cbd5e1; padding: 6px; }
+                    </style>
+                </head>
+                <body>
+                    ${htmlToExport}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\\ufeff' + excelDoc], { type: 'application/vnd.ms-excel;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `LIASSE_SYSCOHADA_${(pme.nom || 'PME').replace(/[^a-zA-Z0-9]/g, '_')}_2026.xls`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast(`Tableau Excel (.xls) officiel généré pour ${pme.nom} !`);
         }
     </script>
 
