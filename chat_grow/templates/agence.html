@@ -1342,6 +1342,16 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Ligne Trésorerie Actuelle -->
+                    <div style="margin-top: 3px; padding-top: 7px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-wallet" style="color: #168078; font-size: 10px;"></i> Trésorerie actuelle
+                        </span>
+                        <span id="sidebarActivePmeTreso" style="font-size: 12px; font-weight: 800; color: #0f172a; font-family: monospace;">
+                            1 850 000 FCFA
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Popover de sélection directe de Dossier Client (Élégant, Pop-up au-dessus) -->
@@ -1359,7 +1369,7 @@
                             <div style="width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #222222 0%, #168078 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 900; flex-shrink: 0;">MD</div>
                             <div style="flex: 1; min-width: 0;">
                                 <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Établissement Mamadou Diop</div>
-                                <div style="font-size: 9.5px; color: #64748b;">Commerce Général &bull; Keur Yoff</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Tréso : <strong style="color: #0f172a;">1 850 000 FCFA</strong> &bull; Keur Yoff</div>
                             </div>
                             <i class="fa-solid fa-check pme-check" style="color: #168078; font-size: 11px;"></i>
                         </div>
@@ -1370,7 +1380,7 @@
                             <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 900; flex-shrink: 0;">TE</div>
                             <div style="flex: 1; min-width: 0;">
                                 <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Boutique Touba Électronique</div>
-                                <div style="font-size: 9.5px; color: #64748b;">Informatique & High-Tech &bull; Plateau</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Tréso : <strong style="color: #0f172a;">3 200 000 FCFA</strong> &bull; Plateau</div>
                             </div>
                         </div>
 
@@ -1380,7 +1390,7 @@
                             <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 900; flex-shrink: 0;">PM</div>
                             <div style="flex: 1; min-width: 0;">
                                 <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Pressing Moderne Dakar</div>
-                                <div style="font-size: 9.5px; color: #64748b;">Services & Blanchisserie &bull; Médina</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Tréso : <strong style="color: #0f172a;">1 950 000 FCFA</strong> &bull; Médina</div>
                             </div>
                         </div>
                     </div>
@@ -4113,6 +4123,15 @@
                 sideTitle.textContent = nom;
                 sideTitle.title = nom;
             }
+            const sideTreso = document.getElementById('sidebarActivePmeTreso');
+            if (sideTreso) {
+                for (const k in PME_DATABASE) {
+                    if (PME_DATABASE[k].nom === nom) {
+                        sideTreso.textContent = PME_DATABASE[k].tresoFinale || (PME_DATABASE[k].bilan?.treso ? PME_DATABASE[k].bilan.treso + ' FCFA' : '1 850 000 FCFA');
+                        break;
+                    }
+                }
+            }
         }
 
         function telechargerFec(pmeName) {
@@ -5773,9 +5792,11 @@
             const av = document.getElementById('sidebarActivePmeAvatar');
             const nm = document.getElementById('sidebarActivePmeName');
             const dt = document.getElementById('sidebarActivePmeDetails');
+            const tr = document.getElementById('sidebarActivePmeTreso');
             if (av) av.textContent = pmeAvatars[pmeKey] || 'PME';
             if (nm) nm.innerHTML = `<span>${pme.nom}</span><i class="fa-solid fa-circle-check" style="color: #168078; font-size: 10.5px;"></i>`;
             if (dt) dt.textContent = pmeSubtitles[pmeKey] || `${pme.ninea} • ${pme.adresse}`;
+            if (tr) tr.textContent = pme.tresoFinale || (pme.bilan?.treso ? pme.bilan.treso + ' FCFA' : '1 850 000 FCFA');
 
             // Mise à jour de la sélection visuelle dans le popover sidebar
             document.querySelectorAll('.sidebar-pme-option').forEach(opt => {
