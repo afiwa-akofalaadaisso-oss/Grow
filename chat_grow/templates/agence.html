@@ -1299,8 +1299,8 @@
                         </a>
                         <a href="javascript:void(0)" onclick="switchAgencyTab('tableau')" class="menu-item"
                             id="sideLinkDashboard">
-                            <i class="fa-solid fa-scale-balanced"></i>
-                            <span>Bilan &amp; Écritures</span>
+                            <i class="fa-solid fa-book-journal-whills"></i>
+                            <span>Journal des Écritures</span>
                         </a>
                         <a href="javascript:void(0)" onclick="switchAgencyTab('documents')" class="menu-item"
                             id="sideLinkDocuments">
@@ -1571,43 +1571,11 @@
 
             <!-- Zone de Travail Principale -->
             <main class="main-content">
-                <!-- ONGLET 1 : TABLEAU DE BORD (VALIDATION PRÉ-COMPTABLE) -->
+                <!-- ONGLET 1 : JOURNAL DES ÉCRITURES (VALIDATION & AUDIT) -->
                 <div id="sectionTableau" class="agency-tab-pane" style="display: none;">
+                    <div class="content-header-tag">Imputation &amp; Validation des Écritures &bull; Norme SYSCOHADA Révisé</div>
+                    <h1 class="content-title">Journal Général des Écritures Comptables</h1>
                     <div>
-                        <!-- BARRE DES 4 BOUTONS OFFICIELS ÉTATS FINANCIERS + LIASSE (PREND TOUT L'ESPACE, BOUTON NOIR) -->
-                        <div class="financial-statements-bar">
-                            <span class="statements-bar-label">
-                                <i class="fa-solid fa-file-invoice" style="color: #222222;"></i> États :
-                            </span>
-                            <button onclick="openReport('bilan')" class="btn-statement"
-                                title="1. Bilan Réglementaire (Actif / Passif)">
-                                <i class="fa-solid fa-scale-balanced" style="color: #475569;"></i> Bilan
-                            </button>
-                            <button onclick="openReport('resultat')" class="btn-statement"
-                                title="2. Compte de Résultat (Produits & Charges)">
-                                <i class="fa-solid fa-chart-pie" style="color: #475569;"></i> Résultat
-                            </button>
-                            <button onclick="openReport('flux')" class="btn-statement"
-                                title="3. Tableau des Flux de Trésorerie">
-                                <i class="fa-solid fa-money-bill-transfer" style="color: #475569;"></i> Flux
-                            </button>
-                            <button onclick="openReport('annexes')" class="btn-statement"
-                                title="4. Notes Annexes & Rapprochement">
-                                <i class="fa-solid fa-file-lines" style="color: #475569;"></i> Notes
-                            </button>
-                            <button onclick="openReport('tout')" class="btn-statement"
-                                style="background: #222222; color: #ffffff; border-color: #222222; font-weight: 800; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);"
-                                onmouseover="this.style.background='#000000'; this.style.borderColor='#000000';"
-                                onmouseout="this.style.background='#222222'; this.style.borderColor='#222222';"
-                                title="Liasse Complète SYSCOHADA (Les 4 États Réunis)">
-                                <i class="fa-solid fa-layer-group" style="color: #ffffff;"></i> Liasse Complète
-                            </button>
-                            <button onclick="openComposerDossierDirect()" class="btn-statement"
-                                style="background: #f0fdfa; color: #0f766e; border-color: #a0d9d2; font-weight: 700;"
-                                title="Composer un dossier client sur-mesure (ex: Bilan + Annexes)">
-                                <i class="fa-solid fa-list-check" style="color: #0f766e;"></i> Composer Dossier
-                            </button>
-                        </div>
 
                         <!-- BARRE DE SÉLECTION PME, PÉRIODE & COMPTES ASSOCIÉS (SUR UNE SEULE LIGNE) -->
                         <div class="filters-row"
@@ -2520,7 +2488,7 @@
                                         Annexes prêts pour dépôt DGID</p>
                                 </div>
                             </div>
-                            <!-- 1. Sélecteur de composition du document (comme au niveau du menu Bilan & Écritures) -->
+                            <!-- 1. Sélecteur de composition du document -->
                             <div style="margin-bottom: 11px;">
                                 <label style="display: block; font-size: 10.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.4px;">
                                     <i class="fa-solid fa-list-check" style="color: #168078;"></i> Composition du document :
