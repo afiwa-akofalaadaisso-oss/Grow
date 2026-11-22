@@ -930,6 +930,7 @@
             #modalConnexion,
             #agenceCalendarPopover,
             #docLiasseCalendarPopover,
+            #docLiasseCompositionPopover,
             #compteAssociesPopover {
                 display: none !important;
             }
@@ -2493,13 +2494,25 @@
                                         Annexes prêts pour dépôt DGID</p>
                                 </div>
                             </div>
-                            <!-- 1. Sélecteur de composition du document -->
-                            <div style="margin-bottom: 11px;">
+                            <!-- 1. Sélecteur Professionnel de composition du document (Design aux Couleurs du Projet) -->
+                            <div class="relative" id="docLiasseCompositionWrapper" style="position: relative; margin-bottom: 11px;">
                                 <label style="display: block; font-size: 10.5px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.4px;">
                                     <i class="fa-solid fa-list-check" style="color: #168078;"></i> Composition du document :
                                 </label>
-                                <select id="docLiasseCompositionSelect" onchange="onDocLiasseCompositionChange(this.value)"
-                                    style="width: 100%; font-size: 12px; font-weight: 700; color: #0f172a; padding: 7px 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; background: #ffffff; cursor: pointer; outline: none;">
+                                <button type="button" id="docLiasseCompositionBtn" onclick="toggleDocLiasseCompositionDropdown(event)"
+                                    style="width: 100%; padding: 8px 12px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 12px; font-weight: 700; color: #0f172a; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.15s; box-shadow: 0 1px 2px rgba(0,0,0,0.03);"
+                                    onmouseover="this.style.borderColor='#168078'; this.style.boxShadow='0 2px 8px rgba(22,128,120,0.12)';"
+                                    onmouseout="this.style.borderColor='#cbd5e1'; this.style.boxShadow='0 1px 2px rgba(0,0,0,0.03)';">
+                                    <span style="display: inline-flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        <i class="fa-solid fa-book-bookmark" id="docLiasseCompositionBtnIcon" style="color: #168078; font-size: 12px;"></i>
+                                        <span id="docLiasseCompositionBtnLabel">Liasse Complète SYSCOHADA (Les 4 états réunis)</span>
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down" id="docLiasseCompositionChevron"
+                                        style="font-size: 10px; color: #94a3b8; transition: transform 0.2s; margin-left: 6px;"></i>
+                                </button>
+
+                                <!-- Hidden select pour préserver la rétro-compatibilité JS absolue -->
+                                <select id="docLiasseCompositionSelect" style="display: none;" onchange="onDocLiasseCompositionChange(this.value)">
                                     <option value="tout" selected>Liasse Complète SYSCOHADA (Les 4 états réunis)</option>
                                     <option value="bilan">1. Bilan Réglementaire (Actif / Passif SMT)</option>
                                     <option value="resultat">2. Compte de Résultat (Produits &amp; Charges)</option>
@@ -2507,6 +2520,87 @@
                                     <option value="annexes">4. Notes Annexes &amp; Rapprochement</option>
                                     <option value="composer">Composer un dossier sur-mesure...</option>
                                 </select>
+
+                                <!-- Popover Menu Custom aux couleurs du projet Grow (#168078) -->
+                                <div id="docLiasseCompositionPopover"
+                                    style="display: none; position: absolute; top: calc(100% + 5px); left: 0; right: 0; width: 100%; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; box-shadow: 0 16px 36px rgba(15,23,42,0.18); padding: 6px; z-index: 9999; animation: fadeInDrop 0.15s ease-out;"
+                                    onclick="event.stopPropagation()">
+                                    <div style="display: flex; flex-direction: column; gap: 3px;">
+                                        
+                                        <!-- Option 1: Tout -->
+                                        <div class="custom-composition-item active" data-val="tout" onclick="selectDocLiasseCompositionOption('tout', 'Liasse Complète SYSCOHADA (Les 4 états réunis)', 'fa-book-bookmark')"
+                                            style="padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #f0fdfa; border: 1px solid #14b8a6; transition: all 0.15s;">
+                                            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+                                                <i class="fa-solid fa-book-bookmark" style="color: #168078; font-size: 13px; width: 16px; text-align: center;"></i>
+                                                <span style="font-size: 11.5px; font-weight: 800; color: #0f766e;">Liasse Complète SYSCOHADA (Les 4 états réunis)</span>
+                                            </div>
+                                            <i class="fa-solid fa-check checkmark-icon" style="color: #168078; font-size: 11px; font-weight: 900;"></i>
+                                        </div>
+
+                                        <!-- Option 2: Bilan -->
+                                        <div class="custom-composition-item" data-val="bilan" onclick="selectDocLiasseCompositionOption('bilan', '1. Bilan Réglementaire (Actif / Passif SMT)', 'fa-scale-balanced')"
+                                            style="padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid transparent; transition: all 0.15s;"
+                                            onmouseover="if(!this.classList.contains('active')){this.style.background='#f8fafc';}"
+                                            onmouseout="if(!this.classList.contains('active')){this.style.background='#ffffff';}">
+                                            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+                                                <i class="fa-solid fa-scale-balanced" style="color: #168078; font-size: 13px; width: 16px; text-align: center;"></i>
+                                                <span style="font-size: 11.5px; font-weight: 700; color: #0f172a;">1. Bilan Réglementaire (Actif / Passif SMT)</span>
+                                            </div>
+                                            <i class="fa-solid fa-check checkmark-icon" style="color: #168078; font-size: 11px; font-weight: 900; display: none;"></i>
+                                        </div>
+
+                                        <!-- Option 3: Compte de Résultat -->
+                                        <div class="custom-composition-item" data-val="resultat" onclick="selectDocLiasseCompositionOption('resultat', '2. Compte de Résultat (Produits & Charges)', 'fa-chart-line')"
+                                            style="padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid transparent; transition: all 0.15s;"
+                                            onmouseover="if(!this.classList.contains('active')){this.style.background='#f8fafc';}"
+                                            onmouseout="if(!this.classList.contains('active')){this.style.background='#ffffff';}">
+                                            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+                                                <i class="fa-solid fa-chart-line" style="color: #168078; font-size: 13px; width: 16px; text-align: center;"></i>
+                                                <span style="font-size: 11.5px; font-weight: 700; color: #0f172a;">2. Compte de Résultat (Produits &amp; Charges)</span>
+                                            </div>
+                                            <i class="fa-solid fa-check checkmark-icon" style="color: #168078; font-size: 11px; font-weight: 900; display: none;"></i>
+                                        </div>
+
+                                        <!-- Option 4: Flux de Trésorerie -->
+                                        <div class="custom-composition-item" data-val="flux" onclick="selectDocLiasseCompositionOption('flux', '3. Tableau des Flux de Trésorerie', 'fa-money-bill-transfer')"
+                                            style="padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid transparent; transition: all 0.15s;"
+                                            onmouseover="if(!this.classList.contains('active')){this.style.background='#f8fafc';}"
+                                            onmouseout="if(!this.classList.contains('active')){this.style.background='#ffffff';}">
+                                            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+                                                <i class="fa-solid fa-money-bill-transfer" style="color: #168078; font-size: 13px; width: 16px; text-align: center;"></i>
+                                                <span style="font-size: 11.5px; font-weight: 700; color: #0f172a;">3. Tableau des Flux de Trésorerie</span>
+                                            </div>
+                                            <i class="fa-solid fa-check checkmark-icon" style="color: #168078; font-size: 11px; font-weight: 900; display: none;"></i>
+                                        </div>
+
+                                        <!-- Option 5: Notes Annexes -->
+                                        <div class="custom-composition-item" data-val="annexes" onclick="selectDocLiasseCompositionOption('annexes', '4. Notes Annexes & Rapprochement', 'fa-file-lines')"
+                                            style="padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid transparent; transition: all 0.15s;"
+                                            onmouseover="if(!this.classList.contains('active')){this.style.background='#f8fafc';}"
+                                            onmouseout="if(!this.classList.contains('active')){this.style.background='#ffffff';}">
+                                            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+                                                <i class="fa-solid fa-file-lines" style="color: #168078; font-size: 13px; width: 16px; text-align: center;"></i>
+                                                <span style="font-size: 11.5px; font-weight: 700; color: #0f172a;">4. Notes Annexes &amp; Rapprochement</span>
+                                            </div>
+                                            <i class="fa-solid fa-check checkmark-icon" style="color: #168078; font-size: 11px; font-weight: 900; display: none;"></i>
+                                        </div>
+
+                                        <div style="height: 1px; background: #f1f5f9; margin: 3px 0;"></div>
+
+                                        <!-- Option 6: Composer sur-mesure -->
+                                        <div class="custom-composition-item" data-val="composer" onclick="selectDocLiasseCompositionOption('composer', 'Composer un dossier sur-mesure...', 'fa-sliders')"
+                                            style="padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px dashed #cbd5e1; transition: all 0.15s;"
+                                            onmouseover="if(!this.classList.contains('active')){this.style.background='#f0fdfa'; this.style.borderColor='#14b8a6';}"
+                                            onmouseout="if(!this.classList.contains('active')){this.style.background='#ffffff'; this.style.borderColor='#cbd5e1';}">
+                                            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+                                                <i class="fa-solid fa-sliders" style="color: #168078; font-size: 13px; width: 16px; text-align: center;"></i>
+                                                <span style="font-size: 11.5px; font-weight: 800; color: #168078;">Composer un dossier sur-mesure...</span>
+                                            </div>
+                                            <span style="font-size: 9.5px; font-weight: 800; color: #0f766e; background: #ecfdf5; padding: 2px 6px; border-radius: 4px;">Sur-mesure</span>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- 2. Sélecteur Professionnel d'intervalle de temps (Calendrier Sur-Mesure & Dates Personnalisables) -->
@@ -4222,6 +4316,14 @@
             if (docCalPop && docCalPop.style.display === 'block') {
                 if (docCalWrap && !docCalWrap.contains(e.target)) {
                     closeDocLiasseCalendar();
+                }
+            }
+
+            const docCompPop = document.getElementById('docLiasseCompositionPopover');
+            const docCompWrap = document.getElementById('docLiasseCompositionWrapper');
+            if (docCompPop && docCompPop.style.display === 'block') {
+                if (docCompWrap && !docCompWrap.contains(e.target)) {
+                    closeDocLiasseCompositionDropdown();
                 }
             }
             const pop = document.getElementById('compteAssociesPopover');
@@ -8173,6 +8275,7 @@
                 event.stopPropagation();
                 event.preventDefault();
             }
+            closeDocLiasseCompositionDropdown();
             const pop = document.getElementById('docLiasseCalendarPopover');
             const chev = document.getElementById('docLiasseDateChevron');
             if (!pop) return;
@@ -8493,6 +8596,78 @@
                 if (btnLabel) btnLabel.textContent = 'Du 01/01/2025 au 31/12/2025';
             }
             showToast("Période comptable mise à jour !");
+        }
+
+        // =========================================================================
+        // SÉLECTEUR DE COMPOSITION DU DOCUMENT (DESIGN AUX COULEURS DU PROJET GROW)
+        // =========================================================================
+        function toggleDocLiasseCompositionDropdown(event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const pop = document.getElementById('docLiasseCompositionPopover');
+            const chev = document.getElementById('docLiasseCompositionChevron');
+            if (!pop) return;
+            const isShowing = pop.style.display === 'block';
+            if (isShowing) {
+                closeDocLiasseCompositionDropdown();
+            } else {
+                closeDocLiasseCalendar();
+                pop.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function closeDocLiasseCompositionDropdown() {
+            const pop = document.getElementById('docLiasseCompositionPopover');
+            const chev = document.getElementById('docLiasseCompositionChevron');
+            if (pop) pop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function selectDocLiasseCompositionOption(val, label, iconClass) {
+            const select = document.getElementById('docLiasseCompositionSelect');
+            if (select) {
+                select.value = val;
+            }
+            const labelEl = document.getElementById('docLiasseCompositionBtnLabel');
+            if (labelEl) {
+                labelEl.textContent = label;
+            }
+            const iconEl = document.getElementById('docLiasseCompositionBtnIcon');
+            if (iconEl && iconClass) {
+                iconEl.className = 'fa-solid ' + iconClass;
+            }
+
+            // Met à jour la classe active et l'état visuel aux couleurs du projet (#168078 / #0f766e)
+            document.querySelectorAll('#docLiasseCompositionPopover .custom-composition-item').forEach(it => {
+                const itemVal = it.getAttribute('data-val');
+                const check = it.querySelector('.checkmark-icon');
+                const textSpan = it.querySelector('span');
+                if (itemVal === val) {
+                    it.classList.add('active');
+                    it.style.background = '#f0fdfa';
+                    it.style.border = '1px solid #14b8a6';
+                    if (textSpan) {
+                        textSpan.style.color = '#0f766e';
+                        textSpan.style.fontWeight = '800';
+                    }
+                    if (check) check.style.display = 'block';
+                } else {
+                    it.classList.remove('active');
+                    it.style.background = '#ffffff';
+                    it.style.border = itemVal === 'composer' ? '1px dashed #cbd5e1' : '1px solid transparent';
+                    if (textSpan) {
+                        textSpan.style.color = itemVal === 'composer' ? '#168078' : '#0f172a';
+                        textSpan.style.fontWeight = itemVal === 'composer' ? '800' : '700';
+                    }
+                    if (check) check.style.display = 'none';
+                }
+            });
+
+            closeDocLiasseCompositionDropdown();
+            onDocLiasseCompositionChange(val);
         }
 
         function onDocLiasseCompositionChange(val) {
