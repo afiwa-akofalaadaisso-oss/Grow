@@ -10,7 +10,8 @@
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome Pro Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="/static/grow_icon_squircle.png?v=3">
@@ -205,13 +206,16 @@
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
@@ -226,31 +230,39 @@
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 gap-3">
-                
+
                 <!-- Logo & Identité Growth PME -->
                 <div class="flex items-center gap-3">
                     <a href="/dashboard" class="flex items-center gap-2.5">
-                        <img src="/static/grow_icon_squircle.png?v=3" alt="Growth" class="w-9 h-9 rounded-xl object-contain shadow-xs">
+                        <img src="/static/grow_icon_squircle.png?v=3" alt="Growth"
+                            class="w-9 h-9 rounded-xl object-contain shadow-xs">
                         <div>
                             <div class="flex items-center gap-2">
-                                <span class="text-base sm:text-lg font-black tracking-tight text-slate-900">Growth</span>
-                                <span class="bg-teal-50 text-teal-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-teal-200 uppercase tracking-wider">Espace PME</span>
+                                <span
+                                    class="text-base sm:text-lg font-black tracking-tight text-slate-900">Growth</span>
+                                <span
+                                    class="bg-teal-50 text-teal-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-teal-200 uppercase tracking-wider">Espace
+                                    PME</span>
                             </div>
-                            <p class="text-[10px] text-slate-500 font-semibold hidden sm:block">Journal des Écritures &bull; Norme SYSCOHADA</p>
+                            <p class="text-[10px] text-slate-500 font-semibold hidden sm:block">Journal des Écritures
+                                &bull; Norme SYSCOHADA</p>
                         </div>
                     </a>
                 </div>
 
                 <!-- Informations PME Connectée & Actions -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    
+
                     <!-- Badge PME Actuelle -->
-                    <div id="pmeIdentityBadge" class="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
-                        <div class="w-7 h-7 rounded-lg bg-[#168078] text-white flex items-center justify-center font-black text-xs" id="pmeAvatarInitials">
+                    <div id="pmeIdentityBadge"
+                        class="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
+                        <div class="w-7 h-7 rounded-lg bg-[#168078] text-white flex items-center justify-center font-black text-xs"
+                            id="pmeAvatarInitials">
                             MD
                         </div>
                         <div class="text-left">
-                            <div class="text-xs font-bold text-slate-900 leading-tight" id="pmeHeaderNom">Établissement Mamadou Diop</div>
+                            <div class="text-xs font-bold text-slate-900 leading-tight" id="pmeHeaderNom">Établissement
+                                Mamadou Diop</div>
                             <div class="text-[10.5px] font-medium text-slate-500 flex items-center gap-1.5">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                 <span id="pmeHeaderTel">+221 78 877 38 27</span>
@@ -277,9 +289,11 @@
         <div class="sm:hidden bg-slate-50 border-t border-slate-100 px-4 py-2 flex items-center justify-between">
             <div class="flex items-center gap-2 min-w-0">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                <span class="text-xs font-bold text-slate-900 truncate" id="pmeMobileNom">Établissement Mamadou Diop</span>
+                <span class="text-xs font-bold text-slate-900 truncate" id="pmeMobileNom">Établissement Mamadou
+                    Diop</span>
             </div>
-            <span class="text-[11px] font-mono font-bold text-[#168078] shrink-0" id="pmeMobileTel">+221 78 877 38 27</span>
+            <span class="text-[11px] font-mono font-bold text-[#168078] shrink-0" id="pmeMobileTel">+221 78 877 38
+                27</span>
         </div>
     </header>
 
@@ -290,7 +304,7 @@
 
         <!-- BANDEAU SYNTHÈSE DE TRÉSORERIE & PISTE D'AUDIT (CHARTE OFFICIELLE BLANC & VERT #168078) -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-            
+
             <!-- Carte 1 : Trésorerie Actuelle -->
             <div class="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between hover:border-teal-300 transition-colors">
                 <div class="flex items-center justify-between text-slate-500 mb-2">
@@ -352,6 +366,9 @@
                     <div class="text-[10.5px] font-semibold text-[#168078] mt-1 flex items-center gap-1">
                         <i class="fa-solid fa-circle-check text-[10px]"></i> Écart Balance : <strong>0 FCFA</strong>
                     </div>
+                    <div class="text-[10.5px] font-semibold text-[#168078] mt-1 flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check text-[10px]"></i> Écart Balance : <strong>0 FCFA</strong>
+                    </div>
                 </div>
             </div>
 
@@ -361,10 +378,11 @@
         <!-- SECTION EN-TÊTE DU JOURNAL GÉNÉRAL DES ÉCRITURES                          -->
         <!-- ========================================================================= -->
         <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 mb-6 shadow-xs">
-            
+
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
                 <div>
-                    <div class="inline-flex items-center gap-2 text-xs font-bold text-[#168078] uppercase tracking-wider mb-1">
+                    <div
+                        class="inline-flex items-center gap-2 text-xs font-bold text-[#168078] uppercase tracking-wider mb-1">
                         <i class="fa-solid fa-book-bookmark text-xs"></i>
                         <span>Imputation &bull; Norme SYSCOHADA Révisé</span>
                     </div>
@@ -403,7 +421,7 @@
 
             <!-- BARRE DE RECHERCHE & FILTRES RAPIDES PAR COMPTES SYSCOHADA -->
             <div class="pt-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                
+
                 <!-- Champ de recherche en direct -->
                 <div class="relative flex-1 max-w-md">
                     <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -415,14 +433,21 @@
                 </div>
 
                 <!-- Filtres par Catégories SYSCOHADA (Pills Défilables horizontalement) -->
-                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none" id="filterPillsContainer">
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none"
+                    id="filterPillsContainer">
                     <button type="button" class="filter-pill active" onclick="filtrerParCompte('', this)">Tous</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('701', this)">Ventes (701)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('601', this)">Achats (601)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('514', this)">Wave (514)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('571', this)">Caisse (571)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('605', this)">Énergie (605)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('401', this)">Fournisseurs (401)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('701', this)">Ventes
+                        (701)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('601', this)">Achats
+                        (601)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('514', this)">Wave
+                        (514)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('571', this)">Caisse
+                        (571)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('605', this)">Énergie
+                        (605)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('401', this)">Fournisseurs
+                        (401)</button>
                 </div>
 
             </div>
@@ -443,7 +468,8 @@
                         <th style="text-align: center; width: 220px;">
                             <div class="flex flex-col items-center">
                                 <span>Pièce Comptable</span>
-                                <span class="text-[9.5px] text-slate-500 font-semibold normal-case">Archivage Légal 10 Ans</span>
+                                <span class="text-[9.5px] text-slate-500 font-semibold normal-case">Archivage Légal 10
+                                    Ans</span>
                             </div>
                         </th>
                     </tr>
@@ -463,33 +489,39 @@
 
         <!-- ÉTAT VIDE EN CAS DE RECHERCHE SANS RÉSULTAT -->
         <div id="emptyResultsState" class="hidden text-center py-12 bg-white rounded-2xl border border-slate-200">
-            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3 text-lg">
+            <div
+                class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3 text-lg">
                 <i class="fa-solid fa-folder-open"></i>
             </div>
             <div class="text-sm font-bold text-slate-700">Aucune écriture ne correspond à vos critères</div>
             <p class="text-xs text-slate-500 mt-1">Essayez un autre mot-clé ou réinitialisez les filtres.</p>
-            <button type="button" onclick="reinitialiserFiltres()" class="mt-3 px-3 py-1.5 rounded-lg bg-[#168078] text-white text-xs font-bold">
+            <button type="button" onclick="reinitialiserFiltres()"
+                class="mt-3 px-3 py-1.5 rounded-lg bg-[#168078] text-white text-xs font-bold">
                 Réinitialiser les filtres
             </button>
         </div>
 
         <!-- BARRE DE PAGINATION & TOTAUX EN BAS DE TABLEAU -->
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+        <div
+            class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
             <div class="text-xs text-slate-500 font-medium flex items-center gap-2">
                 <span id="paginationInfo">Affichage de 1 à 20 sur 100 opérations</span>
                 <span class="inline-block w-1 h-1 rounded-full bg-slate-300"></span>
-                <button type="button" id="btnToggleAllPages" onclick="toggleAfficherToutesEcritures()" class="text-[#168078] font-bold hover:underline cursor-pointer">
+                <button type="button" id="btnToggleAllPages" onclick="toggleAfficherToutesEcritures()"
+                    class="text-[#168078] font-bold hover:underline cursor-pointer">
                     Afficher les 100
                 </button>
             </div>
 
             <!-- Contrôles de Pagination -->
             <div class="flex items-center gap-1.5 self-center sm:self-auto" id="paginationControls">
-                <button type="button" onclick="changerPageEcritures(-1)" class="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs flex items-center justify-center transition cursor-pointer">
+                <button type="button" onclick="changerPageEcritures(-1)"
+                    class="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs flex items-center justify-center transition cursor-pointer">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
                 <div class="flex items-center gap-1" id="pagNumbers"></div>
-                <button type="button" onclick="changerPageEcritures(1)" class="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs flex items-center justify-center transition cursor-pointer">
+                <button type="button" onclick="changerPageEcritures(1)"
+                    class="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs flex items-center justify-center transition cursor-pointer">
                     <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
@@ -500,9 +532,12 @@
     <!-- ========================================================================= -->
     <!-- MODALE CONNEXION RAPIDE PAR NUMÉRO DE TÉLÉPHONE                           -->
     <!-- ========================================================================= -->
-    <div id="modalTelephoneLogin" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" style="display: none;">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border border-slate-200 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
-            
+    <div id="modalTelephoneLogin"
+        class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+        style="display: none;">
+        <div
+            class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border border-slate-200 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+
             <!-- Bouton fermer si déjà connecté -->
             <button type="button" onclick="fermerModalTelephoneLogin()" id="btnClosePhoneModal"
                 class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
@@ -511,10 +546,12 @@
 
             <!-- En-tête -->
             <div class="text-center mb-6">
-                <div class="w-14 h-14 rounded-2xl bg-[#093b36] p-2.5 mx-auto mb-3.5 shadow-md flex items-center justify-center">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-[#093b36] p-2.5 mx-auto mb-3.5 shadow-md flex items-center justify-center">
                     <img src="/static/grow_icon_squircle.png?v=3" alt="Growth" class="w-full h-full object-contain">
                 </div>
-                <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Espace PME &bull; Journal Comptable</h3>
+                <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Espace PME &bull; Journal Comptable
+                </h3>
                 <p class="text-xs text-slate-500 font-medium mt-1">
                     Saisissez votre numéro de téléphone WhatsApp pour afficher votre journal d'écritures en direct.
                 </p>
@@ -544,7 +581,8 @@
             </form>
 
             <!-- Footer sécurité -->
-            <div class="mt-4 text-center text-[10.5px] text-slate-400 font-medium flex items-center justify-center gap-1">
+            <div
+                class="mt-4 text-center text-[10.5px] text-slate-400 font-medium flex items-center justify-center gap-1">
                 <i class="fa-solid fa-shield-halved text-emerald-600"></i>
                 <span>Données chiffrées &bull; Conforme SYSCOHADA</span>
             </div>
@@ -555,22 +593,28 @@
     <!-- ========================================================================= -->
     <!-- MODALE PIÈCE COMPTABLE / REÇU / JUSTIFICATIF (STYLE FINTECH HAUT DE GAMME) -->
     <!-- ========================================================================= -->
-    <div id="pieceComptableModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 select-none" style="display: none;" onclick="fermerPieceComptableModal()">
-        <div class="bg-white rounded-t-[32px] sm:rounded-3xl max-w-lg w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col overflow-hidden border border-slate-200 shadow-2xl relative" onclick="event.stopPropagation()">
-            
+    <div id="pieceComptableModal"
+        class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 select-none"
+        style="display: none;" onclick="fermerPieceComptableModal()">
+        <div class="bg-white rounded-t-[32px] sm:rounded-3xl max-w-lg w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col overflow-hidden border border-slate-200 shadow-2xl relative"
+            onclick="event.stopPropagation()">
+
             <!-- Handle tactile mobile iOS -->
             <div class="sm:hidden pt-3 pb-1 flex justify-center">
                 <div class="w-10 h-1.5 rounded-full bg-slate-300"></div>
             </div>
 
             <!-- Header épuré et prestigieux -->
-            <div class="px-5 sm:px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white shrink-0">
+            <div
+                class="px-5 sm:px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white shrink-0">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-[#168078] text-xs font-bold shadow-2xs">
+                    <div
+                        class="w-8 h-8 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-[#168078] text-xs font-bold shadow-2xs">
                         <i class="fa-solid fa-file-shield text-sm"></i>
                     </div>
                     <div>
-                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#168078] flex items-center gap-1.5">
+                        <div
+                            class="text-[10px] font-extrabold uppercase tracking-wider text-[#168078] flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                             <span>Scellé Probatoire Légal &bull; 10 Ans SYSCOHADA</span>
                         </div>
@@ -578,19 +622,24 @@
                     </div>
                 </div>
 
-                <button type="button" onclick="fermerPieceComptableModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer transition">
+                <button type="button" onclick="fermerPieceComptableModal()"
+                    class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer transition">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
 
             <!-- Corps défilant du reçu avec typographie soignée -->
             <div class="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1 bg-slate-50/60">
-                
+
                 <!-- Bloc Héros Montant & Libellé (Style Apple Wallet / Revolut) -->
-                <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs text-center relative overflow-hidden">
-                    <div class="absolute -top-12 -right-12 w-28 h-28 rounded-full bg-emerald-50 pointer-events-none blur-xl"></div>
-                    
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wide mb-2">
+                <div
+                    class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs text-center relative overflow-hidden">
+                    <div
+                        class="absolute -top-12 -right-12 w-28 h-28 rounded-full bg-emerald-50 pointer-events-none blur-xl">
+                    </div>
+
+                    <span
+                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wide mb-2">
                         <i class="fa-solid fa-circle-check text-[10px]"></i> Écriture Justifiée &bull; Clôture Validée
                     </span>
 
@@ -598,85 +647,102 @@
                         925 000 <span class="text-base font-extrabold text-slate-400">FCFA</span>
                     </div>
 
-                    <h3 class="text-sm font-bold text-slate-800 mt-1.5 max-w-sm mx-auto leading-snug" id="pcModalLibelle">
+                    <h3 class="text-sm font-bold text-slate-800 mt-1.5 max-w-sm mx-auto leading-snug"
+                        id="pcModalLibelle">
                         Achat 50 Sacs Riz Parfumé Brisé 50kg Keur Yoff
                     </h3>
 
                     <div class="mt-2.5 flex items-center justify-center gap-2 flex-wrap">
                         <span class="acc-badge" id="pcModalCompteBadge">601</span>
-                        <span class="text-xs font-semibold text-slate-600" id="pcModalCompte">601100 - Achats de marchandises</span>
+                        <span class="text-xs font-semibold text-slate-600" id="pcModalCompte">601100 - Achats de
+                            marchandises</span>
                     </div>
                 </div>
 
                 <!-- Grille des détails de conformité -->
                 <div class="grid grid-cols-2 gap-3 text-xs">
                     <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-2xs">
-                        <span class="text-slate-400 block text-[10px] font-bold uppercase tracking-wider mb-1">Tiers / Fournisseur</span>
+                        <span class="text-slate-400 block text-[10px] font-bold uppercase tracking-wider mb-1">Tiers /
+                            Fournisseur</span>
                         <strong class="text-slate-900 block truncate" id="pcModalTiers">Grand Moulin Dakar</strong>
                         <span class="text-[10px] text-slate-500 font-medium mt-0.5 block">Partenaire Référencé</span>
                     </div>
 
                     <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-2xs">
-                        <span class="text-slate-400 block text-[10px] font-bold uppercase tracking-wider mb-1">Canal &amp; Date Valeur</span>
+                        <span class="text-slate-400 block text-[10px] font-bold uppercase tracking-wider mb-1">Canal
+                            &amp; Date Valeur</span>
                         <strong class="text-emerald-700 flex items-center gap-1.5 truncate" id="pcModalCanal">
                             <i class="fa-brands fa-whatsapp text-emerald-500"></i> Wave / WhatsApp
                         </strong>
-                        <span class="text-[10px] text-slate-500 font-medium mt-0.5 block" id="pcModalDate">05/01/2026 à 14:22</span>
+                        <span class="text-[10px] text-slate-500 font-medium mt-0.5 block" id="pcModalDate">05/01/2026 à
+                            14:22</span>
                     </div>
                 </div>
 
                 <!-- Facture / Ticket de Caisse Numérique Réaliste & Homologué DGID -->
                 <div class="space-y-2">
                     <div class="flex items-center justify-between text-xs">
-                        <span class="font-extrabold uppercase tracking-wider text-slate-700 text-[11px] flex items-center gap-1.5">
+                        <span
+                            class="font-extrabold uppercase tracking-wider text-slate-700 text-[11px] flex items-center gap-1.5">
                             <i class="fa-solid fa-receipt text-[#168078]"></i>
                             <span>Pièce Justificative Archivée</span>
                         </span>
-                        <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                        <span
+                            class="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
                             Certifié Conforme DGID
                         </span>
                     </div>
 
                     <!-- Ticket de caisse thermique officiel haute définition -->
-                    <div class="bg-white border border-slate-300 rounded-2xl p-5 shadow-sm font-mono text-slate-800 relative">
+                    <div
+                        class="bg-white border border-slate-300 rounded-2xl p-5 shadow-sm font-mono text-slate-800 relative">
                         <!-- En-tête du ticket -->
                         <div class="text-center pb-3 border-b border-dashed border-slate-300 space-y-0.5">
-                            <div class="font-black text-sm text-slate-900 uppercase" id="pcTicketPme">ÉTABLISSEMENT MAMADOU DIOP &amp; FILS</div>
+                            <div class="font-black text-sm text-slate-900 uppercase" id="pcTicketPme">ÉTABLISSEMENT
+                                MAMADOU DIOP &amp; FILS</div>
                             <div class="text-[10.5px] text-slate-600">Marché Keur Yoff &bull; Dakar, Sénégal</div>
-                            <div class="text-[10px] text-slate-500">NINEA : 005489210 2Y3 &bull; RCCM : SN-DKR-2022-B-4819</div>
-                            <div class="text-[9.5px] text-slate-400 font-bold tracking-widest uppercase mt-1">PIÈCE PROBATOIRE ARTICLE 24 SYSCOHADA</div>
+                            <div class="text-[10px] text-slate-500">NINEA : 005489210 2Y3 &bull; RCCM :
+                                SN-DKR-2022-B-4819</div>
+                            <div class="text-[9.5px] text-slate-400 font-bold tracking-widest uppercase mt-1">PIÈCE
+                                PROBATOIRE ARTICLE 24 SYSCOHADA</div>
                         </div>
 
                         <!-- Tableau des articles du ticket -->
                         <div class="py-3 border-b border-dashed border-slate-300 space-y-2 text-xs">
                             <div class="flex justify-between items-start">
-                                <span class="font-bold max-w-[240px] leading-snug" id="pcTicketArticle">Achat 50 Sacs Riz Parfumé Brisé 50kg</span>
+                                <span class="font-bold max-w-[240px] leading-snug" id="pcTicketArticle">Achat 50 Sacs
+                                    Riz Parfumé Brisé 50kg</span>
                                 <span class="font-bold text-slate-900 shrink-0" id="pcTicketMntArticle">925 000 F</span>
                             </div>
                             <div class="flex justify-between text-[11px] text-slate-500">
                                 <span>Mode de paiement</span>
-                                <span class="font-semibold text-slate-700" id="pcTicketMode">Wave Business (+221 78 877 38 27)</span>
+                                <span class="font-semibold text-slate-700" id="pcTicketMode">Wave Business (+221 78 877
+                                    38 27)</span>
                             </div>
                             <div class="flex justify-between text-[11px] text-slate-500">
                                 <span>Réf. Transaction</span>
-                                <span class="font-semibold text-slate-700 font-mono" id="pcTicketRefTx">TX-WV-99824</span>
+                                <span class="font-semibold text-slate-700 font-mono"
+                                    id="pcTicketRefTx">TX-WV-99824</span>
                             </div>
                         </div>
 
                         <!-- Total et Cachet Numérique -->
                         <div class="pt-3 flex items-center justify-between">
                             <div>
-                                <div class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Total Net Réglé :</div>
+                                <div class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Total Net
+                                    Réglé :</div>
                                 <div class="text-lg font-black text-slate-900" id="pcTicketTotal">925 000 FCFA</div>
                             </div>
-                            <div class="px-2.5 py-1 rounded-lg border-2 border-emerald-600 text-emerald-700 font-bold text-[10px] uppercase tracking-wider rotate-[-3deg] shadow-xs">
+                            <div
+                                class="px-2.5 py-1 rounded-lg border-2 border-emerald-600 text-emerald-700 font-bold text-[10px] uppercase tracking-wider rotate-[-3deg] shadow-xs">
                                 ✓ PAYÉ / AUDITÉ
                             </div>
                         </div>
 
                         <!-- Mentions légales en bas de ticket -->
                         <div class="mt-3 pt-2 border-t border-slate-100 text-[9.5px] text-center text-slate-400">
-                            Conservation probatoire 10 ans garantie par Growth &bull; Cabinet Diallo &amp; Associés (ONECCA)
+                            Conservation probatoire 10 ans garantie par Growth &bull; Cabinet Diallo &amp; Associés
+                            (ONECCA)
                         </div>
                     </div>
                 </div>
@@ -685,11 +751,13 @@
 
             <!-- Footer propre avec actions claires -->
             <div class="p-4 bg-white border-t border-slate-200 flex items-center justify-between gap-3 shrink-0">
-                <button type="button" onclick="window.print()" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+                <button type="button" onclick="window.print()"
+                    class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-print text-slate-500"></i>
                     <span>Imprimer</span>
                 </button>
-                <button type="button" onclick="fermerPieceComptableModal()" class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-[#168078] hover:bg-[#115e59] text-white text-xs font-extrabold transition shadow-md shadow-[#168078]/25 cursor-pointer text-center">
+                <button type="button" onclick="fermerPieceComptableModal()"
+                    class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-[#168078] hover:bg-[#115e59] text-white text-xs font-extrabold transition shadow-md shadow-[#168078]/25 cursor-pointer text-center">
                     Fermer la pièce
                 </button>
             </div>
@@ -2342,7 +2410,7 @@
 
         function chargerPme(pmeKey) {
             const pme = PME_DATABASE[pmeKey] || PME_DATABASE['diop'];
-            
+
             // 1. Remplissage des en-têtes
             document.getElementById('pmeHeaderNom').textContent = pme.nom;
             document.getElementById('pmeHeaderTel').textContent = pme.telephone;
@@ -2395,7 +2463,7 @@
 
         function filtrerParCompte(comptePrefix, btnEl) {
             currentFilterCompte = comptePrefix;
-            
+
             // Mise à jour de la pilule active
             document.querySelectorAll('#filterPillsContainer .filter-pill').forEach(btn => btn.classList.remove('active'));
             if (btnEl) btnEl.classList.add('active');
@@ -2602,7 +2670,7 @@
         // Modale Pièce Comptable (Haute Définition Fintech)
         function ouvrirPieceComptableModal(ref, libelle, montant, date, compte, tiers, imgUrl) {
             const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) ? PME_DATABASE[currentPmeKey] : (typeof PME_DATABASE !== 'undefined' ? PME_DATABASE['diop'] : null);
-            
+
             // 1. En-tête de référence
             const refEl = document.getElementById('pcModalRef');
             if (refEl) refEl.textContent = ref || 'PC-2026-01-05-001';
@@ -2631,7 +2699,7 @@
             const isWave = (compte || '').includes('514') || (libelle || '').toLowerCase().includes('wave') || (montant || '').includes('+');
             const canalEl = document.getElementById('pcModalCanal');
             if (canalEl) {
-                canalEl.innerHTML = isWave 
+                canalEl.innerHTML = isWave
                     ? '<i class="fa-solid fa-mobile-screen-button text-teal-600"></i> Wave Business'
                     : '<i class="fa-solid fa-cash-register text-emerald-600"></i> Caisse Espèces';
             }
