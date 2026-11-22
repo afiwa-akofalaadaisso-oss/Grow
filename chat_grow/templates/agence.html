@@ -2674,38 +2674,7 @@
                     </div>
                     <h1 class="content-title">Reporting Financier &amp; Ratios Prudentiels</h1>
 
-                    <!-- Boutons d'accès direct aux 4 états financiers (Format Compact & Fluide) -->
-                    <div class="financial-statements-bar" style="margin-top: 15px;">
-                        <span class="statements-bar-label">
-                            <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> États :
-                        </span>
-                        <button onclick="openReport('bilan')" class="btn-statement"
-                            title="1. Bilan Réglementaire (Actif / Passif)">
-                            <i class="fa-solid fa-scale-balanced" style="color: #168078;"></i> Bilan
-                        </button>
-                        <button onclick="openReport('resultat')" class="btn-statement"
-                            title="2. Compte de Résultat (Produits & Charges)">
-                            <i class="fa-solid fa-chart-pie" style="color: #168078;"></i> Résultat
-                        </button>
-                        <button onclick="openReport('flux')" class="btn-statement"
-                            title="3. Tableau des Flux de Trésorerie">
-                            <i class="fa-solid fa-money-bill-transfer" style="color: #168078;"></i> Flux
-                        </button>
-                        <button onclick="openReport('annexes')" class="btn-statement"
-                            title="4. Notes Annexes & Rapprochement">
-                            <i class="fa-solid fa-file-lines" style="color: #168078;"></i> Notes
-                        </button>
-                        <button onclick="openReport('tout')" class="btn-statement"
-                            style="background: #168078; color: #ffffff; border-color: #168078; font-weight: 800; box-shadow: 0 2px 6px rgba(22, 128, 120, 0.25);"
-                            title="Liasse Complète SYSCOHADA (Les 4 États Réunis)">
-                            <i class="fa-solid fa-layer-group" style="color: #ffffff;"></i> Liasse Complète
-                        </button>
-                        <button onclick="openComposerDossierDirect()" class="btn-statement"
-                            style="background: #f0fdfa; color: #0f766e; border-color: #a0d9d2; font-weight: 700;"
-                            title="Composer un dossier client sur-mesure (ex: Bilan + Annexes)">
-                            <i class="fa-solid fa-list-check" style="color: #0f766e;"></i> Composer Dossier
-                        </button>
-                    </div>
+
 
                     <!-- Grille des 6 Ratios Prudentiels du Cabinet -->
                     <div
@@ -2774,30 +2743,7 @@
                         </div>
                     </div>
 
-                    <!-- Grand Panneau de Certification du Bilan -->
-                    <div
-                        style="background: #ffffff; border: 1.5px solid #0e7647; border-radius: 14px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: 0 4px 12px rgba(14, 118, 71, 0.08);">
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                                <span
-                                    style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: #ecfdf5; color: #0e7647; padding: 3px 8px; border-radius: 6px; border: 1px solid #a7f3d0;">
-                                    Signature Numérique Officielle
-                                </span>
-                                <span style="font-size: 12px; color: #64748b;">Réf: SYSCOHADA-2026-DK-CAB</span>
-                            </div>
-                            <h3 style="font-size: 17px; font-weight: 900; color: #0f172a;">Prêt pour scellement &amp;
-                                visa par votre Cabinet Comptable</h3>
-                            <p style="font-size: 12.5px; color: #64748b; margin-top: 4px; max-width: 580px;">
-                                Toutes les écritures de la PME ont été certifiées. Vous pouvez apposer la signature
-                                électronique de votre cabinet sur la liasse financière.
-                            </p>
-                        </div>
-                        <button type="button" onclick="openReport('tout')"
-                            style="background: #0e7647; color: white; border: none; padding: 14px 26px; border-radius: 10px; font-weight: 800; font-size: 13.5px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(14, 118, 71, 0.25);">
-                            <i class="fa-solid fa-signature" style="font-size: 16px;"></i>
-                            <span>APPOSER LE VISA DU CABINET COMPTABLE</span>
-                        </button>
-                    </div>
+
                 </div>
 
 
@@ -7503,15 +7449,13 @@
             const ecart = totActif - totPassif;
             const fmt = (n) => n.toLocaleString('fr-FR') + ' FCFA';
 
-            const controleArithmHtml = ecart === 0
-                ? `<div style="margin-top: 8px; font-size: 11px; font-weight: 700; color: #0e7647; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 7px;">
-                     <i class="fa-solid fa-circle-check"></i>
-                     <span>Contrôle arithmétique rigoureux : Bilan équilibré sans forçage (Total Actif ${fmt(totActif)} = Total Passif ${fmt(totPassif)} &bull; Écart : 0 FCFA)</span>
-                   </div>`
-                : `<div style="margin-top: 8px; font-size: 11px; font-weight: 800; color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 7px;">
+            // Alerte uniquement en cas d'anomalie de déséquilibre (zéro encart superflu si équilibré)
+            const controleArithmHtml = (ecart !== 0)
+                ? `<div style="margin-top: 8px; font-size: 11px; font-weight: 800; color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 7px;">
                      <i class="fa-solid fa-triangle-exclamation"></i>
                      <span>Déséquilibre comptable détecté : Total Actif ${fmt(totActif)} &ne; Total Passif ${fmt(totPassif)} &bull; Écart : ${fmt(ecart)} (À régulariser)</span>
-                   </div>`;
+                   </div>`
+                : '';
 
             return `
                 <div class="print-page-sheet" style="margin-bottom: 24px;">
