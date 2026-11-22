@@ -3912,6 +3912,11 @@
         function validateRow(id) {
             const btn = document.getElementById(`btn-val-${id}`);
             if (btn) {
+                const parent = btn.parentElement;
+                if (parent) {
+                    // Suppression immédiate de tout badge 'Preuve' à côté
+                    parent.querySelectorAll('.badge-preuve').forEach(el => el.remove());
+                }
                 btn.outerHTML = '<span class="badge-status badge-validee">&#10004; Validée</span>';
             }
             const pf = document.getElementById('progressFill');
@@ -4520,7 +4525,7 @@
                         "tiers": "Grossiste Huilerie Sandaga",
                         "preuve": "/static/mock_receipt_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -4650,7 +4655,7 @@
                         "tiers": "SenEau Distribution Dakar",
                         "preuve": "/static/mock_receipt_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -4780,7 +4785,7 @@
                         "tiers": "Patisen Distribution",
                         "preuve": "/static/mock_receipt_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -4910,7 +4915,7 @@
                         "tiers": "Transporteur Ndiaye Keur Yoff",
                         "preuve": "/static/mock_receipt_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -5040,7 +5045,7 @@
                         "tiers": "Clients Caisse",
                         "preuve": "/static/mock_wave_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -5170,7 +5175,7 @@
                         "tiers": "Grossiste Huilerie Sandaga",
                         "preuve": "/static/mock_receipt_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -5300,7 +5305,7 @@
                         "tiers": "SenEau Distribution Dakar",
                         "preuve": "/static/mock_receipt_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -5430,7 +5435,7 @@
                         "tiers": "Patisen Distribution",
                         "preuve": "/static/mock_receipt_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -5560,7 +5565,7 @@
                         "tiers": "Transporteur Ndiaye Keur Yoff",
                         "preuve": "/static/mock_receipt_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -5690,7 +5695,7 @@
                         "tiers": "Clients Caisse",
                         "preuve": "/static/mock_wave_photo.png",
                         "statut": "preuve",
-                        "statutLabel": "✓ Preuve",
+                        "statutLabel": "À valider",
                         "hasValBtn": true
                     },
                     {
@@ -5834,7 +5839,7 @@
                     "Note 4 — Ligne de crédit : Prêt de trésorerie en cours de remboursement régulier auprès de la CBAO."
                 ],
                 ecritures: [
-                    { id: 1, date: "11/05/2026", libelle: "Achat Lot Smartphones & Câbles USB-C", compte: "601100 - Achats", debit: "750 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "✓ Preuve", hasValBtn: true },
+                    { id: 1, date: "11/05/2026", libelle: "Achat Lot Smartphones & Câbles USB-C", compte: "601100 - Achats", debit: "750 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "À valider", hasValBtn: true },
                     { id: 2, date: "11/05/2026", libelle: "Vente Téléphones Samsung (Wave Business)", compte: "701100 - Ventes", debit: "-", credit: "980 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
                     { id: 3, date: "10/05/2026", libelle: "Facture Électricité Senelec Agence Plateau", compte: "605100 - Frais", debit: "125 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
                     { id: 4, date: "09/05/2026", libelle: "Vente Accessoires Informatiques Cash", compte: "701100 - Ventes", debit: "-", credit: "340 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
@@ -5942,7 +5947,7 @@
                     "Note 4 — Rapprochement Wave Business : 100% des règlements d'acomptes clients validés."
                 ],
                 ecritures: [
-                    { id: 1, date: "12/05/2026", libelle: "Achat Rouleaux Bazin Riche Getzner", compte: "601100 - Achats", debit: "350 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "✓ Preuve", hasValBtn: true },
+                    { id: 1, date: "12/05/2026", libelle: "Achat Rouleaux Bazin Riche Getzner", compte: "601100 - Achats", debit: "350 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "À valider", hasValBtn: true },
                     { id: 2, date: "12/05/2026", libelle: "Acompte Commande Cérémonie (Wave)", compte: "701100 - Ventes", debit: "-", credit: "500 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
                     { id: 3, date: "11/05/2026", libelle: "Achat Fils, Boutons & Fermetures Éclair", compte: "601100 - Achats", debit: "45 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
                     { id: 4, date: "10/05/2026", libelle: "Solde Robes Prêt-à-porter Cash", compte: "701100 - Ventes", debit: "-", credit: "280 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
@@ -5996,7 +6001,7 @@
                     "Note 4 — Suivi carburant & Télématique : Consommations contrôlées par cartes accréditées."
                 ],
                 ecritures: [
-                    { id: 1, date: "12/05/2026", libelle: "Plein Carburant Flotte Camions Total", compte: "601100 - Achats", debit: "420 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "✓ Preuve", hasValBtn: true },
+                    { id: 1, date: "12/05/2026", libelle: "Plein Carburant Flotte Camions Total", compte: "601100 - Achats", debit: "420 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "preuve", statutLabel: "À valider", hasValBtn: true },
                     { id: 2, date: "12/05/2026", libelle: "Prestation Transport Conteneurs Port (Virement)", compte: "701100 - Ventes", debit: "-", credit: "1 250 000", preuve: "/static/mock_wave_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
                     { id: 3, date: "11/05/2026", libelle: "Remplacement Pneumatiques Essieu", compte: "605100 - Frais", debit: "280 000", credit: "-", preuve: "/static/mock_receipt_photo.png", statut: "validee", statutLabel: "✓ Validée", hasValBtn: false },
                     { id: 4, date: "09/05/2026", libelle: "Course Livraison Express Mbao-Dakar", compte: "701100 - Ventes", debit: "-", credit: "160 000", preuve: null, statut: "validee", statutLabel: "✓ Validée", hasValBtn: false }
@@ -6250,8 +6255,10 @@
                                     <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> Pièce Comptable
                                 </button>
                                 <span class="badge-archive-10ans" title="Conservation garantie 10 ans selon l'Art. 24 SYSCOHADA"><i class="fa-solid fa-shield-check"></i> 10 ans</span>
-                                <span class="badge-status ${badgeClass}">${ec.statutLabel}</span>
-                                ${btnVal}
+                                ${ec.hasValBtn
+                                    ? `<button class="btn-validate" id="btn-val-${ec.id}" onclick="validateRow(${ec.id})"><i class="fa-solid fa-check" style="font-size: 9px;"></i> Valider</button>`
+                                    : `<span class="badge-status badge-validee">&#10004; Validée</span>`
+                                }
                             </div>
                         </td>
                     </tr>
