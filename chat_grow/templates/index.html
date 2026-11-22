@@ -123,42 +123,54 @@
     <!-- ========================================================================= -->
     <section class="relative hero-mesh pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden border-b border-[#a0d9d2]/40">
 
-        <!-- FOND CRÉATIF VECTORIEL : DESSINS FINTECH, COURBES DE FLUX & GRILLE ISOMÉTRIQUE -->
+        <!-- FOND CRÉATIF VECTORIEL : DESSINS FINTECH, COURBES DE FLUX & GRILLE GÉOMÉTRIQUE -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
-            <!-- Grille géométrique comptable subtile -->
-            <svg class="absolute w-full h-full opacity-45" xmlns="http://www.w3.org/2000/svg">
+            <!-- Grille géométrique comptable bien visible et contrastée -->
+            <svg class="absolute w-full h-full opacity-65" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <pattern id="fintechGrid" width="48" height="48" patternUnits="userSpaceOnUse">
-                        <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#a0d9d2" stroke-width="0.8" opacity="0.35" />
-                        <circle cx="0" cy="0" r="1.5" fill="#a0d9d2" opacity="0.8" />
+                        <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.45" />
+                        <circle cx="0" cy="0" r="1.8" fill="#a0d9d2" opacity="0.9" />
                     </pattern>
-                    <linearGradient id="curveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#a0d9d2" stop-opacity="0.6" />
-                        <stop offset="50%" stop-color="#8ecfc7" stop-opacity="0.3" />
-                        <stop offset="100%" stop-color="#222222" stop-opacity="0.05" />
+                    <linearGradient id="curveGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#a0d9d2" stop-opacity="0.8" />
+                        <stop offset="50%" stop-color="#8ecfc7" stop-opacity="0.9" />
+                        <stop offset="100%" stop-color="#a0d9d2" stop-opacity="0.3" />
                     </linearGradient>
-                    <linearGradient id="curveGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#a0d9d2" stop-opacity="0.7" />
-                        <stop offset="100%" stop-color="#a0d9d2" stop-opacity="0.0" />
+                    <linearGradient id="curveGrad2" x1="100%" y1="0%" x2="0%" y2="0%">
+                        <stop offset="0%" stop-color="#222222" stop-opacity="0.4" />
+                        <stop offset="50%" stop-color="#a0d9d2" stop-opacity="0.8" />
+                        <stop offset="100%" stop-color="#8ecfc7" stop-opacity="0.6" />
                     </linearGradient>
                 </defs>
                 <rect width="100%" height="100%" fill="url(#fintechGrid)" />
-                <!-- Courbes de flux de trésorerie dessinées en arrière-plan -->
-                <path d="M-100,280 C200,160 350,420 700,260 C1050,100 1200,380 1600,200" fill="none" stroke="url(#curveGrad1)" stroke-width="2.5" />
-                <path d="M-50,340 C280,220 420,490 820,320 C1180,180 1350,440 1700,260" fill="none" stroke="url(#curveGrad2)" stroke-width="1.8" stroke-dasharray="6,6" />
-                <!-- Cercles concentriques d'ondes de transmission Wave/WhatsApp -->
-                <circle cx="15%" cy="30%" r="180" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.25" />
-                <circle cx="15%" cy="30%" r="280" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.15" />
-                <circle cx="85%" cy="35%" r="220" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.2" />
+                
+                <!-- Schéma vectoriel des flux financiers bien net et tracé -->
+                <path d="M -100,220 C 250,120 400,380 750,220 C 1100,60 1350,320 1800,160" fill="none" stroke="url(#curveGrad1)" stroke-width="3" />
+                <path d="M -50,300 C 300,180 450,460 850,280 C 1250,100 1450,400 1900,220" fill="none" stroke="url(#curveGrad2)" stroke-width="2" stroke-dasharray="8,8" />
+                
+                <!-- Nœuds du réseau de transmission financier -->
+                <circle cx="18%" cy="26%" r="6" fill="#a0d9d2" stroke="#222222" stroke-width="2" />
+                <circle cx="18%" cy="26%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" />
+                <circle cx="18%" cy="26%" r="140" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.35" />
+                
+                <circle cx="82%" cy="32%" r="6" fill="#a0d9d2" stroke="#222222" stroke-width="2" />
+                <circle cx="82%" cy="32%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" />
+                <circle cx="82%" cy="32%" r="160" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.35" />
+
+                <!-- Connexion centrale schématique -->
+                <line x1="18%" y1="26%" x2="50%" y2="45%" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5" />
+                <line x1="82%" y1="32%" x2="50%" y2="45%" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5" />
+                <circle cx="50%" cy="45%" r="5" fill="#222222" stroke="#a0d9d2" stroke-width="2" />
             </svg>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
             <!-- ILLUSTRATION FLOTTANTE GAUCHE : REÇU & PREUVE FINANCIÈRE SCELLÉE (DESSIN UI) -->
-            <div class="hidden xl:flex absolute left-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/90 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/25 flex-col gap-2.5 w-64 text-left pointer-events-none z-20 animate-float-left">
+            <div class="hidden lg:flex absolute left-2 xl:left-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/30 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-left">
                 <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-xs">
                         <i class="fa-solid fa-receipt text-[10px]"></i> Preuve Wave
                     </span>
                     <span class="text-[10.5px] text-slate-400 font-mono font-bold">14:22 GMT</span>
@@ -174,7 +186,7 @@
             </div>
 
             <!-- ILLUSTRATION FLOTTANTE DROITE : LIASSE FISCALE DGID SCELLÉE (DESSIN UI) -->
-            <div class="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/90 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/25 flex-col gap-2.5 w-64 text-left pointer-events-none z-20 animate-float-right">
+            <div class="hidden lg:flex absolute right-2 xl:right-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/30 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-right">
                 <div class="flex items-center justify-between">
                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#222222] text-[#a0d9d2] text-[10px] font-black uppercase tracking-wider">
                         <i class="fa-solid fa-scale-balanced text-[10px]"></i> Liasse SMT
@@ -187,7 +199,7 @@
                 </div>
                 <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
                     <span class="font-semibold text-slate-600">FEC Export DGID</span>
-                    <span class="font-bold text-[#142b27] bg-[#a0d9d2]/30 px-2 py-0.5 rounded-md">Prêt 1 Clic</span>
+                    <span class="font-bold text-[#142b27] bg-[#a0d9d2]/40 px-2 py-0.5 rounded-md">Prêt 1 Clic</span>
                 </div>
             </div>
 
@@ -282,6 +294,191 @@
                 </div>
 
             </div>
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 3. BIS. LE SCHÉMA OPÉRATIONNEL VISUEL : DU FLUX PME À LA LIASSE DU CABINET -->
+    <!-- ========================================================================= -->
+    <section class="py-20 bg-gradient-to-b from-white via-[#f4fbf9] to-white border-b border-slate-200 relative overflow-hidden">
+        
+        <!-- Trame de fond géométrique menthe -->
+        <div class="absolute inset-0 pointer-events-none opacity-40">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="schemaGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <circle cx="20" cy="20" r="1.2" fill="#a0d9d2" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#schemaGrid)" />
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+
+            <!-- En-tête du Schéma -->
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-xs font-black uppercase tracking-wider shadow-xs">
+                    <i class="fa-solid fa-diagram-project text-xs"></i> Architecture du Flux
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">
+                    Le schéma comptable : de la preuve à la liasse
+                </h2>
+                <p class="text-slate-600 text-sm sm:text-base">
+                    Comment Growth transforme automatiquement les flux quotidiens des PME en écritures comptables vérifiables par les cabinets et la DGID.
+                </p>
+            </div>
+
+            <!-- SCHÉMA TECHNIQUE INTERACTIF EN 3 BLOCS RELIÉS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
+
+                <!-- BLOC 1 : Les Preuves Financières Réelles (PME) -->
+                <div class="bg-white rounded-3xl p-7 border-2 border-slate-200/90 shadow-lg hover:border-[#a0d9d2] hover:shadow-xl transition-all duration-200 relative group flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="w-9 h-9 rounded-2xl bg-[#222222] text-[#a0d9d2] font-black text-sm flex items-center justify-center">01</span>
+                            <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold">Collecte Terrain</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-[#222222]">Preuves Financières PME</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Capture en temps réel des transactions brutes</p>
+                        </div>
+                        <div class="space-y-2.5 pt-2">
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center text-sm shadow-xs">
+                                    <i class="fa-solid fa-receipt"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-extrabold text-[#222222]">Reçus Wave Business &amp; OM</div>
+                                    <div class="text-slate-500 text-[11px]">API directe ou SMS validé</div>
+                                </div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-xs">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-extrabold text-[#222222]">Vocaux Wolof &amp; Photos Caisse</div>
+                                    <div class="text-slate-500 text-[11px]">Reconnaissance automatique IA</div>
+                                </div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs">
+                                    <i class="fa-solid fa-cash-register"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-extrabold text-[#222222]">Dépenses Espèces &amp; Caisse</div>
+                                    <div class="text-slate-500 text-[11px]">Achats stocks, riz, fournitures</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-500 font-semibold">Traçabilité 100%</span>
+                        <span class="font-black text-[#142b27] bg-[#a0d9d2]/40 px-2.5 py-1 rounded-lg">Piste d'Audit</span>
+                    </div>
+                </div>
+
+                <!-- BLOC 2 : Le Cœur Moteur SYSCOHADA (Traitement) -->
+                <div class="bg-white rounded-3xl p-7 border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/25 relative flex flex-col justify-between">
+                    <span class="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-sm">
+                        Cœur Automatisé
+                    </span>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="w-9 h-9 rounded-2xl bg-[#a0d9d2] text-[#142b27] font-black text-sm flex items-center justify-center shadow-xs">02</span>
+                            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">SYSCOHADA SMT</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-[#222222]">Moteur d'Intelligence</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Normalisation et pré-imputation comptable</p>
+                        </div>
+                        <div class="space-y-2.5 pt-2">
+                            <div class="p-3 rounded-2xl bg-white border border-[#a0d9d2] shadow-2xs space-y-1.5">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="font-black text-[#222222]">Imputation Plan Comptable SMT</span>
+                                    <span class="text-emerald-700 font-mono font-bold text-[10.5px]">Art. 24 AUDCIF</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-1.5 text-[10.5px] font-mono text-slate-600">
+                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">701 : Ventes</span>
+                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">601 : Achats</span>
+                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">514 : Wave</span>
+                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">571 : Caisse</span>
+                                </div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-lock text-[#142b27] bg-[#a0d9d2] w-6 h-6 rounded-lg flex items-center justify-center text-[10px]"></i>
+                                    <span class="font-bold text-[#222222]">Coffre-fort Scellé 10 Ans</span>
+                                </div>
+                                <span class="text-emerald-600 font-black text-[11px]">Inaltérable</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-calculator text-[#142b27] bg-[#a0d9d2] w-6 h-6 rounded-lg flex items-center justify-center text-[10px]"></i>
+                                    <span class="font-bold text-[#222222]">Contrôle Écart de Balance</span>
+                                </div>
+                                <span class="font-mono font-black text-[#142b27] bg-[#a0d9d2]/30 px-2 py-0.5 rounded">0 FCFA</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-500 font-semibold">Zéro saisie manuelle</span>
+                        <span class="font-black text-[#142b27] bg-[#a0d9d2]/40 px-2.5 py-1 rounded-lg">Rapprochement 98.5%</span>
+                    </div>
+                </div>
+
+                <!-- BLOC 3 : Les Liasses & le Cabinet (Sortie) -->
+                <div class="bg-white rounded-3xl p-7 border-2 border-slate-200/90 shadow-lg hover:border-[#a0d9d2] hover:shadow-xl transition-all duration-200 relative group flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="w-9 h-9 rounded-2xl bg-[#222222] text-[#a0d9d2] font-black text-sm flex items-center justify-center">03</span>
+                            <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold">Livrables Finaux</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-[#222222]">Liasses &amp; FEC DGID</h3>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Fourniture prête à l'emploi pour les cabinets</p>
+                        </div>
+                        <div class="space-y-2.5 pt-2">
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-sm shadow-xs">
+                                    <i class="fa-solid fa-file-invoice text-sm"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-extrabold text-[#222222]">Bilan &amp; Compte de Résultat SMT</div>
+                                    <div class="text-slate-500 text-[11px]">4 états financiers prêts à signer</div>
+                                </div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-sm shadow-xs">
+                                    <i class="fa-solid fa-file-shield text-sm"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-extrabold text-[#222222]">Fichier FEC Normalisé DGID</div>
+                                    <div class="text-slate-500 text-[11px]">Audit fiscal et conformité légale</div>
+                                </div>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center text-sm shadow-xs">
+                                    <i class="fa-solid fa-building-columns text-sm"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-extrabold text-[#222222]">Dossier Solvabilité &amp; Crédit</div>
+                                    <div class="text-slate-500 text-[11px]">Pour les banques et bailleurs UEMOA</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                        <span class="text-slate-500 font-semibold">Édition instantanée</span>
+                        <a href="/login-comptable" class="font-black text-[#142b27] hover:underline flex items-center gap-1">
+                            <span>Accès Cabinet</span> &rarr;
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </section>
 
@@ -497,7 +694,8 @@
             </h2>
 
             <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                Connectez votre cabinet en moins de 2 minutes pour consulter les preuves financières de vos PME et éditer leurs liasses fiscales SYSCOHADA.
+                Connectez votre cabinet en moins de 2 minutes pour consulter les preuves financières de vos PME et
+                éditer leurs liasses fiscales SYSCOHADA.
             </p>
 
             <div class="pt-4 flex items-center justify-center">
@@ -542,7 +740,8 @@
 
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
                 <p>
-                    &copy; 2026 Growth Technologies Inc. Conçu à Dakar, Sénégal. Solution de pré-comptabilité conforme aux normes SYSCOHADA SMT et aux exigences fiscales de la DGID.
+                    &copy; 2026 Growth Technologies Inc. Conçu à Dakar, Sénégal. Solution de pré-comptabilité conforme
+                    aux normes SYSCOHADA SMT et aux exigences fiscales de la DGID.
                 </p>
                 <div class="flex items-center gap-4">
                     <span>SYSCOHADA Révisé SMT</span>
