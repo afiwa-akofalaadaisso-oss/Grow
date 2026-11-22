@@ -1325,66 +1325,36 @@
                 </div>
             </div>
 
-            <!-- Widget Dossier Client Actif (Fintech SaaS Pro avec Sélecteur Intégré) -->
-            <div id="sidebarActivePmeCard" style="position: relative; margin-top: auto; padding-top: 10px;">
+            <!-- Widget Dossier Client Actif (Épuré & Ultra-Compact) -->
+            <div id="sidebarActivePmeCard" style="position: relative; margin-top: auto; padding-top: 6px;">
                 <div onclick="toggleSidebarPmeDropdown(event)"
-                    style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 10px 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(15,23,42,0.04); display: flex; flex-direction: column; gap: 8px;"
-                    onmouseover="this.style.borderColor='#168078'; this.style.boxShadow='0 4px 14px rgba(22,128,120,0.12)';"
-                    onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='0 2px 8px rgba(15,23,42,0.04)';">
+                    style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 9px; padding: 6px 10px; cursor: pointer; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(15,23,42,0.03); display: flex; align-items: center; gap: 9px;"
+                    onmouseover="this.style.borderColor='#168078'; this.style.background='#f8fafc';"
+                    onmouseout="this.style.borderColor='#cbd5e1'; this.style.background='#ffffff';">
 
-                    <!-- En-tête statut & action -->
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <span
-                            style="font-size: 9.5px; font-weight: 800; color: #168078; text-transform: uppercase; letter-spacing: 0.6px; display: inline-flex; align-items: center; gap: 5px;">
-                            <span style="position: relative; display: flex; width: 7px; height: 7px;">
-                                <span
-                                    style="position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background: #34d399; opacity: 0.75; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
-                                <span
-                                    style="position: relative; display: inline-flex; border-radius: 50%; height: 7px; width: 7px; background: #10b981;"></span>
-                            </span>
-                            Dossier Actif &bull; SYSCOHADA
-                        </span>
-                        <span
-                            style="font-size: 10.5px; font-weight: 700; color: #222222; background: #f1f5f9; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                            <span>Changer</span>
-                            <i class="fa-solid fa-chevron-up" id="sidebarPmeChevron"
-                                style="font-size: 8px; transition: transform 0.2s;"></i>
-                        </span>
+                    <!-- Avatar Compact 28x28 -->
+                    <div id="sidebarActivePmeAvatar"
+                        style="width: 28px; height: 28px; border-radius: 7px; background: #0f172a; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0;">
+                        MD
                     </div>
 
-                    <!-- Bloc Identité Entreprise -->
-                    <div style="display: flex; align-items: center; gap: 9px;">
-                        <div id="sidebarActivePmeAvatar"
-                            style="width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #222222 0%, #168078 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(22,128,120,0.25);">
-                            MD
+                    <!-- Identité Épurée -->
+                    <div style="flex: 1; min-width: 0; line-height: 1.25;">
+                        <div id="sidebarActivePmeName"
+                            style="font-size: 12px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                            title="Établissement Mamadou Diop">
+                            <span>Établissement Mamadou Diop</span>
                         </div>
-                        <div style="flex: 1; min-width: 0;">
-                            <div id="sidebarActivePmeName"
-                                style="font-size: 12.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 5px;"
-                                title="Établissement Mamadou Diop">
-                                <span>Établissement Mamadou Diop</span>
-                                <i class="fa-solid fa-circle-check" style="color: #168078; font-size: 10.5px;"></i>
-                            </div>
-                            <div id="sidebarActivePmeDetails"
-                                style="font-size: 10.5px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
-                                NINEA 005489210 &bull; SMT
-                            </div>
+                        <div id="sidebarActivePmeDetails"
+                            style="font-size: 10px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
+                            NINEA 005489210 &bull; SMT
                         </div>
+                        <span id="sidebarActivePmeTreso" style="display: none;">1 850 000 FCFA</span>
                     </div>
 
-                    <!-- Ligne Trésorerie Actuelle -->
-                    <div
-                        style="margin-top: 3px; padding-top: 7px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
-                        <span
-                            style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 5px;">
-                            <i class="fa-solid fa-wallet" style="color: #168078; font-size: 10px;"></i> Trésorerie
-                            actuelle
-                        </span>
-                        <span id="sidebarActivePmeTreso"
-                            style="font-size: 12px; font-weight: 800; color: #0f172a; font-family: monospace;">
-                            1 850 000 FCFA
-                        </span>
-                    </div>
+                    <!-- Chevron sobre -->
+                    <i class="fa-solid fa-chevron-up" id="sidebarPmeChevron"
+                        style="font-size: 9px; color: #94a3b8; transition: transform 0.2s; flex-shrink: 0; margin-left: auto;"></i>
                 </div>
 
                 <!-- Popover de sélection directe de Dossier Client (Élégant, Pop-up au-dessus) -->
