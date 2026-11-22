@@ -19,6 +19,7 @@
                             dark: '#222222',
                             mint: '#a0d9d2',
                             mintHover: '#8ecfc7',
+                            mintGlow: 'rgba(160, 217, 210, 0.45)',
                         }
                     },
                     fontFamily: {
@@ -51,17 +52,34 @@
 
         .hero-mesh {
             background:
-                radial-gradient(circle at 10% 20%, rgba(160, 217, 210, 0.18) 0%, transparent 40%),
-                radial-gradient(circle at 90% 40%, rgba(160, 217, 210, 0.14) 0%, transparent 45%),
-                radial-gradient(circle at 50% 90%, rgba(34, 34, 34, 0.03) 0%, transparent 50%),
-                linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+                radial-gradient(circle at 15% 25%, rgba(160, 217, 210, 0.45) 0%, transparent 45%),
+                radial-gradient(circle at 85% 30%, rgba(160, 217, 210, 0.38) 0%, transparent 50%),
+                radial-gradient(circle at 50% 85%, rgba(160, 217, 210, 0.25) 0%, transparent 55%),
+                linear-gradient(180deg, #ffffff 0%, #f4fbf9 50%, #ffffff 100%);
         }
 
         .glass-nav {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(160, 217, 210, 0.35);
+        }
+
+        /* Animation douce de flottement pour les cartes d'illustration */
+        @keyframes floatCardSlow {
+            0%, 100% { transform: translateY(0px) rotate(-1.5deg); }
+            50% { transform: translateY(-10px) rotate(-1.5deg); }
+        }
+        @keyframes floatCardRight {
+            0%, 100% { transform: translateY(0px) rotate(1.5deg); }
+            50% { transform: translateY(-8px) rotate(1.5deg); }
+        }
+
+        .animate-float-left {
+            animation: floatCardSlow 6s ease-in-out infinite;
+        }
+        .animate-float-right {
+            animation: floatCardRight 7s ease-in-out infinite 0.5s;
         }
     </style>
 </head>
@@ -69,25 +87,28 @@
 <body class="min-h-screen flex flex-col antialiased">
 
     <!-- ========================================================================= -->
-    <!-- 1. NAVIGATION BAR FLOTTANTE AVEC BOUTON SE CONNECTER EN ÉVIDENCE          -->
+    <!-- 1. NAVIGATION BAR FLOTTANTE AVEC BOUTON SE CONNECTER EN MENTHE ÉCLATANTE  -->
     <!-- ========================================================================= -->
     <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
-            <!-- Logo Growth Authentique Officiel (Charte Anthracite #222222 & Menthe #a0d9d2) -->
+            <!-- Logo Growth Authentique Officiel (Anthracite #222222 & Menthe #a0d9d2) -->
             <a href="/" class="flex items-center gap-3 group">
                 <img src="/static/grow_icon_official.png?v=7" alt="Growth Logo"
                     class="w-10 h-10 rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform duration-200">
-                <span class="text-2xl font-black tracking-tight text-[#222222]">Growth</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl font-black tracking-tight text-[#222222]">Growth</span>
+                    <span class="hidden sm:inline-block px-2 py-0.5 rounded-full bg-[#a0d9d2]/40 text-[#142b27] text-[10px] font-black uppercase tracking-wider">SYSCOHADA</span>
+                </div>
             </a>
 
-            <!-- Action unique : Bouton SE CONNECTER en évidence (Charte Anthracite & Menthe) -->
+            <!-- Action unique : Bouton SE CONNECTER en Menthe claire #a0d9d2 qui attire le regard -->
             <div>
                 <a href="/login-comptable"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#222222] hover:bg-[#333333] active:bg-[#111111] text-white text-xs sm:text-sm font-extrabold transition shadow-md shadow-black/10 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 duration-150">
-                    <i class="fa-solid fa-lock text-[#a0d9d2] text-xs"></i>
+                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-xs sm:text-sm font-black transition-all shadow-md shadow-[#a0d9d2]/40 hover:shadow-lg hover:shadow-[#a0d9d2]/50 hover:-translate-y-0.5 duration-150 border border-[#8ecfc7]/80">
+                    <i class="fa-solid fa-lock text-[#142b27] text-xs"></i>
                     <span>Se connecter</span>
-                    <i class="fa-solid fa-arrow-right text-[11px] text-[#a0d9d2]"></i>
+                    <i class="fa-solid fa-arrow-right text-[11px] text-[#142b27]"></i>
                 </a>
             </div>
 
@@ -98,57 +119,128 @@
     <div class="h-20"></div>
 
     <!-- ========================================================================= -->
-    <!-- 2. SECTION HÉRO GÉANTE & IMPACTANTE (ÉPURÉE & CENTRÉE)                   -->
+    <!-- 2. SECTION HÉRO AVEC BACKGROUND CRÉATIF FINTECH (DESSINS & MOTIFS SVG)    -->
     <!-- ========================================================================= -->
-    <section class="relative hero-mesh pt-16 pb-20 md:pt-24 md:pb-28 overflow-hidden border-b border-slate-200/70">
+    <section class="relative hero-mesh pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden border-b border-[#a0d9d2]/40">
 
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-7">
+        <!-- FOND CRÉATIF VECTORIEL : DESSINS FINTECH, COURBES DE FLUX & GRILLE ISOMÉTRIQUE -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
+            <!-- Grille géométrique comptable subtile -->
+            <svg class="absolute w-full h-full opacity-45" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="fintechGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+                        <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#a0d9d2" stroke-width="0.8" opacity="0.35" />
+                        <circle cx="0" cy="0" r="1.5" fill="#a0d9d2" opacity="0.8" />
+                    </pattern>
+                    <linearGradient id="curveGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#a0d9d2" stop-opacity="0.6" />
+                        <stop offset="50%" stop-color="#8ecfc7" stop-opacity="0.3" />
+                        <stop offset="100%" stop-color="#222222" stop-opacity="0.05" />
+                    </linearGradient>
+                    <linearGradient id="curveGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#a0d9d2" stop-opacity="0.7" />
+                        <stop offset="100%" stop-color="#a0d9d2" stop-opacity="0.0" />
+                    </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#fintechGrid)" />
+                <!-- Courbes de flux de trésorerie dessinées en arrière-plan -->
+                <path d="M-100,280 C200,160 350,420 700,260 C1050,100 1200,380 1600,200" fill="none" stroke="url(#curveGrad1)" stroke-width="2.5" />
+                <path d="M-50,340 C280,220 420,490 820,320 C1180,180 1350,440 1700,260" fill="none" stroke="url(#curveGrad2)" stroke-width="1.8" stroke-dasharray="6,6" />
+                <!-- Cercles concentriques d'ondes de transmission Wave/WhatsApp -->
+                <circle cx="15%" cy="30%" r="180" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.25" />
+                <circle cx="15%" cy="30%" r="280" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.15" />
+                <circle cx="85%" cy="35%" r="220" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.2" />
+            </svg>
+        </div>
 
-            <!-- Badge de conformité légale SYSCOHADA aux couleurs du projet -->
-            <div
-                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#a0d9d2]/20 border border-[#a0d9d2]/60 text-[#222222] text-xs font-extrabold uppercase tracking-wide shadow-2xs">
-                <span class="w-2 h-2 rounded-full bg-[#222222] animate-pulse"></span>
-                <span>Conforme Normes SYSCOHADA SMT &bull; Partenaire des Cabinets</span>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <!-- ILLUSTRATION FLOTTANTE GAUCHE : REÇU & PREUVE FINANCIÈRE SCELLÉE (DESSIN UI) -->
+            <div class="hidden xl:flex absolute left-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/90 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/25 flex-col gap-2.5 w-64 text-left pointer-events-none z-20 animate-float-left">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider">
+                        <i class="fa-solid fa-receipt text-[10px]"></i> Preuve Wave
+                    </span>
+                    <span class="text-[10.5px] text-slate-400 font-mono font-bold">14:22 GMT</span>
+                </div>
+                <div>
+                    <div class="text-[11px] font-bold text-slate-500">Encaissement Client</div>
+                    <div class="text-xl font-black text-[#222222] tracking-tight">+ 925 000 FCFA</div>
+                </div>
+                <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
+                    <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">✓ Imputé 701</span>
+                    <span class="text-slate-400 font-mono">Art. 24 AUDCIF</span>
+                </div>
             </div>
 
-            <!-- Titre Héro avec typographie forte -->
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-[#222222] tracking-tight leading-[1.12]">
-                L'intelligence comptable pour les cabinets et les <span class="underline decoration-[#a0d9d2] decoration-4 underline-offset-4">400 000 PME</span>
-                du Sénégal.
-            </h1>
-
-            <!-- Sous-titre explicatif -->
-            <p class="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl mx-auto">
-                Réconciliez instantanément les encaissements <strong>Wave Business</strong>, <strong>Orange
-                    Money</strong> et <strong>Caisse</strong>. Produisez vos liasses fiscales <strong>SYSCOHADA
-                    SMT</strong> et générez vos fichiers FEC certifiés conformes au contrôle fiscal
-                <strong>DGID</strong>.
-            </p>
-
-            <!-- CTA Principal Unique : Se Connecter (Anthracite & Menthe) -->
-            <div class="pt-2 flex items-center justify-center">
-                <a href="/login-comptable"
-                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-2xl bg-[#222222] hover:bg-[#333333] active:bg-[#111111] text-white text-base font-black transition-all shadow-xl shadow-black/15 hover:shadow-2xl hover:-translate-y-0.5 duration-150">
-                    <i class="fa-solid fa-lock text-[#a0d9d2]"></i>
-                    <span>Se connecter à mon Cabinet</span>
-                    <i class="fa-solid fa-arrow-right text-xs text-[#a0d9d2]"></i>
-                </a>
+            <!-- ILLUSTRATION FLOTTANTE DROITE : LIASSE FISCALE DGID SCELLÉE (DESSIN UI) -->
+            <div class="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/90 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/25 flex-col gap-2.5 w-64 text-left pointer-events-none z-20 animate-float-right">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#222222] text-[#a0d9d2] text-[10px] font-black uppercase tracking-wider">
+                        <i class="fa-solid fa-scale-balanced text-[10px]"></i> Liasse SMT
+                    </span>
+                    <span class="text-[10px] text-emerald-600 font-black">Audit Conforme</span>
+                </div>
+                <div>
+                    <div class="text-[11px] font-bold text-slate-500">Rapprochement Global</div>
+                    <div class="text-xl font-black text-[#222222] tracking-tight">Écart : 0 FCFA</div>
+                </div>
+                <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
+                    <span class="font-semibold text-slate-600">FEC Export DGID</span>
+                    <span class="font-bold text-[#142b27] bg-[#a0d9d2]/30 px-2 py-0.5 rounded-md">Prêt 1 Clic</span>
+                </div>
             </div>
 
-            <!-- Éléments de réassurance -->
-            <div class="pt-4 flex items-center justify-center gap-6 text-xs font-semibold text-slate-500 flex-wrap">
-                <span class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-shield-check text-[#222222]"></i>
-                    <span>Conforme SYSCOHADA SMT</span>
-                </span>
-                <span class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-contract text-[#222222]"></i>
-                    <span>FEC Contrôle Fiscal DGID</span>
-                </span>
-                <span class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-clock-rotate-left text-[#222222]"></i>
-                    <span>Scellé Légal 10 Ans (Art. 24)</span>
-                </span>
+            <!-- CONTENU CENTRAL DE LA SECTION HÉRO -->
+            <div class="max-w-4xl mx-auto text-center space-y-7 relative z-10">
+
+                <!-- Badge de conformité légale SYSCOHADA aux deux couleurs officielles -->
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-md border-2 border-[#a0d9d2] text-[#142b27] text-xs font-black uppercase tracking-wide shadow-sm shadow-[#a0d9d2]/30">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#a0d9d2] animate-pulse"></span>
+                    <span>Copilote Comptable SYSCOHADA SMT &bull; Partenaire des Cabinets</span>
+                </div>
+
+                <!-- Titre Héro avec la 2ème couleur (Menthe #a0d9d2) mise fortement en valeur -->
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-[#222222] tracking-tight leading-[1.12]">
+                    L'intelligence comptable pour les cabinets et les 
+                    <span class="relative inline-block px-4 py-1 rounded-2xl bg-[#a0d9d2] text-[#142b27] shadow-lg shadow-[#a0d9d2]/35 transform -rotate-1 mx-1">
+                        400 000 PME
+                    </span>
+                    du Sénégal.
+                </h1>
+
+                <!-- Sous-titre explicatif clair et direct -->
+                <p class="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl mx-auto">
+                    Centralisez automatiquement les preuves financières <strong>Wave Business</strong>, <strong>Orange Money</strong> et <strong>Caisse</strong> de vos commerçants, et éditez instantanément leurs liasses fiscales conformes <strong>DGID</strong>.
+                </p>
+
+                <!-- CTA Principal Lumineux : Bouton Menthe #a0d9d2 avec fort contraste -->
+                <div class="pt-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="/login-comptable"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-xl shadow-[#a0d9d2]/45 hover:shadow-2xl hover:shadow-[#a0d9d2]/60 hover:-translate-y-0.5 duration-150 border-2 border-[#8ecfc7]">
+                        <i class="fa-solid fa-lock text-[#142b27] text-sm"></i>
+                        <span>Se connecter à mon Cabinet</span>
+                        <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
+                    </a>
+                </div>
+
+                <!-- Éléments de réassurance avec pastilles menthe -->
+                <div class="pt-4 flex items-center justify-center gap-6 text-xs font-bold text-slate-700 flex-wrap">
+                    <span class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#a0d9d2]/50 shadow-2xs">
+                        <i class="fa-solid fa-shield-check text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-full flex items-center justify-center text-[10px]"></i>
+                        <span>Conforme SYSCOHADA SMT</span>
+                    </span>
+                    <span class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#a0d9d2]/50 shadow-2xs">
+                        <i class="fa-solid fa-file-contract text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-full flex items-center justify-center text-[10px]"></i>
+                        <span>FEC Contrôle Fiscal DGID</span>
+                    </span>
+                    <span class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#a0d9d2]/50 shadow-2xs">
+                        <i class="fa-solid fa-clock-rotate-left text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-full flex items-center justify-center text-[10px]"></i>
+                        <span>Preuves Scellées 10 Ans (Art. 24)</span>
+                    </span>
+                </div>
+
             </div>
 
         </div>
@@ -156,9 +248,9 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 3. BANDEAU DE STATISTIQUES & IMPACT AU SÉNÉGAL                            -->
+    <!-- 3. BANDEAU DE STATISTIQUES & IMPACT AU SÉNÉGAL (LUMINEUX ET FRAIS)        -->
     <!-- ========================================================================= -->
-    <section class="bg-slate-50 border-y border-slate-200 py-12">
+    <section class="bg-gradient-to-r from-[#a0d9d2]/15 via-white to-[#a0d9d2]/15 border-y border-[#a0d9d2]/40 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 
@@ -169,9 +261,9 @@
                 </div>
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight flex items-center justify-center gap-1">
+                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight flex items-center justify-center gap-1.5">
                         <span>98.5%</span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-[#a0d9d2] inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#a0d9d2] shadow-sm inline-block"></span>
                     </div>
                     <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">Rapprochement Wave &amp; Caisse
                     </div>
@@ -201,7 +293,7 @@
 
             <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
                 <span
-                    class="text-xs font-extrabold uppercase tracking-wider text-[#222222] bg-[#a0d9d2]/30 border border-[#a0d9d2]/60 px-3 py-1 rounded-full">
+                    class="text-xs font-extrabold uppercase tracking-wider text-[#142b27] bg-[#a0d9d2]/40 border border-[#a0d9d2] px-3.5 py-1 rounded-full shadow-2xs">
                     Écosystème National
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">
@@ -217,65 +309,65 @@
 
                 <!-- Carte 1 : PME et TPE -->
                 <div id="pme"
-                    class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition space-y-4">
+                    class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md hover:border-[#a0d9d2] transition space-y-4">
                     <div
-                        class="w-12 h-12 rounded-2xl bg-[#a0d9d2]/25 text-[#222222] flex items-center justify-center text-xl font-bold">
+                        class="w-12 h-12 rounded-2xl bg-[#a0d9d2] text-[#142b27] flex items-center justify-center text-xl font-black shadow-md shadow-[#a0d9d2]/30">
                         <i class="fa-solid fa-store"></i>
                     </div>
                     <h3 class="text-xl font-black text-[#222222]">PME &amp; Commerçants</h3>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Besoins de collecte :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Ventes et encaissements
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Ventes et encaissements
                             Wave / Orange Money</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Achats de stocks, riz,
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Achats de stocks, riz,
                             huile, fournitures</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Dépenses de transport,
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Dépenses de transport,
                             salaires et dettes clients</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Consultation du journal
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Consultation du journal
                             par simple numéro WhatsApp</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
                         <a href="/dashboard"
-                            class="text-xs font-bold text-[#222222] hover:underline flex items-center gap-1.5">
+                            class="text-xs font-black text-[#142b27] hover:underline flex items-center gap-1.5">
                             <span>Voir le Journal des Écritures PME</span> &rarr;
                         </a>
                     </div>
                 </div>
 
-                <!-- Carte 2 : Cabinets d'Experts-Comptables -->
+                <!-- Carte 2 : Cabinets d'Experts-Comptables (Mise en avant avec contour Menthe) -->
                 <div id="cabinets"
-                    class="bg-white rounded-3xl p-8 border-2 border-[#222222] shadow-md space-y-4 relative">
+                    class="bg-white rounded-3xl p-8 border-2 border-[#a0d9d2] shadow-xl shadow-[#a0d9d2]/20 space-y-4 relative">
                     <span
-                        class="absolute -top-3.5 right-6 px-3 py-1 rounded-full bg-[#222222] text-[#a0d9d2] text-[10px] font-black uppercase tracking-wider">
+                        class="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-sm">
                         Conforme SYSCOHADA SMT
                     </span>
                     <div
-                        class="w-12 h-12 rounded-2xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-xl font-bold">
+                        class="w-12 h-12 rounded-2xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-xl font-bold shadow-md shadow-black/15">
                         <i class="fa-solid fa-user-tie"></i>
                     </div>
                     <h3 class="text-xl font-black text-[#222222]">Experts-Comptables &amp; AGC</h3>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Besoins de traitement :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Fin de la collecte
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Fin de la collecte
                             manuelle de reçus froissés</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Pré-imputation
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Pré-imputation
                             automatique selon le SYSCOHADA SMT</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Génération instantanée du
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Génération instantanée du
                             Fichier FEC pour la DGID</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Clôture mensuelle et
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Clôture mensuelle et
                             annuelle en 1 clic</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
                         <a href="/login-comptable"
-                            class="text-xs font-bold text-[#222222] hover:underline flex items-center gap-1.5">
+                            class="text-xs font-black text-[#142b27] hover:underline flex items-center gap-1.5">
                             <span>Se connecter à l'Espace Cabinet</span> &rarr;
                         </a>
                     </div>
@@ -283,25 +375,25 @@
 
                 <!-- Carte 3 : Banques, Bailleurs & Administration -->
                 <div id="conformite"
-                    class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition space-y-4">
+                    class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md hover:border-[#a0d9d2] transition space-y-4">
                     <div
-                        class="w-12 h-12 rounded-2xl bg-[#a0d9d2]/25 text-[#222222] flex items-center justify-center text-xl font-bold">
+                        class="w-12 h-12 rounded-2xl bg-[#a0d9d2] text-[#142b27] flex items-center justify-center text-xl font-black shadow-md shadow-[#a0d9d2]/30">
                         <i class="fa-solid fa-landmark"></i>
                     </div>
                     <h3 class="text-xl font-black text-[#222222]">Banques &amp; Administration</h3>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Garanties certifiées :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Piste d'audit fiable et
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Piste d'audit fiable et
                             scellée à 10 ans</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Score de solvabilité et
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Score de solvabilité et
                             bankabilité BCEAO</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Conforme aux contrôles
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Conforme aux contrôles
                             sur pièces de la DGID</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Rapprochement des
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Rapprochement des
                             déclarations VRS et BRS</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
@@ -322,7 +414,7 @@
 
             <div class="text-center max-w-2xl mx-auto space-y-3">
                 <span
-                    class="text-xs font-extrabold uppercase tracking-wider text-[#222222] bg-[#a0d9d2]/30 border border-[#a0d9d2]/60 px-3 py-1 rounded-full">
+                    class="text-xs font-extrabold uppercase tracking-wider text-[#142b27] bg-[#a0d9d2]/40 border border-[#a0d9d2] px-3.5 py-1 rounded-full shadow-2xs">
                     Technologie Propriétaire
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">
@@ -335,8 +427,8 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
-                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center font-bold">
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs hover:border-[#a0d9d2] transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-[#a0d9d2] text-[#142b27] flex items-center justify-center font-black shadow-sm">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
                     </div>
                     <h4 class="text-base font-extrabold text-[#222222]">Audio Wolof &amp; WhatsApp</h4>
@@ -346,8 +438,8 @@
                     </p>
                 </div>
 
-                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
-                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center font-bold">
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs hover:border-[#a0d9d2] transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-[#a0d9d2] text-[#142b27] flex items-center justify-center font-black shadow-sm">
                         <i class="fa-solid fa-mobile-screen-button text-base"></i>
                     </div>
                     <h4 class="text-base font-extrabold text-[#222222]">Flux Wave Business</h4>
@@ -357,8 +449,8 @@
                     </p>
                 </div>
 
-                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
-                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center font-bold">
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs hover:border-[#a0d9d2] transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-[#a0d9d2] text-[#142b27] flex items-center justify-center font-black shadow-sm">
                         <i class="fa-solid fa-scale-balanced text-base"></i>
                     </div>
                     <h4 class="text-base font-extrabold text-[#222222]">Moteur SYSCOHADA SMT</h4>
@@ -368,8 +460,8 @@
                     </p>
                 </div>
 
-                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
-                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center font-bold">
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs hover:border-[#a0d9d2] transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-[#a0d9d2] text-[#142b27] flex items-center justify-center font-black shadow-sm">
                         <i class="fa-solid fa-shield-halved text-base"></i>
                     </div>
                     <h4 class="text-base font-extrabold text-[#222222]">Coffre-fort Légal 10 Ans</h4>
@@ -385,14 +477,18 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 6. BANNIÈRE FINALE D'APPEL À L'ACTION (CTA GÉANT EN ANTHRACITE ET MENTHE)  -->
+    <!-- 6. BANNIÈRE FINALE D'APPEL À L'ACTION (FOND ANTHRACITE ET BOUTON MENTHE)  -->
     <!-- ========================================================================= -->
     <section class="py-20 bg-[#222222] text-white relative overflow-hidden">
+
+        <!-- Lueur de fond menthe pour réchauffer la section sombre -->
+        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-[#a0d9d2]/20 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-[#a0d9d2]/20 blur-3xl pointer-events-none"></div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
 
             <div
-                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#a0d9d2] text-xs font-bold uppercase tracking-wider">
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#a0d9d2]/40 text-[#a0d9d2] text-xs font-black uppercase tracking-wider">
                 <i class="fa-solid fa-sparkles text-[#a0d9d2]"></i> Déploiement Immédiat
             </div>
 
@@ -405,12 +501,12 @@
             </p>
 
             <div class="pt-4 flex items-center justify-center">
-                <!-- LE BOUTON SE CONNECTER EN MENTHE #a0d9d2 -->
+                <!-- LE BOUTON SE CONNECTER EN MENTHE #a0d9d2 QUI RESPLENDIT -->
                 <a href="/login-comptable"
-                    class="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] text-[#222222] text-base font-black transition-all shadow-2xl hover:scale-105 duration-150 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-lock text-[#222222]"></i>
+                    class="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-2xl shadow-[#a0d9d2]/40 hover:scale-105 duration-150 flex items-center justify-center gap-2.5 border border-[#8ecfc7]">
+                    <i class="fa-solid fa-lock text-[#142b27]"></i>
                     <span>Se connecter à mon Cabinet</span>
-                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                    <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
                 </a>
             </div>
 
@@ -436,7 +532,7 @@
 
                 <div>
                     <a href="/login-comptable"
-                        class="text-[#222222] font-black hover:underline flex items-center gap-1.5">
+                        class="text-[#142b27] font-black hover:underline flex items-center gap-1.5 bg-[#a0d9d2]/30 hover:bg-[#a0d9d2]/50 px-4 py-2 rounded-xl transition border border-[#a0d9d2]/60">
                         <i class="fa-solid fa-lock text-xs"></i>
                         <span>Connexion Cabinet</span>
                     </a>
