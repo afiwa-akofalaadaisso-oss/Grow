@@ -6308,14 +6308,9 @@
             const tiers = document.getElementById('pcModalTiers')?.textContent || '';
             const imgSrc = document.getElementById('pcModalImage')?.src || '';
 
-            const pWin = window.open('', '_blank', 'width=800,height=900');
-            if (!pWin) {
-                window.print();
-                return;
-            }
-            pWin.document.write(`
+            const pieceHtml = `
                 <!DOCTYPE html>
-                <html>
+                <html lang="fr">
                 <head>
                     <meta charset="utf-8">
                     <title>${ref} - Archivage Légal 10 ans SYSCOHADA</title>
@@ -6376,15 +6371,49 @@
                     <div class="footer">
                         Document officiel généré par Growth pour le contrôle fiscal (DGID) et les audits légaux.
                     </div>
-                    <script>
-                        window.onload = function() {
-                            setTimeout(function() { window.print(); }, 400);
-                        };
-                    <\/script>
                 </body>
                 </html>
-            `);
-            pWin.document.close();
+            `;
+
+            try {
+                let iframe = document.getElementById('growPiecePrintIframe');
+                if (iframe) iframe.remove();
+                iframe = document.createElement('iframe');
+                iframe.id = 'growPiecePrintIframe';
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '1px';
+                iframe.style.height = '1px';
+                iframe.style.opacity = '0.01';
+                iframe.style.border = '0';
+                iframe.style.pointerEvents = 'none';
+                document.body.appendChild(iframe);
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(pieceHtml);
+                doc.close();
+
+                setTimeout(() => {
+                    try {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                    } catch (e) {
+                        window.print();
+                    }
+                }, 350);
+            } catch (err) {
+                console.error("Erreur lors de l'impression pièce:", err);
+                const pWin = window.open('', '_blank', 'width=800,height=900');
+                if (pWin) {
+                    pWin.document.write(pieceHtml);
+                    pWin.document.close();
+                    setTimeout(() => { pWin.print(); }, 400);
+                } else {
+                    window.print();
+                }
+            }
         }
 
 
@@ -7409,13 +7438,15 @@
                 return;
             }
 
-            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier Client' };
 
             const sel = [];
-            if (composerSelected.bilan) sel.push('Bilan');
-            if (composerSelected.resultat) sel.push('Résultat');
-            if (composerSelected.flux) sel.push('Flux');
-            if (composerSelected.annexes) sel.push('Notes Annexes');
+            if (typeof composedStates !== 'undefined' && composedStates) {
+                if (composedStates.bilan) sel.push('Bilan');
+                if (composedStates.resultat) sel.push('Résultat');
+                if (composedStates.flux) sel.push('Flux');
+                if (composedStates.annexes) sel.push('Notes Annexes');
+            }
 
             let docTitre = `Liasse Fiscale SYSCOHADA SMT — ${pme.nom}`;
             if (sel.length === 4) {
@@ -7424,19 +7455,23 @@
                 docTitre = `Dossier Financier (${sel.join(' + ')}) — ${pme.nom}`;
             }
 
+            try {
                 // Création d'une iframe d'impression isolée pour garantir une impression A4 sans faille
                 let iframe = document.getElementById('growPrintIframe');
-                if (!iframe) {
-                    iframe = document.createElement('iframe');
-                    iframe.id = 'growPrintIframe';
-                    iframe.style.position = 'fixed';
-                    iframe.style.right = '0';
-                    iframe.style.bottom = '0';
-                    iframe.style.width = '0';
-                    iframe.style.height = '0';
-                    iframe.style.border = '0';
-                    document.body.appendChild(iframe);
+                if (iframe) {
+                    iframe.remove();
                 }
+                iframe = document.createElement('iframe');
+                iframe.id = 'growPrintIframe';
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '1px';
+                iframe.style.height = '1px';
+                iframe.style.opacity = '0.01';
+                iframe.style.border = '0';
+                iframe.style.pointerEvents = 'none';
+                document.body.appendChild(iframe);
 
                 const doc = iframe.contentWindow.document;
                 doc.open();
@@ -7497,8 +7532,12 @@
                         // Fallback
                         window.print();
                     }
-                }, 300);
+                }, 350);
+            } catch (err) {
+                console.error("Erreur lors de l'impression liasse:", err);
+                window.print();
             }
+        }
     </script>
 
     <!-- MODALE CONNEXION GROWTH (STYLE FINTECH PRO ÉPURÉ) -->
