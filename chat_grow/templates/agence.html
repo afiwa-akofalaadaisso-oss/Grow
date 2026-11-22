@@ -4874,34 +4874,34 @@
                     </xml>
                     <![endif]-->
                     <style>
-                        body { font-family: Calibri, Arial, sans-serif; font-size: 10pt; }
-                        table { border-collapse: collapse; width: 100%; }
-                        th { background-color: #168078; color: #ffffff; font-weight: bold; border: 0.5pt solid #cbd5e1; padding: 7px 10px; font-size: 10pt; text-align: left; }
-                        td { border: 0.5pt solid #cbd5e1; padding: 5px 8px; font-size: 9.5pt; }
+                        body { font-family: Calibri, Arial, sans-serif; font-size: 10pt; color: #0f172a; margin: 0; padding: 0; }
+                        table { border-collapse: collapse; table-layout: auto; width: 100%; }
+                        th { background-color: #168078; color: #ffffff; font-weight: bold; border: 0.5pt solid #cbd5e1; padding: 8px 12px; font-size: 10pt; text-align: left; white-space: nowrap !important; mso-line-break: none; }
+                        td { border: 0.5pt solid #cbd5e1; padding: 6px 10px; font-size: 9.5pt; white-space: nowrap !important; mso-line-break: none; }
                     </style>
                 </head>
                 <body>
-                    <h2 style="color: #168078; font-family: Calibri, sans-serif;">Fichier des Écritures Comptables (FEC) DGID - ${targetNom}</h2>
-                    <p style="font-size: 10pt; color: #64748b; font-family: Calibri, sans-serif;">Norme fiscale SYSCOHADA &bull; Exercice 2026 &bull; Débit = Crédit équilibré</p>
+                    <h2 style="color: #168078; font-family: Calibri, sans-serif; white-space: nowrap;">Fichier des Écritures Comptables (FEC) DGID - ${targetNom}</h2>
+                    <p style="font-size: 10pt; color: #64748b; font-family: Calibri, sans-serif; white-space: nowrap;">Norme fiscale SYSCOHADA &bull; Exercice 2026 &bull; Débit = Crédit équilibré</p>
                     <table border="1">
                         <thead>
-                            <tr>
-                                <th>JournalCode</th>
-                                <th>JournalLib</th>
-                                <th>EcritureNum</th>
-                                <th>EcritureDate</th>
-                                <th>CompteNum</th>
-                                <th>CompteLib</th>
-                                <th>PieceRef</th>
-                                <th>PieceDate</th>
-                                <th>EcritureLib</th>
-                                <th>Debit</th>
-                                <th>Credit</th>
-                                <th>EcritureLet</th>
-                                <th>DateLet</th>
-                                <th>ValidDate</th>
-                                <th>Montantdevise</th>
-                                <th>Idevise</th>
+                            <tr style="height: 26pt;">
+                                <th nowrap>JournalCode</th>
+                                <th nowrap>JournalLib</th>
+                                <th nowrap>EcritureNum</th>
+                                <th nowrap>EcritureDate</th>
+                                <th nowrap>CompteNum</th>
+                                <th nowrap>CompteLib</th>
+                                <th nowrap>PieceRef</th>
+                                <th nowrap>PieceDate</th>
+                                <th nowrap>EcritureLib</th>
+                                <th nowrap>Debit</th>
+                                <th nowrap>Credit</th>
+                                <th nowrap>EcritureLet</th>
+                                <th nowrap>DateLet</th>
+                                <th nowrap>ValidDate</th>
+                                <th nowrap>Montantdevise</th>
+                                <th nowrap>Idevise</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -4973,14 +4973,14 @@
             comptaRows.forEach((r, idx) => {
                 const bg = idx % 2 === 0 ? '#ffffff' : '#f8fafc';
                 rowsHtml += `
-                    <tr style="background-color: ${bg};">
-                        <td style="border: 0.5pt solid #cbd5e1; text-align: center; font-weight: 700; font-family: Calibri, sans-serif; padding: 6px 8px; color: #0f172a;">${r.code}</td>
-                        <td style="border: 0.5pt solid #cbd5e1; text-align: left; font-family: Calibri, sans-serif; padding: 6px 10px; color: #1e293b; font-weight: 600;">${r.lib}</td>
-                        <td style="border: 0.5pt solid #cbd5e1; text-align: left; font-family: Calibri, sans-serif; padding: 6px 8px; color: #64748b; font-size: 9.5pt;">${r.cl}</td>
-                        <td style="border: 0.5pt solid #cbd5e1; text-align: right; font-family: Calibri, sans-serif; padding: 6px 8px; mso-number-format:'#,##0'; color: #0f172a;">${r.d ? fmtM(r.d) : '0'}</td>
-                        <td style="border: 0.5pt solid #cbd5e1; text-align: right; font-family: Calibri, sans-serif; padding: 6px 8px; mso-number-format:'#,##0'; color: #0f172a;">${r.c ? fmtM(r.c) : '0'}</td>
-                        <td style="border: 0.5pt solid #cbd5e1; text-align: right; font-family: Calibri, sans-serif; padding: 6px 8px; mso-number-format:'#,##0'; font-weight: 700; color: #168078;">${r.sd ? fmtM(r.sd) : '0'}</td>
-                        <td style="border: 0.5pt solid #cbd5e1; text-align: right; font-family: Calibri, sans-serif; padding: 6px 8px; mso-number-format:'#,##0'; font-weight: 700; color: #0e7647;">${r.sc ? fmtM(r.sc) : '0'}</td>
+                    <tr style="background-color: ${bg}; height: 20pt;">
+                        <td nowrap style="border: 0.5pt solid #cbd5e1; text-align: center; font-weight: 700; font-family: Calibri, sans-serif; padding: 6px 10px; color: #0f172a; white-space: nowrap;">${r.code}</td>
+                        <td nowrap style="border: 0.5pt solid #cbd5e1; text-align: left; font-family: Calibri, sans-serif; padding: 6px 12px; color: #1e293b; font-weight: 600; white-space: nowrap;">${r.lib}</td>
+                        <td nowrap style="border: 0.5pt solid #cbd5e1; text-align: left; font-family: Calibri, sans-serif; padding: 6px 10px; color: #64748b; font-size: 9.5pt; white-space: nowrap;">${r.cl}</td>
+                        <td nowrap style="border: 0.5pt solid #cbd5e1; text-align: right; font-family: Calibri, sans-serif; padding: 6px 10px; mso-number-format:'#,##0'; color: #0f172a; white-space: nowrap;">${r.d ? fmtM(r.d) : '0'}</td>
+                        <td nowrap style="border: 0.5pt solid #cbd5e1; text-align: right; font-family: Calibri, sans-serif; padding: 6px 10px; mso-number-format:'#,##0'; color: #0f172a; white-space: nowrap;">${r.c ? fmtM(r.c) : '0'}</td>
+                        <td nowrap style="border: 0.5pt solid #cbd5e1; text-align: right; font-family: Calibri, sans-serif; padding: 6px 10px; mso-number-format:'#,##0'; font-weight: 700; color: #168078; white-space: nowrap;">${r.sd ? fmtM(r.sd) : '0'}</td>
+                        <td nowrap style="border: 0.5pt solid #cbd5e1; text-align: right; font-family: Calibri, sans-serif; padding: 6px 10px; mso-number-format:'#,##0'; font-weight: 700; color: #0e7647; white-space: nowrap;">${r.sc ? fmtM(r.sc) : '0'}</td>
                     </tr>
                 `;
             });
@@ -4997,7 +4997,6 @@
                                 <x:Name>Balance Générale SYSCOHADA</x:Name>
                                 <x:WorksheetOptions>
                                     <x:DisplayGridlines/>
-                                    <x:FitToPage/>
                                 </x:WorksheetOptions>
                             </x:ExcelWorksheet>
                         </x:ExcelWorksheets>
@@ -5005,59 +5004,74 @@
                     </xml>
                     <![endif]-->
                     <style>
-                        body { font-family: Calibri, Arial, sans-serif; font-size: 10pt; color: #0f172a; margin: 0; padding: 15px; }
-                        table { border-collapse: collapse; width: 100%; }
-                        th { font-family: Calibri, Arial, sans-serif; font-size: 10pt; font-weight: bold; }
-                        td { font-family: Calibri, Arial, sans-serif; font-size: 10pt; }
+                        body { font-family: Calibri, Arial, sans-serif; font-size: 10pt; color: #0f172a; margin: 0; padding: 0; }
+                        table { border-collapse: collapse; table-layout: auto; width: 100%; }
+                        th { font-family: Calibri, Arial, sans-serif; font-size: 10pt; font-weight: bold; white-space: nowrap !important; mso-line-break: none; }
+                        td { font-family: Calibri, Arial, sans-serif; font-size: 10pt; white-space: nowrap !important; mso-line-break: none; }
                     </style>
                 </head>
                 <body>
                     <table>
-                        <col width="90">
-                        <col width="280">
-                        <col width="170">
-                        <col width="140">
-                        <col width="140">
-                        <col width="150">
-                        <col width="150">
+                        <colgroup>
+                            <col style="mso-width-source:userset;mso-width-alt:4200;width:90pt">
+                            <col style="mso-width-source:userset;mso-width-alt:16000;width:340pt">
+                            <col style="mso-width-source:userset;mso-width-alt:9500;width:200pt">
+                            <col style="mso-width-source:userset;mso-width-alt:7500;width:155pt">
+                            <col style="mso-width-source:userset;mso-width-alt:7500;width:155pt">
+                            <col style="mso-width-source:userset;mso-width-alt:8000;width:165pt">
+                            <col style="mso-width-source:userset;mso-width-alt:8000;width:165pt">
+                        </colgroup>
 
                         <!-- En-tête Institutionnel et Officiel -->
-                        <tr>
-                            <td colspan="7" style="background-color: #0e7647; color: #ffffff; font-size: 13pt; font-weight: bold; text-align: center; padding: 12px; border: 1pt solid #0a5a36;">
+                        <tr style="height: 32pt;">
+                            <td colspan="7" nowrap style="background-color: #0e7647; color: #ffffff; font-size: 13pt; font-weight: bold; text-align: center; padding: 10px; border: 1pt solid #0a5a36; white-space: nowrap;">
                                 RÉPUBLIQUE DU SÉNÉGAL &bull; SYSTÈME COMPTABLE OHADA RÉVISÉ (SYSCOHADA)
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="7" style="background-color: #f0fdf4; color: #0e7647; font-size: 11pt; font-weight: bold; text-align: center; padding: 8px; border: 0.5pt solid #cbd5e1;">
+                        <tr style="height: 24pt;">
+                            <td colspan="7" nowrap style="background-color: #f0fdf4; color: #0e7647; font-size: 11pt; font-weight: bold; text-align: center; padding: 6px; border: 0.5pt solid #cbd5e1; white-space: nowrap;">
                                 BALANCE GÉNÉRALE DES COMPTES À 6 CHIFFRES &bull; EXERCICE FISCAL 2026
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="7" style="background-color: #f8fafc; color: #334155; font-size: 9.5pt; text-align: center; padding: 6px; border: 0.5pt solid #cbd5e1;">
-                                <strong>Entreprise Requérante :</strong> ${targetNom} &nbsp;|&nbsp; <strong>NINEA :</strong> ${pme.ninea || '005489210'} &nbsp;|&nbsp; <strong>Cabinet Référent :</strong> ${cabNom} &nbsp;|&nbsp; <strong>Date :</strong> ${dateStr}
+                        <tr style="height: 22pt;">
+                            <td colspan="7" nowrap style="background-color: #f8fafc; color: #334155; font-size: 9.5pt; text-align: center; padding: 5px; border: 0.5pt solid #cbd5e1; white-space: nowrap;">
+                                <strong>Entreprise Requérante :</strong> ${targetNom} &nbsp;&bull;&nbsp; <strong>NINEA :</strong> ${pme.ninea || '005489210'} &nbsp;&bull;&nbsp; <strong>Cabinet Référent :</strong> ${cabNom} &nbsp;&bull;&nbsp; <strong>Date :</strong> ${dateStr}
                             </td>
                         </tr>
-                        <tr><td colspan="7" style="height: 10px;"></td></tr>
+                        <tr style="height: 8pt;"><td colspan="7" style="height: 8pt; border: none;"></td></tr>
 
                         <!-- En-têtes des Colonnes Format Pro -->
-                        <tr style="background-color: #0f172a; color: #ffffff;">
-                            <th style="border: 1pt solid #0f172a; padding: 10px 6px; text-align: center; width: 90px; color: #ffffff; background-color: #0f172a;">N° COMPTE</th>
-                            <th style="border: 1pt solid #0f172a; padding: 10px 8px; text-align: left; width: 280px; color: #ffffff; background-color: #0f172a;">INTITULÉ DU COMPTE SYSCOHADA</th>
-                            <th style="border: 1pt solid #0f172a; padding: 10px 8px; text-align: left; width: 170px; color: #ffffff; background-color: #0f172a;">CLASSE COMPTABLE</th>
-                            <th style="border: 1pt solid #0f172a; padding: 10px 8px; text-align: right; width: 140px; color: #ffffff; background-color: #0f172a;">DÉBIT CUMULÉ (FCFA)</th>
-                            <th style="border: 1pt solid #0f172a; padding: 10px 8px; text-align: right; width: 140px; color: #ffffff; background-color: #0f172a;">CRÉDIT CUMULÉ (FCFA)</th>
-                            <th style="border: 1pt solid #0f172a; padding: 10px 8px; text-align: right; width: 150px; color: #ffffff; background-color: #0f172a;">SOLDE DÉBITEUR (FCFA)</th>
-                            <th style="border: 1pt solid #0f172a; padding: 10px 8px; text-align: right; width: 150px; color: #ffffff; background-color: #0f172a;">SOLDE CRÉDITEUR (FCFA)</th>
+                        <tr style="background-color: #0f172a; color: #ffffff; height: 26pt;">
+                            <th nowrap style="border: 1pt solid #0f172a; padding: 8px 10px; text-align: center; color: #ffffff; background-color: #0f172a; white-space: nowrap;">N° COMPTE</th>
+                            <th nowrap style="border: 1pt solid #0f172a; padding: 8px 12px; text-align: left; color: #ffffff; background-color: #0f172a; white-space: nowrap;">INTITULÉ DU COMPTE SYSCOHADA</th>
+                            <th nowrap style="border: 1pt solid #0f172a; padding: 8px 10px; text-align: left; color: #ffffff; background-color: #0f172a; white-space: nowrap;">CLASSE COMPTABLE</th>
+                            <th nowrap style="border: 1pt solid #0f172a; padding: 8px 12px; text-align: right; color: #ffffff; background-color: #0f172a; white-space: nowrap;">DÉBIT CUMULÉ (FCFA)</th>
+                            <th nowrap style="border: 1pt solid #0f172a; padding: 8px 12px; text-align: right; color: #ffffff; background-color: #0f172a; white-space: nowrap;">CRÉDIT CUMULÉ (FCFA)</th>
+                            <th nowrap style="border: 1pt solid #0f172a; padding: 8px 12px; text-align: right; color: #ffffff; background-color: #0f172a; white-space: nowrap;">SOLDE DÉBITEUR (FCFA)</th>
+                            <th nowrap style="border: 1pt solid #0f172a; padding: 8px 12px; text-align: right; color: #ffffff; background-color: #0f172a; white-space: nowrap;">SOLDE CRÉDITEUR (FCFA)</th>
                         </tr>
 
                         <!-- Lignes de Données -->
                         ${rowsHtml}
 
                         <!-- Ligne Total Général de la Balance -->
-                        <tr style="background-color: #f1f5f9; font-weight: bold;">
-                            <td colspan="3" style="border-top: 1.5pt solid #0f172a; border-bottom: 2.5pt double #0f172a; border-left: 0.5pt solid #cbd5e1; border-right: 0.5pt solid #cbd5e1; text-align: right; padding: 9px 12px; font-size: 10.5pt; color: #0f172a;">
+                        <tr style="background-color: #f1f5f9; font-weight: bold; height: 24pt;">
+                            <td colspan="3" nowrap style="border-top: 1.5pt solid #0f172a; border-bottom: 2.5pt double #0f172a; border-left: 0.5pt solid #cbd5e1; border-right: 0.5pt solid #cbd5e1; text-align: right; padding: 8px 12px; font-size: 10.5pt; color: #0f172a; white-space: nowrap;">
                                 TOTAL GÉNÉRAL DES FLUX &amp; SOLDES :
                             </td>
+                            <td nowrap style="border-top: 1.5pt solid #0f172a; border-bottom: 2.5pt double #0f172a; border-left: 0.5pt solid #cbd5e1; border-right: 0.5pt solid #cbd5e1; text-align: right; padding: 8px 10px; font-size: 10.5pt; font-weight: bold; mso-number-format:'#,##0'; color: #0f172a; white-space: nowrap;">
+                                ${fmtM(totD)}
+                            </td>
+                            <td nowrap style="border-top: 1.5pt solid #0f172a; border-bottom: 2.5pt double #0f172a; border-left: 0.5pt solid #cbd5e1; border-right: 0.5pt solid #cbd5e1; text-align: right; padding: 8px 10px; font-size: 10.5pt; font-weight: bold; mso-number-format:'#,##0'; color: #0f172a; white-space: nowrap;">
+                                ${fmtM(totC)}
+                            </td>
+                            <td nowrap style="border-top: 1.5pt solid #0f172a; border-bottom: 2.5pt double #0f172a; border-left: 0.5pt solid #cbd5e1; border-right: 0.5pt solid #cbd5e1; text-align: right; padding: 8px 10px; font-size: 10.5pt; font-weight: bold; mso-number-format:'#,##0'; color: #168078; white-space: nowrap;">
+                                ${fmtM(totSD)}
+                            </td>
+                            <td nowrap style="border-top: 1.5pt solid #0f172a; border-bottom: 2.5pt double #0f172a; border-left: 0.5pt solid #cbd5e1; border-right: 0.5pt solid #cbd5e1; text-align: right; padding: 8px 10px; font-size: 10.5pt; font-weight: bold; mso-number-format:'#,##0'; color: #0e7647; white-space: nowrap;">
+                                ${fmtM(totSC)}
+                            </td>
+                        </tr>
                             <td style="border-top: 1.5pt solid #0f172a; border-bottom: 2.5pt double #0f172a; border-left: 0.5pt solid #cbd5e1; border-right: 0.5pt solid #cbd5e1; text-align: right; padding: 9px 8px; font-size: 10.5pt; font-weight: bold; mso-number-format:'#,##0'; color: #0f172a;">
                                 ${fmtM(totD)}
                             </td>
@@ -8927,10 +8941,10 @@
                     </xml>
                     <![endif]-->
                     <style>
-                        body { font-family: Arial, sans-serif; font-size: 10pt; }
-                        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-                        th { background-color: #f1f5f9; font-weight: bold; border: 0.5pt solid #cbd5e1; padding: 6px; }
-                        td { border: 0.5pt solid #cbd5e1; padding: 6px; }
+                        body { font-family: Calibri, Arial, sans-serif; font-size: 10pt; color: #0f172a; margin: 0; padding: 0; }
+                        table { border-collapse: collapse; table-layout: auto; width: 100%; margin-bottom: 20px; }
+                        th { background-color: #f1f5f9; font-weight: bold; border: 0.5pt solid #cbd5e1; padding: 6px 10px; white-space: nowrap !important; mso-line-break: none; }
+                        td { border: 0.5pt solid #cbd5e1; padding: 6px 10px; white-space: nowrap !important; mso-line-break: none; }
                     </style>
                 </head>
                 <body>
