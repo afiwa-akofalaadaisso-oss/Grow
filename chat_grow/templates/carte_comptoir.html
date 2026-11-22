@@ -312,10 +312,17 @@
 
         /* IMPRESSION PAPIER (A5 / A6) */
         @media print {
+            @page {
+                size: auto;
+                margin: 0 !important; /* Neutralise l'URL et les en-têtes du navigateur */
+            }
+
             body {
                 background: #ffffff !important;
-                padding: 0 !important;
+                padding: 10mm !important;
+                margin: 0 !important;
                 color: #000000 !important;
+                box-sizing: border-box !important;
             }
 
             .action-bar, .no-print, .view-switch-pills {

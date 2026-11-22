@@ -898,14 +898,17 @@
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 12mm 10mm 12mm 10mm;
+                margin: 0 !important; /* Neutralise l'URL, la date et les en-têtes natifs du navigateur */
             }
 
-            body {
+            html, body {
                 background: #ffffff !important;
                 color: #000000 !important;
                 margin: 0 !important;
-                padding: 0 !important;
+                padding: 12mm 10mm !important;
+                box-sizing: border-box !important;
+                height: auto !important;
+                overflow: visible !important;
             }
 
             /* Cacher absolument toute l'interface web */
@@ -6062,7 +6065,22 @@
                     <meta charset="utf-8">
                     <title>${ref} - Archivage Légal 10 ans SYSCOHADA</title>
                     <style>
-                        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 40px; color: #1e293b; }
+                        @page {
+                            size: A4 portrait;
+                            margin: 0 !important; /* Neutralise l'URL et les en-têtes système du navigateur */
+                        }
+                        * {
+                            box-sizing: border-box;
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                        }
+                        html, body {
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                            margin: 0 !important;
+                            padding: 15mm 15mm !important;
+                            color: #1e293b;
+                            box-sizing: border-box !important;
+                        }
                         .header { border-bottom: 2px solid #222222; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-start; }
                         .title { font-size: 20px; font-weight: 800; color: #222222; margin: 0; }
                         .legal-box { background: #f0fdfa; border: 1.5px solid #168078; padding: 12px 16px; border-radius: 8px; font-size: 11.5px; color: #134e4a; margin-bottom: 25px; line-height: 1.5; }
@@ -7024,6 +7042,8 @@
                 return;
             }
 
+            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+
             // Création d'une iframe d'impression isolée pour garantir une impression A4 sans faille
             let iframe = document.getElementById('growPrintIframe');
             if (!iframe) {
@@ -7045,12 +7065,12 @@
                 <html lang="fr">
                 <head>
                     <meta charset="utf-8">
-                    <title>Liasse Financière Officielle SYSCOHADA SMT — Établissement Mamadou Diop</title>
+                    <title>Liasse Fiscale SYSCOHADA SMT — ${pme.nom}</title>
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
                     <style>
                         @page {
                             size: A4 portrait;
-                            margin: 12mm 10mm 12mm 10mm;
+                            margin: 0 !important; /* Neutralise l'URL, la date et les en-têtes natifs du navigateur */
                         }
                         * {
                             box-sizing: border-box;
@@ -7058,13 +7078,14 @@
                             -webkit-print-color-adjust: exact !important;
                             print-color-adjust: exact !important;
                         }
-                        body {
-                            margin: 0;
-                            padding: 0;
-                            background: #ffffff;
-                            color: #000000;
+                        html, body {
+                            margin: 0 !important;
+                            padding: 12mm 10mm !important;
+                            background: #ffffff !important;
+                            color: #000000 !important;
                             font-size: 11px;
                             line-height: 1.4;
+                            box-sizing: border-box !important;
                         }
                         table {
                             width: 100%;
