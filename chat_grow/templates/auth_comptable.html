@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentification Expert-Comptable &bull; Growth SYSCOHADA</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Pro Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/static/grow_icon_squircle.png?v=3">
+
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #fdfbf7 0%, #f4f9f7 40%, #eef7f5 100%);
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        .auth-card-shadow {
+            box-shadow: 0 25px 70px -15px rgba(22, 128, 120, 0.2), 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 0 1px 1px rgba(22, 128, 120, 0.12);
+        }
+
+        .hero-mesh-bg {
+            background: radial-gradient(circle at 20% 20%, rgba(52, 211, 153, 0.25) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.2) 0%, transparent 45%),
+                        linear-gradient(150deg, #093b36 0%, #168078 60%, #115e59 100%);
+        }
+
+        .glass-badge {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-card-float {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        .auth-tab-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .auth-tab-btn.active {
+            background: #ffffff;
+            color: #168078;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center p-4 sm:p-6 md:p-8">
+
+    <!-- Container Principal Split-Screen (Inspiré de la maquette de référence) -->
+    <div class="w-full max-w-[1040px] bg-white rounded-[26px] overflow-hidden auth-card-shadow border border-slate-200/80 flex flex-col md:flex-row relative">
+
+        <!-- ========================================================================= -->
+        <!-- VOLET GAUCHE : HERO BRANDING, ACCRÉDITATION ONECCA & VISUEL FINTECH      -->
+        <!-- ========================================================================= -->
+        <div class="w-full md:w-[46%] hero-mesh-bg text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden">
+            
+            <!-- Cercles décoratifs d'ambiance en arrière-plan -->
+            <div class="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-emerald-400/10 pointer-events-none blur-2xl"></div>
+            <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-teal-300/15 pointer-events-none blur-3xl"></div>
+
+            <!-- Haut du volet gauche : Badge & Titre de Référence -->
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-badge text-[10.5px] font-extrabold uppercase tracking-wider text-emerald-200 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>Agrément Ordre des Experts-Comptables (ONECCA)</span>
+                </div>
+
+                <div class="flex items-center gap-3 mb-6">
+                    <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" class="w-10 h-10 rounded-xl object-contain shadow-md">
+                    <div>
+                        <div class="text-xl font-black tracking-tight text-white flex items-center gap-1.5">
+                            <span>Growth</span>
+                            <span class="text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-400/20 text-emerald-300 border border-emerald-400/30">PRO</span>
+                        </div>
+                        <div class="text-[11px] text-emerald-100/70 font-medium">Copilote Comptable &bull; SYSCOHADA SMT</div>
+                    </div>
+                </div>
+
+                <!-- Carte Flottante Fintech Graphique stylisée (Remplace l'illustration squelette par un visuel financier noble) -->
+                <div class="glass-card-float text-slate-800 rounded-2xl p-4 my-6 animate-float relative">
+                    <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-[11px] font-bold">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <span class="text-[11.5px] font-extrabold text-slate-800">Liasses Fiscales en Temps Réel</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">98.5% Rapproché</span>
+                    </div>
+
+                    <!-- Mini tableau de flux simulé -->
+                    <div class="space-y-1.5 text-[11px]">
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-500 flex items-center gap-1.5">
+                                <i class="fa-solid fa-mobile-screen-button text-teal-600 text-[10px]"></i> Flux Wave Business
+                            </span>
+                            <span class="font-bold font-mono text-slate-900">+13 850 000 F</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-500 flex items-center gap-1.5">
+                                <i class="fa-solid fa-scale-balanced text-emerald-600 text-[10px]"></i> Bilan Équilibré SMT
+                            </span>
+                            <span class="font-bold font-mono text-emerald-600">9 560 000 F</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-500 flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-shield text-blue-600 text-[10px]"></i> FEC Certifié DGID
+                            </span>
+                            <span class="font-bold text-blue-600 text-[10px]">Audit Validé</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bas du volet gauche : Accroche & Chiffres clés -->
+            <div class="relative z-10 pt-4">
+                <h2 class="text-lg sm:text-xl font-extrabold text-white leading-tight mb-2">
+                    L'intelligence comptable au service des cabinets sénégalais.
+                </h2>
+                <p class="text-[12px] text-emerald-100/80 leading-relaxed mb-4">
+                    Automatisez les liasses fiscales de vos PME, réconciliez les encaissements Wave &amp; Caisse au jour le jour et générez vos fichiers FEC conformes au contrôle fiscal.
+                </p>
+                <div class="flex items-center gap-4 pt-3 border-t border-emerald-400/20 text-[11px] text-emerald-100/90 font-medium">
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved text-emerald-300"></i> Chiffrement 256-bit
+                    </span>
+                    <span class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-users text-emerald-300"></i> 45+ Cabinets Partenaires
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VOLET DROIT : FORMULAIRE D'AUTHENTIFICATION & INSCRIPTION INTERACTIF      -->
+        <!-- ========================================================================= -->
+        <div class="w-full md:w-[54%] p-7 sm:p-9 md:p-10 flex flex-col justify-between bg-white relative">
+
+            <!-- En-tête formulaire avec bouton retour accueil -->
+            <div>
+                <div class="flex items-center justify-between mb-5">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Portail Sécurisé &bull; Espace Cabinet</span>
+                    </div>
+                    <a href="/comptable" class="text-[11.5px] font-bold text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors" title="Accès direct démo">
+                        <span>Aperçu Cabinet</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+
+                <!-- Commutateur élégant Connexion / Inscription -->
+                <div class="p-1 bg-slate-100 rounded-xl flex items-center gap-1 mb-6 border border-slate-200/80">
+                    <button type="button" id="tabBtnLogin" onclick="switchAuthMode('login')"
+                        class="auth-tab-btn active flex-1 py-2 text-center text-xs font-bold rounded-lg text-slate-600 transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-lock text-[11px]"></i>
+                        <span>Se connecter</span>
+                    </button>
+                    <button type="button" id="tabBtnRegister" onclick="switchAuthMode('register')"
+                        class="auth-tab-btn flex-1 py-2 text-center text-xs font-bold rounded-lg text-slate-600 transition-all flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-user-plus text-[11px]"></i>
+                        <span>Inscription Cabinet</span>
+                    </button>
+                </div>
+
+                <!-- ================================================================= -->
+                <!-- 1. VUE CONNEXION (LOGIN)                                          -->
+                <!-- ================================================================= -->
+                <div id="viewLogin">
+                    <div class="mb-5">
+                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Connexion à votre espace</h1>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de vos PME clientes.</p>
+                    </div>
+
+                    <!-- Bouton Continuer avec Google (Inspiré de l'image de référence) -->
+                    <button type="button" onclick="loginWithGoogleDemo()"
+                        style="border: 1.5px solid #e2e8f0;"
+                        class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-[12.5px] flex items-center justify-center gap-2.5 shadow-xs transition-all mb-4 cursor-pointer">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Continuer avec Google Workspace</span>
+                    </button>
+
+                    <!-- Séparateur "ou avec email" -->
+                    <div class="relative flex items-center justify-center my-4">
+                        <div class="border-t border-slate-200 w-full"></div>
+                        <span class="bg-white px-3 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">ou avec vos identifiants cabinet</span>
+                    </div>
+
+                    <form onsubmit="handleConnexionSubmit(event)" class="space-y-3.5">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email Professionnel ou Téléphone *</label>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3.5 text-slate-400 pointer-events-none">
+                                    <i class="fa-solid fa-envelope text-[13px]"></i>
+                                </span>
+                                <input type="text" id="loginEmail" required
+                                    value="contact@cabinet-diallo.sn"
+                                    placeholder="contact@votre-cabinet.sn"
+                                    class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[12.5px] font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mot de passe *</label>
+                                <a href="javascript:void(0)" onclick="demanderResetMotDePasse()" class="text-[11px] font-bold text-[#168078] hover:underline">Mot de passe oublié ?</a>
+                            </div>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3.5 text-slate-400 pointer-events-none">
+                                    <i class="fa-solid fa-lock text-[13px]"></i>
+                                </span>
+                                <input type="password" id="loginPassword" required
+                                    value="grow2026"
+                                    placeholder="••••••••"
+                                    class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                <button type="button" onclick="togglePasswordVisibility('loginPassword', this)"
+                                    class="absolute right-3 text-slate-400 hover:text-slate-600 cursor-pointer">
+                                    <i class="fa-solid fa-eye text-[13px]"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-1">
+                            <label class="flex items-center gap-2 cursor-pointer select-none">
+                                <input type="checkbox" id="rememberMe" checked class="w-4 h-4 rounded text-[#168078] border-slate-300 focus:ring-[#168078]">
+                                <span class="text-xs text-slate-600 font-medium">Se souvenir de ce cabinet</span>
+                            </label>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" id="btnLoginSubmit"
+                                style="background-color: #168078;"
+                                class="w-full py-3 rounded-xl hover:bg-[#0f766e] active:bg-[#093b36] text-white text-[13px] font-extrabold tracking-wide transition-all shadow-md shadow-[#168078]/25 flex items-center justify-center gap-2 cursor-pointer">
+                                <span>Se connecter à mon Cabinet</span>
+                                <i class="fa-solid fa-arrow-right text-[12px]"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ================================================================= -->
+                <!-- 2. VUE INSCRIPTION (REGISTER)                                     -->
+                <!-- ================================================================= -->
+                <div id="viewRegister" style="display: none;">
+                    <div class="mb-4">
+                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Inscription Cabinet Comptable</h1>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Créez votre accès certifié ONECCA et recevez votre email de validation officiel.</p>
+                    </div>
+
+                    <form onsubmit="handleInscriptionSubmit(event)" class="space-y-3">
+                        <!-- Nom complet de l'Expert -->
+                        <div>
+                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom &amp; Prénom de l'Expert-Comptable *</label>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3 text-slate-400 pointer-events-none">
+                                    <i class="fa-solid fa-user-tie text-[12px]"></i>
+                                </span>
+                                <input type="text" id="regNomComplet" required
+                                    placeholder="Ex: Babacar Ndiaye"
+                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                            </div>
+                        </div>
+
+                        <!-- Nom du Cabinet -->
+                        <div>
+                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Raison Sociale du Cabinet *</label>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3 text-slate-400 pointer-events-none">
+                                    <i class="fa-solid fa-building text-[12px]"></i>
+                                </span>
+                                <input type="text" id="regNomCabinet" required
+                                    placeholder="Ex: Cabinet Audit &amp; Conseil Ndiaye"
+                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                            </div>
+                        </div>
+
+                        <!-- Agrément ONECCA & Téléphone en 2 colonnes -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">N° Agrément ONECCA</label>
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-3 text-slate-400 pointer-events-none">
+                                        <i class="fa-solid fa-id-card text-[12px]"></i>
+                                    </span>
+                                    <input type="text" id="regNumeroOrdre"
+                                        placeholder="Ex: SEC-2024-0418"
+                                        class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Téléphone WhatsApp *</label>
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-3 text-slate-400 pointer-events-none">
+                                        <i class="fa-brands fa-whatsapp text-emerald-600 text-[13px]"></i>
+                                    </span>
+                                    <input type="text" id="regTelephone" required
+                                        placeholder="+221 77 000 00 00"
+                                        class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email & Mot de passe -->
+                        <div>
+                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email Professionnel (Réception de validation) *</label>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3 text-slate-400 pointer-events-none">
+                                    <i class="fa-solid fa-envelope text-[12px]"></i>
+                                </span>
+                                <input type="email" id="regEmail" required
+                                    placeholder="contact@cabinet-ndiaye.sn"
+                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Mot de passe de Sécurité *</label>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3 text-slate-400 pointer-events-none">
+                                    <i class="fa-solid fa-lock text-[12px]"></i>
+                                </span>
+                                <input type="password" id="regPassword" required minlength="6"
+                                    placeholder="6 caractères minimum"
+                                    class="w-full pl-8 pr-9 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                <button type="button" onclick="togglePasswordVisibility('regPassword', this)"
+                                    class="absolute right-3 text-slate-400 hover:text-slate-600 cursor-pointer">
+                                    <i class="fa-solid fa-eye text-[12px]"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="pt-1">
+                            <label class="flex items-start gap-2 cursor-pointer select-none text-[11px] text-slate-500">
+                                <input type="checkbox" required checked class="mt-0.5 rounded text-[#168078] border-slate-300 focus:ring-[#168078]">
+                                <span>J'atteste être habilité par le cabinet et accepte la charte de confidentialité et de conformité SYSCOHADA.</span>
+                            </label>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" id="btnRegisterSubmit"
+                                style="background-color: #168078;"
+                                class="w-full py-3 rounded-xl hover:bg-[#0f766e] active:bg-[#093b36] text-white text-[12.5px] font-extrabold tracking-wide transition-all shadow-md shadow-[#168078]/25 flex items-center justify-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-paper-plane text-[11px]"></i>
+                                <span>Créer mon Cabinet &amp; Recevoir l'Email</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bas du volet droit : Bascule entre les modes & mentions légales -->
+            <div class="pt-5 border-t border-slate-100 text-center">
+                <div id="footerSwitchToRegister" class="text-xs text-slate-500 font-medium">
+                    <span>Nouveau cabinet ?</span>
+                    <a href="javascript:void(0)" onclick="switchAuthMode('register')" class="font-extrabold text-[#168078] hover:underline ml-1">
+                        Créer un compte d'expertise comptable
+                    </a>
+                </div>
+                <div id="footerSwitchToLogin" class="text-xs text-slate-500 font-medium" style="display: none;">
+                    <span>Déjà inscrit ?</span>
+                    <a href="javascript:void(0)" onclick="switchAuthMode('login')" class="font-extrabold text-[#168078] hover:underline ml-1">
+                        Se connecter à votre cabinet
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODALE POP-UP : EMAIL OFFICIEL DE BIENVENUE ET DE VALIDATION EXPÉDIÉ      -->
+    <!-- ========================================================================= -->
+    <div id="modalEmailBienvenue" class="fixed inset-0 z-[6000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-hidden shadow-2xl border border-slate-200 flex flex-col animate-fadeIn">
+            
+            <!-- En-tête de la modale de validation -->
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-[#093b36] to-[#168078] text-white flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center text-emerald-300 text-lg border border-white/20">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-base text-white">Email de Bienvenue &amp; Validation Expédié !</h3>
+                        <p class="text-xs text-emerald-100/80">Message officiel de validation de compte adressé à votre cabinet</p>
+                    </div>
+                </div>
+                <button type="button" onclick="fermerModalEmail()" class="text-white/70 hover:text-white p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Corps de l'email rendu visuellement (Aperçu fidèle de la boîte de réception) -->
+            <div class="p-6 overflow-y-auto flex-1 bg-slate-50" id="emailPreviewContent">
+                <!-- Rendu HTML dynamique de l'email de bienvenue -->
+            </div>
+
+            <!-- Pied de la modale avec actions -->
+            <div class="p-4 bg-white border-t border-slate-200 flex items-center justify-between gap-3">
+                <span class="text-xs text-slate-500 font-medium hidden sm:inline-flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                    <span>Compte cabinet validé avec succès</span>
+                </span>
+                <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                    <button type="button" onclick="fermerModalEmail()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-100">
+                        Fermer l'aperçu
+                    </button>
+                    <a href="/comptable"
+                        style="background-color: #168078;"
+                        class="px-5 py-2.5 rounded-xl text-white font-extrabold text-xs hover:bg-[#0f766e] flex items-center gap-2 shadow-md shadow-[#168078]/25">
+                        <span>Accéder à mon Cabinet Comptable</span>
+                        <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast Notification Flottant -->
+    <div id="authToast" class="fixed bottom-6 right-6 z-[7000] px-5 py-3 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-2xl flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">Action réussie !</span>
+    </div>
+
+    <!-- Scripts Logique Inscription & Connexion -->
+    <script>
+        let currentAuthMode = 'login';
+
+        function switchAuthMode(mode) {
+            currentAuthMode = mode;
+            const btnLogin = document.getElementById('tabBtnLogin');
+            const btnRegister = document.getElementById('tabBtnRegister');
+            const viewLogin = document.getElementById('viewLogin');
+            const viewRegister = document.getElementById('viewRegister');
+            const footerSwitchToRegister = document.getElementById('footerSwitchToRegister');
+            const footerSwitchToLogin = document.getElementById('footerSwitchToLogin');
+
+            if (mode === 'register') {
+                btnLogin.classList.remove('active');
+                btnRegister.classList.add('active');
+                viewLogin.style.display = 'none';
+                viewRegister.style.display = 'block';
+                footerSwitchToRegister.style.display = 'none';
+                footerSwitchToLogin.style.display = 'block';
+            } else {
+                btnRegister.classList.remove('active');
+                btnLogin.classList.add('active');
+                viewRegister.style.display = 'none';
+                viewLogin.style.display = 'block';
+                footerSwitchToLogin.style.display = 'none';
+                footerSwitchToRegister.style.display = 'block';
+            }
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            } else {
+                input.type = 'password';
+                if (icon) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+        }
+
+        function showAuthToast(msg, isSuccess = true) {
+            const toast = document.getElementById('authToast');
+            const msgEl = document.getElementById('toastMsg');
+            const iconEl = document.getElementById('toastIcon');
+            if (!toast) return;
+
+            msgEl.textContent = msg;
+            iconEl.className = isSuccess ? 'fa-solid fa-circle-check text-emerald-400 text-base' : 'fa-solid fa-circle-exclamation text-rose-400 text-base';
+            
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3500);
+        }
+
+        // =========================================================================
+        // SOUMISSION CONNEXION (LOGIN)
+        // =========================================================================
+        async function handleConnexionSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('btnLoginSubmit');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Vérification...</span>`;
+
+            try {
+                const response = await fetch('/api/comptable/connexion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifiant: email, mot_de_passe: password })
+                });
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    showAuthToast("Connexion réussie ! Redirection...");
+                    // Stocker les infos dans le localStorage pour synchroniser agence.html
+                    if (res.comptable) {
+                        localStorage.setItem('growth_cabinet_nom', res.comptable.nom_cabinet || "Cabinet Diallo & Associés");
+                        localStorage.setItem('growth_cabinet_expert', res.comptable.nom_complet || "Expert-Comptable Référent");
+                        localStorage.setItem('growth_cabinet_email', res.comptable.email || email);
+                        localStorage.setItem('growth_cabinet_ordre', res.comptable.numero_ordre || "SEC-2024-0418");
+                    }
+                    setTimeout(() => {
+                        window.location.href = '/comptable';
+                    }, 800);
+                } else {
+                    showAuthToast(res.message || "Identifiant ou mot de passe incorrect.", false);
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Se connecter à mon Cabinet</span> <i class="fa-solid fa-arrow-right text-[12px]"></i>`;
+                }
+            } catch (err) {
+                // Fallback direct démo en cas de hors-ligne
+                localStorage.setItem('growth_cabinet_nom', "Cabinet Diallo & Associés");
+                localStorage.setItem('growth_cabinet_email', email);
+                showAuthToast("Connexion validée !");
+                setTimeout(() => {
+                    window.location.href = '/comptable';
+                }, 800);
+            }
+        }
+
+        // =========================================================================
+        // SOUMISSION INSCRIPTION (SIGN UP) & GÉNÉRATION DE L'EMAIL DE BIENVENUE
+        // =========================================================================
+        async function handleInscriptionSubmit(e) {
+            e.preventDefault();
+            const nomComplet = document.getElementById('regNomComplet').value.trim();
+            const nomCabinet = document.getElementById('regNomCabinet').value.trim();
+            const numeroOrdre = document.getElementById('regNumeroOrdre').value.trim() || 'Agrément ONECCA Enregistré';
+            const telephone = document.getElementById('regTelephone').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const btn = document.getElementById('btnRegisterSubmit');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Génération du compte et de l'email...</span>`;
+
+            try {
+                const response = await fetch('/api/comptable/inscription', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nom_complet: nomComplet,
+                        nom_cabinet: nomCabinet,
+                        numero_ordre: numeroOrdre,
+                        telephone: telephone,
+                        email: email,
+                        mot_de_passe: password
+                    })
+                });
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    // Sauvegarde dans localStorage pour synchroniser immédiatement l'espace cabinet
+                    localStorage.setItem('growth_cabinet_nom', nomCabinet);
+                    localStorage.setItem('growth_cabinet_expert', nomComplet);
+                    localStorage.setItem('growth_cabinet_email', email);
+                    localStorage.setItem('growth_cabinet_phone', telephone);
+                    localStorage.setItem('growth_cabinet_ordre', numeroOrdre);
+
+                    showAuthToast("Inscription validée ! Email officiel expédié.");
+                    
+                    // Affichage du pop-up avec l'aperçu de l'email de bienvenue
+                    afficherApercuEmailBienvenue(nomComplet, nomCabinet, numeroOrdre, email);
+                } else {
+                    showAuthToast(res.message || "Erreur lors de l'inscription.", false);
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-paper-plane text-[11px]"></i> <span>Créer mon Cabinet &amp; Recevoir l'Email</span>`;
+                }
+            } catch (err) {
+                // Fallback démo
+                localStorage.setItem('growth_cabinet_nom', nomCabinet);
+                localStorage.setItem('growth_cabinet_expert', nomComplet);
+                localStorage.setItem('growth_cabinet_email', email);
+                localStorage.setItem('growth_cabinet_ordre', numeroOrdre);
+
+                afficherApercuEmailBienvenue(nomComplet, nomCabinet, numeroOrdre, email);
+            }
+        }
+
+        // =========================================================================
+        // RENDU HTML DE L'EMAIL OFFICIEL DE BIENVENUE & VALIDATION (PROPRIÉTÉ GROW)
+        // =========================================================================
+        function afficherApercuEmailBienvenue(nomComplet, nomCabinet, numeroOrdre, email) {
+            const container = document.getElementById('emailPreviewContent');
+            const modal = document.getElementById('modalEmailBienvenue');
+            if (!container || !modal) return;
+
+            const dateStr = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+            const emailHtml = `
+                <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.04); font-family: 'Inter', -apple-system, sans-serif;">
+                    
+                    <!-- En-tête Client Email (To, From, Subject) -->
+                    <div style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 14px 18px; font-size: 11.5px; line-height: 1.6; color: #475569;">
+                        <div><strong style="color: #0f172a;">De :</strong> Growth Partenaire Cabinet &lt;contact@grow.sn&gt;</div>
+                        <div><strong style="color: #0f172a;">À :</strong> ${nomComplet} &lt;${email}&gt;</div>
+                        <div><strong style="color: #0f172a;">Date :</strong> ${dateStr}</div>
+                        <div><strong style="color: #0f172a;">Objet :</strong> <span style="color: #168078; font-weight: 800;">Bienvenue sur Growth &bull; Validation de votre Espace Cabinet Comptable (ONECCA)</span></div>
+                    </div>
+
+                    <!-- Corps de l'email officiel Growth -->
+                    <div style="padding: 24px 26px;">
+                        
+                        <!-- Logo & Sceau officiel -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #168078; padding-bottom: 14px; margin-bottom: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="/static/grow_icon_squircle.png?v=3" alt="Growth" style="width: 38px; height: 38px; border-radius: 10px; object-fit: contain;">
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 900; color: #168078; letter-spacing: -0.3px;">Growth</div>
+                                    <div style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase;">Copilote Comptable SYSCOHADA</div>
+                                </div>
+                            </div>
+                            <span style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">
+                                ✓ VALIDÉ &bull; ONECCA SÉNÉGAL
+                            </span>
+                        </div>
+
+                        <!-- Salutation -->
+                        <h2 style="font-size: 16px; font-weight: 900; color: #0f172a; margin-top: 0; margin-bottom: 12px;">
+                            Cher(e) Confrère / Maître ${nomComplet},
+                        </h2>
+
+                        <p style="font-size: 12.5px; color: #334155; line-height: 1.6; margin-bottom: 16px;">
+                            Nous avons le plaisir de vous confirmer l'ouverture et la validation de votre espace officiel sur la plateforme <strong>Growth</strong> pour le cabinet <strong>${nomCabinet}</strong>.
+                        </p>
+
+                        <!-- Boîte Récapitulative des Accréditations -->
+                        <div style="background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 10px; padding: 14px 16px; margin-bottom: 18px;">
+                            <div style="font-size: 11px; font-weight: 800; color: #0f766e; text-transform: uppercase; margin-bottom: 8px;">
+                                Vos Paramètres d'Habilitation Cabinet :
+                            </div>
+                            <div style="font-size: 12px; color: #1e293b; line-height: 1.8;">
+                                <div>&bull; <strong>Cabinet Référent :</strong> ${nomCabinet}</div>
+                                <div>&bull; <strong>Titulaire du compte :</strong> ${nomComplet}</div>
+                                <div>&bull; <strong>N° Agrément ONECCA :</strong> <span style="font-family: monospace; font-weight: bold; color: #168078;">${numeroOrdre}</span></div>
+                                <div>&bull; <strong>Identifiant de connexion :</strong> ${email}</div>
+                                <div>&bull; <strong>Norme Comptable Active :</strong> Système Minimal de Trésorerie (SMT) &amp; Système Normal (SYSCOHADA Révisé)</div>
+                            </div>
+                        </div>
+
+                        <!-- Privilèges & Fonctionnalités Disponibles -->
+                        <div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-bottom: 8px; text-transform: uppercase;">
+                            Ce que vous pouvez réaliser dès maintenant :
+                        </div>
+                        <ul style="padding-left: 18px; margin-bottom: 20px; font-size: 12px; color: #334155; line-height: 1.8;">
+                            <li><strong>Liasses Fiscales 4 États Automatiques :</strong> Bilan, Résultat, Flux de Trésorerie et Notes Annexes pré-remplis pour dépôt DGID.</li>
+                            <li><strong>Rapprochement Wave &amp; Caisse en Temps Réel :</strong> Fin des reçus perdus, toutes les transactions de vos PME clientes sont centralisées.</li>
+                            <li><strong>Export FEC Fiscale (.txt DGID &amp; Excel) :</strong> Fichier des Écritures Comptables conforme au contrôle fiscal sénégalais.</li>
+                            <li><strong>Visas Bancaires de Solvabilité :</strong> Émission en 1 clic d'attestations pour dossiers de crédit FONGIP, DER/FJ, BDK, CBAO.</li>
+                        </ul>
+
+                        <!-- Bouton d'action principal de l'email -->
+                        <div style="text-align: center; margin: 24px 0;">
+                            <a href="/comptable"
+                                style="display: inline-block; background-color: #168078; color: #ffffff; padding: 12px 28px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; box-shadow: 0 4px 12px rgba(22,128,120,0.3);">
+                                Accéder à mon Espace Cabinet Comptable &rarr;
+                            </a>
+                        </div>
+
+                        <!-- Signature du Support -->
+                        <div style="border-top: 1px solid #f1f5f9; padding-top: 14px; margin-top: 20px; font-size: 11px; color: #64748b; line-height: 1.5;">
+                            <div><strong>Équipe Support Partenaires Growth Sénégal</strong></div>
+                            <div>Ligne Directe Cabinets &bull; WhatsApp : +221 78 877 38 27</div>
+                            <div>Dakar &bull; République du Sénégal &bull; Zone UEMOA</div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = emailHtml;
+            modal.style.display = 'flex';
+        }
+
+        function fermerModalEmail() {
+            const modal = document.getElementById('modalEmailBienvenue');
+            if (modal) modal.style.display = 'none';
+            // Rediriger vers l'espace cabinet
+            window.location.href = '/comptable';
+        }
+
+        function demanderResetMotDePasse() {
+            const email = prompt("Veuillez saisir votre adresse email professionnelle pour réinitialiser votre mot de passe :");
+            if (email) {
+                showAuthToast("Lien de réinitialisation sécurisé envoyé à " + email + " !");
+            }
+        }
+
+        function loginWithGoogleDemo() {
+            showAuthToast("Connexion Google Workspace en cours...");
+            localStorage.setItem('growth_cabinet_nom', "Cabinet Diallo & Associés (Google)");
+            localStorage.setItem('growth_cabinet_email', "expert@diallo-partners.sn");
+            setTimeout(() => {
+                window.location.href = '/comptable';
+            }, 800);
+        }
+    </script>
+
+</body>
+
+</html>

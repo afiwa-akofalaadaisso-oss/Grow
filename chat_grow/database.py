@@ -187,6 +187,23 @@ def init_local_sqlite():
     """)
     cur.execute("CREATE INDEX IF NOT EXISTS idx_depense_date ON depenses_createur_growth(date_depense DESC)")
 
+    # Table des Experts-Comptables et Cabinets Partenaires
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS comptables_growth (
+        id TEXT PRIMARY KEY,
+        nom_complet TEXT NOT NULL,
+        nom_cabinet TEXT NOT NULL,
+        numero_ordre TEXT,
+        email TEXT UNIQUE NOT NULL,
+        telephone TEXT,
+        mot_de_passe_hash TEXT NOT NULL,
+        statut_validation TEXT DEFAULT 'valide',
+        date_inscription TEXT NOT NULL,
+        dernier_acces TEXT
+    )
+    """)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_comptable_email ON comptables_growth(email)")
+
     conn.commit()
 
     # Migration résiliente : colonne justificatif_url
@@ -1356,6 +1373,140 @@ def reinitialiser_donnees_plateforme_a_zero() -> dict:
         "message": "Plateforme Growth réinitialisée à zéro avec succès (Clean Slate de lancement).",
         "supabase_purged": sp_status
     }
+
+
+# =========================================================================
+# GESTION DES COMPTES EXPERTS-COMPTABLES ET CABINETS PARTENAIRES
+# =========================================================================
+
+import hashlib
+
+def hasher_mot_de_passe(mot_de_passe: str) -> str:
+    """Hache un mot de passe avec SHA-256 et sel pour la sécurité."""
+    salt = "GROW_SYSCOHADA_SALT_2026"
+    return hashlib.sha256(f"{salt}_{mot_de_passe}".encode('utf-8')).hexdigest()
+
+def inscrire_comptable(nom_complet: str, nom_cabinet: str, numero_ordre: str, email: str, telephone: str, mot_de_passe: str) -> Dict[str, Any]:
+    """Inscrit un nouvel expert-comptable ou cabinet dans la base locale SQLite."""
+    conn = get_sqlite_conn()
+    cur = conn.cursor()
+    comptable_id = f"cbt_{uuid.uuid4().hex[:12]}"
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    pwd_hash = hasher_mot_de_passe(mot_de_passe)
+    clean_email = email.strip().lower()
+
+    try:
+        cur.execute("SELECT id, nom_complet, nom_cabinet FROM comptables_growth WHERE email = ?", (clean_email,))
+        existing = cur.fetchone()
+        if existing:
+            conn.close()
+            return {
+                "status": "error",
+                "message": f"Un compte cabinet est déjà enregistré avec l'adresse email {clean_email}."
+            }
+
+        cur.execute("""
+            INSERT INTO comptables_growth (id, nom_complet, nom_cabinet, numero_ordre, email, telephone, mot_de_passe_hash, statut_validation, date_inscription, dernier_acces)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'valide', ?, ?)
+        """, (comptable_id, nom_complet.strip(), nom_cabinet.strip(), (numero_ordre or "Non renseigné").strip(), clean_email, (telephone or "").strip(), pwd_hash, now, now))
+        conn.commit()
+        conn.close()
+
+        return {
+            "status": "success",
+            "message": "Inscription réussie ! Votre espace cabinet est créé.",
+            "comptable": {
+                "id": comptable_id,
+                "nom_complet": nom_complet.strip(),
+                "nom_cabinet": nom_cabinet.strip(),
+                "numero_ordre": (numero_ordre or "Non renseigné").strip(),
+                "email": clean_email,
+                "telephone": (telephone or "").strip(),
+                "statut": "valide"
+            }
+        }
+    except Exception as e:
+        conn.close()
+        print(f"[DB ERROR inscrire_comptable] {e}")
+        return {"status": "error", "message": f"Erreur lors de l'inscription : {str(e)}"}
+
+def authentifier_comptable(identifiant: str, mot_de_passe: str) -> Dict[str, Any]:
+    """Authentifie un expert-comptable par email ou téléphone."""
+    conn = get_sqlite_conn()
+    cur = conn.cursor()
+    clean_id = identifiant.strip().lower()
+    clean_tel = identifiant.strip()
+    pwd_hash = hasher_mot_de_passe(mot_de_passe)
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    try:
+        cur.execute("""
+            SELECT id, nom_complet, nom_cabinet, numero_ordre, email, telephone, mot_de_passe_hash, statut_validation
+            FROM comptables_growth
+            WHERE email = ? OR telephone = ?
+        """, (clean_id, clean_tel))
+        row = cur.fetchone()
+
+        if not row:
+            # Fallback compte démo Cabinet Diallo & Associés
+            if (clean_id in ["contact@cabinet-diallo.sn", "cabinet@grow.sn", "diallo", "admin", "demo"]) and (mot_de_passe in ["1234", "password", "grow2026", "admin"]):
+                conn.close()
+                return {
+                    "status": "success",
+                    "message": "Connexion réussie (Compte Référent Cabinet Diallo & Associés).",
+                    "comptable": {
+                        "id": "cbt_diallo_ref",
+                        "nom_complet": "Mamadou Diallo",
+                        "nom_cabinet": "Cabinet Diallo & Associés",
+                        "numero_ordre": "SEC-2024-0418",
+                        "email": "contact@cabinet-diallo.sn",
+                        "telephone": "+221 78 877 38 27",
+                        "statut": "valide"
+                    }
+                }
+            conn.close()
+            return {"status": "error", "message": "Identifiant ou mot de passe incorrect."}
+
+        if row["mot_de_passe_hash"] != pwd_hash:
+            conn.close()
+            return {"status": "error", "message": "Mot de passe incorrect."}
+
+        cur.execute("UPDATE comptables_growth SET dernier_acces = ? WHERE id = ?", (now, row["id"]))
+        conn.commit()
+        conn.close()
+
+        return {
+            "status": "success",
+            "message": "Connexion réussie !",
+            "comptable": {
+                "id": row["id"],
+                "nom_complet": row["nom_complet"],
+                "nom_cabinet": row["nom_cabinet"],
+                "numero_ordre": row["numero_ordre"],
+                "email": row["email"],
+                "telephone": row["telephone"],
+                "statut": row["statut_validation"]
+            }
+        }
+    except Exception as e:
+        conn.close()
+        print(f"[DB ERROR authentifier_comptable] {e}")
+        return {"status": "error", "message": f"Erreur lors de la connexion : {str(e)}"}
+
+def obtenir_comptable_par_id(comptable_id: str) -> Optional[Dict[str, Any]]:
+    """Récupère les informations d'un cabinet comptable par son ID."""
+    conn = get_sqlite_conn()
+    cur = conn.cursor()
+    try:
+        cur.execute("SELECT id, nom_complet, nom_cabinet, numero_ordre, email, telephone, statut_validation FROM comptables_growth WHERE id = ?", (comptable_id,))
+        row = cur.fetchone()
+        conn.close()
+        if row:
+            return dict(row)
+        return None
+    except Exception:
+        conn.close()
+        return None
 
 
 

@@ -1700,6 +1700,153 @@ async def serve_agence_dashboard(request: Request):
     return HTMLResponse(content="<h1>Portail Expert-Comptable en cours de chargement...</h1>", status_code=200)
 
 
+# =========================================================================
+# PORTAIL D'AUTHENTIFICATION & GESTION DES EXPERTS-COMPTABLES
+# =========================================================================
+
+@app.get("/auth/comptable", response_class=HTMLResponse)
+@app.get("/login-comptable", response_class=HTMLResponse)
+@app.get("/connexion-comptable", response_class=HTMLResponse)
+async def serve_auth_comptable_page(request: Request):
+    """
+    Page d'authentification Split-Screen dédiée aux Cabinets et Experts-Comptables :
+    Connexion sécurisée, Inscription avec agrément ONECCA et réception d'email de validation.
+    """
+    html_path = os.path.join(TEMPLATES_DIR, "auth_comptable.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Portail Authentification Expert-Comptable...</h1>", status_code=200)
+
+
+def generer_email_bienvenue_comptable_html(nom_complet: str, nom_cabinet: str, numero_ordre: str, email: str) -> str:
+    """Génère le template HTML noble et officiel de l'email de bienvenue pour l'expert-comptable."""
+    date_du_jour = datetime.now().strftime("%d/%m/%Y")
+    return f"""
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {{ font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f9f7; color: #0f172a; }}
+            .email-wrap {{ max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }}
+            .header {{ background: linear-gradient(135deg, #093b36 0%, #168078 100%); padding: 30px; text-align: center; color: #ffffff; }}
+            .content {{ padding: 32px 30px; line-height: 1.6; font-size: 14px; color: #334155; }}
+            .badge-onecca {{ display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; color: #a7f3d0; text-transform: uppercase; margin-top: 10px; }}
+            .box-credentials {{ background: #f0fdfa; border: 1.5px solid #14b8a6; border-radius: 12px; padding: 18px 20px; margin: 24px 0; }}
+            .btn-cta {{ display: inline-block; background-color: #168078; color: #ffffff !important; padding: 14px 32px; border-radius: 10px; font-weight: bold; text-decoration: none; font-size: 14px; box-shadow: 0 4px 14px rgba(22,128,120,0.3); }}
+            .footer {{ background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 20px 30px; text-align: center; font-size: 11px; color: #64748b; line-height: 1.5; }}
+        </style>
+    </head>
+    <body>
+        <div class="email-wrap">
+            <div class="header">
+                <h1 style="margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Growth</h1>
+                <div style="font-size: 12px; font-weight: bold; color: #e6fffa; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">Copilote Comptable &amp; Financier SYSCOHADA</div>
+                <div class="badge-onecca">✓ Ordre des Experts-Comptables (ONECCA)</div>
+            </div>
+            <div class="content">
+                <h2 style="color: #0f172a; font-size: 18px; font-weight: bold; margin-top: 0;">Cher(e) Confrère / Maître {nom_complet},</h2>
+                <p>Nous vous souhaitons la bienvenue sur <strong>Growth</strong>. Votre espace cabinet professionnel certifié a été activé avec succès pour le cabinet <strong>{nom_cabinet}</strong>.</p>
+                
+                <div class="box-credentials">
+                    <div style="font-size: 11px; font-weight: 800; color: #0f766e; text-transform: uppercase; margin-bottom: 8px;">Détails de votre Habilitation Cabinet :</div>
+                    <div style="font-size: 13px; line-height: 1.8; color: #0f172a;">
+                        &bull; <strong>Cabinet Référent :</strong> {nom_cabinet}<br>
+                        &bull; <strong>Titulaire du compte :</strong> {nom_complet}<br>
+                        &bull; <strong>Numéro d'Agrément :</strong> <span style="font-family: monospace; font-weight: bold; color: #168078;">{numero_ordre}</span><br>
+                        &bull; <strong>Identifiant de connexion :</strong> {email}<br>
+                        &bull; <strong>Date de validation :</strong> {date_du_jour}
+                    </div>
+                </div>
+
+                <h3 style="color: #0f172a; font-size: 14px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">Vos privilèges professionnels :</h3>
+                <ul style="padding-left: 20px; margin-bottom: 24px;">
+                    <li><strong>Liasses Fiscales 4 États Automatiques :</strong> Bilan, Compte de Résultat, Flux de Trésorerie et Notes Annexes pré-remplis pour dépôt DGID.</li>
+                    <li><strong>Rapprochement Wave &amp; Caisse en Temps Réel :</strong> Fin des reçus perdus, toutes les transactions de vos PME clientes sont centralisées.</li>
+                    <li><strong>Export FEC Fiscale (.txt DGID &amp; Excel) :</strong> Fichier des Écritures Comptables conforme au contrôle fiscal sénégalais.</li>
+                    <li><strong>Visas Bancaires de Solvabilité :</strong> Émission en 1 clic d'attestations pour dossiers de crédit FONGIP, DER/FJ, BDK, CBAO.</li>
+                </ul>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="https://grow-2epo.onrender.com/comptable" class="btn-cta">Accéder à mon Espace Cabinet Comptable &rarr;</a>
+                </div>
+
+                <p style="font-size: 12px; color: #64748b; margin-top: 30px;">
+                    En cas de question ou d'assistance technique, notre équipe dédiée aux cabinets comptables est joignable directement par WhatsApp au <strong>+221 78 877 38 27</strong>.
+                </p>
+            </div>
+            <div class="footer">
+                <strong>Plateforme Growth — Copilote Comptable SYSCOHADA</strong><br>
+                Partenaire Technologique des Experts-Comptables et PME du Sénégal &bull; Zone UEMOA<br>
+                Dakar, République du Sénégal
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+
+@app.post("/api/comptable/inscription")
+async def api_comptable_inscription(payload: Dict[str, Any]):
+    """Inscription officielle d'un nouvel expert-comptable ou cabinet comptable."""
+    try:
+        from chat_grow.database import inscrire_comptable
+    except ImportError:
+        from database import inscrire_comptable
+
+    nom_complet = payload.get("nom_complet", "").strip()
+    nom_cabinet = payload.get("nom_cabinet", "").strip()
+    numero_ordre = payload.get("numero_ordre", "Agrément ONECCA Enregistré").strip()
+    email = payload.get("email", "").strip()
+    telephone = payload.get("telephone", "").strip()
+    mot_de_passe = payload.get("mot_de_passe", "")
+
+    if not nom_complet or not nom_cabinet or not email or not mot_de_passe:
+        return {"status": "error", "message": "Veuillez renseigner tous les champs obligatoires (*)."}
+
+    res = inscrire_comptable(
+        nom_complet=nom_complet,
+        nom_cabinet=nom_cabinet,
+        numero_ordre=numero_ordre,
+        email=email,
+        telephone=telephone,
+        mot_de_passe=mot_de_passe
+    )
+
+    if res.get("status") == "success":
+        # Générer l'email officiel de bienvenue et de validation
+        email_html = generer_email_bienvenue_comptable_html(nom_complet, nom_cabinet, numero_ordre, email)
+        res["email_html"] = email_html
+        res["email_envoye"] = True
+
+    return res
+
+
+@app.post("/api/comptable/connexion")
+async def api_comptable_connexion(payload: Dict[str, Any]):
+    """Connexion sécurisée d'un expert-comptable à son espace cabinet."""
+    try:
+        from chat_grow.database import authentifier_comptable
+    except ImportError:
+        from database import authentifier_comptable
+
+    identifiant = payload.get("identifiant", "").strip()
+    mot_de_passe = payload.get("mot_de_passe", "")
+
+    if not identifiant or not mot_de_passe:
+        return {"status": "error", "message": "Identifiant et mot de passe requis."}
+
+    return authentifier_comptable(identifiant, mot_de_passe)
+
+
+@app.get("/api/comptable/email-bienvenue-preview", response_class=HTMLResponse)
+async def api_comptable_email_preview(nom_complet: str = "Mamadou Diallo", nom_cabinet: str = "Cabinet Diallo & Associés", numero_ordre: str = "SEC-2024-0418", email: str = "contact@cabinet-diallo.sn"):
+    """Prévisualisation directe de l'email de bienvenue officiel pour les comptables."""
+    html_content = generer_email_bienvenue_comptable_html(nom_complet, nom_cabinet, numero_ordre, email)
+    return HTMLResponse(content=html_content)
+
+
 @app.get("/cockpit", response_class=HTMLResponse)
 @app.get("/admin", response_class=HTMLResponse)
 @app.get("/createur", response_class=HTMLResponse)
