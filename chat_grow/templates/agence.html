@@ -715,21 +715,38 @@
             color: #15803d;
         }
 
+        .btn-validate,
         .btn-validate-row {
-            background: #e2e8f0;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 4px 11px;
+            background: #222222;
+            color: #ffffff;
+            border: 1px solid #222222;
+            border-radius: 7px;
             font-size: 11px;
             font-weight: 700;
-            color: #475569;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            font-family: inherit;
+            white-space: nowrap;
+            outline: none;
         }
 
+        .btn-validate:hover,
         .btn-validate-row:hover {
-            background: #0e7647;
-            color: #ffffff;
+            background: #000000;
+            border-color: #000000;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-validate:active,
+        .btn-validate-row:active {
+            transform: translateY(0);
         }
 
         /* Barre d'action inférieure */
@@ -1969,8 +1986,8 @@
                                             </button>
                                             <span class="badge-archive-10ans"><i class="fa-solid fa-shield-check"></i>
                                                 10 ans</span>
-                                            <button class="btn-validate-row" id="btn-val-1"
-                                                onclick="validateRow(1)">Valider</button>
+                                            <button class="btn-validate" id="btn-val-1"
+                                                onclick="validateRow(1)"><i class="fa-solid fa-check" style="font-size: 9px;"></i> Valider</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -5933,7 +5950,7 @@
             let html = '';
             displayList.forEach(ec => {
                 const btnVal = ec.hasValBtn
-                    ? `<button class="btn-validate" id="btn-val-${ec.id}" onclick="validateRow(${ec.id})">Valider</button>`
+                    ? `<button class="btn-validate" id="btn-val-${ec.id}" onclick="validateRow(${ec.id})"><i class="fa-solid fa-check" style="font-size: 9px;"></i> Valider</button>`
                     : '';
                 const badgeClass = ec.statut === 'validee' ? 'badge-validee' : (ec.statut === 'numerique' ? 'badge-numerique' : 'badge-preuve');
                 const safeRef = `PC-${ec.date.split('/').reverse().join('-')}-00${ec.id}`;
