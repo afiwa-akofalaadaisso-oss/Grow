@@ -91,129 +91,37 @@
     </style>
 </head>
 
-<body class="flex items-center justify-center p-4 sm:p-6 md:p-8">
+<body class="flex items-center justify-center p-4 sm:p-6 md:p-8 min-h-screen">
 
-    <!-- Container Principal Split-Screen (Inspiré de la maquette de référence) -->
+    <!-- Container Principal Centré Épuré -->
     <div
-        class="w-full max-w-[1040px] bg-white rounded-[26px] overflow-hidden auth-card-shadow border border-slate-200/80 flex flex-col md:flex-row relative">
+        class="w-full max-w-[480px] bg-white rounded-[26px] overflow-hidden auth-card-shadow border border-slate-200/80 relative my-auto">
 
         <!-- ========================================================================= -->
-        <!-- VOLET GAUCHE : HERO BRANDING, ACCRÉDITATION ONECCA & VISUEL FINTECH      -->
+        <!-- FORMULAIRE D'AUTHENTIFICATION & INSCRIPTION CABINET                        -->
         <!-- ========================================================================= -->
-        <div
-            class="w-full md:w-[46%] hero-mesh-bg text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden">
+        <div class="w-full p-6 sm:p-8 md:p-9 flex flex-col justify-between bg-white relative">
 
-            <!-- Cercles décoratifs d'ambiance en arrière-plan -->
-            <div
-                class="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-emerald-400/10 pointer-events-none blur-2xl">
-            </div>
-            <div
-                class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-teal-300/15 pointer-events-none blur-3xl">
-            </div>
-
-            <!-- Haut du volet gauche : Badge & Titre de Référence -->
-            <div class="relative z-10">
-                <div
-                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-badge text-[10.5px] font-extrabold uppercase tracking-wider text-emerald-200 mb-6">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span>Espace Dédié aux Experts-Comptables &bull; SYSCOHADA SMT</span>
-                </div>
-
-                <a href="/comptable" class="flex items-center gap-4 mb-6 hover:opacity-95 transition cursor-pointer"
-                    title="Accéder au Portail Cabinet">
-                    <img src="/static/grow_icon_official.png?v=6" alt="Logo Growth"
-                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-contain shadow-2xl border border-white/25 shrink-0">
-                    <div>
-                        <div class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
-                            <span>Growth</span>
-                            <span
-                                class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-emerald-400/25 text-emerald-300 border border-emerald-400/35 tracking-wider">PRO</span>
-                        </div>
-                        <div class="text-xs sm:text-sm text-emerald-100/85 font-medium mt-0.5">Copilote Comptable &bull;
-                            SYSCOHADA SMT</div>
-                    </div>
+            <!-- En-tête avec Logo Growth Officiel et bouton retour accueil -->
+            <div class="text-center pb-5 mb-5 border-b border-slate-100">
+                <a href="/" class="inline-flex items-center gap-2.5 group mb-2" title="Retour à l'accueil Growth">
+                    <img src="/static/grow_icon_official.png?v=6" alt="Growth"
+                        class="w-10 h-10 rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform">
+                    <span class="text-2xl font-black tracking-tight text-slate-900">Growth</span>
                 </a>
-
-                <!-- Carte Flottante Fintech Graphique stylisée (Remplace l'illustration squelette par un visuel financier noble) -->
-                <div class="glass-card-float text-slate-800 rounded-2xl p-4 my-6 animate-float relative">
-                    <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100">
-                        <div class="flex items-center gap-2">
-                            <div
-                                class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-[11px] font-bold">
-                                <i class="fa-solid fa-chart-line"></i>
-                            </div>
-                            <span class="text-[11.5px] font-extrabold text-slate-800">Liasses Fiscales en Temps
-                                Réel</span>
-                        </div>
-                        <span
-                            class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">98.5%
-                            Rapproché</span>
-                    </div>
-
-                    <!-- Mini tableau de flux simulé -->
-                    <div class="space-y-1.5 text-[11px]">
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-500 flex items-center gap-1.5">
-                                <i class="fa-solid fa-mobile-screen-button text-teal-600 text-[10px]"></i> Flux Wave
-                                Business
-                            </span>
-                            <span class="font-bold font-mono text-slate-900">+13 850 000 F</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-500 flex items-center gap-1.5">
-                                <i class="fa-solid fa-scale-balanced text-emerald-600 text-[10px]"></i> Bilan Équilibré
-                                SMT
-                            </span>
-                            <span class="font-bold font-mono text-emerald-600">9 560 000 F</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-500 flex items-center gap-1.5">
-                                <i class="fa-solid fa-file-shield text-blue-600 text-[10px]"></i> FEC Certifié DGID
-                            </span>
-                            <span class="font-bold text-blue-600 text-[10px]">Audit Validé</span>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-[11.5px] font-semibold text-slate-500">Portail Sécurisé &bull; Espace Cabinet Comptable</p>
             </div>
 
-            <!-- Bas du volet gauche : Accroche & Chiffres clés -->
-            <div class="relative z-10 pt-4">
-                <h2 class="text-lg sm:text-xl font-extrabold text-white leading-tight mb-2">
-                    L'intelligence comptable au service des cabinets sénégalais.
-                </h2>
-                <p class="text-[12px] text-emerald-100/80 leading-relaxed mb-4">
-                    Automatisez les liasses fiscales de vos PME, réconciliez les encaissements Wave &amp; Caisse au jour
-                    le jour et générez vos fichiers FEC conformes au contrôle fiscal.
-                </p>
-                <div
-                    class="flex items-center gap-4 pt-3 border-t border-emerald-400/20 text-[11px] text-emerald-100/90 font-medium">
-                    <span class="flex items-center gap-1.5">
-                        <i class="fa-solid fa-shield-halved text-emerald-300"></i> Chiffrement 256-bit
-                    </span>
-                    <span class="flex items-center gap-1.5">
-                        <i class="fa-solid fa-users text-emerald-300"></i> 45+ Cabinets Partenaires
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========================================================================= -->
-        <!-- VOLET DROIT : FORMULAIRE D'AUTHENTIFICATION & INSCRIPTION INTERACTIF      -->
-        <!-- ========================================================================= -->
-        <div class="w-full md:w-[54%] p-7 sm:p-9 md:p-10 flex flex-col justify-between bg-white relative">
-
-            <!-- En-tête formulaire avec bouton retour accueil -->
             <div>
-                <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                        <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Portail
-                            Sécurisé &bull; Espace Cabinet</span>
+                        <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Connexion Conforme SMT</span>
                     </div>
                     <a href="/comptable"
                         class="text-[11.5px] font-bold text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors"
                         title="Accès direct démo">
-                        <span>Aperçu Cabinet</span>
+                        <span>Aperçu Démo</span>
                         <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </a>
                 </div>
