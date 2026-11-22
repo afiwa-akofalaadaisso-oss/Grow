@@ -19,19 +19,17 @@
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #fdfbf7 0%, #f4f9f7 40%, #eef7f5 100%);
-            color: #0f172a;
+            background: #f8fafc;
+            color: #222222;
             min-height: 100vh;
         }
 
         .auth-card-shadow {
-            box-shadow: 0 25px 70px -15px rgba(22, 128, 120, 0.2), 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 0 1px 1px rgba(22, 128, 120, 0.12);
+            box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.1), 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 0 1px 1px rgba(0, 0, 0, 0.05);
         }
 
         .hero-mesh-bg {
-            background: radial-gradient(circle at 20% 20%, rgba(52, 211, 153, 0.25) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.2) 0%, transparent 45%),
-                linear-gradient(150deg, #093b36 0%, #168078 60%, #115e59 100%);
+            background: #f8fafc;
         }
 
         .glass-badge {
@@ -70,7 +68,7 @@
 
         .auth-tab-btn.active {
             background: #ffffff;
-            color: #168078;
+            color: #222222;
             font-weight: 800;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
@@ -105,9 +103,9 @@
             <!-- En-tête avec Logo Growth Officiel et bouton retour accueil -->
             <div class="text-center pb-5 mb-5 border-b border-slate-100">
                 <a href="/" class="inline-flex items-center gap-2.5 group mb-2" title="Retour à l'accueil Growth">
-                    <img src="/static/grow_icon_official.png?v=6" alt="Growth"
+                    <img src="/static/grow_icon_official.png?v=7" alt="Growth"
                         class="w-10 h-10 rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform">
-                    <span class="text-2xl font-black tracking-tight text-slate-900">Growth</span>
+                    <span class="text-2xl font-black tracking-tight text-[#222222]">Growth</span>
                 </a>
                 <p class="text-[11.5px] font-semibold text-slate-500">Portail Sécurisé &bull; Espace Cabinet Comptable
                 </p>
@@ -188,7 +186,7 @@
                                 </span>
                                 <input type="text" id="loginEmail" required value="contact@cabinet-diallo.sn"
                                     placeholder="contact@votre-cabinet.sn"
-                                    class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[12.5px] font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                    class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[12.5px] font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                             </div>
                         </div>
 
@@ -197,7 +195,7 @@
                                 <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mot
                                     de passe *</label>
                                 <a href="javascript:void(0)" onclick="demanderResetMotDePasse()"
-                                    class="text-[11px] font-bold text-[#168078] hover:underline">Mot de passe oublié
+                                    class="text-[11px] font-bold text-[#222222] hover:underline">Mot de passe oublié
                                     ?</a>
                             </div>
                             <div class="relative flex items-center">
@@ -206,7 +204,7 @@
                                 </span>
                                 <input type="password" id="loginPassword" required value="grow2026"
                                     placeholder="••••••••"
-                                    class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                    class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                                 <button type="button" onclick="togglePasswordVisibility('loginPassword', this)"
                                     class="absolute right-3 text-slate-400 hover:text-slate-600 cursor-pointer">
                                     <i class="fa-solid fa-eye text-[13px]"></i>
@@ -217,23 +215,23 @@
                         <div class="flex items-center justify-between pt-1">
                             <label class="flex items-center gap-2 cursor-pointer select-none">
                                 <input type="checkbox" id="rememberMe" checked
-                                    class="w-4 h-4 rounded text-[#168078] border-slate-300 focus:ring-[#168078]">
+                                    class="w-4 h-4 rounded text-[#222222] border-slate-300 focus:ring-[#a0d9d2]">
                                 <span class="text-xs text-slate-600 font-medium">Se souvenir de ce cabinet</span>
                             </label>
                         </div>
 
                         <div class="pt-2">
-                            <button type="submit" id="btnLoginSubmit" style="background-color: #168078;"
-                                class="w-full py-3 rounded-xl hover:bg-[#0f766e] active:bg-[#093b36] text-white text-[13px] font-extrabold tracking-wide transition-all shadow-md shadow-[#168078]/25 flex items-center justify-center gap-2 cursor-pointer">
+                            <button type="submit" id="btnLoginSubmit" style="background-color: #222222;"
+                                class="w-full py-3 rounded-xl hover:bg-[#333333] active:bg-[#111111] text-white text-[13px] font-extrabold tracking-wide transition-all shadow-md shadow-black/15 flex items-center justify-center gap-2 cursor-pointer">
                                 <span>Se connecter à mon Cabinet</span>
-                                <i class="fa-solid fa-arrow-right text-[12px]"></i>
+                                <i class="fa-solid fa-arrow-right text-[12px] text-[#a0d9d2]"></i>
                             </button>
                         </div>
 
                         <div class="pt-1.5 text-center">
                             <a href="/comptable"
-                                class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-slate-50 hover:bg-teal-50 border border-slate-200 hover:border-teal-300 text-slate-700 hover:text-[#168078] text-xs font-bold transition">
-                                <i class="fa-solid fa-building-columns text-[11px] text-[#168078]"></i>
+                                class="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 text-slate-700 hover:text-[#222222] text-xs font-bold transition">
+                                <i class="fa-solid fa-building-columns text-[11px] text-[#222222]"></i>
                                 <span>Accéder directement au Portail Cabinet (Mode Démo) &rarr;</span>
                             </a>
                         </div>
@@ -262,7 +260,7 @@
                                     <i class="fa-solid fa-user-tie text-[12px]"></i>
                                 </span>
                                 <input type="text" id="regNomComplet" required placeholder="Ex: Babacar Ndiaye"
-                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                             </div>
                         </div>
 
@@ -277,7 +275,7 @@
                                 </span>
                                 <input type="text" id="regNomCabinet" required
                                     placeholder="Ex: Cabinet Audit &amp; Conseil Ndiaye"
-                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                             </div>
                         </div>
 
@@ -292,7 +290,7 @@
                                         <i class="fa-solid fa-id-card text-[12px]"></i>
                                     </span>
                                     <input type="text" id="regNumeroOrdre" placeholder="Ex: SEC-2024-0418"
-                                        class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                        class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                                 </div>
                             </div>
                             <div>
@@ -304,7 +302,7 @@
                                         <i class="fa-brands fa-whatsapp text-emerald-600 text-[13px]"></i>
                                     </span>
                                     <input type="text" id="regTelephone" required placeholder="+221 77 000 00 00"
-                                        class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                        class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                                 </div>
                             </div>
                         </div>
@@ -319,7 +317,7 @@
                                     <i class="fa-solid fa-envelope text-[12px]"></i>
                                 </span>
                                 <input type="email" id="regEmail" required placeholder="contact@cabinet-ndiaye.sn"
-                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                             </div>
                         </div>
 
@@ -333,7 +331,7 @@
                                 </span>
                                 <input type="password" id="regPassword" required minlength="6"
                                     placeholder="6 caractères minimum"
-                                    class="w-full pl-8 pr-9 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                                    class="w-full pl-8 pr-9 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                                 <button type="button" onclick="togglePasswordVisibility('regPassword', this)"
                                     class="absolute right-3 text-slate-400 hover:text-slate-600 cursor-pointer">
                                     <i class="fa-solid fa-eye text-[12px]"></i>
@@ -344,16 +342,16 @@
                         <div class="pt-1">
                             <label class="flex items-start gap-2 cursor-pointer select-none text-[11px] text-slate-500">
                                 <input type="checkbox" required checked
-                                    class="mt-0.5 rounded text-[#168078] border-slate-300 focus:ring-[#168078]">
+                                    class="mt-0.5 rounded text-[#222222] border-slate-300 focus:ring-[#a0d9d2]">
                                 <span>J'atteste être habilité par le cabinet et accepte la charte de confidentialité et
                                     de conformité SYSCOHADA.</span>
                             </label>
                         </div>
 
                         <div class="pt-2">
-                            <button type="submit" id="btnRegisterSubmit" style="background-color: #168078;"
-                                class="w-full py-3 rounded-xl hover:bg-[#0f766e] active:bg-[#093b36] text-white text-[12.5px] font-extrabold tracking-wide transition-all shadow-md shadow-[#168078]/25 flex items-center justify-center gap-2 cursor-pointer">
-                                <i class="fa-solid fa-paper-plane text-[11px]"></i>
+                            <button type="submit" id="btnRegisterSubmit" style="background-color: #222222;"
+                                class="w-full py-3 rounded-xl hover:bg-[#333333] active:bg-[#111111] text-white text-[12.5px] font-extrabold tracking-wide transition-all shadow-md shadow-black/15 flex items-center justify-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-paper-plane text-[11px] text-[#a0d9d2]"></i>
                                 <span>Créer mon Cabinet &amp; Recevoir l'Email</span>
                             </button>
                         </div>
@@ -366,14 +364,14 @@
                 <div id="footerSwitchToRegister" class="text-xs text-slate-500 font-medium">
                     <span>Nouveau cabinet ?</span>
                     <a href="javascript:void(0)" onclick="switchAuthMode('register')"
-                        class="font-extrabold text-[#168078] hover:underline ml-1">
+                        class="font-extrabold text-[#222222] hover:underline ml-1">
                         Créer un compte d'expertise comptable
                     </a>
                 </div>
                 <div id="footerSwitchToLogin" class="text-xs text-slate-500 font-medium" style="display: none;">
                     <span>Déjà inscrit ?</span>
                     <a href="javascript:void(0)" onclick="switchAuthMode('login')"
-                        class="font-extrabold text-[#168078] hover:underline ml-1">
+                        class="font-extrabold text-[#222222] hover:underline ml-1">
                         Se connecter à votre cabinet
                     </a>
                 </div>
@@ -393,16 +391,16 @@
 
             <!-- En-tête de la modale de validation -->
             <div
-                class="p-5 sm:p-6 bg-gradient-to-r from-[#093b36] to-[#168078] text-white flex items-center justify-between">
+                class="p-5 sm:p-6 bg-[#222222] text-white flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div
-                        class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center text-emerald-300 text-lg border border-white/20">
+                        class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-[#a0d9d2] text-lg border border-white/20">
                         <i class="fa-solid fa-envelope-circle-check"></i>
                     </div>
                     <div>
                         <h3 class="font-extrabold text-base text-white">Email de Bienvenue &amp; Validation Expédié !
                         </h3>
-                        <p class="text-xs text-emerald-100/80">Message officiel de validation de compte adressé à votre
+                        <p class="text-xs text-slate-300">Message officiel de validation de compte adressé à votre
                             cabinet</p>
                     </div>
                 </div>
@@ -420,7 +418,7 @@
             <!-- Pied de la modale avec actions -->
             <div class="p-4 bg-white border-t border-slate-200 flex items-center justify-between gap-3">
                 <span class="text-xs text-slate-500 font-medium hidden sm:inline-flex items-center gap-1.5">
-                    <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                    <i class="fa-solid fa-circle-check text-[#222222]"></i>
                     <span>Compte cabinet validé avec succès</span>
                 </span>
                 <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
@@ -428,10 +426,10 @@
                         class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-100">
                         Fermer l'aperçu
                     </button>
-                    <a href="/comptable" style="background-color: #168078;"
-                        class="px-5 py-2.5 rounded-xl text-white font-extrabold text-xs hover:bg-[#0f766e] flex items-center gap-2 shadow-md shadow-[#168078]/25">
+                    <a href="/comptable" style="background-color: #222222;"
+                        class="px-5 py-2.5 rounded-xl text-white font-extrabold text-xs hover:bg-[#333333] flex items-center gap-2 shadow-md shadow-black/15">
                         <span>Accéder à mon Cabinet Comptable</span>
-                        <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                        <i class="fa-solid fa-arrow-right text-[11px] text-[#a0d9d2]"></i>
                     </a>
                 </div>
             </div>
@@ -635,22 +633,22 @@
                         <div><strong style="color: #0f172a;">De :</strong> Growth Partenaire Cabinet &lt;contact@grow.sn&gt;</div>
                         <div><strong style="color: #0f172a;">À :</strong> ${nomComplet} &lt;${email}&gt;</div>
                         <div><strong style="color: #0f172a;">Date :</strong> ${dateStr}</div>
-                        <div><strong style="color: #0f172a;">Objet :</strong> <span style="color: #168078; font-weight: 800;">Bienvenue sur Growth &bull; Validation de votre Espace Cabinet Comptable</span></div>
+                        <div><strong style="color: #0f172a;">Objet :</strong> <span style="color: #222222; font-weight: 800;">Bienvenue sur Growth &bull; Validation de votre Espace Cabinet Comptable</span></div>
                     </div>
 
                     <!-- Corps de l'email officiel Growth -->
                     <div style="padding: 24px 26px;">
                         
                         <!-- Logo & Sceau officiel -->
-                        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #168078; padding-bottom: 14px; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #222222; padding-bottom: 14px; margin-bottom: 20px;">
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <img src="/static/grow_icon_squircle.png?v=3" alt="Growth" style="width: 38px; height: 38px; border-radius: 10px; object-fit: contain;">
+                                <img src="/static/grow_icon_official.png?v=7" alt="Growth" style="width: 38px; height: 38px; border-radius: 10px; object-fit: contain;">
                                 <div>
-                                    <div style="font-size: 18px; font-weight: 900; color: #168078; letter-spacing: -0.3px;">Growth</div>
+                                    <div style="font-size: 18px; font-weight: 900; color: #222222; letter-spacing: -0.3px;">Growth</div>
                                     <div style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase;">Copilote Comptable SYSCOHADA</div>
                                 </div>
                             </div>
-                            <span style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">
+                            <span style="background: #222222; color: #a0d9d2; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800;">
                                 ✓ VALIDÉ &bull; ESPACE CABINET
                             </span>
                         </div>
@@ -665,14 +663,14 @@
                         </p>
 
                         <!-- Boîte Récapitulative des Accréditations -->
-                        <div style="background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 10px; padding: 14px 16px; margin-bottom: 18px;">
-                            <div style="font-size: 11px; font-weight: 800; color: #0f766e; text-transform: uppercase; margin-bottom: 8px;">
+                        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 18px;">
+                            <div style="font-size: 11px; font-weight: 800; color: #222222; text-transform: uppercase; margin-bottom: 8px;">
                                 Vos Paramètres d'Habilitation Cabinet :
                             </div>
                             <div style="font-size: 12px; color: #1e293b; line-height: 1.8;">
                                 <div>&bull; <strong>Cabinet Référent :</strong> ${nomCabinet}</div>
                                 <div>&bull; <strong>Titulaire du compte :</strong> ${nomComplet}</div>
-                                <div>&bull; <strong>N° d'Agrément / Ordre :</strong> <span style="font-family: monospace; font-weight: bold; color: #168078;">${numeroOrdre}</span></div>
+                                <div>&bull; <strong>N° d'Agrément / Ordre :</strong> <span style="font-family: monospace; font-weight: bold; color: #222222;">${numeroOrdre}</span></div>
                                 <div>&bull; <strong>Identifiant de connexion :</strong> ${email}</div>
                                 <div>&bull; <strong>Norme Comptable Active :</strong> Système Minimal de Trésorerie (SMT) &amp; Système Normal (SYSCOHADA Révisé)</div>
                             </div>
@@ -692,7 +690,7 @@
                         <!-- Bouton d'action principal de l'email -->
                         <div style="text-align: center; margin: 24px 0;">
                             <a href="/comptable"
-                                style="display: inline-block; background-color: #168078; color: #ffffff; padding: 12px 28px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; box-shadow: 0 4px 12px rgba(22,128,120,0.3);">
+                                style="display: inline-block; background-color: #222222; color: #ffffff; padding: 12px 28px; border-radius: 10px; font-weight: 800; font-size: 13px; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                                 Accéder à mon Espace Cabinet Comptable &rarr;
                             </a>
                         </div>

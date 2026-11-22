@@ -16,19 +16,9 @@
                 extend: {
                     colors: {
                         growth: {
-                            50: '#f0fdf9',
-                            100: '#ccfbe9',
-                            200: '#99f6d7',
-                            500: '#168078',
-                            600: '#115e59',
-                            700: '#0d4a46',
-                            800: '#093b36',
-                            900: '#04221f',
-                        },
-                        fintech: {
-                            dark: '#0b0f19',
-                            card: '#111827',
-                            border: '#1f2937'
+                            dark: '#222222',
+                            mint: '#a0d9d2',
+                            mintHover: '#8ecfc7',
                         }
                     },
                     fontFamily: {
@@ -49,73 +39,29 @@
 
     <!-- FontAwesome Pro Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="/static/grow_icon_squircle_hd.png?v=4">
+    <link rel="icon" type="image/png" href="/static/grow_icon_official.png?v=7">
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #ffffff;
-            color: #0f172a;
+            color: #222222;
             overflow-x: hidden;
         }
 
         .hero-mesh {
             background:
-                radial-gradient(circle at 10% 20%, rgba(22, 128, 120, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 40%, rgba(16, 185, 129, 0.07) 0%, transparent 45%),
-                radial-gradient(circle at 50% 90%, rgba(22, 128, 120, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 10% 20%, rgba(160, 217, 210, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 90% 40%, rgba(160, 217, 210, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 50% 90%, rgba(34, 34, 34, 0.03) 0%, transparent 50%),
                 linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
         }
 
         .glass-nav {
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-        }
-
-        .fintech-card-shadow {
-            box-shadow: 0 20px 50px -12px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(15, 23, 42, 0.04);
-        }
-
-        .badge-pulse {
-            position: relative;
-        }
-
-        .badge-pulse::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            border-radius: inherit;
-            background: rgba(22, 128, 120, 0.35);
-            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-            z-index: -1;
-        }
-
-        @keyframes pulse-ring {
-            0% {
-                transform: scale(0.95);
-                opacity: 0.8;
-            }
-
-            50% {
-                transform: scale(1.15);
-                opacity: 0;
-            }
-
-            100% {
-                transform: scale(1.15);
-                opacity: 0;
-            }
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #093b36 0%, #168078 60%, #10b981 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
@@ -128,20 +74,20 @@
     <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
-            <!-- Logo Growth Épuré Officiel (Charte Teal #168078 & Menthe #a0d9d2) -->
+            <!-- Logo Growth Authentique Officiel (Charte Anthracite #222222 & Menthe #a0d9d2) -->
             <a href="/" class="flex items-center gap-3 group">
-                <img src="/static/grow_icon_official.png?v=6" alt="Growth Logo"
+                <img src="/static/grow_icon_official.png?v=7" alt="Growth Logo"
                     class="w-10 h-10 rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform duration-200">
-                <span class="text-2xl font-black tracking-tight text-slate-900">Growth</span>
+                <span class="text-2xl font-black tracking-tight text-[#222222]">Growth</span>
             </a>
 
-            <!-- Action unique : Bouton SE CONNECTER en évidence (Espace Connexion Cabinet) -->
+            <!-- Action unique : Bouton SE CONNECTER en évidence (Charte Anthracite & Menthe) -->
             <div>
                 <a href="/login-comptable"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#168078] hover:bg-[#115e59] active:bg-[#093b36] text-white text-xs sm:text-sm font-extrabold transition shadow-md shadow-[#168078]/25 cursor-pointer hover:shadow-lg hover:shadow-[#168078]/30 hover:-translate-y-0.5 duration-150">
-                    <i class="fa-solid fa-lock text-emerald-300 text-xs"></i>
+                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#222222] hover:bg-[#333333] active:bg-[#111111] text-white text-xs sm:text-sm font-extrabold transition shadow-md shadow-black/10 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 duration-150">
+                    <i class="fa-solid fa-lock text-[#a0d9d2] text-xs"></i>
                     <span>Se connecter</span>
-                    <i class="fa-solid fa-arrow-right text-[11px] opacity-80"></i>
+                    <i class="fa-solid fa-arrow-right text-[11px] text-[#a0d9d2]"></i>
                 </a>
             </div>
 
@@ -158,16 +104,16 @@
 
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-7">
 
-            <!-- Badge de conformité légale SYSCOHADA -->
+            <!-- Badge de conformité légale SYSCOHADA aux couleurs du projet -->
             <div
-                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-extrabold uppercase tracking-wide shadow-2xs">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#a0d9d2]/20 border border-[#a0d9d2]/60 text-[#222222] text-xs font-extrabold uppercase tracking-wide shadow-2xs">
+                <span class="w-2 h-2 rounded-full bg-[#222222] animate-pulse"></span>
                 <span>Conforme Normes SYSCOHADA SMT &bull; Partenaire des Cabinets</span>
             </div>
 
             <!-- Titre Héro avec typographie forte -->
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.12]">
-                L'intelligence comptable pour les cabinets et les <span class="gradient-text">400 000 PME</span>
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-[#222222] tracking-tight leading-[1.12]">
+                L'intelligence comptable pour les cabinets et les <span class="underline decoration-[#a0d9d2] decoration-4 underline-offset-4">400 000 PME</span>
                 du Sénégal.
             </h1>
 
@@ -179,28 +125,28 @@
                 <strong>DGID</strong>.
             </p>
 
-            <!-- CTA Principal Unique : Se Connecter -->
+            <!-- CTA Principal Unique : Se Connecter (Anthracite & Menthe) -->
             <div class="pt-2 flex items-center justify-center">
                 <a href="/login-comptable"
-                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-2xl bg-[#168078] hover:bg-[#115e59] active:bg-[#093b36] text-white text-base font-black transition-all shadow-xl shadow-[#168078]/25 hover:shadow-2xl hover:shadow-[#168078]/35 hover:-translate-y-0.5 duration-150">
-                    <i class="fa-solid fa-lock text-emerald-300"></i>
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-2xl bg-[#222222] hover:bg-[#333333] active:bg-[#111111] text-white text-base font-black transition-all shadow-xl shadow-black/15 hover:shadow-2xl hover:-translate-y-0.5 duration-150">
+                    <i class="fa-solid fa-lock text-[#a0d9d2]"></i>
                     <span>Se connecter à mon Cabinet</span>
-                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                    <i class="fa-solid fa-arrow-right text-xs text-[#a0d9d2]"></i>
                 </a>
             </div>
 
             <!-- Éléments de réassurance -->
             <div class="pt-4 flex items-center justify-center gap-6 text-xs font-semibold text-slate-500 flex-wrap">
                 <span class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-shield-check text-[#168078]"></i>
+                    <i class="fa-solid fa-shield-check text-[#222222]"></i>
                     <span>Conforme SYSCOHADA SMT</span>
                 </span>
                 <span class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-contract text-[#168078]"></i>
+                    <i class="fa-solid fa-file-contract text-[#222222]"></i>
                     <span>FEC Contrôle Fiscal DGID</span>
                 </span>
                 <span class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-clock-rotate-left text-[#168078]"></i>
+                    <i class="fa-solid fa-clock-rotate-left text-[#222222]"></i>
                     <span>Scellé Légal 10 Ans (Art. 24)</span>
                 </span>
             </div>
@@ -212,30 +158,33 @@
     <!-- ========================================================================= -->
     <!-- 3. BANDEAU DE STATISTIQUES & IMPACT AU SÉNÉGAL                            -->
     <!-- ========================================================================= -->
-    <section class="bg-teal-50/50 border-y border-teal-100/80 py-12">
+    <section class="bg-slate-50 border-y border-slate-200 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">400 000+</div>
+                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">400 000+</div>
                     <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">PME, TPE &amp; Commerçants au
                         Sénégal</div>
                 </div>
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-[#168078] tracking-tight">98.5%</div>
+                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight flex items-center justify-center gap-1">
+                        <span>98.5%</span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#a0d9d2] inline-block"></span>
+                    </div>
                     <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">Rapprochement Wave &amp; Caisse
                     </div>
                 </div>
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-emerald-600 tracking-tight">10 Ans</div>
+                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">10 Ans</div>
                     <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">Archivage Légal SYSCOHADA (Art.
                         24)</div>
                 </div>
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">0 F</div>
+                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">0 F</div>
                     <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">Écart de Balance &bull; FEC Validé
                         DGID</div>
                 </div>
@@ -247,15 +196,15 @@
     <!-- ========================================================================= -->
     <!-- 4. POUR QUI EST CONÇU GROWTH ?                                            -->
     <!-- ========================================================================= -->
-    <section id="pour-qui" class="py-20 bg-slate-50 border-b border-slate-200">
+    <section id="pour-qui" class="py-20 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
                 <span
-                    class="text-xs font-extrabold uppercase tracking-wider text-[#168078] bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
+                    class="text-xs font-extrabold uppercase tracking-wider text-[#222222] bg-[#a0d9d2]/30 border border-[#a0d9d2]/60 px-3 py-1 rounded-full">
                     Écosystème National
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                <h2 class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">
                     Qui a besoin de collecter et certifier ses écritures ?
                 </h2>
                 <p class="text-slate-600 text-sm sm:text-base">
@@ -270,28 +219,28 @@
                 <div id="pme"
                     class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition space-y-4">
                     <div
-                        class="w-12 h-12 rounded-2xl bg-teal-50 text-[#168078] flex items-center justify-center text-xl font-bold">
+                        class="w-12 h-12 rounded-2xl bg-[#a0d9d2]/25 text-[#222222] flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-store"></i>
                     </div>
-                    <h3 class="text-xl font-black text-slate-900">PME &amp; Commerçants</h3>
+                    <h3 class="text-xl font-black text-[#222222]">PME &amp; Commerçants</h3>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Besoins de collecte :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Ventes et encaissements
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Ventes et encaissements
                             Wave / Orange Money</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Achats de stocks, riz,
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Achats de stocks, riz,
                             huile, fournitures</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Dépenses de transport,
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Dépenses de transport,
                             salaires et dettes clients</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Consultation du journal
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Consultation du journal
                             par simple numéro WhatsApp</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
                         <a href="/dashboard"
-                            class="text-xs font-bold text-[#168078] hover:underline flex items-center gap-1.5">
+                            class="text-xs font-bold text-[#222222] hover:underline flex items-center gap-1.5">
                             <span>Voir le Journal des Écritures PME</span> &rarr;
                         </a>
                     </div>
@@ -299,34 +248,34 @@
 
                 <!-- Carte 2 : Cabinets d'Experts-Comptables -->
                 <div id="cabinets"
-                    class="bg-white rounded-3xl p-8 border-2 border-[#168078] shadow-md space-y-4 relative">
+                    class="bg-white rounded-3xl p-8 border-2 border-[#222222] shadow-md space-y-4 relative">
                     <span
-                        class="absolute -top-3.5 right-6 px-3 py-1 rounded-full bg-[#168078] text-white text-[10px] font-black uppercase tracking-wider">
+                        class="absolute -top-3.5 right-6 px-3 py-1 rounded-full bg-[#222222] text-[#a0d9d2] text-[10px] font-black uppercase tracking-wider">
                         Conforme SYSCOHADA SMT
                     </span>
                     <div
-                        class="w-12 h-12 rounded-2xl bg-[#093b36] text-white flex items-center justify-center text-xl font-bold">
+                        class="w-12 h-12 rounded-2xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-user-tie"></i>
                     </div>
-                    <h3 class="text-xl font-black text-slate-900">Experts-Comptables &amp; AGC</h3>
+                    <h3 class="text-xl font-black text-[#222222]">Experts-Comptables &amp; AGC</h3>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Besoins de traitement :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Fin de la collecte
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Fin de la collecte
                             manuelle de reçus froissés</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Pré-imputation
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Pré-imputation
                             automatique selon le SYSCOHADA SMT</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Génération instantanée du
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Génération instantanée du
                             Fichier FEC pour la DGID</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Clôture mensuelle et
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Clôture mensuelle et
                             annuelle en 1 clic</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
                         <a href="/login-comptable"
-                            class="text-xs font-bold text-[#168078] hover:underline flex items-center gap-1.5">
+                            class="text-xs font-bold text-[#222222] hover:underline flex items-center gap-1.5">
                             <span>Se connecter à l'Espace Cabinet</span> &rarr;
                         </a>
                     </div>
@@ -336,23 +285,23 @@
                 <div id="conformite"
                     class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition space-y-4">
                     <div
-                        class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl font-bold">
+                        class="w-12 h-12 rounded-2xl bg-[#a0d9d2]/25 text-[#222222] flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-landmark"></i>
                     </div>
-                    <h3 class="text-xl font-black text-slate-900">Banques &amp; Administration</h3>
+                    <h3 class="text-xl font-black text-[#222222]">Banques &amp; Administration</h3>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Garanties certifiées :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Piste d'audit fiable et
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Piste d'audit fiable et
                             scellée à 10 ans</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Score de solvabilité et
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Score de solvabilité et
                             bankabilité BCEAO</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Conforme aux contrôles
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Conforme aux contrôles
                             sur pièces de la DGID</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-500 text-xs"></i> Rapprochement des
+                                class="fa-solid fa-circle-check text-[#222222] text-xs"></i> Rapprochement des
                             déclarations VRS et BRS</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
@@ -368,15 +317,15 @@
     <!-- ========================================================================= -->
     <!-- 5. FONCTIONNALITÉS MAÎTRESSES DU COPILOTE                                 -->
     <!-- ========================================================================= -->
-    <section id="fonctionnalites" class="py-20 bg-white">
+    <section id="fonctionnalites" class="py-20 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
 
             <div class="text-center max-w-2xl mx-auto space-y-3">
                 <span
-                    class="text-xs font-extrabold uppercase tracking-wider text-[#168078] bg-teal-50 border border-teal-200 px-3 py-1 rounded-full">
+                    class="text-xs font-extrabold uppercase tracking-wider text-[#222222] bg-[#a0d9d2]/30 border border-[#a0d9d2]/60 px-3 py-1 rounded-full">
                     Technologie Propriétaire
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                <h2 class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">
                     Conçu sur le terrain, homologué pour la loi.
                 </h2>
                 <p class="text-slate-600 text-sm sm:text-base">
@@ -386,47 +335,44 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
-                    <div class="w-10 h-10 rounded-xl bg-teal-500 text-white flex items-center justify-center font-bold">
-                        <i class="fa-brands fa-whatsapp"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center font-bold">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
                     </div>
-                    <h4 class="text-base font-extrabold text-slate-900">Audio Wolof &amp; WhatsApp</h4>
+                    <h4 class="text-base font-extrabold text-[#222222]">Audio Wolof &amp; WhatsApp</h4>
                     <p class="text-xs text-slate-600 leading-relaxed">
                         Le commerçant envoie un vocal en wolof ou une photo de ticket. L'IA extrait automatiquement la
                         date, le montant et la nature de la dépense.
                     </p>
                 </div>
 
-                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-mobile-screen-button"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-mobile-screen-button text-base"></i>
                     </div>
-                    <h4 class="text-base font-extrabold text-slate-900">Flux Wave Business</h4>
+                    <h4 class="text-base font-extrabold text-[#222222]">Flux Wave Business</h4>
                     <p class="text-xs text-slate-600 leading-relaxed">
                         Connexion automatisée des relevés Wave et Orange Money Merchant. Zéro ressaisie manuelle,
                         élimination intégrale des erreurs de caisse.
                     </p>
                 </div>
 
-                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-[#093b36] text-white flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-scale-balanced"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-scale-balanced text-base"></i>
                     </div>
-                    <h4 class="text-base font-extrabold text-slate-900">Moteur SYSCOHADA SMT</h4>
+                    <h4 class="text-base font-extrabold text-[#222222]">Moteur SYSCOHADA SMT</h4>
                     <p class="text-xs text-slate-600 leading-relaxed">
                         Imputation en temps réel dans les comptes officiels : 601 (Achats), 701 (Ventes), 521 (Banque),
                         514 (Wave), 571 (Caisse).
                     </p>
                 </div>
 
-                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-shield-halved"></i>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-shield-halved text-base"></i>
                     </div>
-                    <h4 class="text-base font-extrabold text-slate-900">Coffre-fort Légal 10 Ans</h4>
+                    <h4 class="text-base font-extrabold text-[#222222]">Coffre-fort Légal 10 Ans</h4>
                     <p class="text-xs text-slate-600 leading-relaxed">
                         Conformité stricte avec l'Article 24 de l'AUDCIF. Toutes les pièces justificatives sont
                         chiffrées, scellées et horodatées.
@@ -439,31 +385,30 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 6. BANNIÈRE FINALE D'APPEL À L'ACTION (CTA GÉANT)                         -->
+    <!-- 6. BANNIÈRE FINALE D'APPEL À L'ACTION (CTA GÉANT EN ANTHRACITE ET MENTHE)  -->
     <!-- ========================================================================= -->
-    <section
-        class="py-20 bg-gradient-to-br from-[#093b36] via-[#168078] to-[#115e59] text-white relative overflow-hidden">
+    <section class="py-20 bg-[#222222] text-white relative overflow-hidden">
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
 
             <div
-                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-bold uppercase tracking-wider">
-                <i class="fa-solid fa-sparkles"></i> Déploiement Immédiat
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#a0d9d2] text-xs font-bold uppercase tracking-wider">
+                <i class="fa-solid fa-sparkles text-[#a0d9d2]"></i> Déploiement Immédiat
             </div>
 
-            <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+            <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white">
                 Prêt à moderniser la comptabilité de vos PME clientes ?
             </h2>
 
-            <p class="text-emerald-100/90 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
                 Connectez votre cabinet en moins de 2 minutes et commencez à réconcilier vos flux en toute conformité avec les normes SYSCOHADA.
             </p>
 
             <div class="pt-4 flex items-center justify-center">
-                <!-- LE BOUTON SE CONNECTER -->
+                <!-- LE BOUTON SE CONNECTER EN MENTHE #a0d9d2 -->
                 <a href="/login-comptable"
-                    class="w-full sm:w-auto px-9 py-4 rounded-2xl bg-white hover:bg-slate-100 text-[#093b36] text-base font-black transition-all shadow-2xl hover:scale-105 duration-150 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-lock text-[#168078]"></i>
+                    class="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] text-[#222222] text-base font-black transition-all shadow-2xl hover:scale-105 duration-150 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock text-[#222222]"></i>
                     <span>Se connecter à mon Cabinet</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
@@ -481,17 +426,17 @@
             <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-100">
 
                 <div class="flex items-center gap-3">
-                    <img src="/static/grow_icon_official.png?v=6" alt="Growth"
+                    <img src="/static/grow_icon_official.png?v=7" alt="Growth"
                         class="w-8 h-8 rounded-xl object-contain">
                     <div>
-                        <span class="font-black text-sm text-slate-900">Growth</span>
+                        <span class="font-black text-sm text-[#222222]">Growth</span>
                         <span class="text-slate-400 ml-1">&bull; Copilote Financier &amp; Comptable SYSCOHADA</span>
                     </div>
                 </div>
 
                 <div>
                     <a href="/login-comptable"
-                        class="text-[#168078] font-bold hover:underline flex items-center gap-1.5">
+                        class="text-[#222222] font-black hover:underline flex items-center gap-1.5">
                         <i class="fa-solid fa-lock text-xs"></i>
                         <span>Connexion Cabinet</span>
                     </a>
