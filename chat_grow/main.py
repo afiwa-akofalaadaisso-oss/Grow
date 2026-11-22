@@ -642,6 +642,8 @@ async def health_check():
 
 
 @app.get("/")
+@app.get("/accueil", response_class=HTMLResponse)
+@app.get("/home", response_class=HTMLResponse)
 @app.get("/webhook")
 async def verify_webhook(
     request: Request,
@@ -649,14 +651,18 @@ async def verify_webhook(
     hub_challenge: str = Query(None, alias="hub.challenge"),
     hub_verify_token: str = Query(None, alias="hub.verify_token"),
 ):
-    """Validation initiale du webhook par Meta ou redirection vers le portail comptable."""
+    """Validation initiale du webhook par Meta ou affichage de la grande page d'accueil officielle Growth."""
     if hub_mode == "subscribe" and hub_challenge:
         print(f"Webhook validé avec succès par Meta (token reçu: '{hub_verify_token}', challenge: '{hub_challenge}') !")
         return PlainTextResponse(content=hub_challenge, status_code=200)
     if hub_mode == "subscribe" and hub_verify_token == VERIFY_TOKEN:
         print("Webhook validé avec succès par Meta !")
         return PlainTextResponse(content=hub_challenge or "OK", status_code=200)
-    if request.url.path == "/":
+    if request.url.path in ["/", "/accueil", "/home"]:
+        html_path = os.path.join(TEMPLATES_DIR, "index.html")
+        if os.path.exists(html_path):
+            with open(html_path, "r", encoding="utf-8") as f:
+                return HTMLResponse(content=f.read())
         return RedirectResponse(url="/dashboard?portal=1", status_code=302)
     return {
         "status": "online",
