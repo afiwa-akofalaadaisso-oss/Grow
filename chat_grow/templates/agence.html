@@ -2777,11 +2777,24 @@
                                     <strong style="color: #0e7647;">Audité</strong>
                                 </li>
                             </ul>
-                            <button type="button" onclick="telechargerFec()"
-                                style="width: 100%; padding: 10px 14px; background: #222222; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                                <i class="fa-solid fa-download"></i>
-                                <span>Télécharger Fichier FEC (.txt DGID)</span>
-                            </button>
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" onclick="telechargerFec()"
+                                    style="flex: 1; padding: 10px 12px; background: #222222; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 11.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;"
+                                    title="Format réglementaire officiel .txt délimité par tabulation pour le serveur DGID">
+                                    <i class="fa-solid fa-file-code"></i>
+                                    <span>FEC Officiel (.txt DGID)</span>
+                                </button>
+                                <button type="button" onclick="telechargerFecExcel()"
+                                    style="padding: 10px 14px; background: #168078; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 11.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 1px 3px rgba(22,128,120,0.25);"
+                                    title="Ouvrir directement dans Excel avec toutes les colonnes parfaitement alignées">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                    <span>Excel (.xls)</span>
+                                </button>
+                            </div>
+                            <div style="font-size: 10px; color: #64748b; margin-top: 8px; display: flex; align-items: center; gap: 5px;">
+                                <i class="fa-solid fa-circle-info" style="color: #168078; font-size: 11px;"></i>
+                                <span>Le fichier .txt est destiné au fisc (à ouvrir dans <strong>Excel</strong> ou <strong>Bloc-notes</strong>, pas dans Word).</span>
+                            </div>
                         </div>
 
                         <!-- 3. Dossiers Bancaires & Scoring Crédit -->
@@ -4757,6 +4770,157 @@
             a.click();
             document.body.removeChild(a);
             showToast(`Fichier FEC officiel DGID (${ecrituresList.length * 2} écritures générées) exporté pour ${targetNom} !`);
+        }
+
+        function telechargerFecExcel(pmeName) {
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Entreprise' };
+            const targetNom = pmeName || pme.nom || 'Entreprise';
+            
+            const ecrituresList = (pme.ecritures && pme.ecritures.length > 0) ? pme.ecritures : [
+                { id: 1, date: "05/01/2026", libelle: "Achat Marchandises Riz Keur Yoff", compte: "601100 - Achats de marchandises", debit: "925 000", credit: "-" },
+                { id: 2, date: "08/01/2026", libelle: "Ventes de riz par Wave Business", compte: "701100 - Ventes de marchandises", debit: "-", credit: "1 450 000" },
+                { id: 3, date: "12/01/2026", libelle: "Règlement Fournisseur Huile", compte: "401100 - Fournisseurs", debit: "650 000", credit: "-" },
+                { id: 4, date: "15/01/2026", libelle: "Encaissement Client Caisse Espèces", compte: "701100 - Ventes de marchandises", debit: "-", credit: "820 000" }
+            ];
+
+            let rowsHtml = '';
+            let numPiece = 1;
+
+            ecrituresList.forEach(ec => {
+                const rawDate = (ec.date || '2026-01-01').toString();
+                let d = "20260115";
+                if (rawDate.includes('/')) {
+                    const p = rawDate.split('/');
+                    if (p.length === 3) d = `${p[2]}${p[1]}${p[0]}`;
+                } else if (rawDate.includes('-')) {
+                    const p = rawDate.split('-');
+                    if (p.length === 3) d = `${p[0]}${p[1]}${p[2]}`;
+                }
+                const cptParts = (ec.compte || '601100 - Achats').split(' - ');
+                const cptNum = cptParts[0].trim();
+                const cptLib = cptParts[1] ? cptParts[1].trim() : 'Opération';
+                const cleanMnt = (ec.debit && ec.debit !== '-' ? ec.debit : (ec.credit && ec.credit !== '-' ? ec.credit : '0')).toString().replace(/\s+/g, '').replace('FCFA', '');
+                const mnt = parseFloat(cleanMnt) || 0;
+                const isDebit = ec.debit && ec.debit !== '-';
+                const jCode = isDebit ? 'ACH' : 'VTE';
+                const jLib = isDebit ? 'ACHATS' : 'VENTES';
+                const pieceRef = `PIECE-2026-${String(numPiece).padStart(4, '0')}`;
+                
+                // Ligne écriture principale
+                rowsHtml += `
+                    <tr>
+                        <td style="text-align: center; font-weight: bold;">${jCode}</td>
+                        <td>${jLib}</td>
+                        <td style="text-align: center;">${numPiece}</td>
+                        <td style="text-align: center;">${d}</td>
+                        <td style="font-family: monospace; font-weight: bold;">${cptNum}</td>
+                        <td>${cptLib}</td>
+                        <td>${pieceRef}</td>
+                        <td style="text-align: center;">${d}</td>
+                        <td>${ec.libelle}</td>
+                        <td style="text-align: right; font-weight: bold;">${isDebit ? mnt : 0}</td>
+                        <td style="text-align: right; font-weight: bold;">${isDebit ? 0 : mnt}</td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center;">${d}</td>
+                        <td style="text-align: right;">${mnt}</td>
+                        <td style="text-align: center;">XOF</td>
+                    </tr>
+                `;
+
+                // Contrepartie de trésorerie
+                const isWave = (ec.libelle || '').toLowerCase().includes('wave');
+                const cpteTreso = isWave ? '514100' : '571100';
+                const libTreso = isWave ? 'Trésorerie Wave Business' : 'Caisse Principale Espèces';
+
+                rowsHtml += `
+                    <tr style="background-color: #f8fafc;">
+                        <td style="text-align: center; font-weight: bold;">${jCode}</td>
+                        <td>${jLib}</td>
+                        <td style="text-align: center;">${numPiece}</td>
+                        <td style="text-align: center;">${d}</td>
+                        <td style="font-family: monospace; font-weight: bold;">${cpteTreso}</td>
+                        <td>${libTreso}</td>
+                        <td>${pieceRef}</td>
+                        <td style="text-align: center;">${d}</td>
+                        <td>${ec.libelle}</td>
+                        <td style="text-align: right; font-weight: bold;">${isDebit ? 0 : mnt}</td>
+                        <td style="text-align: right; font-weight: bold;">${isDebit ? mnt : 0}</td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center;">${d}</td>
+                        <td style="text-align: right;">${mnt}</td>
+                        <td style="text-align: center;">XOF</td>
+                    </tr>
+                `;
+
+                numPiece++;
+            });
+
+            const excelDoc = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                <head>
+                    <meta charset="utf-8">
+                    <!--[if gte mso 9]>
+                    <xml>
+                    <x:ExcelWorkbook>
+                        <x:ExcelWorksheets>
+                            <x:ExcelWorksheet>
+                                <x:Name>FEC DGID 2026</x:Name>
+                                <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                            </x:ExcelWorksheet>
+                        </x:ExcelWorksheets>
+                    </x:ExcelWorkbook>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        body { font-family: Calibri, Arial, sans-serif; font-size: 10pt; }
+                        table { border-collapse: collapse; width: 100%; }
+                        th { background-color: #168078; color: #ffffff; font-weight: bold; border: 0.5pt solid #cbd5e1; padding: 7px 10px; font-size: 10pt; text-align: left; }
+                        td { border: 0.5pt solid #cbd5e1; padding: 5px 8px; font-size: 9.5pt; }
+                    </style>
+                </head>
+                <body>
+                    <h2 style="color: #168078; font-family: Calibri, sans-serif;">Fichier des Écritures Comptables (FEC) DGID - ${targetNom}</h2>
+                    <p style="font-size: 10pt; color: #64748b; font-family: Calibri, sans-serif;">Norme fiscale SYSCOHADA &bull; Exercice 2026 &bull; Débit = Crédit équilibré</p>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>JournalCode</th>
+                                <th>JournalLib</th>
+                                <th>EcritureNum</th>
+                                <th>EcritureDate</th>
+                                <th>CompteNum</th>
+                                <th>CompteLib</th>
+                                <th>PieceRef</th>
+                                <th>PieceDate</th>
+                                <th>EcritureLib</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>EcritureLet</th>
+                                <th>DateLet</th>
+                                <th>ValidDate</th>
+                                <th>Montantdevise</th>
+                                <th>Idevise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(["\ufeff" + excelDoc], { type: 'application/vnd.ms-excel;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `FEC_DGID_${targetNom.replace(/[^a-zA-Z0-9]/g, '_')}_2026.xls`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast(`Fichier FEC format Excel (.xls) avec colonnes alignées généré pour ${targetNom} !`);
         }
 
         function telechargerGrandLivre(pmeName) {
