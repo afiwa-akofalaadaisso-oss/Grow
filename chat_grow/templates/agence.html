@@ -1334,72 +1334,134 @@
                 </div>
             </div>
 
-            <!-- Widget Entreprise Comptable Connectée (Bas de la Sidebar) -->
-            <div id="sidebarCabinetCard" style="position: relative; margin-top: auto; padding-top: 10px;">
-                <div onclick="switchAgencyTab('parametres')"
-                    style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 11px 13px; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(15,23,42,0.04); display: flex; flex-direction: column; gap: 8px;"
-                    onmouseover="this.style.borderColor='#168078'; this.style.boxShadow='0 4px 14px rgba(22,128,120,0.12)'; this.style.background='#fafbfc';"
-                    onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='0 2px 8px rgba(15,23,42,0.04)'; this.style.background='#ffffff';">
+            <!-- Widget Dossier Client Actif (Petit Rectangle Épuré & Trésorerie PME) -->
+            <div id="sidebarActivePmeCard" style="position: relative; margin-top: auto; padding-top: 8px;">
+                <div onclick="toggleSidebarPmeDropdown(event)"
+                    style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 4px rgba(15,23,42,0.04); display: flex; flex-direction: column; gap: 7px;"
+                    onmouseover="this.style.borderColor='#168078'; this.style.boxShadow='0 3px 10px rgba(22,128,120,0.1)';"
+                    onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='0 1px 4px rgba(15,23,42,0.04)';">
 
-                    <!-- En-tête statut & action Paramètres -->
+                    <!-- En-tête statut & action Changer -->
                     <div style="display: flex; align-items: center; justify-content: space-between;">
                         <span
-                            style="font-size: 9.5px; font-weight: 800; color: #168078; text-transform: uppercase; letter-spacing: 0.6px; display: inline-flex; align-items: center; gap: 5px;">
+                            style="font-size: 9.5px; font-weight: 800; color: #168078; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px;">
                             <span style="position: relative; display: flex; width: 7px; height: 7px;">
                                 <span
                                     style="position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background: #34d399; opacity: 0.75; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
                                 <span
                                     style="position: relative; display: inline-flex; border-radius: 50%; height: 7px; width: 7px; background: #10b981;"></span>
                             </span>
-                            Cabinet Connecté &bull; ONECCA
+                            Dossier Actif &bull; SYSCOHADA
                         </span>
                         <span
-                            style="font-size: 10px; font-weight: 700; color: #168078; background: #f0fdfa; border: 1px solid #ccfbf1; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
-                            <i class="fa-solid fa-gear" style="font-size: 9px;"></i>
-                            <span>Paramètres</span>
+                            style="font-size: 10px; font-weight: 700; color: #222222; background: #f1f5f9; padding: 2px 7px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                            <span>Changer</span>
+                            <i class="fa-solid fa-chevron-up" id="sidebarPmeChevron"
+                                style="font-size: 8px; transition: transform 0.2s;"></i>
                         </span>
                     </div>
 
-                    <!-- Bloc Identité Cabinet Comptable -->
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div id="sidebarCabinetAvatar"
-                            style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0e7647 0%, #168078 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(14,118,71,0.25);">
-                            CD
+                    <!-- Bloc Identité Entreprise PME -->
+                    <div style="display: flex; align-items: center; gap: 9px;">
+                        <div id="sidebarActivePmeAvatar"
+                            style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #1e293b 0%, #168078 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 11.5px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(22,128,120,0.2);">
+                            MD
                         </div>
                         <div style="flex: 1; min-width: 0;">
-                            <div id="sidebarCabinetName"
-                                style="font-size: 12.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 5px;"
-                                title="Cabinet Diallo & Associés">
-                                <span>Cabinet Diallo &amp; Associés</span>
-                                <i class="fa-solid fa-circle-check" style="color: #0e7647; font-size: 10.5px;"></i>
+                            <div id="sidebarActivePmeName"
+                                style="font-size: 12px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                title="Établissement Mamadou Diop">
+                                Établissement Mamadou Diop
                             </div>
-                            <div id="sidebarCabinetDetails"
-                                style="font-size: 10.5px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
-                                contact@cabinet-diallo.sn &bull; Dakar
+                            <div id="sidebarActivePmeDetails"
+                                style="font-size: 10px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px;">
+                                NINEA 005489210 &bull; SMT
                             </div>
                         </div>
                     </div>
 
-                    <!-- Ligne Rôle & Habilitation -->
+                    <!-- Ligne Trésorerie Actuelle (Alignement parfait) -->
                     <div
-                        style="margin-top: 3px; padding-top: 7px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                        style="margin-top: 1px; padding-top: 6px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
                         <span
-                            style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 5px;">
-                            <i class="fa-solid fa-shield-halved" style="color: #168078; font-size: 10px;"></i> Rôle
+                            style="font-size: 9.5px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-wallet" style="color: #168078; font-size: 10px;"></i> Trésorerie Actuelle
                         </span>
-                        <span id="sidebarCabinetRole"
-                            style="font-size: 11px; font-weight: 800; color: #0e7647;">
-                            Expert-Comptable Référent
+                        <span id="sidebarActivePmeTreso"
+                            style="font-size: 11.5px; font-weight: 800; color: #0f172a; font-family: ui-monospace, monospace;">
+                            1 850 000 FCFA
                         </span>
                     </div>
                 </div>
 
-                <!-- Éléments masqués garantissant la compatibilité JS -->
-                <div style="display: none;">
-                    <div id="sidebarActivePmeAvatar">MD</div>
-                    <div id="sidebarActivePmeName">Établissement Mamadou Diop</div>
-                    <div id="sidebarActivePmeDetails">NINEA 005489210 &bull; SMT</div>
-                    <span id="sidebarActivePmeTreso">1 850 000 FCFA</span>
+                <!-- Popover de sélection directe de Dossier Client (Élégant, Pop-up au-dessus) -->
+                <div id="sidebarPmeDropdownMenu"
+                    style="display: none; position: absolute; bottom: calc(100% + 8px); left: 0; right: 0; width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 16px 40px rgba(15,23,42,0.2); z-index: 3000; padding: 6px; overflow: hidden; animation: fadeInDrop 0.15s ease-out;"
+                    onclick="event.stopPropagation()">
+                    <div
+                        style="padding: 7px 9px 5px 9px; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                        <span>Dossiers Clients Agréés</span>
+                        <span
+                            style="background: #f0fdfa; color: #0f766e; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 800;">3 PME</span>
+                    </div>
+
+                    <div
+                        style="max-height: 240px; overflow-y: auto; padding-top: 4px; display: flex; flex-direction: column; gap: 3px;">
+                        <!-- Option 1: Mamadou Diop -->
+                        <div class="sidebar-pme-option active" id="pmeOpt-diop"
+                            onclick="selectionnerPmeDepuisSidebar('diop', event)"
+                            style="display: flex; align-items: center; gap: 9px; padding: 7px 8px; border-radius: 7px; cursor: pointer; transition: all 0.12s; background: #f8fafc; border: 1px solid #e2e8f0;">
+                            <div
+                                style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #1e293b 0%, #168078 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; flex-shrink: 0;">
+                                MD</div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div
+                                    style="font-size: 11px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    Établissement Mamadou Diop</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Tréso : <strong style="color: #0f172a;">1 850 000 FCFA</strong> &bull; Keur Yoff</div>
+                            </div>
+                            <i class="fa-solid fa-check pme-check" style="color: #168078; font-size: 11px;"></i>
+                        </div>
+
+                        <!-- Option 2: Touba Électronique -->
+                        <div class="sidebar-pme-option" id="pmeOpt-touba"
+                            onclick="selectionnerPmeDepuisSidebar('touba', event)"
+                            style="display: flex; align-items: center; gap: 9px; padding: 7px 8px; border-radius: 7px; cursor: pointer; transition: all 0.12s;">
+                            <div
+                                style="width: 26px; height: 26px; border-radius: 6px; background: #f1f5f9; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; flex-shrink: 0;">
+                                TE</div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div
+                                    style="font-size: 11px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    Boutique Touba Électronique</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Tréso : <strong style="color: #0f172a;">3 200 000 FCFA</strong> &bull; Plateau</div>
+                            </div>
+                        </div>
+
+                        <!-- Option 3: Pressing Moderne Dakar -->
+                        <div class="sidebar-pme-option" id="pmeOpt-pressing"
+                            onclick="selectionnerPmeDepuisSidebar('pressing', event)"
+                            style="display: flex; align-items: center; gap: 9px; padding: 7px 8px; border-radius: 7px; cursor: pointer; transition: all 0.12s;">
+                            <div
+                                style="width: 26px; height: 26px; border-radius: 6px; background: #f1f5f9; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; flex-shrink: 0;">
+                                PM</div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div
+                                    style="font-size: 11px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    Pressing Moderne Dakar</div>
+                                <div style="font-size: 9.5px; color: #64748b;">Tréso : <strong style="color: #0f172a;">1 950 000 FCFA</strong> &bull; Médina</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer d'accès à la gestion complète -->
+                    <div style="border-top: 1px solid #f1f5f9; margin-top: 4px; padding-top: 5px;">
+                        <a href="javascript:void(0)" onclick="switchAgencyTab('pme'); fermerSidebarPmeDropdown();"
+                            style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px; font-size: 11px; font-weight: 700; color: #168078; text-decoration: none; border-radius: 7px; background: #f0fdfa; transition: all 0.15s;">
+                            <i class="fa-solid fa-list-check" style="font-size: 10px;"></i>
+                            <span>Voir le registre des PME</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </aside>
