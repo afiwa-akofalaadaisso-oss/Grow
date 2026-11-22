@@ -1473,7 +1473,16 @@
                     </span>
                 </div>
 
-                <div class="nav-right" style="display: flex; align-items: center; gap: 14px;">
+                <div class="nav-right" style="display: flex; align-items: center; gap: 12px;">
+                    <!-- Bouton d'accès direct au Portail de Connexion Cabinet -->
+                    <a href="/login-comptable" 
+                        style="display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; background: #f0fdfa; border: 1.5px solid #14b8a6; border-radius: 99px; font-size: 11.5px; font-weight: 800; color: #0f766e; text-decoration: none; transition: all 0.15s; box-shadow: 0 1px 3px rgba(20,184,166,0.12);"
+                        onmouseover="this.style.background='#168078'; this.style.color='#ffffff'; this.style.borderColor='#168078';"
+                        onmouseout="this.style.background='#f0fdfa'; this.style.color='#0f766e'; this.style.borderColor='#14b8a6';">
+                        <i class="fa-solid fa-user-lock" style="font-size: 11px;"></i>
+                        <span>Connexion Cabinet</span>
+                    </a>
+
                     <!-- Profil Officiel de l'Expert-Comptable -->
                     <div style="position: relative;">
                         <button type="button" id="comptableProfileBtn" onclick="toggleComptableDropdown(event)"
@@ -1551,17 +1560,24 @@
                                         style="font-size: 13px; color: #64748b; width: 16px; text-align: center;"></i>
                                     <span>Basculer vers Vue PME</span>
                                 </a>
+                                <a href="/login-comptable"
+                                    style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-size: 12px; font-weight: 700; color: #168078; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
+                                    onmouseover="this.style.background='#f0fdfa';"
+                                    onmouseout="this.style.background='transparent';">
+                                    <i class="fa-solid fa-user-lock"
+                                        style="font-size: 13px; color: #168078; width: 16px; text-align: center;"></i>
+                                    <span>Portail Connexion / Inscription</span>
+                                </a>
                             </div>
 
                             <div style="padding: 6px; border-top: 1px solid #f1f5f9; background: #fafafa;">
-                                <a href="javascript:void(0)"
-                                    onclick="ouvrirModalConnexion(); fermerComptableDropdown();"
+                                <a href="/login-comptable"
                                     style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; font-size: 11.5px; font-weight: 700; color: #dc2626; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
                                     onmouseover="this.style.background='#fef2f2';"
                                     onmouseout="this.style.background='transparent';">
                                     <i class="fa-solid fa-arrow-right-from-bracket"
                                         style="font-size: 12px; color: #dc2626; width: 16px; text-align: center;"></i>
-                                    <span>Se déconnecter</span>
+                                    <span>Se déconnecter (Changer de compte)</span>
                                 </a>
                             </div>
                         </div>
@@ -3584,12 +3600,12 @@
                             </div>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button type="button" onclick="ouvrirModalConnexion()"
+                            <button type="button" onclick="window.location.href='/login-comptable'"
                                 style="padding: 8px 14px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12px; font-weight: 600; color: #0f172a; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; box-shadow: 0 1px 2px rgba(0,0,0,0.03);"
                                 onmouseover="this.style.background='#f8fafc'; this.style.borderColor='#94a3b8';"
                                 onmouseout="this.style.background='#ffffff'; this.style.borderColor='#cbd5e1';">
                                 <i class="fa-solid fa-arrow-right-arrow-left"
-                                    style="font-size: 11px; color: #64748b;"></i> Changer de compte
+                                    style="font-size: 11px; color: #64748b;"></i> Changer de compte / Connexion
                             </button>
                         </div>
                     </div>
