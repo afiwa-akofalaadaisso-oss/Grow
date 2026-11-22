@@ -4489,6 +4489,8 @@
 
         function genererDossierBancaire() {
             const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier PME', ninea: '005489210', secteur: 'Commerce', chiffreAffaires: '14 850 000 FCFA', tresoFinale: '1 850 000 FCFA' };
+            const cabNom = document.getElementById('cabNom')?.value || localStorage.getItem('growth_cabinet_nom') || "Cabinet Diallo & Associés";
+            const cabResp = document.getElementById('cabResponsable')?.value || localStorage.getItem('growth_cabinet_expert') || "L'Expert-Comptable Référent";
             const modal = document.getElementById('modalAttestationBancaire');
             const body = document.getElementById('attestationBody');
             const sub = document.getElementById('attestationSub');
@@ -4500,7 +4502,7 @@
                     <!-- En-tête officiel Cabinet -->
                     <div style="border-bottom: 2px solid #0f172a; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start;">
                         <div>
-                            <div style="font-size: 18px; font-weight: 900; color: #0f172a; letter-spacing: -0.3px;">CABINET DIALLO &amp; ASSOCIÉS</div>
+                            <div style="font-size: 18px; font-weight: 900; color: #0f172a; letter-spacing: -0.3px;">${cabNom.toUpperCase()}</div>
                             <div style="font-size: 11px; color: #168078; font-weight: 700; text-transform: uppercase; margin-top: 2px;">Expertise Comptable, Audit &amp; Conseil Financier SYSCOHADA</div>
                             <div style="font-size: 10.5px; color: #64748b; margin-top: 3px;">Plateforme Partenaire Certifiée Growth • République du Sénégal</div>
                         </div>
@@ -4575,7 +4577,7 @@
                         <strong style="color: #0f766e; display: block; font-size: 12.5px; margin-bottom: 4px;">
                             <i class="fa-solid fa-certificate"></i> CONCLUSION &amp; AVIS DU CABINET COMPTABLE :
                         </strong>
-                        Nous soussignés, <strong>Cabinet Diallo &amp; Associés</strong>, attestons que la situation financière et la tenue des comptes de <strong>${pme.nom}</strong> présentent une parfaite régularité au regard du droit comptable SYSCOHADA (SMT). Les recettes et décaissements ont fait l'objet d'un contrôle de sincérité complet. En conséquence, nous émettons un <strong>AVIS TRÈS FAVORABLE SANS RÉSERVE</strong> pour l'octroi des facilités de crédit ou des concours bancaires sollicités par l'entreprise.
+                        Nous soussignés, <strong>${cabNom}</strong>, attestons que la situation financière et la tenue des comptes de <strong>${pme.nom}</strong> présentent une parfaite régularité au regard du droit comptable SYSCOHADA (SMT). Les recettes et décaissements ont fait l'objet d'un contrôle de sincérité complet. En conséquence, nous émettons un <strong>AVIS TRÈS FAVORABLE SANS RÉSERVE</strong> pour l'octroi des facilités de crédit ou des concours bancaires sollicités par l'entreprise.
                     </div>
                     
                     <!-- Signatures & Cachets -->
@@ -4585,11 +4587,14 @@
                             <div style="margin-top: 3px; font-family: monospace;">Empreinte d'intégrité : SHA256-V-${(pme.ninea || '005489').substring(0,6)}</div>
                             <div style="color: #16a34a; font-weight: 700; margin-top: 2px;">✓ Document certifié conforme &bull; SYSCOHADA SMT</div>
                         </div>
-                        <div style="text-align: center; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 10px 18px; background: #fafafa;">
-                            <div style="font-size: 11px; font-weight: 800; color: #0f172a;">Pour le Cabinet Diallo &amp; Associés</div>
-                            <div style="font-size: 10px; color: #168078; font-weight: 700; margin: 4px 0;">VISA &amp; SIGNATURE NUMÉRIQUE</div>
-                            <i class="fa-solid fa-stamp" style="font-size: 24px; color: #168078; margin: 4px 0;"></i>
-                            <div style="font-size: 9.5px; color: #94a3b8;">Horodaté légalement &bull; SYSCOHADA</div>
+                        <div style="text-align: center; border: 1.5px dashed #cbd5e1; border-radius: 8px; padding: 12px 20px; background: #ffffff; min-width: 220px;">
+                            <div style="font-size: 11px; font-weight: 800; color: #0f172a;">Pour le ${cabNom}</div>
+                            <div style="font-size: 10px; color: #64748b; margin-top: 2px;">${cabResp}</div>
+                            <!-- Espace blanc officiel réservé pour signature manuscrite au bic et cachet physique -->
+                            <div style="height: 65px; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 9px; color: #cbd5e1; font-style: italic;">(Cadre réservé au cachet et à la signature)</span>
+                            </div>
+                            <div style="font-size: 9.5px; color: #64748b; border-top: 1px dashed #e2e8f0; padding-top: 4px;">Délivré le ${new Date().toLocaleDateString('fr-FR')}</div>
                         </div>
                     </div>
                 </div>
