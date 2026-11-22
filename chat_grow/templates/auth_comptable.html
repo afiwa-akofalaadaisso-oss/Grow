@@ -10,7 +10,8 @@
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome Pro Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="/static/grow_icon_squircle.png?v=3">
@@ -29,8 +30,8 @@
 
         .hero-mesh-bg {
             background: radial-gradient(circle at 20% 20%, rgba(52, 211, 153, 0.25) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.2) 0%, transparent 45%),
-                        linear-gradient(150deg, #093b36 0%, #168078 60%, #115e59 100%);
+                radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.2) 0%, transparent 45%),
+                linear-gradient(150deg, #093b36 0%, #168078 60%, #115e59 100%);
         }
 
         .glass-badge {
@@ -48,8 +49,15 @@
         }
 
         @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
         }
 
         .animate-float {
@@ -71,9 +79,11 @@
         ::-webkit-scrollbar {
             width: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
@@ -84,32 +94,43 @@
 <body class="flex items-center justify-center p-4 sm:p-6 md:p-8">
 
     <!-- Container Principal Split-Screen (Inspiré de la maquette de référence) -->
-    <div class="w-full max-w-[1040px] bg-white rounded-[26px] overflow-hidden auth-card-shadow border border-slate-200/80 flex flex-col md:flex-row relative">
+    <div
+        class="w-full max-w-[1040px] bg-white rounded-[26px] overflow-hidden auth-card-shadow border border-slate-200/80 flex flex-col md:flex-row relative">
 
         <!-- ========================================================================= -->
         <!-- VOLET GAUCHE : HERO BRANDING, ACCRÉDITATION ONECCA & VISUEL FINTECH      -->
         <!-- ========================================================================= -->
-        <div class="w-full md:w-[46%] hero-mesh-bg text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden">
-            
+        <div
+            class="w-full md:w-[46%] hero-mesh-bg text-white p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden">
+
             <!-- Cercles décoratifs d'ambiance en arrière-plan -->
-            <div class="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-emerald-400/10 pointer-events-none blur-2xl"></div>
-            <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-teal-300/15 pointer-events-none blur-3xl"></div>
+            <div
+                class="absolute -top-16 -left-16 w-48 h-48 rounded-full bg-emerald-400/10 pointer-events-none blur-2xl">
+            </div>
+            <div
+                class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-teal-300/15 pointer-events-none blur-3xl">
+            </div>
 
             <!-- Haut du volet gauche : Badge & Titre de Référence -->
             <div class="relative z-10">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-badge text-[10.5px] font-extrabold uppercase tracking-wider text-emerald-200 mb-6">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-badge text-[10.5px] font-extrabold uppercase tracking-wider text-emerald-200 mb-6">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                     <span>Agrément Ordre des Experts-Comptables (ONECCA)</span>
                 </div>
 
-                <a href="/comptable" class="flex items-center gap-4 mb-6 hover:opacity-95 transition cursor-pointer" title="Accéder au Portail Cabinet">
-                    <img src="/static/grow_icon_squircle_hd.png?v=4" alt="Logo Growth" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-contain shadow-2xl border border-white/20 bg-black/25 p-1 shrink-0">
+                <a href="/comptable" class="flex items-center gap-4 mb-6 hover:opacity-95 transition cursor-pointer"
+                    title="Accéder au Portail Cabinet">
+                    <img src="/static/grow_icon_squircle_hd.png?v=4" alt="Logo Growth"
+                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-contain shadow-2xl border border-white/20 bg-black/25 p-1 shrink-0">
                     <div>
                         <div class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-2">
                             <span>Growth</span>
-                            <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-emerald-400/25 text-emerald-300 border border-emerald-400/35 tracking-wider">PRO</span>
+                            <span
+                                class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg bg-emerald-400/25 text-emerald-300 border border-emerald-400/35 tracking-wider">PRO</span>
                         </div>
-                        <div class="text-xs sm:text-sm text-emerald-100/85 font-medium mt-0.5">Copilote Comptable &bull; SYSCOHADA SMT</div>
+                        <div class="text-xs sm:text-sm text-emerald-100/85 font-medium mt-0.5">Copilote Comptable &bull;
+                            SYSCOHADA SMT</div>
                     </div>
                 </a>
 
@@ -117,25 +138,31 @@
                 <div class="glass-card-float text-slate-800 rounded-2xl p-4 my-6 animate-float relative">
                     <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100">
                         <div class="flex items-center gap-2">
-                            <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-[11px] font-bold">
+                            <div
+                                class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-[11px] font-bold">
                                 <i class="fa-solid fa-chart-line"></i>
                             </div>
-                            <span class="text-[11.5px] font-extrabold text-slate-800">Liasses Fiscales en Temps Réel</span>
+                            <span class="text-[11.5px] font-extrabold text-slate-800">Liasses Fiscales en Temps
+                                Réel</span>
                         </div>
-                        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">98.5% Rapproché</span>
+                        <span
+                            class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">98.5%
+                            Rapproché</span>
                     </div>
 
                     <!-- Mini tableau de flux simulé -->
                     <div class="space-y-1.5 text-[11px]">
                         <div class="flex items-center justify-between">
                             <span class="text-slate-500 flex items-center gap-1.5">
-                                <i class="fa-solid fa-mobile-screen-button text-teal-600 text-[10px]"></i> Flux Wave Business
+                                <i class="fa-solid fa-mobile-screen-button text-teal-600 text-[10px]"></i> Flux Wave
+                                Business
                             </span>
                             <span class="font-bold font-mono text-slate-900">+13 850 000 F</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-slate-500 flex items-center gap-1.5">
-                                <i class="fa-solid fa-scale-balanced text-emerald-600 text-[10px]"></i> Bilan Équilibré SMT
+                                <i class="fa-solid fa-scale-balanced text-emerald-600 text-[10px]"></i> Bilan Équilibré
+                                SMT
                             </span>
                             <span class="font-bold font-mono text-emerald-600">9 560 000 F</span>
                         </div>
@@ -155,9 +182,11 @@
                     L'intelligence comptable au service des cabinets sénégalais.
                 </h2>
                 <p class="text-[12px] text-emerald-100/80 leading-relaxed mb-4">
-                    Automatisez les liasses fiscales de vos PME, réconciliez les encaissements Wave &amp; Caisse au jour le jour et générez vos fichiers FEC conformes au contrôle fiscal.
+                    Automatisez les liasses fiscales de vos PME, réconciliez les encaissements Wave &amp; Caisse au jour
+                    le jour et générez vos fichiers FEC conformes au contrôle fiscal.
                 </p>
-                <div class="flex items-center gap-4 pt-3 border-t border-emerald-400/20 text-[11px] text-emerald-100/90 font-medium">
+                <div
+                    class="flex items-center gap-4 pt-3 border-t border-emerald-400/20 text-[11px] text-emerald-100/90 font-medium">
                     <span class="flex items-center gap-1.5">
                         <i class="fa-solid fa-shield-halved text-emerald-300"></i> Chiffrement 256-bit
                     </span>
@@ -178,9 +207,12 @@
                 <div class="flex items-center justify-between mb-5">
                     <div class="flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                        <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Portail Sécurisé &bull; Espace Cabinet</span>
+                        <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Portail
+                            Sécurisé &bull; Espace Cabinet</span>
                     </div>
-                    <a href="/comptable" class="text-[11.5px] font-bold text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors" title="Accès direct démo">
+                    <a href="/comptable"
+                        class="text-[11.5px] font-bold text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors"
+                        title="Accès direct démo">
                         <span>Aperçu Cabinet</span>
                         <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </a>
@@ -205,19 +237,24 @@
                 <!-- ================================================================= -->
                 <div id="viewLogin">
                     <div class="mb-5">
-                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Connexion à votre espace</h1>
-                        <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de vos PME clientes.</p>
+                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Connexion à votre
+                            espace</h1>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de
+                            vos PME clientes.</p>
                     </div>
 
                     <!-- Bouton Continuer avec Google (Inspiré de l'image de référence) -->
-                    <button type="button" onclick="loginWithGoogleDemo()"
-                        style="border: 1.5px solid #e2e8f0;"
+                    <button type="button" onclick="loginWithGoogleDemo()" style="border: 1.5px solid #e2e8f0;"
                         class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-[12.5px] flex items-center justify-center gap-2.5 shadow-xs transition-all mb-4 cursor-pointer">
                         <svg class="w-4 h-4" viewBox="0 0 24 24">
-                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                            <path fill="#4285F4"
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path fill="#34A853"
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path fill="#FBBC05"
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                            <path fill="#EA4335"
+                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                         </svg>
                         <span>Continuer avec Google Workspace</span>
                     </button>
@@ -225,18 +262,21 @@
                     <!-- Séparateur "ou avec email" -->
                     <div class="relative flex items-center justify-center my-4">
                         <div class="border-t border-slate-200 w-full"></div>
-                        <span class="bg-white px-3 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">ou avec vos identifiants cabinet</span>
+                        <span
+                            class="bg-white px-3 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">ou
+                            avec vos identifiants cabinet</span>
                     </div>
 
                     <form onsubmit="handleConnexionSubmit(event)" class="space-y-3.5">
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email Professionnel ou Téléphone *</label>
+                            <label
+                                class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email
+                                Professionnel ou Téléphone *</label>
                             <div class="relative flex items-center">
                                 <span class="absolute left-3.5 text-slate-400 pointer-events-none">
                                     <i class="fa-solid fa-envelope text-[13px]"></i>
                                 </span>
-                                <input type="text" id="loginEmail" required
-                                    value="contact@cabinet-diallo.sn"
+                                <input type="text" id="loginEmail" required value="contact@cabinet-diallo.sn"
                                     placeholder="contact@votre-cabinet.sn"
                                     class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[12.5px] font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
                             </div>
@@ -244,15 +284,17 @@
 
                         <div>
                             <div class="flex items-center justify-between mb-1">
-                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mot de passe *</label>
-                                <a href="javascript:void(0)" onclick="demanderResetMotDePasse()" class="text-[11px] font-bold text-[#168078] hover:underline">Mot de passe oublié ?</a>
+                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mot
+                                    de passe *</label>
+                                <a href="javascript:void(0)" onclick="demanderResetMotDePasse()"
+                                    class="text-[11px] font-bold text-[#168078] hover:underline">Mot de passe oublié
+                                    ?</a>
                             </div>
                             <div class="relative flex items-center">
                                 <span class="absolute left-3.5 text-slate-400 pointer-events-none">
                                     <i class="fa-solid fa-lock text-[13px]"></i>
                                 </span>
-                                <input type="password" id="loginPassword" required
-                                    value="grow2026"
+                                <input type="password" id="loginPassword" required value="grow2026"
                                     placeholder="••••••••"
                                     class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
                                 <button type="button" onclick="togglePasswordVisibility('loginPassword', this)"
@@ -264,14 +306,14 @@
 
                         <div class="flex items-center justify-between pt-1">
                             <label class="flex items-center gap-2 cursor-pointer select-none">
-                                <input type="checkbox" id="rememberMe" checked class="w-4 h-4 rounded text-[#168078] border-slate-300 focus:ring-[#168078]">
+                                <input type="checkbox" id="rememberMe" checked
+                                    class="w-4 h-4 rounded text-[#168078] border-slate-300 focus:ring-[#168078]">
                                 <span class="text-xs text-slate-600 font-medium">Se souvenir de ce cabinet</span>
                             </label>
                         </div>
 
                         <div class="pt-2">
-                            <button type="submit" id="btnLoginSubmit"
-                                style="background-color: #168078;"
+                            <button type="submit" id="btnLoginSubmit" style="background-color: #168078;"
                                 class="w-full py-3 rounded-xl hover:bg-[#0f766e] active:bg-[#093b36] text-white text-[13px] font-extrabold tracking-wide transition-all shadow-md shadow-[#168078]/25 flex items-center justify-center gap-2 cursor-pointer">
                                 <span>Se connecter à mon Cabinet</span>
                                 <i class="fa-solid fa-arrow-right text-[12px]"></i>
@@ -293,27 +335,32 @@
                 <!-- ================================================================= -->
                 <div id="viewRegister" style="display: none;">
                     <div class="mb-4">
-                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Inscription Cabinet Comptable</h1>
-                        <p class="text-xs text-slate-500 font-medium mt-1">Créez votre accès certifié ONECCA et recevez votre email de validation officiel.</p>
+                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Inscription Cabinet
+                            Comptable</h1>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Créez votre accès certifié ONECCA et recevez
+                            votre email de validation officiel.</p>
                     </div>
 
                     <form onsubmit="handleInscriptionSubmit(event)" class="space-y-3">
                         <!-- Nom complet de l'Expert -->
                         <div>
-                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom &amp; Prénom de l'Expert-Comptable *</label>
+                            <label
+                                class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom
+                                &amp; Prénom de l'Expert-Comptable *</label>
                             <div class="relative flex items-center">
                                 <span class="absolute left-3 text-slate-400 pointer-events-none">
                                     <i class="fa-solid fa-user-tie text-[12px]"></i>
                                 </span>
-                                <input type="text" id="regNomComplet" required
-                                    placeholder="Ex: Babacar Ndiaye"
+                                <input type="text" id="regNomComplet" required placeholder="Ex: Babacar Ndiaye"
                                     class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
                             </div>
                         </div>
 
                         <!-- Nom du Cabinet -->
                         <div>
-                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Raison Sociale du Cabinet *</label>
+                            <label
+                                class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Raison
+                                Sociale du Cabinet *</label>
                             <div class="relative flex items-center">
                                 <span class="absolute left-3 text-slate-400 pointer-events-none">
                                     <i class="fa-solid fa-building text-[12px]"></i>
@@ -327,24 +374,26 @@
                         <!-- Agrément ONECCA & Téléphone en 2 colonnes -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             <div>
-                                <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">N° Agrément ONECCA</label>
+                                <label
+                                    class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">N°
+                                    Agrément ONECCA</label>
                                 <div class="relative flex items-center">
                                     <span class="absolute left-3 text-slate-400 pointer-events-none">
                                         <i class="fa-solid fa-id-card text-[12px]"></i>
                                     </span>
-                                    <input type="text" id="regNumeroOrdre"
-                                        placeholder="Ex: SEC-2024-0418"
+                                    <input type="text" id="regNumeroOrdre" placeholder="Ex: SEC-2024-0418"
                                         class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Téléphone WhatsApp *</label>
+                                <label
+                                    class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Téléphone
+                                    WhatsApp *</label>
                                 <div class="relative flex items-center">
                                     <span class="absolute left-3 text-slate-400 pointer-events-none">
                                         <i class="fa-brands fa-whatsapp text-emerald-600 text-[13px]"></i>
                                     </span>
-                                    <input type="text" id="regTelephone" required
-                                        placeholder="+221 77 000 00 00"
+                                    <input type="text" id="regTelephone" required placeholder="+221 77 000 00 00"
                                         class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
                                 </div>
                             </div>
@@ -352,19 +401,22 @@
 
                         <!-- Email & Mot de passe -->
                         <div>
-                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email Professionnel (Réception de validation) *</label>
+                            <label
+                                class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email
+                                Professionnel (Réception de validation) *</label>
                             <div class="relative flex items-center">
                                 <span class="absolute left-3 text-slate-400 pointer-events-none">
                                     <i class="fa-solid fa-envelope text-[12px]"></i>
                                 </span>
-                                <input type="email" id="regEmail" required
-                                    placeholder="contact@cabinet-ndiaye.sn"
+                                <input type="email" id="regEmail" required placeholder="contact@cabinet-ndiaye.sn"
                                     class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Mot de passe de Sécurité *</label>
+                            <label
+                                class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Mot
+                                de passe de Sécurité *</label>
                             <div class="relative flex items-center">
                                 <span class="absolute left-3 text-slate-400 pointer-events-none">
                                     <i class="fa-solid fa-lock text-[12px]"></i>
@@ -381,14 +433,15 @@
 
                         <div class="pt-1">
                             <label class="flex items-start gap-2 cursor-pointer select-none text-[11px] text-slate-500">
-                                <input type="checkbox" required checked class="mt-0.5 rounded text-[#168078] border-slate-300 focus:ring-[#168078]">
-                                <span>J'atteste être habilité par le cabinet et accepte la charte de confidentialité et de conformité SYSCOHADA.</span>
+                                <input type="checkbox" required checked
+                                    class="mt-0.5 rounded text-[#168078] border-slate-300 focus:ring-[#168078]">
+                                <span>J'atteste être habilité par le cabinet et accepte la charte de confidentialité et
+                                    de conformité SYSCOHADA.</span>
                             </label>
                         </div>
 
                         <div class="pt-2">
-                            <button type="submit" id="btnRegisterSubmit"
-                                style="background-color: #168078;"
+                            <button type="submit" id="btnRegisterSubmit" style="background-color: #168078;"
                                 class="w-full py-3 rounded-xl hover:bg-[#0f766e] active:bg-[#093b36] text-white text-[12.5px] font-extrabold tracking-wide transition-all shadow-md shadow-[#168078]/25 flex items-center justify-center gap-2 cursor-pointer">
                                 <i class="fa-solid fa-paper-plane text-[11px]"></i>
                                 <span>Créer mon Cabinet &amp; Recevoir l'Email</span>
@@ -402,13 +455,15 @@
             <div class="pt-5 border-t border-slate-100 text-center">
                 <div id="footerSwitchToRegister" class="text-xs text-slate-500 font-medium">
                     <span>Nouveau cabinet ?</span>
-                    <a href="javascript:void(0)" onclick="switchAuthMode('register')" class="font-extrabold text-[#168078] hover:underline ml-1">
+                    <a href="javascript:void(0)" onclick="switchAuthMode('register')"
+                        class="font-extrabold text-[#168078] hover:underline ml-1">
                         Créer un compte d'expertise comptable
                     </a>
                 </div>
                 <div id="footerSwitchToLogin" class="text-xs text-slate-500 font-medium" style="display: none;">
                     <span>Déjà inscrit ?</span>
-                    <a href="javascript:void(0)" onclick="switchAuthMode('login')" class="font-extrabold text-[#168078] hover:underline ml-1">
+                    <a href="javascript:void(0)" onclick="switchAuthMode('login')"
+                        class="font-extrabold text-[#168078] hover:underline ml-1">
                         Se connecter à votre cabinet
                     </a>
                 </div>
@@ -420,21 +475,29 @@
     <!-- ========================================================================= -->
     <!-- MODALE POP-UP : EMAIL OFFICIEL DE BIENVENUE ET DE VALIDATION EXPÉDIÉ      -->
     <!-- ========================================================================= -->
-    <div id="modalEmailBienvenue" class="fixed inset-0 z-[6000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4" style="display: none;">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-hidden shadow-2xl border border-slate-200 flex flex-col animate-fadeIn">
-            
+    <div id="modalEmailBienvenue"
+        class="fixed inset-0 z-[6000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+        style="display: none;">
+        <div
+            class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-hidden shadow-2xl border border-slate-200 flex flex-col animate-fadeIn">
+
             <!-- En-tête de la modale de validation -->
-            <div class="p-5 sm:p-6 bg-gradient-to-r from-[#093b36] to-[#168078] text-white flex items-center justify-between">
+            <div
+                class="p-5 sm:p-6 bg-gradient-to-r from-[#093b36] to-[#168078] text-white flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center text-emerald-300 text-lg border border-white/20">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center text-emerald-300 text-lg border border-white/20">
                         <i class="fa-solid fa-envelope-circle-check"></i>
                     </div>
                     <div>
-                        <h3 class="font-extrabold text-base text-white">Email de Bienvenue &amp; Validation Expédié !</h3>
-                        <p class="text-xs text-emerald-100/80">Message officiel de validation de compte adressé à votre cabinet</p>
+                        <h3 class="font-extrabold text-base text-white">Email de Bienvenue &amp; Validation Expédié !
+                        </h3>
+                        <p class="text-xs text-emerald-100/80">Message officiel de validation de compte adressé à votre
+                            cabinet</p>
                     </div>
                 </div>
-                <button type="button" onclick="fermerModalEmail()" class="text-white/70 hover:text-white p-1 rounded-lg">
+                <button type="button" onclick="fermerModalEmail()"
+                    class="text-white/70 hover:text-white p-1 rounded-lg">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
@@ -451,11 +514,11 @@
                     <span>Compte cabinet validé avec succès</span>
                 </span>
                 <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
-                    <button type="button" onclick="fermerModalEmail()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-100">
+                    <button type="button" onclick="fermerModalEmail()"
+                        class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-100">
                         Fermer l'aperçu
                     </button>
-                    <a href="/comptable"
-                        style="background-color: #168078;"
+                    <a href="/comptable" style="background-color: #168078;"
                         class="px-5 py-2.5 rounded-xl text-white font-extrabold text-xs hover:bg-[#0f766e] flex items-center gap-2 shadow-md shadow-[#168078]/25">
                         <span>Accéder à mon Cabinet Comptable</span>
                         <i class="fa-solid fa-arrow-right text-[11px]"></i>
@@ -467,7 +530,8 @@
     </div>
 
     <!-- Toast Notification Flottant -->
-    <div id="authToast" class="fixed bottom-6 right-6 z-[7000] px-5 py-3 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-2xl flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 pointer-events-none">
+    <div id="authToast"
+        class="fixed bottom-6 right-6 z-[7000] px-5 py-3 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-2xl flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 pointer-events-none">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
         <span id="toastMsg">Action réussie !</span>
     </div>
@@ -529,7 +593,7 @@
 
             msgEl.textContent = msg;
             iconEl.className = isSuccess ? 'fa-solid fa-circle-check text-emerald-400 text-base' : 'fa-solid fa-circle-exclamation text-rose-400 text-base';
-            
+
             toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
             setTimeout(() => {
                 toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
@@ -624,7 +688,7 @@
                     localStorage.setItem('growth_cabinet_ordre', numeroOrdre);
 
                     showAuthToast("Inscription validée ! Email officiel expédié.");
-                    
+
                     // Affichage du pop-up avec l'aperçu de l'email de bienvenue
                     afficherApercuEmailBienvenue(nomComplet, nomCabinet, numeroOrdre, email);
                 } else {
