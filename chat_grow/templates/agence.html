@@ -1562,6 +1562,11 @@
                                 title="Liasse Complète SYSCOHADA (Les 4 États Réunis)">
                                 <i class="fa-solid fa-layer-group" style="color: #ffffff;"></i> Liasse Complète
                             </button>
+                            <button onclick="openComposerDossierDirect()" class="btn-statement"
+                                style="background: #f0fdfa; color: #0f766e; border-color: #a0d9d2; font-weight: 700;"
+                                title="Composer un dossier client sur-mesure (ex: Bilan + Annexes)">
+                                <i class="fa-solid fa-list-check" style="color: #0f766e;"></i> Composer Dossier
+                            </button>
                         </div>
 
                         <!-- BARRE DE SÉLECTION PME, PÉRIODE & COMPTES ASSOCIÉS (SUR UNE SEULE LIGNE) -->
@@ -2593,6 +2598,11 @@
                     title="Liasse Complète SYSCOHADA (Les 4 États Réunis)">
                     <i class="fa-solid fa-layer-group" style="color: #ffffff;"></i> Liasse Complète
                 </button>
+                <button onclick="openComposerDossierDirect()" class="btn-statement"
+                    style="background: #f0fdfa; color: #0f766e; border-color: #a0d9d2; font-weight: 700;"
+                    title="Composer un dossier client sur-mesure (ex: Bilan + Annexes)">
+                    <i class="fa-solid fa-list-check" style="color: #0f766e;"></i> Composer Dossier
+                </button>
             </div>
 
             <!-- Grille des 6 Ratios Prudentiels du Cabinet -->
@@ -3467,8 +3477,8 @@
                 </div>
 
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                    <!-- Commutateur discret des 4 états -->
-                    <div style="display: flex; align-items: center; gap: 3px; background: #f1f5f9; padding: 3px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <!-- Commutateur discret des 4 états + Composer sur-mesure -->
+                    <div style="display: flex; align-items: center; gap: 3px; background: #f1f5f9; padding: 3px; border-radius: 8px; border: 1px solid #e2e8f0; position: relative;">
                         <button type="button" onclick="openReport('bilan')" id="tabRepBilan" class="tab-rep-btn-light">
                             1. Bilan
                         </button>
@@ -3484,6 +3494,99 @@
                         <button type="button" onclick="openReport('tout')" id="tabRepTout" class="tab-rep-btn-light">
                             Liasse Complète
                         </button>
+                        
+                        <!-- Séparateur discret -->
+                        <div style="width: 1px; height: 16px; background: #cbd5e1; margin: 0 2px;"></div>
+
+                        <!-- Bouton Composer le Dossier Client (Sur-mesure) -->
+                        <button type="button" onclick="toggleComposerPopover(event)" id="tabRepComposer" class="tab-rep-btn-light"
+                            title="Composer un dossier client sur-mesure (ex: Bilan + Annexes uniquement)"
+                            style="display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-layer-group" style="color: #168078;"></i>
+                            <span>Composer</span>
+                            <span id="composerBadge" style="background: #168078; color: #ffffff; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 10px; line-height: 1.2;">2</span>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 8px; color: #64748b; margin-left: 1px;"></i>
+                        </button>
+
+                        <!-- POPOVER FLOTTANT DE COMPOSITION DU DOSSIER -->
+                        <div id="composerPopover" class="composer-popover-box"
+                            style="display: none; position: absolute; top: calc(100% + 8px); right: 0; width: 320px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 16px 36px rgba(15,23,42,0.18), 0 4px 12px rgba(0,0,0,0.06); padding: 14px 16px; z-index: 999999; animation: fadeInDrop 0.15s ease-out; text-align: left;"
+                            onclick="event.stopPropagation()">
+                            
+                            <!-- En-tête popover -->
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+                                        <i class="fa-solid fa-layer-group" style="color: #168078;"></i> Composer le dossier client
+                                    </div>
+                                    <div style="font-size: 10px; color: #64748b; margin-top: 1px;">
+                                        Cochez les états demandés par le client :
+                                    </div>
+                                </div>
+                                <button type="button" onclick="fermerComposerPopover()" style="background: none; border: none; font-size: 16px; color: #94a3b8; cursor: pointer; padding: 0 3px; line-height: 1;">&times;</button>
+                            </div>
+
+                            <!-- Presets rapides en 1 clic -->
+                            <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                                <button type="button" onclick="appliquerPresetComposer('bilan_annexes')"
+                                    style="flex: 1; padding: 4px 6px; background: #f0fdfa; border: 1px solid #a0d9d2; border-radius: 6px; font-size: 10.5px; font-weight: 700; color: #0f766e; cursor: pointer; text-align: center; transition: all 0.12s;"
+                                    title="Dossier Bilan + Notes Annexes">
+                                    Bilan + Annexes
+                                </button>
+                                <button type="button" onclick="appliquerPresetComposer('bilan_resultat')"
+                                    style="flex: 1; padding: 4px 6px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 10.5px; font-weight: 700; color: #475569; cursor: pointer; text-align: center; transition: all 0.12s;"
+                                    title="Dossier Bilan + Résultat">
+                                    Bilan + Résultat
+                                </button>
+                                <button type="button" onclick="appliquerPresetComposer('tout')"
+                                    style="flex: 1; padding: 4px 6px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 10.5px; font-weight: 700; color: #475569; cursor: pointer; text-align: center; transition: all 0.12s;"
+                                    title="Liasse Complète (4)">
+                                    Tous (4)
+                                </button>
+                            </div>
+
+                            <!-- Cases à cocher des 4 états -->
+                            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;">
+                                <label style="display: flex; align-items: center; gap: 9px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.15s;" onmouseover="this.style.borderColor='#168078'" onmouseout="this.style.borderColor='#e2e8f0'">
+                                    <input type="checkbox" id="compCheckBilan" checked onchange="onComposerCheckboxChange()" style="accent-color: #168078; width: 15px; height: 15px; cursor: pointer;">
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 11.5px; font-weight: 800; color: #0f172a;">1. Bilan Réglementaire</div>
+                                        <div style="font-size: 9.5px; color: #64748b;">Actif, Passif &amp; Patrimoine SMT</div>
+                                    </div>
+                                </label>
+
+                                <label style="display: flex; align-items: center; gap: 9px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.15s;" onmouseover="this.style.borderColor='#168078'" onmouseout="this.style.borderColor='#e2e8f0'">
+                                    <input type="checkbox" id="compCheckResultat" onchange="onComposerCheckboxChange()" style="accent-color: #168078; width: 15px; height: 15px; cursor: pointer;">
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 11.5px; font-weight: 800; color: #0f172a;">2. Compte de Résultat</div>
+                                        <div style="font-size: 9.5px; color: #64748b;">Produits, Charges &amp; Bénéfice Net</div>
+                                    </div>
+                                </label>
+
+                                <label style="display: flex; align-items: center; gap: 9px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.15s;" onmouseover="this.style.borderColor='#168078'" onmouseout="this.style.borderColor='#e2e8f0'">
+                                    <input type="checkbox" id="compCheckFlux" onchange="onComposerCheckboxChange()" style="accent-color: #168078; width: 15px; height: 15px; cursor: pointer;">
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 11.5px; font-weight: 800; color: #0f172a;">3. Tableau des Flux</div>
+                                        <div style="font-size: 9.5px; color: #64748b;">Encaissements &amp; Décaissements</div>
+                                    </div>
+                                </label>
+
+                                <label style="display: flex; align-items: center; gap: 9px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.15s;" onmouseover="this.style.borderColor='#168078'" onmouseout="this.style.borderColor='#e2e8f0'">
+                                    <input type="checkbox" id="compCheckAnnexes" checked onchange="onComposerCheckboxChange()" style="accent-color: #168078; width: 15px; height: 15px; cursor: pointer;">
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 11.5px; font-weight: 800; color: #0f172a;">4. Notes Annexes</div>
+                                        <div style="font-size: 9.5px; color: #64748b;">Rapprochement &amp; Informations SMT</div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Bouton Générer et fermer -->
+                            <button type="button" onclick="appliquerCompositionDossier()"
+                                style="width: 100%; padding: 7px 12px; background: #222222; color: #ffffff; border: none; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s;"
+                                onmouseover="this.style.background='#000000'" onmouseout="this.style.background='#222222'">
+                                <i class="fa-solid fa-check" style="color: #a0d9d2;"></i> Appliquer ce dossier (<span id="composerSelectedCount">2</span>/4)
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Bouton Déplier les options de personnalisation -->
@@ -6734,48 +6837,139 @@
             `;
         }
 
-        // 5. FONCTION PRINCIPALE : OUVERTURE DU RAPPORT
-        function openReport(type) {
-            currentReportType = type;
-            const m = document.getElementById('reportModal');
-            const t = document.getElementById('repTitle');
-            const b = document.getElementById('repBody');
-            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
-            const intervalle = obtenirIntervalleTexteActuel();
+        // =========================================================================
+        // MODULE DE COMPOSITION DE DOSSIER SUR-MESURE (EX: BILAN + ANNEXES)
+        // =========================================================================
+        let composedStates = {
+            bilan: true,
+            resultat: false,
+            flux: false,
+            annexes: true
+        };
 
-            // Mise à jour des onglets
-            ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepTout'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.remove('active');
-            });
-            const tabMap = {
-                'bilan': 'tabRepBilan',
-                'resultat': 'tabRepResultat',
-                'flux': 'tabRepFlux',
-                'annexes': 'tabRepAnnexes',
-                'tout': 'tabRepTout'
-            };
-            if (tabMap[type] && document.getElementById(tabMap[type])) {
-                document.getElementById(tabMap[type]).classList.add('active');
+        function toggleComposerPopover(event) {
+            if (event) event.stopPropagation();
+            const pop = document.getElementById('composerPopover');
+            if (!pop) return;
+            const isVisible = pop.style.display === 'block';
+            pop.style.display = isVisible ? 'none' : 'block';
+            if (!isVisible) {
+                syncComposerCheckboxesFromState();
+            }
+        }
+
+        function fermerComposerPopover() {
+            const pop = document.getElementById('composerPopover');
+            if (pop) pop.style.display = 'none';
+        }
+
+        function syncComposerCheckboxesFromState() {
+            const cB = document.getElementById('compCheckBilan');
+            const cR = document.getElementById('compCheckResultat');
+            const cF = document.getElementById('compCheckFlux');
+            const cA = document.getElementById('compCheckAnnexes');
+            if (cB) cB.checked = !!composedStates.bilan;
+            if (cR) cR.checked = !!composedStates.resultat;
+            if (cF) cF.checked = !!composedStates.flux;
+            if (cA) cA.checked = !!composedStates.annexes;
+            updateComposerCountUI();
+        }
+
+        function updateComposerCountUI() {
+            const count = (composedStates.bilan ? 1 : 0) +
+                          (composedStates.resultat ? 1 : 0) +
+                          (composedStates.flux ? 1 : 0) +
+                          (composedStates.annexes ? 1 : 0);
+
+            const b1 = document.getElementById('composerBadge');
+            const b2 = document.getElementById('composerSelectedCount');
+            if (b1) b1.textContent = count;
+            if (b2) b2.textContent = count;
+        }
+
+        function onComposerCheckboxChange() {
+            const cB = document.getElementById('compCheckBilan');
+            const cR = document.getElementById('compCheckResultat');
+            const cF = document.getElementById('compCheckFlux');
+            const cA = document.getElementById('compCheckAnnexes');
+
+            composedStates.bilan = cB ? cB.checked : false;
+            composedStates.resultat = cR ? cR.checked : false;
+            composedStates.flux = cF ? cF.checked : false;
+            composedStates.annexes = cA ? cA.checked : false;
+
+            // Empêcher de tout décocher (au moins 1 état)
+            if (!composedStates.bilan && !composedStates.resultat && !composedStates.flux && !composedStates.annexes) {
+                composedStates.bilan = true;
+                if (cB) cB.checked = true;
             }
 
-            const sub = document.getElementById('repSubtitle');
-            if (sub) {
-                sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle}`;
+            updateComposerCountUI();
+            // Rafraîchir en temps réel si déjà en mode composer
+            if (currentReportType === 'composer') {
+                openReport('composer');
             }
+        }
 
+        function appliquerPresetComposer(preset) {
+            if (preset === 'bilan_annexes') {
+                composedStates.bilan = true;
+                composedStates.resultat = false;
+                composedStates.flux = false;
+                composedStates.annexes = true;
+            } else if (preset === 'bilan_resultat') {
+                composedStates.bilan = true;
+                composedStates.resultat = true;
+                composedStates.flux = false;
+                composedStates.annexes = false;
+            } else if (preset === 'tout') {
+                composedStates.bilan = true;
+                composedStates.resultat = true;
+                composedStates.flux = true;
+                composedStates.annexes = true;
+            }
+            syncComposerCheckboxesFromState();
+            appliquerCompositionDossier();
+        }
+
+        function appliquerCompositionDossier() {
+            fermerComposerPopover();
+            openReport('composer');
+            showToast("Dossier composé avec succès !");
+        }
+
+        function openComposerDossierDirect() {
+            openReport('composer');
+            setTimeout(() => {
+                const pop = document.getElementById('composerPopover');
+                if (pop) pop.style.display = 'block';
+            }, 100);
+        }
+
+        // Fermer le popover composer si clic hors du panneau
+        document.addEventListener('click', function(e) {
+            const pop = document.getElementById('composerPopover');
+            const btn = document.getElementById('tabRepComposer');
+            if (pop && pop.style.display === 'block') {
+                if (!pop.contains(e.target) && (!btn || !btn.contains(e.target))) {
+                    pop.style.display = 'none';
+                }
+            }
+        });
+
+        // =========================================================================
+        // CONSTRUCTEURS MODULAIRES DES 4 ÉTATS FINANCIERS SYSCOHADA SMT
+        // =========================================================================
+        function buildSectionBilanHtml(pme, intervalle, isFirst = true) {
             const tableHeaderStyle = "background: #f8fafc; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0f172a;";
             const thCell = "padding: 9px 12px; border: 1px solid #cbd5e1; color: #0f172a;";
             const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
             const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
             const trTotal = "background: #f8fafc; font-weight: 900; font-size: 12.5px; border-top: 2px solid #0f172a; border-bottom: 3px double #0f172a;";
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF SMT)", isFirst);
 
-            if (type === 'bilan') {
-                t.textContent = `1. Bilan Réglementaire SYSCOHADA SMT — ${pme.nom}`;
-                const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 1 : BILAN RÉGLEMENTAIRE SYSCOHADA (ACTIF / PASSIF SMT)");
-                const footerHtml = genererFooterOfficielDoc(pme);
-
-                b.innerHTML = `
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
                     ${headerHtml}
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
                         <tr style="${tableHeaderStyle}">
@@ -6815,26 +7009,30 @@
                             <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
                         </tr>
                     </table>
-                    ${footerHtml}
+                </div>
+            `;
+        }
+
+        function buildSectionResultatHtml(pme, intervalle, isFirst = true) {
+            const tableHeaderStyle = "background: #f8fafc; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0f172a;";
+            const thCell = "padding: 9px 12px; border: 1px solid #cbd5e1; color: #0f172a;";
+            const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
+            const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS & CHARGES SMT)", isFirst);
+
+            let rowsHtml = '';
+            pme.resultatLignes.forEach((r, idx) => {
+                const bgStyle = r.isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
+                rowsHtml += `
+                    <tr style="${bgStyle}">
+                        <td style="${tdCell} ${r.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${r.label}</td>
+                        <td style="${tdMono} ${r.isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${r.mnt}</td>
+                    </tr>
                 `;
-            } else if (type === 'resultat') {
-                t.textContent = `2. Compte de Résultat SYSCOHADA — ${pme.nom}`;
-                const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT RÉGLEMENTAIRE (PRODUITS & CHARGES SMT)");
-                const footerHtml = genererFooterOfficielDoc(pme);
+            });
 
-                let rowsHtml = '';
-                pme.resultatLignes.forEach((r, idx) => {
-                    const isTotal = r.isFinal || r.bold;
-                    const bgStyle = r.isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
-                    rowsHtml += `
-                        <tr style="${bgStyle}">
-                            <td style="${tdCell} ${r.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${r.label}</td>
-                            <td style="${tdMono} ${r.isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${r.mnt}</td>
-                        </tr>
-                    `;
-                });
-
-                b.innerHTML = `
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
                     ${headerHtml}
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
                         <tr style="${tableHeaderStyle}">
@@ -6843,26 +7041,31 @@
                         </tr>
                         ${rowsHtml}
                     </table>
-                    ${footerHtml}
+                </div>
+            `;
+        }
+
+        function buildSectionFluxHtml(pme, intervalle, isFirst = true) {
+            const tableHeaderStyle = "background: #f8fafc; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0f172a;";
+            const thCell = "padding: 9px 12px; border: 1px solid #cbd5e1; color: #0f172a;";
+            const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
+            const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)", isFirst);
+
+            let fluxHtml = '';
+            pme.fluxLignes.forEach((f, idx) => {
+                const isFinal = f.isFinalTreso;
+                const bgStyle = isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
+                fluxHtml += `
+                    <tr style="${bgStyle}">
+                        <td style="${tdCell} ${f.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${f.label}</td>
+                        <td style="${tdMono} ${isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${f.mnt}</td>
+                    </tr>
                 `;
-            } else if (type === 'flux') {
-                t.textContent = `3. Tableau des Flux de Trésorerie — ${pme.nom}`;
-                const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)");
-                const footerHtml = genererFooterOfficielDoc(pme);
+            });
 
-                let fluxHtml = '';
-                pme.fluxLignes.forEach((f, idx) => {
-                    const isFinal = f.isFinalTreso;
-                    const bgStyle = isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
-                    fluxHtml += `
-                        <tr style="${bgStyle}">
-                            <td style="${tdCell} ${f.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${f.label}</td>
-                            <td style="${tdMono} ${isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${f.mnt}</td>
-                        </tr>
-                    `;
-                });
-
-                b.innerHTML = `
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
                     ${headerHtml}
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
                         <tr style="${tableHeaderStyle}">
@@ -6871,157 +7074,140 @@
                         </tr>
                         ${fluxHtml}
                     </table>
-                    ${footerHtml}
+                </div>
+            `;
+        }
+
+        function buildSectionAnnexesHtml(pme, intervalle, isFirst = true) {
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 4 : NOTES ANNEXES & INFORMATIONS COMPLÉMENTAIRES SMT", isFirst);
+
+            let notesHtml = '';
+            pme.notes.forEach(n => {
+                const parts = n.split(' : ');
+                notesHtml += `
+                    <div style="margin-bottom: 12px; padding: 10px 14px; background: #fafafa; border-left: 3px solid #168078; border-radius: 4px; border: 1px solid #e2e8f0; border-left-width: 3px;">
+                        <div style="font-weight: 800; font-size: 12px; color: #0f172a; text-transform: uppercase;">${parts[0]}</div>
+                        <div style="font-size: 11.5px; line-height: 1.5; color: #334155; margin-top: 3px;">${parts[1] || ''}</div>
+                    </div>
                 `;
-            } else if (type === 'annexes') {
-                t.textContent = `4. Notes Annexes & Rapprochement — ${pme.nom}`;
-                const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 4 : NOTES ANNEXES & INFORMATIONS COMPLÉMENTAIRES SMT");
-                const footerHtml = genererFooterOfficielDoc(pme);
+            });
 
-                let notesHtml = '';
-                pme.notes.forEach(n => {
-                    const parts = n.split(' : ');
-                    notesHtml += `
-                        <div style="margin-bottom: 14px; padding: 10px 14px; background: #fafafa; border-left: 3px solid #168078; border-radius: 4px; border: 1px solid #e2e8f0; border-left-width: 3px;">
-                            <div style="font-weight: 800; font-size: 12px; color: #0f172a; text-transform: uppercase;">${parts[0]}</div>
-                            <div style="font-size: 11.5px; line-height: 1.5; color: #334155; margin-top: 3px;">${parts[1] || ''}</div>
-                        </div>
-                    `;
-                });
-
-                b.innerHTML = `
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
                     ${headerHtml}
                     <div style="border: 1px solid #cbd5e1; padding: 18px 20px; background: #ffffff; margin-bottom: 14px; border-radius: 6px;">
                         ${notesHtml}
                     </div>
-                    ${footerHtml}
-                `;
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 5. FONCTION PRINCIPALE : OUVERTURE DU RAPPORT FINANCIER
+        // =========================================================================
+        function openReport(type) {
+            currentReportType = type;
+            const m = document.getElementById('reportModal');
+            const t = document.getElementById('repTitle');
+            const b = document.getElementById('repBody');
+            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+            const intervalle = obtenirIntervalleTexteActuel();
+
+            // Mise à jour de l'état actif des onglets
+            ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepTout', 'tabRepComposer'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            const tabMap = {
+                'bilan': 'tabRepBilan',
+                'resultat': 'tabRepResultat',
+                'flux': 'tabRepFlux',
+                'annexes': 'tabRepAnnexes',
+                'tout': 'tabRepTout',
+                'composer': 'tabRepComposer'
+            };
+            if (tabMap[type] && document.getElementById(tabMap[type])) {
+                document.getElementById(tabMap[type]).classList.add('active');
+            }
+
+            const sub = document.getElementById('repSubtitle');
+            const footerHtml = genererFooterOfficielDoc(pme);
+
+            if (type === 'bilan') {
+                t.textContent = `1. Bilan Réglementaire SYSCOHADA SMT — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionBilanHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'resultat') {
+                t.textContent = `2. Compte de Résultat SYSCOHADA SMT — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionResultatHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'flux') {
+                t.textContent = `3. Tableau des Flux de Trésorerie — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionFluxHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'annexes') {
+                t.textContent = `4. Notes Annexes & Rapprochement — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionAnnexesHtml(pme, intervalle, true) + footerHtml;
+
             } else if (type === 'tout') {
                 t.textContent = `Liasse Financière Complète SYSCOHADA SMT — ${pme.nom}`;
-
-                const headerBilan = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF SMT)", true);
-                const headerResultat = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS & CHARGES SMT)", false);
-                const headerFlux = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)", false);
-                const headerAnnexes = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 4 : NOTES ANNEXES & INFORMATIONS COMPLÉMENTAIRES SMT");
-                const footerHtml = genererFooterOfficielDoc(pme);
-
-                let resRows = '';
-                pme.resultatLignes.forEach((r, idx) => {
-                    const bgStyle = r.isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
-                    resRows += `
-                        <tr style="${bgStyle}">
-                            <td style="${tdCell} ${r.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${r.label}</td>
-                            <td style="${tdMono} ${r.isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${r.mnt}</td>
-                        </tr>
-                    `;
-                });
-
-                let fluxRows = '';
-                pme.fluxLignes.forEach((f, idx) => {
-                    const isFinal = f.isFinalTreso;
-                    const bgStyle = isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
-                    fluxRows += `
-                        <tr style="${bgStyle}">
-                            <td style="${tdCell} ${f.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${f.label}</td>
-                            <td style="${tdMono} ${isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${f.mnt}</td>
-                        </tr>
-                    `;
-                });
-
-                let notesAll = '';
-                pme.notes.forEach(n => {
-                    const parts = n.split(' : ');
-                    notesAll += `
-                        <div style="margin-bottom: 12px; padding: 8px 12px; background: #fafafa; border-left: 3px solid #168078; border: 1px solid #e2e8f0; border-left-width: 3px; border-radius: 4px;">
-                            <div style="font-weight: 800; font-size: 11.5px; color: #0f172a; text-transform: uppercase;">${parts[0]}</div>
-                            <div style="font-size: 11px; line-height: 1.45; color: #334155; margin-top: 2px;">${parts[1] || ''}</div>
-                        </div>
-                    `;
-                });
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet} • Les 4 états réglementaires réunis`;
 
                 b.innerHTML = `
-                    <!-- PAGE 1 : BILAN RÉGLEMENTAIRE -->
-                    <div class="print-page-sheet" style="margin-bottom: 30px;">
-                        ${headerBilan}
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-                            <tr style="${tableHeaderStyle}">
-                                <th style="${thCell} text-align: left; width: 35%;">ACTIF (Emplois)</th>
-                                <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
-                                <th style="${thCell} text-align: left; width: 35%;">PASSIF (Ressources)</th>
-                                <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
-                            </tr>
-                            <tr>
-                                <td style="${tdCell}">Immobilisations corporelles (Matériel d'exploitation)</td>
-                                <td style="${tdMono}">${pme.bilan.immo}</td>
-                                <td style="${tdCell}">Capital NINEA &amp; Apports personnels</td>
-                                <td style="${tdMono}">${pme.bilan.capital}</td>
-                            </tr>
-                            <tr style="background: #fafafa;">
-                                <td style="${tdCell}">Stocks de marchandises (Inventaire au prix d'achat)</td>
-                                <td style="${tdMono}">${pme.bilan.stocks}</td>
-                                <td style="${tdCell}">Résultat Net de la Période (Bénéfice)</td>
-                                <td style="${tdMono} color: #168078;">${pme.bilan.resultat}</td>
-                            </tr>
-                            <tr>
-                                <td style="${tdCell}">Créances clients (Compte 411100)</td>
-                                <td style="${tdMono}">${pme.bilan.creances}</td>
-                                <td style="${tdCell}">Dettes Fournisseurs (Compte 401100)</td>
-                                <td style="${tdMono}">${pme.bilan.fournisseurs}</td>
-                            </tr>
-                            <tr style="background: #fafafa;">
-                                <td style="${tdCell}">Trésorerie Wave Business &amp; Caisse Espèces</td>
-                                <td style="${tdMono}">${pme.bilan.treso}</td>
-                                <td style="${tdCell}">Dettes fiscales &amp; sociales (DGID / IPRES)</td>
-                                <td style="${tdMono}">${pme.bilan.dettesFiscales}</td>
-                            </tr>
-                            <tr style="${trTotal}">
-                                <td style="padding: 10px 12px; font-weight: 900; color: #000000;">TOTAL ACTIF GÉNÉRAL</td>
-                                <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
-                                <td style="padding: 10px 12px; font-weight: 900; color: #000000;">TOTAL PASSIF GÉNÉRAL</td>
-                                <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000;">${pme.totalActifPassif}</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <!-- SAUT DE PAGE IMPRESSION (A4) -->
+                    ${buildSectionBilanHtml(pme, intervalle, true)}
                     <div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>
-
-                    <!-- PAGE 2 : COMPTE DE RÉSULTAT -->
-                    <div class="print-page-sheet" style="margin-bottom: 30px;">
-                        ${headerResultat}
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-                            <tr style="${tableHeaderStyle}">
-                                <th style="${thCell} text-align: left; width: 75%;">POSTES DU COMPTE DE RÉSULTAT (SYSCOHADA SMT)</th>
-                                <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
-                            </tr>
-                            ${resRows}
-                        </table>
-                    </div>
-
-                    <!-- SAUT DE PAGE IMPRESSION (A4) -->
+                    ${buildSectionResultatHtml(pme, intervalle, false)}
                     <div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>
-
-                    <!-- PAGE 3 : FLUX DE TRÉSORERIE & NOTES ANNEXES AVEC CERTIFICATION -->
-                    <div class="print-page-sheet">
-                        ${headerFlux}
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 18px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-                            <tr style="${tableHeaderStyle}">
-                                <th style="${thCell} text-align: left; width: 75%;">MOUVEMENTS DE TRÉSORERIE (ENCAISSEMENTS &amp; DÉCAISSEMENTS)</th>
-                                <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
-                            </tr>
-                            ${fluxRows}
-                        </table>
-
-                        <div style="margin-top: 16px; margin-bottom: 16px;">
-                            <div style="font-size: 11.5px; font-weight: 900; text-transform: uppercase; color: #0f172a; border-bottom: 2px solid #168078; padding-bottom: 4px; margin-bottom: 10px;">
-                                NOTES ANNEXES &amp; INFORMATIONS COMPLÉMENTAIRES (SMT)
-                            </div>
-                            ${notesAll}
-                        </div>
-
-                        ${footerHtml}
-                    </div>
+                    ${buildSectionFluxHtml(pme, intervalle, false)}
+                    ${buildSectionAnnexesHtml(pme, intervalle, false)}
+                    ${footerHtml}
                 `;
+
+            } else if (type === 'composer') {
+                // DOSSIER COMPOSÉ SUR-MESURE (EX: CLIENT NE VEUT QUE BILAN ET ANNEXES)
+                const selection = [];
+                if (composedStates.bilan) selection.push({ key: 'bilan', label: 'Bilan' });
+                if (composedStates.resultat) selection.push({ key: 'resultat', label: 'Résultat' });
+                if (composedStates.flux) selection.push({ key: 'flux', label: 'Flux' });
+                if (composedStates.annexes) selection.push({ key: 'annexes', label: 'Notes Annexes' });
+
+                if (selection.length === 0) {
+                    composedStates.bilan = true;
+                    selection.push({ key: 'bilan', label: 'Bilan' });
+                    syncComposerCheckboxesFromState();
+                }
+
+                const libelles = selection.map(s => s.label).join(' + ');
+                t.textContent = `Dossier Composé (${libelles}) — ${pme.nom}`;
+                if (sub) {
+                    sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet} • Composition sur-mesure (${selection.length} état${selection.length > 1 ? 's' : ''})`;
+                }
+
+                let fullContentHtml = '';
+                selection.forEach((item, idx) => {
+                    const isFirst = (idx === 0);
+                    if (idx > 0) {
+                        fullContentHtml += `<div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>`;
+                    }
+
+                    if (item.key === 'bilan') {
+                        fullContentHtml += buildSectionBilanHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'resultat') {
+                        fullContentHtml += buildSectionResultatHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'flux') {
+                        fullContentHtml += buildSectionFluxHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'annexes') {
+                        fullContentHtml += buildSectionAnnexesHtml(pme, intervalle, isFirst);
+                    }
+                });
+
+                // Apposition de l'attestation et des signatures officielles sur le dernier état
+                fullContentHtml += footerHtml;
+                b.innerHTML = fullContentHtml;
             }
 
             m.style.display = 'flex';
@@ -7030,6 +7216,7 @@
         function closeReport() {
             const m = document.getElementById('reportModal');
             if (m) m.style.display = 'none';
+            fermerComposerPopover();
         }
 
         // =========================================================================
@@ -7043,6 +7230,24 @@
             }
 
             const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+
+            let docTitre = `Liasse Fiscale SYSCOHADA SMT — ${pme.nom}`;
+            if (currentReportType === 'composer') {
+                const sel = [];
+                if (composedStates.bilan) sel.push('Bilan');
+                if (composedStates.resultat) sel.push('Résultat');
+                if (composedStates.flux) sel.push('Flux');
+                if (composedStates.annexes) sel.push('Notes Annexes');
+                docTitre = `Dossier Composé (${sel.join(' + ')}) — ${pme.nom}`;
+            } else if (currentReportType === 'bilan') {
+                docTitre = `Bilan Réglementaire SYSCOHADA — ${pme.nom}`;
+            } else if (currentReportType === 'resultat') {
+                docTitre = `Compte de Résultat SYSCOHADA — ${pme.nom}`;
+            } else if (currentReportType === 'flux') {
+                docTitre = `Tableau des Flux de Trésorerie — ${pme.nom}`;
+            } else if (currentReportType === 'annexes') {
+                docTitre = `Notes Annexes SYSCOHADA — ${pme.nom}`;
+            }
 
             // Création d'une iframe d'impression isolée pour garantir une impression A4 sans faille
             let iframe = document.getElementById('growPrintIframe');
@@ -7065,7 +7270,7 @@
                 <html lang="fr">
                 <head>
                     <meta charset="utf-8">
-                    <title>Liasse Fiscale SYSCOHADA SMT — ${pme.nom}</title>
+                    <title>${docTitre}</title>
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
                     <style>
                         @page {
