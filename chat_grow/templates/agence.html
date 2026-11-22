@@ -1315,10 +1315,10 @@
 
                         <div style="margin: 8px 10px; border-top: 1px solid #f1f5f9;"></div>
 
-                        <a href="javascript:void(0)" onclick="ouvrirModalConnexion()" class="menu-item"
-                            id="sideLinkAcces">
-                            <i class="fa-solid fa-user-shield"></i>
-                            <span>Accès Sécurisé</span>
+                        <a href="javascript:void(0)" onclick="switchAgencyTab('parametres')" class="menu-item"
+                            id="sideLinkParametres">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Paramètres Cabinet</span>
                         </a>
                     </div>
                 </div>
@@ -3199,9 +3199,39 @@
                 <!-- SECTION : PARAMÈTRES (CONFIGURATION DU CABINET COMPTABLE)                 -->
                 <!-- ========================================================================= -->
                 <div id="sectionParametres" class="agency-tab-pane" style="display: none;">
-                    <div class="content-header-tag">Configuration Cabinet &bull; Habilitations &amp; Mentions Légales
+                    <div class="content-header-tag">Entreprise Comptable Connectée &bull; Habilitations &amp; Mentions Légales
                     </div>
-                    <h1 class="content-title">Paramètres de votre Cabinet Comptable</h1>
+                    <h1 class="content-title">Paramètres du Cabinet Comptable Connecté</h1>
+
+                    <!-- Encart dynamique d'identification du Cabinet connecté -->
+                    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border: 1.5px solid #a7f3d0; border-radius: 14px; padding: 20px 24px; margin-bottom: 22px; max-width: 780px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(14,118,71,0.06);">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="width: 50px; height: 50px; border-radius: 12px; background: #0e7647; color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 10px rgba(14,118,71,0.25);">
+                                <i class="fa-solid fa-building-circle-check"></i>
+                            </div>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <h3 id="paramConnectedCabName" style="font-size: 16px; font-weight: 800; color: #0f172a; margin: 0;">Cabinet Diallo &amp; Associés</h3>
+                                    <span style="font-size: 10px; font-weight: 800; background: #ecfdf5; color: #0e7647; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 99px; display: inline-flex; align-items: center; gap: 4px;">
+                                        <i class="fa-solid fa-circle-check"></i> Connecté
+                                    </span>
+                                </div>
+                                <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">
+                                    <span id="paramConnectedCabEmail">contact@cabinet-diallo.sn</span> &bull; 
+                                    <span id="paramConnectedCabResp">Expert-Comptable Référent</span> &bull; 
+                                    <strong style="color: #0e7647;">Ordre des Experts-Comptables (ONECCA Sénégal)</strong>
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" onclick="ouvrirModalConnexion()" 
+                                style="padding: 8px 14px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 11.5px; font-weight: 700; color: #334155; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s;"
+                                onmouseover="this.style.background='#f8fafc'; this.style.borderColor='#94a3b8';"
+                                onmouseout="this.style.background='#ffffff'; this.style.borderColor='#cbd5e1';">
+                                <i class="fa-solid fa-arrow-right-arrow-left"></i> Changer de compte
+                            </button>
+                        </div>
+                    </div>
 
                     <div
                         style="background: white; border: 1px solid #e2e8f0; border-radius: 14px; padding: 26px; max-width: 780px;">
@@ -4171,9 +4201,10 @@
                 'tableau': 'sideLinkDashboard',
                 'pme': 'sideLinkPme',
                 'reporting': 'sideLinkReporting',
-                'documents': 'sideLinkDocuments'
+                'documents': 'sideLinkDocuments',
+                'parametres': 'sideLinkParametres'
             };
-            ['sideLinkDashboard', 'sideLinkPme', 'sideLinkReporting', 'sideLinkDocuments', 'sideLinkAcces'].forEach(id => {
+            ['sideLinkDashboard', 'sideLinkPme', 'sideLinkReporting', 'sideLinkDocuments', 'sideLinkParametres'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('active');
             });
@@ -4304,13 +4335,19 @@
                 if (email) localStorage.setItem('growth_cabinet_email', email);
                 if (phone) localStorage.setItem('growth_cabinet_phone', phone);
             }
-            // 1. Mise à jour de la barre supérieure (Navbar)
+            // 1. Mise à jour de la barre supérieure (Navbar) et de la page Paramètres
             const navNom = document.getElementById('navCabinetName');
             if (navNom) navNom.textContent = nom;
             const menuNom = document.getElementById('navMenuCabinetName');
             if (menuNom) menuNom.textContent = nom;
             const menuEmail = document.getElementById('navMenuCabinetEmail');
             if (menuEmail && email) menuEmail.textContent = email;
+            const paramCabName = document.getElementById('paramConnectedCabName');
+            if (paramCabName) paramCabName.textContent = nom;
+            const paramCabEmail = document.getElementById('paramConnectedCabEmail');
+            if (paramCabEmail && email) paramCabEmail.textContent = email;
+            const paramCabResp = document.getElementById('paramConnectedCabResp');
+            if (paramCabResp && resp) paramCabResp.textContent = resp;
 
             // 2. Mise à jour des champs du formulaire Paramètres
             const cabNomInput = document.getElementById('cabNom');
