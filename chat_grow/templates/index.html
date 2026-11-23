@@ -869,9 +869,10 @@
     <div id="modalConnexionCabinet"
         class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
         style="display: none;">
-        
-        <div class="w-full max-w-[480px] bg-white rounded-[26px] p-6 sm:p-8 border border-slate-200/90 shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-200">
-            
+
+        <div
+            class="w-full max-w-[480px] bg-white rounded-[26px] p-6 sm:p-8 border border-slate-200/90 shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-200">
+
             <!-- Bouton de fermeture croix (X) -->
             <button type="button" onclick="fermerModalConnexionCabinet()"
                 class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
@@ -880,20 +881,24 @@
 
             <!-- En-tête officiel Growth -->
             <div class="text-center pb-4 mb-4 border-b border-slate-100">
-                <div class="w-12 h-12 rounded-2xl bg-[#222222] p-2 mx-auto mb-2 shadow-md flex items-center justify-center">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-[#222222] p-2 mx-auto mb-2 shadow-md flex items-center justify-center">
                     <img src="/static/grow_icon_official.png?v=7" alt="Growth" class="w-full h-full object-contain">
                 </div>
                 <h3 class="text-2xl font-black tracking-tight text-[#222222]">Growth</h3>
-                <p class="text-[11.5px] font-semibold text-slate-500">Portail Sécurisé &bull; Espace Cabinet Comptable</p>
+                <p class="text-[11.5px] font-semibold text-slate-500">Portail Sécurisé &bull; Espace Cabinet Comptable
+                </p>
             </div>
 
             <!-- Sous-barre de conformité & démo -->
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Connexion Conforme SMT</span>
+                    <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Connexion Conforme
+                        SMT</span>
                 </div>
-                <a href="/comptable" class="text-[11.5px] font-bold text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors">
+                <a href="/comptable"
+                    class="text-[11.5px] font-bold text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors">
                     <span>Aperçu Démo</span>
                     <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </a>
@@ -917,24 +922,31 @@
             <div id="modalViewLogin">
                 <div class="mb-4">
                     <h4 class="text-xl font-black text-slate-900 tracking-tight">Connexion à votre espace</h4>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de vos PME clientes.</p>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de vos
+                        PME clientes.</p>
                 </div>
 
                 <!-- Bouton Continuer avec Google Workspace -->
                 <button type="button" onclick="loginWithGoogleModal()" style="border: 1.5px solid #e2e8f0;"
                     class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-[12.5px] flex items-center justify-center gap-2.5 shadow-xs transition-all mb-4 cursor-pointer">
                     <svg class="w-4 h-4" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                     </svg>
                     <span>Continuer avec Google Workspace</span>
                 </button>
 
                 <div class="relative flex items-center justify-center my-3.5">
                     <div class="border-t border-slate-200 w-full"></div>
-                    <span class="bg-white px-3 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">ou avec vos identifiants cabinet</span>
+                    <span
+                        class="bg-white px-3 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">ou
+                        avec vos identifiants cabinet</span>
                 </div>
 
                 <form onsubmit="handleModalConnexionSubmit(event)" class="space-y-3">
@@ -954,8 +966,10 @@
 
                     <div>
                         <div class="flex items-center justify-between mb-1">
-                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mot de passe *</label>
-                            <a href="javascript:void(0)" onclick="alert('Veuillez contacter le support Growth Dakar pour réinitialiser vos accès cabinet : support@growth.sn')"
+                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mot de
+                                passe *</label>
+                            <a href="javascript:void(0)"
+                                onclick="alert('Veuillez contacter le support Growth Dakar pour réinitialiser vos accès cabinet : support@growth.sn')"
                                 class="text-[11px] font-bold text-[#222222] hover:underline">Mot de passe oublié ?</a>
                         </div>
                         <div class="relative flex items-center">
@@ -999,34 +1013,42 @@
 
                 <form onsubmit="handleModalInscriptionSubmit(event)" class="space-y-3">
                     <div>
-                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom &amp; Prénom *</label>
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom
+                            &amp; Prénom *</label>
                         <input type="text" id="modalRegNomComplet" required placeholder="Ex: Babacar Ndiaye"
                             class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                     </div>
                     <div>
-                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom du Cabinet *</label>
-                        <input type="text" id="modalRegNomCabinet" required placeholder="Ex: Cabinet Audit &amp; Conseil Ndiaye"
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom du
+                            Cabinet *</label>
+                        <input type="text" id="modalRegNomCabinet" required
+                            placeholder="Ex: Cabinet Audit &amp; Conseil Ndiaye"
                             class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">N° Ordre</label>
+                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">N°
+                                Ordre</label>
                             <input type="text" id="modalRegNumeroOrdre" placeholder="SEC-2024-0418"
                                 class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                         </div>
                         <div>
-                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Téléphone *</label>
+                            <label
+                                class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Téléphone
+                                *</label>
                             <input type="tel" id="modalRegTelephone" required placeholder="+221 77..."
                                 class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email Professionnel *</label>
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email
+                            Professionnel *</label>
                         <input type="email" id="modalRegEmail" required placeholder="contact@votre-cabinet.sn"
                             class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                     </div>
                     <div>
-                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Mot de passe *</label>
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Mot de
+                            passe *</label>
                         <input type="password" id="modalRegPassword" required placeholder="••••••••"
                             class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                     </div>
@@ -1041,7 +1063,8 @@
             </div>
 
             <!-- Footer sécurité -->
-            <div class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-400 font-medium flex items-center justify-center gap-1.5">
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-400 font-medium flex items-center justify-center gap-1.5">
                 <i class="fa-solid fa-shield-halved text-emerald-600"></i>
                 <span>Chiffrement AES-256 &bull; Conforme SYSCOHADA SMT</span>
             </div>
@@ -1050,10 +1073,10 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- MODALE : CONSULTATION DU JOURNAL DE LA PME PAR SON NUMÉRO DE TÉLÉPHONE     -->
+    <!-- MODALE : AUTHENTIFICATION ROBUSTE PME (VÉRIFICATION BASE + CODE 2FA SMS)   -->
     <!-- ========================================================================= -->
     <div id="modalPMEPhone"
-        class="fixed inset-0 z-50 bg-[#222222]/70 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-200"
+        class="fixed inset-0 z-50 bg-[#222222]/75 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-200"
         style="display: none;">
         <div
             class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border-2 border-[#a0d9d2] shadow-2xl relative animate-in fade-in zoom-in-95 duration-150">
@@ -1064,50 +1087,125 @@
                 <i class="fa-solid fa-xmark text-base"></i>
             </button>
 
-            <!-- En-tête -->
-            <div class="text-center mb-6">
+            <!-- En-tête officiel -->
+            <div class="text-center mb-5">
                 <div
                     class="w-14 h-14 rounded-2xl bg-[#222222] p-2.5 mx-auto mb-3 shadow-md flex items-center justify-center border-2 border-[#a0d9d2]">
                     <img src="/static/grow_icon_official.png?v=7" alt="Growth" class="w-full h-full object-contain">
                 </div>
                 <h3 class="text-xl font-black text-[#222222] tracking-tight">
-                    Journal d'une PME en direct
+                    Accès Sécurisé &bull; Journal PME
                 </h3>
-                <p class="text-xs text-slate-500 font-medium mt-1.5 leading-relaxed">
-                    Saisissez le <strong>numéro de téléphone</strong> de la PME pour ouvrir instantanément ses écritures
-                    comptables dédiées.
+                <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                    Authentification certifiée conforme aux normes SYSCOHADA SMT.
                 </p>
             </div>
 
-            <!-- Formulaire téléphone -->
-            <form onsubmit="accederJournalPMEParTelephone(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-black text-[#222222] uppercase tracking-wider mb-1.5">
-                        Numéro de téléphone de la PME *
-                    </label>
-                    <div class="relative flex items-center">
-                        <span class="absolute left-3.5 text-slate-400 text-sm">
-                            <i class="fa-solid fa-phone"></i>
-                        </span>
-                        <input type="tel" id="inputTelPME" required autofocus
-                            placeholder="+221 78 877 38 27 ou 77 123 45 67"
-                            class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-[#222222] placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition">
-                    </div>
-                    <p class="text-[11px] text-slate-400 mt-1">Exemple : 78 877 38 27 (Boutique Touba Sandaga)</p>
+            <!-- ===================================================================== -->
+            <!-- ÉTAPE 1 : VÉRIFICATION DE L'EXISTENCE EN BASE DE DONNÉES              -->
+            <!-- ===================================================================== -->
+            <div id="stepPMEPhone">
+                <p class="text-xs text-slate-600 mb-3.5 leading-relaxed text-center">
+                    Saisissez le <strong>numéro de téléphone</strong> de votre PME pour vérifier vos droits d'accès en base.
+                </p>
+
+                <!-- Zone d'alerte rouge si le numéro n'est pas en base de données -->
+                <div id="alertPMEError"
+                    class="hidden mb-4 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-exclamation text-rose-500 text-sm mt-0.5 shrink-0"></i>
+                    <span id="txtPMEError">Ce numéro n'est pas dans la base de données.</span>
                 </div>
 
-                <button type="submit"
-                    class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-sm font-black transition-all shadow-lg shadow-[#a0d9d2]/40 flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
-                    <i class="fa-solid fa-book-open text-xs text-[#142b27]"></i>
-                    <span>Ouvrir le Journal de cette PME</span>
-                    <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
-                </button>
-            </form>
+                <form onsubmit="verifierNumeroPME(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-black text-[#222222] uppercase tracking-wider mb-1.5">
+                            Numéro de téléphone de la PME *
+                        </label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-3.5 text-slate-400 text-sm">
+                                <i class="fa-solid fa-phone"></i>
+                            </span>
+                            <input type="tel" id="inputTelPME" required autofocus
+                                placeholder="+221 78 877 38 27 ou 77 123 45 67"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-[#222222] placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition">
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Exemple : 78 877 38 27 (Entreprise CGLT)</p>
+                    </div>
+
+                    <button type="submit" id="btnPMECheckPhone"
+                        class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-sm font-black transition-all shadow-lg shadow-[#a0d9d2]/40 flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
+                        <i class="fa-solid fa-shield-check text-xs text-[#142b27]"></i>
+                        <span>Vérifier &amp; Recevoir le Code SMS</span>
+                        <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ===================================================================== -->
+            <!-- ÉTAPE 2 : VALIDATION DU CODE OTP REÇU SUR SMS                        -->
+            <!-- ===================================================================== -->
+            <div id="stepPMECode" style="display: none;">
+                <!-- Badge de confirmation entreprise trouvée -->
+                <div class="mb-3.5 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center gap-2.5">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-base shrink-0"></i>
+                    <div class="text-xs">
+                        <div class="font-black text-emerald-950" id="lblPMENomEntreprise">Entreprise identifiée</div>
+                        <div class="text-emerald-700 text-[11px]" id="lblPMEPhoneValide">+221 ...</div>
+                    </div>
+                </div>
+
+                <!-- Simulation/Toast du SMS reçu sur smartphone -->
+                <div id="smsNotificationBanner" class="mb-4 p-3 rounded-2xl bg-slate-900 text-white shadow-xl border border-slate-700 space-y-1">
+                    <div class="flex items-center justify-between text-[10px] text-slate-400">
+                        <span class="flex items-center gap-1.5 font-bold text-[#a0d9d2]">
+                            <i class="fa-solid fa-comment-sms"></i> SMS REÇU DE GROWTH
+                        </span>
+                        <span class="font-mono">À l'instant</span>
+                    </div>
+                    <div class="text-xs font-semibold text-slate-200" id="txtSmsReceived">
+                        Votre code de sécurité est : <span class="text-[#a0d9d2] font-mono font-black text-sm" id="badgeDevCode">------</span>
+                    </div>
+                </div>
+
+                <!-- Alerte rouge si code faux -->
+                <div id="alertCodeError"
+                    class="hidden mb-3.5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-circle-xmark text-rose-500"></i>
+                    <span id="txtCodeError">Code incorrect. Veuillez réessayer.</span>
+                </div>
+
+                <form onsubmit="validerCodeSMSPME(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-black text-[#222222] uppercase tracking-wider mb-1.5 text-center">
+                            Entrez le code SMS à 6 chiffres *
+                        </label>
+                        <input type="text" id="inputCodeSMS" maxlength="6" required autofocus
+                            placeholder="000000"
+                            class="w-full py-3.5 text-center font-mono text-2xl font-black tracking-[10px] rounded-xl bg-slate-50 border-2 border-slate-200 text-[#222222] placeholder:text-slate-300 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-4 focus:ring-[#a0d9d2]/30 transition">
+                    </div>
+
+                    <button type="submit" id="btnPMEValiderCode"
+                        class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-sm font-black transition-all shadow-lg shadow-[#a0d9d2]/40 flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
+                        <i class="fa-solid fa-lock-open text-xs text-[#142b27]"></i>
+                        <span>Valider mon code &amp; Ouvrir le Journal</span>
+                        <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
+                    </button>
+                </form>
+
+                <div class="mt-4 flex items-center justify-between text-xs">
+                    <button type="button" onclick="renvoyerCodeSMS()" class="text-slate-500 hover:text-[#222222] font-bold underline cursor-pointer">
+                        Renvoyer un nouveau code
+                    </button>
+                    <button type="button" onclick="retourEtapeNumeroPME()" class="text-slate-500 hover:text-[#222222] font-bold cursor-pointer">
+                        &larr; Changer de numéro
+                    </button>
+                </div>
+            </div>
 
             <div
-                class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
+                class="mt-5 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
                 <i class="fa-solid fa-shield-halved text-emerald-600"></i>
-                <span>Données scellées &bull; Traçabilité SYSCOHADA Art. 24</span>
+                <span>Contrôle d'accès certifié &bull; SYSCOHADA Art. 24</span>
             </div>
 
         </div>
@@ -1270,11 +1368,14 @@
         }
 
         // =========================================================================
-        // GESTION DU JOURNAL PME PAR TÉLÉPHONE
+        // GESTION DU JOURNAL PME PAR AUTHENTIFICATION ROBUSTE 2FA SMS
         // =========================================================================
+        let pmeCurrentPhone = '';
+
         function ouvrirModalPMEPhone() {
             const m = document.getElementById('modalPMEPhone');
             if (m) {
+                retourEtapeNumeroPME();
                 m.style.display = 'flex';
                 setTimeout(() => {
                     const input = document.getElementById('inputTelPME');
@@ -1288,20 +1389,139 @@
             if (m) m.style.display = 'none';
         }
 
-        function accederJournalPMEParTelephone(e) {
+        function retourEtapeNumeroPME() {
+            const s1 = document.getElementById('stepPMEPhone');
+            const s2 = document.getElementById('stepPMECode');
+            const err1 = document.getElementById('alertPMEError');
+            const err2 = document.getElementById('alertCodeError');
+            if (s1) s1.style.display = 'block';
+            if (s2) s2.style.display = 'none';
+            if (err1) err1.classList.add('hidden');
+            if (err2) err2.classList.add('hidden');
+            const codeInput = document.getElementById('inputCodeSMS');
+            if (codeInput) codeInput.value = '';
+        }
+
+        async function verifierNumeroPME(e) {
             e.preventDefault();
             const input = document.getElementById('inputTelPME');
-            if (!input) return;
+            const btn = document.getElementById('btnPMECheckPhone');
+            const alertErr = document.getElementById('alertPMEError');
+            const txtErr = document.getElementById('txtPMEError');
+            if (!input || !btn) return;
+
+            alertErr.classList.add('hidden');
             let raw = input.value.trim();
-            let digits = raw.replace(/\D/g, '');
-            if (!digits) {
-                alert("Veuillez saisir un numéro de téléphone valide.");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Vérification en base de données...</span>`;
+
+            try {
+                const response = await fetch('/api/pme/demander-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ telephone: raw })
+                });
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    pmeCurrentPhone = res.phone;
+                    // Basculer vers l'étape 2 : Saisie du Code SMS
+                    document.getElementById('stepPMEPhone').style.display = 'none';
+                    document.getElementById('stepPMECode').style.display = 'block';
+
+                    document.getElementById('lblPMENomEntreprise').textContent = res.nom_entreprise || "PME Identifiée";
+                    document.getElementById('lblPMEPhoneValide').textContent = "+" + res.phone;
+
+                    // Afficher le code SMS de sécurité dans la notification toast
+                    const badgeDev = document.getElementById('badgeDevCode');
+                    if (badgeDev) badgeDev.textContent = res.dev_code || "Code envoyé";
+
+                    setTimeout(() => {
+                        const codeIn = document.getElementById('inputCodeSMS');
+                        if (codeIn) {
+                            codeIn.value = '';
+                            codeIn.focus();
+                        }
+                    }, 150);
+                } else {
+                    // NUMÉRO INCONNU OU NON AUTORISÉ : ON N'OUVRE PAS !
+                    txtErr.textContent = res.message || "Ce numéro n'est pas dans la base de données. Accès refusé.";
+                    alertErr.classList.remove('hidden');
+                }
+            } catch (err) {
+                txtErr.textContent = "Erreur de connexion au serveur de vérification.";
+                alertErr.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-shield-check text-xs text-[#142b27]"></i> <span>Vérifier &amp; Recevoir le Code SMS</span> <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>`;
+            }
+        }
+
+        async function validerCodeSMSPME(e) {
+            e.preventDefault();
+            const codeInput = document.getElementById('inputCodeSMS');
+            const btn = document.getElementById('btnPMEValiderCode');
+            const alertErr = document.getElementById('alertCodeError');
+            const txtErr = document.getElementById('txtCodeError');
+            if (!codeInput || !btn) return;
+
+            alertErr.classList.add('hidden');
+            const code = codeInput.value.trim();
+            if (code.length !== 6) {
+                txtErr.textContent = "Le code de sécurité doit comporter 6 chiffres.";
+                alertErr.classList.remove('hidden');
                 return;
             }
-            if (digits.length === 9 && (digits.startsWith('70') || digits.startsWith('75') || digits.startsWith('76') || digits.startsWith('77') || digits.startsWith('78'))) {
-                digits = '221' + digits;
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Validation du code SMS...</span>`;
+
+            try {
+                const response = await fetch('/api/pme/valider-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ telephone: pmeCurrentPhone, code: code })
+                });
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    btn.innerHTML = `<i class="fa-solid fa-check text-[#142b27]"></i> <span>Code validé ! Ouverture...</span>`;
+                    sessionStorage.setItem('growth_pme_auth_phone', pmeCurrentPhone);
+                    setTimeout(() => {
+                        window.location.href = res.redirect_url || ('/dashboard?phone=' + encodeURIComponent(pmeCurrentPhone));
+                    }, 400);
+                } else {
+                    txtErr.textContent = res.message || "Code incorrect ou expiré. Veuillez vérifier le SMS reçu.";
+                    alertErr.classList.remove('hidden');
+                    codeInput.focus();
+                    codeInput.select();
+                }
+            } catch (err) {
+                txtErr.textContent = "Erreur lors de la validation du code.";
+                alertErr.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-lock-open text-xs text-[#142b27]"></i> <span>Valider mon code &amp; Ouvrir le Journal</span> <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>`;
             }
-            window.location.href = '/dashboard?phone=' + encodeURIComponent(digits);
+        }
+
+        async function renvoyerCodeSMS() {
+            if (!pmeCurrentPhone) return;
+            try {
+                const res = await fetch('/api/pme/demander-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ telephone: pmeCurrentPhone })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    const badgeDev = document.getElementById('badgeDevCode');
+                    if (badgeDev) badgeDev.textContent = data.dev_code || "Nouveau code";
+                    alert("Nouveau code SMS envoyé au +" + pmeCurrentPhone);
+                }
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         // Fermer les modales si clic en dehors ou touche Echap

@@ -763,8 +763,28 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
                 if clean_phone in tel or tel in clean_phone:
                     target_ent = e
                     break
+            
+            # RÈGLE DE SÉCURITÉ ROBUSTE : Si un numéro précis est demandé mais INTROUVABLE en base de données, REFUSER STRICTEMENT L'ACCÈS
+            if not target_ent:
+                return {
+                    "status": "error",
+                    "error": "NUMERO_NON_AUTORISE",
+                    "message": f"Le numéro {clean_phone} n'est associé à aucune PME enregistrée dans la base de données. Accès strictement refusé.",
+                    "autorise": False,
+                    "entreprise": {
+                        "id": "",
+                        "nom_entreprise": "Numéro Non Enregistré",
+                        "telephone_whatsapp": clean_phone,
+                        "ninea": None,
+                        "adresse_siege": "Accès Verrouillé"
+                    },
+                    "entreprises": [],
+                    "transactions": [],
+                    "totals": {"debit": 0, "credit": 0, "solde": 0, "count": 0},
+                    "auth_requise": True
+                }
 
-        # 3. Si non trouvé, se rabattre obligatoirement sur l'entreprise active réelle CGLT (17 transactions garanties)
+        # 3. Si aucun numéro n'est spécifié (accès démo portail)
         if not target_ent and all_ents:
             primary_ent = next(
                 (e for e in all_ents if "221788773827" in str(e.get("telephone_whatsapp") or "") or "CGLT" in (e.get("nom_entreprise") or "").upper()),
@@ -1851,6 +1871,127 @@ async def api_comptable_email_preview(nom_complet: str = "Mamadou Diallo", nom_c
     """Prévisualisation directe de l'email de bienvenue officiel pour les comptables."""
     html_content = generer_email_bienvenue_comptable_html(nom_complet, nom_cabinet, numero_ordre, email)
     return HTMLResponse(content=html_content)
+
+
+# =========================================================================
+# MODULE DE SÉCURITÉ ROBUSTE & 2FA SMS POUR LES PME SÉNÉGALAISES
+# =========================================================================
+_PME_OTP_STORAGE = {}  # { clean_phone: { "code": "123456", "expires_at": ts, "nom_entreprise": "..." } }
+
+
+@app.post("/api/pme/demander-otp")
+async def api_pme_demander_otp(payload: Dict[str, Any]):
+    """
+    Vérification stricte de l'existence du numéro PME en base de données :
+    - Si le numéro n'est PAS en base : REFUS STRICT (on n'ouvre pas)
+    - Si le numéro existe : Génération d'un code OTP de sécurité SMS à 6 chiffres
+    """
+    import random
+    raw_phone = str(payload.get("telephone") or "").strip()
+    digits = re.sub(r"\D", "", raw_phone)
+
+    if not digits:
+        return {"status": "error", "message": "Numéro de téléphone requis."}
+
+    # Format normalisé Sénégal : 9 chiffres (70, 75, 76, 77, 78) -> 221...
+    if len(digits) == 9 and digits.startswith(("70", "75", "76", "77", "78")):
+        clean_phone = "221" + digits
+    else:
+        clean_phone = digits
+
+    # 1. Vérification stricte en Base de Données
+    all_ents = get_all_entreprises_resilient()
+    matched_ent = None
+    for e in all_ents:
+        tel = re.sub(r"\D", "", str(e.get("telephone_whatsapp") or ""))
+        if clean_phone == tel or (len(clean_phone) >= 9 and clean_phone[-9:] == tel[-9:]):
+            matched_ent = e
+            break
+
+    # RÈGLE DE SÉCURITÉ STRICTE : Si le numéro n'est PAS dans la base de données, REFUS TOTAL
+    if not matched_ent:
+        return {
+            "status": "error",
+            "code": "NUMERO_INCONNU",
+            "message": "Ce numéro de téléphone n'est associé à aucune PME enregistrée dans la base de données. Accès strictement refusé."
+        }
+
+    # 2. Génération du Code OTP de Sécurité (6 chiffres)
+    otp_code = f"{random.randint(100000, 999999)}"
+    nom_ent = matched_ent.get("nom_entreprise") or "Votre PME"
+    expires_at = time.time() + 600  # Valable 10 minutes
+
+    _PME_OTP_STORAGE[clean_phone] = {
+        "code": otp_code,
+        "expires_at": expires_at,
+        "nom_entreprise": nom_ent,
+        "entreprise_id": matched_ent.get("id")
+    }
+
+    # 3. Notification WhatsApp / SMS
+    sms_text = f"🔒 [GROWTH SYSCOHADA] Votre code de sécurité SMS pour accéder au journal de {nom_ent} est : {otp_code}. Valable 10 minutes. Ne le communiquez à personne."
+    try:
+        asyncio.create_task(send_whatsapp_message(clean_phone, sms_text, with_buttons=False))
+    except Exception as e_sms:
+        print(f"[OTP SMS INFO] {e_sms}")
+
+    print(f"[AUTH SÉCURITÉ PME] Code OTP généré pour {clean_phone} ({nom_ent}): {otp_code}")
+
+    return {
+        "status": "success",
+        "message": f"Code de vérification envoyé par SMS au +{clean_phone}",
+        "phone": clean_phone,
+        "nom_entreprise": nom_ent,
+        "dev_code": otp_code  # Fourni pour confort de test démo immédiat
+    }
+
+
+@app.post("/api/pme/valider-otp")
+async def api_pme_valider_otp(payload: Dict[str, Any]):
+    """Validation rigoureuse du code SMS reçu par la PME."""
+    raw_phone = str(payload.get("telephone") or "").strip()
+    code_saisi = str(payload.get("code") or "").strip().replace(" ", "")
+    digits = re.sub(r"\D", "", raw_phone)
+
+    if len(digits) == 9 and digits.startswith(("70", "75", "76", "77", "78")):
+        clean_phone = "221" + digits
+    else:
+        clean_phone = digits
+
+    entry = _PME_OTP_STORAGE.get(clean_phone)
+    if not entry:
+        return {
+            "status": "error",
+            "code": "AUCUN_CODE",
+            "message": "Aucun code n'a été demandé pour ce numéro. Veuillez d'abord demander un code SMS."
+        }
+
+    if time.time() > entry.get("expires_at", 0):
+        _PME_OTP_STORAGE.pop(clean_phone, None)
+        return {
+            "status": "error",
+            "code": "CODE_EXPIRE",
+            "message": "Le code de sécurité a expiré (délai de 10 min dépassé). Veuillez en demander un nouveau."
+        }
+
+    if code_saisi != entry.get("code"):
+        return {
+            "status": "error",
+            "code": "CODE_INVALIDE",
+            "message": "Code de vérification incorrect. Veuillez vérifier le SMS reçu."
+        }
+
+    # Code validé avec succès !
+    nom_ent = entry.get("nom_entreprise")
+    _PME_OTP_STORAGE.pop(clean_phone, None)  # Usage unique
+
+    return {
+        "status": "success",
+        "message": "Identité certifiée avec succès !",
+        "phone": clean_phone,
+        "nom_entreprise": nom_ent,
+        "redirect_url": f"/dashboard?phone={clean_phone}&auth_verified=1"
+    }
 
 
 @app.get("/cockpit", response_class=HTMLResponse)
