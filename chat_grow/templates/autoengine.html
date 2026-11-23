@@ -20,13 +20,13 @@
             --bg-card: #0d121d;
             --bg-card-hover: #131b2a;
             --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(0, 229, 255, 0.35);
+            --border-glow: rgba(160, 217, 210, 0.3);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
-            --cyan-glow: #00e5ff;
-            --blue-tech: #3b82f6;
-            --emerald-grow: #10b981;
+            --cyan-glow: #a0d9d2;
+            --blue-tech: #142b27;
+            --emerald-grow: #a0d9d2;
             --wa-green: #25D366;
             --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
             --font-display: 'Space Grotesk', var(--font-main);
@@ -68,7 +68,7 @@
             left: 20vw;
             width: 60vw;
             height: 60vw;
-            background: radial-gradient(circle, rgba(0, 229, 255, 0.07) 0%, rgba(59, 130, 246, 0.03) 40%, transparent 70%);
+            background: radial-gradient(circle, rgba(160, 217, 210, 0.05) 0%, rgba(20, 43, 39, 0.1) 40%, transparent 70%);
             filter: blur(100px);
             pointer-events: none;
             z-index: 0;
@@ -80,7 +80,7 @@
             right: 10vw;
             width: 55vw;
             height: 55vw;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, rgba(0, 229, 255, 0.02) 50%, transparent 70%);
+            background: radial-gradient(circle, rgba(20, 43, 39, 0.15) 0%, rgba(160, 217, 210, 0.03) 50%, transparent 70%);
             filter: blur(120px);
             pointer-events: none;
             z-index: 0;
@@ -126,12 +126,12 @@
             width: 38px;
             height: 38px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #0f172a 0%, #00e5ff 150%);
-            border: 1px solid rgba(0, 229, 255, 0.4);
+            background: #142b27;
+            border: 1.5px solid #a0d9d2;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
+            box-shadow: 0 4px 14px rgba(20, 43, 39, 0.4);
         }
 
         .logo-symbol i {
@@ -211,8 +211,9 @@
         }
 
         .btn-nav-cta {
-            background: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
-            color: #050a14;
+            background: #142b27;
+            color: #ffffff;
+            border: 1.5px solid #a0d9d2;
             border: none;
             border-radius: 10px;
             padding: 9px 18px;
@@ -220,7 +221,7 @@
             font-weight: 800;
             text-decoration: none;
             transition: all 0.2s;
-            box-shadow: 0 4px 18px rgba(0, 229, 255, 0.3);
+            box-shadow: 0 4px 18px rgba(20, 43, 39, 0.4);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -228,7 +229,7 @@
 
         .btn-nav-cta:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(0, 229, 255, 0.45);
+            box-shadow: 0 6px 24px rgba(20, 43, 39, 0.55);
         }
 
         /* Hero Section */
@@ -245,13 +246,13 @@
             gap: 9px;
             padding: 6px 16px;
             border-radius: 99px;
-            background: rgba(0, 229, 255, 0.06);
-            border: 1px solid rgba(0, 229, 255, 0.25);
+            background: rgba(160, 217, 210, 0.08);
+            border: 1px solid rgba(160, 217, 210, 0.3);
             font-size: 12.5px;
             font-weight: 700;
             color: var(--cyan-glow);
             margin-bottom: 24px;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.12);
+            box-shadow: 0 0 20px rgba(160, 217, 210, 0.12);
         }
 
         .hero-pill .pulse-dot {
@@ -280,7 +281,7 @@
         }
 
         .hero-title .gradient-text {
-            background: linear-gradient(135deg, #ffffff 30%, #00e5ff 100%);
+            background: linear-gradient(135deg, #ffffff 40%, #a0d9d2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -311,8 +312,9 @@
         }
 
         .btn-hero-primary {
-            background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
-            color: #030712;
+            background: #142b27;
+            color: #ffffff;
+            border: 1.5px solid #a0d9d2;
             padding: 15px 32px;
             border-radius: 12px;
             font-weight: 800;
@@ -321,13 +323,13 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.35);
+            box-shadow: 0 10px 30px rgba(20, 43, 39, 0.45);
             transition: all 0.25s;
         }
 
         .btn-hero-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 40px rgba(0, 229, 255, 0.5);
+            box-shadow: 0 14px 40px rgba(20, 43, 39, 0.6);
         }
 
         .btn-hero-secondary {
@@ -448,7 +450,7 @@
 
         .pillar-card:hover {
             background: var(--bg-card-hover);
-            border-color: rgba(0, 229, 255, 0.3);
+            border-color: rgba(20, 43, 39, 0.4);
             transform: translateY(-4px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
@@ -457,8 +459,8 @@
             width: 52px;
             height: 52px;
             border-radius: 14px;
-            background: rgba(0, 229, 255, 0.08);
-            border: 1px solid rgba(0, 229, 255, 0.2);
+            background: rgba(20, 43, 39, 0.6);
+            border: 1px solid rgba(160, 217, 210, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -513,10 +515,10 @@
         /* ------------------------------------------------------------------------- */
         .flagship-box {
             background: linear-gradient(135deg, rgba(13, 18, 29, 0.95) 0%, rgba(9, 28, 24, 0.85) 100%);
-            border: 1.5px solid rgba(16, 185, 129, 0.35);
+            border: 1.5px solid rgba(20, 43, 39, 0.45);
             border-radius: 28px;
             padding: 48px;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), 0 0 50px rgba(16, 185, 129, 0.12);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), 0 0 50px rgba(20, 43, 39, 0.35);
             position: relative;
             overflow: hidden;
         }
@@ -525,9 +527,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(16, 185, 129, 0.12);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            color: #34d399;
+            background: rgba(20, 43, 39, 0.5);
+            border: 1px solid rgba(160, 217, 210, 0.3);
+            color: #a0d9d2;
             padding: 5px 14px;
             border-radius: 99px;
             font-size: 12px;
@@ -554,7 +556,7 @@
         }
 
         .flagship-title span {
-            color: #10b981;
+            color: #a0d9d2;
         }
 
         .flagship-desc {
@@ -580,7 +582,7 @@
         }
 
         .ff-item i {
-            color: #10b981;
+            color: #a0d9d2;
             margin-top: 3px;
             font-size: 14px;
         }
@@ -593,8 +595,9 @@
         }
 
         .btn-growth-portal {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: #142b27;
             color: #ffffff;
+            border: 1.5px solid #a0d9d2;
             padding: 13px 26px;
             border-radius: 12px;
             font-weight: 800;
@@ -603,13 +606,13 @@
             display: inline-flex;
             align-items: center;
             gap: 9px;
-            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+            box-shadow: 0 8px 24px rgba(20, 43, 39, 0.45);
             transition: all 0.2s;
         }
 
         .btn-growth-portal:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
+            box-shadow: 0 12px 32px rgba(20, 43, 39, 0.6);
         }
 
         .btn-growth-cabinet {
@@ -662,7 +665,7 @@
         }
 
         .qr-brand i {
-            color: #10b981;
+            color: #a0d9d2;
         }
 
         .qr-badge-wa {
@@ -740,7 +743,7 @@
         }
 
         .uc-card:hover {
-            border-color: rgba(0, 229, 255, 0.25);
+            border-color: rgba(160, 217, 210, 0.3);
             transform: translateY(-3px);
             background: var(--bg-card-hover);
         }
@@ -853,8 +856,8 @@
         }
 
         .calc-result-panel {
-            background: rgba(0, 229, 255, 0.04);
-            border: 1px solid rgba(0, 229, 255, 0.25);
+            background: rgba(20, 43, 39, 0.35);
+            border: 1px solid rgba(160, 217, 210, 0.3);
             border-radius: 18px;
             padding: 32px;
             text-align: center;
@@ -897,7 +900,7 @@
         .pricing-card.featured {
             background: linear-gradient(180deg, #101928 0%, #0d121d 100%);
             border: 1.5px solid var(--cyan-glow);
-            box-shadow: 0 0 40px rgba(0, 229, 255, 0.18);
+            box-shadow: 0 0 40px rgba(20, 43, 39, 0.45);
         }
 
         .featured-tag {
@@ -905,8 +908,9 @@
             top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
-            color: #050a14;
+            background: #142b27;
+            color: #ffffff;
+            border: 1.5px solid #a0d9d2;
             font-size: 10.5px;
             font-weight: 900;
             text-transform: uppercase;
@@ -970,8 +974,9 @@
         }
 
         .btn-pricing.primary {
-            background: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
-            color: #030712;
+            background: #142b27;
+            color: #ffffff;
+            border: 1.5px solid #a0d9d2;
             border: none;
         }
 
@@ -1013,8 +1018,8 @@
 
         .form-input:focus {
             border-color: var(--cyan-glow);
-            background: rgba(0, 229, 255, 0.03);
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+            background: rgba(20, 43, 39, 0.25);
+            box-shadow: 0 0 15px rgba(20, 43, 39, 0.3);
         }
 
         /* Footer */
@@ -1127,7 +1132,7 @@
 
                 <ul class="nav-menu">
                     <li><a href="#piliers" class="nav-link">Piliers IA</a></li>
-                    <li><a href="#growth" class="nav-link" style="color: #34d399;"><i class="fa-solid fa-bolt" style="font-size: 11px;"></i> Agent Growth</a></li>
+                    <li><a href="#growth" class="nav-link" style="color: #a0d9d2;"><i class="fa-solid fa-bolt" style="font-size: 11px;"></i> Agent Growth</a></li>
                     <li><a href="#secteurs" class="nav-link">Secteurs</a></li>
                     <li><a href="#methodologie" class="nav-link">Méthodologie</a></li>
                     <li><a href="#simulateur" class="nav-link">Simulateur ROI</a></li>
@@ -1167,7 +1172,7 @@
                     <span>Auditer Mon Entreprise</span>
                 </a>
                 <a href="#growth" class="btn-hero-secondary">
-                    <i class="fa-solid fa-shield-halved" style="color: #34d399;"></i>
+                    <i class="fa-solid fa-shield-halved" style="color: #a0d9d2;"></i>
                     <span>Découvrir notre 1er Agent : Growth</span>
                 </a>
             </div>
@@ -1201,77 +1206,80 @@
                 <span class="section-tag">Notre Savoir-Faire d'Ingénierie</span>
                 <h2 class="section-title">Quatre Piliers d'Automatisation Intelligente</h2>
                 <p class="section-desc">
-                    Nous ne nous limitons pas à installer de simples chatbots. Nous concevons une véritable architecture d'automatisation d'entreprise.
+                    Nous concevons des architectures d'automatisation cognitive d'envergure pour transformer vos opérations manuelles en systèmes autonomes et résilients.
                 </p>
             </div>
 
             <div class="pillars-grid">
-                <!-- 1. Création d'agents IA -->
+                <!-- 1. Systèmes Multi-Agents Autonomes -->
                 <div class="pillar-card">
                     <span class="pillar-num">01</span>
                     <div class="pillar-icon-box">
-                        <i class="fa-solid fa-robot"></i>
+                        <i class="fa-solid fa-network-wired"></i>
                     </div>
-                    <h3 class="pillar-title">Création d'Agents IA Autonomes</h3>
+                    <h3 class="pillar-title">Systèmes Multi-Agents &amp; Copilotes Décisionnels</h3>
                     <p class="pillar-text">
-                        Développement d'agents spécialisés : commerciaux IA, assistants virtuels de support client, qualification continue de prospects et prise automatique de rendez-vous dans vos agendas.
+                        Déploiement d'agents IA hautement spécialisés qui collaborent en essaim : prospection B2B grands comptes, assistants exécutifs de direction, analyse prédictive de données financières et support opérationnel L1/L2/L3.
                     </p>
                     <div class="pillar-tags">
-                        <span class="tech-pill">Qualification Leads</span>
-                        <span class="tech-pill">Support 24/7</span>
-                        <span class="tech-pill">Prise de RDV Calendly/Google</span>
+                        <span class="tech-pill">Intelligence Collective (Swarms)</span>
+                        <span class="tech-pill">Prospection &amp; Négociation B2B</span>
+                        <span class="tech-pill">Analystes de Données Temps Réel</span>
+                        <span class="tech-pill">Copilotes Exécutifs</span>
                     </div>
                 </div>
 
-                <!-- 2. Automatisation des processus -->
+                <!-- 2. Automatisation des Workflows Complexes End-to-End -->
                 <div class="pillar-card">
                     <span class="pillar-num">02</span>
                     <div class="pillar-icon-box">
-                        <i class="fa-solid fa-gears"></i>
+                        <i class="fa-solid fa-diagram-project"></i>
                     </div>
-                    <h3 class="pillar-title">Automatisation des Processus Métiers</h3>
+                    <h3 class="pillar-title">Automatisation des Processus Métiers Critiques</h3>
                     <p class="pillar-text">
-                        Éradication des tâches chronophages : génération automatique de factures et devis, traitement instantané des commandes, relances intelligentes d'impayés et consolidation de rapports de gestion.
+                        Élimination des goulots d'étranglement sur toute la chaîne de valeur : cycles Purchase-to-Pay, réconciliation multi-comptes bancaires, vérifications de conformité (KYC, AML, audits), et gestion des opérations de supply chain.
                     </p>
                     <div class="pillar-tags">
-                        <span class="tech-pill">Facturation & Rapprochement</span>
-                        <span class="tech-pill">Relances Clients</span>
-                        <span class="tech-pill">Reporting Décisionnel</span>
+                        <span class="tech-pill">Supply Chain &amp; Logistique</span>
+                        <span class="tech-pill">Conformité Réglementaire &amp; KYC</span>
+                        <span class="tech-pill">Cycle Achats / Ventes End-to-End</span>
+                        <span class="tech-pill">Audits Automatisés</span>
                     </div>
                 </div>
 
-                <!-- 3. Intégration de systèmes intelligents -->
+                <!-- 3. Interconnexion d'Architectures Hybrides & ERP -->
                 <div class="pillar-card">
                     <span class="pillar-num">03</span>
                     <div class="pillar-icon-box">
-                        <i class="fa-solid fa-network-wired"></i>
+                        <i class="fa-solid fa-server"></i>
                     </div>
-                    <h3 class="pillar-title">Intégration de Systèmes Intelligents</h3>
+                    <h3 class="pillar-title">Intégration d'Architectures d'Entreprise &amp; ERP</h3>
                     <p class="pillar-text">
-                        Interconnexion totale de tout votre écosystème numérique : plateformes web, logiciels de gestion internes, CRM, ERP, bases de données SQL/NoSQL, flux emails, téléphonie et canaux de messagerie.
+                        Connexion robuste et sécurisée avec les infrastructures maîtresses : ERP industriels (SAP, Oracle, Odoo, Sage), CRM d'envergure (Salesforce, HubSpot), entrepôts de données (BigQuery, PostgreSQL, Snowflake) et API propriétaires.
                     </p>
                     <div class="pillar-tags">
-                        <span class="tech-pill">API REST & Webhooks</span>
-                        <span class="tech-pill">ERP & Logiciels Métiers</span>
-                        <span class="tech-pill">CRM & Bases de Données</span>
-                        <span class="tech-pill">Web, Voix & Messageries</span>
+                        <span class="tech-pill">SAP &bull; Oracle &bull; Odoo &bull; Sage</span>
+                        <span class="tech-pill">Salesforce &bull; HubSpot Enterprise</span>
+                        <span class="tech-pill">Data Warehouses &amp; Data Lakes</span>
+                        <span class="tech-pill">Chiffrement Bancaire &amp; SOC-2</span>
                     </div>
                 </div>
 
-                <!-- 4. Agents IA sur mesure -->
+                <!-- 4. RAG d'Entreprise & Analyse Documentaire Avancée -->
                 <div class="pillar-card">
                     <span class="pillar-num">04</span>
                     <div class="pillar-icon-box">
                         <i class="fa-solid fa-brain"></i>
                     </div>
-                    <h3 class="pillar-title">Agents IA Sur-Mesure & Raisonnement</h3>
+                    <h3 class="pillar-title">Raisonnement Cognitif &amp; RAG d'Entreprise</h3>
                     <p class="pillar-text">
-                        Conception d'agents capables d'analyser des documents non structurés, d'interroger vos API internes, d'appliquer vos règles de conformité et d'exécuter des missions sous contrôle humain.
+                        Moteurs d'IA entraînés sur vos bases de connaissances propriétaires : analyse instantanée de milliers de pages de contrats juridiques, extraction de données non structurées sur documents scannés, et prise de décision sous garde-fous stricts.
                     </p>
                     <div class="pillar-tags">
-                        <span class="tech-pill">Vision par Ordinateur</span>
-                        <span class="tech-pill">Garde-fous Métier</span>
-                        <span class="tech-pill">Audit Trail 100% traçable</span>
+                        <span class="tech-pill">RAG Haute Précision</span>
+                        <span class="tech-pill">Analyse Contractuelle &amp; Légale</span>
+                        <span class="tech-pill">Vision par Ordinateur (OCR Avancé)</span>
+                        <span class="tech-pill">Traçabilité &amp; Audit Trail 100%</span>
                     </div>
                 </div>
             </div>
@@ -1368,62 +1376,62 @@
                 <span class="section-tag">Adaptabilité Industrielle</span>
                 <h2 class="section-title">Des Agents IA Taillés pour Votre Métier</h2>
                 <p class="section-desc">
-                    Chaque industrie possède ses propres goulots d'étranglement. Voici comment AutoEngine déploie la force de travail autonome.
+                    De la finance de marché à la chaîne logistique internationale, nos agents IA s'intègrent au cœur des opérations les plus critiques.
                 </p>
             </div>
 
             <div class="use-cases-grid">
-                <!-- PME & Négoce -->
+                <!-- 1. Banque, Finance & Fintech -->
                 <div class="uc-card">
-                    <div class="uc-icon"><i class="fa-solid fa-briefcase"></i></div>
-                    <h3 class="uc-title">PME &amp; Commerces</h3>
+                    <div class="uc-icon"><i class="fa-solid fa-building-columns"></i></div>
+                    <h3 class="uc-title">Banque, Assurance &amp; Fintech</h3>
                     <p class="uc-desc">
-                        Automatisation de la facturation, synchronisation de caisse, suivi des créances clients et saisie administrative sans friction.
+                        Onboarding KYC/KYB automatisé, scoring crédit instantané, détection des fraudes financières, conciliation des flux interbancaires et conformité réglementaire continue.
                     </p>
                 </div>
 
-                <!-- E-Commerce -->
+                <!-- 2. Industrie, Logistique & Supply Chain -->
                 <div class="uc-card">
-                    <div class="uc-icon"><i class="fa-solid fa-cart-shopping"></i></div>
-                    <h3 class="uc-title">E-Commerce &amp; Retail</h3>
+                    <div class="uc-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                    <h3 class="uc-title">Industrie, Fret &amp; Supply Chain</h3>
                     <p class="uc-desc">
-                        Automatisation omnicanale des commandes (Web, Email, Chat), suivi logistique en direct et support après-vente 24/7.
+                        Suivi automatisé des expéditions de fret, gestion prédictive des stocks multi-entrepôts, dédouanement documentaire et dispatch intelligent des flottes.
                     </p>
                 </div>
 
-                <!-- Restaurants & Hôtellerie -->
+                <!-- 3. Cabinets d'Avocats, Notaires & Juridique -->
                 <div class="uc-card">
-                    <div class="uc-icon"><i class="fa-solid fa-utensils"></i></div>
-                    <h3 class="uc-title">Restaurants &amp; Hôtels</h3>
+                    <div class="uc-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3 class="uc-title">Juridique, Notaires &amp; Conformité</h3>
                     <p class="uc-desc">
-                        Prise de réservations 24h/24, gestion intelligente du menu, recueil d'avis clients et fidélisation automatisée.
+                        Audit contractuel assisté par IA, extraction des clauses critiques et de risque, génération d'actes juridiques normalisés et synthèse de volumineux dossiers contentieux.
                     </p>
                 </div>
 
-                <!-- Cabinets & Agences -->
+                <!-- 4. Experts-Comptables, CAC & Audit Financier -->
                 <div class="uc-card">
-                    <div class="uc-icon"><i class="fa-solid fa-landmark"></i></div>
-                    <h3 class="uc-title">Cabinets &amp; Agences</h3>
+                    <div class="uc-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <h3 class="uc-title">Cabinets d'Audit &amp; Experts-Comptables</h3>
                     <p class="uc-desc">
-                        Collecte de pièces justificatives, qualification des dossiers entrants, relance des pièces manquantes et planification de rendez-vous.
+                        Collecte automatisée de pièces comptables probantes, lettrage de masse, détection des ruptures de FEC et génération des liasses financières officielles (SYSCOHADA / IFRS).
                     </p>
                 </div>
 
-                <!-- Services Médicaux & Cliniques -->
+                <!-- 5. Télécoms, Énergie & Services Publics -->
                 <div class="uc-card">
-                    <div class="uc-icon"><i class="fa-solid fa-stethoscope"></i></div>
-                    <h3 class="uc-title">Santé &amp; Cliniques</h3>
+                    <div class="uc-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+                    <h3 class="uc-title">Télécoms, Énergie &amp; Infrastructures</h3>
                     <p class="uc-desc">
-                        Rappels automatisés de rendez-vous pour réduire l'absentéisme, tri d'accueil et orientation des patients selon les urgences.
+                        Gestion omnicanale de millions d'interactions abonnés, traitement autonome des réclamations de facturation et supervision des incidents d'infrastructure réseau.
                     </p>
                 </div>
 
-                <!-- Grandes Entreprises -->
+                <!-- 6. Santé, Laboratoires & Groupes Hospitaliers -->
                 <div class="uc-card">
-                    <div class="uc-icon"><i class="fa-solid fa-building-user"></i></div>
-                    <h3 class="uc-title">Grandes Entreprises</h3>
+                    <div class="uc-icon"><i class="fa-solid fa-hospital"></i></div>
+                    <h3 class="uc-title">Santé, Cliniques &amp; Laboratoires</h3>
                     <p class="uc-desc">
-                        Agents d'analyse documentaire complexe, assistants RH internes et automatisation des flux inter-services sécurisés.
+                        Numérisation et synthèse sécurisée de dossiers médicaux, coordination automatisée des examens, acheminement des résultats d'analyses et conformité des données de santé.
                     </p>
                 </div>
             </div>
@@ -1641,8 +1649,8 @@
                     </button>
                 </form>
 
-                <div id="auditSuccessNotice" style="display: none; text-align: center; padding: 24px; background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 14px; margin-top: 18px;">
-                    <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 32px; margin-bottom: 10px;"></i>
+                <div id="auditSuccessNotice" style="display: none; text-align: center; padding: 24px; background: rgba(20, 43, 39, 0.5); border: 1.5px solid #a0d9d2; border-radius: 14px; margin-top: 18px;">
+                    <i class="fa-solid fa-circle-check" style="color: #a0d9d2; font-size: 32px; margin-bottom: 10px;"></i>
                     <h4 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-bottom: 4px;">Demande d'Audit Reçue avec Succès !</h4>
                     <p style="font-size: 13.5px; color: #cbd5e1;">Un ingénieur AutoEngine vous contactera sous 2 heures ouvrées pour convenir du créneau de 30 minutes.</p>
                 </div>
@@ -1684,7 +1692,7 @@
                 <div class="footer-col">
                     <h4>Produits IA</h4>
                     <ul class="footer-links">
-                        <li><a href="/comptable" style="color: #34d399; font-weight: 700;"><i class="fa-solid fa-bolt" style="font-size: 11px;"></i> Growth (Fintech IA)</a></li>
+                        <li><a href="/comptable" style="color: #a0d9d2; font-weight: 700;"><i class="fa-solid fa-bolt" style="font-size: 11px;"></i> Growth (Fintech IA)</a></li>
                         <li><a href="/dashboard">Portail PME Growth</a></li>
                         <li><a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank">WhatsApp Growth Live</a></li>
                         <li><a href="#offres">Abonnements SaaS</a></li>
@@ -1707,7 +1715,7 @@
                     &copy; 2026 AUTOENGINE AI &bull; Tous droits réservés. Less manual work. More intelligent business.
                 </div>
                 <div>
-                    Propulseur de l'écosystème <a href="/comptable" style="color: #34d399; text-decoration: none; font-weight: 700;">Growth SYSCOHADA</a>.
+                    Propulseur de l'écosystème <a href="/comptable" style="color: #a0d9d2; text-decoration: none; font-weight: 700;">Growth SYSCOHADA</a>.
                 </div>
             </div>
         </div>
