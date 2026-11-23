@@ -2056,7 +2056,31 @@ async def api_pme_verifier_acces(request: Request, payload: Dict[str, Any]):
         "redirect_url": f"/dashboard?phone={clean_phone}"
     }
 
-_PME_OTP_STORAGE = {}  # { clean_phone: { "code": "123456", "expires_at": ts, "nom_entreprise": "..." } }
+PME_OTP_FILE = os.path.join(os.path.dirname(__file__), "pme_otp_registry.json")
+
+def load_pme_otp_storage() -> Dict[str, Dict[str, Any]]:
+    """Charge les codes OTP actifs depuis le stockage persistant JSON."""
+    if os.path.exists(PME_OTP_FILE):
+        try:
+            with open(PME_OTP_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                # Purger les codes expirés
+                now = time.time()
+                return {k: v for k, v in data.items() if v.get("expires_at", 0) > now}
+        except Exception as e:
+            print(f"Info lecture {PME_OTP_FILE}: {e}")
+            return {}
+    return {}
+
+def save_pme_otp_storage(storage: Dict[str, Dict[str, Any]]):
+    """Sauvegarde les codes OTP de manière atomique et persistante."""
+    try:
+        with open(PME_OTP_FILE, "w", encoding="utf-8") as f:
+            json.dump(storage, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Erreur écriture {PME_OTP_FILE}: {e}")
+
+_PME_OTP_STORAGE = load_pme_otp_storage()
 
 
 @app.post("/api/pme/demander-otp")
@@ -2110,10 +2134,12 @@ async def api_pme_demander_otp(payload: Dict[str, Any]):
         "entreprise_id": matched_ent.get("id"),
         "phone": clean_phone
     }
-    # Indexation sous les formats complet et 9 chiffres pour éviter tout décalage d'indicatif
-    _PME_OTP_STORAGE[clean_phone] = otp_record
+    # Indexation persistante sous les formats complet et 9 chiffres pour éviter tout décalage d'indicatif
+    storage = load_pme_otp_storage()
+    storage[clean_phone] = otp_record
     if len(clean_phone) >= 9:
-        _PME_OTP_STORAGE[clean_phone[-9:]] = otp_record
+        storage[clean_phone[-9:]] = otp_record
+    save_pme_otp_storage(storage)
 
     # 3. Notification WhatsApp Réelle via l'API Cloud Meta (Template officiel approuvé + Fallback texte)
     try:
@@ -2144,22 +2170,24 @@ async def api_pme_valider_otp(payload: Dict[str, Any]):
     else:
         clean_phone = digits
 
-    entry = _PME_OTP_STORAGE.get(clean_phone) or (len(clean_phone) >= 9 and _PME_OTP_STORAGE.get(clean_phone[-9:]))
+    storage = load_pme_otp_storage()
+    entry = storage.get(clean_phone) or (len(clean_phone) >= 9 and storage.get(clean_phone[-9:]))
     if not entry:
         return {
             "status": "error",
             "code": "AUCUN_CODE",
-            "message": "Aucun code n'a été demandé pour ce numéro. Veuillez d'abord demander un code."
+            "message": "Aucun code actif pour ce numéro. Cliquez sur 'Renvoyer le code' pour en recevoir un nouveau."
         }
 
     if time.time() > entry.get("expires_at", 0):
-        _PME_OTP_STORAGE.pop(clean_phone, None)
+        storage.pop(clean_phone, None)
         if len(clean_phone) >= 9:
-            _PME_OTP_STORAGE.pop(clean_phone[-9:], None)
+            storage.pop(clean_phone[-9:], None)
+        save_pme_otp_storage(storage)
         return {
             "status": "error",
             "code": "CODE_EXPIRE",
-            "message": "Le code de sécurité a expiré (délai de 10 min dépassé). Veuillez en demander un nouveau."
+            "message": "Le code de sécurité a expiré. Cliquez sur 'Renvoyer le code'."
         }
 
     # SÉCURITÉ STRICTE : Si le code est faussé / incorrect, la PME n'entre PAS !
@@ -2173,9 +2201,10 @@ async def api_pme_valider_otp(payload: Dict[str, Any]):
     # Code validé avec succès !
     nom_ent = entry.get("nom_entreprise")
     final_phone = entry.get("phone") or clean_phone
-    _PME_OTP_STORAGE.pop(clean_phone, None)  # Usage unique
+    storage.pop(clean_phone, None)  # Usage unique
     if len(clean_phone) >= 9:
-        _PME_OTP_STORAGE.pop(clean_phone[-9:], None)
+        storage.pop(clean_phone[-9:], None)
+    save_pme_otp_storage(storage)
 
     return {
         "status": "success",
