@@ -5564,6 +5564,54 @@ async def send_whatsapp_template_otp(to_phone: str, otp_code: str, nom_entrepris
     return res_template
 
 
+async def send_whatsapp_video(to_phone: str, video_url: str, caption: str = ""):
+    """
+    Envoi d'un tutoriel vidéo au commerçant via l'API Cloud de Meta.
+    Idéal pour guider sur :
+    - Comment exporter son relevé Wave Business / Orange Money
+    - Comment configurer le Webhook de vente
+    - Comment dicter son vocal Wolof ou Français
+    """
+    load_dotenv(override=True)
+    token = os.getenv("WHATSAPP_TOKEN")
+    phone_id = os.getenv("PHONE_NUMBER_ID")
+
+    if not token or not phone_id or not to_phone or not video_url:
+        return False
+
+    clean_phone = re.sub(r"[^\d]", "", str(to_phone))
+    url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": clean_phone,
+        "type": "video",
+        "video": {
+            "link": video_url,
+            "caption": caption
+        }
+    }
+
+    def _sync_send_video():
+        try:
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                headers=headers
+            )
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                print(f"[WHATSAPP VIDEO] Vidéo envoyée avec succès à {clean_phone} : statut {resp.status}")
+                return True
+        except Exception as e:
+            print(f"[WHATSAPP VIDEO ERREUR] {e}")
+            return False
+
+    return await asyncio.to_thread(_sync_send_video)
+
+
 async def mark_whatsapp_message_as_read(message_id: str):
     """Marque le message reçu comme lu (double coche bleue instantanée)."""
     if not message_id:
