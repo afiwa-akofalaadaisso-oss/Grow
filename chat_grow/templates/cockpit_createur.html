@@ -51,7 +51,8 @@
             -ms-overflow-style: none !important;
         }
 
-        html, body {
+        html,
+        body {
             background-color: #f8fafc !important;
             background: #f8fafc !important;
             color: #0f172a !important;
@@ -110,27 +111,36 @@
     <!-- ========================================================================= -->
     <!-- BARRE SUPÉRIEURE DE DIRECTION / FONDATEUR                                -->
     <!-- ========================================================================= -->
-    <header class="bg-white/95 border-b border-slate-200 sticky top-0 z-40 px-4 sm:px-8 py-3.5 shadow-2xs backdrop-blur-md">
+    <header
+        class="bg-white/95 border-b border-slate-200 sticky top-0 z-40 px-4 sm:px-8 py-3.5 shadow-2xs backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            
+
             <!-- Logo Growth Officiel & Titre Cockpit -->
             <div class="flex items-center gap-3">
-                <a href="/cockpit" class="w-10 h-10 rounded-2xl overflow-hidden shadow-xs border border-slate-200 flex-shrink-0 bg-white flex items-center justify-center hover:scale-105 transition-transform" title="Growth Cockpit">
-                    <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" class="w-full h-full object-contain rounded-2xl">
+                <a href="/cockpit"
+                    class="w-10 h-10 rounded-2xl overflow-hidden shadow-xs border border-slate-200 flex-shrink-0 bg-white flex items-center justify-center hover:scale-105 transition-transform"
+                    title="Growth Cockpit">
+                    <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth"
+                        class="w-full h-full object-contain rounded-2xl">
                 </a>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 font-sans">Growth</span>
-                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 uppercase tracking-wider">Cockpit Fondateur</span>
+                        <span
+                            class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 font-sans">Growth</span>
+                        <span
+                            class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 uppercase tracking-wider">Cockpit
+                            Fondateur</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 font-body hidden sm:block">Supervision Utilisateurs &bull; Caisse Abonnements &bull; Active Learning IA</p>
+                    <p class="text-[11px] text-slate-500 font-body hidden sm:block">Supervision Utilisateurs &bull;
+                        Caisse Abonnements &bull; Active Learning IA</p>
                 </div>
             </div>
 
             <!-- Actions Rapides & Horloge Dakar -->
             <div class="flex items-center gap-2.5 sm:gap-3">
                 <!-- Horloge Dakar -->
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-600">
+                <div
+                    class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-600">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span id="dakarClock">Dakar 00:00 (GMT)</span>
                 </div>
@@ -166,12 +176,14 @@
 
         <!-- 4 CARTES KPIS STRATÉGIQUES (PALETTE OFFICIELLE GROWTH #222222) -->
         <section class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-            
+
             <!-- 1. Commerçants Inscrits -->
             <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
-                <div class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                <div
+                    class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
                     <span>Commerçants Inscrits</span>
-                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]" translate="no">storefront</span>
+                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]"
+                        translate="no">storefront</span>
                 </div>
                 <div class="mt-2.5 flex items-baseline gap-2">
                     <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiTotalUsers">0</span>
@@ -182,28 +194,36 @@
 
             <!-- 2. Trésorerie & Caisse Dirigeant -->
             <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
-                <div class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                <div
+                    class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
                     <span>Trésorerie Caisse Dirigeant</span>
-                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]" translate="no">account_balance_wallet</span>
+                    <span class="material-symbols-outlined notranslate text-[#a0d9d2] text-[22px]"
+                        translate="no">account_balance_wallet</span>
                 </div>
                 <div class="mt-2.5 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-[#a0d9d2]" id="kpiCaisseAbonnements">0 FCFA</span>
+                    <span class="text-2xl sm:text-3xl font-black font-mono text-[#a0d9d2]" id="kpiCaisseAbonnements">0
+                        FCFA</span>
                     <span class="text-[11px] text-slate-400 font-semibold" id="kpiCaisseStatut">Solde net</span>
                 </div>
                 <div class="mt-1.5 text-[11px] text-slate-300 flex items-center justify-between">
-                    <span id="kpiEntreesSortiesDetail" class="font-mono text-[10.5px]">🟢 +0 F abos · 🔴 -0 F sorties</span>
-                    <span class="text-[10.5px] text-[#a0d9d2] font-mono font-semibold" id="kpiAbonnesActifs">0 abonné(s)</span>
+                    <span id="kpiEntreesSortiesDetail" class="font-mono text-[10.5px]">🟢 +0 F abos · 🔴 -0 F
+                        sorties</span>
+                    <span class="text-[10.5px] text-[#a0d9d2] font-mono font-semibold" id="kpiAbonnesActifs">0
+                        abonné(s)</span>
                 </div>
             </div>
 
             <!-- 3. Satisfaction IA -->
             <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
-                <div class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                <div
+                    class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
                     <span>Satisfaction IA</span>
-                    <span class="material-symbols-outlined notranslate text-amber-300 text-[22px]" translate="no">thumb_up</span>
+                    <span class="material-symbols-outlined notranslate text-amber-300 text-[22px]"
+                        translate="no">thumb_up</span>
                 </div>
                 <div class="mt-2.5 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-amber-300" id="kpiSatisfaction">100%</span>
+                    <span class="text-2xl sm:text-3xl font-black font-mono text-amber-300"
+                        id="kpiSatisfaction">100%</span>
                     <span class="text-[11px] text-slate-300 font-mono" id="kpiVotesCounts">👍 0 / 👎 0</span>
                 </div>
                 <div class="mt-1.5 text-[11px] text-slate-400">Évaluation des réponses WhatsApp</div>
@@ -211,13 +231,16 @@
 
             <!-- 4. Commerçants Inactifs à Relancer -->
             <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
-                <div class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                <div
+                    class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
                     <span>Inactifs à Relancer</span>
-                    <span class="material-symbols-outlined notranslate text-rose-300 text-[22px]" translate="no">notifications_active</span>
+                    <span class="material-symbols-outlined notranslate text-rose-300 text-[22px]"
+                        translate="no">notifications_active</span>
                 </div>
                 <div class="mt-2.5 flex items-baseline gap-2">
                     <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiInactifs">0</span>
-                    <span class="text-[11px] text-slate-300 font-semibold" id="kpiInactifsLabel">&gt; 24h sans écriture</span>
+                    <span class="text-[11px] text-slate-300 font-semibold" id="kpiInactifsLabel">&gt; 24h sans
+                        écriture</span>
                 </div>
                 <div class="mt-1.5 text-[11px] text-slate-400">Prêts pour réactivation WhatsApp</div>
             </div>
@@ -230,15 +253,18 @@
                 class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#222222] text-white shadow-xs cursor-pointer flex-shrink-0">
                 <span class="material-symbols-outlined notranslate text-[18px]" translate="no">groups</span>
                 <span>Suivi &amp; Relance des Utilisateurs</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/20 text-white font-mono" id="tabBadgeUsersCount">0</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/20 text-white font-mono"
+                    id="tabBadgeUsersCount">0</span>
             </button>
 
             <!-- Onglet 2 : Caisse & Trésorerie Dirigeant -->
             <button type="button" onclick="switchCockpitTab('abonnements')" id="tabBtnAbonnements"
                 class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer flex-shrink-0">
-                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">account_balance_wallet</span>
+                <span class="material-symbols-outlined notranslate text-[18px]"
+                    translate="no">account_balance_wallet</span>
                 <span>Caisse &amp; Trésorerie Growth</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-800 font-mono" id="tabBadgeCaisseCount">0 F</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-800 font-mono"
+                    id="tabBadgeCaisseCount">0 F</span>
             </button>
 
             <!-- Onglet 3 : Active Learning IA -->
@@ -246,24 +272,28 @@
                 class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer flex-shrink-0">
                 <span class="material-symbols-outlined notranslate text-[18px]" translate="no">psychology</span>
                 <span>Apprentissage Continu IA</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-800 font-mono" id="tabBadgeLearningCount">0</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-800 font-mono"
+                    id="tabBadgeLearningCount">0</span>
             </button>
         </div>
-                <span class="material-symbols-outlined notranslate text-[18px]" translate="no">psychology</span>
-                <span>Apprentissage Continu IA</span>
-                <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-mono" id="tabBadgeLearningCount">0</span>
-            </button>
+        <span class="material-symbols-outlined notranslate text-[18px]" translate="no">psychology</span>
+        <span>Apprentissage Continu IA</span>
+        <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 font-mono"
+            id="tabBadgeLearningCount">0</span>
+        </button>
         </div>
 
         <!-- ========================================================================= -->
         <!-- SECTION 1 : SUIVI & RELANCE DES UTILISATEURS                            -->
         <!-- ========================================================================= -->
         <section id="cockpitSectionUsers" class="space-y-4">
-            
+
             <!-- Barre de Recherche & Filtres d'Activité -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 growth-card p-4">
                 <div class="relative flex-1 max-w-md">
-                    <span class="material-symbols-outlined notranslate absolute left-3 top-2.5 text-slate-400 text-[18px]" translate="no">search</span>
+                    <span
+                        class="material-symbols-outlined notranslate absolute left-3 top-2.5 text-slate-400 text-[18px]"
+                        translate="no">search</span>
                     <input type="text" id="searchUserInput" onkeyup="filterUsersTable()"
                         placeholder="Rechercher par nom de commerce ou numéro WhatsApp..."
                         class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-slate-400 transition-colors">
@@ -273,11 +303,14 @@
                     <button type="button" onclick="setUserFilter('ALL')" id="filterAll"
                         class="px-2.5 py-1 rounded-lg bg-[#222222] text-white font-bold cursor-pointer">Tous</button>
                     <button type="button" onclick="setUserFilter('ACTIF')" id="filterActif"
-                        class="px-2.5 py-1 rounded-lg text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 cursor-pointer">🟢 Actifs</button>
+                        class="px-2.5 py-1 rounded-lg text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 cursor-pointer">🟢
+                        Actifs</button>
                     <button type="button" onclick="setUserFilter('ATTENTION')" id="filterAttention"
-                        class="px-2.5 py-1 rounded-lg text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 cursor-pointer">🟡 Inactifs 24h</button>
+                        class="px-2.5 py-1 rounded-lg text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 cursor-pointer">🟡
+                        Inactifs 24h</button>
                     <button type="button" onclick="setUserFilter('INACTIF')" id="filterInactif"
-                        class="px-2.5 py-1 rounded-lg text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 cursor-pointer">🔴 Inactifs &gt; 3j</button>
+                        class="px-2.5 py-1 rounded-lg text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 cursor-pointer">🔴
+                        Inactifs &gt; 3j</button>
                 </div>
             </div>
 
@@ -307,16 +340,18 @@
         <!-- SECTION 2 : CAISSE PERSO & TRÉSORERIE DU CRÉATEUR (ENTRÉES & SORTIES)      -->
         <!-- ========================================================================= -->
         <section id="cockpitSectionAbonnements" class="space-y-5 hidden">
-            
+
             <!-- 4 Cartes Synthèse Trésorerie Growth -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                 <!-- Solde Net Disponible -->
                 <div class="growth-card-dark p-4 relative overflow-hidden">
                     <div class="flex items-center justify-between text-slate-300 text-xs">
                         <span class="font-bold uppercase tracking-wider text-[#a0d9d2]">Solde Net en Caisse</span>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-[#a0d9d2]">DISPONIBLE</span>
+                        <span
+                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-[#a0d9d2]">DISPONIBLE</span>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSoldeNet">0 FCFA</div>
+                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSoldeNet">0 FCFA
+                    </div>
                     <div class="text-[11px] text-slate-400 mt-1">Trésorerie nette disponible pour le créateur</div>
                 </div>
 
@@ -324,25 +359,34 @@
                 <div class="growth-card p-4 border border-slate-200">
                     <div class="flex items-center justify-between text-slate-500 text-xs">
                         <span class="font-bold uppercase tracking-wider text-emerald-700">🟢 Entrées Abonnements</span>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200" id="caisseAbonnesCountBadge">0 abo(s)</span>
+                        <span
+                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"
+                            id="caisseAbonnesCountBadge">0 abo(s)</span>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-emerald-600 mt-2" id="caisseEntreesTotal">+0 FCFA</div>
-                    <div class="text-[11px] text-slate-500 mt-1" id="caisseEntreesSources">Wave: 0 F · OM: 0 F · Cash: 0 F</div>
+                    <div class="text-xl sm:text-2xl font-black font-mono text-emerald-600 mt-2" id="caisseEntreesTotal">
+                        +0 FCFA</div>
+                    <div class="text-[11px] text-slate-500 mt-1" id="caisseEntreesSources">Wave: 0 F · OM: 0 F · Cash: 0
+                        F</div>
                 </div>
 
                 <!-- Total Sorties & Dépenses -->
                 <div class="growth-card p-4 border border-slate-200">
                     <div class="flex items-center justify-between text-slate-500 text-xs">
                         <span class="font-bold uppercase tracking-wider text-rose-700">🔴 Sorties &amp; Dépenses</span>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200" id="caisseSortiesCountBadge">0 sortie(s)</span>
+                        <span
+                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200"
+                            id="caisseSortiesCountBadge">0 sortie(s)</span>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-rose-600 mt-2" id="caisseSortiesTotal">-0 FCFA</div>
-                    <div class="text-[11px] text-slate-500 mt-1" id="caisseSortiesSources">Wave: 0 F · OM: 0 F · Cash: 0 F</div>
+                    <div class="text-xl sm:text-2xl font-black font-mono text-rose-600 mt-2" id="caisseSortiesTotal">-0
+                        FCFA</div>
+                    <div class="text-[11px] text-slate-500 mt-1" id="caisseSortiesSources">Wave: 0 F · OM: 0 F · Cash: 0
+                        F</div>
                 </div>
 
                 <!-- Actions Rapides Trésorerie -->
                 <div class="growth-card p-4 border border-slate-200 flex flex-col justify-between">
-                    <div class="text-slate-600 text-xs font-bold uppercase tracking-wider">Mouvements de Trésorerie</div>
+                    <div class="text-slate-600 text-xs font-bold uppercase tracking-wider">Mouvements de Trésorerie
+                    </div>
                     <div class="grid grid-cols-2 gap-2 mt-2">
                         <button type="button" onclick="openDepenseModal()"
                             class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center justify-center gap-1 cursor-pointer transition-all">
@@ -360,13 +404,17 @@
 
             <!-- TABLEAU 1 : REGISTRE DES SORTIES D'ARGENT ("POURQUOI C'EST SORTI") -->
             <div class="growth-card shadow-xs overflow-hidden border border-slate-200">
-                <div class="px-5 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70">
+                <div
+                    class="px-5 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70">
                     <div>
                         <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                            <span class="material-symbols-outlined notranslate text-rose-600 text-[18px]">payments</span>
+                            <span
+                                class="material-symbols-outlined notranslate text-rose-600 text-[18px]">payments</span>
                             <span>Sorties d'Argent &amp; Dépenses de l'Entreprise Growth</span>
                         </h3>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Traçabilité stricte : chaque FCFA sorti avec son <strong class="text-slate-700">motif explicite (« Pourquoi c'est sorti »)</strong> et sa catégorie</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Traçabilité stricte : chaque FCFA sorti avec son
+                            <strong class="text-slate-700">motif explicite (« Pourquoi c'est sorti »)</strong> et sa
+                            catégorie</p>
                     </div>
                     <button type="button" onclick="openDepenseModal()"
                         class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-1.5 cursor-pointer shadow-2xs self-start sm:self-auto transition-all">
@@ -395,13 +443,16 @@
 
             <!-- TABLEAU 2 : JOURNAL DES ENCAISSEMENTS D'ABONNEMENTS -->
             <div class="growth-card shadow-xs overflow-hidden border border-slate-200">
-                <div class="px-5 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70">
+                <div
+                    class="px-5 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70">
                     <div>
                         <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                            <span class="material-symbols-outlined notranslate text-emerald-600 text-[18px]">receipt_long</span>
+                            <span
+                                class="material-symbols-outlined notranslate text-emerald-600 text-[18px]">receipt_long</span>
                             <span>Journal des Entrées &amp; Abonnements Commerçants</span>
                         </h3>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Historique de tous les commerçants ayant payé leur abonnement mensuel</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Historique de tous les commerçants ayant payé leur
+                            abonnement mensuel</p>
                     </div>
                     <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
                         class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#222222] hover:bg-[#333333] text-white flex items-center gap-1.5 cursor-pointer shadow-2xs self-start sm:self-auto transition-all">
@@ -435,14 +486,18 @@
         <section id="cockpitSectionLearning" class="space-y-4 hidden">
             <!-- CARTE BANNIÈRE EXPLICATIVE -->
             <div class="growth-card p-5 border border-slate-200">
-                <div class="flex items-center gap-2 text-slate-600 text-[10px] font-extrabold uppercase tracking-wider mb-1">
-                    <span class="material-symbols-outlined notranslate text-[16px] text-slate-700" translate="no">psychology</span>
+                <div
+                    class="flex items-center gap-2 text-slate-600 text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                    <span class="material-symbols-outlined notranslate text-[16px] text-slate-700"
+                        translate="no">psychology</span>
                     <span>Auto-Critique &amp; Enseignement IA</span>
                 </div>
-                <h3 class="text-base sm:text-lg font-black text-slate-900">Journal des Questions &amp; Hésitations de Growth</h3>
+                <h3 class="text-base sm:text-lg font-black text-slate-900">Journal des Questions &amp; Hésitations de
+                    Growth</h3>
                 <p class="text-xs text-slate-600 mt-1 max-w-2xl leading-relaxed">
                     Dès que Growth a un doute ou qu'un commerçant clique sur 👎 À corriger, le cas est répertorié ici.
-                    Rédigez la réponse parfaite pour enrichir l'intelligence de votre copilote sans redévelopper de code.
+                    Rédigez la réponse parfaite pour enrichir l'intelligence de votre copilote sans redévelopper de
+                    code.
                 </p>
             </div>
 
@@ -470,7 +525,8 @@
         </section>
 
         <!-- PIED DE PAGE DU COCKPIT -->
-        <footer class="mt-12 pt-6 pb-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <footer
+            class="mt-12 pt-6 pb-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <div class="flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                 <span>Growth Cockpit Fondateur &bull; Dakar, Sénégal &bull; SYSCOHADA SMT</span>
@@ -488,15 +544,18 @@
     <!-- ========================================================================= -->
     <!-- MODALE 1 : RELANCER LE COMMERÇANT SUR WHATSAPP                          -->
     <!-- ========================================================================= -->
-    <div id="modalRelance" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+    <div id="modalRelance"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
         style="display: none;">
         <div class="bg-white max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
             <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
                 <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined notranslate text-[#25D366] text-[20px]" translate="no">send</span>
+                    <span class="material-symbols-outlined notranslate text-[#25D366] text-[20px]"
+                        translate="no">send</span>
                     <h4 class="text-sm font-bold text-slate-900">Relance WhatsApp du Berger</h4>
                 </div>
-                <button type="button" onclick="closeRelanceModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <button type="button" onclick="closeRelanceModal()"
+                    class="text-slate-400 hover:text-slate-600 cursor-pointer">
                     <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
                 </button>
             </div>
@@ -506,15 +565,18 @@
 
                 <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                     <div>
-                        <span class="text-[10px] uppercase font-bold text-slate-500 block tracking-wider">Destinataire</span>
+                        <span
+                            class="text-[10px] uppercase font-bold text-slate-500 block tracking-wider">Destinataire</span>
                         <div class="text-xs font-bold text-slate-900 mt-0.5" id="relanceDestinataireLabel">--</div>
                     </div>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200"
+                    <span
+                        class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200"
                         id="relanceStatusBadge">Inactif</span>
                 </div>
 
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1 flex items-center justify-between">
+                    <label
+                        class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1 flex items-center justify-between">
                         <span>Message de relance (Personnalisable)</span>
                         <span class="text-[10px] text-slate-400 font-normal">Envoyé avec boutons 👍 / 👎</span>
                     </label>
@@ -537,32 +599,38 @@
     <!-- ========================================================================= -->
     <!-- MODALE 2 : ENCAISSER UN ABONNEMENT (CRÉDITER LA CAISSE DU CRÉATEUR)       -->
     <!-- ========================================================================= -->
-    <div id="modalEncaisserAbo" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+    <div id="modalEncaisserAbo"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
         style="display: none;">
         <div class="bg-white max-w-md w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
             <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
                 <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined notranslate text-emerald-600 text-[20px]" translate="no">add_card</span>
+                    <span class="material-symbols-outlined notranslate text-emerald-600 text-[20px]"
+                        translate="no">add_card</span>
                     <h4 class="text-sm font-bold text-slate-900">Encaisser un Abonnement Growth</h4>
                 </div>
-                <button type="button" onclick="closeEncaisserModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <button type="button" onclick="closeEncaisserModal()"
+                    class="text-slate-400 hover:text-slate-600 cursor-pointer">
                     <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
                 </button>
             </div>
             <div class="p-5 space-y-3.5">
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Numéro WhatsApp du commerçant</label>
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Numéro
+                        WhatsApp du commerçant</label>
                     <input type="text" id="encaisserPhone" placeholder="Ex: 221788773827"
                         class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 font-mono">
                 </div>
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Nom du commerce (optionnel)</label>
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Nom du
+                        commerce (optionnel)</label>
                     <input type="text" id="encaisserNom" placeholder="Ex: Boutique Moderne"
                         class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Forfait</label>
+                        <label
+                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Forfait</label>
                         <select id="encaisserPlan" onchange="ajusterMontantPlan(this.value)"
                             class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 cursor-pointer">
                             <option value="Starter">Starter (10 000 F)</option>
@@ -571,13 +639,16 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Montant Encaissé (FCFA)</label>
+                        <label
+                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Montant
+                            Encaissé (FCFA)</label>
                         <input type="number" id="encaisserMontant" value="10000"
                             class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 font-mono font-bold">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Mode de Réception des Fonds</label>
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Mode de
+                        Réception des Fonds</label>
                     <select id="encaisserOperateur"
                         class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 cursor-pointer">
                         <option value="WAVE">Wave Sénégal</option>
@@ -601,15 +672,18 @@
     <!-- ========================================================================= -->
     <!-- MODALE 2BIS : ENREGISTRER UNE SORTIE D'ARGENT / DÉPENSE (POURQUOI C'EST SORTI) -->
     <!-- ========================================================================= -->
-    <div id="modalEnregistrerDepense" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+    <div id="modalEnregistrerDepense"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
         style="display: none;">
         <div class="bg-white max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
             <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
                 <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined notranslate text-rose-600 text-[20px]" translate="no">payments</span>
+                    <span class="material-symbols-outlined notranslate text-rose-600 text-[20px]"
+                        translate="no">payments</span>
                     <h4 class="text-sm font-bold text-slate-900">Enregistrer une Sortie d'Argent (Dépense Growth)</h4>
                 </div>
-                <button type="button" onclick="closeDepenseModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <button type="button" onclick="closeDepenseModal()"
+                    class="text-slate-400 hover:text-slate-600 cursor-pointer">
                     <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
                 </button>
             </div>
@@ -618,19 +692,24 @@
                     <label class="block text-[10.5px] uppercase font-bold text-rose-700 tracking-wider mb-1">
                         Pourquoi c'est sorti ? (Motif obligatoire) *
                     </label>
-                    <input type="text" id="depenseMotif" placeholder="Ex: Popote midi du fondateur, Hébergement Render, Forfait Free pro..."
+                    <input type="text" id="depenseMotif"
+                        placeholder="Ex: Popote midi du fondateur, Hébergement Render, Forfait Free pro..."
                         class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-rose-400 outline-none text-slate-900 font-medium">
-                    <span class="text-[10px] text-slate-500 mt-0.5 block">Indiquez la raison exacte du décaissement pour votre comptabilité.</span>
+                    <span class="text-[10px] text-slate-500 mt-0.5 block">Indiquez la raison exacte du décaissement pour
+                        votre comptabilité.</span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Montant Décaissé (FCFA) *</label>
+                        <label
+                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Montant
+                            Décaissé (FCFA) *</label>
                         <input type="number" id="depenseMontant" placeholder="Ex: 5000"
                             class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 font-mono font-bold">
                     </div>
                     <div>
-                        <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Moyen de Paiement *</label>
+                        <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Moyen
+                            de Paiement *</label>
                         <select id="depenseSource"
                             class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 cursor-pointer">
                             <option value="WAVE">Wave Sénégal</option>
@@ -642,7 +721,9 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Catégorie de Dépense</label>
+                        <label
+                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Catégorie
+                            de Dépense</label>
                         <select id="depenseCategorie"
                             class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 cursor-pointer">
                             <option value="RETRAIT_FONDATEUR">🍲 Prélèvement Fondateur / Popote midi</option>
@@ -654,14 +735,18 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Bénéficiaire / Prestataire</label>
-                        <input type="text" id="depenseBeneficiaire" placeholder="Ex: Keur Yoff, Render, Sonatel, Fondateur"
+                        <label
+                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Bénéficiaire
+                            / Prestataire</label>
+                        <input type="text" id="depenseBeneficiaire"
+                            placeholder="Ex: Keur Yoff, Render, Sonatel, Fondateur"
                             class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Note explicative / Justificatif (optionnel)</label>
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Note
+                        explicative / Justificatif (optionnel)</label>
                     <input type="text" id="depenseNote" placeholder="Ex: Reçu n° 481, Facture mensuelle novembre..."
                         class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900">
                 </div>
@@ -681,32 +766,38 @@
     <!-- ========================================================================= -->
     <!-- MODALE 3 : ENSEIGNER LA RÉPONSE PARFAITE (ACTIVE LEARNING)               -->
     <!-- ========================================================================= -->
-    <div id="modalTeach" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+    <div id="modalTeach"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
         style="display: none;">
         <div class="bg-white max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
             <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
                 <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined notranslate text-slate-800 text-[20px]" translate="no">school</span>
+                    <span class="material-symbols-outlined notranslate text-slate-800 text-[20px]"
+                        translate="no">school</span>
                     <h4 class="text-sm font-bold text-slate-900">Enseigner la Réponse Parfaite à Growth</h4>
                 </div>
-                <button type="button" onclick="closeTeachModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <button type="button" onclick="closeTeachModal()"
+                    class="text-slate-400 hover:text-slate-600 cursor-pointer">
                     <span class="material-symbols-outlined notranslate text-[18px]" translate="no">close</span>
                 </button>
             </div>
             <div class="p-5 space-y-4">
                 <input type="hidden" id="teachCasId" value="">
                 <div>
-                    <span class="text-[10px] uppercase font-bold text-slate-500 block tracking-wider mb-1">Question du commerçant</span>
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block tracking-wider mb-1">Question du
+                        commerçant</span>
                     <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 italic"
                         id="teachQuestionDisplay">--</div>
                 </div>
                 <div>
-                    <span class="text-[10px] uppercase font-bold text-slate-500 block tracking-wider mb-1">Réponse initiale de Growth</span>
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block tracking-wider mb-1">Réponse
+                        initiale de Growth</span>
                     <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 line-clamp-3"
                         id="teachResponseDisplay">--</div>
                 </div>
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-800 tracking-wider mb-1">Votre réponse d'expert définitive (Règle métier permanente)</label>
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-800 tracking-wider mb-1">Votre
+                        réponse d'expert définitive (Règle métier permanente)</label>
                     <textarea id="teachInputText" rows="4"
                         class="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 leading-relaxed"
                         placeholder="Rédigez la réponse d'élite que Growth doit désormais mémoriser pour ce cas..."></textarea>
@@ -748,7 +839,7 @@
             const secUsers = document.getElementById('cockpitSectionUsers');
             const secAbo = document.getElementById('cockpitSectionAbonnements');
             const secLearning = document.getElementById('cockpitSectionLearning');
-            
+
             const btnUsers = document.getElementById('tabBtnUsers');
             const btnAbo = document.getElementById('tabBtnAbonnements');
             const btnLearning = document.getElementById('tabBtnLearning');
@@ -786,7 +877,7 @@
                     const s = await resStats.json();
                     document.getElementById('kpiTotalUsers').textContent = s.total_utilisateurs || 0;
                     document.getElementById('kpiActifsJour').textContent = `${s.actifs_aujourdhui || 0} actif(s) auj.`;
-                    
+
                     // Caisse & Trésorerie du Créateur (Entrées - Sorties)
                     const soldeNet = s.solde_caisse_net_fcfa !== undefined ? s.solde_caisse_net_fcfa : (s.caisse_abonnements_fcfa || 0);
                     const totalEntrees = s.total_entrees_abos_fcfa !== undefined ? s.total_entrees_abos_fcfa : (s.caisse_abonnements_fcfa || 0);
