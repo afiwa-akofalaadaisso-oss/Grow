@@ -1210,19 +1210,20 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            padding: 5px 9px;
+            padding: 4px 8px;
             background: #f8fafc;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
-            font-size: 11px;
+            border-radius: 6px;
+            font-size: 10.5px;
             font-weight: 700;
-            color: #222222;
+            color: #1e293b;
             cursor: pointer;
             transition: all 0.15s;
             text-decoration: none;
             font-family: inherit;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .btn-piece-comptable:hover {
@@ -1929,17 +1930,10 @@
                                     <th
                                         style="text-align: right; width: 120px; background-color: #f8fafc !important; color: #475569 !important; padding: 13px 16px; border-bottom: 1.5px solid #e2e8f0 !important; text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">
                                         Crédit (FCFA)</th>
-                                    <th
-                                        style="text-align: center; width: 230px; border-top-right-radius: 12px; background-color: #f8fafc !important; color: #475569 !important; padding: 11px 16px; border-bottom: 1.5px solid #e2e8f0 !important;">
-                                        <div
-                                            style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
-                                            <span
-                                                style="font-size: 11px; font-weight: 700; color: #334155; letter-spacing: 0.5px; text-transform: uppercase;">Pièce
-                                                Comptable</span>
-                                            <span
-                                                style="font-size: 9.5px; font-weight: 600; color: #64748b; letter-spacing: 0.2px;">
-                                                Conservation 10 ans (SYSCOHADA)
-                                            </span>
+                                    <th style="text-align: right; width: 210px; border-top-right-radius: 12px; background-color: #f8fafc !important; color: #475569 !important; padding: 11px 18px; border-bottom: 1.5px solid #e2e8f0 !important;">
+                                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                                            <span style="font-size: 11px; font-weight: 700; color: #334155; letter-spacing: 0.5px; text-transform: uppercase;">Pièce &amp; Statut</span>
+                                            <span style="font-size: 9.5px; font-weight: 600; color: #64748b; letter-spacing: 0.2px;">Archivage légal 10 ans</span>
                                         </div>
                                     </th>
                                 </tr>
@@ -1989,14 +1983,11 @@
                                     <td style="text-align: right; font-weight: 700; color: #0f172a;">185 000</td>
                                     <td style="text-align: right; color: #94a3b8;">-</td>
                                     <td>
-                                        <div class="proof-cell" style="justify-content: center; gap: 6px;">
-                                            <button type="button" class="btn-piece-comptable"
+                                        <div class="proof-cell" style="justify-content: flex-end; gap: 7px; padding-right: 4px;">
+                                            <button type="button" class="btn-piece-comptable" title="Pièce justificative légale archivée 10 ans (Art. 24 SYSCOHADA)"
                                                 onclick="ouvrirPieceComptableModal('PC-2026-05-0185', 'Achat Stock Riz', '185 000 FCFA', '12/05/2026', '601100 - Achats de marchandises', 'Grand Moulin Dakar', '/static/mock_receipt_photo.png', 'En attente')">
-                                                <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> Pièce
-                                                Comptable
+                                                <i class="fa-solid fa-file-invoice" style="color: #168078; font-size: 11px;"></i> <span>Pièce (10 ans)</span>
                                             </button>
-                                            <span class="badge-archive-10ans"><i class="fa-solid fa-shield-check"></i>
-                                                10 ans</span>
                                             <button class="btn-validate" id="btn-val-1" onclick="validateRow(1)"><i
                                                     class="fa-solid fa-check" style="font-size: 9px;"></i>
                                                 Valider</button>
@@ -2041,14 +2032,11 @@
                                     <td style="text-align: right; color: #94a3b8;">-</td>
                                     <td style="text-align: right; font-weight: 700; color: #0f172a;">240 000</td>
                                     <td>
-                                        <div class="proof-cell" style="justify-content: center; gap: 6px;">
-                                            <button type="button" class="btn-piece-comptable"
+                                        <div class="proof-cell" style="justify-content: flex-end; gap: 7px; padding-right: 4px;">
+                                            <button type="button" class="btn-piece-comptable" title="Pièce justificative légale archivée 10 ans (Art. 24 SYSCOHADA)"
                                                 onclick="ouvrirPieceComptableModal('PC-2026-05-0240', 'Vente Journalière Espèces (Boutique)', '240 000 FCFA', '12/05/2026', '701100 - Ventes de marchandises', 'Clients Comptoir Sandaga', '/static/mock_wave_photo.png', 'Validée')">
-                                                <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> Pièce
-                                                Comptable
+                                                <i class="fa-solid fa-file-invoice" style="color: #168078; font-size: 11px;"></i> <span>Pièce (10 ans)</span>
                                             </button>
-                                            <span class="badge-archive-10ans"><i class="fa-solid fa-shield-check"></i>
-                                                10 ans</span>
                                             <span class="badge-status badge-validee">&#10004; Validée</span>
                                         </div>
                                     </td>
@@ -2087,14 +2075,11 @@
                                     <td style="text-align: right; font-weight: 700; color: #0f172a;">185 000</td>
                                     <td style="text-align: right; color: #94a3b8;">-</td>
                                     <td>
-                                        <div class="proof-cell" style="justify-content: center; gap: 6px;">
-                                            <button type="button" class="btn-piece-comptable"
+                                        <div class="proof-cell" style="justify-content: flex-end; gap: 7px; padding-right: 4px;">
+                                            <button type="button" class="btn-piece-comptable" title="Pièce justificative légale archivée 10 ans (Art. 24 SYSCOHADA)"
                                                 onclick="ouvrirPieceComptableModal('PC-2026-05-0186', 'Achat Stock Riz Descompte', '185 000 FCFA', '12/05/2026', '601100 - Achats de marchandises', 'Riz Sénégal SA', '/static/mock_receipt_photo.png', 'Validée')">
-                                                <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> Pièce
-                                                Comptable
+                                                <i class="fa-solid fa-file-invoice" style="color: #168078; font-size: 11px;"></i> <span>Pièce (10 ans)</span>
                                             </button>
-                                            <span class="badge-archive-10ans"><i class="fa-solid fa-shield-check"></i>
-                                                10 ans</span>
                                             <span class="badge-status badge-validee">&#10004; Validée</span>
                                         </div>
                                     </td>
@@ -2127,14 +2112,11 @@
                                     <td style="text-align: right; font-weight: 700; color: #0f172a;">240 000</td>
                                     <td style="text-align: right; color: #94a3b8;">-</td>
                                     <td>
-                                        <div class="proof-cell" style="justify-content: center; gap: 6px;">
-                                            <button type="button" class="btn-piece-comptable"
+                                        <div class="proof-cell" style="justify-content: flex-end; gap: 7px; padding-right: 4px;">
+                                            <button type="button" class="btn-piece-comptable" title="Pièce justificative légale archivée 10 ans (Art. 24 SYSCOHADA)"
                                                 onclick="ouvrirPieceComptableModal('PC-2026-05-0241', 'Vente Journalière Espèces', '240 000 FCFA', '12/05/2026', '701100 - Ventes', 'Clients Caisse', '/static/mock_wave_photo.png', 'Validée')">
-                                                <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> Pièce
-                                                Comptable
+                                                <i class="fa-solid fa-file-invoice" style="color: #168078; font-size: 11px;"></i> <span>Pièce (10 ans)</span>
                                             </button>
-                                            <span class="badge-archive-10ans"><i class="fa-solid fa-shield-check"></i>
-                                                10 ans</span>
                                             <span class="badge-status badge-validee">&#10004; Validée</span>
                                         </div>
                                     </td>
@@ -4847,11 +4829,20 @@
             'Transports Express Yoff SARL': { regime: 'SYSCOHADA NORMAL', ville: 'Yoff Tonghor' }
         };
 
+        const PME_SHORT_LABELS = {
+            'Établissement Mamadou Diop': 'Mamadou Diop',
+            'Boutique Touba Électronique': 'Touba Électronique',
+            'Pressing Moderne Dakar': 'Pressing Moderne',
+            'Atelier Fatou Ndiaye Couture': 'Fatou Ndiaye Couture',
+            'Transports Express Yoff SARL': 'Transports Express'
+        };
+
         function selectionnerPmeDossier(nom) {
             switchAgencyTab('tableau');
             const sideName = document.getElementById('sidebarActivePmeName');
             if (sideName) {
-                sideName.textContent = nom;
+                const shortNom = PME_SHORT_LABELS[nom] || nom;
+                sideName.innerHTML = `<span>${shortNom}</span><i class="fa-solid fa-circle-check" style="color: #168078; font-size: 10.5px; margin-left: 4px;"></i>`;
                 sideName.title = nom;
             }
             const sideDetails = document.getElementById('sidebarActivePmeDetails');
@@ -7103,9 +7094,14 @@
             const nm = document.getElementById('sidebarActivePmeName');
             const dt = document.getElementById('sidebarActivePmeDetails');
             const tr = document.getElementById('sidebarActivePmeTreso');
+            const pmeShortNames = {
+                diop: 'Mamadou Diop',
+                touba: 'Touba Électronique',
+                pressing: 'Pressing Moderne'
+            };
             if (av) av.textContent = pmeAvatars[pmeKey] || 'PME';
-            if (nm) nm.innerHTML = `<span>${pme.nom}</span><i class="fa-solid fa-circle-check" style="color: #168078; font-size: 10.5px;"></i>`;
-            if (dt) dt.textContent = pmeSubtitles[pmeKey] || `${pme.ninea} • ${pme.adresse}`;
+            if (nm) nm.innerHTML = `<span>${pmeShortNames[pmeKey] || pme.nom}</span><i class="fa-solid fa-circle-check" style="color: #168078; font-size: 10.5px; margin-left: 4px;"></i>`;
+            if (dt) dt.textContent = 'SYSCOHADA SMT';
             if (tr) tr.textContent = pme.tresoFinale || (pme.bilan?.treso ? pme.bilan.treso + ' FCFA' : '1 850 000 FCFA');
 
             // Mise à jour de la sélection visuelle dans le popover sidebar
@@ -7307,11 +7303,10 @@
                         <td style="text-align: right; font-weight: 700; color: #0f172a;">${ec.debit}</td>
                         <td style="text-align: right; font-weight: 700; color: #0e7647;">${ec.credit}</td>
                         <td>
-                            <div class="proof-cell" style="justify-content: center; gap: 6px;">
-                                <button type="button" class="btn-piece-comptable" onclick="ouvrirPieceComptableModal('${safeRef}', '${ec.libelle.replace(/'/g, "\\'")}', '${ec.debit !== '-' ? ec.debit : ec.credit} FCFA', '${ec.date}', '${rawCpt.replace(/'/g, "\\'")}', '${safeTiers.replace(/'/g, "\\'")}', '${safeImg}', '${ec.statutLabel}')">
-                                    <i class="fa-solid fa-file-invoice" style="color: #168078;"></i> Pièce Comptable
+                            <div class="proof-cell" style="justify-content: flex-end; gap: 7px; padding-right: 4px;">
+                                <button type="button" class="btn-piece-comptable" title="Pièce justificative légale archivée 10 ans (Art. 24 SYSCOHADA)" onclick="ouvrirPieceComptableModal('${safeRef}', '${ec.libelle.replace(/'/g, "\\'")}', '${ec.debit !== '-' ? ec.debit : ec.credit} FCFA', '${ec.date}', '${rawCpt.replace(/'/g, "\\'")}', '${safeTiers.replace(/'/g, "\\'")}', '${safeImg}', '${ec.statutLabel}')">
+                                    <i class="fa-solid fa-file-invoice" style="color: #168078; font-size: 11px;"></i> <span>Pièce (10 ans)</span>
                                 </button>
-                                <span class="badge-archive-10ans" title="Conservation garantie 10 ans selon l'Art. 24 SYSCOHADA"><i class="fa-solid fa-shield-check"></i> 10 ans</span>
                                 ${badgeStatusHtml}
                                 ${btnVal}
                             </div>
