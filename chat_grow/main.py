@@ -20,7 +20,7 @@ import zoneinfo
 import httpx
 import anthropic
 from fastapi import FastAPI, Request, HTTPException, Query, Body, File, UploadFile, Form
-from fastapi.responses import PlainTextResponse, HTMLResponse, FileResponse, RedirectResponse, Response
+from fastapi.responses import PlainTextResponse, HTMLResponse, FileResponse, RedirectResponse, Response, JSONResponse
 from archive_legale import (
     creer_archive_annuelle_zip,
     sauvegarder_base_locale_quotidienne,
@@ -118,6 +118,74 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
 if os.path.exists(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+# =========================================================================
+# MODULE DE CYBERSÉCURITÉ NATIONALE & OWASP : RATE LIMITING & SÉCURITÉ
+# =========================================================================
+_FAILED_LOGIN_ATTEMPTS: Dict[str, List[float]] = {}  # { identifiant: [timestamps] }
+_RATE_LIMIT_BUCKETS: Dict[str, List[float]] = {}    # { key: [timestamps] }
+CREATOR_SECURITY_KEY = os.getenv("CREATOR_SECURITY_KEY", "Grow@Creator#Dakar2026!Master")
+
+def verifier_rate_limit(key: str, max_requests: int = 30, window_seconds: int = 60) -> bool:
+    """Vérifie si une clé (IP ou identifiant) dépasse le seuil de requêtes autorisées."""
+    now = time.time()
+    attempts = _RATE_LIMIT_BUCKETS.get(key, [])
+    attempts = [t for t in attempts if now - t < window_seconds]
+    if len(attempts) >= max_requests:
+        _RATE_LIMIT_BUCKETS[key] = attempts
+        return False
+    attempts.append(now)
+    _RATE_LIMIT_BUCKETS[key] = attempts
+    return True
+
+def enregistrer_echec_auth(identifiant: str) -> int:
+    """Enregistre un échec de connexion et retourne le nombre d'échecs récents (fenêtre 15 min)."""
+    now = time.time()
+    clean_id = identifiant.strip().lower()
+    attempts = _FAILED_LOGIN_ATTEMPTS.get(clean_id, [])
+    attempts = [t for t in attempts if now - t < 900]
+    attempts.append(now)
+    _FAILED_LOGIN_ATTEMPTS[clean_id] = attempts
+    return len(attempts)
+
+def est_compte_verrouille_temporairement(identifiant: str) -> bool:
+    """Vérifie si plus de 5 tentatives infructueuses ont été effectuées dans les 15 minutes."""
+    now = time.time()
+    clean_id = identifiant.strip().lower()
+    attempts = _FAILED_LOGIN_ATTEMPTS.get(clean_id, [])
+    attempts = [t for t in attempts if now - t < 900]
+    return len(attempts) >= 5
+
+def reinitialiser_echecs_auth(identifiant: str):
+    """Réinitialise le compteur d'échecs après connexion réussie."""
+    clean_id = identifiant.strip().lower()
+    _FAILED_LOGIN_ATTEMPTS.pop(clean_id, None)
+
+@app.middleware("http")
+async def security_headers_middleware(request: Request, call_next):
+    """Applique les en-têtes de sécurité stricts OWASP et protège les routes API."""
+    client_ip = request.client.host if request.client else "unknown"
+    path = request.url.path
+
+    # Protection Anti-DDoS / Rate Limiting pour toutes les routes API
+    if path.startswith("/api/"):
+        if not verifier_rate_limit(f"ip_api:{client_ip}", max_requests=100, window_seconds=60):
+            return JSONResponse(
+                status_code=429,
+                content={"status": "error", "message": "Trop de requêtes. Veuillez patienter une minute (Protection Anti-Abus Growth)."}
+            )
+
+    response = await call_next(request)
+    # En-têtes HTTP de sécurité renforcée
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    if "server" in response.headers:
+        del response.headers["server"]
+    return response
 
 # Cache anti-doublon pour les webhooks Meta WhatsApp (retries dans les 120s)
 PROCESSED_MESSAGE_IDS: dict[str, float] = {}
@@ -1850,8 +1918,8 @@ async def api_comptable_inscription(payload: Dict[str, Any]):
 
 
 @app.post("/api/comptable/connexion")
-async def api_comptable_connexion(payload: Dict[str, Any]):
-    """Connexion sécurisée d'un expert-comptable à son espace cabinet."""
+async def api_comptable_connexion(request: Request, payload: Dict[str, Any]):
+    """Connexion sécurisée d'un expert-comptable avec protection anti-brute-force."""
     try:
         from chat_grow.database import authentifier_comptable
     except ImportError:
@@ -1863,7 +1931,24 @@ async def api_comptable_connexion(payload: Dict[str, Any]):
     if not identifiant or not mot_de_passe:
         return {"status": "error", "message": "Identifiant et mot de passe requis."}
 
-    return authentifier_comptable(identifiant, mot_de_passe)
+    # Protection Anti-Brute-Force : verrouillage 15 minutes après 5 échecs consécutifs
+    if est_compte_verrouille_temporairement(identifiant):
+        return {
+            "status": "error",
+            "message": "Sécurité : Ce compte est temporairement protégé après 5 tentatives infructueuses. Veuillez patienter 15 minutes."
+        }
+
+    res = authentifier_comptable(identifiant, mot_de_passe)
+    if res.get("status") == "success":
+        reinitialiser_echecs_auth(identifiant)
+    else:
+        nb_echecs = enregistrer_echec_auth(identifiant)
+        if nb_echecs >= 5:
+            res["message"] = "Sécurité : 5 tentatives infructueuses atteintes. Compte temporairement protégé pendant 15 minutes."
+        elif nb_echecs >= 3:
+            res["message"] += f" (Attention : {5 - nb_echecs} tentative(s) restante(s) avant verrouillage temporaire de sécurité)."
+
+    return res
 
 
 @app.get("/api/comptable/email-bienvenue-preview", response_class=HTMLResponse)
@@ -1877,12 +1962,17 @@ async def api_comptable_email_preview(nom_complet: str = "Mamadou Diallo", nom_c
 # MODULE DE SÉCURITÉ ROBUSTE & CONTRÔLE D'ACCÈS POUR LES PME SÉNÉGALAISES
 # =========================================================================
 @app.post("/api/pme/verifier-acces")
-async def api_pme_verifier_acces(payload: Dict[str, Any]):
+async def api_pme_verifier_acces(request: Request, payload: Dict[str, Any]):
     """
     Vérification stricte de l'existence du numéro PME en base de données :
+    - Protection Rate-Limiting anti-énumération de numéros
     - Si le numéro n'est PAS en base : REFUS STRICT (accès impossible au journal)
     - Si le numéro existe : Redirection directe et autorisée vers le journal de la PME
     """
+    client_ip = request.client.host if request.client else "unknown"
+    if not verifier_rate_limit(f"pme_chk:{client_ip}", max_requests=25, window_seconds=60):
+        return {"status": "error", "message": "Trop de vérifications consécutives. Veuillez patienter une minute."}
+
     raw_phone = str(payload.get("telephone") or "").strip()
     digits = re.sub(r"\D", "", raw_phone)
 
@@ -2037,39 +2127,95 @@ async def api_pme_valider_otp(payload: Dict[str, Any]):
     }
 
 
+def check_creator_access(request: Request) -> bool:
+    """Contrôle d'accès souverain pour les opérations critiques de Direction / Créateur."""
+    auth_cookie = request.cookies.get("growth_creator_auth")
+    auth_header = request.headers.get("X-Creator-Key")
+    key_param = request.query_params.get("key")
+    return (
+        auth_cookie == CREATOR_SECURITY_KEY
+        or auth_header == CREATOR_SECURITY_KEY
+        or key_param == CREATOR_SECURITY_KEY
+    )
+
 @app.get("/cockpit", response_class=HTMLResponse)
 @app.get("/admin", response_class=HTMLResponse)
 @app.get("/createur", response_class=HTMLResponse)
-async def serve_cockpit_createur():
+@app.get("/cockpit-createur", response_class=HTMLResponse)
+async def serve_cockpit_createur(request: Request, key: str = None):
     """
     Cockpit Direction & Supervision réservé exclusivement au Créateur / Fondateur de Growth.
-    Contient le suivi de l'activité des utilisateurs, la relance WhatsApp en 1 clic et l'Active Learning IA.
+    Accès strictement verrouillé par la clé de sécurité cryptographique créateur.
     """
-    html_path = os.path.join(TEMPLATES_DIR, "cockpit_createur.html")
-    if os.path.exists(html_path):
-        with open(html_path, "r", encoding="utf-8") as f:
-            return HTMLResponse(content=f.read())
-    return HTMLResponse(content="<h1>Cockpit Créateur en cours de chargement...</h1>", status_code=200)
+    if check_creator_access(request) or (key and key == CREATOR_SECURITY_KEY):
+        html_path = os.path.join(TEMPLATES_DIR, "cockpit_createur.html")
+        if os.path.exists(html_path):
+            with open(html_path, "r", encoding="utf-8") as f:
+                resp = HTMLResponse(content=f.read())
+                resp.set_cookie("growth_creator_auth", CREATOR_SECURITY_KEY, max_age=86400 * 7, httponly=True, samesite="lax")
+                return resp
+        return HTMLResponse(content="<h1>Cockpit Créateur en cours de chargement...</h1>", status_code=200)
+
+    # Écran de verrouillage haute sécurité Direction
+    lock_html = f"""<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accès Sécurisé • Cockpit Direction Growth</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-[#0f172a] text-white min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl text-center space-y-6">
+        <div class="w-16 h-16 rounded-2xl bg-slate-800 text-[#a0d9d2] border border-[#a0d9d2]/40 flex items-center justify-center mx-auto text-2xl shadow-lg">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+            <h1 class="text-xl font-black text-white tracking-tight">Cockpit Direction &amp; Créateur</h1>
+            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Espace souverain réservé à la direction de Growth. Saisissez votre clé secrète de déverrouillage.</p>
+        </div>
+        <form method="GET" action="/cockpit-createur" class="space-y-4">
+            <div>
+                <input type="password" name="key" required autofocus placeholder="Clé de sécurité Créateur..."
+                    class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 text-sm font-mono text-center focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/40 transition">
+            </div>
+            <button type="submit"
+                class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] text-[#142b27] font-black text-xs uppercase tracking-wider transition shadow-lg shadow-[#a0d9d2]/20 cursor-pointer">
+                Déverrouiller l'accès &rarr;
+            </button>
+        </form>
+        <div class="text-[11px] text-slate-500 border-t border-slate-800 pt-4 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-lock text-emerald-500"></i>
+            <span>Protection Cryptographique Active • Syscohada Growth 2026</span>
+        </div>
+    </div>
+</body>
+</html>"""
+    return HTMLResponse(content=lock_html, status_code=403)
 
 
 @app.get("/api/createur/stats")
-async def api_createur_stats():
-    """Statistiques globales de direction pour le Cockpit Créateur."""
+async def api_createur_stats(request: Request):
+    """Statistiques globales de direction pour le Cockpit Créateur (Sécurisé)."""
+    if not check_creator_access(request):
+        raise HTTPException(status_code=403, detail="Accès non autorisé au Cockpit Créateur.")
     return obtenir_stats_globales_createur()
 
 
 @app.get("/api/createur/utilisateurs")
-async def api_createur_utilisateurs():
-    """Liste de tous les commerçants inscrits et leur niveau d'activité en temps réel."""
+async def api_createur_utilisateurs(request: Request):
+    """Liste de tous les commerçants inscrits et leur niveau d'activité en temps réel (Sécurisé)."""
+    if not check_creator_access(request):
+        raise HTTPException(status_code=403, detail="Accès non autorisé au Cockpit Créateur.")
     return obtenir_liste_utilisateurs_createur()
 
 
 @app.post("/api/createur/relancer-utilisateur")
-async def api_createur_relancer_utilisateur(payload: dict = Body(...)):
-    """
-    Permet au créateur de relancer un commerçant inactif en lui envoyant
-    un message WhatsApp chaleureux du berger avec boutons interactifs.
-    """
+async def api_createur_relancer_utilisateur(request: Request, payload: dict = Body(...)):
+    """Relance WhatsApp d'un commerçant (Sécurisé)."""
+    if not check_creator_access(request):
+        raise HTTPException(status_code=403, detail="Accès non autorisé au Cockpit Créateur.")
     telephone = str(payload.get("telephone") or "").strip()
     nom = str(payload.get("nom_entreprise") or "Commerçant").strip()
     message = str(payload.get("message") or "").strip()
@@ -2092,25 +2238,28 @@ async def api_createur_relancer_utilisateur(payload: dict = Body(...)):
 
 
 @app.post("/api/createur/reinitialiser-donnees-test")
-async def api_createur_reinitialiser_donnees():
-    """
-    Permet au créateur de réinitialiser la plateforme à zéro (Clean Slate)
-    pour démarrer l'exploitation commerciale sans clients de test.
-    """
+async def api_createur_reinitialiser_donnees(request: Request):
+    """Réinitialisation de la plateforme (Opération critique hautement sécurisée)."""
+    if not check_creator_access(request):
+        raise HTTPException(status_code=403, detail="Accès strictement réservé au Créateur.")
     from chat_grow.database import reinitialiser_donnees_plateforme_a_zero
     return reinitialiser_donnees_plateforme_a_zero()
 
 
 @app.get("/api/createur/caisse-abonnements")
-async def api_createur_caisse_abonnements():
-    """Détail complet de la caisse abonnements du créateur, sorties de caisse et solde net."""
+async def api_createur_caisse_abonnements(request: Request):
+    """Détail complet de la caisse abonnements (Sécurisé)."""
+    if not check_creator_access(request):
+        raise HTTPException(status_code=403, detail="Accès non autorisé au Cockpit Créateur.")
     from chat_grow.database import obtenir_stats_caisse_abonnements
     return obtenir_stats_caisse_abonnements()
 
 
 @app.post("/api/createur/encaisser-abonnement")
-async def api_createur_encaisser_abonnement(payload: dict = Body(...)):
-    """Permet au créateur d'enregistrer et valider l'abonnement d'un client (Wave, OM, Cash)."""
+async def api_createur_encaisser_abonnement(request: Request, payload: dict = Body(...)):
+    """Enregistrement d'abonnement (Sécurisé)."""
+    if not check_creator_access(request):
+        raise HTTPException(status_code=403, detail="Accès non autorisé au Cockpit Créateur.")
     from chat_grow.database import enregistrer_paiement_abonnement
     phone = str(payload.get("telephone") or "").strip()
     nom = str(payload.get("nom_entreprise") or "").strip()
