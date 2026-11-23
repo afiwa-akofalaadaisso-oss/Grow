@@ -2040,7 +2040,7 @@ async def api_pme_demander_otp(payload: Dict[str, Any]):
     """
     Vérification stricte de l'existence du numéro PME en base de données :
     - Si le numéro n'est PAS en base : REFUS STRICT (on n'ouvre pas)
-    - Si le numéro existe : Génération d'un code OTP de sécurité SMS à 6 chiffres
+    - Si le numéro existe : Envoi réel d'un code OTP confidentiel par WhatsApp/SMS
     """
     import random
     raw_phone = str(payload.get("telephone") or "").strip()
@@ -2052,6 +2052,8 @@ async def api_pme_demander_otp(payload: Dict[str, Any]):
     # Format normalisé Sénégal : 9 chiffres (70, 75, 76, 77, 78) -> 221...
     if len(digits) == 9 and digits.startswith(("70", "75", "76", "77", "78")):
         clean_phone = "221" + digits
+    elif len(digits) == 12 and digits.startswith("221"):
+        clean_phone = digits
     else:
         clean_phone = digits
 
@@ -2072,39 +2074,44 @@ async def api_pme_demander_otp(payload: Dict[str, Any]):
             "message": "Ce numéro de téléphone n'est associé à aucune PME enregistrée dans la base de données. Accès strictement refusé."
         }
 
-    # 2. Génération du Code OTP de Sécurité (6 chiffres)
+    # 2. Génération du Code OTP de Sécurité (6 chiffres aléatoires)
     otp_code = f"{random.randint(100000, 999999)}"
     nom_ent = matched_ent.get("nom_entreprise") or "Votre PME"
     expires_at = time.time() + 600  # Valable 10 minutes
 
-    _PME_OTP_STORAGE[clean_phone] = {
+    otp_record = {
         "code": otp_code,
         "expires_at": expires_at,
         "nom_entreprise": nom_ent,
-        "entreprise_id": matched_ent.get("id")
+        "entreprise_id": matched_ent.get("id"),
+        "phone": clean_phone
     }
+    # Indexation sous les formats complet et 9 chiffres pour éviter tout décalage d'indicatif
+    _PME_OTP_STORAGE[clean_phone] = otp_record
+    if len(clean_phone) >= 9:
+        _PME_OTP_STORAGE[clean_phone[-9:]] = otp_record
 
-    # 3. Notification WhatsApp / SMS
-    sms_text = f"🔒 [GROWTH SYSCOHADA] Votre code de sécurité SMS pour accéder au journal de {nom_ent} est : {otp_code}. Valable 10 minutes. Ne le communiquez à personne."
+    # 3. Notification WhatsApp Réelle via l'API Cloud Meta
+    sms_text = f"🔒 *GROWTH — Accès Sécurisé Journal*\n\nVotre code de vérification pour accéder au journal de *{nom_ent}* est :\n👉 *{otp_code}*\n\n_Ce code expire dans 10 minutes. Ne le communiquez à personne._"
     try:
-        asyncio.create_task(send_whatsapp_message(clean_phone, sms_text, with_buttons=False))
+        await send_whatsapp_message(clean_phone, sms_text, with_buttons=False)
     except Exception as e_sms:
-        print(f"[OTP SMS INFO] {e_sms}")
+        print(f"[OTP WHATSAPP INFO] {e_sms}")
 
-    print(f"[AUTH SÉCURITÉ PME] Code OTP généré pour {clean_phone} ({nom_ent}): {otp_code}")
+    print(f"[AUTH SÉCURITÉ PME] Code OTP généré pour {clean_phone} ({nom_ent}) et envoyé sur WhatsApp.")
 
+    # SÉCURITÉ STRICTE : Ne JAMAIS renvoyer le code dans la réponse JSON au navigateur !
     return {
         "status": "success",
-        "message": f"Code de vérification envoyé par SMS au +{clean_phone}",
+        "message": f"Code de sécurité envoyé sur votre WhatsApp au +{clean_phone}",
         "phone": clean_phone,
-        "nom_entreprise": nom_ent,
-        "dev_code": otp_code  # Fourni pour confort de test démo immédiat
+        "nom_entreprise": nom_ent
     }
 
 
 @app.post("/api/pme/valider-otp")
 async def api_pme_valider_otp(payload: Dict[str, Any]):
-    """Validation rigoureuse du code SMS reçu par la PME."""
+    """Validation rigoureuse du code OTP reçu sur WhatsApp par la PME."""
     raw_phone = str(payload.get("telephone") or "").strip()
     code_saisi = str(payload.get("code") or "").strip().replace(" ", "")
     digits = re.sub(r"\D", "", raw_phone)
@@ -2114,39 +2121,45 @@ async def api_pme_valider_otp(payload: Dict[str, Any]):
     else:
         clean_phone = digits
 
-    entry = _PME_OTP_STORAGE.get(clean_phone)
+    entry = _PME_OTP_STORAGE.get(clean_phone) or (len(clean_phone) >= 9 and _PME_OTP_STORAGE.get(clean_phone[-9:]))
     if not entry:
         return {
             "status": "error",
             "code": "AUCUN_CODE",
-            "message": "Aucun code n'a été demandé pour ce numéro. Veuillez d'abord demander un code SMS."
+            "message": "Aucun code n'a été demandé pour ce numéro. Veuillez d'abord demander un code."
         }
 
     if time.time() > entry.get("expires_at", 0):
         _PME_OTP_STORAGE.pop(clean_phone, None)
+        if len(clean_phone) >= 9:
+            _PME_OTP_STORAGE.pop(clean_phone[-9:], None)
         return {
             "status": "error",
             "code": "CODE_EXPIRE",
             "message": "Le code de sécurité a expiré (délai de 10 min dépassé). Veuillez en demander un nouveau."
         }
 
+    # SÉCURITÉ STRICTE : Si le code est faussé / incorrect, la PME n'entre PAS !
     if code_saisi != entry.get("code"):
         return {
             "status": "error",
             "code": "CODE_INVALIDE",
-            "message": "Code de vérification incorrect. Veuillez vérifier le SMS reçu."
+            "message": "Code de vérification incorrect. Accès strictement refusé. Veuillez vérifier le message reçu sur votre WhatsApp."
         }
 
     # Code validé avec succès !
     nom_ent = entry.get("nom_entreprise")
+    final_phone = entry.get("phone") or clean_phone
     _PME_OTP_STORAGE.pop(clean_phone, None)  # Usage unique
+    if len(clean_phone) >= 9:
+        _PME_OTP_STORAGE.pop(clean_phone[-9:], None)
 
     return {
         "status": "success",
-        "message": "Identité certifiée avec succès !",
-        "phone": clean_phone,
+        "message": "Identité certifiée avec succès ! Accès autorisé.",
+        "phone": final_phone,
         "nom_entreprise": nom_ent,
-        "redirect_url": f"/dashboard?phone={clean_phone}&auth_verified=1"
+        "redirect_url": f"/dashboard?phone={final_phone}&auth_verified=1"
     }
 
 
