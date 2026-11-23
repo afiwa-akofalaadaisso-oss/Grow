@@ -8237,4 +8237,991 @@
                             <td style="${tdCell}">Immobilisations corporelles (Matériel d'exploitation)</td>
                             <td style="${tdMono}">${pme.bilan.immo}</td>
                             <td style="${tdCell}">Capital NINEA &amp; Apports personnels</td>
-... [truncated for diff preview]
+                            <td style="${tdMono}">${pme.bilan.capital}</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell}">Stocks de marchandises (Inventaire au prix d'achat)</td>
+                            <td style="${tdMono}">${pme.bilan.stocks}</td>
+                            <td style="${tdCell}">Résultat Net de la Période (Bénéfice)</td>
+                            <td style="${tdMono} color: #168078;">${pme.bilan.resultat}</td>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell}">Créances clients (Compte 411100)</td>
+                            <td style="${tdMono}">${pme.bilan.creances}</td>
+                            <td style="${tdCell}">Dettes Fournisseurs (Compte 401100)</td>
+                            <td style="${tdMono}">${pme.bilan.fournisseurs}</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell}">Trésorerie Wave Business &amp; Caisse Espèces</td>
+                            <td style="${tdMono}">${pme.bilan.treso}</td>
+                            <td style="${tdCell}">Dettes fiscales &amp; sociales (DGID / IPRES)</td>
+                            <td style="${tdMono}">${pme.bilan.dettesFiscales}</td>
+                        </tr>
+                        <tr style="${trTotal}">
+                            <td style="padding: 10px 12px; font-weight: 900; color: #000000; border: 1px solid #cbd5e1;">TOTAL ACTIF GÉNÉRAL</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000; border: 1px solid #cbd5e1;">${fmt(totActif)}</td>
+                            <td style="padding: 10px 12px; font-weight: 900; color: #000000; border: 1px solid #cbd5e1;">TOTAL PASSIF GÉNÉRAL</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000; border: 1px solid #cbd5e1;">${fmt(totPassif)}</td>
+                        </tr>
+                    </table>
+                    
+                </div>
+            `;
+        }
+
+        function buildSectionResultatHtml(pme, intervalle, isFirst = true) {
+            const tableHeaderStyle = "background: #f8fafc; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0f172a;";
+            const thCell = "padding: 9px 12px; border: 1px solid #cbd5e1; color: #0f172a;";
+            const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
+            const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS & CHARGES SMT)", isFirst);
+
+            let rowsHtml = '';
+            pme.resultatLignes.forEach((r, idx) => {
+                const bgStyle = r.isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
+                rowsHtml += `
+                    <tr style="${bgStyle}">
+                        <td style="${tdCell} ${r.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${r.label}</td>
+                        <td style="${tdMono} ${r.isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${r.mnt}</td>
+                    </tr>
+                `;
+            });
+
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
+                    ${headerHtml}
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+                        <tr style="${tableHeaderStyle}">
+                            <th style="${thCell} text-align: left; width: 75%;">POSTES DU COMPTE DE RÉSULTAT (SYSCOHADA SMT)</th>
+                            <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
+                        </tr>
+                        ${rowsHtml}
+                    </table>
+                </div>
+            `;
+        }
+
+        function buildSectionFluxHtml(pme, intervalle, isFirst = true) {
+            const tableHeaderStyle = "background: #f8fafc; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0f172a;";
+            const thCell = "padding: 9px 12px; border: 1px solid #cbd5e1; color: #0f172a;";
+            const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
+            const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)", isFirst);
+
+            let fluxHtml = '';
+            pme.fluxLignes.forEach((f, idx) => {
+                const isFinal = f.isFinalTreso;
+                const bgStyle = isFinal ? 'background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;' : (idx % 2 === 1 ? 'background: #fafafa;' : '');
+                fluxHtml += `
+                    <tr style="${bgStyle}">
+                        <td style="${tdCell} ${f.bold ? 'font-weight: 800; color: #000;' : 'color: #334155;'}">${f.label}</td>
+                        <td style="${tdMono} ${isFinal ? 'font-size: 13px; color: #168078; font-weight: 900;' : ''}">${f.mnt}</td>
+                    </tr>
+                `;
+            });
+
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
+                    ${headerHtml}
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+                        <tr style="${tableHeaderStyle}">
+                            <th style="${thCell} text-align: left; width: 75%;">MOUVEMENTS DE TRÉSORERIE (ENCAISSEMENTS &amp; DÉCAISSEMENTS)</th>
+                            <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
+                        </tr>
+                        ${fluxHtml}
+                    </table>
+                </div>
+            `;
+        }
+
+        function buildSectionAnnexesHtml(pme, intervalle, isFirst = true) {
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 4 : NOTES ANNEXES & INFORMATIONS COMPLÉMENTAIRES SMT", isFirst);
+
+            let notesHtml = '';
+            pme.notes.forEach(n => {
+                const parts = n.split(' : ');
+                notesHtml += `
+                    <div style="margin-bottom: 12px; padding: 10px 14px; background: #fafafa; border-left: 3px solid #168078; border-radius: 4px; border: 1px solid #e2e8f0; border-left-width: 3px;">
+                        <div style="font-weight: 800; font-size: 12px; color: #0f172a; text-transform: uppercase;">${parts[0]}</div>
+                        <div style="font-size: 11.5px; line-height: 1.5; color: #334155; margin-top: 3px;">${parts[1] || ''}</div>
+                    </div>
+                `;
+            });
+
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
+                    ${headerHtml}
+                    <div style="border: 1px solid #cbd5e1; padding: 18px 20px; background: #ffffff; margin-bottom: 14px; border-radius: 6px;">
+                        ${notesHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 5. FONCTION PRINCIPALE : OUVERTURE DU RAPPORT FINANCIER
+        // =========================================================================
+        function openReport(type) {
+            currentReportType = type;
+            const m = document.getElementById('reportModal');
+            const t = document.getElementById('repTitle');
+            const b = document.getElementById('repBody');
+            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+            const intervalle = obtenirIntervalleTexteActuel();
+
+            // Mise à jour de l'état actif des onglets
+            ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepTout', 'tabRepComposer'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            const tabMap = {
+                'bilan': 'tabRepBilan',
+                'resultat': 'tabRepResultat',
+                'flux': 'tabRepFlux',
+                'annexes': 'tabRepAnnexes',
+                'tout': 'tabRepTout',
+                'composer': 'tabRepComposer'
+            };
+            if (tabMap[type] && document.getElementById(tabMap[type])) {
+                document.getElementById(tabMap[type]).classList.add('active');
+            }
+
+            const sub = document.getElementById('repSubtitle');
+            const footerHtml = genererFooterOfficielDoc(pme);
+
+            if (type === 'bilan') {
+                t.textContent = `1. Bilan Réglementaire SYSCOHADA SMT — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionBilanHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'resultat') {
+                t.textContent = `2. Compte de Résultat SYSCOHADA SMT — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionResultatHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'flux') {
+                t.textContent = `3. Tableau des Flux de Trésorerie — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionFluxHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'annexes') {
+                t.textContent = `4. Notes Annexes & Rapprochement — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionAnnexesHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'tout') {
+                t.textContent = `Liasse Financière Complète SYSCOHADA SMT — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet} • Les 4 états réglementaires réunis`;
+
+                b.innerHTML = `
+                    ${buildSectionBilanHtml(pme, intervalle, true)}
+                    <div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>
+                    ${buildSectionResultatHtml(pme, intervalle, false)}
+                    <div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>
+                    ${buildSectionFluxHtml(pme, intervalle, false)}
+                    ${buildSectionAnnexesHtml(pme, intervalle, false)}
+                    ${footerHtml}
+                `;
+
+            } else if (type === 'composer') {
+                // DOSSIER COMPOSÉ SUR-MESURE (EX: CLIENT NE VEUT QUE BILAN ET ANNEXES)
+                const selection = [];
+                if (composedStates.bilan) selection.push({ key: 'bilan', label: 'Bilan' });
+                if (composedStates.resultat) selection.push({ key: 'resultat', label: 'Résultat' });
+                if (composedStates.flux) selection.push({ key: 'flux', label: 'Flux' });
+                if (composedStates.annexes) selection.push({ key: 'annexes', label: 'Notes Annexes' });
+
+                if (selection.length === 0) {
+                    composedStates.bilan = true;
+                    selection.push({ key: 'bilan', label: 'Bilan' });
+                    syncComposerCheckboxesFromState();
+                }
+
+                const libelles = selection.map(s => s.label).join(' + ');
+                t.textContent = `Dossier Composé (${libelles}) — ${pme.nom}`;
+                if (sub) {
+                    sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet} • Composition sur-mesure (${selection.length} état${selection.length > 1 ? 's' : ''})`;
+                }
+
+                let fullContentHtml = '';
+                selection.forEach((item, idx) => {
+                    const isFirst = (idx === 0);
+                    if (idx > 0) {
+                        fullContentHtml += `<div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>`;
+                    }
+
+                    if (item.key === 'bilan') {
+                        fullContentHtml += buildSectionBilanHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'resultat') {
+                        fullContentHtml += buildSectionResultatHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'flux') {
+                        fullContentHtml += buildSectionFluxHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'annexes') {
+                        fullContentHtml += buildSectionAnnexesHtml(pme, intervalle, isFirst);
+                    }
+                });
+
+                // Apposition de l'attestation et des signatures officielles sur le dernier état
+                fullContentHtml += footerHtml;
+                b.innerHTML = fullContentHtml;
+            }
+
+            m.style.display = 'flex';
+        }
+
+        function closeReport() {
+            const m = document.getElementById('reportModal');
+            if (m) m.style.display = 'none';
+            fermerComposerPopover();
+        }
+
+        // =========================================================================
+        // MOTEUR D'IMPRESSION HAUTE-FIDÉLITÉ A4 SYSCOHADA (100% GARANTI SANS BUG)
+        // =========================================================================
+        function imprimerLiasse() {
+            const repBody = document.getElementById('repBody');
+            if (!repBody) {
+                window.print();
+                return;
+            }
+
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier Client' };
+
+            const sel = [];
+            if (typeof composedStates !== 'undefined' && composedStates) {
+                if (composedStates.bilan) sel.push('Bilan');
+                if (composedStates.resultat) sel.push('Résultat');
+                if (composedStates.flux) sel.push('Flux');
+                if (composedStates.annexes) sel.push('Notes Annexes');
+            }
+
+            let docTitre = `Liasse Fiscale SYSCOHADA SMT — ${pme.nom}`;
+            if (currentReportType === 'composer') {
+                const sel = [];
+                if (composedStates.bilan) sel.push('Bilan');
+                if (composedStates.resultat) sel.push('Résultat');
+                if (composedStates.flux) sel.push('Flux');
+                if (composedStates.annexes) sel.push('Notes Annexes');
+                docTitre = `Dossier Composé (${sel.join(' + ')}) — ${pme.nom}`;
+            } else if (currentReportType === 'bilan') {
+                docTitre = `Bilan Réglementaire SYSCOHADA — ${pme.nom}`;
+            } else if (currentReportType === 'resultat') {
+                docTitre = `Compte de Résultat SYSCOHADA — ${pme.nom}`;
+            } else if (currentReportType === 'flux') {
+                docTitre = `Tableau des Flux de Trésorerie — ${pme.nom}`;
+            } else if (currentReportType === 'annexes') {
+                docTitre = `Notes Annexes SYSCOHADA — ${pme.nom}`;
+                if (sel.length === 4) {
+                    docTitre = `Liasse Fiscale Complète SYSCOHADA SMT — ${pme.nom}`;
+                } else {
+                    docTitre = `Dossier Financier (${sel.join(' + ')}) — ${pme.nom}`;
+                }
+            }
+
+            try {
+                // Création d'une iframe d'impression isolée pour garantir une impression A4 sans faille
+                let iframe = document.getElementById('growPrintIframe');
+                if (iframe) {
+                    iframe.remove();
+                }
+                iframe = document.createElement('iframe');
+                iframe.id = 'growPrintIframe';
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '1px';
+                iframe.style.height = '1px';
+                iframe.style.opacity = '0.01';
+                iframe.style.border = '0';
+                iframe.style.pointerEvents = 'none';
+                document.body.appendChild(iframe);
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="utf-8">
+                    <title>${docTitre}</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                    <style>
+                        @page {
+                            size: A4 portrait;
+                            margin: 0 !important; /* Neutralise l'URL, la date et les en-têtes natifs du navigateur */
+                        }
+                        * {
+                            box-sizing: border-box;
+                            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                        }
+                        html, body {
+                            margin: 0 !important;
+                            padding: 12mm 10mm !important;
+                            background: #ffffff !important;
+                            color: #000000 !important;
+                            font-size: 11px;
+                            line-height: 1.4;
+                            box-sizing: border-box !important;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        .print-page-break {
+                            page-break-before: always;
+                            break-before: page;
+                            clear: both;
+                            border: none !important;
+                            margin-top: 0 !important;
+                            padding-top: 0 !important;
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${repBody.innerHTML}
+                </body>
+                </html>
+            `);
+                doc.close();
+
+                // Lancement de l'impression
+                setTimeout(() => {
+                    try {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                    } catch (e) {
+                        // Fallback
+                        window.print();
+                    }
+                }, 350);
+            } catch (err) {
+                console.error("Erreur lors de l'impression liasse:", err);
+                window.print();
+            }
+        }
+
+        // =========================================================================
+        // GESTION DYNAMIQUE DE LA LIASSE DANS DOCUMENTS & LIASSES (PDF / WORD / EXCEL)
+        // =========================================================================
+        
+        // =========================================================================
+        // CALENDRIER SUR-MESURE DE LA LIASSE FISCALE & ÉTATS RÉGLEMENTAIRES
+        // =========================================================================
+        let docLiasseCalCurrentMonth = new Date(2026, 0, 1); // Janvier 2026
+        let docLiasseStartDate = '2026-01-01';
+        let docLiasseEndDate = '2026-12-31';
+
+        function toggleDocLiasseCalendar(event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            closeDocLiasseCompositionDropdown();
+            const pop = document.getElementById('docLiasseCalendarPopover');
+            const chev = document.getElementById('docLiasseDateChevron');
+            if (!pop) return;
+            const isShowing = pop.style.display === 'block';
+            if (isShowing) {
+                closeDocLiasseCalendar();
+            } else {
+                pop.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+                renderDocLiasseCalendar();
+            }
+        }
+
+        function closeDocLiasseCalendar() {
+            const pop = document.getElementById('docLiasseCalendarPopover');
+            const chev = document.getElementById('docLiasseDateChevron');
+            if (pop) pop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function changeDocLiasseCalendarMonth(delta) {
+            docLiasseCalCurrentMonth.setMonth(docLiasseCalCurrentMonth.getMonth() + delta);
+            renderDocLiasseCalendar();
+            renderDocLiasseMonthGrid();
+        }
+
+        function changeDocLiasseCalendarYear(delta) {
+            const newY = docLiasseCalCurrentMonth.getFullYear() + delta;
+            if (newY >= 2016 && newY <= 2030) {
+                docLiasseCalCurrentMonth.setFullYear(newY);
+                renderDocLiasseCalendar();
+                renderDocLiasseMonthGrid();
+            }
+        }
+
+        function toggleDocLiasseMonthYearPicker() {
+            const pickerView = document.getElementById('docLiasseMonthYearPickerView');
+            const chev = document.getElementById('docLiasseCalPickerChevron');
+            if (!pickerView) return;
+            const isHidden = pickerView.style.display === 'none' || !pickerView.style.display;
+            if (isHidden) {
+                pickerView.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+                renderDocLiasseMonthGrid();
+            } else {
+                pickerView.style.display = 'none';
+                if (chev) chev.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function selectDocLiasseMonth(monthIndex) {
+            docLiasseCalCurrentMonth.setMonth(monthIndex);
+            const pickerView = document.getElementById('docLiasseMonthYearPickerView');
+            const chev = document.getElementById('docLiasseCalPickerChevron');
+            if (pickerView) pickerView.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+            renderDocLiasseCalendar();
+        }
+
+        function renderDocLiasseMonthGrid() {
+            const grid = document.getElementById('docLiasseCalMonthsGrid');
+            const yrDisplay = document.getElementById('docLiasseCalYearDisplay');
+            if (!grid) return;
+            const curY = docLiasseCalCurrentMonth.getFullYear();
+            const curM = docLiasseCalCurrentMonth.getMonth();
+            if (yrDisplay) yrDisplay.textContent = curY;
+
+            grid.innerHTML = '';
+            AGENCE_MONTH_SHORT.forEach((shortName, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'cal-month-grid-btn' + (idx === curM ? ' active' : '');
+                btn.textContent = shortName;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    selectDocLiasseMonth(idx);
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectDocLiasseCalendarPreset(preset) {
+            const pop = document.getElementById('docLiasseCalendarPopover');
+            if (pop) {
+                pop.querySelectorAll('.cal-preset-pill').forEach(btn => btn.classList.remove('active'));
+            }
+            if (event && event.target && event.target.classList.contains('cal-preset-pill')) {
+                event.target.classList.add('active');
+            }
+
+            if (preset === 'mois_actuel') {
+                docLiasseStartDate = '2026-05-01';
+                docLiasseEndDate = '2026-05-31';
+                docLiasseCalCurrentMonth = new Date(2026, 4, 1);
+            } else if (preset === 'mois_precedent') {
+                docLiasseStartDate = '2026-04-01';
+                docLiasseEndDate = '2026-04-30';
+                docLiasseCalCurrentMonth = new Date(2026, 3, 1);
+            } else if (preset === 't1_2026') {
+                docLiasseStartDate = '2026-01-01';
+                docLiasseEndDate = '2026-03-31';
+                docLiasseCalCurrentMonth = new Date(2026, 0, 1);
+            } else if (preset === 't2_2026') {
+                docLiasseStartDate = '2026-04-01';
+                docLiasseEndDate = '2026-06-30';
+                docLiasseCalCurrentMonth = new Date(2026, 3, 1);
+            } else if (preset === 'annee_2026') {
+                docLiasseStartDate = '2026-01-01';
+                docLiasseEndDate = '2026-12-31';
+                docLiasseCalCurrentMonth = new Date(2026, 0, 1);
+            } else if (preset === 'annee_2025') {
+                docLiasseStartDate = '2025-01-01';
+                docLiasseEndDate = '2025-12-31';
+                docLiasseCalCurrentMonth = new Date(2025, 0, 1);
+            }
+            renderDocLiasseCalendar();
+            applyDocLiasseCalendarFilter();
+        }
+
+        function onDocLiasseManualDateInput() {
+            const inpDebut = document.getElementById('docLiasseCalInputDebut');
+            const inpFin = document.getElementById('docLiasseCalInputFin');
+            if (!inpDebut || !inpFin) return;
+
+            const isoDebut = parseFRDateToISO(inpDebut.value);
+            const isoFin = parseFRDateToISO(inpFin.value);
+
+            if (isoDebut) {
+                docLiasseStartDate = isoDebut;
+                const [y, m] = isoDebut.split('-');
+                docLiasseCalCurrentMonth = new Date(parseInt(y, 10), parseInt(m, 10) - 1, 1);
+            }
+            if (isoFin) {
+                docLiasseEndDate = isoFin;
+            }
+            renderDocLiasseCalendar();
+        }
+
+        function renderDocLiasseCalendar() {
+            const y = docLiasseCalCurrentMonth.getFullYear();
+            const m = docLiasseCalCurrentMonth.getMonth();
+
+            const titleEl = document.getElementById('docLiasseCalTitleText');
+            if (titleEl) {
+                titleEl.textContent = `${AGENCE_MONTH_NAMES[m]} ${y}`;
+            }
+            const yrDisplay = document.getElementById('docLiasseCalYearDisplay');
+            if (yrDisplay) {
+                yrDisplay.textContent = y;
+            }
+
+            const grid = document.getElementById('docLiasseCalDaysGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const firstDayIndex = new Date(y, m, 1).getDay();
+            const startOffset = (firstDayIndex === 0 ? 7 : firstDayIndex) - 1;
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+            for (let i = 0; i < startOffset; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'cal-day-cell empty';
+                grid.appendChild(empty);
+            }
+
+            const today = new Date();
+            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'cal-day-cell';
+                const dayStr = `${y}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                cell.textContent = day;
+
+                if (dayStr === todayStr) {
+                    cell.classList.add('today');
+                }
+
+                if (docLiasseStartDate && dayStr === docLiasseStartDate) {
+                    cell.classList.add('selected-start');
+                } else if (docLiasseEndDate && dayStr === docLiasseEndDate) {
+                    cell.classList.add('selected-end');
+                } else if (docLiasseStartDate && docLiasseEndDate && dayStr > docLiasseStartDate && dayStr < docLiasseEndDate) {
+                    cell.classList.add('in-range');
+                }
+
+                cell.onclick = (e) => {
+                    e.stopPropagation();
+                    onDocLiasseDayClick(dayStr);
+                };
+
+                grid.appendChild(cell);
+            }
+
+            updateDocLiasseCalSummary();
+        }
+
+        function onDocLiasseDayClick(dayStr) {
+            if (!docLiasseStartDate || (docLiasseStartDate && docLiasseEndDate)) {
+                docLiasseStartDate = dayStr;
+                docLiasseEndDate = '';
+            } else if (docLiasseStartDate && !docLiasseEndDate) {
+                if (dayStr < docLiasseStartDate) {
+                    docLiasseEndDate = docLiasseStartDate;
+                    docLiasseStartDate = dayStr;
+                } else {
+                    docLiasseEndDate = dayStr;
+                }
+            }
+            renderDocLiasseCalendar();
+        }
+
+        function updateDocLiasseCalSummary() {
+            const sum = document.getElementById('docLiasseCalSummary');
+            const inpDebut = document.getElementById('docLiasseCalInputDebut');
+            const inpFin = document.getElementById('docLiasseCalInputFin');
+
+            if (docLiasseStartDate && docLiasseEndDate) {
+                const [y1, m1, d1] = docLiasseStartDate.split('-');
+                const [y2, m2, d2] = docLiasseEndDate.split('-');
+                if (inpDebut) inpDebut.value = `${d1}/${m1}/${y1}`;
+                if (inpFin) inpFin.value = `${d2}/${m2}/${y2}`;
+                if (sum) {
+                    if (docLiasseStartDate === `${y1}-01-01` && docLiasseEndDate === `${y1}-12-31`) {
+                        sum.innerHTML = `<span style="color: #0e7647; font-weight: 800;">✓ Exercice comptable complet ${y1}</span> (${d1}/${m1}/${y1} au ${d2}/${m2}/${y2})`;
+                    } else if (docLiasseStartDate === docLiasseEndDate) {
+                        sum.innerHTML = `<span style="color: #0e7647; font-weight: 800;">✓ Date unique :</span> ${d1}/${m1}/${y1}`;
+                    } else {
+                        sum.innerHTML = `<span style="color: #0e7647; font-weight: 800;">✓ Intervalle :</span> Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                    }
+                }
+            } else if (docLiasseStartDate) {
+                const [y1, m1, d1] = docLiasseStartDate.split('-');
+                if (inpDebut) inpDebut.value = `${d1}/${m1}/${y1}`;
+                if (inpFin) inpFin.value = '';
+                if (sum) {
+                    sum.innerHTML = `<span><strong>Date Début :</strong> ${d1}/${m1}/${y1}</span> <span style="color: #168078; font-weight: 700;">→ Cliquez sur la date de fin</span>`;
+                }
+            }
+        }
+
+        function applyDocLiasseCalendarFilter() {
+            if (docLiasseStartDate && !docLiasseEndDate) {
+                docLiasseEndDate = docLiasseStartDate;
+            }
+
+            if (docLiasseStartDate && docLiasseEndDate) {
+                const debEl = document.getElementById('dateBilanDebut');
+                const finEl = document.getElementById('dateBilanFin');
+                const docDebEl = document.getElementById('docLiasseDateDebut');
+                const docFinEl = document.getElementById('docLiasseDateFin');
+                const btnLabel = document.getElementById('docLiasseDateBtnLabel');
+                const agenceBtnLabel = document.getElementById('agenceDateBtnLabel');
+
+                if (debEl) debEl.value = docLiasseStartDate;
+                if (finEl) finEl.value = docLiasseEndDate;
+                if (docDebEl) docDebEl.value = docLiasseStartDate;
+                if (docFinEl) docFinEl.value = docLiasseEndDate;
+
+                const [y1, m1, d1] = docLiasseStartDate.split('-');
+                const [y2, m2, d2] = docLiasseEndDate.split('-');
+
+                let labelText = '';
+                if (docLiasseStartDate === '2026-01-01' && docLiasseEndDate === '2026-12-31') {
+                    labelText = 'Exercice Annuel 2026 (01/01/2026 - 31/12/2026)';
+                } else if (docLiasseStartDate === '2025-01-01' && docLiasseEndDate === '2025-12-31') {
+                    labelText = 'Exercice Précédent N-1 (01/01/2025 - 31/12/2025)';
+                } else if (docLiasseStartDate === '2026-05-01' && docLiasseEndDate === '2026-05-31') {
+                    labelText = 'Mois en cours (01/05/2026 - 31/05/2026)';
+                } else if (docLiasseStartDate === '2026-04-01' && docLiasseEndDate === '2026-04-30') {
+                    labelText = 'Mois dernier (01/04/2026 - 30/04/2026)';
+                } else if (docLiasseStartDate === '2026-01-01' && docLiasseEndDate === '2026-03-31') {
+                    labelText = '1er Trimestre 2026 (01/01/2026 - 31/03/2026)';
+                } else if (docLiasseStartDate === '2026-04-01' && docLiasseEndDate === '2026-06-30') {
+                    labelText = '2ème Trimestre 2026 (01/04/2026 - 30/06/2026)';
+                } else if (docLiasseStartDate === docLiasseEndDate) {
+                    labelText = `Le ${d1}/${m1}/${y1}`;
+                } else {
+                    labelText = `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                }
+
+                if (btnLabel) btnLabel.textContent = labelText;
+                if (agenceBtnLabel) agenceBtnLabel.textContent = (docLiasseStartDate === docLiasseEndDate) ? `Le ${d1}/${m1}/${y1}` : `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+
+                // Sync avec les variables globales
+                agenceStartDate = docLiasseStartDate;
+                agenceEndDate = docLiasseEndDate;
+                mettreAJourDocPreview();
+            }
+
+            closeDocLiasseCalendar();
+        }
+
+        function onDocLiassePeriodeChange(val) {
+            const debEl = document.getElementById('dateBilanDebut');
+            const finEl = document.getElementById('dateBilanFin');
+            const btnLabel = document.getElementById('agenceDateBtnLabel');
+            
+            if (val === 'annee_2026') {
+                if (debEl) debEl.value = '2026-01-01';
+                if (finEl) finEl.value = '2026-12-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2026 au 31/12/2026';
+            } else if (val === 'mois_courant') {
+                if (debEl) debEl.value = '2026-05-01';
+                if (finEl) finEl.value = '2026-05-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/05/2026 au 31/05/2026';
+            } else if (val === 't1_2026') {
+                if (debEl) debEl.value = '2026-01-01';
+                if (finEl) finEl.value = '2026-03-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2026 au 31/03/2026';
+            } else if (val === 't2_2026') {
+                if (debEl) debEl.value = '2026-04-01';
+                if (finEl) finEl.value = '2026-06-30';
+                if (btnLabel) btnLabel.textContent = 'Du 01/04/2026 au 30/06/2026';
+            } else if (val === 'annee_2025') {
+                if (debEl) debEl.value = '2025-01-01';
+                if (finEl) finEl.value = '2025-12-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2025 au 31/12/2025';
+            }
+            showToast("Période comptable mise à jour !");
+        }
+
+        // =========================================================================
+        // SÉLECTEUR DE COMPOSITION DU DOCUMENT (DESIGN AUX COULEURS DU PROJET GROW)
+        // =========================================================================
+        function toggleDocLiasseCompositionDropdown(event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const pop = document.getElementById('docLiasseCompositionPopover');
+            const chev = document.getElementById('docLiasseCompositionChevron');
+            if (!pop) return;
+            const isShowing = pop.style.display === 'block';
+            if (isShowing) {
+                closeDocLiasseCompositionDropdown();
+            } else {
+                closeDocLiasseCalendar();
+                pop.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function closeDocLiasseCompositionDropdown() {
+            const pop = document.getElementById('docLiasseCompositionPopover');
+            const chev = document.getElementById('docLiasseCompositionChevron');
+            if (pop) pop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function selectDocLiasseCompositionOption(val, label, iconClass) {
+            const select = document.getElementById('docLiasseCompositionSelect');
+            if (select) {
+                select.value = val;
+            }
+            const labelEl = document.getElementById('docLiasseCompositionBtnLabel');
+            if (labelEl) {
+                labelEl.textContent = label;
+            }
+            const iconEl = document.getElementById('docLiasseCompositionBtnIcon');
+            if (iconEl && iconClass) {
+                iconEl.className = 'fa-solid ' + iconClass;
+            }
+
+            // Met à jour la classe active et l'état visuel aux couleurs du projet (#168078 / #0f766e)
+            document.querySelectorAll('#docLiasseCompositionPopover .custom-composition-item').forEach(it => {
+                const itemVal = it.getAttribute('data-val');
+                const check = it.querySelector('.checkmark-icon');
+                const textSpan = it.querySelector('span');
+                if (itemVal === val) {
+                    it.classList.add('active');
+                    it.style.background = '#f0fdfa';
+                    it.style.border = '1px solid #14b8a6';
+                    if (textSpan) {
+                        textSpan.style.color = '#0f766e';
+                        textSpan.style.fontWeight = '800';
+                    }
+                    if (check) check.style.display = 'block';
+                } else {
+                    it.classList.remove('active');
+                    it.style.background = '#ffffff';
+                    it.style.border = itemVal === 'composer' ? '1px dashed #cbd5e1' : '1px solid transparent';
+                    if (textSpan) {
+                        textSpan.style.color = itemVal === 'composer' ? '#168078' : '#0f172a';
+                        textSpan.style.fontWeight = itemVal === 'composer' ? '800' : '700';
+                    }
+                    if (check) check.style.display = 'none';
+                }
+            });
+
+            closeDocLiasseCompositionDropdown();
+            onDocLiasseCompositionChange(val);
+        }
+
+        function onDocLiasseCompositionChange(val) {
+            if (val === 'composer') {
+                openComposerDossierDirect();
+            }
+        }
+
+        function ouvrirLiasseDepuisDocCard() {
+            const select = document.getElementById('docLiasseCompositionSelect');
+            const type = select ? select.value : 'tout';
+            if (type === 'composer') {
+                openComposerDossierDirect();
+            } else {
+                openReport(type);
+            }
+        }
+
+        function exporterLiasseWord() {
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier PME' };
+            const intervalle = obtenirIntervalleTexteActuel();
+            const repBody = document.getElementById('repBody');
+            
+            let htmlToExport = '';
+            if (repBody && repBody.innerHTML && repBody.innerHTML.trim().length > 100) {
+                htmlToExport = repBody.innerHTML;
+            } else {
+                htmlToExport = buildSectionBilanHtml(pme, intervalle, true) +
+                    "<br><br>" + buildSectionResultatHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionFluxHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionAnnexesHtml(pme, intervalle, false) +
+                    genererFooterOfficielDoc(pme);
+            }
+
+            const wordDoc = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Liasse Fiscale SYSCOHADA - ${pme.nom}</title>
+                    <style>
+                        body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; color: #1e293b; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 16pt; }
+                        th, td { border: 1pt solid #cbd5e1; padding: 6pt 8pt; font-size: 10pt; }
+                        th { background-color: #f1f5f9; font-weight: bold; color: #0f172a; }
+                        h1, h2, h3 { color: #0f172a; }
+                    </style>
+                </head>
+                <body>
+                    ${htmlToExport}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\\ufeff' + wordDoc], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `LIASSE_SYSCOHADA_${(pme.nom || 'PME').replace(/[^a-zA-Z0-9]/g, '_')}_2026.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast(`Document Word (.doc) officiel généré pour ${pme.nom} !`);
+        }
+
+        function exporterLiasseExcel() {
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier PME' };
+            const intervalle = obtenirIntervalleTexteActuel();
+            const repBody = document.getElementById('repBody');
+            
+            let htmlToExport = '';
+            if (repBody && repBody.innerHTML && repBody.innerHTML.trim().length > 100) {
+                htmlToExport = repBody.innerHTML;
+            } else {
+                htmlToExport = buildSectionBilanHtml(pme, intervalle, true) +
+                    "<br><br>" + buildSectionResultatHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionFluxHtml(pme, intervalle, false);
+            }
+
+            const excelDoc = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                <head>
+                    <meta charset="utf-8">
+                    <!--[if gte mso 9]>
+                    <xml>
+                    <x:ExcelWorkbook>
+                        <x:ExcelWorksheets>
+                            <x:ExcelWorksheet>
+                                <x:Name>Liasse Fiscale SYSCOHADA</x:Name>
+                                <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                            </x:ExcelWorksheet>
+                        </x:ExcelWorksheets>
+                    </x:ExcelWorkbook>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        body { font-family: Arial, sans-serif; font-size: 10pt; }
+                        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+                        th { background-color: #f1f5f9; font-weight: bold; border: 0.5pt solid #cbd5e1; padding: 6px; }
+                        td { border: 0.5pt solid #cbd5e1; padding: 6px; }
+                    </style>
+                </head>
+                <body>
+                    ${htmlToExport}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\\ufeff' + excelDoc], { type: 'application/vnd.ms-excel;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `LIASSE_SYSCOHADA_${(pme.nom || 'PME').replace(/[^a-zA-Z0-9]/g, '_')}_2026.xls`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast(`Tableau Excel (.xls) officiel généré pour ${pme.nom} !`);
+        }
+    </script>
+
+    <!-- MODALE CONNEXION GROWTH (STYLE FINTECH PRO ÉPURÉ) -->
+    <div id="modalConnexion"
+        class="fixed inset-0 z-[5000] bg-slate-900/50 backdrop-blur-sm items-center justify-center p-4 select-none"
+        style="display: none;" onclick="fermerModalConnexion()">
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-2xl max-w-[420px] w-full overflow-hidden p-6 sm:p-7 relative font-sans text-slate-800"
+            onclick="event.stopPropagation()">
+
+            <!-- Bouton fermer discret -->
+            <button type="button" onclick="fermerModalConnexion()"
+                class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition-colors"
+                title="Fermer">
+                <i class="fa-solid fa-xmark text-[18px]"></i>
+            </button>
+
+            <!-- En-tête Lumineux avec Avatar Growth -->
+            <div class="mb-6">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-[#222222] text-[#a0d9d2] p-2 flex items-center justify-center shadow-xs mb-3.5">
+                    <img src="/static/grow_icon_squircle.png?v=3" alt="Growth" class="w-8 h-8 object-contain">
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Connexion à votre espace</h3>
+                <p class="text-xs text-slate-500 font-medium mt-1">Copilote Financier &amp; Pré-Comptable SYSCOHADA</p>
+            </div>
+
+            <!-- Formulaire de Connexion -->
+            <form onsubmit="validerConnexion(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11.5px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Numéro
+                        WhatsApp ou Email *</label>
+                    <div class="relative flex items-center">
+                        <span
+                            class="absolute left-3.5 text-slate-400 pointer-events-none flex items-center justify-center">
+                            <i class="fa-solid fa-circle-user text-[18px]"></i>
+                        </span>
+                        <input type="text" id="loginIdentifiant" required
+                            placeholder="+221 78 877 38 27 ou cabinet@grow.sn"
+                            class="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block text-[11.5px] font-bold text-slate-700 uppercase tracking-wider">Code PIN ou
+                            Mot de passe *</label>
+                        <a href="https://wa.me/221788773827?text=Bonjour%20GROW,%20j'ai%20oublié%20mon%20code%20PIN"
+                            target="_blank" class="text-[11.5px] font-semibold text-[#168078] hover:underline">Code
+                            oublié ?</a>
+                    </div>
+                    <div class="relative flex items-center">
+                        <span
+                            class="absolute left-3.5 text-slate-400 pointer-events-none flex items-center justify-center">
+                            <i class="fa-solid fa-lock text-[18px]"></i>
+                        </span>
+                        <input type="password" id="loginPin" required placeholder="••••" maxlength="8"
+                            class="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[14px] font-bold font-mono tracking-widest text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit"
+                        class="w-full py-3 rounded-xl bg-[#222222] hover:bg-[#333333] active:bg-[#0f2820] text-white text-[12.5px] font-bold transition-all shadow-sm shadow-[#222222]/20 cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99]">
+                        <span>Se connecter</span>
+                        <i class="fa-solid fa-arrow-right text-[15px] text-[#a0d9d2]"></i>
+                    </button>
+                </div>
+
+                <div
+                    class="pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[11px] text-slate-400 font-medium">
+                    <i class="fa-solid fa-shield-halved text-[14px] text-emerald-600"></i>
+                    <span>Données chiffrées &bull; Conforme SYSCOHADA</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+            function ouvrirModalConnexion() {
+                const m = document.getElementById('modalConnexion');
+                if (m) m.style.display = 'flex';
+            }
+            function fermerModalConnexion() {
+                const m = document.getElementById('modalConnexion');
+                if (m) m.style.display = 'none';
+            }
+            function validerConnexion(e) {
+                e.preventDefault();
+                const id = document.getElementById('loginIdentifiant')?.value || '';
+                fermerModalConnexion();
+                window.location.href = '/dashboard';
+            }
+    </script>
+
+</body>
+
+</html>
