@@ -2246,36 +2246,51 @@ async def serve_cockpit_createur(request: Request, key: str = None):
 
     # Écran de verrouillage haute sécurité Direction
     lock_html = f"""<!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="h-full bg-[#f8fafc]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accès Sécurisé • Cockpit Direction Growth</title>
+    <link rel="icon" type="image/png" href="/static/grow_icon_squircle.png?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {{ font-family: 'Plus Jakarta Sans', sans-serif; }}
+    </style>
 </head>
-<body class="bg-[#0f172a] text-white min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl text-center space-y-6">
-        <div class="w-16 h-16 rounded-2xl bg-slate-800 text-[#a0d9d2] border border-[#a0d9d2]/40 flex items-center justify-center mx-auto text-2xl shadow-lg">
-            <i class="fa-solid fa-shield-halved"></i>
+<body class="bg-[#f8fafc] text-slate-900 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white border border-slate-200/90 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/50 text-center space-y-6">
+        <!-- Logo officiel Growth -->
+        <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-xs border border-slate-200 flex items-center justify-center mx-auto bg-white p-1">
+            <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" class="w-full h-full object-contain rounded-xl">
         </div>
         <div>
-            <h1 class="text-xl font-black text-white tracking-tight">Cockpit Direction &amp; Créateur</h1>
-            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Espace souverain réservé à la direction de Growth. Saisissez votre clé secrète de déverrouillage.</p>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[10.5px] font-bold uppercase tracking-wider border border-slate-200 mb-2">
+                <i class="fa-solid fa-shield-halved text-emerald-600 text-[10px]"></i>
+                <span>Espace Souverain Direction</span>
+            </div>
+            <h1 class="text-2xl font-black text-slate-900 tracking-tight">Cockpit Dirigeant</h1>
+            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                Supervision des commerçants, caisse abonnements et apprentissage IA. Saisissez votre clé secrète.
+            </p>
         </div>
         <form method="GET" action="/cockpit-createur" class="space-y-4">
             <div>
-                <input type="password" name="key" required autofocus placeholder="Clé de sécurité Créateur..."
-                    class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 text-sm font-mono text-center focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/40 transition">
+                <input type="password" name="key" required autofocus placeholder="Saisir la clé secrète..."
+                    class="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm font-mono text-center focus:bg-white focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200 transition">
             </div>
             <button type="submit"
-                class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] text-[#142b27] font-black text-xs uppercase tracking-wider transition shadow-lg shadow-[#a0d9d2]/20 cursor-pointer">
-                Déverrouiller l'accès &rarr;
+                class="w-full py-3.5 rounded-xl bg-[#222222] hover:bg-[#333333] active:scale-[0.99] text-white font-bold text-xs uppercase tracking-wider transition shadow-md shadow-black/10 cursor-pointer flex items-center justify-center gap-2">
+                <span>Déverrouiller l'accès</span>
+                <i class="fa-solid fa-arrow-right text-[11px]"></i>
             </button>
         </form>
-        <div class="text-[11px] text-slate-500 border-t border-slate-800 pt-4 flex items-center justify-center gap-1.5">
-            <i class="fa-solid fa-lock text-emerald-500"></i>
-            <span>Protection Cryptographique Active • Syscohada Growth 2026</span>
+        <div class="text-[11px] text-slate-400 border-t border-slate-100 pt-4 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-lock text-emerald-600"></i>
+            <span>Protection Cryptographique Active • SYSCOHADA Growth 2026</span>
         </div>
     </div>
 </body>
