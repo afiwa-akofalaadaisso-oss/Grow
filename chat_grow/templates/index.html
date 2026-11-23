@@ -88,15 +88,18 @@
         }
 
         .hero-mesh {
-            background: #ffffff;
-            background-image: radial-gradient(circle at 50% -20%, #f8fafc 0%, #ffffff 80%);
+            background:
+                radial-gradient(circle at 15% 25%, rgba(160, 217, 210, 0.45) 0%, transparent 45%),
+                radial-gradient(circle at 85% 30%, rgba(160, 217, 210, 0.38) 0%, transparent 50%),
+                radial-gradient(circle at 50% 85%, rgba(160, 217, 210, 0.25) 0%, transparent 55%),
+                linear-gradient(180deg, #ffffff 0%, #f4fbf9 50%, #ffffff 100%);
         }
 
         .glass-nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(160, 217, 210, 0.35);
         }
 
         /* Animation douce de flottement pour les cartes d'illustration */
@@ -137,29 +140,29 @@
 <body class="min-h-screen flex flex-col antialiased">
 
     <!-- ========================================================================= -->
-    <!-- 1. NAVIGATION BAR FLOTTANTE AVEC BOUTON SE CONNECTER ÉLÉGANT & SOBER        -->
+    <!-- 1. NAVIGATION BAR FLOTTANTE AVEC BOUTON SE CONNECTER EN MENTHE ÉCLATANTE  -->
     <!-- ========================================================================= -->
     <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
-            <!-- Logo Growth Authentique Officiel -->
+            <!-- Logo Growth Authentique Officiel (Anthracite #222222 & Menthe #a0d9d2) -->
             <a href="/" class="flex items-center gap-3 group">
                 <img src="/static/grow_icon_official.png?v=7" alt="Growth Logo"
                     class="w-10 h-10 rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform duration-200">
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl font-black tracking-tight text-slate-900">Growth</span>
+                    <span class="text-2xl font-black tracking-tight text-[#222222]">Growth</span>
                     <span
-                        class="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold uppercase tracking-wider border border-slate-200">SYSCOHADA</span>
+                        class="hidden sm:inline-block px-2 py-0.5 rounded-full bg-[#a0d9d2]/40 text-[#142b27] text-[10px] font-black uppercase tracking-wider">SYSCOHADA</span>
                 </div>
             </a>
 
-            <!-- Action : Bouton SE CONNECTER Noir Élite -->
+            <!-- Action unique : Bouton SE CONNECTER en Menthe claire #a0d9d2 qui attire le regard -->
             <div>
                 <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
-                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-95 text-white text-xs sm:text-sm font-bold transition-all shadow-xs duration-150 cursor-pointer">
-                    <i class="fa-solid fa-lock text-slate-400 text-xs"></i>
+                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-xs sm:text-sm font-black transition-all shadow-md shadow-[#a0d9d2]/40 hover:shadow-lg hover:shadow-[#a0d9d2]/50 hover:-translate-y-0.5 duration-150 border border-[#8ecfc7]/80 cursor-pointer">
+                    <i class="fa-solid fa-lock text-[#142b27] text-xs"></i>
                     <span>Se connecter</span>
-                    <i class="fa-solid fa-arrow-right text-[11px] text-slate-400"></i>
+                    <i class="fa-solid fa-arrow-right text-[11px] text-[#142b27]"></i>
                 </a>
             </div>
 
@@ -170,25 +173,73 @@
     <div class="h-20"></div>
 
     <!-- ========================================================================= -->
-    <!-- 2. SECTION HÉRO ÉLÉGANTE, SOUVERAINE & SANS SURCHARGE VERTE               -->
+    <!-- 2. SECTION HÉRO AVEC BACKGROUND CRÉATIF FINTECH (DESSINS & MOTIFS SVG)    -->
     <!-- ========================================================================= -->
-    <section class="relative hero-mesh pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden border-b border-slate-200">
+    <section class="relative hero-mesh pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden border-b border-[#a0d9d2]/40">
+
+        <!-- FOND CRÉATIF VECTORIEL : DESSINS FINTECH, COURBES DE FLUX & GRILLE GÉOMÉTRIQUE -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
+            <!-- Grille géométrique comptable bien visible et contrastée -->
+            <svg class="absolute w-full h-full opacity-65" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="fintechGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+                        <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.45" />
+                        <circle cx="0" cy="0" r="1.8" fill="#a0d9d2" opacity="0.9" />
+                    </pattern>
+                    <linearGradient id="curveGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#a0d9d2" stop-opacity="0.8" />
+                        <stop offset="50%" stop-color="#8ecfc7" stop-opacity="0.9" />
+                        <stop offset="100%" stop-color="#a0d9d2" stop-opacity="0.3" />
+                    </linearGradient>
+                    <linearGradient id="curveGrad2" x1="100%" y1="0%" x2="0%" y2="0%">
+                        <stop offset="0%" stop-color="#222222" stop-opacity="0.4" />
+                        <stop offset="50%" stop-color="#a0d9d2" stop-opacity="0.8" />
+                        <stop offset="100%" stop-color="#8ecfc7" stop-opacity="0.6" />
+                    </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#fintechGrid)" />
+
+                <!-- Schéma vectoriel des flux financiers bien net et tracé -->
+                <path d="M -100,220 C 250,120 400,380 750,220 C 1100,60 1350,320 1800,160" fill="none"
+                    stroke="url(#curveGrad1)" stroke-width="3" />
+                <path d="M -50,300 C 300,180 450,460 850,280 C 1250,100 1450,400 1900,220" fill="none"
+                    stroke="url(#curveGrad2)" stroke-width="2" stroke-dasharray="8,8" />
+
+                <!-- Nœuds du réseau de transmission financier -->
+                <circle cx="18%" cy="26%" r="6" fill="#a0d9d2" stroke="#222222" stroke-width="2" />
+                <circle cx="18%" cy="26%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5"
+                    stroke-dasharray="4,4" />
+                <circle cx="18%" cy="26%" r="140" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.35" />
+
+                <circle cx="82%" cy="32%" r="6" fill="#a0d9d2" stroke="#222222" stroke-width="2" />
+                <circle cx="82%" cy="32%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5"
+                    stroke-dasharray="4,4" />
+                <circle cx="82%" cy="32%" r="160" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.35" />
+
+                <!-- Connexion centrale schématique -->
+                <line x1="18%" y1="26%" x2="50%" y2="45%" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4"
+                    opacity="0.5" />
+                <line x1="82%" y1="32%" x2="50%" y2="45%" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4"
+                    opacity="0.5" />
+                <circle cx="50%" cy="45%" r="5" fill="#222222" stroke="#a0d9d2" stroke-width="2" />
+            </svg>
+        </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-            <!-- ILLUSTRATION FLOTTANTE GAUCHE : REÇU & PREUVE FINANCIÈRE SCELLÉE -->
+            <!-- ILLUSTRATION FLOTTANTE GAUCHE : REÇU & PREUVE FINANCIÈRE SCELLÉE (DESSIN UI) -->
             <div
-                class="hidden lg:flex absolute left-2 xl:left-4 top-1/2 -translate-y-1/2 p-4 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200 shadow-xl shadow-slate-900/5 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-left">
+                class="hidden lg:flex absolute left-2 xl:left-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/30 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-left">
                 <div class="flex items-center justify-between">
                     <span
-                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold uppercase tracking-wider border border-slate-200">
-                        <i class="fa-solid fa-receipt text-[10px] text-slate-500"></i> Preuve Wave
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-xs">
+                        <i class="fa-solid fa-receipt text-[10px]"></i> Preuve Wave
                     </span>
                     <span class="text-[10.5px] text-slate-400 font-mono font-bold">14:22 GMT</span>
                 </div>
                 <div>
                     <div class="text-[11px] font-bold text-slate-500">Encaissement Client</div>
-                    <div class="text-xl font-black text-slate-900 tracking-tight">+ 925 000 FCFA</div>
+                    <div class="text-xl font-black text-[#222222] tracking-tight">+ 925 000 FCFA</div>
                 </div>
                 <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
                     <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">✓ Imputé 701</span>
@@ -196,71 +247,81 @@
                 </div>
             </div>
 
-            <!-- ILLUSTRATION FLOTTANTE DROITE : LIASSE FISCALE DGID SCELLÉE -->
+            <!-- ILLUSTRATION FLOTTANTE DROITE : LIASSE FISCALE DGID SCELLÉE (DESSIN UI) -->
             <div
-                class="hidden lg:flex absolute right-2 xl:right-4 top-1/2 -translate-y-1/2 p-4 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200 shadow-xl shadow-slate-900/5 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-right">
+                class="hidden lg:flex absolute right-2 xl:right-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/30 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-right">
                 <div class="flex items-center justify-between">
                     <span
-                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider">
-                        <i class="fa-solid fa-scale-balanced text-[10px] text-slate-400"></i> Liasse SMT
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#222222] text-[#a0d9d2] text-[10px] font-black uppercase tracking-wider">
+                        <i class="fa-solid fa-scale-balanced text-[10px]"></i> Liasse SMT
                     </span>
-                    <span class="text-[10px] text-emerald-600 font-bold">Audit Conforme</span>
+                    <span class="text-[10px] text-emerald-600 font-black">Audit Conforme</span>
                 </div>
                 <div>
                     <div class="text-[11px] font-bold text-slate-500">Rapprochement Global</div>
-                    <div class="text-xl font-black text-slate-900 tracking-tight">Écart : 0 FCFA</div>
+                    <div class="text-xl font-black text-[#222222] tracking-tight">Écart : 0 FCFA</div>
                 </div>
                 <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
                     <span class="font-semibold text-slate-600">FEC Export DGID</span>
-                    <span class="font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">Prêt 1 Clic</span>
+                    <span class="font-bold text-[#142b27] bg-[#a0d9d2]/40 px-2 py-0.5 rounded-md">Prêt 1 Clic</span>
                 </div>
             </div>
 
             <!-- CONTENU CENTRAL DE LA SECTION HÉRO -->
             <div class="max-w-4xl mx-auto text-center space-y-7 relative z-10">
 
-                <!-- Badge de conformité légale SYSCOHADA sobre & pro -->
+                <!-- Badge de conformité légale SYSCOHADA aux deux couleurs officielles -->
                 <div
-                    class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold shadow-xs">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-md border-2 border-[#a0d9d2] text-[#142b27] text-xs font-black uppercase tracking-wide shadow-sm shadow-[#a0d9d2]/30">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#a0d9d2] animate-pulse"></span>
                     <span>Copilote Comptable SYSCOHADA SMT &bull; Partenaire des Cabinets</span>
                 </div>
 
-                <!-- Titre Héro sobre, puissant et sans effet surchargé -->
-                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.14]">
-                    L'intelligence comptable pour les cabinets et les <span class="text-slate-900 underline decoration-slate-300 underline-offset-8 decoration-4">400 000 PME</span> du Sénégal.
+                <!-- Titre Héro avec la 2ème couleur (Menthe #a0d9d2) mise fortement en valeur -->
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-[#222222] tracking-tight leading-[1.12]">
+                    L'intelligence comptable pour les cabinets et les
+                    <span
+                        class="relative inline-block px-4 py-1 rounded-2xl bg-[#a0d9d2] text-[#142b27] shadow-lg shadow-[#a0d9d2]/35 transform -rotate-1 mx-1">
+                        400 000 PME
+                    </span>
+                    du Sénégal.
                 </h1>
 
-                <!-- Sous-titre explicatif -->
+                <!-- Sous-titre explicatif clair et direct -->
                 <p class="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl mx-auto">
-                    Centralisez automatiquement les preuves financières <strong>Wave Business</strong>, <strong>Orange Money</strong> et <strong>Caisse</strong> de vos commerçants, et éditez instantanément leurs liasses fiscales conformes <strong>DGID</strong>.
+                    Centralisez automatiquement les preuves financières <strong>Wave Business</strong>, <strong>Orange
+                        Money</strong> et <strong>Caisse</strong> de vos commerçants, et éditez instantanément leurs
+                    liasses fiscales conformes <strong>DGID</strong>.
                 </p>
 
-                <!-- CTA Principal Pro Noir Élite -->
-                <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <!-- CTA Principal Lumineux : Bouton Menthe #a0d9d2 avec fort contraste -->
+                <div class="pt-3 flex flex-col sm:flex-row items-center justify-center gap-4">
                     <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
-                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-98 text-white text-sm sm:text-base font-bold transition shadow-sm hover:shadow-md cursor-pointer">
-                        <i class="fa-solid fa-lock text-slate-400 text-xs"></i>
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-xl shadow-[#a0d9d2]/45 hover:shadow-2xl hover:shadow-[#a0d9d2]/60 hover:-translate-y-0.5 duration-150 border-2 border-[#8ecfc7] cursor-pointer">
+                        <i class="fa-solid fa-lock text-[#142b27] text-sm"></i>
                         <span>Se connecter à mon Cabinet</span>
-                        <i class="fa-solid fa-arrow-right text-xs text-slate-400"></i>
+                        <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
                     </a>
                 </div>
 
-                <!-- Éléments de réassurance discrets et crédibles -->
-                <div class="pt-3 flex items-center justify-center gap-3 sm:gap-6 text-xs font-semibold text-slate-600 flex-wrap">
+                <!-- Éléments de réassurance avec pastilles menthe -->
+                <div class="pt-4 flex items-center justify-center gap-6 text-xs font-bold text-slate-700 flex-wrap">
                     <span
-                        class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
-                        <i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i>
+                        class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#a0d9d2]/50 shadow-2xs">
+                        <i
+                            class="fa-solid fa-shield-check text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-full flex items-center justify-center text-[10px]"></i>
                         <span>Conforme SYSCOHADA SMT</span>
                     </span>
                     <span
-                        class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
-                        <i class="fa-solid fa-file-shield text-slate-500 text-xs"></i>
+                        class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#a0d9d2]/50 shadow-2xs">
+                        <i
+                            class="fa-solid fa-file-contract text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-full flex items-center justify-center text-[10px]"></i>
                         <span>FEC Contrôle Fiscal DGID</span>
                     </span>
                     <span
-                        class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
-                        <i class="fa-solid fa-lock text-slate-500 text-xs"></i>
+                        class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#a0d9d2]/50 shadow-2xs">
+                        <i
+                            class="fa-solid fa-clock-rotate-left text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-full flex items-center justify-center text-[10px]"></i>
                         <span>Preuves Scellées 10 Ans (Art. 24)</span>
                     </span>
                 </div>
@@ -272,30 +333,38 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 3. BANDEAU DE STATISTIQUES ÉPURÉ                                          -->
+    <!-- 3. BANDEAU DE STATISTIQUES & IMPACT AU SÉNÉGAL (LUMINEUX ET FRAIS)        -->
     <!-- ========================================================================= -->
-    <section class="bg-slate-50 border-y border-slate-200 py-10">
+    <section class="bg-gradient-to-r from-[#a0d9d2]/15 via-white to-[#a0d9d2]/15 border-y border-[#a0d9d2]/40 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">400 000+</div>
-                    <div class="text-xs sm:text-sm font-semibold text-slate-500 mt-1">PME &amp; Commerçants au Sénégal</div>
+                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">400 000+</div>
+                    <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">PME, TPE &amp; Commerçants au
+                        Sénégal</div>
                 </div>
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">98.5%</div>
-                    <div class="text-xs sm:text-sm font-semibold text-slate-500 mt-1">Rapprochement Wave &amp; Caisse</div>
+                    <div
+                        class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight flex items-center justify-center gap-1.5">
+                        <span>98.5%</span>
+                        <span class="w-3 h-3 rounded-full bg-[#a0d9d2] shadow-sm inline-block"></span>
+                    </div>
+                    <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">Rapprochement Wave &amp; Caisse
+                    </div>
                 </div>
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">10 Ans</div>
-                    <div class="text-xs sm:text-sm font-semibold text-slate-500 mt-1">Archivage Légal SYSCOHADA</div>
+                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">10 Ans</div>
+                    <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">Archivage Légal SYSCOHADA (Art.
+                        24)</div>
                 </div>
 
                 <div>
-                    <div class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">0 F</div>
-                    <div class="text-xs sm:text-sm font-semibold text-slate-500 mt-1">Écart de Balance &bull; FEC DGID</div>
+                    <div class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">0 F</div>
+                    <div class="text-xs sm:text-sm font-semibold text-slate-600 mt-1">Écart de Balance &bull; FEC Validé
+                        DGID</div>
                 </div>
 
             </div>
@@ -305,230 +374,279 @@
     <!-- ========================================================================= -->
     <!-- 3. BIS. LE SCHÉMA OPÉRATIONNEL VISUEL : DU FLUX PME À LA LIASSE DU CABINET -->
     <!-- ========================================================================= -->
-    <section class="py-12 sm:py-16 bg-white border-b border-slate-200 relative">
+    <section
+        class="py-10 sm:py-12 bg-gradient-to-b from-white via-[#f4fbf9] to-white border-b border-slate-200 relative overflow-hidden">
+
+        <!-- Trame de fond géométrique menthe -->
+        <div class="absolute inset-0 pointer-events-none opacity-40">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="schemaGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <circle cx="20" cy="20" r="1.2" fill="#a0d9d2" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#schemaGrid)" />
+            </svg>
+        </div>
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6 sm:space-y-8">
 
-            <!-- En-tête du Schéma compact & sobre -->
+            <!-- En-tête du Schéma compact -->
             <div class="text-center max-w-3xl mx-auto space-y-2">
                 <span
-                    class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10.5px] font-bold uppercase tracking-wider border border-slate-200">
-                    <i class="fa-solid fa-diagram-project text-[10px] text-slate-500"></i> Architecture du Flux
+                    class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10.5px] font-black uppercase tracking-wider shadow-xs">
+                    <i class="fa-solid fa-diagram-project text-[10px]"></i> Architecture du Flux
                 </span>
-                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                <h2 class="text-2xl sm:text-3xl font-black text-[#222222] tracking-tight">
                     Le schéma comptable : de la preuve à la liasse
                 </h2>
-                <p class="text-slate-500 text-xs sm:text-sm">
-                    Comment Growth transforme automatiquement les flux quotidiens des PME en écritures comptables vérifiables par les cabinets et la DGID.
+                <p class="text-slate-600 text-xs sm:text-sm">
+                    Comment Growth transforme automatiquement les flux quotidiens des PME en écritures comptables
+                    vérifiables par les cabinets et la DGID.
                 </p>
             </div>
 
-            <!-- SCHÉMA TECHNIQUE EN 3 BLOCS COMPACTS & ÉLÉGANTS -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 relative">
+            <!-- SCHÉMA TECHNIQUE EN 3 BLOCS COMPACTS (100% CŒUR AUTOMATISÉ AUX COULEURS OFFICIELLES) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 relative">
 
                 <!-- BLOC 1 : Les Preuves Financières Réelles (PME) -->
                 <div
-                    class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:shadow-md transition-all relative flex flex-col justify-between">
+                    class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-[#a0d9d2] shadow-lg shadow-[#a0d9d2]/15 hover:shadow-xl hover:shadow-[#a0d9d2]/25 transition-all duration-200 relative flex flex-col justify-between">
                     <span
-                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[9px] font-bold uppercase tracking-wider border border-slate-200">
-                        01 &bull; Collecte Automatisée
+                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[9px] font-black uppercase tracking-wider shadow-xs">
+                        01 &bull; Cœur Automatisé &bull; Collecte
                     </span>
-                    <div class="space-y-3">
+                    <div class="space-y-2.5">
                         <div class="flex items-center justify-between">
                             <span
-                                class="w-7 h-7 rounded-lg bg-slate-900 text-white font-black text-xs flex items-center justify-center">01</span>
+                                class="w-7 h-7 rounded-xl bg-[#222222] text-[#a0d9d2] font-black text-xs flex items-center justify-center shadow-xs">01</span>
                             <span
-                                class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold border border-slate-200">Flux PME</span>
+                                class="px-2 py-0.5 rounded-full bg-[#a0d9d2]/30 text-[#142b27] text-[10px] font-extrabold border border-[#a0d9d2]/60">Flux
+                                PME</span>
                         </div>
                         <div>
-                            <h3 class="text-base font-black text-slate-900">Preuves Financières PME</h3>
-                            <p class="text-[11px] text-slate-500 font-medium">Capture en temps réel des transactions brutes</p>
+                            <h3 class="text-base font-black text-[#222222]">Preuves Financières PME</h3>
+                            <p class="text-[11px] text-slate-500 font-medium">Capture en temps réel des transactions
+                                brutes</p>
                         </div>
                         <div class="space-y-1.5 pt-1">
                             <!-- 1. Ventes & Encaissements -->
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition flex items-center gap-2.5">
+                                class="p-1.5 px-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] transition flex items-center gap-2.5">
                                 <div
-                                    class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs shadow-2xs shrink-0">
-                                    <i class="fa-solid fa-mobile-screen-button text-[11px]"></i>
+                                    class="w-6 h-6 rounded-lg bg-[#a0d9d2] text-[#142b27] flex items-center justify-center text-xs shadow-xs shrink-0 font-black">
+                                    <i class="fa-solid fa-mobile-screen-button text-[10px]"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-bold text-slate-900 text-[11px] truncate">Encaissements Wave, OM &amp; Banque</div>
-                                    <div class="text-slate-500 text-[10px] truncate">Ventes directes, QR codes, virements &amp; chèques</div>
+                                    <div class="font-extrabold text-[#222222] text-[11px] truncate">Encaissements Wave,
+                                        OM &amp; Banque</div>
+                                    <div class="text-slate-500 text-[10px] truncate">Ventes directes, QR codes,
+                                        virements &amp; chèques</div>
                                 </div>
                             </div>
 
                             <!-- 2. Factures Fournisseurs & Achats -->
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition flex items-center gap-2.5">
+                                class="p-1.5 px-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] transition flex items-center gap-2.5">
                                 <div
-                                    class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs shadow-2xs shrink-0">
-                                    <i class="fa-solid fa-file-invoice-dollar text-[11px]"></i>
+                                    class="w-6 h-6 rounded-lg bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-xs shadow-xs shrink-0 font-black">
+                                    <i class="fa-solid fa-file-invoice-dollar text-[10px]"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-bold text-slate-900 text-[11px] truncate">Factures Fournisseurs &amp; Stocks</div>
-                                    <div class="text-slate-500 text-[10px] truncate">Achats de marchandises, intrants &amp; appros</div>
+                                    <div class="font-extrabold text-[#222222] text-[11px] truncate">Factures
+                                        Fournisseurs &amp; Stocks</div>
+                                    <div class="text-slate-500 text-[10px] truncate">Achats de marchandises, intrants
+                                        &amp; appros</div>
                                 </div>
                             </div>
 
                             <!-- 3. Charges d'Exploitation -->
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition flex items-center gap-2.5">
+                                class="p-1.5 px-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] transition flex items-center gap-2.5">
                                 <div
-                                    class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs shadow-2xs shrink-0">
-                                    <i class="fa-solid fa-bolt text-[11px]"></i>
+                                    class="w-6 h-6 rounded-lg bg-[#a0d9d2] text-[#142b27] flex items-center justify-center text-xs shadow-xs shrink-0 font-black">
+                                    <i class="fa-solid fa-bolt text-[10px]"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-bold text-slate-900 text-[11px] truncate">Charges d'Exploitation &amp; Caisse</div>
-                                    <div class="text-slate-500 text-[10px] truncate">Loyer, Senelec, Sen'Eau, carburant &amp; transport</div>
+                                    <div class="font-extrabold text-[#222222] text-[11px] truncate">Charges
+                                        d'Exploitation &amp; Caisse</div>
+                                    <div class="text-slate-500 text-[10px] truncate">Loyer, Senelec, Sen'Eau, carburant
+                                        &amp; transport</div>
                                 </div>
                             </div>
 
                             <!-- 4. Salaires & Dettes -->
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition flex items-center gap-2.5">
+                                class="p-1.5 px-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] transition flex items-center gap-2.5">
                                 <div
-                                    class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs shadow-2xs shrink-0">
-                                    <i class="fa-solid fa-users-gear text-[11px]"></i>
+                                    class="w-6 h-6 rounded-lg bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-xs shadow-xs shrink-0 font-black">
+                                    <i class="fa-solid fa-users-gear text-[10px]"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-bold text-slate-900 text-[11px] truncate">Salaires, Avances &amp; Dettes</div>
-                                    <div class="text-slate-500 text-[10px] truncate">Paie employés, acomptes, carnet de crédit</div>
+                                    <div class="font-extrabold text-[#222222] text-[11px] truncate">Salaires, Avances
+                                        &amp; Dettes</div>
+                                    <div class="text-slate-500 text-[10px] truncate">Paie employés, acomptes, carnet de
+                                        crédit</div>
                                 </div>
                             </div>
 
                             <!-- 5. Capture WhatsApp Vocale & Photos -->
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition flex items-center gap-2.5">
+                                class="p-1.5 px-2.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] transition flex items-center gap-2.5">
                                 <div
-                                    class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-emerald-600 flex items-center justify-center text-xs shadow-2xs shrink-0">
-                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                    class="w-6 h-6 rounded-lg bg-[#a0d9d2] text-[#142b27] flex items-center justify-center text-xs shadow-xs shrink-0 font-black">
+                                    <i class="fa-brands fa-whatsapp text-xs"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-bold text-slate-900 text-[11px] truncate">Photos de Reçus &amp; Vocaux Wolof</div>
-                                    <div class="text-slate-500 text-[10px] truncate">Capture instantanée sur le terrain par WhatsApp</div>
+                                    <div class="font-extrabold text-[#222222] text-[11px] truncate">Photos de Reçus
+                                        &amp; Vocaux Wolof</div>
+                                    <div class="text-slate-500 text-[10px] truncate">Capture instantanée sur le terrain
+                                        par WhatsApp</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
+                    <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
                         <span class="text-slate-500 font-semibold">Traçabilité 100%</span>
-                        <span class="font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">Piste d'Audit</span>
+                        <span class="font-black text-[#142b27] bg-[#a0d9d2]/40 px-2 py-0.5 rounded-md">Piste
+                            d'Audit</span>
                     </div>
                 </div>
 
                 <!-- BLOC 2 : Le Cœur Moteur SYSCOHADA (Traitement) -->
                 <div
-                    class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:shadow-md transition-all relative flex flex-col justify-between">
+                    class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-[#a0d9d2] shadow-xl shadow-[#a0d9d2]/20 relative flex flex-col justify-between">
                     <span
-                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[9px] font-bold uppercase tracking-wider border border-slate-200">
-                        02 &bull; Moteur d'Intelligence
+                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[9px] font-black uppercase tracking-wider shadow-xs">
+                        02 &bull; Cœur Automatisé &bull; Moteur
                     </span>
-                    <div class="space-y-3">
+                    <div class="space-y-2.5">
                         <div class="flex items-center justify-between">
                             <span
-                                class="w-7 h-7 rounded-lg bg-slate-900 text-white font-black text-xs flex items-center justify-center">02</span>
+                                class="w-7 h-7 rounded-xl bg-[#a0d9d2] text-[#142b27] font-black text-xs flex items-center justify-center shadow-xs">02</span>
                             <span
-                                class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold border border-slate-200">SYSCOHADA SMT</span>
+                                class="px-2 py-0.5 rounded-full bg-[#a0d9d2]/30 text-[#142b27] text-[10px] font-extrabold border border-[#a0d9d2]/60">SYSCOHADA
+                                SMT</span>
                         </div>
                         <div>
-                            <h3 class="text-base font-black text-slate-900">Moteur d'Intelligence</h3>
-                            <p class="text-[11px] text-slate-500 font-medium">Normalisation et pré-imputation comptable</p>
+                            <h3 class="text-base font-black text-[#222222]">Moteur d'Intelligence</h3>
+                            <p class="text-[11px] text-slate-500 font-medium">Normalisation et pré-imputation comptable
+                            </p>
                         </div>
                         <div class="space-y-2 pt-1">
-                            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                            <div class="p-2.5 rounded-xl bg-white border border-[#a0d9d2] shadow-2xs space-y-1">
                                 <div class="flex items-center justify-between text-[11px]">
-                                    <span class="font-bold text-slate-900">Imputation Plan Comptable SMT</span>
-                                    <span class="text-slate-600 bg-white border border-slate-200 px-1.5 py-0.5 rounded font-mono font-bold text-[9.5px]">Art. 24 AUDCIF</span>
+                                    <span class="font-black text-[#222222]">Imputation Plan Comptable SMT</span>
+                                    <span
+                                        class="text-[#142b27] bg-[#a0d9d2]/40 px-1.5 py-0.5 rounded font-mono font-bold text-[9.5px]">Art.
+                                        24 AUDCIF</span>
                                 </div>
-                                <div class="grid grid-cols-2 gap-1 text-[9.5px] font-mono text-slate-800">
-                                    <span class="bg-white px-2 py-1 rounded border border-slate-200 font-bold">701 : Ventes</span>
-                                    <span class="bg-white px-2 py-1 rounded border border-slate-200 font-bold">601 : Achats</span>
-                                    <span class="bg-white px-2 py-1 rounded border border-slate-200 font-bold">514 : Wave</span>
-                                    <span class="bg-white px-2 py-1 rounded border border-slate-200 font-bold">571 : Caisse</span>
+                                <div class="grid grid-cols-2 gap-1 text-[9.5px] font-mono text-[#222222]">
+                                    <span class="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">701 :
+                                        Ventes</span>
+                                    <span class="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">601 :
+                                        Achats</span>
+                                    <span class="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">514 :
+                                        Wave</span>
+                                    <span class="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">571 :
+                                        Caisse</span>
                                 </div>
                             </div>
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-[11px]">
+                                class="p-2 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-[11px]">
                                 <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-lock text-slate-500 text-[10px]"></i>
-                                    <span class="font-bold text-slate-900">Coffre-fort Scellé 10 Ans</span>
+                                    <i
+                                        class="fa-solid fa-lock text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-md flex items-center justify-center text-[9px]"></i>
+                                    <span class="font-bold text-[#222222]">Coffre-fort Scellé 10 Ans</span>
                                 </div>
-                                <span class="text-slate-700 font-bold text-[9.5px] bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">Inaltérable</span>
+                                <span
+                                    class="text-[#142b27] font-black text-[9.5px] bg-[#a0d9d2]/40 px-2 py-0.5 rounded">Inaltérable</span>
                             </div>
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-[11px]">
+                                class="p-2 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-[11px]">
                                 <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-calculator text-slate-500 text-[10px]"></i>
-                                    <span class="font-bold text-slate-900">Contrôle Écart de Balance</span>
+                                    <i
+                                        class="fa-solid fa-calculator text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-md flex items-center justify-center text-[9px]"></i>
+                                    <span class="font-bold text-[#222222]">Contrôle Écart de Balance</span>
                                 </div>
-                                <span class="font-mono font-bold text-slate-900 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded text-[10px]">0 FCFA</span>
+                                <span
+                                    class="font-mono font-black text-[#142b27] bg-[#a0d9d2]/50 px-2 py-0.5 rounded border border-[#a0d9d2] text-[10px]">0
+                                    FCFA</span>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
+                    <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
                         <span class="text-slate-500 font-semibold">Zéro saisie manuelle</span>
-                        <span class="font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">Rapprochement 98.5%</span>
+                        <span class="font-black text-[#142b27] bg-[#a0d9d2]/40 px-2 py-0.5 rounded-md">Rapprochement
+                            98.5%</span>
                     </div>
                 </div>
 
                 <!-- BLOC 3 : Les Liasses & le Cabinet (Sortie) -->
                 <div
-                    class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:shadow-md transition-all relative flex flex-col justify-between">
+                    class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-[#a0d9d2] shadow-lg shadow-[#a0d9d2]/15 hover:shadow-xl hover:shadow-[#a0d9d2]/25 transition-all duration-200 relative flex flex-col justify-between">
                     <span
-                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[9px] font-bold uppercase tracking-wider border border-slate-200">
-                        03 &bull; Édition &amp; Livrables
+                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[9px] font-black uppercase tracking-wider shadow-xs">
+                        03 &bull; Cœur Automatisé &bull; Édition
                     </span>
-                    <div class="space-y-3">
+                    <div class="space-y-2.5">
                         <div class="flex items-center justify-between">
                             <span
-                                class="w-7 h-7 rounded-lg bg-slate-900 text-white font-black text-xs flex items-center justify-center">03</span>
+                                class="w-7 h-7 rounded-xl bg-[#222222] text-[#a0d9d2] font-black text-xs flex items-center justify-center shadow-xs">03</span>
                             <span
-                                class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold border border-slate-200">Livrables</span>
+                                class="px-2 py-0.5 rounded-full bg-[#a0d9d2]/30 text-[#142b27] text-[10px] font-extrabold border border-[#a0d9d2]/60">Livrables</span>
                         </div>
                         <div>
-                            <h3 class="text-base font-black text-slate-900">Liasses &amp; FEC DGID</h3>
-                            <p class="text-[11px] text-slate-500 font-medium">Fourniture prête à l'emploi pour les cabinets</p>
+                            <h3 class="text-base font-black text-[#222222]">Liasses &amp; FEC DGID</h3>
+                            <p class="text-[11px] text-slate-500 font-medium">Fourniture prête à l'emploi pour les
+                                cabinets</p>
                         </div>
                         <div class="space-y-1.5 pt-1">
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition flex items-center gap-2.5">
+                                class="p-2 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] transition flex items-center gap-2.5">
                                 <div
-                                    class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs shadow-2xs shrink-0">
-                                    <i class="fa-solid fa-file-invoice text-[11px]"></i>
+                                    class="w-6 h-6 rounded-lg bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-xs shadow-xs shrink-0 font-black">
+                                    <i class="fa-solid fa-file-invoice text-[10px]"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-bold text-slate-900 text-[11px] truncate">Bilan &amp; Compte de Résultat SMT</div>
-                                    <div class="text-slate-500 text-[10px] truncate">4 états financiers prêts à signer</div>
+                                    <div class="font-extrabold text-[#222222] text-[11px] truncate">Bilan &amp; Compte
+                                        de Résultat SMT</div>
+                                    <div class="text-slate-500 text-[10px] truncate">4 états financiers prêts à signer
+                                    </div>
                                 </div>
                             </div>
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition flex items-center gap-2.5">
+                                class="p-2 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] transition flex items-center gap-2.5">
                                 <div
-                                    class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs shadow-2xs shrink-0">
-                                    <i class="fa-solid fa-file-shield text-[11px]"></i>
+                                    class="w-6 h-6 rounded-lg bg-[#a0d9d2] text-[#142b27] flex items-center justify-center text-xs shadow-xs shrink-0 font-black">
+                                    <i class="fa-solid fa-file-shield text-[10px]"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-bold text-slate-900 text-[11px] truncate">Fichier FEC Normalisé DGID</div>
-                                    <div class="text-slate-500 text-[10px] truncate">Audit fiscal et conformité légale</div>
+                                    <div class="font-extrabold text-[#222222] text-[11px] truncate">Fichier FEC
+                                        Normalisé DGID</div>
+                                    <div class="text-slate-500 text-[10px] truncate">Audit fiscal et conformité légale
+                                    </div>
                                 </div>
                             </div>
                             <div
-                                class="p-2 px-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition flex items-center gap-2.5">
+                                class="p-2 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#a0d9d2] transition flex items-center gap-2.5">
                                 <div
-                                    class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 flex items-center justify-center text-xs shadow-2xs shrink-0">
-                                    <i class="fa-solid fa-building-columns text-[11px]"></i>
+                                    class="w-6 h-6 rounded-lg bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-xs shadow-xs shrink-0 font-black">
+                                    <i class="fa-solid fa-building-columns text-[10px]"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-bold text-slate-900 text-[11px] truncate">Dossier Solvabilité &amp; Crédit</div>
-                                    <div class="text-slate-500 text-[10px] truncate">Pour les banques et bailleurs UEMOA</div>
+                                    <div class="font-extrabold text-[#222222] text-[11px] truncate">Dossier Solvabilité
+                                        &amp; Crédit</div>
+                                    <div class="text-slate-500 text-[10px] truncate">Pour les banques et bailleurs UEMOA
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
+                    <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
                         <span class="text-slate-500 font-semibold">Édition instantanée</span>
                         <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
-                            class="font-bold text-slate-900 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg border border-slate-200 transition flex items-center gap-1 cursor-pointer">
+                            class="font-black text-[#142b27] bg-[#a0d9d2]/40 hover:bg-[#a0d9d2]/60 px-2.5 py-1 rounded-lg border border-[#a0d9d2] transition flex items-center gap-1 cursor-pointer">
                             <span>Accès Cabinet</span> &rarr;
                         </a>
                     </div>
@@ -539,6 +657,11 @@
         </div>
     </section>
 
+    </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 4. POUR QUI EST CONÇU GROWTH ?                                            -->
     <!-- ========================================================================= -->
     <section id="pour-qui" class="py-20 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -595,36 +718,36 @@
                     </div>
                 </div>
 
-                <!-- Carte 2 : Cabinets d'Experts-Comptables (Mise en avant Sobre & Pro) -->
+                <!-- Carte 2 : Cabinets d'Experts-Comptables (Mise en avant avec contour Menthe) -->
                 <div id="cabinets"
-                    class="bg-white rounded-3xl p-8 border-2 border-slate-900 shadow-lg shadow-slate-900/5 space-y-4 relative">
+                    class="bg-white rounded-3xl p-8 border-2 border-[#a0d9d2] shadow-xl shadow-[#a0d9d2]/20 space-y-4 relative">
                     <span
-                        class="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+                        class="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-sm">
                         Conforme SYSCOHADA SMT
                     </span>
                     <div
-                        class="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-xl font-bold shadow-sm">
+                        class="w-12 h-12 rounded-2xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-xl font-bold shadow-md shadow-black/15">
                         <i class="fa-solid fa-user-tie"></i>
                     </div>
-                    <h3 class="text-xl font-black text-slate-900">Experts-Comptables &amp; AGC</h3>
+                    <h3 class="text-xl font-black text-[#222222]">Experts-Comptables &amp; AGC</h3>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Besoins de traitement :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-600 text-xs"></i> Fin de la collecte
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Fin de la collecte
                             manuelle de reçus froissés</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-600 text-xs"></i> Pré-imputation
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Pré-imputation
                             automatique selon le SYSCOHADA SMT</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-600 text-xs"></i> Génération instantanée du
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Génération instantanée du
                             Fichier FEC pour la DGID</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-emerald-600 text-xs"></i> Clôture mensuelle et
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Clôture mensuelle et
                             annuelle en 1 clic</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
                         <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
-                            class="text-xs font-bold text-slate-900 hover:underline flex items-center gap-1.5 cursor-pointer">
+                            class="text-xs font-black text-[#142b27] hover:underline flex items-center gap-1.5 cursor-pointer">
                             <span>Se connecter à l'Espace Cabinet</span> &rarr;
                         </a>
                     </div>
@@ -632,12 +755,12 @@
 
                 <!-- Carte 3 : Banques, Bailleurs & Administration -->
                 <div id="conformite"
-                    class="bg-white rounded-3xl p-8 border border-slate-200 shadow-xs hover:shadow-md transition space-y-4">
+                    class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-md hover:border-[#a0d9d2] transition space-y-4">
                     <div
-                        class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-800 flex items-center justify-center text-xl font-bold">
+                        class="w-12 h-12 rounded-2xl bg-[#a0d9d2] text-[#142b27] flex items-center justify-center text-xl font-black shadow-md shadow-[#a0d9d2]/30">
                         <i class="fa-solid fa-landmark"></i>
                     </div>
-                    <h3 class="text-xl font-black text-slate-900">Banques &amp; Administration</h3>
+                    <h3 class="text-xl font-black text-[#222222]">Banques &amp; Administration</h3>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Garanties certifiées :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
@@ -769,12 +892,12 @@
             </p>
 
             <div class="pt-4 flex items-center justify-center">
-                <!-- Bouton Blanc Élite sur Fond Sombre -->
+                <!-- LE BOUTON SE CONNECTER EN MENTHE #a0d9d2 QUI RESPLENDIT -->
                 <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
-                    class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white hover:bg-slate-100 active:scale-98 text-slate-900 text-sm sm:text-base font-extrabold transition-all shadow-md hover:shadow-lg duration-150 flex items-center justify-center gap-2.5 cursor-pointer">
-                    <i class="fa-solid fa-lock text-slate-400 text-xs"></i>
+                    class="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-2xl shadow-[#a0d9d2]/40 hover:scale-105 duration-150 flex items-center justify-center gap-2.5 border border-[#8ecfc7] cursor-pointer">
+                    <i class="fa-solid fa-lock text-[#142b27]"></i>
                     <span>Se connecter à mon Cabinet</span>
-                    <i class="fa-solid fa-arrow-right text-xs text-slate-400"></i>
+                    <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
                 </a>
             </div>
 
