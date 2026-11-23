@@ -85,6 +85,85 @@ def sanitize_payload_for_supabase(table: str, payload: Dict[str, Any]) -> Dict[s
     return payload
 DB_DIR = os.path.dirname(os.path.abspath(__file__))
 SQLITE_DB_PATH = os.path.join(DB_DIR, "grow_compta.db")
+REGISTRY_JSON_PATH = os.path.join(DB_DIR, "comptables_registry.json")
+
+def charger_registre_comptables() -> Dict[str, Dict[str, Any]]:
+    """Charge le registre immuable des cabinets comptables depuis le fichier disque persistant."""
+    if not os.path.exists(REGISTRY_JSON_PATH):
+        pwd_diallo = hasher_mot_de_passe("Grow@Dakar2026!")
+        data = {
+            "contact@cabinet-diallo.sn": {
+                "id": "cbt_diallo_ref",
+                "nom_complet": "Mamadou Diallo",
+                "nom_cabinet": "Cabinet Diallo & Associés",
+                "numero_ordre": "SEC-2024-0418",
+                "email": "contact@cabinet-diallo.sn",
+                "telephone": "+221 78 877 38 27",
+                "mot_de_passe_hash": pwd_diallo,
+                "statut_validation": "valide",
+                "scelle_a_jamais": True,
+                "date_inscription": "2024-01-01 00:00:00",
+                "dernier_acces": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+        }
+        try:
+            with open(REGISTRY_JSON_PATH, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"[REGISTRE] Erreur initialisation: {e}")
+        return data
+
+    try:
+        with open(REGISTRY_JSON_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"[REGISTRE] Erreur lecture registre: {e}")
+        return {}
+
+def sauvegarder_comptable_au_registre(cabinet_data: Dict[str, Any]):
+    """Scelle définitivement un cabinet dans le registre JSON persistant sur disque."""
+    try:
+        registre = charger_registre_comptables()
+        clean_email = cabinet_data["email"].strip().lower()
+        cabinet_data["scelle_a_jamais"] = True
+        registre[clean_email] = cabinet_data
+        with open(REGISTRY_JSON_PATH, "w", encoding="utf-8") as f:
+            json.dump(registre, f, ensure_ascii=False, indent=2)
+        print(f"[REGISTRE] Cabinet « {cabinet_data.get('nom_cabinet')} » scellé à jamais dans {REGISTRY_JSON_PATH}")
+    except Exception as e:
+        print(f"[REGISTRE] Erreur sauvegarde registre: {e}")
+
+def obtenir_dernier_cabinet_scelle() -> Dict[str, Any]:
+    """Retourne les informations du dernier cabinet scellé ou le compte référent officiel."""
+    reg = charger_registre_comptables()
+    dernier = None
+    # Prendre le dernier cabinet inscrit non-Diallo, sinon Diallo
+    for k, v in reg.items():
+        if k != "contact@cabinet-diallo.sn":
+            dernier = v
+    if not dernier:
+        dernier = reg.get("contact@cabinet-diallo.sn", {
+            "id": "cbt_diallo_ref",
+            "nom_complet": "Mamadou Diallo",
+            "nom_cabinet": "Cabinet Diallo & Associés",
+            "numero_ordre": "SEC-2024-0418",
+            "email": "contact@cabinet-diallo.sn",
+            "telephone": "+221 78 877 38 27",
+            "statut_validation": "valide"
+        })
+    return {
+        "status": "success",
+        "comptable": {
+            "id": dernier.get("id"),
+            "nom_complet": dernier.get("nom_complet"),
+            "nom_cabinet": dernier.get("nom_cabinet"),
+            "numero_ordre": dernier.get("numero_ordre"),
+            "email": dernier.get("email"),
+            "telephone": dernier.get("telephone"),
+            "statut": dernier.get("statut_validation", "valide"),
+            "scelle": True
+        }
+    }
 
 # Supabase Client Singleton
 _SUPABASE_CLIENT = None
@@ -253,10 +332,32 @@ def init_local_sqlite():
         VALUES ('cbt_diallo_ref', 'Mamadou Diallo', 'Cabinet Diallo & Associés', 'SEC-2024-0418', 'contact@cabinet-diallo.sn', '+221 78 877 38 27', ?, 'valide', ?, ?)
         """, (pwd_diallo, now_ts, now_ts))
         cur.execute("UPDATE comptables_growth SET mot_de_passe_hash = ? WHERE email = 'contact@cabinet-diallo.sn'", (pwd_diallo,))
+        conn.commit()
     except Exception as e_seed:
         print(f"[DB SEED] Erreur insertion compte référent : {e_seed}")
 
-    conn.commit()
+    # Synchronisation et restauration automatique de tous les cabinets scellés (Inaltérable)
+    try:
+        registre = charger_registre_comptables()
+        for c_email, c_data in registre.items():
+            cur.execute("""
+            INSERT OR REPLACE INTO comptables_growth (id, nom_complet, nom_cabinet, numero_ordre, email, telephone, mot_de_passe_hash, statut_validation, date_inscription, dernier_acces)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                c_data.get("id", f"cbt_{uuid.uuid4().hex[:12]}"),
+                c_data.get("nom_complet", "Expert"),
+                c_data.get("nom_cabinet", "Cabinet Partenaire"),
+                c_data.get("numero_ordre", "Agrément Ordre"),
+                c_email,
+                c_data.get("telephone", ""),
+                c_data.get("mot_de_passe_hash", ""),
+                c_data.get("statut_validation", "valide"),
+                c_data.get("date_inscription", now_ts),
+                c_data.get("dernier_acces", now_ts)
+            ))
+        conn.commit()
+    except Exception as e_reg:
+        print(f"[DB INIT] Erreur synchronisation registre comptables : {e_reg}")
 
     # Migration résiliente : colonne justificatif_url
     try:
@@ -1432,7 +1533,7 @@ def reinitialiser_donnees_plateforme_a_zero() -> dict:
 # =========================================================================
 
 def inscrire_comptable(nom_complet: str, nom_cabinet: str, numero_ordre: str, email: str, telephone: str, mot_de_passe: str) -> Dict[str, Any]:
-    """Inscrit un nouvel expert-comptable ou cabinet dans la base locale SQLite avec contrôle strict de robustesse."""
+    """Inscrit un nouvel expert-comptable ou cabinet et le scelle à jamais (persistance indestructible)."""
     force_ok, msg_force = valider_force_mot_de_passe(mot_de_passe)
     if not force_ok:
         return {"status": "error", "message": msg_force}
@@ -1461,9 +1562,41 @@ def inscrire_comptable(nom_complet: str, nom_cabinet: str, numero_ordre: str, em
         conn.commit()
         conn.close()
 
+        # SCELLAGE INDESTRUCTIBLE DANS LE REGISTRE PERSISTANT SUR DISQUE
+        cabinet_record = {
+            "id": comptable_id,
+            "nom_complet": nom_complet.strip(),
+            "nom_cabinet": nom_cabinet.strip(),
+            "numero_ordre": (numero_ordre or "Non renseigné").strip(),
+            "email": clean_email,
+            "telephone": (telephone or "").strip(),
+            "mot_de_passe_hash": pwd_hash,
+            "statut_validation": "valide",
+            "date_inscription": now,
+            "dernier_acces": now,
+            "scelle_a_jamais": True
+        }
+        sauvegarder_comptable_au_registre(cabinet_record)
+
+        # Tentative de réplication Cloud Supabase
+        try:
+            sp = get_supabase_client()
+            if sp:
+                sp.table("comptables_growth").upsert({
+                    "id": comptable_id,
+                    "nom_complet": nom_complet.strip(),
+                    "nom_cabinet": nom_cabinet.strip(),
+                    "numero_ordre": (numero_ordre or "Non renseigné").strip(),
+                    "email": clean_email,
+                    "telephone": (telephone or "").strip(),
+                    "statut_validation": "valide"
+                }).execute()
+        except Exception:
+            pass
+
         return {
             "status": "success",
-            "message": "Inscription réussie ! Votre espace cabinet est créé et sécurisé.",
+            "message": "Inscription réussie ! Votre espace cabinet est créé et scellé à jamais.",
             "comptable": {
                 "id": comptable_id,
                 "nom_complet": nom_complet.strip(),
@@ -1471,7 +1604,8 @@ def inscrire_comptable(nom_complet: str, nom_cabinet: str, numero_ordre: str, em
                 "numero_ordre": (numero_ordre or "Non renseigné").strip(),
                 "email": clean_email,
                 "telephone": (telephone or "").strip(),
-                "statut": "valide"
+                "statut": "valide",
+                "scelle": True
             }
         }
     except Exception as e:
@@ -1480,7 +1614,7 @@ def inscrire_comptable(nom_complet: str, nom_cabinet: str, numero_ordre: str, em
         return {"status": "error", "message": f"Erreur lors de l'inscription : {str(e)}"}
 
 def authentifier_comptable(identifiant: str, mot_de_passe: str) -> Dict[str, Any]:
-    """Authentifie strictement un expert-comptable inscrit dans la base locale SQLite (accès strictement refusé si non inscrit)."""
+    """Authentifie un expert-comptable inscrit avec auto-restauration depuis le registre scellé."""
     conn = get_sqlite_conn()
     cur = conn.cursor()
     clean_id = identifiant.strip().lower()
@@ -1494,6 +1628,30 @@ def authentifier_comptable(identifiant: str, mot_de_passe: str) -> Dict[str, Any
             WHERE lower(email) = ? OR telephone = ?
         """, (clean_id, clean_tel))
         row = cur.fetchone()
+
+        # Si absent de SQLite (ex: après un redémarrage partiel), vérification dans le registre scellé
+        if not row:
+            registre = charger_registre_comptables()
+            c_found = None
+            for r_email, r_data in registre.items():
+                if r_email == clean_id or r_data.get("telephone") == clean_tel:
+                    c_found = r_data
+                    break
+            
+            if c_found:
+                # Restauration immédiate dans SQLite
+                cur.execute("""
+                INSERT OR REPLACE INTO comptables_growth (id, nom_complet, nom_cabinet, numero_ordre, email, telephone, mot_de_passe_hash, statut_validation, date_inscription, dernier_acces)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    c_found.get("id"), c_found.get("nom_complet"), c_found.get("nom_cabinet"),
+                    c_found.get("numero_ordre"), c_found.get("email"), c_found.get("telephone"),
+                    c_found.get("mot_de_passe_hash"), c_found.get("statut_validation", "valide"),
+                    c_found.get("date_inscription", now), now
+                ))
+                conn.commit()
+                cur.execute("SELECT id, nom_complet, nom_cabinet, numero_ordre, email, telephone, mot_de_passe_hash, statut_validation FROM comptables_growth WHERE email = ?", (c_found.get("email"),))
+                row = cur.fetchone()
 
         if not row:
             conn.close()
@@ -1536,7 +1694,8 @@ def authentifier_comptable(identifiant: str, mot_de_passe: str) -> Dict[str, Any
                 "numero_ordre": row["numero_ordre"],
                 "email": row["email"],
                 "telephone": row["telephone"],
-                "statut": row["statut_validation"]
+                "statut": row["statut_validation"],
+                "scelle": True
             }
         }
     except Exception as e:

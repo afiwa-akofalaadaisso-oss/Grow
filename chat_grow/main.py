@@ -1881,9 +1881,19 @@ def generer_email_bienvenue_comptable_html(nom_complet: str, nom_cabinet: str, n
     """
 
 
+@app.get("/api/comptable/dernier-scelle")
+async def api_comptable_dernier_scelle():
+    """Retourne le dernier cabinet scellé pour garantir la persistance même après F5 ou réinitialisation."""
+    try:
+        from chat_grow.database import obtenir_dernier_cabinet_scelle
+    except ImportError:
+        from database import obtenir_dernier_cabinet_scelle
+    return obtenir_dernier_cabinet_scelle()
+
+
 @app.post("/api/comptable/inscription")
-async def api_comptable_inscription(payload: Dict[str, Any]):
-    """Inscription officielle d'un nouvel expert-comptable ou cabinet comptable."""
+async def api_comptable_inscription(payload: Dict[str, Any], response: Response):
+    """Inscription officielle d'un nouvel expert-comptable ou cabinet comptable scellé à jamais."""
     try:
         from chat_grow.database import inscrire_comptable
     except ImportError:
@@ -1909,6 +1919,13 @@ async def api_comptable_inscription(payload: Dict[str, Any]):
     )
 
     if res.get("status") == "success":
+        # Scellage persistant par cookie (valide 1 an)
+        response.set_cookie("growth_cabinet_nom", nom_cabinet, max_age=31536000, path="/", samesite="lax")
+        response.set_cookie("growth_cabinet_expert", nom_complet, max_age=31536000, path="/", samesite="lax")
+        response.set_cookie("growth_cabinet_email", email, max_age=31536000, path="/", samesite="lax")
+        response.set_cookie("growth_cabinet_phone", telephone, max_age=31536000, path="/", samesite="lax")
+        response.set_cookie("growth_cabinet_scelle", "1", max_age=31536000, path="/", samesite="lax")
+
         # Générer l'email officiel de bienvenue et de validation
         email_html = generer_email_bienvenue_comptable_html(nom_complet, nom_cabinet, numero_ordre, email)
         res["email_html"] = email_html
@@ -1918,8 +1935,8 @@ async def api_comptable_inscription(payload: Dict[str, Any]):
 
 
 @app.post("/api/comptable/connexion")
-async def api_comptable_connexion(request: Request, payload: Dict[str, Any]):
-    """Connexion sécurisée d'un expert-comptable avec protection anti-brute-force."""
+async def api_comptable_connexion(request: Request, payload: Dict[str, Any], response: Response):
+    """Connexion sécurisée d'un expert-comptable avec protection anti-brute-force et scellage de session."""
     try:
         from chat_grow.database import authentifier_comptable
     except ImportError:
@@ -1941,6 +1958,12 @@ async def api_comptable_connexion(request: Request, payload: Dict[str, Any]):
     res = authentifier_comptable(identifiant, mot_de_passe)
     if res.get("status") == "success":
         reinitialiser_echecs_auth(identifiant)
+        c = res.get("comptable", {})
+        response.set_cookie("growth_cabinet_nom", c.get("nom_cabinet", ""), max_age=31536000, path="/", samesite="lax")
+        response.set_cookie("growth_cabinet_expert", c.get("nom_complet", ""), max_age=31536000, path="/", samesite="lax")
+        response.set_cookie("growth_cabinet_email", c.get("email", ""), max_age=31536000, path="/", samesite="lax")
+        response.set_cookie("growth_cabinet_phone", c.get("telephone", ""), max_age=31536000, path="/", samesite="lax")
+        response.set_cookie("growth_cabinet_scelle", "1", max_age=31536000, path="/", samesite="lax")
     else:
         nb_echecs = enregistrer_echec_auth(identifiant)
         if nb_echecs >= 5:
