@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTOENGINE • AI & Business Automation | Systèmes Intelligents & Agents IA</title>
+    <meta name="description"
+        content="AutoEngine transforme les processus des entreprises en systèmes intelligents et automatisés. Ingénierie d'agents IA, automatisation de workflows et intégration WhatsApp, CRM & ERP.">
+    
+    <!-- Polices Google Font & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #07090e;
+            --bg-card: #0d121d;
+            --bg-card-hover: #131b2a;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 229, 255, 0.35);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --cyan-glow: #00e5ff;
+            --blue-tech: #3b82f6;
+            --emerald-grow: #10b981;
+            --wa-green: #25D366;
+            --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-display: 'Space Grotesk', var(--font-main);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient Background Lighting */
+        .ambient-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-glow-1 {
+            position: fixed;
+            top: -10vw;
+            left: 20vw;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.07) 0%, rgba(59, 130, 246, 0.03) 40%, transparent 70%);
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            bottom: -15vw;
+            right: 10vw;
+            width: 55vw;
+            height: 55vw;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, rgba(0, 229, 255, 0.02) 50%, transparent 70%);
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header & Navbar */
+        header.navbar-glass {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(7, 9, 14, 0.75);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-symbol {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0f172a 0%, #00e5ff 150%);
+            border: 1px solid rgba(0, 229, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
+        }
+
+        .logo-symbol i {
+            font-size: 17px;
+            color: #ffffff;
+        }
+
+        .brand-text {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 19px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .brand-text span {
+            color: var(--cyan-glow);
+        }
+
+        .brand-badge {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-nav-ghost {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-ghost:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .btn-nav-cta {
+            background: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
+            color: #050a14;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 18px;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 18px rgba(0, 229, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(0, 229, 255, 0.45);
+        }
+
+        /* Hero Section */
+        section.hero-section {
+            padding-top: 170px;
+            padding-bottom: 90px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 6px 16px;
+            border-radius: 99px;
+            background: rgba(0, 229, 255, 0.06);
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--cyan-glow);
+            margin-bottom: 24px;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.12);
+        }
+
+        .hero-pill .pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan-glow);
+            box-shadow: 0 0 10px var(--cyan-glow);
+            animation: pulseGlow 1.8s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(38px, 5.5vw, 68px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            max-width: 980px;
+            margin: 0 auto 24px auto;
+            color: #ffffff;
+        }
+
+        .hero-title .gradient-text {
+            background: linear-gradient(135deg, #ffffff 30%, #00e5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-secondary);
+            max-width: 740px;
+            margin: 0 auto 36px auto;
+            font-weight: 400;
+        }
+
+        .hero-tagline {
+            display: block;
+            margin-top: 10px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
+            color: #030712;
+            padding: 15px 32px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 15px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.35);
+            transition: all 0.25s;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px rgba(0, 229, 255, 0.5);
+        }
+
+        .btn-hero-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: #ffffff;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-hero-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Metrics Bar */
+        .metrics-banner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            background: rgba(13, 18, 29, 0.75);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 28px 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 0 12px;
+        }
+
+        .metric-item:not(:last-child) {
+            border-right: 1px solid var(--border-subtle);
+        }
+
+        .metric-value {
+            font-family: var(--font-display);
+            font-size: 34px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .metric-value.cyan { color: var(--cyan-glow); }
+        .metric-value.emerald { color: var(--emerald-grow); }
+
+        .metric-label {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Section Global Styles */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 60px auto;
+        }
+
+        .section-tag {
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--cyan-glow);
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(30px, 3.8vw, 44px);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.8px;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* 4 Pillars Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .pillar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .pillar-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(0, 229, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .pillar-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--cyan-glow);
+            margin-bottom: 22px;
+        }
+
+        .pillar-num {
+            position: absolute;
+            top: 28px;
+            right: 32px;
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.12);
+        }
+
+        .pillar-title {
+            font-family: var(--font-display);
+            font-size: 21px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .pillar-text {
+            color: var(--text-secondary);
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .pillar-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-pill {
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+        }
+
+        /* ------------------------------------------------------------------------- */
+        /* SECTION FLAGSHIP : GROWTH - 1ER AGENT IA D'AUTOENGINE                      */
+        /* ------------------------------------------------------------------------- */
+        .flagship-box {
+            background: linear-gradient(135deg, rgba(13, 18, 29, 0.95) 0%, rgba(9, 28, 24, 0.85) 100%);
+            border: 1.5px solid rgba(16, 185, 129, 0.35);
+            border-radius: 28px;
+            padding: 48px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), 0 0 50px rgba(16, 185, 129, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flagship-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+            padding: 5px 14px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .flagship-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .flagship-title {
+            font-family: var(--font-display);
+            font-size: 38px;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .flagship-title span {
+            color: #10b981;
+        }
+
+        .flagship-desc {
+            font-size: 16px;
+            color: #cbd5e1;
+            margin-bottom: 26px;
+            line-height: 1.6;
+        }
+
+        .flagship-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+
+        .ff-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13.5px;
+            color: #e2e8f0;
+        }
+
+        .ff-item i {
+            color: #10b981;
+            margin-top: 3px;
+            font-size: 14px;
+        }
+
+        .flagship-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-growth-portal {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            padding: 13px 26px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 14.5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-growth-portal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-growth-cabinet {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            padding: 13px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-growth-cabinet:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* QR Code Live Card */
+        .qr-live-card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+            position: relative;
+        }
+
+        .qr-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .qr-brand {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 16px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .qr-brand i {
+            color: #10b981;
+        }
+
+        .qr-badge-wa {
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 99px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .qr-img-box {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+
+        .qr-img-box img {
+            width: 170px;
+            height: 170px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .qr-prompt-text {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .btn-wa-direct {
+            background: #25D366;
+            color: #ffffff;
+            width: 100%;
+            padding: 11px 16px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 13.5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-wa-direct:hover {
+            background: #1ebd5a;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+        }
+
+        /* Use Cases Tabs */
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .uc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 28px;
+            transition: all 0.25s;
+        }
+
+        .uc-card:hover {
+            border-color: rgba(0, 229, 255, 0.25);
+            transform: translateY(-3px);
+            background: var(--bg-card-hover);
+        }
+
+        .uc-icon {
+            font-size: 24px;
+            color: var(--cyan-glow);
+            margin-bottom: 16px;
+        }
+
+        .uc-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .uc-desc {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Methodology 5 Steps */
+        .method-steps {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            position: relative;
+        }
+
+        .step-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px 20px;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .step-item:hover {
+            border-color: var(--cyan-glow);
+        }
+
+        .step-badge {
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--cyan-glow);
+            margin-bottom: 12px;
+        }
+
+        .step-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .step-text {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        /* ROI Calculator Interactive */
+        .roi-calculator-box {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .calc-control-group {
+            margin-bottom: 24px;
+        }
+
+        .calc-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .calc-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .calc-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--cyan-glow);
+            cursor: pointer;
+            box-shadow: 0 0 12px var(--cyan-glow);
+        }
+
+        .calc-result-panel {
+            background: rgba(0, 229, 255, 0.04);
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            border-radius: 18px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .calc-res-big {
+            font-family: var(--font-display);
+            font-size: 44px;
+            font-weight: 900;
+            color: var(--cyan-glow);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .calc-res-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Pricing & Hybrid Model */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 36px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(180deg, #101928 0%, #0d121d 100%);
+            border: 1.5px solid var(--cyan-glow);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.18);
+        }
+
+        .featured-tag {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
+            color: #050a14;
+            font-size: 10.5px;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 99px;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-tier {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .pricing-price {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .pricing-price span {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .pricing-list {
+            list-style: none;
+            margin-bottom: 28px;
+        }
+
+        .pricing-list li {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .pricing-list li i {
+            color: var(--cyan-glow);
+            font-size: 12px;
+        }
+
+        .btn-pricing {
+            width: 100%;
+            padding: 13px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .btn-pricing.primary {
+            background: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
+            color: #030712;
+            border: none;
+        }
+
+        .btn-pricing.ghost {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* Contact & Audit Form */
+        .audit-form-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 44px;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 13px 16px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--cyan-glow);
+            background: rgba(0, 229, 255, 0.03);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+        }
+
+        /* Footer */
+        footer.site-footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 70px 0 30px 0;
+            background: #040609;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 13.5px;
+            max-width: 320px;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+
+        .footer-col h4 {
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #ffffff;
+            margin-bottom: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.15s;
+        }
+
+        .footer-links a:hover {
+            color: var(--cyan-glow);
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Responsive Media Queries */
+        @media (max-width: 992px) {
+            .metrics-banner { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .metric-item:nth-child(2) { border-right: none; }
+            .pillars-grid { grid-template-columns: 1fr; }
+            .flagship-grid { grid-template-columns: 1fr; }
+            .use-cases-grid { grid-template-columns: 1fr; }
+            .method-steps { grid-template-columns: 1fr; }
+            .roi-calculator-box { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            .nav-menu { display: none; }
+            .form-row { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .metrics-banner { grid-template-columns: 1fr; }
+            .metric-item { border-right: none !important; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px; }
+            .flagship-box { padding: 28px 20px; }
+            .flagship-features { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Ambient Grid & Lights -->
+    <div class="ambient-grid"></div>
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- Header Navbar Glass -->
+    <header class="navbar-glass">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="/autoengine" class="brand-logo">
+                    <div class="logo-symbol">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <div class="brand-text">
+                        AUTO<span>ENGINE</span>
+                        <span class="brand-badge">AI SYSTEMS</span>
+                    </div>
+                </a>
+
+                <ul class="nav-menu">
+                    <li><a href="#piliers" class="nav-link">Piliers IA</a></li>
+                    <li><a href="#growth" class="nav-link" style="color: #34d399;"><i class="fa-solid fa-bolt" style="font-size: 11px;"></i> Agent Growth</a></li>
+                    <li><a href="#secteurs" class="nav-link">Secteurs</a></li>
+                    <li><a href="#methodologie" class="nav-link">Méthodologie</a></li>
+                    <li><a href="#simulateur" class="nav-link">Simulateur ROI</a></li>
+                    <li><a href="#offres" class="nav-link">Offres</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="/comptable" class="btn-nav-ghost" title="Accéder au Portail Comptable Growth">
+                        <i class="fa-solid fa-chart-pie" style="color: #10b981;"></i>
+                        <span>Portail Growth</span>
+                    </a>
+                    <a href="#audit" class="btn-nav-cta">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Réserver un Audit</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-pill">
+                <span class="pulse-dot"></span>
+                <span>Ingénierie d'Automatisation & Agents IA Autonomes</span>
+            </div>
+
+            <h1 class="hero-title">
+                Nous transformons les processus des entreprises en <span class="gradient-text">systèmes intelligents et automatisés.</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Conception d'agents IA verticaux, automatisation de workflows critiques et intégration de systèmes intelligents.
+                <span class="hero-tagline">Less manual work. More intelligent business.</span>
+            </p>
+
+            <div class="hero-actions">
+                <a href="#audit" class="btn-hero-primary">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Auditer Mon Entreprise</span>
+                </a>
+                <a href="#growth" class="btn-hero-secondary">
+                    <i class="fa-solid fa-shield-halved" style="color: #34d399;"></i>
+                    <span>Découvrir notre 1er Agent : Growth</span>
+                </a>
+            </div>
+
+            <!-- Metrics Banner -->
+            <div class="metrics-banner">
+                <div class="metric-item">
+                    <div class="metric-value cyan">-85%</div>
+                    <div class="metric-label">De tâches manuelles répétitives</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">24/7</div>
+                    <div class="metric-label">Exécution autonome sans faille</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value emerald">100%</div>
+                    <div class="metric-label">Intégration WhatsApp, CRM & ERP</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">&lt; 45j</div>
+                    <div class="metric-label">Retour sur investissement mesuré</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LES 4 PILIERS D'AUTOENGINE -->
+    <section id="piliers">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Notre Savoir-Faire d'Ingénierie</span>
+                <h2 class="section-title">Quatre Piliers d'Automatisation Intelligente</h2>
+                <p class="section-desc">
+                    Nous ne nous limitons pas à installer de simples chatbots. Nous concevons une véritable architecture d'automatisation d'entreprise.
+                </p>
+            </div>
+
+            <div class="pillars-grid">
+                <!-- 1. Création d'agents IA -->
+                <div class="pillar-card">
+                    <span class="pillar-num">01</span>
+                    <div class="pillar-icon-box">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 class="pillar-title">Création d'Agents IA Autonomes</h3>
+                    <p class="pillar-text">
+                        Développement d'agents spécialisés : commerciaux IA, assistants virtuels de support client, qualification continue de prospects et prise automatique de rendez-vous dans vos agendas.
+                    </p>
+                    <div class="pillar-tags">
+                        <span class="tech-pill">Qualification Leads</span>
+                        <span class="tech-pill">Support 24/7</span>
+                        <span class="tech-pill">Prise de RDV Calendly/Google</span>
+                    </div>
+                </div>
+
+                <!-- 2. Automatisation des processus -->
+                <div class="pillar-card">
+                    <span class="pillar-num">02</span>
+                    <div class="pillar-icon-box">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+                    <h3 class="pillar-title">Automatisation des Processus Métiers</h3>
+                    <p class="pillar-text">
+                        Éradication des tâches chronophages : génération automatique de factures et devis, traitement instantané des commandes, relances intelligentes d'impayés et consolidation de rapports de gestion.
+                    </p>
+                    <div class="pillar-tags">
+                        <span class="tech-pill">Facturation & Rapprochement</span>
+                        <span class="tech-pill">Relances Clients</span>
+                        <span class="tech-pill">Reporting Décisionnel</span>
+                    </div>
+                </div>
+
+                <!-- 3. Intégration de systèmes intelligents -->
+                <div class="pillar-card">
+                    <span class="pillar-num">03</span>
+                    <div class="pillar-icon-box">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <h3 class="pillar-title">Intégration de Systèmes Intelligents</h3>
+                    <p class="pillar-text">
+                        Connexion harmonieuse entre vos canaux de communication (WhatsApp Business API, Email, Web) et vos outils de travail (CRM, bases de données, logiciels de comptabilité et ERP).
+                    </p>
+                    <div class="pillar-tags">
+                        <span class="tech-pill">WhatsApp API Officielle</span>
+                        <span class="tech-pill">HubSpot / Salesforce</span>
+                        <span class="tech-pill">Webhooks Sécurisés</span>
+                    </div>
+                </div>
+
+                <!-- 4. Agents IA sur mesure -->
+                <div class="pillar-card">
+                    <span class="pillar-num">04</span>
+                    <div class="pillar-icon-box">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="pillar-title">Agents IA Sur-Mesure & Raisonnement</h3>
+                    <p class="pillar-text">
+                        Conception d'agents capables d'analyser des documents non structurés, d'interroger vos API internes, d'appliquer vos règles de conformité et d'exécuter des missions sous contrôle humain.
+                    </p>
+                    <div class="pillar-tags">
+                        <span class="tech-pill">Vision par Ordinateur</span>
+                        <span class="tech-pill">Garde-fous Métier</span>
+                        <span class="tech-pill">Audit Trail 100% traçable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------- -->
+    <!-- SECTION FLAGSHIP : PREMIER AGENT IA D'AUTOENGINE = GROWTH                 -->
+    <!-- ------------------------------------------------------------------------- -->
+    <section id="growth" style="padding-top: 20px;">
+        <div class="container">
+            <div class="flagship-box">
+                <div class="flagship-grid">
+                    <div>
+                        <div class="flagship-badge">
+                            <i class="fa-solid fa-award"></i>
+                            <span>Preuve de Concept Majeure &bull; Produit Propriétaire AutoEngine</span>
+                        </div>
+                        <h2 class="flagship-title">
+                            Rencontrez <span>Growth</span> : Le Premier Agent Financier &amp; Comptable d'Afrique
+                        </h2>
+                        <p class="flagship-desc">
+                            Conçu et propulsé par l'ingénierie AutoEngine, <strong>Growth</strong> est un agent IA autonome sur WhatsApp qui remplace la saisie comptable manuelle pour des centaines de commerçants et PME.
+                        </p>
+
+                        <div class="flagship-features">
+                            <div class="ff-item">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Saisie vocale et photo de reçus sur WhatsApp</span>
+                            </div>
+                            <div class="ff-item">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Imputation automatique SYSCOHADA (Bilan & FEC)</span>
+                            </div>
+                            <div class="ff-item">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Réconciliation automatique Wave &amp; Orange Money</span>
+                            </div>
+                            <div class="ff-item">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Portail Web certifié pour Cabinets Comptables</span>
+                            </div>
+                        </div>
+
+                        <div class="flagship-actions">
+                            <a href="/comptable" class="btn-growth-portal">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                <span>Accéder au Portail Growth</span>
+                            </a>
+                            <a href="/dashboard" class="btn-growth-cabinet">
+                                <i class="fa-solid fa-store"></i>
+                                <span>Vue Dirigeant PME</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Live QR Code Card Interactive -->
+                    <div>
+                        <div class="qr-live-card">
+                            <div class="qr-card-header">
+                                <div class="qr-brand">
+                                    <i class="fa-solid fa-bolt"></i>
+                                    <span>Agent Growth</span>
+                                </div>
+                                <span class="qr-badge-wa">
+                                    <i class="fa-brands fa-whatsapp"></i> Live 24/7
+                                </span>
+                            </div>
+
+                            <div class="qr-img-box">
+                                <img src="/static/qr_code_whatsapp.png" alt="QR Code WhatsApp Growth" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fwa.me%2F221788773827%3Ftext%3DBonjour%2520Grow';" />
+                            </div>
+
+                            <p class="qr-prompt-text">
+                                <strong>Scannez pour tester l'Agent en direct</strong><br>
+                                Envoyez un vocal ou une photo sur WhatsApp au <strong>+221 78 877 38 27</strong>
+                            </p>
+
+                            <a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank" class="btn-wa-direct">
+                                <i class="fa-brands fa-whatsapp"></i>
+                                <span>Discuter avec Growth sur WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLIENTS ET SECTEURS CIBLES -->
+    <section id="secteurs">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Adaptabilité Industrielle</span>
+                <h2 class="section-title">Des Agents IA Taillés pour Votre Métier</h2>
+                <p class="section-desc">
+                    Chaque industrie possède ses propres goulots d'étranglement. Voici comment AutoEngine déploie la force de travail autonome.
+                </p>
+            </div>
+
+            <div class="use-cases-grid">
+                <!-- PME & Négoce -->
+                <div class="uc-card">
+                    <div class="uc-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3 class="uc-title">PME &amp; Commerces</h3>
+                    <p class="uc-desc">
+                        Automatisation de la facturation, synchronisation de caisse, suivi des créances clients et saisie administrative sans friction.
+                    </p>
+                </div>
+
+                <!-- E-Commerce -->
+                <div class="uc-card">
+                    <div class="uc-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <h3 class="uc-title">E-Commerce &amp; Retail</h3>
+                    <p class="uc-desc">
+                        Confirmation automatique des commandes par WhatsApp, suivi des livraisons en temps réel et support après-vente instantané.
+                    </p>
+                </div>
+
+                <!-- Restaurants & Hôtellerie -->
+                <div class="uc-card">
+                    <div class="uc-icon"><i class="fa-solid fa-utensils"></i></div>
+                    <h3 class="uc-title">Restaurants &amp; Hôtels</h3>
+                    <p class="uc-desc">
+                        Prise de réservations 24h/24, gestion intelligente du menu, recueil d'avis clients et fidélisation automatisée.
+                    </p>
+                </div>
+
+                <!-- Cabinets & Agences -->
+                <div class="uc-card">
+                    <div class="uc-icon"><i class="fa-solid fa-landmark"></i></div>
+                    <h3 class="uc-title">Cabinets &amp; Agences</h3>
+                    <p class="uc-desc">
+                        Collecte de pièces justificatives, qualification des dossiers entrants, relance des pièces manquantes et planification de rendez-vous.
+                    </p>
+                </div>
+
+                <!-- Services Médicaux & Cliniques -->
+                <div class="uc-card">
+                    <div class="uc-icon"><i class="fa-solid fa-stethoscope"></i></div>
+                    <h3 class="uc-title">Santé &amp; Cliniques</h3>
+                    <p class="uc-desc">
+                        Rappels automatisés de rendez-vous pour réduire l'absentéisme, tri d'accueil et orientation des patients selon les urgences.
+                    </p>
+                </div>
+
+                <!-- Grandes Entreprises -->
+                <div class="uc-card">
+                    <div class="uc-icon"><i class="fa-solid fa-building-user"></i></div>
+                    <h3 class="uc-title">Grandes Entreprises</h3>
+                    <p class="uc-desc">
+                        Agents d'analyse documentaire complexe, assistants RH internes et automatisation des flux inter-services sécurisés.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- METHODOLOGIE EN 5 ÉTAPES -->
+    <section id="methodologie" style="background: rgba(13, 18, 29, 0.4);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Rigueur &amp; Gouvernance</span>
+                <h2 class="section-title">L'Ingénierie AutoEngine en 5 Étapes</h2>
+                <p class="section-desc">
+                    Nous suivons un protocole rigoureux pour garantir que chaque système automatisé livre des résultats concrets sans perturber vos opérations.
+                </p>
+            </div>
+
+            <div class="method-steps">
+                <div class="step-item">
+                    <div class="step-badge">ÉTAPE 01</div>
+                    <h4 class="step-title">Audit Opérationnel</h4>
+                    <p class="step-text">Cartographie de vos flux et identification des tâches chronophages à fort ROI.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-badge">ÉTAPE 02</div>
+                    <h4 class="step-title">Architecture IA</h4>
+                    <p class="step-text">Conception des instructions de l'agent, des règles métier et de la mémoire de travail.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-badge">ÉTAPE 03</div>
+                    <h4 class="step-title">Connexion &amp; API</h4>
+                    <p class="step-text">Intégration technique à vos systèmes : WhatsApp, bases de données, CRM et outils comptables.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-badge">ÉTAPE 04</div>
+                    <h4 class="step-title">Tests &amp; Pilote</h4>
+                    <p class="step-text">Déploiement sous supervision étroite avec des garde-fous stricts contre les erreurs.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-badge">ÉTAPE 05</div>
+                    <h4 class="step-title">Optimisation Continue</h4>
+                    <p class="step-text">Maintenance active, monitoring des performances et montée en puissance progressive.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALCULATEUR DE ROI INTERACTIF -->
+    <section id="simulateur">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Impact Mesurable</span>
+                <h2 class="section-title">Simulateur de Gain Financier</h2>
+                <p class="section-desc">
+                    Calculez en quelques secondes les heures et les ressources financières récupérées grâce à l'automatisation intelligente.
+                </p>
+            </div>
+
+            <div class="roi-calculator-box">
+                <div>
+                    <div class="calc-control-group">
+                        <div class="calc-label">
+                            <span>Taille de votre équipe opérationnelle</span>
+                            <strong id="teamSizeLabel" style="color: var(--cyan-glow);">5 collaborateurs</strong>
+                        </div>
+                        <input type="range" class="calc-slider" id="teamSizeSlider" min="1" max="50" value="5" oninput="updateRoiCalc()">
+                    </div>
+
+                    <div class="calc-control-group">
+                        <div class="calc-label">
+                            <span>Heures manuelles perdues par employé / semaine</span>
+                            <strong id="hoursLabel" style="color: var(--cyan-glow);">12 heures / semaine</strong>
+                        </div>
+                        <input type="range" class="calc-slider" id="hoursSlider" min="2" max="30" value="12" oninput="updateRoiCalc()">
+                    </div>
+
+                    <div class="calc-control-group">
+                        <div class="calc-label">
+                            <span>Taux horaire moyen estimé</span>
+                            <strong id="rateLabel" style="color: var(--cyan-glow);">5 000 FCFA / h</strong>
+                        </div>
+                        <input type="range" class="calc-slider" id="rateSlider" min="2000" max="25000" step="500" value="5000" oninput="updateRoiCalc()">
+                    </div>
+                </div>
+
+                <div class="calc-result-panel">
+                    <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+                        Économie Annuelle Potentielle
+                    </div>
+                    <div class="calc-res-big" id="annualSavings">14 400 000</div>
+                    <div class="calc-res-sub">FCFA récupérés par an sur la masse horaire perdue</div>
+
+                    <div style="padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around;">
+                        <div>
+                            <div style="font-size: 18px; font-weight: 800; color: #ffffff;" id="hoursSavedYear">2 880 h</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">Heures libérées / an</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 18px; font-weight: 800; color: var(--emerald-grow);">85%</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">Taux d'automatisation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODÈLE HYBRIDE : OFFRES & TARIFS -->
+    <section id="offres">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Partenariat &amp; Valeur</span>
+                <h2 class="section-title">Notre Modèle Économique Hybride</h2>
+                <p class="section-desc">
+                    Des prestations sur-mesure pour les besoins spécifiques et des abonnements clé-en-main pour nos agents IA propriétaires.
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- 1. Audit & Conception Sur-Mesure -->
+                <div class="pricing-card">
+                    <div>
+                        <div class="pricing-tier">Ingénierie Sur-Mesure</div>
+                        <div class="pricing-price">Sur Devis <span>/ projet</span></div>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+                            Pour les entreprises souhaitant une automatisation complète de leurs systèmes internes.
+                        </p>
+                        <ul class="pricing-list">
+                            <li><i class="fa-solid fa-check"></i> Audit complet des processus</li>
+                            <li><i class="fa-solid fa-check"></i> Architecture d'agents sur-mesure</li>
+                            <li><i class="fa-solid fa-check"></i> Intégration API &amp; Webhooks</li>
+                            <li><i class="fa-solid fa-check"></i> Formation des équipes</li>
+                        </ul>
+                    </div>
+                    <a href="#audit" class="btn-pricing ghost">Demander un Devis</a>
+                </div>
+
+                <!-- 2. Produit Propriétaire : Growth -->
+                <div class="pricing-card featured">
+                    <span class="featured-tag">Solution Clé en Main</span>
+                    <div>
+                        <div class="pricing-tier">Agent Growth</div>
+                        <div class="pricing-price">15 000 FCFA <span>/ mois</span></div>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+                            Le copilote comptable et financier sur WhatsApp pour PME et commerçants.
+                        </p>
+                        <ul class="pricing-list">
+                            <li><i class="fa-solid fa-check"></i> Saisie WhatsApp voix et reçus</li>
+                            <li><i class="fa-solid fa-check"></i> Rapprochement Wave &amp; OM</li>
+                            <li><i class="fa-solid fa-check"></i> États financiers SYSCOHADA</li>
+                            <li><i class="fa-solid fa-check"></i> Dépôt légal DGID &amp; FEC</li>
+                        </ul>
+                    </div>
+                    <a href="/comptable" class="btn-pricing primary">Accéder à Growth</a>
+                </div>
+
+                <!-- 3. Enterprise & Maintenance Continue -->
+                <div class="pricing-card">
+                    <div>
+                        <div class="pricing-tier">Supervision &amp; SLA</div>
+                        <div class="pricing-price">Abonnement <span>/ mois</span></div>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+                            Maintenance continue, fine-tuning des agents IA et garantie de disponibilité 99.9%.
+                        </p>
+                        <ul class="pricing-list">
+                            <li><i class="fa-solid fa-check"></i> Supervision 24/7 des agents</li>
+                            <li><i class="fa-solid fa-check"></i> Mises à jour des modèles LLM</li>
+                            <li><i class="fa-solid fa-check"></i> Support prioritaire WhatsApp</li>
+                            <li><i class="fa-solid fa-check"></i> Rapport mensuel de gains</li>
+                        </ul>
+                    </div>
+                    <a href="#audit" class="btn-pricing ghost">Contacter l'Équipe</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULAIRE DE RÉSERVATION D'AUDIT -->
+    <section id="audit" style="background: rgba(13, 18, 29, 0.4);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Passez à la Vitesse Supérieure</span>
+                <h2 class="section-title">Réservez Votre Audit d'Automatisation (30 min)</h2>
+                <p class="section-desc">
+                    Nos ingénieurs analysent vos processus actuels et vous présentent un plan d'automatisation concret avec estimation de votre ROI.
+                </p>
+            </div>
+
+            <div class="audit-form-box">
+                <form id="auditForm" onsubmit="handleAuditSubmit(event)">
+                    <div class="form-row">
+                        <input type="text" id="auditNom" class="form-input" placeholder="Votre nom complet" required>
+                        <input type="text" id="auditEntreprise" class="form-input" placeholder="Nom de votre entreprise" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="email" id="auditEmail" class="form-input" placeholder="Adresse email professionnelle" required>
+                        <input type="tel" id="auditTel" class="form-input" placeholder="Téléphone / WhatsApp (ex: +221 ...)" required>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <select id="auditBesoin" class="form-input" style="background: #0f172a; color: #ffffff;" required>
+                            <option value="" disabled selected>Quel processus souhaitez-vous automatiser en priorité ?</option>
+                            <option value="commercial">Agents commerciaux, qualification de prospects & RDV</option>
+                            <option value="support">Service client & SAV autonome sur WhatsApp</option>
+                            <option value="admin">Facturation, comptabilité & gestion administrative</option>
+                            <option value="growth">Déploiement de l'Agent Financier Growth</option>
+                            <option value="surmesure">Système complet sur-mesure / Intégration ERP</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <textarea id="auditMessage" class="form-input" rows="3" placeholder="Décrivez brièvement les tâches qui vous font perdre du temps au quotidien..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center; border: none; cursor: pointer;">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Confirmer ma Demande d'Audit Gratuit</span>
+                    </button>
+                </form>
+
+                <div id="auditSuccessNotice" style="display: none; text-align: center; padding: 24px; background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 14px; margin-top: 18px;">
+                    <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 32px; margin-bottom: 10px;"></i>
+                    <h4 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-bottom: 4px;">Demande d'Audit Reçue avec Succès !</h4>
+                    <p style="font-size: 13.5px; color: #cbd5e1;">Un ingénieur AutoEngine vous contactera sous 2 heures ouvrées pour convenir du créneau de 30 minutes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/autoengine" class="brand-logo">
+                        <div class="logo-symbol">
+                            <i class="fa-solid fa-cube"></i>
+                        </div>
+                        <div class="brand-text">
+                            AUTO<span>ENGINE</span>
+                        </div>
+                    </a>
+                    <p>
+                        Studio d'ingénierie et d'automatisation par intelligence artificielle. Nous concevons la force de travail autonome des entreprises modernes.
+                    </p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                        Dakar &bull; Abidjan &bull; International
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Technologies</h4>
+                    <ul class="footer-links">
+                        <li><a href="#piliers">Agents IA Commerciaux</a></li>
+                        <li><a href="#piliers">Automatisation Workflows</a></li>
+                        <li><a href="#piliers">Intégration WhatsApp API</a></li>
+                        <li><a href="#piliers">Systèmes Autonomes</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Produits IA</h4>
+                    <ul class="footer-links">
+                        <li><a href="/comptable" style="color: #34d399; font-weight: 700;"><i class="fa-solid fa-bolt" style="font-size: 11px;"></i> Growth (Fintech IA)</a></li>
+                        <li><a href="/dashboard">Portail PME Growth</a></li>
+                        <li><a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank">WhatsApp Growth Live</a></li>
+                        <li><a href="#offres">Abonnements SaaS</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Entreprise</h4>
+                    <ul class="footer-links">
+                        <li><a href="#methodologie">Méthodologie</a></li>
+                        <li><a href="#simulateur">Calculateur ROI</a></li>
+                        <li><a href="#audit">Réserver un Audit</a></li>
+                        <li><a href="mailto:contact@autoengine.ai">contact@autoengine.ai</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>
+                    &copy; 2026 AUTOENGINE AI &bull; Tous droits réservés. Less manual work. More intelligent business.
+                </div>
+                <div>
+                    Propulseur de l'écosystème <a href="/comptable" style="color: #34d399; text-decoration: none; font-weight: 700;">Growth SYSCOHADA</a>.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logique Interactive : Simulateur ROI & Formulaire -->
+    <script>
+        function updateRoiCalc() {
+            const teamSize = parseInt(document.getElementById('teamSizeSlider').value);
+            const hoursPerWeek = parseInt(document.getElementById('hoursSlider').value);
+            const hourlyRate = parseInt(document.getElementById('rateSlider').value);
+
+            document.getElementById('teamSizeLabel').textContent = `${teamSize} collaborateur${teamSize > 1 ? 's' : ''}`;
+            document.getElementById('hoursLabel').textContent = `${hoursPerWeek} heures / semaine`;
+            document.getElementById('rateLabel').textContent = `${hourlyRate.toLocaleString('fr-FR')} FCFA / h`;
+
+            // Calcul : 48 semaines travaillées par an
+            const totalHoursPerYear = teamSize * hoursPerWeek * 48;
+            const automatedHours = Math.round(totalHoursPerYear * 0.85);
+            const annualSavings = automatedHours * hourlyRate;
+
+            document.getElementById('annualSavings').textContent = annualSavings.toLocaleString('fr-FR');
+            document.getElementById('hoursSavedYear').textContent = `${automatedHours.toLocaleString('fr-FR')} h`;
+        }
+
+        function handleAuditSubmit(event) {
+            event.preventDefault();
+            const nom = document.getElementById('auditNom').value;
+            const entreprise = document.getElementById('auditEntreprise').value;
+            const email = document.getElementById('auditEmail').value;
+            const tel = document.getElementById('auditTel').value;
+            const besoin = document.getElementById('auditBesoin').value;
+            const message = document.getElementById('auditMessage').value;
+
+            // Masquer le formulaire et afficher le mot de confirmation
+            document.getElementById('auditForm').style.display = 'none';
+            document.getElementById('auditSuccessNotice').style.display = 'block';
+
+            // Optionnel : Envoi webhook ou notification
+            console.log("Demande d'audit AutoEngine :", { nom, entreprise, email, tel, besoin, message });
+        }
+
+        // Initialiser le simulateur au chargement
+        document.addEventListener('DOMContentLoaded', updateRoiCalc);
+    </script>
+</body>
+
+</html>

@@ -738,6 +738,17 @@ async def verify_webhook(
     }
 
 
+@app.get("/autoengine", response_class=HTMLResponse)
+@app.get("/agency-ai", response_class=HTMLResponse)
+async def serve_autoengine_page():
+    """Site officiel de l'entreprise mère AutoEngine (AI & Business Automation)."""
+    html_path = os.path.join(TEMPLATES_DIR, "autoengine.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>AutoEngine AI en cours d'initialisation</h1>", status_code=200)
+
+
 @app.get("/dashboard", response_class=HTMLResponse)
 @app.get("/client", response_class=HTMLResponse)
 async def serve_dashboard(request: Request, phone: str = None, id: str = None):
