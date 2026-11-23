@@ -2549,7 +2549,6 @@
                                     <option value="resultat">2. Compte de Résultat (Produits &amp; Charges)</option>
                                     <option value="flux">3. Tableau des Flux de Trésorerie</option>
                                     <option value="annexes">4. Notes Annexes &amp; Rapprochement</option>
-                                    <option value="demarche">5. Démarche de Calcul &amp; Piste d'Audit</option>
                                     <option value="composer">Composer un dossier sur-mesure...</option>
                                 </select>
 
@@ -2637,43 +2636,6 @@
                                             <i class="fa-solid fa-check checkmark-icon"
                                                 style="color: #168078; font-size: 11px; font-weight: 900; display: none;"></i>
                                         </div>
-
-                                        <!-- Option 6: Démarche de Calcul & Piste d'Audit -->
-                                        <div class="custom-composition-item" data-val="demarche"
-                                            onclick="selectDocLiasseCompositionOption('demarche', '5. Démarche de Calcul & Piste d\'Audit', 'fa-route')"
-                                            style="padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid transparent; transition: all 0.15s;"
-                                            onmouseover="if(!this.classList.contains('active')){this.style.background='#f8fafc';}"
-                                            onmouseout="if(!this.classList.contains('active')){this.style.background='#ffffff';}">
-                                            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-                                                <i class="fa-solid fa-route"
-                                                    style="color: #168078; font-size: 13px; width: 16px; text-align: center;"></i>
-                                                <span style="font-size: 11.5px; font-weight: 700; color: #0f172a;">5.
-                                                    Démarche de Calcul &amp; Piste d'Audit</span>
-                                            </div>
-                                            <i class="fa-solid fa-check checkmark-icon"
-                                                style="color: #168078; font-size: 11px; font-weight: 900; display: none;"></i>
-                                        </div>
-
-                                        <div style="height: 1px; background: #f1f5f9; margin: 3px 0;"></div>
-
-                                        <!-- Option 6: Composer sur-mesure -->
-                                        <div class="custom-composition-item" data-val="composer"
-                                            onclick="selectDocLiasseCompositionOption('composer', 'Composer un dossier sur-mesure...', 'fa-sliders')"
-                                            style="padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px dashed #cbd5e1; transition: all 0.15s;"
-                                            onmouseover="if(!this.classList.contains('active')){this.style.background='#f0fdfa'; this.style.borderColor='#14b8a6';}"
-                                            onmouseout="if(!this.classList.contains('active')){this.style.background='#ffffff'; this.style.borderColor='#cbd5e1';}">
-                                            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-                                                <i class="fa-solid fa-sliders"
-                                                    style="color: #168078; font-size: 13px; width: 16px; text-align: center;"></i>
-                                                <span
-                                                    style="font-size: 11.5px; font-weight: 800; color: #168078;">Composer
-                                                    un dossier sur-mesure...</span>
-                                            </div>
-                                            <span
-                                                style="font-size: 9.5px; font-weight: 800; color: #0f766e; background: #ecfdf5; padding: 2px 6px; border-radius: 4px;">Sur-mesure</span>
-                                        </div>
-
-                                    </div>
                                 </div>
                             </div>
 
@@ -2956,39 +2918,6 @@
                                 onmouseout="this.style.background='#0e7647';">
                                 <i class="fa-solid fa-file-excel"></i>
                                 <span>Télécharger Balance Générale (.xls)</span>
-                            </button>
-                        </div>
-
-                        <!-- 5. Démarche Comptable & Traçabilité des Montants PME -->
-                        <div
-                            style="background: white; border: 1.5px solid #168078; border-radius: 14px; padding: 22px; box-shadow: 0 4px 14px rgba(22,128,120,0.08); position: relative;">
-                            <div
-                                style="position: absolute; top: -10px; right: 16px; background: #168078; color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 12px; text-transform: uppercase;">
-                                Piste d'Audit &bull; Recommandé
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
-                                <div
-                                    style="width: 40px; height: 40px; border-radius: 10px; background: #f0fdfa; color: #168078; border: 1px solid rgba(22, 128, 120, 0.2); display: flex; align-items: center; justify-content: center; font-size: 18px;">
-                                    <i class="fa-solid fa-route"></i>
-                                </div>
-                                <div>
-                                    <h3 style="font-size: 15px; font-weight: 800; color: #0f172a;">Démarche de Calcul
-                                        &amp; Piste d'Audit</h3>
-                                    <p style="font-size: 11.5px; color: #64748b;">Justification pas à pas de chaque
-                                        montant du Bilan</p>
-                                </div>
-                            </div>
-                            <p style="font-size: 12px; color: #475569; line-height: 1.5; margin-bottom: 16px;">
-                                Visualisez comment les encaissements Wave, les sorties d'espèces et les factures
-                                fournisseurs de la PME sont réconciliés et convertis en Bilan et Compte de Résultat
-                                certifiés.
-                            </p>
-                            <button type="button" onclick="openReport('demarche')"
-                                style="width: 100%; padding: 11px 16px; background: #168078; color: white; border: none; border-radius: 8px; font-weight: 800; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 6px rgba(22,128,120,0.25); transition: all 0.15s;"
-                                onmouseover="this.style.background='#0f766e';"
-                                onmouseout="this.style.background='#168078';">
-                                <i class="fa-solid fa-list-check"></i>
-                                <span>Consulter la Démarche de Calcul Pas à Pas</span>
                             </button>
                         </div>
                     </div>
@@ -3981,10 +3910,6 @@
                         <button type="button" onclick="openReport('annexes')" id="tabRepAnnexes"
                             class="tab-rep-btn-light">
                             4. Notes
-                        </button>
-                        <button type="button" onclick="openReport('demarche')" id="tabRepDemarche"
-                            class="tab-rep-btn-light">
-                            5. Démarche &amp; Calculs
                         </button>
                         <button type="button" onclick="openReport('tout')" id="tabRepTout" class="tab-rep-btn-light">
                             Liasse Complète
@@ -8286,79 +8211,7 @@
         // MOTEUR D'AGRÉGATION COMPTABLE DYNAMIQUE FEC SYSCOHADA SMT (100% MATHÉMATIQUE)
         // Calcule le Bilan, le Compte de Résultat et les Flux directement depuis les écritures réelles
         // =========================================================================
-        function calculerSyntheseComptableFec(pme) {
-            const ecritures = (pme && pme.ecritures && pme.ecritures.length > 0) ? pme.ecritures : [];
-            const parseVal = (v) => {
-                if (!v || v === '-') return 0;
-                return parseInt(String(v).replace(/\s/g, '').replace(/FCFA/gi, ''), 10) || 0;
-            };
-
-            const soldeComptes = {};
-            const addMvt = (num, lib, debit, credit) => {
-                const root = num.substring(0, 3);
-                if (!soldeComptes[root]) {
-                    soldeComptes[root] = { root, num, lib, debit: 0, credit: 0 };
-                }
-                soldeComptes[root].debit += debit;
-                soldeComptes[root].credit += credit;
-            };
-
-            ecritures.forEach(ec => {
-                const cptParts = (ec.compte || '').split(' - ');
-                const num = cptParts[0].trim();
-                const lib = cptParts[1] ? cptParts[1].trim() : 'Opération';
-                const isDebit = ec.debit && ec.debit !== '-';
-                const mnt = isDebit ? parseVal(ec.debit) : parseVal(ec.credit);
-
-                // Ligne principale du journal
-                addMvt(num, lib, isDebit ? mnt : 0, isDebit ? 0 : mnt);
-
-                // Contrepartie de trésorerie (identique à l'export FEC officiel)
-                const isWave = (ec.libelle || '').toLowerCase().includes('wave');
-                const cpteTreso = isWave ? '514' : '571';
-                const libTreso = isWave ? 'Trésorerie Wave Business' : 'Caisse Principale';
-                addMvt(cpteTreso, libTreso, isDebit ? 0 : mnt, isDebit ? mnt : 0);
-            });
-
-            // 1. Compte de Résultat
-            const vtes701 = soldeComptes['701'] ? (soldeComptes['701'].credit - soldeComptes['701'].debit) : 0;
-            const ach601 = soldeComptes['601'] ? (soldeComptes['601'].debit - soldeComptes['601'].credit) : 0;
-            const energ605 = soldeComptes['605'] ? (soldeComptes['605'].debit - soldeComptes['605'].credit) : 0;
-            const transp612 = soldeComptes['612'] ? (soldeComptes['612'].debit - soldeComptes['612'].credit) : 0;
-            const margeBrute = vtes701 - ach601;
-            const resultatNet = vtes701 - ach601 - energ605 - transp612;
-
-            // 2. Bilan Actif
-            const actifFourn401 = soldeComptes['401'] ? Math.max(0, soldeComptes['401'].debit - soldeComptes['401'].credit) : 0;
-            const actifBanque521 = soldeComptes['521'] ? Math.max(0, soldeComptes['521'].debit - soldeComptes['521'].credit) : 0;
-            const actifWave514 = soldeComptes['514'] ? Math.max(0, soldeComptes['514'].debit - soldeComptes['514'].credit) : 0;
-            const totalActif = actifFourn401 + actifBanque521 + actifWave514;
-
-            // 3. Bilan Passif
-            const passifClients411 = soldeComptes['411'] ? Math.max(0, soldeComptes['411'].credit - soldeComptes['411'].debit) : 0;
-            const passifCaisse571 = soldeComptes['571'] ? Math.max(0, soldeComptes['571'].credit - soldeComptes['571'].debit) : 0;
-            const totalPassif = resultatNet + passifClients411 + passifCaisse571;
-
-            return {
-                vtes701,
-                ach601,
-                energ605,
-                transp612,
-                margeBrute,
-                resultatNet,
-                actifFourn401,
-                actifBanque521,
-                actifWave514,
-                totalActif,
-                passifClients411,
-                passifCaisse571,
-                totalPassif,
-                soldeComptes,
-                totalEcritures: ecritures.length
-            };
-        }
-
-        // =========================================================================
+                // =========================================================================
         // CONSTRUCTEURS DYNAMIQUES DES 4 ÉTATS FINANCIERS SYSCOHADA SMT (100% ALIGNÉS SUR LE FEC)
         // =========================================================================
         // =========================================================================
@@ -8671,208 +8524,7 @@
                 </div>
             `;
         }
-        function buildSectionDemarcheHtml(pme, intervalle, isFirst = true) {
-            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 5 : DÉMARCHE DE CALCUL & PISTE D'AUDIT SMT", isFirst);
-
-            const nomPme = pme.nom || "PME Partenaire";
-            const ninea = pme.ninea || "005489210";
-            const activite = pme.activite || "Commerce Général & Distribution";
-            const caTotal = pme.ca || (pme.resultatLignes && pme.resultatLignes[0] ? pme.resultatLignes[0].mnt : "14 500 000 FCFA");
-            const beneficeNet = pme.beneficeNet || (pme.bilan && pme.bilan.resultat ? pme.bilan.resultat + " FCFA" : "+2 820 000 FCFA");
-            const tresoCloture = pme.tresoFinale || (pme.bilan && pme.bilan.treso ? pme.bilan.treso + " FCFA" : "1 850 000 FCFA");
-            const scoreAudit = pme.score || "92/100";
-            const tauxPreuve = pme.tauxValidation || "98.5%";
-
-            // Écritures réelles du journal de cette PME
-            const ecrituresPme = (pme.ecritures && pme.ecritures.length > 0) ? pme.ecritures.slice(0, 10) : [
-                { id: 1, date: "05/01/2026", libelle: "Encaissement Wave Business Vente Directe", compte: "701100 Ventes", credit: "450 000", tiers: "Client Wave", statutLabel: "✓ Numérique", preuve: "/static/mock_wave_photo.png" },
-                { id: 2, date: "08/01/2026", libelle: "Achat Marchandises Fournisseur Principal", compte: "601100 Achats", debit: "320 000", tiers: "Grossiste Partenaire", statutLabel: "✓ Facture Scellée", preuve: "/static/mock_receipt_photo.png" },
-                { id: 3, date: "12/01/2026", libelle: "Règlement Loyer Commercial Keur Yoff", compte: "622100 Locations", debit: "150 000", tiers: "Bailleur Local", statutLabel: "✓ Quittance", preuve: "/static/mock_receipt_photo.png" },
-                { id: 4, date: "15/01/2026", libelle: "Ventes Comptant Caisse Magasin", compte: "701100 Ventes", credit: "280 000", tiers: "Clients Comptoir", statutLabel: "✓ Livre Caisse", preuve: "/static/mock_receipt_photo.png" },
-                { id: 5, date: "20/01/2026", libelle: "Facture Électricité Senelec Climatisation", compte: "605100 Énergie", debit: "65 000", tiers: "Senelec Dakar", statutLabel: "✓ Facture Reçue", preuve: "/static/mock_receipt_photo.png" }
-            ];
-
-            let ecrituresRowsHtml = '';
-            ecrituresPme.forEach(e => {
-                const montant = (e.credit && e.credit !== '-') ? `${e.credit} F (Crédit)` : `${e.debit || '0'} F (Débit)`;
-                const badgeColor = (e.credit && e.credit !== '-') ? '#047857' : '#b91c1c';
-                ecrituresRowsHtml += `
-                    <tr style="border-bottom: 1px solid #e2e8f0; font-size: 11px;">
-                        <td style="padding: 7px 10px; font-weight: 700; color: #475569;">${e.date || '01/05/2026'}</td>
-                        <td style="padding: 7px 10px; font-weight: 800; color: #0f172a;">${e.libelle}</td>
-                        <td style="padding: 7px 10px; font-family: monospace; font-weight: 700; color: #168078;">${e.compte}</td>
-                        <td style="padding: 7px 10px; font-weight: 800; color: ${badgeColor}; text-align: right;">${montant}</td>
-                        <td style="padding: 7px 10px; color: #475569;">${e.tiers || 'Tiers Rapproché'}</td>
-                        <td style="padding: 7px 10px; text-align: center;">
-                            <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 9.5px; font-weight: 800; background: #f0fdfa; color: #168078; border: 1px solid #a0d9d2;">
-                                ${e.statutLabel || '✓ Justifié'}
-                            </span>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            return `
-                <div class="print-page-sheet" style="margin-bottom: 24px;">
-                    ${headerHtml}
-                    
-                    <!-- BANDEAU PISTE D'AUDIT SYSCOHADA -->
-                    <div style="background: #f0fdfa; border: 1.5px solid #168078; border-radius: 8px; padding: 14px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
-                        <div>
-                            <div style="font-size: 12px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 6px;">
-                                <i class="fa-solid fa-route" style="color: #168078; font-size: 15px;"></i>
-                                PISTE D'AUDIT COMPTABLE PAS À PAS &bull; DOSSIER : ${nomPme.toUpperCase()}
-                            </div>
-                            <div style="font-size: 11px; color: #334155; margin-top: 2px; line-height: 1.4;">
-                                Traçabilité arithmétique de chaque poste financier à partir du Journal des Écritures (Conforme AUDCIF Art. 24).
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <div style="text-align: center; background: white; padding: 6px 12px; border-radius: 6px; border: 1px solid #a0d9d2;">
-                                <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase;">Score Rapprochement</div>
-                                <div style="font-size: 15px; font-weight: 900; color: #168078;">${scoreAudit}</div>
-                            </div>
-                            <div style="text-align: center; background: white; padding: 6px 12px; border-radius: 6px; border: 1px solid #a0d9d2;">
-                                <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase;">Couverture Justificatifs</div>
-                                <div style="font-size: 15px; font-weight: 900; color: #059669;">${tauxPreuve}</div>
-                            </div>
-                            <div style="text-align: center; background: white; padding: 6px 12px; border-radius: 6px; border: 1px solid #a0d9d2;">
-                                <div style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase;">Écart de Balance</div>
-                                <div style="font-size: 15px; font-weight: 900; color: #0f172a;">0 FCFA</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- LES 4 ÉTAPES ARITHMÉTIQUES DÉTAILLÉES ADAPTÉES À CETTE PME -->
-                    <div style="margin-bottom: 20px;">
-                        
-                        <!-- ÉTAPE 1 : CHIFFRE D'AFFAIRES (701) -->
-                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: white;">
-                            <div style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
-                                <div style="font-size: 12px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-                                    <span style="background: #168078; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">1</span>
-                                    Formation du Chiffre d'Affaires &bull; Compte SYSCOHADA 701 (Ventes)
-                                </div>
-                                <span style="font-size: 13px; font-weight: 900; color: #047857;">${caTotal}</span>
-                            </div>
-                            <div style="padding: 12px 16px; font-size: 11.5px; color: #334155; line-height: 1.6;">
-                                <p style="margin-top: 0; margin-bottom: 8px;">
-                                    Pour l'entité <strong>${nomPme}</strong>, les recettes enregistrées dans le journal des écritures proviennent de deux canaux contrôlés :
-                                </p>
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 8px;">
-                                    <div style="padding: 8px 12px; background: #fbfcfe; border: 1px solid #e2e8f0; border-radius: 6px;">
-                                        <div style="font-size: 10px; font-weight: 700; color: #64748b;">Encaissements Wave Business (Compte 514)</div>
-                                        <div style="font-size: 12.5px; font-weight: 800; color: #0f172a; margin-top: 2px;">Rapprochement automatique par webhook API</div>
-                                    </div>
-                                    <div style="padding: 8px 12px; background: #fbfcfe; border: 1px solid #e2e8f0; border-radius: 6px;">
-                                        <div style="font-size: 10px; font-weight: 700; color: #64748b;">Recettes Caisse Espèces (Compte 571)</div>
-                                        <div style="font-size: 12.5px; font-weight: 800; color: #0f172a; margin-top: 2px;">Bordereaux de caisse et reçus manuels visés</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 11px; color: #168078; font-weight: 700;">
-                                    → Démarche : <code>Chiffre d'Affaires (701) = ∑(Ventes Wave) + ∑(Ventes Espèces) = ${caTotal} (Justifié à 100%)</code>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ÉTAPE 2 : ACHATS & MARGE COMMERCIALE -->
-                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: white;">
-                            <div style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
-                                <div style="font-size: 12px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-                                    <span style="background: #168078; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">2</span>
-                                    Achats Consommés (601) &amp; Détermination de la Marge Brute
-                                </div>
-                                <span style="font-size: 13px; font-weight: 900; color: #0f172a;">Norme SMT</span>
-                            </div>
-                            <div style="padding: 12px 16px; font-size: 11.5px; color: #334155; line-height: 1.6;">
-                                <p style="margin-top: 0; margin-bottom: 6px;">
-                                    Toutes les factures d'achat de marchandises et intrants ont été rapprochées avec les relevés de décaissements Wave et sorties de caisse.
-                                </p>
-                                <div style="font-size: 11px; color: #168078; font-weight: 700;">
-                                    → Démarche : <code>Marge Commerciale = Chiffre d'Affaires (701) - Achats de marchandises (601)</code>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ÉTAPE 3 : RÉSULTAT NET COMPTABLE -->
-                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: white;">
-                            <div style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
-                                <div style="font-size: 12px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-                                    <span style="background: #168078; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">3</span>
-                                    Déduction des Charges d'Exploitation &amp; Résultat Net
-                                </div>
-                                <span style="font-size: 13px; font-weight: 900; color: #047857;">Bénéfice : ${beneficeNet}</span>
-                            </div>
-                            <div style="padding: 12px 16px; font-size: 11.5px; color: #334155; line-height: 1.6;">
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-bottom: 8px;">
-                                    <div style="padding: 8px; background: #fff5f5; border: 1px solid #fed7d7; border-radius: 6px;">
-                                        <div style="font-size: 10px; font-weight: 800; color: #c53030;">CHARGES EXTERNES (61/62/63)</div>
-                                        <div style="font-size: 11px; color: #4a5568; margin-top: 2px;">Loyers, électricité Senelec, carburant &amp; fournitures</div>
-                                    </div>
-                                    <div style="padding: 8px; background: #fff5f5; border: 1px solid #fed7d7; border-radius: 6px;">
-                                        <div style="font-size: 10px; font-weight: 800; color: #c53030;">CHARGES DE PERSONNEL (64)</div>
-                                        <div style="font-size: 11px; color: #4a5568; margin-top: 2px;">Rémunérations nettes du personnel &amp; acomptes versés</div>
-                                    </div>
-                                </div>
-                                <div style="font-size: 11px; color: #047857; font-weight: 800; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px solid #a7f3d0;">
-                                    → Formule du Résultat : <code>Résultat Net = Marge Brute - Charges Externes - Charges de Personnel = ${beneficeNet}</code> (Inscrit au Passif du Bilan).
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ÉTAPE 4 : TRÉSORERIE DE CLÔTURE & ÉQUILIBRE BILANCIEL -->
-                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 14px; overflow: hidden; background: white;">
-                            <div style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
-                                <div style="font-size: 12px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-                                    <span style="background: #168078; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">4</span>
-                                    Réconciliation de la Trésorerie de Clôture &amp; Contrôle d'Équilibre
-                                </div>
-                                <span style="font-size: 13px; font-weight: 900; color: #0f172a;">Solde : ${tresoCloture}</span>
-                            </div>
-                            <div style="padding: 12px 16px; font-size: 11.5px; color: #334155; line-height: 1.6;">
-                                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                                    <tr style="border-bottom: 1px solid #e2e8f0;">
-                                        <td style="padding: 4px 0; color: #475569;">Trésorerie Actif (514 Wave/Banques + 571 Caisse) :</td>
-                                        <td style="padding: 4px 0; text-align: right; font-weight: 800; color: #0f172a;">${tresoCloture}</td>
-                                    </tr>
-                                    <tr style="border-bottom: 1px solid #e2e8f0;">
-                                        <td style="padding: 4px 0; color: #475569;">Contrôle d'Équilibre Bilanciel (Total Actif = Total Passif) :</td>
-                                        <td style="padding: 4px 0; text-align: right; font-weight: 900; color: #047857;">0 FCFA d'Écart (Équilibre Parfait)</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- ÉCHANTILLONNAGE DE LA PISTE D'AUDIT SUR LE JOURNAL RÉEL DE CETTE PME -->
-                    <div style="border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: white; margin-bottom: 16px;">
-                        <div style="background: #0f172a; color: white; padding: 10px 14px; font-size: 11.5px; font-weight: 800; display: flex; align-items: center; justify-content: space-between;">
-                            <span>Extrait du Journal d'Audit &bull; Écritures Sources de ${nomPme}</span>
-                            <span style="font-size: 10px; color: #a0d9d2; font-weight: 700;">Conforme SYSCOHADA SMT Art. 24</span>
-                        </div>
-                        <div style="overflow-x: auto;">
-                            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                                <thead>
-                                    <tr style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1; font-size: 10.5px; font-weight: 800; color: #334155; text-transform: uppercase;">
-                                        <th style="padding: 8px 10px;">Date</th>
-                                        <th style="padding: 8px 10px;">Opération / Libellé</th>
-                                        <th style="padding: 8px 10px;">Compte SYSCOHADA</th>
-                                        <th style="padding: 8px 10px; text-align: right;">Montant</th>
-                                        <th style="padding: 8px 10px;">Tiers / Canal</th>
-                                        <th style="padding: 8px 10px; text-align: center;">Pièce Justificative</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${ecrituresRowsHtml}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
-            `;
-        }
+        
 
         // =========================================================================
         // 5. FONCTION PRINCIPALE : OUVERTURE DU RAPPORT FINANCIER
@@ -8886,7 +8538,7 @@
             const intervalle = obtenirIntervalleTexteActuel();
 
             // Mise à jour de l'état actif des onglets
-            ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepDemarche', 'tabRepTout', 'tabRepComposer'].forEach(id => {
+            ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepTout', 'tabRepComposer'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('active');
             });
@@ -8895,7 +8547,7 @@
                 'resultat': 'tabRepResultat',
                 'flux': 'tabRepFlux',
                 'annexes': 'tabRepAnnexes',
-                'demarche': 'tabRepDemarche',
+                
                 'tout': 'tabRepTout',
                 'composer': 'tabRepComposer'
             };
@@ -8924,14 +8576,7 @@
             } else if (type === 'annexes') {
                 t.textContent = `4. Notes Annexes & Rapprochement — ${pme.nom}`;
                 if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
-                b.innerHTML = buildSectionAnnexesHtml(pme, intervalle, true) + footerHtml;
-
-            } else if (type === 'demarche') {
-                t.textContent = `5. Démarche de Calcul & Piste d'Audit — ${pme.nom}`;
-                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet} • Justification arithmétique pas à pas & Piste d'Audit SYSCOHADA Art. 24`;
-                b.innerHTML = buildSectionDemarcheHtml(pme, intervalle, true) + footerHtml;
-
-            } else if (type === 'tout') {
+                b.innerHTML = buildSectionAnnexesHtml(pme, intervalle, true) + footerHtml;} else if (type === 'tout') {
                 t.textContent = `Liasse Financière Complète SYSCOHADA SMT — ${pme.nom}`;
                 if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet} • Les 4 états réglementaires réunis`;
 
