@@ -42,8 +42,8 @@
         }
 
         table.agency-table thead th {
-            background-color: #f8fafc !important;
-            color: #475569 !important;
+            background-color: #222222 !important;
+            color: #ffffff !important;
             font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
@@ -51,7 +51,7 @@
             padding: 13px 16px;
             text-align: left;
             white-space: nowrap;
-            border-bottom: 1.5px solid #e2e8f0 !important;
+            border-bottom: 2px solid #333333 !important;
         }
 
         table.agency-table tbody tr {
@@ -295,44 +295,43 @@
     <!-- ========================================================================= -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7">
 
-        <!-- BANDEAU SYNTHÈSE DE TRÉSORERIE & PISTE D'AUDIT (CHARTE OFFICIELLE BLANC & ANTHRACITE) -->
+        <!-- BANDEAU SYNTHÈSE DE TRÉSORERIE & PISTE D'AUDIT (BACKGROUND SÉCURISÉ #222222) -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
 
             <!-- Carte 1 : Trésorerie Actuelle -->
             <div
-                class="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-colors">
-                <div class="flex items-center justify-between text-slate-500 mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">Trésorerie
-                        Actuelle</span>
+                class="bg-[#222222] border border-[#333333] rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col justify-between hover:border-[#444444] transition-all">
+                <div class="flex items-center justify-between text-slate-400 mb-2">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#a0d9d2]">Trésorerie Actuelle</span>
                     <div
-                        class="w-8 h-8 rounded-xl bg-[#a0d9d2]/25 border border-[#a0d9d2]/50 text-[#222222] flex items-center justify-center text-xs">
+                        class="w-8 h-8 rounded-xl bg-[#142b27] border border-[#168078]/50 text-[#a0d9d2] flex items-center justify-center text-xs">
                         <i class="fa-solid fa-wallet"></i>
                     </div>
                 </div>
                 <div>
-                    <div class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight" id="kpiTresoVal">1 850 000
-                        <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>
+                    <div class="text-lg sm:text-2xl font-black text-white tracking-tight" id="kpiTresoVal">1 850 000
+                        <span class="text-xs sm:text-sm font-bold text-[#a0d9d2]">FCFA</span>
                     </div>
-                    <div class="text-[10.5px] font-semibold text-[#222222] mt-1 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-check text-[10px]"></i> Wave Business + Caisse
+                    <div class="text-[10.5px] font-semibold text-slate-300 mt-1 flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check text-[10px] text-[#a0d9d2]"></i> Wave Business + Caisse
                     </div>
                 </div>
             </div>
 
             <!-- Carte 2 : Total Ventes (Crédit 701) -->
             <div
-                class="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-colors">
-                <div class="flex items-center justify-between text-slate-500 mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">Total Recettes</span>
+                class="bg-[#222222] border border-[#333333] rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col justify-between hover:border-[#444444] transition-all">
+                <div class="flex items-center justify-between text-slate-400 mb-2">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">Total Recettes</span>
                     <div
-                        class="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center text-xs">
+                        class="w-8 h-8 rounded-xl bg-emerald-950/60 border border-emerald-800/60 text-[#34d399] flex items-center justify-center text-xs">
                         <i class="fa-solid fa-arrow-trend-up"></i>
                     </div>
                 </div>
                 <div>
-                    <div class="text-lg sm:text-2xl font-black text-emerald-600 tracking-tight" id="kpiCreditVal">14 850
-                        000 <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span></div>
-                    <div class="text-[10.5px] font-semibold text-slate-500 mt-1">
+                    <div class="text-lg sm:text-2xl font-black text-[#34d399] tracking-tight" id="kpiCreditVal">14 850 000
+                        <span class="text-xs sm:text-sm font-bold text-slate-400">FCFA</span></div>
+                    <div class="text-[10.5px] font-semibold text-slate-400 mt-1">
                         Ventes de marchandises (701)
                     </div>
                 </div>
@@ -340,19 +339,19 @@
 
             <!-- Carte 3 : Total Achats & Charges (Débit 601) -->
             <div
-                class="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-colors">
-                <div class="flex items-center justify-between text-slate-500 mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">Total Dépenses</span>
+                class="bg-[#222222] border border-[#333333] rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col justify-between hover:border-[#444444] transition-all">
+                <div class="flex items-center justify-between text-slate-400 mb-2">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">Total Dépenses</span>
                     <div
-                        class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center text-xs">
+                        class="w-8 h-8 rounded-xl bg-rose-950/60 border border-rose-800/60 text-rose-400 flex items-center justify-center text-xs">
                         <i class="fa-solid fa-arrow-trend-down"></i>
                     </div>
                 </div>
                 <div>
-                    <div class="text-lg sm:text-2xl font-black text-rose-600 tracking-tight" id="kpiDebitVal">13 200 000
-                        <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>
+                    <div class="text-lg sm:text-2xl font-black text-rose-400 tracking-tight" id="kpiDebitVal">13 200 000
+                        <span class="text-xs sm:text-sm font-bold text-slate-400">FCFA</span>
                     </div>
-                    <div class="text-[10.5px] font-semibold text-slate-500 mt-1">
+                    <div class="text-[10.5px] font-semibold text-slate-400 mt-1">
                         Stocks &amp; charges justifiés (601)
                     </div>
                 </div>
@@ -360,21 +359,20 @@
 
             <!-- Carte 4 : Scellé Probatoire & Équilibre SYSCOHADA -->
             <div
-                class="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-colors">
-                <div class="flex items-center justify-between text-slate-500 mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">Traçabilité
-                        Fiscale</span>
+                class="bg-[#222222] border border-[#333333] rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col justify-between hover:border-[#444444] transition-all">
+                <div class="flex items-center justify-between text-slate-400 mb-2">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">Traçabilité Fiscale</span>
                     <div
-                        class="w-8 h-8 rounded-xl bg-[#a0d9d2]/25 border border-[#a0d9d2]/50 text-[#222222] flex items-center justify-center text-xs">
+                        class="w-8 h-8 rounded-xl bg-[#142b27] border border-[#168078]/50 text-[#a0d9d2] flex items-center justify-center text-xs">
                         <i class="fa-solid fa-scale-balanced"></i>
                     </div>
                 </div>
                 <div>
-                    <div class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight" id="kpiEcrituresCount">100
-                        <span class="text-xs sm:text-sm font-bold text-slate-500">écritures</span>
+                    <div class="text-lg sm:text-2xl font-black text-white tracking-tight" id="kpiEcrituresCount">100
+                        <span class="text-xs sm:text-sm font-bold text-slate-400">écritures</span>
                     </div>
-                    <div class="text-[10.5px] font-semibold text-[#222222] mt-1 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-check text-[10px]"></i> Écart Balance : <strong>0 FCFA</strong>
+                    <div class="text-[10.5px] font-semibold text-slate-300 mt-1 flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check text-[10px] text-[#a0d9d2]"></i> Écart Balance : <strong class="text-white">0 FCFA</strong>
                     </div>
                 </div>
             </div>
@@ -475,8 +473,7 @@
                         <th style="text-align: center; width: 220px;">
                             <div class="flex flex-col items-center">
                                 <span>Pièce Comptable</span>
-                                <span class="text-[9.5px] text-slate-500 font-semibold normal-case">Archivage Légal 10
-                                    Ans</span>
+                                <span class="text-[9.5px] text-[#a0d9d2] font-semibold normal-case">Archivage Légal 10 Ans</span>
                             </div>
                         </th>
                     </tr>
