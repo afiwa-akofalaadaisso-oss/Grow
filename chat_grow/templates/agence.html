@@ -8067,6 +8067,12 @@
         }
 
         function genererFooterOfficielDoc(pme) {
+            const cabNom = document.getElementById('customCabNom')?.value || localStorage.getItem('growth_cabinet_nom') || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
+            const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "Expert-Comptable Référent (Agrément ONECCA)";
+            const obs = document.getElementById('customObservations')?.value || localStorage.getItem('growth_custom_observations') || "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.";
+            const noteExtra = document.getElementById('customNoteExtra')?.value || "";
+            const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
             const extraNoteHtml = noteExtra && noteExtra.trim()
                 ? `<div style="margin-top: 10px; padding: 8px 12px; background: #f8fafc; border: 1px dashed #cbd5e1; font-size: 11px; color: #1e293b;">
                     <strong>Observation Spécifique de l'Expert :</strong> ${noteExtra.trim()}
