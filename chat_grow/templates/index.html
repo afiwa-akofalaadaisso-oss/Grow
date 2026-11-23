@@ -50,6 +50,43 @@
             overflow-x: hidden;
         }
 
+        /* Élimination définitive des ascenseurs disgracieux de Windows et de leurs flèches */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-button {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0d9d2;
+        }
+
+        /* Classe utilitaire no-scrollbar : permet le scroll tactile/molette sans afficher de barre */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
+
         .hero-mesh {
             background:
                 radial-gradient(circle at 15% 25%, rgba(160, 217, 210, 0.45) 0%, transparent 45%),
@@ -861,7 +898,7 @@
     <!-- MODALE POP-IN FLOTTANTE : CONNEXION & INSCRIPTION CABINET COMPTABLE      -->
     <!-- ========================================================================= -->
     <div id="modalConnexionCabinet"
-        class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+        class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto no-scrollbar"
         style="display: none;">
 
         <div
@@ -1062,7 +1099,7 @@
     <!-- MODALE : AUTHENTIFICATION ROBUSTE PME (VÉRIFICATION BASE + CODE 2FA SMS)   -->
     <!-- ========================================================================= -->
     <div id="modalPMEPhone"
-        class="fixed inset-0 z-50 bg-[#222222]/75 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-200"
+        class="fixed inset-0 z-50 bg-[#222222]/75 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto no-scrollbar transition-opacity duration-200"
         style="display: none;">
         <div
             class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border-2 border-[#a0d9d2] shadow-2xl relative animate-in fade-in zoom-in-95 duration-150">
@@ -1204,6 +1241,7 @@
         function ouvrirModalConnexionCabinet() {
             const m = document.getElementById('modalConnexionCabinet');
             if (m) {
+                document.body.style.overflow = 'hidden';
                 m.style.display = 'flex';
                 setTimeout(() => {
                     const emailInput = document.getElementById('modalLoginEmail');
@@ -1214,7 +1252,10 @@
 
         function fermerModalConnexionCabinet() {
             const m = document.getElementById('modalConnexionCabinet');
-            if (m) m.style.display = 'none';
+            if (m) {
+                m.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         }
 
         function switchModalAuthMode(mode) {
@@ -1362,6 +1403,7 @@
             const m = document.getElementById('modalPMEPhone');
             if (m) {
                 retourEtapeNumeroPME();
+                document.body.style.overflow = 'hidden';
                 m.style.display = 'flex';
                 setTimeout(() => {
                     const input = document.getElementById('inputTelPME');
@@ -1372,7 +1414,10 @@
 
         function fermerModalPMEPhone() {
             const m = document.getElementById('modalPMEPhone');
-            if (m) m.style.display = 'none';
+            if (m) {
+                m.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         }
 
         function retourEtapeNumeroPME() {
