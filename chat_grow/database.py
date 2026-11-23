@@ -1204,23 +1204,23 @@ def obtenir_liste_utilisateurs_createur() -> list:
 
         if ecritures_jour > 0:
             u["statut_activite"] = "ACTIF"
-            u["statut_libelle"] = "🟢 Actif aujourd'hui"
+            u["statut_libelle"] = "Actif"
         elif dernier:
             try:
                 dt = datetime.fromisoformat(str(dernier).replace("Z", "+00:00").split("+")[0])
                 delta_heures = (now - dt).total_seconds() / 3600
                 if delta_heures <= 36:
                     u["statut_activite"] = "ATTENTION"
-                    u["statut_libelle"] = "🟡 Inactif (24h)"
+                    u["statut_libelle"] = "Inactif (24h)"
                 else:
                     u["statut_activite"] = "INACTIF"
-                    u["statut_libelle"] = "🔴 Inactif (> 3j)"
+                    u["statut_libelle"] = "Inactif (> 3j)"
             except Exception:
                 u["statut_activite"] = "INACTIF"
-                u["statut_libelle"] = "🔴 Inactif (> 3j)"
+                u["statut_libelle"] = "Inactif (> 3j)"
         else:
             u["statut_activite"] = "INACTIF"
-            u["statut_libelle"] = "🔴 Jamais actif"
+            u["statut_libelle"] = "Jamais actif"
 
         liste_triee.append(u)
 
