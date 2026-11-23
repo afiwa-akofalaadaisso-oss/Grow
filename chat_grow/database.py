@@ -13,7 +13,13 @@ import asyncio
 import concurrent.futures
 from typing import List, Dict, Any, Optional
 from datetime import datetime
+import hashlib
 from dotenv import load_dotenv
+
+def hasher_mot_de_passe(mot_de_passe: str) -> str:
+    """Hache un mot de passe avec SHA-256 et sel pour la sécurité."""
+    salt = "GROW_SYSCOHADA_SALT_2026"
+    return hashlib.sha256(f"{salt}{mot_de_passe}".encode("utf-8")).hexdigest()
 
 SUPABASE_TRANSACTION_COLUMNS = {
     "id", "entreprise_id", "date_operation", "libelle", "compte_syscohada",
@@ -203,6 +209,18 @@ def init_local_sqlite():
     )
     """)
     cur.execute("CREATE INDEX IF NOT EXISTS idx_comptable_email ON comptables_growth(email)")
+
+    # Compte Référent Officiel Cabinet Diallo & Associés (Garantit l'accès de base)
+    try:
+        pwd_diallo = hasher_mot_de_passe("grow2026")
+        now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cur.execute("""
+        INSERT OR IGNORE INTO comptables_growth (id, nom_complet, nom_cabinet, numero_ordre, email, telephone, mot_de_passe_hash, statut_validation, date_inscription, dernier_acces)
+        VALUES ('cbt_diallo_ref', 'Mamadou Diallo', 'Cabinet Diallo & Associés', 'SEC-2024-0418', 'contact@cabinet-diallo.sn', '+221 78 877 38 27', ?, 'valide', ?, ?)
+        """, (pwd_diallo, now_ts, now_ts))
+        cur.execute("UPDATE comptables_growth SET mot_de_passe_hash = ? WHERE email = 'contact@cabinet-diallo.sn' AND mot_de_passe_hash != ?", (pwd_diallo, pwd_diallo))
+    except Exception as e_seed:
+        print(f"[DB SEED] Erreur insertion compte référent : {e_seed}")
 
     conn.commit()
 
@@ -1431,7 +1449,7 @@ def inscrire_comptable(nom_complet: str, nom_cabinet: str, numero_ordre: str, em
         return {"status": "error", "message": f"Erreur lors de l'inscription : {str(e)}"}
 
 def authentifier_comptable(identifiant: str, mot_de_passe: str) -> Dict[str, Any]:
-    """Authentifie un expert-comptable par email ou téléphone."""
+    """Authentifie strictement un expert-comptable inscrit dans la base locale SQLite (accès strictement refusé si non inscrit)."""
     conn = get_sqlite_conn()
     cur = conn.cursor()
     clean_id = identifiant.strip().lower()
@@ -1443,33 +1461,23 @@ def authentifier_comptable(identifiant: str, mot_de_passe: str) -> Dict[str, Any
         cur.execute("""
             SELECT id, nom_complet, nom_cabinet, numero_ordre, email, telephone, mot_de_passe_hash, statut_validation
             FROM comptables_growth
-            WHERE email = ? OR telephone = ?
+            WHERE lower(email) = ? OR telephone = ?
         """, (clean_id, clean_tel))
         row = cur.fetchone()
 
         if not row:
-            # Fallback compte démo Cabinet Diallo & Associés
-            if (clean_id in ["contact@cabinet-diallo.sn", "cabinet@grow.sn", "diallo", "admin", "demo"]) and (mot_de_passe in ["1234", "password", "grow2026", "admin"]):
-                conn.close()
-                return {
-                    "status": "success",
-                    "message": "Connexion réussie (Compte Référent Cabinet Diallo & Associés).",
-                    "comptable": {
-                        "id": "cbt_diallo_ref",
-                        "nom_complet": "Mamadou Diallo",
-                        "nom_cabinet": "Cabinet Diallo & Associés",
-                        "numero_ordre": "SEC-2024-0418",
-                        "email": "contact@cabinet-diallo.sn",
-                        "telephone": "+221 78 877 38 27",
-                        "statut": "valide"
-                    }
-                }
             conn.close()
-            return {"status": "error", "message": "Identifiant ou mot de passe incorrect."}
+            return {
+                "status": "error",
+                "message": "Ce cabinet n'est pas inscrit dans la base de données. Veuillez créer votre compte dans l'onglet Inscription Cabinet."
+            }
 
         if row["mot_de_passe_hash"] != pwd_hash:
             conn.close()
-            return {"status": "error", "message": "Mot de passe incorrect."}
+            return {
+                "status": "error",
+                "message": "Mot de passe incorrect pour ce compte cabinet."
+            }
 
         cur.execute("UPDATE comptables_growth SET dernier_acces = ? WHERE id = ?", (now, row["id"]))
         conn.commit()
