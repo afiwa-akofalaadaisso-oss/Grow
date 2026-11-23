@@ -898,44 +898,43 @@
     <!-- MODALE POP-IN FLOTTANTE : CONNEXION & INSCRIPTION CABINET COMPTABLE      -->
     <!-- ========================================================================= -->
     <div id="modalConnexionCabinet"
-        class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto no-scrollbar"
+        class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto no-scrollbar"
         style="display: none;">
 
         <div
-            class="w-full max-w-[480px] bg-white rounded-[26px] p-6 sm:p-8 border border-slate-200/90 shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-200">
+            class="w-full max-w-[430px] bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-200">
 
             <!-- Bouton de fermeture croix (X) -->
             <button type="button" onclick="fermerModalConnexionCabinet()"
-                class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
-                <i class="fa-solid fa-xmark text-base"></i>
+                class="absolute top-4 right-4 w-7 h-7 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
+                <i class="fa-solid fa-xmark text-sm"></i>
             </button>
 
-            <!-- En-tête officiel Growth -->
-            <div class="text-center pb-4 mb-4 border-b border-slate-100">
-                <div
-                    class="w-12 h-12 rounded-2xl bg-[#222222] p-2 mx-auto mb-2 shadow-md flex items-center justify-center">
+            <!-- En-tête officiel Growth compact horizontal -->
+            <div class="flex items-center gap-3 pb-3 mb-3 border-b border-slate-100 pr-8">
+                <div class="w-9 h-9 rounded-xl bg-[#222222] p-1.5 shadow-sm flex items-center justify-center shrink-0 border border-slate-700">
                     <img src="/static/grow_icon_official.png?v=7" alt="Growth" class="w-full h-full object-contain">
                 </div>
-                <h3 class="text-2xl font-black tracking-tight text-[#222222]">Growth</h3>
-                <p class="text-[11.5px] font-semibold text-slate-500">Portail Sécurisé &bull; Espace Cabinet Comptable
-                </p>
-            </div>
-
-            <!-- Sous-barre de conformité SMT -->
-            <div class="flex items-center gap-2 mb-4">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#a0d9d2]"></span>
-                <span class="text-[11px] font-black text-slate-500 uppercase tracking-wider">Connexion Sécurisée Conforme SYSCOHADA SMT</span>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-lg font-black tracking-tight text-[#222222]">Growth</h3>
+                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-[#a0d9d2]/25 text-[#142b27] text-[9.5px] font-black uppercase">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#142b27]"></span> SMT
+                        </span>
+                    </div>
+                    <p class="text-[11px] font-semibold text-slate-500">Portail Sécurisé &bull; Espace Cabinet Comptable</p>
+                </div>
             </div>
 
             <!-- Commutateur Connexion / Inscription -->
-            <div class="p-1 bg-slate-100 rounded-xl flex items-center gap-1 mb-5 border border-slate-200/80">
+            <div class="p-1 bg-slate-100 rounded-xl flex items-center gap-1 mb-3 border border-slate-200/80">
                 <button type="button" id="modalTabBtnLogin" onclick="switchModalAuthMode('login')"
-                    class="flex-1 py-2 text-center text-xs font-extrabold rounded-lg transition-all flex items-center justify-center gap-1.5 bg-white text-[#222222] shadow-xs cursor-pointer">
+                    class="flex-1 py-1.5 text-center text-xs font-extrabold rounded-lg transition-all flex items-center justify-center gap-1.5 bg-white text-[#222222] shadow-xs cursor-pointer">
                     <i class="fa-solid fa-lock text-[11px]"></i>
                     <span>Se connecter</span>
                 </button>
                 <button type="button" id="modalTabBtnRegister" onclick="switchModalAuthMode('register')"
-                    class="flex-1 py-2 text-center text-xs font-bold rounded-lg text-slate-600 transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:text-slate-900">
+                    class="flex-1 py-1.5 text-center text-xs font-bold rounded-lg text-slate-600 transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:text-slate-900">
                     <i class="fa-solid fa-user-plus text-[11px]"></i>
                     <span>Inscription Cabinet</span>
                 </button>
@@ -943,16 +942,15 @@
 
             <!-- VUE 1 : CONNEXION -->
             <div id="modalViewLogin">
-                <div class="mb-4">
-                    <h4 class="text-xl font-black text-slate-900 tracking-tight">Connexion à votre espace</h4>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de vos
-                        PME clientes.</p>
+                <div class="mb-2.5">
+                    <h4 class="text-base font-black text-slate-900 tracking-tight">Connexion à votre espace</h4>
+                    <p class="text-[11.5px] text-slate-500 font-medium">Accédez aux dossiers comptables et liasses de vos PME clientes.</p>
                 </div>
 
                 <!-- Bouton Continuer avec Google Workspace -->
                 <button type="button" onclick="loginWithGoogleModal()" style="border: 1.5px solid #e2e8f0;"
-                    class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-[12.5px] flex items-center justify-center gap-2.5 shadow-xs transition-all mb-4 cursor-pointer">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    class="w-full py-2 px-3 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-all mb-2.5 cursor-pointer">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24">
                         <path fill="#4285F4"
                             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                         <path fill="#34A853"
@@ -965,63 +963,61 @@
                     <span>Continuer avec Google Workspace</span>
                 </button>
 
-                <div class="relative flex items-center justify-center my-3.5">
+                <div class="relative flex items-center justify-center my-2">
                     <div class="border-t border-slate-200 w-full"></div>
                     <span
-                        class="bg-white px-3 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">ou
-                        avec vos identifiants cabinet</span>
+                        class="bg-white px-2.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">ou avec vos identifiants cabinet</span>
                 </div>
 
-                <form onsubmit="handleModalConnexionSubmit(event)" class="space-y-3">
+                <form onsubmit="handleModalConnexionSubmit(event)" class="space-y-2.5">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-0.5">
                             Email Professionnel ou Téléphone *
                         </label>
                         <div class="relative flex items-center">
-                            <span class="absolute left-3.5 text-slate-400 pointer-events-none">
-                                <i class="fa-solid fa-envelope text-[13px]"></i>
+                            <span class="absolute left-3 text-slate-400 pointer-events-none">
+                                <i class="fa-solid fa-envelope text-xs"></i>
                             </span>
                             <input type="text" id="modalLoginEmail" required value="contact@cabinet-diallo.sn"
                                 placeholder="contact@votre-cabinet.sn"
-                                class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[12.5px] font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                                class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                         </div>
                     </div>
 
                     <div>
-                        <div class="flex items-center justify-between mb-1">
-                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mot de
-                                passe *</label>
+                        <div class="flex items-center justify-between mb-0.5">
+                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider">Mot de passe *</label>
                             <a href="javascript:void(0)"
                                 onclick="alert('Veuillez contacter le support Growth Dakar pour réinitialiser vos accès cabinet : support@growth.sn')"
-                                class="text-[11px] font-bold text-[#222222] hover:underline">Mot de passe oublié ?</a>
+                                class="text-[10.5px] font-bold text-[#222222] hover:underline">Mot de passe oublié ?</a>
                         </div>
                         <div class="relative flex items-center">
-                            <span class="absolute left-3.5 text-slate-400 pointer-events-none">
-                                <i class="fa-solid fa-lock text-[13px]"></i>
+                            <span class="absolute left-3 text-slate-400 pointer-events-none">
+                                <i class="fa-solid fa-lock text-xs"></i>
                             </span>
                             <input type="password" id="modalLoginPassword" required value="grow2026"
                                 placeholder="••••••••"
-                                class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                                class="w-full pl-8 pr-9 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                             <button type="button" onclick="toggleModalPasswordVisibility('modalLoginPassword', this)"
-                                class="absolute right-3 text-slate-400 hover:text-slate-600 cursor-pointer">
-                                <i class="fa-solid fa-eye text-[13px]"></i>
+                                class="absolute right-2.5 text-slate-400 hover:text-slate-600 cursor-pointer">
+                                <i class="fa-solid fa-eye text-xs"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-1">
+                    <div class="flex items-center justify-between pt-0.5">
                         <label class="flex items-center gap-2 cursor-pointer select-none">
                             <input type="checkbox" checked
-                                class="w-4 h-4 rounded text-[#222222] border-slate-300 focus:ring-[#a0d9d2]">
-                            <span class="text-xs text-slate-600 font-medium">Se souvenir de ce cabinet</span>
+                                class="w-3.5 h-3.5 rounded text-[#222222] border-slate-300 focus:ring-[#a0d9d2]">
+                            <span class="text-[11.5px] text-slate-600 font-medium">Se souvenir de ce cabinet</span>
                         </label>
                     </div>
 
-                    <div class="pt-2">
+                    <div class="pt-1">
                         <button type="submit" id="btnModalLoginSubmit" style="background-color: #222222;"
-                            class="w-full py-3 rounded-xl hover:bg-[#333333] active:bg-[#111111] text-white text-[13px] font-extrabold tracking-wide transition-all shadow-md shadow-black/15 flex items-center justify-center gap-2 cursor-pointer">
+                            class="w-full py-2.5 rounded-xl hover:bg-[#333333] active:bg-[#111111] text-white text-xs font-extrabold tracking-wide transition-all shadow-md shadow-black/15 flex items-center justify-center gap-2 cursor-pointer">
                             <span>Se connecter à mon Cabinet</span>
-                            <i class="fa-solid fa-arrow-right text-[12px] text-[#a0d9d2]"></i>
+                            <i class="fa-solid fa-arrow-right text-[11px] text-[#a0d9d2]"></i>
                         </button>
                     </div>
                 </form>
@@ -1029,57 +1025,50 @@
 
             <!-- VUE 2 : INSCRIPTION RAPIDE CABINET -->
             <div id="modalViewRegister" style="display: none;">
-                <div class="mb-4">
-                    <h4 class="text-xl font-black text-slate-900 tracking-tight">Inscription Cabinet</h4>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Créez votre accès professionnel cabinet.</p>
+                <div class="mb-2">
+                    <h4 class="text-base font-black text-slate-900 tracking-tight">Inscription Cabinet</h4>
+                    <p class="text-[11px] text-slate-500 font-medium">Créez votre accès professionnel cabinet.</p>
                 </div>
 
-                <form onsubmit="handleModalInscriptionSubmit(event)" class="space-y-3">
+                <form onsubmit="handleModalInscriptionSubmit(event)" class="space-y-2">
                     <div>
-                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom
-                            &amp; Prénom *</label>
+                        <label class="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-0.5">Nom &amp; Prénom *</label>
                         <input type="text" id="modalRegNomComplet" required placeholder="Ex: Babacar Ndiaye"
-                            class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                            class="w-full px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                     </div>
                     <div>
-                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom du
-                            Cabinet *</label>
+                        <label class="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-0.5">Nom du Cabinet *</label>
                         <input type="text" id="modalRegNomCabinet" required
                             placeholder="Ex: Cabinet Audit &amp; Conseil Ndiaye"
-                            class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                            class="w-full px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">N°
-                                Ordre</label>
+                            <label class="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-0.5">N° Ordre</label>
                             <input type="text" id="modalRegNumeroOrdre" placeholder="SEC-2024-0418"
-                                class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
+                                class="w-full px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                         </div>
                         <div>
-                            <label
-                                class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Téléphone
-                                *</label>
+                            <label class="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-0.5">Téléphone *</label>
                             <input type="tel" id="modalRegTelephone" required placeholder="+221 77..."
-                                class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
+                                class="w-full px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email
-                            Professionnel *</label>
+                        <label class="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-0.5">Email Professionnel *</label>
                         <input type="email" id="modalRegEmail" required placeholder="contact@votre-cabinet.sn"
-                            class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
+                            class="w-full px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                     </div>
                     <div>
-                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Mot de
-                            passe *</label>
+                        <label class="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mb-0.5">Mot de passe *</label>
                         <input type="password" id="modalRegPassword" required placeholder="••••••••"
-                            class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
+                            class="w-full px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
                     </div>
-                    <div class="pt-2">
+                    <div class="pt-1">
                         <button type="submit" id="btnModalRegSubmit" style="background-color: #222222;"
-                            class="w-full py-3 rounded-xl hover:bg-[#333333] text-white text-[13px] font-extrabold tracking-wide transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
+                            class="w-full py-2.5 rounded-xl hover:bg-[#333333] text-white text-xs font-extrabold tracking-wide transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
                             <span>Créer mon Accès Cabinet</span>
-                            <i class="fa-solid fa-arrow-right text-[12px] text-[#a0d9d2]"></i>
+                            <i class="fa-solid fa-arrow-right text-[11px] text-[#a0d9d2]"></i>
                         </button>
                     </div>
                 </form>
@@ -1087,8 +1076,8 @@
 
             <!-- Footer sécurité -->
             <div
-                class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-400 font-medium flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+                class="mt-3 pt-2 border-t border-slate-100 text-center text-[10.5px] text-slate-400 font-medium flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-[#142b27]"></i>
                 <span>Chiffrement AES-256 &bull; Conforme SYSCOHADA SMT</span>
             </div>
 
@@ -1099,64 +1088,61 @@
     <!-- MODALE : AUTHENTIFICATION ROBUSTE PME (VÉRIFICATION BASE + CODE 2FA SMS)   -->
     <!-- ========================================================================= -->
     <div id="modalPMEPhone"
-        class="fixed inset-0 z-50 bg-[#222222]/75 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto no-scrollbar transition-opacity duration-200"
+        class="fixed inset-0 z-50 bg-[#222222]/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto no-scrollbar transition-opacity duration-200"
         style="display: none;">
         <div
-            class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border-2 border-[#a0d9d2] shadow-2xl relative animate-in fade-in zoom-in-95 duration-150">
+            class="bg-white rounded-2xl max-w-[420px] w-full p-5 sm:p-6 border-2 border-[#a0d9d2] shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-150">
 
             <!-- Bouton fermer -->
             <button type="button" onclick="fermerModalPMEPhone()"
-                class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
-                <i class="fa-solid fa-xmark text-base"></i>
+                class="absolute top-4 right-4 w-7 h-7 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
+                <i class="fa-solid fa-xmark text-sm"></i>
             </button>
 
-            <!-- En-tête officiel -->
-            <div class="text-center mb-5">
-                <div
-                    class="w-14 h-14 rounded-2xl bg-[#222222] p-2.5 mx-auto mb-3 shadow-md flex items-center justify-center border-2 border-[#a0d9d2]">
+            <!-- En-tête officiel compact -->
+            <div class="flex items-center gap-3 pb-3 mb-3 border-b border-slate-100 pr-8">
+                <div class="w-9 h-9 rounded-xl bg-[#222222] p-1.5 shadow-sm flex items-center justify-center shrink-0 border-2 border-[#a0d9d2]">
                     <img src="/static/grow_icon_official.png?v=7" alt="Growth" class="w-full h-full object-contain">
                 </div>
-                <h3 class="text-xl font-black text-[#222222] tracking-tight">
-                    Accès Sécurisé &bull; Journal PME
-                </h3>
-                <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                    Authentification certifiée conforme aux normes SYSCOHADA SMT.
-                </p>
+                <div>
+                    <h3 class="text-base font-black text-[#222222] tracking-tight">Accès Sécurisé &bull; Journal PME</h3>
+                    <p class="text-[11px] text-slate-500 font-medium">Authentification certifiée conforme SYSCOHADA SMT</p>
+                </div>
             </div>
 
             <!-- ===================================================================== -->
             <!-- ÉTAPE 1 : VÉRIFICATION DE L'EXISTENCE EN BASE DE DONNÉES              -->
             <!-- ===================================================================== -->
             <div id="stepPMEPhone">
-                <p class="text-xs text-slate-600 mb-3.5 leading-relaxed text-center">
+                <p class="text-xs text-slate-600 mb-3 text-center">
                     Saisissez le <strong>numéro de téléphone</strong> de votre PME pour vérifier vos droits d'accès en base.
                 </p>
 
                 <!-- Zone d'alerte rouge si le numéro n'est pas en base de données -->
                 <div id="alertPMEError"
-                    class="hidden mb-4 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-start gap-2.5">
+                    class="hidden mb-3 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-start gap-2">
                     <i class="fa-solid fa-circle-exclamation text-rose-500 text-sm mt-0.5 shrink-0"></i>
                     <span id="txtPMEError">Ce numéro n'est pas dans la base de données.</span>
                 </div>
 
-                <form onsubmit="verifierNumeroPME(event)" class="space-y-4">
+                <form onsubmit="verifierNumeroPME(event)" class="space-y-3">
                     <div>
-                        <label class="block text-xs font-black text-[#222222] uppercase tracking-wider mb-1.5">
+                        <label class="block text-[10.5px] font-black text-[#222222] uppercase tracking-wider mb-1">
                             Numéro de téléphone de la PME *
                         </label>
                         <div class="relative flex items-center">
-                            <span class="absolute left-3.5 text-slate-400 text-sm">
+                            <span class="absolute left-3 text-slate-400 text-xs">
                                 <i class="fa-solid fa-phone"></i>
                             </span>
                             <input type="tel" id="inputTelPME" required autofocus
                                 placeholder="+221 78 877 38 27 ou 77 123 45 67"
-                                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-[#222222] placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition">
+                                class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-[#222222] placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition">
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1">Exemple : 78 877 38 27 (Entreprise CGLT)</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Exemple : 78 877 38 27 (Entreprise CGLT)</p>
                     </div>
 
                     <button type="submit" id="btnPMECheckPhone"
-                        class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-sm font-black transition-all shadow-lg shadow-[#a0d9d2]/40 flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
+                        class="w-full py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-xs font-black transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
                         <i class="fa-solid fa-shield-check text-xs text-[#142b27]"></i>
                         <span>Vérifier &amp; Recevoir le Code SMS</span>
                         <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
@@ -1169,16 +1155,16 @@
             <!-- ===================================================================== -->
             <div id="stepPMECode" style="display: none;">
                 <!-- Badge de confirmation entreprise trouvée -->
-                <div class="mb-3.5 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center gap-2.5">
-                    <i class="fa-solid fa-circle-check text-emerald-600 text-base shrink-0"></i>
+                <div class="mb-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-sm shrink-0"></i>
                     <div class="text-xs">
                         <div class="font-black text-emerald-950" id="lblPMENomEntreprise">Entreprise identifiée</div>
-                        <div class="text-emerald-700 text-[11px]" id="lblPMEPhoneValide">+221 ...</div>
+                        <div class="text-emerald-700 text-[10.5px]" id="lblPMEPhoneValide">+221 ...</div>
                     </div>
                 </div>
 
                 <!-- Simulation/Toast du SMS reçu sur smartphone -->
-                <div id="smsNotificationBanner" class="mb-4 p-3 rounded-2xl bg-slate-900 text-white shadow-xl border border-slate-700 space-y-1">
+                <div id="smsNotificationBanner" class="mb-3 p-2.5 rounded-xl bg-slate-900 text-white shadow-lg border border-slate-700 space-y-1">
                     <div class="flex items-center justify-between text-[10px] text-slate-400">
                         <span class="flex items-center gap-1.5 font-bold text-[#a0d9d2]">
                             <i class="fa-solid fa-comment-sms"></i> SMS REÇU DE GROWTH
@@ -1192,30 +1178,30 @@
 
                 <!-- Alerte rouge si code faux -->
                 <div id="alertCodeError"
-                    class="hidden mb-3.5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2">
+                    class="hidden mb-3 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-2">
                     <i class="fa-solid fa-circle-xmark text-rose-500"></i>
                     <span id="txtCodeError">Code incorrect. Veuillez réessayer.</span>
                 </div>
 
-                <form onsubmit="validerCodeSMSPME(event)" class="space-y-4">
+                <form onsubmit="validerCodeSMSPME(event)" class="space-y-3">
                     <div>
-                        <label class="block text-xs font-black text-[#222222] uppercase tracking-wider mb-1.5 text-center">
+                        <label class="block text-[10.5px] font-black text-[#222222] uppercase tracking-wider mb-1 text-center">
                             Entrez le code SMS à 6 chiffres *
                         </label>
                         <input type="text" id="inputCodeSMS" maxlength="6" required autofocus
                             placeholder="000000"
-                            class="w-full py-3.5 text-center font-mono text-2xl font-black tracking-[10px] rounded-xl bg-slate-50 border-2 border-slate-200 text-[#222222] placeholder:text-slate-300 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-4 focus:ring-[#a0d9d2]/30 transition">
+                            class="w-full py-2.5 text-center font-mono text-xl font-black tracking-[8px] rounded-xl bg-slate-50 border-2 border-slate-200 text-[#222222] placeholder:text-slate-300 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition">
                     </div>
 
                     <button type="submit" id="btnPMEValiderCode"
-                        class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-sm font-black transition-all shadow-lg shadow-[#a0d9d2]/40 flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
+                        class="w-full py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-xs font-black transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
                         <i class="fa-solid fa-lock-open text-xs text-[#142b27]"></i>
                         <span>Valider mon code &amp; Ouvrir le Journal</span>
                         <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
                     </button>
                 </form>
 
-                <div class="mt-4 flex items-center justify-between text-xs">
+                <div class="mt-3 flex items-center justify-between text-xs">
                     <button type="button" onclick="renvoyerCodeSMS()" class="text-slate-500 hover:text-[#222222] font-bold underline cursor-pointer">
                         Renvoyer un nouveau code
                     </button>
@@ -1226,7 +1212,7 @@
             </div>
 
             <div
-                class="mt-5 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
+                class="mt-3 pt-2 border-t border-slate-100 text-center text-[10.5px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
                 <i class="fa-solid fa-shield-halved text-emerald-600"></i>
                 <span>Contrôle d'accès certifié &bull; SYSCOHADA Art. 24</span>
             </div>
