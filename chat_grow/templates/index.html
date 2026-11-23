@@ -388,35 +388,59 @@
                             <p class="text-xs text-slate-500 font-medium mt-1">Capture en temps réel des transactions
                                 brutes</p>
                         </div>
-                        <div class="space-y-2.5 pt-2">
-                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center text-sm shadow-xs">
-                                    <i class="fa-solid fa-receipt"></i>
+                        <div class="space-y-2 pt-2">
+                            <!-- 1. Ventes & Encaissements -->
+                            <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center text-sm shadow-xs shrink-0">
+                                    <i class="fa-solid fa-mobile-screen-button"></i>
                                 </div>
                                 <div class="text-xs">
-                                    <div class="font-extrabold text-[#222222]">Reçus Wave Business &amp; OM</div>
-                                    <div class="text-slate-500 text-[11px]">API directe ou SMS validé</div>
+                                    <div class="font-extrabold text-[#222222]">Encaissements Wave, OM &amp; Banque</div>
+                                    <div class="text-slate-500 text-[11px]">Ventes directes, QR codes, virements &amp; chèques</div>
                                 </div>
                             </div>
-                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-xs">
-                                    <i class="fa-brands fa-whatsapp"></i>
+
+                            <!-- 2. Factures Fournisseurs & Achats -->
+                            <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xs shrink-0">
+                                    <i class="fa-solid fa-file-invoice-dollar"></i>
                                 </div>
                                 <div class="text-xs">
-                                    <div class="font-extrabold text-[#222222]">Vocaux Wolof &amp; Photos Caisse</div>
-                                    <div class="text-slate-500 text-[11px]">Reconnaissance automatique IA</div>
+                                    <div class="font-extrabold text-[#222222]">Factures Fournisseurs &amp; Stocks</div>
+                                    <div class="text-slate-500 text-[11px]">Achats de marchandises, intrants &amp; approvisionnements</div>
                                 </div>
                             </div>
-                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs">
-                                    <i class="fa-solid fa-cash-register"></i>
+
+                            <!-- 3. Charges d'Exploitation -->
+                            <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs shrink-0">
+                                    <i class="fa-solid fa-bolt"></i>
                                 </div>
                                 <div class="text-xs">
-                                    <div class="font-extrabold text-[#222222]">Dépenses Espèces &amp; Caisse</div>
-                                    <div class="text-slate-500 text-[11px]">Achats stocks, riz, fournitures</div>
+                                    <div class="font-extrabold text-[#222222]">Charges d'Exploitation &amp; Caisse</div>
+                                    <div class="text-slate-500 text-[11px]">Loyer commercial, Senelec, Sen'Eau, carburant &amp; transport</div>
+                                </div>
+                            </div>
+
+                            <!-- 4. Salaires & Dettes -->
+                            <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center text-sm shadow-xs shrink-0">
+                                    <i class="fa-solid fa-users-gear"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-extrabold text-[#222222]">Salaires, Avances &amp; Dettes</div>
+                                    <div class="text-slate-500 text-[11px]">Paie employés, acomptes, carnet de crédit clients</div>
+                                </div>
+                            </div>
+
+                            <!-- 5. Capture WhatsApp Vocale & Photos -->
+                            <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-xs shrink-0">
+                                    <i class="fa-brands fa-whatsapp text-base"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="font-extrabold text-[#222222]">Photos de Reçus &amp; Vocaux Wolof</div>
+                                    <div class="text-slate-500 text-[11px]">Capture instantanée sur le terrain par WhatsApp</div>
                                 </div>
                             </div>
                         </div>
@@ -590,22 +614,21 @@
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Besoins de collecte :</p>
                     <ul class="text-sm text-slate-600 space-y-2.5 font-medium">
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Ventes et encaissements
-                            Wave / Orange Money</li>
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Encaissements Wave, Orange Money, Virements &amp; Caisse</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Achats de stocks, riz,
-                            huile, fournitures</li>
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Factures fournisseurs, réassort &amp; achats de marchandises</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Dépenses de transport,
-                            salaires et dettes clients</li>
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Loyer commercial, factures Senelec &amp; frais de transport</li>
                         <li class="flex items-center gap-2"><i
-                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Consultation du journal
-                            par simple numéro WhatsApp</li>
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Salaires, acomptes employés &amp; créances clients</li>
+                        <li class="flex items-center gap-2"><i
+                                class="fa-solid fa-circle-check text-[#142b27] text-xs"></i> Envoi direct par WhatsApp (vocal wolof, photo de ticket, PDF)</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
                         <button type="button" onclick="ouvrirModalPMEPhone()"
                             class="text-xs font-black text-[#142b27] hover:underline flex items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0 text-left">
-                            <i class="fa-solid fa-phone text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-full flex items-center justify-center text-[9px]"></i>
+                            <i
+                                class="fa-solid fa-phone text-[#142b27] bg-[#a0d9d2] w-5 h-5 rounded-full flex items-center justify-center text-[9px]"></i>
                             <span>Consulter avec le N° de la PME</span> &rarr;
                         </button>
                     </div>
@@ -1032,8 +1055,9 @@
     <div id="modalPMEPhone"
         class="fixed inset-0 z-50 bg-[#222222]/70 backdrop-blur-sm flex items-center justify-center p-4 transition-opacity duration-200"
         style="display: none;">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border-2 border-[#a0d9d2] shadow-2xl relative animate-in fade-in zoom-in-95 duration-150">
-            
+        <div
+            class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 border-2 border-[#a0d9d2] shadow-2xl relative animate-in fade-in zoom-in-95 duration-150">
+
             <!-- Bouton fermer -->
             <button type="button" onclick="fermerModalPMEPhone()"
                 class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
@@ -1042,14 +1066,16 @@
 
             <!-- En-tête -->
             <div class="text-center mb-6">
-                <div class="w-14 h-14 rounded-2xl bg-[#222222] p-2.5 mx-auto mb-3 shadow-md flex items-center justify-center border-2 border-[#a0d9d2]">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-[#222222] p-2.5 mx-auto mb-3 shadow-md flex items-center justify-center border-2 border-[#a0d9d2]">
                     <img src="/static/grow_icon_official.png?v=7" alt="Growth" class="w-full h-full object-contain">
                 </div>
                 <h3 class="text-xl font-black text-[#222222] tracking-tight">
                     Journal d'une PME en direct
                 </h3>
                 <p class="text-xs text-slate-500 font-medium mt-1.5 leading-relaxed">
-                    Saisissez le <strong>numéro de téléphone</strong> de la PME pour ouvrir instantanément ses écritures comptables dédiées.
+                    Saisissez le <strong>numéro de téléphone</strong> de la PME pour ouvrir instantanément ses écritures
+                    comptables dédiées.
                 </p>
             </div>
 
@@ -1078,7 +1104,8 @@
                 </button>
             </form>
 
-            <div class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
+            <div
+                class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
                 <i class="fa-solid fa-shield-halved text-emerald-600"></i>
                 <span>Données scellées &bull; Traçabilité SYSCOHADA Art. 24</span>
             </div>
