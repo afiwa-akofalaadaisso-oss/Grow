@@ -2115,14 +2115,13 @@ async def api_pme_demander_otp(payload: Dict[str, Any]):
     if len(clean_phone) >= 9:
         _PME_OTP_STORAGE[clean_phone[-9:]] = otp_record
 
-    # 3. Notification WhatsApp Réelle via l'API Cloud Meta
-    sms_text = f"🔒 *GROWTH — Accès Sécurisé Journal*\n\nVotre code de vérification pour accéder au journal de *{nom_ent}* est :\n👉 *{otp_code}*\n\n_Ce code expire dans 10 minutes. Ne le communiquez à personne._"
+    # 3. Notification WhatsApp Réelle via l'API Cloud Meta (Template officiel approuvé + Fallback texte)
     try:
-        await send_whatsapp_message(clean_phone, sms_text, with_buttons=False)
+        await send_whatsapp_template_otp(clean_phone, otp_code, nom_ent)
     except Exception as e_sms:
         print(f"[OTP WHATSAPP INFO] {e_sms}")
 
-    print(f"[AUTH SÉCURITÉ PME] Code OTP généré pour {clean_phone} ({nom_ent}) et envoyé sur WhatsApp.")
+    print(f"[AUTH SÉCURITÉ PME] Code OTP généré pour {clean_phone} ({nom_ent}) et envoyé sur WhatsApp via Template Officiel.")
 
     # SÉCURITÉ STRICTE : Ne JAMAIS renvoyer le code dans la réponse JSON au navigateur !
     return {
@@ -5458,6 +5457,82 @@ async def send_whatsapp_message(to_phone: str, text: str, with_buttons: bool = T
             "📊 Évaluez cette réponse de Growth :",
             DEFAULT_FEEDBACK_BUTTONS
         )
+
+
+async def send_whatsapp_template_otp(to_phone: str, otp_code: str, nom_entreprise: str):
+    """
+    Envoi du code OTP sécurisé par WhatsApp via le Template approuvé par Meta (nouvelle_notification).
+    Contourne la limitation des 24h de Meta et garantit la délivrance officielle sur le téléphone.
+    """
+    load_dotenv(override=True)
+    token = os.getenv("WHATSAPP_TOKEN")
+    phone_id = os.getenv("PHONE_NUMBER_ID")
+
+    if not token or not phone_id or not to_phone:
+        return False
+
+    clean_phone = re.sub(r"\D", "", str(to_phone))
+    if len(clean_phone) == 9 and clean_phone.startswith(("70", "75", "76", "77", "78")):
+        clean_phone = "221" + clean_phone
+
+    url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json; charset=utf-8"
+    }
+
+    # 1. Envoi via le Template officiel approuvé par Meta (contourne la fenêtre de 24h)
+    payload_template = {
+        "messaging_product": "whatsapp",
+        "to": clean_phone,
+        "type": "template",
+        "template": {
+            "name": "nouvelle_notification",
+            "language": {"code": "fr"},
+            "components": [
+                {
+                    "type": "body",
+                    "parameters": [
+                        {
+                            "type": "text",
+                            "parameter_name": "expediteur",
+                            "text": "Sécurité Growth"
+                        },
+                        {
+                            "type": "text",
+                            "parameter_name": "contenu",
+                            "text": f"Votre code de sécurité Journal PME ({nom_entreprise}) est : *{otp_code}* (Valable 10 minutes)."
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+
+    def _sync_send_template():
+        try:
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(payload_template, ensure_ascii=False).encode("utf-8"),
+                headers=headers
+            )
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                print(f"[OTP TEMPLATE META] Succès envoi template vers {clean_phone} : statut {resp.status}")
+                return True
+        except Exception as e_tpl:
+            print(f"[OTP TEMPLATE META INFO] {e_tpl}")
+            return False
+
+    res_template = await asyncio.to_thread(_sync_send_template)
+
+    # 2. Envoi simultané du message texte complet en fallback (si fenêtre 24h déjà ouverte)
+    sms_text = f"🔒 *GROWTH — Accès Sécurisé Journal*\n\nVotre code de vérification pour accéder au journal de *{nom_entreprise}* est :\n👉 *{otp_code}*\n\n_Ce code expire dans 10 minutes. Ne le communiquez à personne._"
+    try:
+        await send_whatsapp_message(clean_phone, sms_text, with_buttons=False)
+    except Exception as e_txt:
+        print(f"[OTP TEXTE FALLBACK INFO] {e_txt}")
+
+    return res_template
 
 
 async def mark_whatsapp_message_as_read(message_id: str):
