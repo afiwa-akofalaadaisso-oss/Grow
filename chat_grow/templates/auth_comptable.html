@@ -135,6 +135,12 @@
                 <!-- 1. VUE CONNEXION (LOGIN)                                          -->
                 <!-- ================================================================= -->
                 <div id="viewLogin">
+                    <!-- Bannière d'alerte si tentative d'accès non autorisé au portail cabinet -->
+                    <div id="authRequiredBanner" class="hidden mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-amber-600 text-sm shrink-0"></i>
+                        <span>Accès restreint : Le Portail Cabinet est réservé aux experts authentifiés. Veuillez vous connecter.</span>
+                    </div>
+
                     <div class="mb-5">
                         <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Connexion à votre espace</h1>
                         <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de vos PME clientes.</p>
@@ -697,6 +703,13 @@
         function demanderResetMotDePasse() {
             showAuthToast("Veuillez contacter le support Growth pour réinitialiser vos identifiants.");
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.search.includes('auth_required')) {
+                const b = document.getElementById('authRequiredBanner');
+                if (b) b.classList.remove('hidden');
+            }
+        });
     </script>
 
 </body>

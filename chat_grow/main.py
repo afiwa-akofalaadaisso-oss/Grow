@@ -1786,12 +1786,36 @@ async def serve_agence_dashboard(request: Request):
     """
     Espace réservé exclusivement aux Cabinets Comptables et Experts-Comptables :
     Accès aux dossiers comptables, liasses SYSCOHADA, grand livre et exports FEC (sans accès cockpit créateur).
+    Contrôle d'accès souverain : Toute personne non authentifiée est immédiatement redirigée vers /auth/comptable.
     """
+    # 1. CONTRÔLE D'ACCÈS SOUVERAIN AU PORTAIL CABINET :
+    # Si le visiteur n'est PAS authentifié (aucun cookie cabinet valide et aucun cabinet scellé),
+    # redirection immédiate vers la page de connexion sécurisée.
+    is_scelle = request.cookies.get("growth_cabinet_scelle") == "1"
+    has_cabinet = bool(request.cookies.get("growth_cabinet_nom") or request.cookies.get("growth_cabinet_expert") or request.cookies.get("growth_cabinet_auth"))
+    
+    if not (is_scelle or has_cabinet):
+        return RedirectResponse(url="/auth/comptable?redirect=/comptable&err=auth_required", status_code=302)
+
     html_path = os.path.join(TEMPLATES_DIR, "agence.html")
     if os.path.exists(html_path):
         with open(html_path, "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
     return HTMLResponse(content="<h1>Portail Expert-Comptable en cours de chargement...</h1>", status_code=200)
+
+
+@app.get("/deconnexion-comptable")
+@app.get("/logout-comptable")
+async def deconnexion_comptable():
+    """Déconnexion sécurisée de l'expert-comptable avec suppression de tous les cookies de session."""
+    resp = RedirectResponse(url="/auth/comptable?msg=deconnecte", status_code=302)
+    resp.delete_cookie("growth_cabinet_scelle", path="/")
+    resp.delete_cookie("growth_cabinet_nom", path="/")
+    resp.delete_cookie("growth_cabinet_expert", path="/")
+    resp.delete_cookie("growth_cabinet_email", path="/")
+    resp.delete_cookie("growth_cabinet_phone", path="/")
+    resp.delete_cookie("growth_cabinet_auth", path="/")
+    return resp
 
 
 # =========================================================================
