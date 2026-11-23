@@ -411,16 +411,12 @@
                 <!-- BLOC 1 : Les Preuves Financières Réelles (PME) -->
                 <div
                     class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-[#a0d9d2] shadow-lg shadow-[#a0d9d2]/15 hover:shadow-xl hover:shadow-[#a0d9d2]/25 transition-all duration-200 relative flex flex-col justify-between">
-                    <span
-                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[9px] font-black uppercase tracking-wider shadow-xs">
-                        01 &bull; Cœur Automatisé &bull; Collecte
-                    </span>
                     <div class="space-y-2.5">
                         <div class="flex items-center justify-between">
                             <span
                                 class="w-7 h-7 rounded-xl bg-[#222222] text-[#a0d9d2] font-black text-xs flex items-center justify-center shadow-xs">01</span>
                             <span
-                                class="px-2 py-0.5 rounded-full bg-[#a0d9d2]/30 text-[#142b27] text-[10px] font-extrabold border border-[#a0d9d2]/60">Flux PME</span>
+                                class="px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black border border-[#8ecfc7]">01 &bull; Cœur Automatisé &bull; Collecte</span>
                         </div>
                         <div>
                             <h3 class="text-base font-black text-[#222222]">Preuves Financières PME</h3>
@@ -492,16 +488,12 @@
                 <!-- BLOC 2 : Le Cœur Moteur SYSCOHADA (Traitement) -->
                 <div
                     class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-[#a0d9d2] shadow-xl shadow-[#a0d9d2]/20 relative flex flex-col justify-between">
-                    <span
-                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[9px] font-black uppercase tracking-wider shadow-xs">
-                        02 &bull; Cœur Automatisé &bull; Moteur
-                    </span>
                     <div class="space-y-2.5">
                         <div class="flex items-center justify-between">
                             <span
                                 class="w-7 h-7 rounded-xl bg-[#a0d9d2] text-[#142b27] font-black text-xs flex items-center justify-center shadow-xs">02</span>
                             <span
-                                class="px-2 py-0.5 rounded-full bg-[#a0d9d2]/30 text-[#142b27] text-[10px] font-extrabold border border-[#a0d9d2]/60">SYSCOHADA SMT</span>
+                                class="px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black border border-[#8ecfc7]">02 &bull; Cœur Automatisé &bull; Moteur SMT</span>
                         </div>
                         <div>
                             <h3 class="text-base font-black text-[#222222]">Moteur d'Intelligence</h3>
@@ -549,16 +541,12 @@
                 <!-- BLOC 3 : Les Liasses & le Cabinet (Sortie) -->
                 <div
                     class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-[#a0d9d2] shadow-lg shadow-[#a0d9d2]/15 hover:shadow-xl hover:shadow-[#a0d9d2]/25 transition-all duration-200 relative flex flex-col justify-between">
-                    <span
-                        class="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[9px] font-black uppercase tracking-wider shadow-xs">
-                        03 &bull; Cœur Automatisé &bull; Édition
-                    </span>
                     <div class="space-y-2.5">
                         <div class="flex items-center justify-between">
                             <span
                                 class="w-7 h-7 rounded-xl bg-[#222222] text-[#a0d9d2] font-black text-xs flex items-center justify-center shadow-xs">03</span>
                             <span
-                                class="px-2 py-0.5 rounded-full bg-[#a0d9d2]/30 text-[#142b27] text-[10px] font-extrabold border border-[#a0d9d2]/60">Livrables</span>
+                                class="px-2.5 py-0.5 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black border border-[#8ecfc7]">03 &bull; Cœur Automatisé &bull; Édition</span>
                         </div>
                         <div>
                             <h3 class="text-base font-black text-[#222222]">Liasses &amp; FEC DGID</h3>
@@ -1074,82 +1062,95 @@
     <!-- MODALE : AUTHENTIFICATION ROBUSTE PME (VÉRIFICATION BASE + CODE 2FA SMS)   -->
     <!-- ========================================================================= -->
     <div id="modalPMEPhone"
-        class="fixed inset-0 z-50 bg-[#222222]/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto no-scrollbar transition-opacity duration-200"
+        class="fixed inset-0 z-50 bg-[#222222]/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto no-scrollbar transition-opacity duration-200"
         style="display: none;">
         <div
-            class="bg-white rounded-2xl max-w-[420px] w-full p-5 sm:p-6 border-2 border-[#a0d9d2] shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-150">
+            class="bg-white rounded-[26px] max-w-[430px] w-full p-6 sm:p-7 border border-slate-200/90 shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-150">
 
-            <!-- Bouton fermer -->
+            <!-- Bouton fermer croix (X) -->
             <button type="button" onclick="fermerModalPMEPhone()"
-                class="absolute top-4 right-4 w-7 h-7 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
-                <i class="fa-solid fa-xmark text-sm"></i>
+                class="absolute top-4 right-4 w-8 h-8 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
+                <i class="fa-solid fa-xmark text-base"></i>
             </button>
 
-            <!-- En-tête officiel compact -->
-            <div class="flex items-center gap-3 pb-3 mb-3 border-b border-slate-100 pr-8">
-                <div class="w-9 h-9 rounded-xl bg-[#222222] p-1.5 shadow-sm flex items-center justify-center shrink-0 border-2 border-[#a0d9d2]">
-                    <img src="/static/grow_icon_official.png?v=7" alt="Growth" class="w-full h-full object-contain">
-                </div>
-                <div>
-                    <h3 class="text-base font-black text-[#222222] tracking-tight">Accès Sécurisé &bull; Journal PME</h3>
-                    <p class="text-[11px] text-slate-500 font-medium">Authentification certifiée conforme SYSCOHADA SMT</p>
-                </div>
-            </div>
-
             <!-- ===================================================================== -->
-            <!-- ÉTAPE 1 : VÉRIFICATION DE L'EXISTENCE EN BASE DE DONNÉES              -->
+            <!-- ÉTAPE 1 : SAISIE DU NUMÉRO & VÉRIFICATION EN BASE                    -->
             <!-- ===================================================================== -->
             <div id="stepPMEPhone">
-                <p class="text-xs text-slate-600 mb-3 text-center">
-                    Saisissez le <strong>numéro de téléphone</strong> de votre PME pour vérifier vos droits d'accès en base.
-                </p>
+                <!-- En-tête centré noble avec logo Squircle -->
+                <div class="text-center mb-4">
+                    <div style="width: 50px; height: 50px;"
+                        class="rounded-2xl bg-[#222222] p-2 mx-auto mb-2.5 shadow-md flex items-center justify-center border border-slate-700">
+                        <img src="/static/grow_icon_official.png?v=7" alt="Growth" style="width: 32px; height: 32px;" class="object-contain">
+                    </div>
+                    <h3 class="text-lg font-black text-[#222222] tracking-tight">Journal d'une PME en direct</h3>
+                    <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                        Saisissez le <strong>numéro de téléphone</strong> de la PME pour ouvrir instantanément ses écritures comptables dédiées.
+                    </p>
+                </div>
 
                 <!-- Zone d'alerte rouge si le numéro n'est pas en base de données -->
                 <div id="alertPMEError"
-                    class="hidden mb-3 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-start gap-2">
+                    class="hidden mb-3.5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-start gap-2">
                     <i class="fa-solid fa-circle-exclamation text-rose-500 text-sm mt-0.5 shrink-0"></i>
                     <span id="txtPMEError">Ce numéro n'est pas dans la base de données.</span>
                 </div>
 
-                <form onsubmit="verifierNumeroPME(event)" class="space-y-3">
+                <form onsubmit="verifierNumeroPME(event)" class="space-y-3.5">
                     <div>
-                        <label class="block text-[10.5px] font-black text-[#222222] uppercase tracking-wider mb-1">
+                        <label class="block text-[11px] font-black text-[#222222] uppercase tracking-wider mb-1.5">
                             Numéro de téléphone de la PME *
                         </label>
                         <div class="relative flex items-center">
-                            <span class="absolute left-3 text-slate-400 text-xs">
+                            <span class="absolute left-3.5 text-slate-400 text-sm pointer-events-none">
                                 <i class="fa-solid fa-phone"></i>
                             </span>
                             <input type="tel" id="inputTelPME" required autofocus
                                 placeholder="+221 78 877 38 27 ou 77 123 45 67"
-                                class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-[#222222] placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition">
+                                class="w-full pl-10 pr-3.5 py-3 rounded-xl bg-slate-50 border border-[#a0d9d2] text-sm font-bold text-[#222222] placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#a0d9d2]/40 transition">
                         </div>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Exemple : 78 877 38 27 (Entreprise CGLT)</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Exemple : 78 877 38 27 (Entreprise CGLT)</p>
                     </div>
 
                     <button type="submit" id="btnPMECheckPhone"
-                        class="w-full py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-xs font-black transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
-                        <i class="fa-solid fa-shield-check text-xs text-[#142b27]"></i>
-                        <span>Vérifier &amp; Recevoir le Code SMS</span>
+                        class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-[0.99] text-[#142b27] text-sm font-black transition-all shadow-md shadow-[#a0d9d2]/30 flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
+                        <i class="fa-solid fa-book-open text-xs text-[#142b27]"></i>
+                        <span>Ouvrir le Journal de cette PME</span>
                         <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
                     </button>
                 </form>
+
+                <div
+                    class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i>
+                    <span>Données scellées &bull; Traçabilité SYSCOHADA Art. 24</span>
+                </div>
             </div>
 
             <!-- ===================================================================== -->
             <!-- ÉTAPE 2 : VALIDATION DU CODE OTP REÇU SUR SMS                        -->
             <!-- ===================================================================== -->
             <div id="stepPMECode" style="display: none;">
+                <!-- En-tête centré noble avec logo Squircle -->
+                <div class="text-center mb-3.5">
+                    <div style="width: 50px; height: 50px;"
+                        class="rounded-2xl bg-[#222222] p-2 mx-auto mb-2 shadow-md flex items-center justify-center border border-slate-700">
+                        <img src="/static/grow_icon_official.png?v=7" alt="Growth" style="width: 32px; height: 32px;" class="object-contain">
+                    </div>
+                    <h3 class="text-lg font-black text-[#222222] tracking-tight">Validation Sécurité SMS</h3>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Un code de confirmation a été transmis à votre mobile.</p>
+                </div>
+
                 <!-- Badge de confirmation entreprise trouvée -->
-                <div class="mb-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-check text-emerald-600 text-sm shrink-0"></i>
+                <div class="mb-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2.5">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-base shrink-0"></i>
                     <div class="text-xs">
                         <div class="font-black text-emerald-950" id="lblPMENomEntreprise">Entreprise identifiée</div>
-                        <div class="text-emerald-700 text-[10.5px]" id="lblPMEPhoneValide">+221 ...</div>
+                        <div class="text-emerald-700 text-[11px]" id="lblPMEPhoneValide">+221 ...</div>
                     </div>
                 </div>
 
-                <!-- Simulation/Toast du SMS reçu sur smartphone -->
+                <!-- Toast de simulation SMS -->
                 <div id="smsNotificationBanner" class="mb-3 p-2.5 rounded-xl bg-slate-900 text-white shadow-lg border border-slate-700 space-y-1">
                     <div class="flex items-center justify-between text-[10px] text-slate-400">
                         <span class="flex items-center gap-1.5 font-bold text-[#a0d9d2]">
@@ -1171,16 +1172,16 @@
 
                 <form onsubmit="validerCodeSMSPME(event)" class="space-y-3">
                     <div>
-                        <label class="block text-[10.5px] font-black text-[#222222] uppercase tracking-wider mb-1 text-center">
+                        <label class="block text-xs font-black text-[#222222] uppercase tracking-wider mb-1.5 text-center">
                             Entrez le code SMS à 6 chiffres *
                         </label>
                         <input type="text" id="inputCodeSMS" maxlength="6" required autofocus
                             placeholder="000000"
-                            class="w-full py-2.5 text-center font-mono text-xl font-black tracking-[8px] rounded-xl bg-slate-50 border-2 border-slate-200 text-[#222222] placeholder:text-slate-300 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition">
+                            class="w-full py-3 text-center font-mono text-2xl font-black tracking-[10px] rounded-xl bg-slate-50 border-2 border-[#a0d9d2] text-[#222222] placeholder:text-slate-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#a0d9d2]/40 transition">
                     </div>
 
                     <button type="submit" id="btnPMEValiderCode"
-                        class="w-full py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-xs font-black transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
+                        class="w-full py-3 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-[0.99] text-[#142b27] text-xs font-black transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#8ecfc7]">
                         <i class="fa-solid fa-lock-open text-xs text-[#142b27]"></i>
                         <span>Valider mon code &amp; Ouvrir le Journal</span>
                         <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
@@ -1195,12 +1196,12 @@
                         &larr; Changer de numéro
                     </button>
                 </div>
-            </div>
 
-            <div
-                class="mt-3 pt-2 border-t border-slate-100 text-center text-[10.5px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-shield-halved text-emerald-600"></i>
-                <span>Contrôle d'accès certifié &bull; SYSCOHADA Art. 24</span>
+                <div
+                    class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-500 font-semibold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-emerald-600 text-xs"></i>
+                    <span>Contrôle d'accès certifié &bull; SYSCOHADA Art. 24</span>
+                </div>
             </div>
 
         </div>

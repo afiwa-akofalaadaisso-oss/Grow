@@ -267,5 +267,26 @@
     "montant_abonnement": 25000,
     "nom_entreprise_detecte": "1122",
     "statut_operateurs": "INCONNU"
+  },
+  "221789999999": {
+    "etape": "PHASE_2_CAPITAL_INITIAL",
+    "langue_preferee": "fr",
+    "ninea": null,
+    "nom_entreprise": "Entreprise 9999",
+    "nom_personne_physique": null,
+    "capital": 0,
+    "forme_juridique": null,
+    "activite_principale": null,
+    "registre_commerce": null,
+    "nombre_employes": null,
+    "operateurs": null,
+    "liste_operateurs_cles": null,
+    "immobilisations": null,
+    "valeur_equipements_fcfa": null,
+    "equipements_photo_validee": false,
+    "statut": "EN_COURS",
+    "abonnement_valide": true,
+    "premier_contact_effectue": true,
+    "plan_abonnement": "Starter"
   }
 }

@@ -675,19 +675,7 @@
         }
 
         function demanderResetMotDePasse() {
-            const email = prompt("Veuillez saisir votre adresse email professionnelle pour réinitialiser votre mot de passe :");
-            if (email) {
-                showAuthToast("Lien de réinitialisation sécurisé envoyé à " + email + " !");
-            }
-        }
-
-        function loginWithGoogleDemo() {
-            showAuthToast("Connexion Google Workspace en cours...");
-            localStorage.setItem('growth_cabinet_nom', "Cabinet Diallo & Associés (Google)");
-            localStorage.setItem('growth_cabinet_email', "expert@diallo-partners.sn");
-            setTimeout(() => {
-                window.location.href = '/comptable';
-            }, 800);
+            showAuthToast("Veuillez contacter le support Growth pour réinitialiser vos identifiants.");
         }
     </script>
 
