@@ -1874,8 +1874,51 @@ async def api_comptable_email_preview(nom_complet: str = "Mamadou Diallo", nom_c
 
 
 # =========================================================================
-# MODULE DE SÉCURITÉ ROBUSTE & 2FA SMS POUR LES PME SÉNÉGALAISES
+# MODULE DE SÉCURITÉ ROBUSTE & CONTRÔLE D'ACCÈS POUR LES PME SÉNÉGALAISES
 # =========================================================================
+@app.post("/api/pme/verifier-acces")
+async def api_pme_verifier_acces(payload: Dict[str, Any]):
+    """
+    Vérification stricte de l'existence du numéro PME en base de données :
+    - Si le numéro n'est PAS en base : REFUS STRICT (accès impossible au journal)
+    - Si le numéro existe : Redirection directe et autorisée vers le journal de la PME
+    """
+    raw_phone = str(payload.get("telephone") or "").strip()
+    digits = re.sub(r"\D", "", raw_phone)
+
+    if not digits:
+        return {"status": "error", "message": "Numéro de téléphone requis."}
+
+    # Format normalisé Sénégal : 9 chiffres (70, 75, 76, 77, 78) -> 221...
+    if len(digits) == 9 and digits.startswith(("70", "75", "76", "77", "78")):
+        clean_phone = "221" + digits
+    else:
+        clean_phone = digits
+
+    all_ents = get_all_entreprises_resilient()
+    matched_ent = None
+    for e in all_ents:
+        tel = re.sub(r"\D", "", str(e.get("telephone_whatsapp") or ""))
+        if clean_phone == tel or (len(clean_phone) >= 9 and clean_phone[-9:] == tel[-9:]):
+            matched_ent = e
+            break
+
+    if not matched_ent:
+        return {
+            "status": "error",
+            "code": "NUMERO_INCONNU",
+            "message": "Ce numéro de téléphone n'est associé à aucune PME enregistrée dans la base de données. Accès strictement refusé."
+        }
+
+    nom_ent = matched_ent.get("nom_entreprise") or "Votre PME"
+    return {
+        "status": "success",
+        "message": f"Accès autorisé pour {nom_ent}",
+        "phone": clean_phone,
+        "nom_entreprise": nom_ent,
+        "redirect_url": f"/dashboard?phone={clean_phone}"
+    }
+
 _PME_OTP_STORAGE = {}  # { clean_phone: { "code": "123456", "expires_at": ts, "nom_entreprise": "..." } }
 
 
