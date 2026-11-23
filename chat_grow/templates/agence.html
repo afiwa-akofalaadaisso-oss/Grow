@@ -1467,101 +1467,87 @@
                     <!-- Profil Officiel du Cabinet Comptable Connecté -->
                     <div style="position: relative;">
                         <button type="button" id="comptableProfileBtn" onclick="toggleComptableDropdown(event)"
-                            style="display: flex; align-items: center; gap: 10px; padding: 4px 12px 4px 6px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 99px; cursor: pointer; transition: all 0.15s; outline: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04);"
+                            style="display: flex; align-items: center; gap: 9px; padding: 4px 10px 4px 5px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 99px; cursor: pointer; transition: all 0.15s; outline: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04);"
                             onmouseover="this.style.borderColor='#cbd5e1'; this.style.background='#f8fafc';"
                             onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#ffffff';">
-                            <!-- Avatar Expert avec Initiales (Début de lettre) & indicateur en ligne -->
-                            <div style="position: relative; width: 32px; height: 32px; flex-shrink: 0;">
+                            <!-- Avatar Expert avec Initiales & pastille en ligne -->
+                            <div style="position: relative; width: 30px; height: 30px; flex-shrink: 0;">
                                 <div id="navCabinetAvatar"
-                                    style="width: 32px; height: 32px; border-radius: 50%; background: #142b27; color: #a0d9d2; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; letter-spacing: 0.5px; border: 1.5px solid #168078; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
-                                    CD
+                                    style="width: 30px; height: 30px; border-radius: 50%; background: #142b27; color: #a0d9d2; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 900; letter-spacing: 0.5px; border: 1.5px solid #168078;">
+                                    AD
                                 </div>
                                 <span
-                                    style="position: absolute; bottom: 0; right: 0; width: 8.5px; height: 8.5px; border-radius: 50%; background: #10b981; border: 1.5px solid #ffffff;"></span>
+                                    style="position: absolute; bottom: 0; right: 0; width: 7.5px; height: 7.5px; border-radius: 50%; background: #10b981; border: 1.5px solid #ffffff;"></span>
                             </div>
 
                             <!-- Identité de l'Expert-Comptable -->
-                            <div style="text-align: left; line-height: 1.25;">
-                                <div
-                                    style="font-size: 12px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 5px;">
-                                    <span id="navCabinetName">Cabinet Diallo &amp; Associés</span>
-                                    <i class="fa-solid fa-circle-check" style="font-size: 11px; color: #0e7647;"
-                                        title="Cabinet Comptable Partenaire"></i>
+                            <div style="text-align: left; line-height: 1.2;">
+                                <div style="font-size: 11.5px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 4px;">
+                                    <span id="navCabinetName">ADAISSO</span>
+                                    <i class="fa-solid fa-circle-check" style="font-size: 10px; color: #0e7647;"></i>
                                 </div>
-                                <div style="font-size: 10px; font-weight: 600; color: #64748b;">
-                                    <div id="navCabinetSubtitle"
-                                        style="font-size: 10px; font-weight: 600; color: #64748b;">
-                                        Expert-Comptable Référent
-                                    </div>
+                                <div id="navCabinetSubtitle" style="font-size: 9.5px; font-weight: 600; color: #64748b;">
+                                    Afiwa
                                 </div>
+                            </div>
 
-                                <i class="fa-solid fa-chevron-down"
-                                    style="font-size: 10px; color: #94a3b8; margin-left: 3px;"></i>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 9px; color: #94a3b8; margin-left: 2px;"></i>
                         </button>
 
-                        <!-- Menu déroulant du profil comptable -->
+                        <!-- Menu déroulant du profil comptable (Épuré & Ultra-Pro) -->
                         <div id="comptableDropdownMenu"
-                            style="display: none; position: absolute; right: 0; top: calc(100% + 8px); width: 260px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000; overflow: hidden; font-family: inherit;">
-                            <div style="padding: 14px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-                                <div id="navMenuCabinetName" style="font-size: 13px; font-weight: 800; color: #0f172a;">
-                                    Cabinet Diallo &amp;
-                                    Associés</div>
-                                <div id="navMenuCabinetEmail" style="font-size: 11px; color: #64748b; margin-top: 2px;">
-                                    contact@cabinet-diallo.sn
+                            style="display: none; position: absolute; right: 0; top: calc(100% + 8px); width: 250px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 12px 30px -4px rgba(15,23,42,0.15), 0 4px 10px -2px rgba(15,23,42,0.06); z-index: 1000; overflow: hidden; font-family: inherit; animation: fadeInDrop 0.15s ease-out;">
+                            
+                            <!-- En-tête profil cabinet -->
+                            <div style="padding: 12px 14px; background: #f8fafc; border-bottom: 1px solid #eef2f6;">
+                                <div id="navMenuCabinetName" style="font-size: 13px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    Cabinet ADAISSO
                                 </div>
-                                <div style="margin-top: 8px;">
-                                    <span
-                                        style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: #0e7647; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 99px;">
-                                        <i class="fa-solid fa-certificate"></i> Ordre des Experts-Comptables
+                                <div id="navMenuCabinetEmail" style="font-size: 11px; color: #64748b; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="afiwa-akofala.adaisso@ism.edu.sn">
+                                    afiwa-akofala.adaisso@ism.edu.sn
+                                </div>
+                                <div style="margin-top: 6px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 9.5px; font-weight: 700; color: #0e7647; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 2px 7px; border-radius: 99px;">
+                                        <i class="fa-solid fa-certificate" style="font-size: 8.5px;"></i> Ordre des Experts-Comptables
                                     </span>
                                 </div>
                             </div>
 
-                            <div style="padding: 6px;">
+                            <!-- Navigation interne du cabinet -->
+                            <div style="padding: 5px;">
                                 <a href="javascript:void(0)"
                                     onclick="switchAgencyTab('parametres'); fermerComptableDropdown();"
-                                    style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-size: 12px; font-weight: 600; color: #334155; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
+                                    style="display: flex; align-items: center; gap: 9px; padding: 8px 10px; font-size: 12px; font-weight: 600; color: #334155; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
                                     onmouseover="this.style.background='#f1f5f9';"
                                     onmouseout="this.style.background='transparent';">
-                                    <i class="fa-solid fa-briefcase"
-                                        style="font-size: 13px; color: #0e7647; width: 16px; text-align: center;"></i>
-                                    <span>Fiche Cabinet &amp; Habilitations</span>
+                                    <i class="fa-solid fa-briefcase" style="font-size: 12.5px; color: #0e7647; width: 16px; text-align: center;"></i>
+                                    <span>Paramètres du Cabinet</span>
                                 </a>
                                 <a href="javascript:void(0)"
                                     onclick="switchAgencyTab('documents'); fermerComptableDropdown();"
-                                    style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-size: 12px; font-weight: 600; color: #334155; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
+                                    style="display: flex; align-items: center; gap: 9px; padding: 8px 10px; font-size: 12px; font-weight: 600; color: #334155; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
                                     onmouseover="this.style.background='#f1f5f9';"
                                     onmouseout="this.style.background='transparent';">
-                                    <i class="fa-solid fa-signature"
-                                        style="font-size: 13px; color: #0e7647; width: 16px; text-align: center;"></i>
+                                    <i class="fa-solid fa-signature" style="font-size: 12.5px; color: #0e7647; width: 16px; text-align: center;"></i>
                                     <span>Signature &amp; Cachet Numérique</span>
                                 </a>
                                 <a href="/dashboard"
-                                    style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-size: 12px; font-weight: 600; color: #334155; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
+                                    style="display: flex; align-items: center; gap: 9px; padding: 8px 10px; font-size: 12px; font-weight: 600; color: #334155; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
                                     onmouseover="this.style.background='#f1f5f9';"
                                     onmouseout="this.style.background='transparent';">
-                                    <i class="fa-solid fa-store"
-                                        style="font-size: 13px; color: #64748b; width: 16px; text-align: center;"></i>
+                                    <i class="fa-solid fa-store" style="font-size: 12.5px; color: #64748b; width: 16px; text-align: center;"></i>
                                     <span>Basculer vers Vue PME</span>
-                                </a>
-                                <a href="/login-comptable"
-                                    style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; font-size: 12px; font-weight: 700; color: #168078; text-decoration: none; border-radius: 8px; transition: background 0.15s;"
-                                    onmouseover="this.style.background='#f0fdfa';"
-                                    onmouseout="this.style.background='transparent';">
-                                    <i class="fa-solid fa-user-lock"
-                                        style="font-size: 13px; color: #168078; width: 16px; text-align: center;"></i>
-                                    <span>Portail Connexion / Inscription</span>
                                 </a>
                             </div>
 
-                            <div style="padding: 6px; border-top: 1px solid #f1f5f9; background: #fafafa;">
+                            <!-- Déconnexion nette -->
+                            <div style="padding: 5px; border-top: 1px solid #f1f5f9; background: #ffffff;">
                                 <a href="javascript:void(0)" onclick="deconnecterCabinet(event)"
-                                    style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; font-size: 11.5px; font-weight: 700; color: #dc2626; text-decoration: none; border-radius: 8px; transition: background 0.15s; cursor: pointer;"
+                                    style="display: flex; align-items: center; gap: 9px; padding: 7px 10px; font-size: 11.5px; font-weight: 700; color: #dc2626; text-decoration: none; border-radius: 8px; transition: background 0.15s; cursor: pointer;"
                                     onmouseover="this.style.background='#fef2f2';"
                                     onmouseout="this.style.background='transparent';">
-                                    <i class="fa-solid fa-arrow-right-from-bracket"
-                                        style="font-size: 12px; color: #dc2626; width: 16px; text-align: center;"></i>
-                                    <span>Se déconnecter (Changer de compte)</span>
+                                    <i class="fa-solid fa-arrow-right-from-bracket" style="font-size: 11.5px; color: #dc2626; width: 16px; text-align: center;"></i>
+                                    <span>Déconnexion</span>
                                 </a>
                             </div>
                         </div>
