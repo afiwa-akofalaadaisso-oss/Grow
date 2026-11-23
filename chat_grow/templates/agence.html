@@ -4008,8 +4008,8 @@
                     </button>
 
                     <button type="button" onclick="imprimerLiasse()"
-                        style="padding: 7px 12px; background: #168078; color: #ffffff; border: none; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.15s;"
-                        onmouseover="this.style.background='#0f766e';" onmouseout="this.style.background='#168078';"
+                        style="padding: 7px 12px; background: #0f172a; color: #ffffff; border: 1px solid #1e293b; border-radius: 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.15s;"
+                        onmouseover="this.style.background='#1e293b';" onmouseout="this.style.background='#0f172a';"
                         title="Imprimer ou enregistrer en format PDF (A4)">
                         <i class="fa-solid fa-file-pdf"></i> PDF (A4)
                     </button>
@@ -7879,7 +7879,7 @@
                     <!-- EN-TÊTE ÉPURÉ POUR ÉTATS SUIVANTS -->
                     <div style="border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                         <div>
-                            <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #168078;">
+                            <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #0f172a;">
                                 DROIT COMPTABLE SYSCOHADA RÉVISÉ (OHADA SMT)
                             </div>
                             <div style="font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.4px; color: #0f172a; margin-top: 2px;">
@@ -7900,7 +7900,7 @@
                     
                     <!-- TITRE OFFICIEL DE L'ÉTAT FINANCIER -->
                     <div style="text-align: center; margin-bottom: 14px; padding: 10px 14px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px;">
-                        <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #168078;">
+                        <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #0f172a;">
                             SYSTÈME MINIMAL DE TRÉSORERIE (SMT) &bull; ACTE UNIFORME OHADA
                         </div>
                         <div style="font-size: 14.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: #0f172a; margin-top: 2px;">
@@ -7917,7 +7917,7 @@
                             <td style="padding: 6px 10px; width: 22%; font-weight: 800; text-transform: uppercase; color: #334155;">Raison Sociale :</td>
                             <td style="padding: 6px 10px; width: 48%; font-weight: 900; color: #000000; font-size: 12.5px;">${pme.nom}</td>
                             <td style="padding: 6px 10px; width: 15%; font-weight: 800; text-transform: uppercase; color: #334155;">Régime Fiscal :</td>
-                            <td style="padding: 6px 10px; width: 15%; font-weight: 800; color: #168078;">SYSCOHADA SMT</td>
+                            <td style="padding: 6px 10px; width: 15%; font-weight: 800; color: #0f172a;">SYSCOHADA SMT</td>
                         </tr>
                         <tr style="border-bottom: 1px solid #cbd5e1;">
                             <td style="padding: 5px 10px; font-weight: 700; color: #475569;">N° NINEA :</td>
@@ -8315,7 +8315,7 @@
                             <td style="${tdCell}">Fournisseurs débiteurs (Avances versées) – 401</td>
                             <td style="${tdMono}">${fmt(d.actifFourn401)}</td>
                             <td style="${tdCell}">Résultat net de la période (${d.resultatNet >= 0 ? 'Bénéfice' : 'Perte'})</td>
-                            <td style="${tdMono} ${d.resultatNet >= 0 ? 'color: #0e7647; font-weight: 900;' : 'color: #b91c1c; font-weight: 900;'}">${fmtNet(d.resultatNet)}</td>
+                            <td style="${tdMono} font-weight: 900; color: #000000;">${fmtNet(d.resultatNet)}</td>
                         </tr>
                         <tr>
                             <td style="${tdCell}">Banque CBAO (Disponibilités) – 521</td>
@@ -8325,28 +8325,28 @@
                         </tr>
                         <tr style="background: #fafafa;">
                             <td style="${tdCell}">Trésorerie Wave Business – 514</td>
-                            <td style="${tdMono} color: #0e7647; font-weight: 800;">${fmt(d.actifWave514)}</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">${fmt(d.actifWave514)}</td>
                             <td style="${tdCell}; color: #64748b;">Trésorerie-passif : Découverts bancaires</td>
                             <td style="${tdMono}; color: #64748b;">0 FCFA</td>
                         </tr>
                         <tr>
                             <td style="${tdCell}">Caisse Principale Espèces (Solde actif disponible) – 571</td>
-                            <td style="${tdMono} color: #0e7647; font-weight: 800;">${fmt(d.actifCaisse571)}</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">${fmt(d.actifCaisse571)}</td>
                             <td style="${tdCell}; color: #64748b;">Dettes fiscales &amp; sociales (Échéance N+1)</td>
                             <td style="${tdMono}; color: #64748b;">0 FCFA</td>
                         </tr>
                         <tr style="${trTotal}">
                             <td style="padding: 10px 12px; font-weight: 900; color: #000000; border: 1px solid #cbd5e1;">TOTAL ACTIF GÉNÉRAL</td>
-                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #0e7647; border: 1px solid #cbd5e1;">${fmt(d.totalActif)}</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000; border: 1px solid #cbd5e1;">${fmt(d.totalActif)}</td>
                             <td style="padding: 10px 12px; font-weight: 900; color: #000000; border: 1px solid #cbd5e1;">TOTAL PASSIF GÉNÉRAL</td>
-                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #0e7647; border: 1px solid #cbd5e1;">${fmt(d.totalPassif)}</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000; border: 1px solid #cbd5e1;">${fmt(d.totalPassif)}</td>
                         </tr>
                     </table>
 
-                    <!-- VALIDATION D'AUDIT COMPTABLE -->
-                    <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 12px 14px; margin-top: 10px; font-size: 11px; color: #166534; line-height: 1.55;">
-                        <div style="font-weight: 800; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-                            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                    <!-- VALIDATION D'AUDIT COMPTABLE (CONFORME & SOBRE) -->
+                    <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 11px; color: #1e293b; line-height: 1.55;">
+                        <div style="font-weight: 800; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; color: #0f172a;">
+                            <i class="fa-solid fa-circle-check" style="color: #475569;"></i>
                             Certification d'équilibre SYSCOHADA : Total Actif = Total Passif (${fmt(d.totalActif)}) &bull; Écart : 0 FCFA
                         </div>
                         <div>
@@ -8385,35 +8385,35 @@
                         </tr>
                         <tr>
                             <td style="${tdCell} font-weight: 800; color: #0f172a;">Ventes de marchandises – Compte 701</td>
-                            <td style="${tdMono} color: #0e7647; font-weight: 800;">${fmtSigne(d.vtes701)}</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">${fmtSigne(d.vtes701)}</td>
                         </tr>
                         <tr style="background: #fafafa;">
                             <td style="${tdCell} color: #334155;">Achats de marchandises (Bruts) – Compte 601</td>
-                            <td style="${tdMono} color: #b91c1c;">${fmtSigne(d.achBruts601, true)}</td>
+                            <td style="${tdMono} color: #000000;">${fmtSigne(d.achBruts601, true)}</td>
                         </tr>
                         <tr>
-                            <td style="${tdCell} color: #168078;">Variation de stocks (Déduction du stock final inventorié) – Compte 603</td>
-                            <td style="${tdMono} color: #0e7647; font-weight: 700;">+ ${fmt(d.varStock603)}</td>
+                            <td style="${tdCell} color: #0f172a;">Variation de stocks (Déduction du stock final inventorié) – Compte 603</td>
+                            <td style="${tdMono} font-weight: 700; color: #000000;">+ ${fmt(d.varStock603)}</td>
                         </tr>
                         <tr style="background: #f8fafc;">
                             <td style="${tdCell} font-weight: 700; color: #334155;">Coût d'Achat des Marchandises Vendues (Achats consommés)</td>
-                            <td style="${tdMono} color: #b91c1c; font-weight: 800;">${fmtSigne(d.achConsommes, true)}</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">${fmtSigne(d.achConsommes, true)}</td>
                         </tr>
                         <tr style="background: #f1f5f9; font-weight: 800;">
                             <td style="${tdCell}">MARGE COMMERCIALE BRUTE (Taux de marge : ${txMarge}%)</td>
-                            <td style="${tdMono} color: #0e7647; font-weight: 900;">+ ${fmt(d.margeBrute)}</td>
+                            <td style="${tdMono} font-weight: 900; color: #000000;">+ ${fmt(d.margeBrute)}</td>
                         </tr>
                         <tr>
                             <td style="${tdCell} color: #334155;">Énergie, eau et fournitures consommées – Compte 605</td>
-                            <td style="${tdMono} color: #b91c1c;">${fmtSigne(d.energ605, true)}</td>
+                            <td style="${tdMono} color: #000000;">${fmtSigne(d.energ605, true)}</td>
                         </tr>
                         <tr style="background: #fafafa;">
                             <td style="${tdCell} color: #334155;">Transports et logistique de marchandises – Compte 612</td>
-                            <td style="${tdMono} color: #b91c1c;">${fmtSigne(d.transp612, true)}</td>
+                            <td style="${tdMono} color: #000000;">${fmtSigne(d.transp612, true)}</td>
                         </tr>
                         <tr style="background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;">
                             <td style="${tdCell} font-size: 12.5px; font-weight: 900; color: #0f172a;">RÉSULTAT NET COMPTABLE DE LA PÉRIODE (BÉNÉFICE NET)</td>
-                            <td style="${tdMono} font-size: 13.5px; color: #0e7647; font-weight: 900;">+ ${fmt(d.resultatNet)}</td>
+                            <td style="${tdMono} font-size: 13.5px; font-weight: 900; color: #000000;">+ ${fmt(d.resultatNet)}</td>
                         </tr>
                     </table>
                 </div>
@@ -8440,19 +8440,19 @@
                         </tr>
                         <tr>
                             <td style="${tdCell} font-weight: 700;">Caisse Principale Espèces (Solde actif après règlements) – Compte 571</td>
-                            <td style="${tdMono} color: #0e7647; font-weight: 800;">+ ${fmt(d.actifCaisse571)}</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">+ ${fmt(d.actifCaisse571)}</td>
                         </tr>
                         <tr style="background: #fafafa;">
                             <td style="${tdCell} font-weight: 700;">Trésorerie Wave Business (Encaissements marchands) – Compte 514</td>
-                            <td style="${tdMono} color: #0e7647; font-weight: 800;">+ ${fmt(d.actifWave514)}</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">+ ${fmt(d.actifWave514)}</td>
                         </tr>
                         <tr>
                             <td style="${tdCell} font-weight: 700;">Banque CBAO (Disponibilités sur compte bancaire) – Compte 521</td>
-                            <td style="${tdMono} color: #0e7647; font-weight: 800;">+ ${fmt(d.actifBanque521)}</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">+ ${fmt(d.actifBanque521)}</td>
                         </tr>
                         <tr style="background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;">
                             <td style="${tdCell} font-size: 12px; font-weight: 900;">TRÉSORERIE GLOBALE DE CLÔTURE (DISPONIBILITÉS TOTALES)</td>
-                            <td style="${tdMono} font-size: 13px; color: #0e7647; font-weight: 900;">${fmt(d.actifCaisse571 + d.actifWave514 + d.actifBanque521)}</td>
+                            <td style="${tdMono} font-size: 13px; font-weight: 900; color: #000000;">${fmt(d.actifCaisse571 + d.actifWave514 + d.actifBanque521)}</td>
                         </tr>
                     </table>
                 </div>
@@ -8475,7 +8475,7 @@
             notes.forEach(n => {
                 const parts = n.split(' : ');
                 notesHtml += `
-                    <div style="margin-bottom: 12px; padding: 10px 14px; background: #fafafa; border-left: 3px solid #168078; border-radius: 4px; border: 1px solid #e2e8f0; border-left-width: 3px;">
+                    <div style="margin-bottom: 12px; padding: 10px 14px; background: #fafafa; border-left: 3px solid #0f172a; border-radius: 4px; border: 1px solid #e2e8f0; border-left-width: 3px;">
                         <div style="font-weight: 800; font-size: 12px; color: #0f172a; text-transform: uppercase;">${parts[0]}</div>
                         <div style="font-size: 11.5px; line-height: 1.5; color: #334155; margin-top: 3px;">${parts[1] || ''}</div>
                     </div>
