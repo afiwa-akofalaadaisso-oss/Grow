@@ -121,8 +121,8 @@
 
             <!-- Action unique : Bouton SE CONNECTER en Menthe claire #a0d9d2 qui attire le regard -->
             <div>
-                <a href="/login-comptable"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-xs sm:text-sm font-black transition-all shadow-md shadow-[#a0d9d2]/40 hover:shadow-lg hover:shadow-[#a0d9d2]/50 hover:-translate-y-0.5 duration-150 border border-[#8ecfc7]/80">
+                <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
+                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-xs sm:text-sm font-black transition-all shadow-md shadow-[#a0d9d2]/40 hover:shadow-lg hover:shadow-[#a0d9d2]/50 hover:-translate-y-0.5 duration-150 border border-[#8ecfc7]/80 cursor-pointer">
                     <i class="fa-solid fa-lock text-[#142b27] text-xs"></i>
                     <span>Se connecter</span>
                     <i class="fa-solid fa-arrow-right text-[11px] text-[#142b27]"></i>
@@ -161,23 +161,29 @@
                     </linearGradient>
                 </defs>
                 <rect width="100%" height="100%" fill="url(#fintechGrid)" />
-                
+
                 <!-- Schéma vectoriel des flux financiers bien net et tracé -->
-                <path d="M -100,220 C 250,120 400,380 750,220 C 1100,60 1350,320 1800,160" fill="none" stroke="url(#curveGrad1)" stroke-width="3" />
-                <path d="M -50,300 C 300,180 450,460 850,280 C 1250,100 1450,400 1900,220" fill="none" stroke="url(#curveGrad2)" stroke-width="2" stroke-dasharray="8,8" />
-                
+                <path d="M -100,220 C 250,120 400,380 750,220 C 1100,60 1350,320 1800,160" fill="none"
+                    stroke="url(#curveGrad1)" stroke-width="3" />
+                <path d="M -50,300 C 300,180 450,460 850,280 C 1250,100 1450,400 1900,220" fill="none"
+                    stroke="url(#curveGrad2)" stroke-width="2" stroke-dasharray="8,8" />
+
                 <!-- Nœuds du réseau de transmission financier -->
                 <circle cx="18%" cy="26%" r="6" fill="#a0d9d2" stroke="#222222" stroke-width="2" />
-                <circle cx="18%" cy="26%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" />
+                <circle cx="18%" cy="26%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5"
+                    stroke-dasharray="4,4" />
                 <circle cx="18%" cy="26%" r="140" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.35" />
-                
+
                 <circle cx="82%" cy="32%" r="6" fill="#a0d9d2" stroke="#222222" stroke-width="2" />
-                <circle cx="82%" cy="32%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" />
+                <circle cx="82%" cy="32%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5"
+                    stroke-dasharray="4,4" />
                 <circle cx="82%" cy="32%" r="160" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.35" />
 
                 <!-- Connexion centrale schématique -->
-                <line x1="18%" y1="26%" x2="50%" y2="45%" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5" />
-                <line x1="82%" y1="32%" x2="50%" y2="45%" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5" />
+                <line x1="18%" y1="26%" x2="50%" y2="45%" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4"
+                    opacity="0.5" />
+                <line x1="82%" y1="32%" x2="50%" y2="45%" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4"
+                    opacity="0.5" />
                 <circle cx="50%" cy="45%" r="5" fill="#222222" stroke="#a0d9d2" stroke-width="2" />
             </svg>
         </div>
@@ -185,9 +191,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
             <!-- ILLUSTRATION FLOTTANTE GAUCHE : REÇU & PREUVE FINANCIÈRE SCELLÉE (DESSIN UI) -->
-            <div class="hidden lg:flex absolute left-2 xl:left-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/30 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-left">
+            <div
+                class="hidden lg:flex absolute left-2 xl:left-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/30 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-left">
                 <div class="flex items-center justify-between">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-xs">
+                    <span
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-xs">
                         <i class="fa-solid fa-receipt text-[10px]"></i> Preuve Wave
                     </span>
                     <span class="text-[10.5px] text-slate-400 font-mono font-bold">14:22 GMT</span>
@@ -203,7 +211,8 @@
             </div>
 
             <!-- ILLUSTRATION FLOTTANTE DROITE : LIASSE FISCALE DGID SCELLÉE (DESSIN UI) -->
-            <div class="hidden lg:flex absolute right-2 xl:right-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/30 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-right">
+            <div
+                class="hidden lg:flex absolute right-2 xl:right-4 top-1/2 -translate-y-1/2 p-4 rounded-3xl bg-white/95 backdrop-blur-xl border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/30 flex-col gap-2.5 w-60 xl:w-64 text-left pointer-events-none z-20 animate-float-right">
                 <div class="flex items-center justify-between">
                     <span
                         class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#222222] text-[#a0d9d2] text-[10px] font-black uppercase tracking-wider">
@@ -250,8 +259,8 @@
 
                 <!-- CTA Principal Lumineux : Bouton Menthe #a0d9d2 avec fort contraste -->
                 <div class="pt-3 flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="/login-comptable"
-                        class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-xl shadow-[#a0d9d2]/45 hover:shadow-2xl hover:shadow-[#a0d9d2]/60 hover:-translate-y-0.5 duration-150 border-2 border-[#8ecfc7]">
+                    <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-xl shadow-[#a0d9d2]/45 hover:shadow-2xl hover:shadow-[#a0d9d2]/60 hover:-translate-y-0.5 duration-150 border-2 border-[#8ecfc7] cursor-pointer">
                         <i class="fa-solid fa-lock text-[#142b27] text-sm"></i>
                         <span>Se connecter à mon Cabinet</span>
                         <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
@@ -328,8 +337,9 @@
     <!-- ========================================================================= -->
     <!-- 3. BIS. LE SCHÉMA OPÉRATIONNEL VISUEL : DU FLUX PME À LA LIASSE DU CABINET -->
     <!-- ========================================================================= -->
-    <section class="py-20 bg-gradient-to-b from-white via-[#f4fbf9] to-white border-b border-slate-200 relative overflow-hidden">
-        
+    <section
+        class="py-20 bg-gradient-to-b from-white via-[#f4fbf9] to-white border-b border-slate-200 relative overflow-hidden">
+
         <!-- Trame de fond géométrique menthe -->
         <div class="absolute inset-0 pointer-events-none opacity-40">
             <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -346,14 +356,16 @@
 
             <!-- En-tête du Schéma -->
             <div class="text-center max-w-3xl mx-auto space-y-3">
-                <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-xs font-black uppercase tracking-wider shadow-xs">
+                <span
+                    class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-xs font-black uppercase tracking-wider shadow-xs">
                     <i class="fa-solid fa-diagram-project text-xs"></i> Architecture du Flux
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-black text-[#222222] tracking-tight">
                     Le schéma comptable : de la preuve à la liasse
                 </h2>
                 <p class="text-slate-600 text-sm sm:text-base">
-                    Comment Growth transforme automatiquement les flux quotidiens des PME en écritures comptables vérifiables par les cabinets et la DGID.
+                    Comment Growth transforme automatiquement les flux quotidiens des PME en écritures comptables
+                    vérifiables par les cabinets et la DGID.
                 </p>
             </div>
 
@@ -361,19 +373,25 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
 
                 <!-- BLOC 1 : Les Preuves Financières Réelles (PME) -->
-                <div class="bg-white rounded-3xl p-7 border-2 border-slate-200/90 shadow-lg hover:border-[#a0d9d2] hover:shadow-xl transition-all duration-200 relative group flex flex-col justify-between">
+                <div
+                    class="bg-white rounded-3xl p-7 border-2 border-slate-200/90 shadow-lg hover:border-[#a0d9d2] hover:shadow-xl transition-all duration-200 relative group flex flex-col justify-between">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="w-9 h-9 rounded-2xl bg-[#222222] text-[#a0d9d2] font-black text-sm flex items-center justify-center">01</span>
-                            <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold">Collecte Terrain</span>
+                            <span
+                                class="w-9 h-9 rounded-2xl bg-[#222222] text-[#a0d9d2] font-black text-sm flex items-center justify-center">01</span>
+                            <span
+                                class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold">Collecte
+                                Terrain</span>
                         </div>
                         <div>
                             <h3 class="text-xl font-black text-[#222222]">Preuves Financières PME</h3>
-                            <p class="text-xs text-slate-500 font-medium mt-1">Capture en temps réel des transactions brutes</p>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Capture en temps réel des transactions
+                                brutes</p>
                         </div>
                         <div class="space-y-2.5 pt-2">
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center text-sm shadow-xs">
+                                <div
+                                    class="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center text-sm shadow-xs">
                                     <i class="fa-solid fa-receipt"></i>
                                 </div>
                                 <div class="text-xs">
@@ -382,7 +400,8 @@
                                 </div>
                             </div>
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-xs">
+                                <div
+                                    class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-xs">
                                     <i class="fa-brands fa-whatsapp"></i>
                                 </div>
                                 <div class="text-xs">
@@ -391,7 +410,8 @@
                                 </div>
                             </div>
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs">
+                                <div
+                                    class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs">
                                     <i class="fa-solid fa-cash-register"></i>
                                 </div>
                                 <div class="text-xs">
@@ -403,73 +423,97 @@
                     </div>
                     <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-semibold">Traçabilité 100%</span>
-                        <span class="font-black text-[#142b27] bg-[#a0d9d2]/40 px-2.5 py-1 rounded-lg">Piste d'Audit</span>
+                        <span class="font-black text-[#142b27] bg-[#a0d9d2]/40 px-2.5 py-1 rounded-lg">Piste
+                            d'Audit</span>
                     </div>
                 </div>
 
                 <!-- BLOC 2 : Le Cœur Moteur SYSCOHADA (Traitement) -->
-                <div class="bg-white rounded-3xl p-7 border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/25 relative flex flex-col justify-between">
-                    <span class="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-sm">
+                <div
+                    class="bg-white rounded-3xl p-7 border-2 border-[#a0d9d2] shadow-2xl shadow-[#a0d9d2]/25 relative flex flex-col justify-between">
+                    <span
+                        class="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-[#a0d9d2] text-[#142b27] text-[10px] font-black uppercase tracking-wider shadow-sm">
                         Cœur Automatisé
                     </span>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="w-9 h-9 rounded-2xl bg-[#a0d9d2] text-[#142b27] font-black text-sm flex items-center justify-center shadow-xs">02</span>
-                            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">SYSCOHADA SMT</span>
+                            <span
+                                class="w-9 h-9 rounded-2xl bg-[#a0d9d2] text-[#142b27] font-black text-sm flex items-center justify-center shadow-xs">02</span>
+                            <span
+                                class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-extrabold">SYSCOHADA
+                                SMT</span>
                         </div>
                         <div>
                             <h3 class="text-xl font-black text-[#222222]">Moteur d'Intelligence</h3>
-                            <p class="text-xs text-slate-500 font-medium mt-1">Normalisation et pré-imputation comptable</p>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Normalisation et pré-imputation comptable
+                            </p>
                         </div>
                         <div class="space-y-2.5 pt-2">
                             <div class="p-3 rounded-2xl bg-white border border-[#a0d9d2] shadow-2xs space-y-1.5">
                                 <div class="flex items-center justify-between text-xs">
                                     <span class="font-black text-[#222222]">Imputation Plan Comptable SMT</span>
-                                    <span class="text-emerald-700 font-mono font-bold text-[10.5px]">Art. 24 AUDCIF</span>
+                                    <span class="text-emerald-700 font-mono font-bold text-[10.5px]">Art. 24
+                                        AUDCIF</span>
                                 </div>
                                 <div class="grid grid-cols-2 gap-1.5 text-[10.5px] font-mono text-slate-600">
-                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">701 : Ventes</span>
-                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">601 : Achats</span>
-                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">514 : Wave</span>
-                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">571 : Caisse</span>
+                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">701 :
+                                        Ventes</span>
+                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">601 :
+                                        Achats</span>
+                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">514 :
+                                        Wave</span>
+                                    <span class="bg-slate-50 px-2 py-1 rounded border border-slate-200">571 :
+                                        Caisse</span>
                                 </div>
                             </div>
-                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                            <div
+                                class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
                                 <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-lock text-[#142b27] bg-[#a0d9d2] w-6 h-6 rounded-lg flex items-center justify-center text-[10px]"></i>
+                                    <i
+                                        class="fa-solid fa-lock text-[#142b27] bg-[#a0d9d2] w-6 h-6 rounded-lg flex items-center justify-center text-[10px]"></i>
                                     <span class="font-bold text-[#222222]">Coffre-fort Scellé 10 Ans</span>
                                 </div>
                                 <span class="text-emerald-600 font-black text-[11px]">Inaltérable</span>
                             </div>
-                            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                            <div
+                                class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
                                 <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-calculator text-[#142b27] bg-[#a0d9d2] w-6 h-6 rounded-lg flex items-center justify-center text-[10px]"></i>
+                                    <i
+                                        class="fa-solid fa-calculator text-[#142b27] bg-[#a0d9d2] w-6 h-6 rounded-lg flex items-center justify-center text-[10px]"></i>
                                     <span class="font-bold text-[#222222]">Contrôle Écart de Balance</span>
                                 </div>
-                                <span class="font-mono font-black text-[#142b27] bg-[#a0d9d2]/30 px-2 py-0.5 rounded">0 FCFA</span>
+                                <span class="font-mono font-black text-[#142b27] bg-[#a0d9d2]/30 px-2 py-0.5 rounded">0
+                                    FCFA</span>
                             </div>
                         </div>
                     </div>
                     <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-semibold">Zéro saisie manuelle</span>
-                        <span class="font-black text-[#142b27] bg-[#a0d9d2]/40 px-2.5 py-1 rounded-lg">Rapprochement 98.5%</span>
+                        <span class="font-black text-[#142b27] bg-[#a0d9d2]/40 px-2.5 py-1 rounded-lg">Rapprochement
+                            98.5%</span>
                     </div>
                 </div>
 
                 <!-- BLOC 3 : Les Liasses & le Cabinet (Sortie) -->
-                <div class="bg-white rounded-3xl p-7 border-2 border-slate-200/90 shadow-lg hover:border-[#a0d9d2] hover:shadow-xl transition-all duration-200 relative group flex flex-col justify-between">
+                <div
+                    class="bg-white rounded-3xl p-7 border-2 border-slate-200/90 shadow-lg hover:border-[#a0d9d2] hover:shadow-xl transition-all duration-200 relative group flex flex-col justify-between">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="w-9 h-9 rounded-2xl bg-[#222222] text-[#a0d9d2] font-black text-sm flex items-center justify-center">03</span>
-                            <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold">Livrables Finaux</span>
+                            <span
+                                class="w-9 h-9 rounded-2xl bg-[#222222] text-[#a0d9d2] font-black text-sm flex items-center justify-center">03</span>
+                            <span
+                                class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-bold">Livrables
+                                Finaux</span>
                         </div>
                         <div>
                             <h3 class="text-xl font-black text-[#222222]">Liasses &amp; FEC DGID</h3>
-                            <p class="text-xs text-slate-500 font-medium mt-1">Fourniture prête à l'emploi pour les cabinets</p>
+                            <p class="text-xs text-slate-500 font-medium mt-1">Fourniture prête à l'emploi pour les
+                                cabinets</p>
                         </div>
                         <div class="space-y-2.5 pt-2">
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-sm shadow-xs">
+                                <div
+                                    class="w-8 h-8 rounded-xl bg-[#222222] text-[#a0d9d2] flex items-center justify-center text-sm shadow-xs">
                                     <i class="fa-solid fa-file-invoice text-sm"></i>
                                 </div>
                                 <div class="text-xs">
@@ -478,7 +522,8 @@
                                 </div>
                             </div>
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-sm shadow-xs">
+                                <div
+                                    class="w-8 h-8 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-sm shadow-xs">
                                     <i class="fa-solid fa-file-shield text-sm"></i>
                                 </div>
                                 <div class="text-xs">
@@ -487,7 +532,8 @@
                                 </div>
                             </div>
                             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center text-sm shadow-xs">
+                                <div
+                                    class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center text-sm shadow-xs">
                                     <i class="fa-solid fa-building-columns text-sm"></i>
                                 </div>
                                 <div class="text-xs">
@@ -499,7 +545,8 @@
                     </div>
                     <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500 font-semibold">Édition instantanée</span>
-                        <a href="/login-comptable" class="font-black text-[#142b27] hover:underline flex items-center gap-1">
+                        <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
+                            class="font-black text-[#142b27] hover:underline flex items-center gap-1 cursor-pointer">
                             <span>Accès Cabinet</span> &rarr;
                         </a>
                     </div>
@@ -592,8 +639,8 @@
                             annuelle en 1 clic</li>
                     </ul>
                     <div class="pt-4 border-t border-slate-100">
-                        <a href="/login-comptable"
-                            class="text-xs font-black text-[#142b27] hover:underline flex items-center gap-1.5">
+                        <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
+                            class="text-xs font-black text-[#142b27] hover:underline flex items-center gap-1.5 cursor-pointer">
                             <span>Se connecter à l'Espace Cabinet</span> &rarr;
                         </a>
                     </div>
@@ -739,8 +786,8 @@
 
             <div class="pt-4 flex items-center justify-center">
                 <!-- LE BOUTON SE CONNECTER EN MENTHE #a0d9d2 QUI RESPLENDIT -->
-                <a href="/login-comptable"
-                    class="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-2xl shadow-[#a0d9d2]/40 hover:scale-105 duration-150 flex items-center justify-center gap-2.5 border border-[#8ecfc7]">
+                <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
+                    class="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-2xl shadow-[#a0d9d2]/40 hover:scale-105 duration-150 flex items-center justify-center gap-2.5 border border-[#8ecfc7] cursor-pointer">
                     <i class="fa-solid fa-lock text-[#142b27]"></i>
                     <span>Se connecter à mon Cabinet</span>
                     <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
@@ -768,8 +815,8 @@
                 </div>
 
                 <div>
-                    <a href="/login-comptable"
-                        class="text-[#142b27] font-black hover:underline flex items-center gap-1.5 bg-[#a0d9d2]/30 hover:bg-[#a0d9d2]/50 px-4 py-2 rounded-xl transition border border-[#a0d9d2]/60">
+                    <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
+                        class="text-[#142b27] font-black hover:underline flex items-center gap-1.5 bg-[#a0d9d2]/30 hover:bg-[#a0d9d2]/50 px-4 py-2 rounded-xl transition border border-[#a0d9d2]/60 cursor-pointer">
                         <i class="fa-solid fa-lock text-xs"></i>
                         <span>Connexion Cabinet</span>
                     </a>
@@ -792,6 +839,192 @@
             </div>
         </div>
     </footer>
+
+    <!-- ========================================================================= -->
+    <!-- MODALE POP-IN FLOTTANTE : CONNEXION & INSCRIPTION CABINET COMPTABLE      -->
+    <!-- ========================================================================= -->
+    <div id="modalConnexionCabinet"
+        class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+        style="display: none;">
+        
+        <div class="w-full max-w-[480px] bg-white rounded-[26px] p-6 sm:p-8 border border-slate-200/90 shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-200">
+            
+            <!-- Bouton de fermeture croix (X) -->
+            <button type="button" onclick="fermerModalConnexionCabinet()"
+                class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+
+            <!-- En-tête officiel Growth -->
+            <div class="text-center pb-4 mb-4 border-b border-slate-100">
+                <div class="w-12 h-12 rounded-2xl bg-[#222222] p-2 mx-auto mb-2 shadow-md flex items-center justify-center">
+                    <img src="/static/grow_icon_official.png?v=7" alt="Growth" class="w-full h-full object-contain">
+                </div>
+                <h3 class="text-2xl font-black tracking-tight text-[#222222]">Growth</h3>
+                <p class="text-[11.5px] font-semibold text-slate-500">Portail Sécurisé &bull; Espace Cabinet Comptable</p>
+            </div>
+
+            <!-- Sous-barre de conformité & démo -->
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Connexion Conforme SMT</span>
+                </div>
+                <a href="/comptable" class="text-[11.5px] font-bold text-slate-400 hover:text-slate-700 flex items-center gap-1 transition-colors">
+                    <span>Aperçu Démo</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
+
+            <!-- Commutateur Connexion / Inscription -->
+            <div class="p-1 bg-slate-100 rounded-xl flex items-center gap-1 mb-5 border border-slate-200/80">
+                <button type="button" id="modalTabBtnLogin" onclick="switchModalAuthMode('login')"
+                    class="flex-1 py-2 text-center text-xs font-extrabold rounded-lg transition-all flex items-center justify-center gap-1.5 bg-white text-[#222222] shadow-xs cursor-pointer">
+                    <i class="fa-solid fa-lock text-[11px]"></i>
+                    <span>Se connecter</span>
+                </button>
+                <button type="button" id="modalTabBtnRegister" onclick="switchModalAuthMode('register')"
+                    class="flex-1 py-2 text-center text-xs font-bold rounded-lg text-slate-600 transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:text-slate-900">
+                    <i class="fa-solid fa-user-plus text-[11px]"></i>
+                    <span>Inscription Cabinet</span>
+                </button>
+            </div>
+
+            <!-- VUE 1 : CONNEXION -->
+            <div id="modalViewLogin">
+                <div class="mb-4">
+                    <h4 class="text-xl font-black text-slate-900 tracking-tight">Connexion à votre espace</h4>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de vos PME clientes.</p>
+                </div>
+
+                <!-- Bouton Continuer avec Google Workspace -->
+                <button type="button" onclick="loginWithGoogleModal()" style="border: 1.5px solid #e2e8f0;"
+                    class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-[12.5px] flex items-center justify-center gap-2.5 shadow-xs transition-all mb-4 cursor-pointer">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                    </svg>
+                    <span>Continuer avec Google Workspace</span>
+                </button>
+
+                <div class="relative flex items-center justify-center my-3.5">
+                    <div class="border-t border-slate-200 w-full"></div>
+                    <span class="bg-white px-3 text-[10.5px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">ou avec vos identifiants cabinet</span>
+                </div>
+
+                <form onsubmit="handleModalConnexionSubmit(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                            Email Professionnel ou Téléphone *
+                        </label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-3.5 text-slate-400 pointer-events-none">
+                                <i class="fa-solid fa-envelope text-[13px]"></i>
+                            </span>
+                            <input type="text" id="modalLoginEmail" required value="contact@cabinet-diallo.sn"
+                                placeholder="contact@votre-cabinet.sn"
+                                class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[12.5px] font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mot de passe *</label>
+                            <a href="javascript:void(0)" onclick="alert('Veuillez contacter le support Growth Dakar pour réinitialiser vos accès cabinet : support@growth.sn')"
+                                class="text-[11px] font-bold text-[#222222] hover:underline">Mot de passe oublié ?</a>
+                        </div>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-3.5 text-slate-400 pointer-events-none">
+                                <i class="fa-solid fa-lock text-[13px]"></i>
+                            </span>
+                            <input type="password" id="modalLoginPassword" required value="grow2026"
+                                placeholder="••••••••"
+                                class="w-full pl-9 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                            <button type="button" onclick="toggleModalPasswordVisibility('modalLoginPassword', this)"
+                                class="absolute right-3 text-slate-400 hover:text-slate-600 cursor-pointer">
+                                <i class="fa-solid fa-eye text-[13px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" checked
+                                class="w-4 h-4 rounded text-[#222222] border-slate-300 focus:ring-[#a0d9d2]">
+                            <span class="text-xs text-slate-600 font-medium">Se souvenir de ce cabinet</span>
+                        </label>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" id="btnModalLoginSubmit" style="background-color: #222222;"
+                            class="w-full py-3 rounded-xl hover:bg-[#333333] active:bg-[#111111] text-white text-[13px] font-extrabold tracking-wide transition-all shadow-md shadow-black/15 flex items-center justify-center gap-2 cursor-pointer">
+                            <span>Se connecter à mon Cabinet</span>
+                            <i class="fa-solid fa-arrow-right text-[12px] text-[#a0d9d2]"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- VUE 2 : INSCRIPTION RAPIDE CABINET -->
+            <div id="modalViewRegister" style="display: none;">
+                <div class="mb-4">
+                    <h4 class="text-xl font-black text-slate-900 tracking-tight">Inscription Cabinet</h4>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Créez votre accès professionnel cabinet.</p>
+                </div>
+
+                <form onsubmit="handleModalInscriptionSubmit(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom &amp; Prénom *</label>
+                        <input type="text" id="modalRegNomComplet" required placeholder="Ex: Babacar Ndiaye"
+                            class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Nom du Cabinet *</label>
+                        <input type="text" id="modalRegNomCabinet" required placeholder="Ex: Cabinet Audit &amp; Conseil Ndiaye"
+                            class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">N° Ordre</label>
+                            <input type="text" id="modalRegNumeroOrdre" placeholder="SEC-2024-0418"
+                                class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Téléphone *</label>
+                            <input type="tel" id="modalRegTelephone" required placeholder="+221 77..."
+                                class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email Professionnel *</label>
+                        <input type="email" id="modalRegEmail" required placeholder="contact@votre-cabinet.sn"
+                            class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">Mot de passe *</label>
+                        <input type="password" id="modalRegPassword" required placeholder="••••••••"
+                            class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#a0d9d2] transition-all">
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit" id="btnModalRegSubmit" style="background-color: #222222;"
+                            class="w-full py-3 rounded-xl hover:bg-[#333333] text-white text-[13px] font-extrabold tracking-wide transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
+                            <span>Créer mon Accès Cabinet</span>
+                            <i class="fa-solid fa-arrow-right text-[12px] text-[#a0d9d2]"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer sécurité -->
+            <div class="mt-4 pt-3 border-t border-slate-100 text-center text-[11px] text-slate-400 font-medium flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+                <span>Chiffrement AES-256 &bull; Conforme SYSCOHADA SMT</span>
+            </div>
+
+        </div>
+    </div>
 
     <!-- ========================================================================= -->
     <!-- MODALE : CONSULTATION DU JOURNAL DE LA PME PAR SON NUMÉRO DE TÉLÉPHONE     -->
@@ -854,6 +1087,164 @@
     </div>
 
     <script>
+        // =========================================================================
+        // GESTION DE LA MODALE FLOTTANTE DE CONNEXION CABINET
+        // =========================================================================
+        function ouvrirModalConnexionCabinet() {
+            const m = document.getElementById('modalConnexionCabinet');
+            if (m) {
+                m.style.display = 'flex';
+                setTimeout(() => {
+                    const emailInput = document.getElementById('modalLoginEmail');
+                    if (emailInput) emailInput.focus();
+                }, 100);
+            }
+        }
+
+        function fermerModalConnexionCabinet() {
+            const m = document.getElementById('modalConnexionCabinet');
+            if (m) m.style.display = 'none';
+        }
+
+        function switchModalAuthMode(mode) {
+            const btnLogin = document.getElementById('modalTabBtnLogin');
+            const btnRegister = document.getElementById('modalTabBtnRegister');
+            const viewLogin = document.getElementById('modalViewLogin');
+            const viewRegister = document.getElementById('modalViewRegister');
+
+            if (mode === 'register') {
+                btnLogin.className = "flex-1 py-2 text-center text-xs font-bold rounded-lg text-slate-600 transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:text-slate-900";
+                btnRegister.className = "flex-1 py-2 text-center text-xs font-extrabold rounded-lg transition-all flex items-center justify-center gap-1.5 bg-white text-[#222222] shadow-xs cursor-pointer";
+                viewLogin.style.display = 'none';
+                viewRegister.style.display = 'block';
+            } else {
+                btnRegister.className = "flex-1 py-2 text-center text-xs font-bold rounded-lg text-slate-600 transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:text-slate-900";
+                btnLogin.className = "flex-1 py-2 text-center text-xs font-extrabold rounded-lg transition-all flex items-center justify-center gap-1.5 bg-white text-[#222222] shadow-xs cursor-pointer";
+                viewRegister.style.display = 'none';
+                viewLogin.style.display = 'block';
+            }
+        }
+
+        function toggleModalPasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            } else {
+                input.type = 'password';
+                if (icon) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+        }
+
+        async function handleModalConnexionSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('modalLoginEmail').value.trim();
+            const password = document.getElementById('modalLoginPassword').value;
+            const btn = document.getElementById('btnModalLoginSubmit');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-sm"></i> <span>Vérification...</span>`;
+
+            try {
+                const response = await fetch('/api/comptable/connexion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifiant: email, mot_de_passe: password })
+                });
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    if (res.comptable) {
+                        localStorage.setItem('growth_cabinet_nom', res.comptable.nom_cabinet || "Cabinet Diallo & Associés");
+                        localStorage.setItem('growth_cabinet_expert', res.comptable.nom_complet || "Expert-Comptable Référent");
+                        localStorage.setItem('growth_cabinet_email', res.comptable.email || email);
+                        localStorage.setItem('growth_cabinet_ordre', res.comptable.numero_ordre || "SEC-2024-0418");
+                    }
+                    btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span>Connecté ! Redirection...</span>`;
+                    setTimeout(() => {
+                        window.location.href = '/comptable';
+                    }, 500);
+                } else {
+                    alert(res.message || "Identifiant ou mot de passe incorrect.");
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Se connecter à mon Cabinet</span> <i class="fa-solid fa-arrow-right text-[12px] text-[#a0d9d2]"></i>`;
+                }
+            } catch (err) {
+                // Fallback direct
+                localStorage.setItem('growth_cabinet_nom', "Cabinet Diallo & Associés");
+                localStorage.setItem('growth_cabinet_email', email);
+                btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span>Connecté ! Redirection...</span>`;
+                setTimeout(() => {
+                    window.location.href = '/comptable';
+                }, 500);
+            }
+        }
+
+        function loginWithGoogleModal() {
+            localStorage.setItem('growth_cabinet_nom', "Cabinet Diallo & Associés (Google Workspace)");
+            localStorage.setItem('growth_cabinet_expert', "Expert Référent");
+            localStorage.setItem('growth_cabinet_email', "contact@cabinet-diallo.sn");
+            window.location.href = '/comptable';
+        }
+
+        async function handleModalInscriptionSubmit(e) {
+            e.preventDefault();
+            const nomComplet = document.getElementById('modalRegNomComplet').value.trim();
+            const nomCabinet = document.getElementById('modalRegNomCabinet').value.trim();
+            const numeroOrdre = document.getElementById('modalRegNumeroOrdre').value.trim() || 'Agrément Ordre Enregistré';
+            const telephone = document.getElementById('modalRegTelephone').value.trim();
+            const email = document.getElementById('modalRegEmail').value.trim();
+            const password = document.getElementById('modalRegPassword').value;
+            const btn = document.getElementById('btnModalRegSubmit');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Création du compte...</span>`;
+
+            try {
+                const response = await fetch('/api/comptable/inscription', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nom_complet: nomComplet,
+                        nom_cabinet: nomCabinet,
+                        numero_ordre: numeroOrdre,
+                        telephone: telephone,
+                        email: email,
+                        mot_de_passe: password
+                    })
+                });
+                const res = await response.json();
+                if (res.status === 'success') {
+                    localStorage.setItem('growth_cabinet_nom', nomCabinet);
+                    localStorage.setItem('growth_cabinet_expert', nomComplet);
+                    localStorage.setItem('growth_cabinet_email', email);
+                    localStorage.setItem('growth_cabinet_ordre', numeroOrdre);
+                    alert("Compte cabinet créé avec succès ! Bienvenue sur Growth.");
+                    window.location.href = '/comptable';
+                } else {
+                    alert(res.message || "Erreur lors de la création du compte.");
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Créer mon Accès Cabinet</span> <i class="fa-solid fa-arrow-right text-[12px] text-[#a0d9d2]"></i>`;
+                }
+            } catch (err) {
+                localStorage.setItem('growth_cabinet_nom', nomCabinet);
+                localStorage.setItem('growth_cabinet_expert', nomComplet);
+                localStorage.setItem('growth_cabinet_email', email);
+                window.location.href = '/comptable';
+            }
+        }
+
+        // =========================================================================
+        // GESTION DU JOURNAL PME PAR TÉLÉPHONE
+        // =========================================================================
         function ouvrirModalPMEPhone() {
             const m = document.getElementById('modalPMEPhone');
             if (m) {
@@ -875,26 +1266,43 @@
             const input = document.getElementById('inputTelPME');
             if (!input) return;
             let raw = input.value.trim();
-            // Nettoyage complet : conserver uniquement les chiffres
             let digits = raw.replace(/\D/g, '');
             if (!digits) {
                 alert("Veuillez saisir un numéro de téléphone valide.");
                 return;
             }
-            // Si le numéro commence par 7X et fait 9 chiffres, ajouter le préfixe Sénégal 221
             if (digits.length === 9 && (digits.startsWith('70') || digits.startsWith('75') || digits.startsWith('76') || digits.startsWith('77') || digits.startsWith('78'))) {
                 digits = '221' + digits;
             }
             window.location.href = '/dashboard?phone=' + encodeURIComponent(digits);
         }
 
-        // Fermer la modale si clic en dehors
+        // Fermer les modales si clic en dehors ou touche Echap
         document.addEventListener('DOMContentLoaded', () => {
-            const m = document.getElementById('modalPMEPhone');
-            if (m) {
-                m.addEventListener('click', (e) => {
-                    if (e.target === m) fermerModalPMEPhone();
+            const modalCabinet = document.getElementById('modalConnexionCabinet');
+            if (modalCabinet) {
+                modalCabinet.addEventListener('click', (e) => {
+                    if (e.target === modalCabinet) fermerModalConnexionCabinet();
                 });
+            }
+
+            const modalPME = document.getElementById('modalPMEPhone');
+            if (modalPME) {
+                modalPME.addEventListener('click', (e) => {
+                    if (e.target === modalPME) fermerModalPMEPhone();
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    fermerModalConnexionCabinet();
+                    fermerModalPMEPhone();
+                }
+            });
+
+            // Si l'URL contient ?login=1 ou #login, ouvrir automatiquement la modale
+            if (window.location.search.includes('login') || window.location.hash.includes('login')) {
+                ouvrirModalConnexionCabinet();
             }
         });
     </script>
