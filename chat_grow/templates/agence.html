@@ -1490,11 +1490,12 @@
                             style="display: flex; align-items: center; gap: 10px; padding: 4px 12px 4px 6px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 99px; cursor: pointer; transition: all 0.15s; outline: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04);"
                             onmouseover="this.style.borderColor='#cbd5e1'; this.style.background='#f8fafc';"
                             onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#ffffff';">
-                            <!-- Avatar Expert avec indicateur en ligne -->
+                            <!-- Avatar Expert avec Initiales (Début de lettre) & indicateur en ligne -->
                             <div style="position: relative; width: 32px; height: 32px; flex-shrink: 0;">
-                                <img src="/static/user_avatar.png" alt="Expert-Comptable"
-                                    onerror="this.src='/static/grow_icon_squircle.png?v=3'"
-                                    style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #168078;">
+                                <div id="navCabinetAvatar"
+                                    style="width: 32px; height: 32px; border-radius: 50%; background: #142b27; color: #a0d9d2; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; letter-spacing: 0.5px; border: 1.5px solid #168078; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+                                    CD
+                                </div>
                                 <span
                                     style="position: absolute; bottom: 0; right: 0; width: 8.5px; height: 8.5px; border-radius: 50%; background: #10b981; border: 1.5px solid #ffffff;"></span>
                             </div>
@@ -4836,6 +4837,12 @@
             if (navNom) navNom.textContent = nom;
             const navSub = document.getElementById('navCabinetSubtitle');
             if (navSub && resp) navSub.textContent = resp;
+            const navCabAvatar = document.getElementById('navCabinetAvatar');
+            if (navCabAvatar) {
+                const words = nom.replace(/[^a-zA-Z0-9\s]/g, '').trim().split(/\s+/);
+                const inits = words.length >= 2 ? (words[0][0] + words[1][0]).toUpperCase() : nom.substring(0, 2).toUpperCase();
+                navCabAvatar.textContent = inits || 'CD';
+            }
             const menuNom = document.getElementById('navMenuCabinetName');
             if (menuNom) menuNom.textContent = nom;
             const menuEmail = document.getElementById('navMenuCabinetEmail');
