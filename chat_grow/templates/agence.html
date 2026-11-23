@@ -2175,7 +2175,7 @@
                 <!-- ========================================================================= -->
                 <div id="sectionPme" class="agency-tab-pane">
 
-                    <!-- Barre d'outils PME Clientes Moderne & Épurée -->
+                    <!-- Barre d'outils PME Clientes (Design Moderne & Épuré) -->
                     <div
                         style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
                         <div style="position: relative; width: 100%; max-width: 380px;">
@@ -2183,282 +2183,279 @@
                                 style="position: absolute; left: 14px; top: 12px; color: #94a3b8; font-size: 13px;"></i>
                             <input type="text" id="searchPmeInput" onkeyup="filtrerPmeTable()"
                                 placeholder="Rechercher une PME, un NINEA, gérant..."
-                                style="width: 100%; padding: 9px 14px 9px 38px; border: 1.5px solid #cbd5e1; border-radius: 9px; font-size: 12.5px; outline: none; background: #f8fafc; font-family: inherit; transition: all 0.15s;">
+                                style="width: 100%; padding: 9px 14px 9px 38px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 12.5px; outline: none; background: #f8fafc; font-family: inherit; transition: all 0.15s;"
+                                onfocus="this.style.borderColor='#168078'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 3px rgba(22,128,120,0.1)';"
+                                onblur="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc'; this.style.boxShadow='none';">
                         </div>
 
-                        <!-- Filtres pilules élégants pour le régime fiscal (remplace le select natif) -->
+                        <!-- Filtres pilules élégants pour le régime fiscal -->
                         <div
-                            style="display: flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 10px;">
+                            style="display: flex; align-items: center; gap: 4px; background: #f1f5f9; padding: 4px; border-radius: 10px;">
                             <button type="button" id="regimeBtnAll" onclick="filtrerPmeRegime('ALL', this)"
                                 class="pme-regime-pill"
-                                style="padding: 7px 15px; border-radius: 8px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; transition: all 0.15s; background: #222222; color: #ffffff; box-shadow: 0 1px 4px rgba(20, 54, 43, 0.25);">
+                                style="padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 800; border: none; cursor: pointer; transition: all 0.15s; background: #ffffff; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
                                 Tous les régimes <span
-                                    style="font-size: 10.5px; opacity: 0.85; margin-left: 3px;">(5)</span>
+                                    style="font-size: 10.5px; color: #64748b; font-weight: 700; margin-left: 2px;">(5)</span>
                             </button>
                             <button type="button" id="regimeBtnSmt" onclick="filtrerPmeRegime('SMT', this)"
                                 class="pme-regime-pill"
-                                style="padding: 7px 15px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; background: transparent; color: #475569;">
-                                Régime SMT <span style="font-size: 10.5px; opacity: 0.85; margin-left: 3px;">(4)</span>
+                                style="padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; background: transparent; color: #64748b;">
+                                Régime SMT <span style="font-size: 10.5px; color: #94a3b8; margin-left: 2px;">(4)</span>
                             </button>
                             <button type="button" id="regimeBtnNormal" onclick="filtrerPmeRegime('NORMAL', this)"
                                 class="pme-regime-pill"
-                                style="padding: 7px 15px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; background: transparent; color: #475569;">
+                                style="padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; background: transparent; color: #64748b;">
                                 Régime Normal <span
-                                    style="font-size: 10.5px; opacity: 0.85; margin-left: 3px;">(1)</span>
+                                    style="font-size: 10.5px; color: #94a3b8; margin-left: 2px;">(1)</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Tableau du Portefeuille PME Clientes -->
+                    <!-- Tableau du Portefeuille PME Clientes (Design Prestige & Avatars) -->
                     <div class="table-container"
-                        style="background: white; border: 1px solid #e2e8f0; border-radius: 14px; overflow-x: auto; width: 100%; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+                        style="background: white; border: 1px solid #e2e8f0; border-radius: 14px; overflow-x: auto; width: 100%; box-shadow: 0 4px 20px -2px rgba(15,23,42,0.04);">
                         <table class="agency-table" style="width: 100%; border-collapse: collapse;">
                             <thead>
                                 <tr style="background-color: #f8fafc; border-bottom: 1.5px solid #e2e8f0;">
                                     <th
-                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border-top-left-radius: 13px;">
+                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 18px; text-align: left; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-top-left-radius: 13px;">
                                         Entreprise &amp; Contact</th>
                                     <th
-                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 16px; text-align: left; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
                                         Secteur &amp; Localisation</th>
                                     <th
-                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 16px; text-align: right; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 18px; text-align: right; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
                                         Chiffre d'Affaires</th>
                                     <th
-                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 16px; text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 16px; text-align: center; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
                                         Régime Fiscal</th>
                                     <th
-                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 16px; text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; border-top-right-radius: 13px;">
+                                        style="background-color: #f8fafc !important; color: #475569 !important; border-bottom: 1.5px solid #e2e8f0 !important; padding: 13px 18px; text-align: center; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; border-top-right-radius: 13px;">
                                         Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="pmeTableBody">
                                 <!-- 1. Mamadou Diop -->
-                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                    <td style="padding: 14px 16px;">
-                                        <div>
-                                            <div style="font-weight: 800; color: #0f172a; font-size: 13.5px;">
-                                                Établissement Mamadou Diop</div>
-                                            <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 78
-                                                877 38 27 &bull; NINEA: 009845210</div>
+                                <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;"
+                                    onmouseover="this.style.background='#f8fafc';"
+                                    onmouseout="this.style.background='transparent';">
+                                    <td style="padding: 13px 18px;">
+                                        <div style="display: flex; align-items: center; gap: 11px;">
+                                            <div
+                                                style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(15,118,110,0.22);">
+                                                MD
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 800; color: #0f172a; font-size: 13.5px; letter-spacing: -0.2px;">
+                                                    Établissement Mamadou Diop</div>
+                                                <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 78 877 38 27 &bull; NINEA: 009845210</div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px;">
-                                        <div style="font-weight: 600; color: #1e293b; font-size: 12.5px;">Alimentation
-                                            Générale &amp; Riz</div>
-                                        <div
-                                            style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                                            <i class="fa-solid fa-location-dot"
-                                                style="font-size: 10px; color: #94a3b8;"></i>
+                                    <td style="padding: 13px 16px;">
+                                        <div style="font-weight: 700; color: #1e293b; font-size: 12.5px;">Alimentation Générale &amp; Riz</div>
+                                        <div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                            <i class="fa-solid fa-location-dot" style="font-size: 10px; color: #168078;"></i>
                                             Marché Sandaga, Dakar
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: right; white-space: nowrap;">
-                                        <span style="font-weight: 800; color: #0f172a; font-size: 13.5px;">3 850
-                                            000</span>
-                                        <span
-                                            style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
+                                    <td style="padding: 13px 18px; text-align: right; white-space: nowrap;">
+                                        <span style="font-weight: 900; color: #0f172a; font-size: 14px;">3 850 000</span>
+                                        <span style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 16px; text-align: center; white-space: nowrap;">
                                         <span
                                             style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
-                                            <span
-                                                style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>SYSCOHADA
-                                            SMT
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>SYSCOHADA SMT
                                         </span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 18px; text-align: center; white-space: nowrap;">
                                         <button onclick="selectionnerPmeDossier('Établissement Mamadou Diop')"
-                                            style="padding: 7px 15px; background: #222222; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 4px rgba(20, 54, 43, 0.2); transition: all 0.15s;"
-                                            onmouseover="this.style.background='#168078';"
-                                            onmouseout="this.style.background='#222222';">
-                                            <i class="fa-solid fa-folder-open"
-                                                style="color: #a0d9d2; font-size: 11.5px;"></i>
-                                            Gérer
+                                            style="padding: 7px 14px; background: #f0fdfa; color: #0f766e; border: 1.5px solid #ccfbf1; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s;"
+                                            onmouseover="this.style.background='#168078'; this.style.color='#ffffff'; this.style.borderColor='#168078'; this.style.boxShadow='0 3px 10px rgba(22,128,120,0.25)';"
+                                            onmouseout="this.style.background='#f0fdfa'; this.style.color='#0f766e'; this.style.borderColor='#ccfbf1'; this.style.boxShadow='none';">
+                                            <i class="fa-solid fa-folder-open" style="font-size: 11.5px;"></i>
+                                            <span>Gérer</span>
                                         </button>
                                     </td>
                                 </tr>
 
                                 <!-- 2. Touba Électronique -->
-                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                    <td style="padding: 14px 16px;">
-                                        <div>
-                                            <div style="font-weight: 800; color: #0f172a; font-size: 13.5px;">
-                                                Boutique Touba Électronique</div>
-                                            <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 77
-                                                654 32 10 &bull; NINEA: 008124950</div>
+                                <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;"
+                                    onmouseover="this.style.background='#f8fafc';"
+                                    onmouseout="this.style.background='transparent';">
+                                    <td style="padding: 13px 18px;">
+                                        <div style="display: flex; align-items: center; gap: 11px;">
+                                            <div
+                                                style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(29,78,216,0.22);">
+                                                TE
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 800; color: #0f172a; font-size: 13.5px; letter-spacing: -0.2px;">
+                                                    Boutique Touba Électronique</div>
+                                                <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 77 654 32 10 &bull; NINEA: 008124950</div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px;">
-                                        <div style="font-weight: 600; color: #1e293b; font-size: 12.5px;">High-Tech
-                                            &amp; Électroménager</div>
-                                        <div
-                                            style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                                            <i class="fa-solid fa-location-dot"
-                                                style="font-size: 10px; color: #94a3b8;"></i>
+                                    <td style="padding: 13px 16px;">
+                                        <div style="font-weight: 700; color: #1e293b; font-size: 12.5px;">High-Tech &amp; Électroménager</div>
+                                        <div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                            <i class="fa-solid fa-location-dot" style="font-size: 10px; color: #168078;"></i>
                                             Colobane, Dakar
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: right; white-space: nowrap;">
-                                        <span style="font-weight: 800; color: #0f172a; font-size: 13.5px;">6 200
-                                            000</span>
-                                        <span
-                                            style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
+                                    <td style="padding: 13px 18px; text-align: right; white-space: nowrap;">
+                                        <span style="font-weight: 900; color: #0f172a; font-size: 14px;">6 200 000</span>
+                                        <span style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 16px; text-align: center; white-space: nowrap;">
                                         <span
                                             style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
-                                            <span
-                                                style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>SYSCOHADA
-                                            SMT
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>SYSCOHADA SMT
                                         </span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 18px; text-align: center; white-space: nowrap;">
                                         <button onclick="selectionnerPmeDossier('Boutique Touba Électronique')"
-                                            style="padding: 7px 15px; background: #222222; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 4px rgba(20, 54, 43, 0.2); transition: all 0.15s;"
-                                            onmouseover="this.style.background='#168078';"
-                                            onmouseout="this.style.background='#222222';">
-                                            <i class="fa-solid fa-folder-open"
-                                                style="color: #a0d9d2; font-size: 11.5px;"></i>
-                                            Gérer
+                                            style="padding: 7px 14px; background: #f0fdfa; color: #0f766e; border: 1.5px solid #ccfbf1; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s;"
+                                            onmouseover="this.style.background='#168078'; this.style.color='#ffffff'; this.style.borderColor='#168078'; this.style.boxShadow='0 3px 10px rgba(22,128,120,0.25)';"
+                                            onmouseout="this.style.background='#f0fdfa'; this.style.color='#0f766e'; this.style.borderColor='#ccfbf1'; this.style.boxShadow='none';">
+                                            <i class="fa-solid fa-folder-open" style="font-size: 11.5px;"></i>
+                                            <span>Gérer</span>
                                         </button>
                                     </td>
                                 </tr>
 
                                 <!-- 3. Pressing Moderne -->
-                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                    <td style="padding: 14px 16px;">
-                                        <div>
-                                            <div style="font-weight: 800; color: #0f172a; font-size: 13.5px;">
-                                                Pressing Moderne Dakar</div>
-                                            <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 70
-                                                812 34 56 &bull; NINEA: 007341820</div>
+                                <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;"
+                                    onmouseover="this.style.background='#f8fafc';"
+                                    onmouseout="this.style.background='transparent';">
+                                    <td style="padding: 13px 18px;">
+                                        <div style="display: flex; align-items: center; gap: 11px;">
+                                            <div
+                                                style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(67,56,202,0.22);">
+                                                PM
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 800; color: #0f172a; font-size: 13.5px; letter-spacing: -0.2px;">
+                                                    Pressing Moderne Dakar</div>
+                                                <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 70 812 34 56 &bull; NINEA: 007341820</div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px;">
-                                        <div style="font-weight: 600; color: #1e293b; font-size: 12.5px;">Services &amp;
-                                            Blanchisserie</div>
-                                        <div
-                                            style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                                            <i class="fa-solid fa-location-dot"
-                                                style="font-size: 10px; color: #94a3b8;"></i>
+                                    <td style="padding: 13px 16px;">
+                                        <div style="font-weight: 700; color: #1e293b; font-size: 12.5px;">Services &amp; Blanchisserie</div>
+                                        <div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                            <i class="fa-solid fa-location-dot" style="font-size: 10px; color: #168078;"></i>
                                             Almadies, Dakar
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: right; white-space: nowrap;">
-                                        <span style="font-weight: 800; color: #0f172a; font-size: 13.5px;">2 450
-                                            000</span>
-                                        <span
-                                            style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
+                                    <td style="padding: 13px 18px; text-align: right; white-space: nowrap;">
+                                        <span style="font-weight: 900; color: #0f172a; font-size: 14px;">2 450 000</span>
+                                        <span style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 16px; text-align: center; white-space: nowrap;">
                                         <span
                                             style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
-                                            <span
-                                                style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>SYSCOHADA
-                                            SMT
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>SYSCOHADA SMT
                                         </span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 18px; text-align: center; white-space: nowrap;">
                                         <button onclick="selectionnerPmeDossier('Pressing Moderne Dakar')"
-                                            style="padding: 7px 15px; background: #222222; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 4px rgba(20, 54, 43, 0.2); transition: all 0.15s;"
-                                            onmouseover="this.style.background='#168078';"
-                                            onmouseout="this.style.background='#222222';">
-                                            <i class="fa-solid fa-folder-open"
-                                                style="color: #a0d9d2; font-size: 11.5px;"></i>
-                                            Gérer
+                                            style="padding: 7px 14px; background: #f0fdfa; color: #0f766e; border: 1.5px solid #ccfbf1; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s;"
+                                            onmouseover="this.style.background='#168078'; this.style.color='#ffffff'; this.style.borderColor='#168078'; this.style.boxShadow='0 3px 10px rgba(22,128,120,0.25)';"
+                                            onmouseout="this.style.background='#f0fdfa'; this.style.color='#0f766e'; this.style.borderColor='#ccfbf1'; this.style.boxShadow='none';">
+                                            <i class="fa-solid fa-folder-open" style="font-size: 11.5px;"></i>
+                                            <span>Gérer</span>
                                         </button>
                                     </td>
                                 </tr>
 
-                                <!-- 4. Fatou Ndiaye -->
-                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                    <td style="padding: 14px 16px;">
-                                        <div>
-                                            <div style="font-weight: 800; color: #0f172a; font-size: 13.5px;">
-                                                Atelier Fatou Ndiaye Couture</div>
-                                            <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 76
-                                                543 21 09 &bull; NINEA: 006591230</div>
+                                <!-- 4. Fatou Ndiaye Couture -->
+                                <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;"
+                                    onmouseover="this.style.background='#f8fafc';"
+                                    onmouseout="this.style.background='transparent';">
+                                    <td style="padding: 13px 18px;">
+                                        <div style="display: flex; align-items: center; gap: 11px;">
+                                            <div
+                                                style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #be185d 0%, #ec4899 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(190,24,93,0.22);">
+                                                FN
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 800; color: #0f172a; font-size: 13.5px; letter-spacing: -0.2px;">
+                                                    Atelier Fatou Ndiaye Couture</div>
+                                                <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 76 543 21 09 &bull; NINEA: 006591230</div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px;">
-                                        <div style="font-weight: 600; color: #1e293b; font-size: 12.5px;">Stylisme &amp;
-                                            Confection Wax</div>
-                                        <div
-                                            style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                                            <i class="fa-solid fa-location-dot"
-                                                style="font-size: 10px; color: #94a3b8;"></i>
+                                    <td style="padding: 13px 16px;">
+                                        <div style="font-weight: 700; color: #1e293b; font-size: 12.5px;">Stylisme &amp; Confection Wax</div>
+                                        <div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                            <i class="fa-solid fa-location-dot" style="font-size: 10px; color: #168078;"></i>
                                             Médina, Dakar
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: right; white-space: nowrap;">
-                                        <span style="font-weight: 800; color: #0f172a; font-size: 13.5px;">1 800
-                                            000</span>
-                                        <span
-                                            style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
+                                    <td style="padding: 13px 18px; text-align: right; white-space: nowrap;">
+                                        <span style="font-weight: 900; color: #0f172a; font-size: 14px;">1 800 000</span>
+                                        <span style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 16px; text-align: center; white-space: nowrap;">
                                         <span
                                             style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
-                                            <span
-                                                style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>SYSCOHADA
-                                            SMT
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>SYSCOHADA SMT
                                         </span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 18px; text-align: center; white-space: nowrap;">
                                         <button onclick="selectionnerPmeDossier('Atelier Fatou Ndiaye Couture')"
-                                            style="padding: 7px 15px; background: #222222; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 4px rgba(20, 54, 43, 0.2); transition: all 0.15s;"
-                                            onmouseover="this.style.background='#168078';"
-                                            onmouseout="this.style.background='#222222';">
-                                            <i class="fa-solid fa-folder-open"
-                                                style="color: #a0d9d2; font-size: 11.5px;"></i>
-                                            Gérer
+                                            style="padding: 7px 14px; background: #f0fdfa; color: #0f766e; border: 1.5px solid #ccfbf1; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s;"
+                                            onmouseover="this.style.background='#168078'; this.style.color='#ffffff'; this.style.borderColor='#168078'; this.style.boxShadow='0 3px 10px rgba(22,128,120,0.25)';"
+                                            onmouseout="this.style.background='#f0fdfa'; this.style.color='#0f766e'; this.style.borderColor='#ccfbf1'; this.style.boxShadow='none';">
+                                            <i class="fa-solid fa-folder-open" style="font-size: 11.5px;"></i>
+                                            <span>Gérer</span>
                                         </button>
                                     </td>
                                 </tr>
 
-                                <!-- 5. Transports Sahel -->
-                                <tr>
-                                    <td style="padding: 14px 16px;">
-                                        <div>
-                                            <div style="font-weight: 800; color: #0f172a; font-size: 13.5px;">
-                                                Transports Express Yoff SARL</div>
-                                            <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 77
-                                                123 45 67 &bull; NINEA: 005432109</div>
+                                <!-- 5. Transports Express Yoff SARL -->
+                                <tr style="transition: background 0.15s;"
+                                    onmouseover="this.style.background='#f8fafc';"
+                                    onmouseout="this.style.background='transparent';">
+                                    <td style="padding: 13px 18px;">
+                                        <div style="display: flex; align-items: center; gap: 11px;">
+                                            <div
+                                                style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; letter-spacing: -0.5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(180,83,9,0.22);">
+                                                TY
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 800; color: #0f172a; font-size: 13.5px; letter-spacing: -0.2px;">
+                                                    Transports Express Yoff SARL</div>
+                                                <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">+221 77 123 45 67 &bull; NINEA: 005432109</div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px;">
-                                        <div style="font-weight: 600; color: #1e293b; font-size: 12.5px;">Fret &amp;
-                                            Logistique Urbaine</div>
-                                        <div
-                                            style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                                            <i class="fa-solid fa-location-dot"
-                                                style="font-size: 10px; color: #94a3b8;"></i>
+                                    <td style="padding: 13px 16px;">
+                                        <div style="font-weight: 700; color: #1e293b; font-size: 12.5px;">Fret &amp; Logistique Urbaine</div>
+                                        <div style="font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                            <i class="fa-solid fa-location-dot" style="font-size: 10px; color: #168078;"></i>
                                             Yoff Tonghor, Dakar
                                         </div>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: right; white-space: nowrap;">
-                                        <span style="font-weight: 800; color: #0f172a; font-size: 13.5px;">5 100
-                                            000</span>
-                                        <span
-                                            style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
+                                    <td style="padding: 13px 18px; text-align: right; white-space: nowrap;">
+                                        <span style="font-weight: 900; color: #0f172a; font-size: 14px;">5 100 000</span>
+                                        <span style="font-size: 10.5px; font-weight: 700; color: #64748b; margin-left: 3px;">FCFA</span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 16px; text-align: center; white-space: nowrap;">
                                         <span
-                                            style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; background: #f0fdfa; color: #222222; border: 1px solid #ccfbf1;">
-                                            <span
-                                                style="width: 6px; height: 6px; border-radius: 50%; background: #168078;"></span>SYSCOHADA
-                                            NORMAL
+                                            style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4;">
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; background: #14b8a6;"></span>SYSCOHADA NORMAL
                                         </span>
                                     </td>
-                                    <td style="padding: 14px 16px; text-align: center; white-space: nowrap;">
+                                    <td style="padding: 13px 18px; text-align: center; white-space: nowrap;">
                                         <button onclick="selectionnerPmeDossier('Transports Express Yoff SARL')"
-                                            style="padding: 7px 15px; background: #222222; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 4px rgba(20, 54, 43, 0.2); transition: all 0.15s;"
-                                            onmouseover="this.style.background='#168078';"
-                                            onmouseout="this.style.background='#222222';">
-                                            <i class="fa-solid fa-folder-open"
-                                                style="color: #a0d9d2; font-size: 11.5px;"></i>
-                                            Gérer
+                                            style="padding: 7px 14px; background: #f0fdfa; color: #0f766e; border: 1.5px solid #ccfbf1; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s;"
+                                            onmouseover="this.style.background='#168078'; this.style.color='#ffffff'; this.style.borderColor='#168078'; this.style.boxShadow='0 3px 10px rgba(22,128,120,0.25)';"
+                                            onmouseout="this.style.background='#f0fdfa'; this.style.color='#0f766e'; this.style.borderColor='#ccfbf1'; this.style.boxShadow='none';">
+                                            <i class="fa-solid fa-folder-open" style="font-size: 11.5px;"></i>
+                                            <span>Gérer</span>
                                         </button>
                                     </td>
                                 </tr>
@@ -2466,6 +2463,8 @@
                         </table>
                     </div>
                 </div>
+
+                
 
 
                 <!-- ========================================================================= -->
