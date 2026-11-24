@@ -3515,7 +3515,8 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     # GESTION PAIEMENT INSTANTANÉ SUR MOT-CLÉ (« J'ai payé », « Fey naa », etc.)
     if user_text and is_paiement_keyword(user_text):
         update_onboarding_state(sender_phone, "abonnement_valide", True)
-        update_onboarding_state(sender_phone, "statut", "EN_COURS")
+        update_onboarding_state(sender_phone, "statut", "COMPLET")
+        update_onboarding_state(sender_phone, "etape", "TERMINE")
         onboarding = get_onboarding_state(sender_phone)
         is_abonne = True
         plan_actuel = onboarding.get("plan_abonnement", "Starter")
@@ -3537,61 +3538,24 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             msg_confirm += "Vous pouvez m'envoyer dès maintenant votre première vente, dépense ou note vocale !"
             return msg_confirm
 
-    # PAYWALL INTELLIGENT (FREEMIUM SALUTATION & VERROUILLAGE SÉCURISÉ)
-    if not is_abonne:
-        lien_abo = f"{base_url}/abonnement?phone={clean_p}"
-        
-        # 1. PREMIER MESSAGE D'UN NOUVEAU CLIENT
-        if not premier_contact:
-            update_onboarding_state(sender_phone, "premier_contact_effectue", True)
-            
-            # Si le premier message est une salutation ("Bonjour", "Salam", "Nanga def", etc.) : C'EST GRATUIT !
-            if user_text and is_greeting(user_text):
-                # On déroule l'accueil chaleureux normal et la demande de choix de mode (1 ou 2)
-                return await process_onboarding_step(sender_phone, user_text, media_tuple, onboarding, contact_name)
-            else:
-                # Le premier message n'est PAS une salutation (il envoie direct un chiffre, un reçu ou une question)
-                return (
-                    "🌿 Bonjour ! Bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA certifié.\n\n"
-                    "🔒 Pour activer votre copilote 24h/24, enregistrer vos opérations et certifier vos bilans bancaires, veuillez activer votre abonnement :\n\n"
-                    "⭐ *Pack Starter* (10 000 FCFA / mois) : Assistant WhatsApp 24h/24, rapprochement Wave & OM, bilans SYSCOHADA.\n"
-                    "🚀 *Pack Pro* (25 000 FCFA / mois) : Tout Starter + Dossiers bancaires certifiés ONECCA, multi-caisses & Webhooks instantanés.\n\n"
-                    f"👉 *Activez votre accès en 1 clic via Wave ou Orange Money :*\n{lien_abo}\n\n"
-                    "💡 Dès votre paiement validé, vous recevrez une confirmation immédiate et nous commencerons aussitôt !"
-                )
-        
-        # 2. MESSAGES SUIVANTS TANT QU'IL N'EST PAS ABONNÉ
-        u_low = (user_text or "").strip().lower()
-        choix_vocal = any(k in u_low for k in ["1", "vocal", "voix", "audio", "parler", "micro", "note vocale"])
-        choix_ecrit = any(k in u_low for k in ["2", "ecrit", "écrit", "texte", "message", "clavier"])
-        
-        # S'il répond 1 ou 2 pour choisir son mode
-        if choix_vocal or choix_ecrit:
-            mode = "VOCAL" if choix_vocal else "ECRIT"
-            update_onboarding_state(sender_phone, "mode_communication", mode)
-            mode_desc = "Note vocale 🎙️" if mode == "VOCAL" else "Messages textes ✍️"
-            return (
-                f"✅ Votre mode d'échange ({mode_desc}) est bien enregistré !\n\n"
-                "🔒 Pour débloquer votre copilote financier Growth 24h/24 et commencer à enregistrer vos opérations au bilan SYSCOHADA, activez votre abonnement via Wave ou Orange Money :\n\n"
-                "⭐ *Pack Starter* : 10 000 FCFA / mois\n"
-                "🚀 *Pack Pro* : 25 000 FCFA / mois (Dossiers bancaires ONECCA & Multi-boutiques)\n\n"
-                f"👉 *Cliquez ici pour régler par Wave ou Orange Money :*\n{lien_abo}\n\n"
-                "💡 Dès que votre règlement est fait, vous recevrez la confirmation et nous démarrerons immédiatement (ou répondez simplement *« J'ai payé »*) !"
-            )
-        
-        # S'il envoie des chiffres, opérations, reçus ou messages sans être abonné
-        return (
-            "🔒 *Espace Growth en attente d'activation*\n\n"
-            "Pour que je puisse traiter vos opérations, certifier votre comptabilité SYSCOHADA et constituer vos dossiers de crédit bancaire, veuillez souscrire à l'un de nos forfaits :\n\n"
-            "⭐ *Pack Starter* : 10 000 FCFA / mois\n"
-            "🚀 *Pack Pro* : 25 000 FCFA / mois (Certification ONECCA & multi-caisses)\n\n"
-            f"👉 *Régler en 1 clic via Wave ou Orange Money :*\n{lien_abo}\n\n"
-            "💡 Si vous avez déjà effectué votre paiement, répondez simplement *« J'ai payé »* pour débloquer votre compte instantanément."
-        )
-
-    # 1. Si les 4 premières phases ne sont pas encore terminées, on déroule le tunnel obligatoire
+    # 1. PARCOURS D'ONBOARDING ET RECONSTITUTION INITIALE (ÉTAPES 1 À 6)
+    # Les Étapes 1 à 5 (configuration Wave/Orange, NINEA, reconstitution du passé, inventaire caisse espèces)
+    # constituent le Pack d'Accueil Gratuit et sont traitées par process_onboarding_step.
     if etape != "TERMINE" and statut not in ["COMPLET"]:
         return await process_onboarding_step(sender_phone, user_text, media_tuple, onboarding, contact_name)
+
+    # 2. VERROUILLAGE ABONNEMENT EN ROUTINE ACTIVE (ÉTAPE 7)
+    if not is_abonne:
+        lien_abo = f"{base_url}/abonnement?phone={clean_p}"
+        return (
+            "🔒 *Espace Growth en attente d'activation d'abonnement*\n\n"
+            "Votre Bilan d'Ouverture initial est scellé conforme SYSCOHADA SMT.\n"
+            "Pour continuer à saisir vos ventes par note vocale 24h/24, bénéficier des relances de caisse et certifier vos bilans bancaires, veuillez activer votre abonnement mensuel :\n\n"
+            "⭐ *Pack Starter* (10 000 FCFA / mois) : Assistant WhatsApp 24h/24, rapprochement Wave & OM, bilans SYSCOHADA.\n"
+            "🚀 *Pack Pro* (25 000 FCFA / mois) : Tout Starter + Dossiers bancaires certifiés ONECCA, multi-caisses & Webhooks instantanés.\n\n"
+            f"👉 *Activez votre accès en 1 clic via Wave ou Orange Money :*\n{lien_abo}\n\n"
+            "💡 Dès votre paiement effectué, répondez simplement *« J'ai payé »* pour débloquer immédiatement votre copilote !"
+        )
 
     # 2. PHASE 5 (À VIE EN CONTINU) :
     # A. Filtre Hors-Sujet Strict : "Désolé, je n'ai pas été créé pour répondre à cette demande."
@@ -4341,20 +4305,36 @@ def synchroniser_bilan_structurel_depart(clean_phone: str, categorie: str, monta
 
 async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple, onboarding: dict, contact_name: str = None) -> str:
     """
-    Machine à états stricte pour l'accompagnement Growth (1 seule question par message/vocal) :
-    - Phase 1 : Accueil personnalisé (Nom d'entreprise & Statut Opérateurs détectés d'office). Choix mode.
-    - Phase 2 : Raccordement du 2ème numéro marchand (si besoin) & NINEA (100% optionnel).
-    - Phase 3 : Reconstitution du bilan de départ (Trésorerie, Stock, Matériel, Dettes).
-    - Phase 4 : Organisation des rappels de clôture.
-    - Phase 5 : Accompagnement permanent.
+    Machine à états stricte pour l'accompagnement Growth conforme au document Word officiel :
+    - Étape 1 : Accueil, choix du mode (Vocal / Écrit) & Vidéo démo officielle.
+    - Étape 2 : Avertissement preuves financières banques/DGID & Choix 5 opérateurs (Boutons A à E).
+    - Étape 3 : Fiche d'identité Entreprise (NINEA, RCCM, extraction titulaire physique + question obligatoire nom commercial).
+    - Étape 4 : Reconstitution du passé (anciens relevés ou double condition solde départ comptes perso).
+    - Étape 5 : Inventaire initial complet ONECCA (Caisse espèces 571 obligatoire, immobilisations & amortissements 5/10 ans, stock grossiste, dettes/créances).
+    - Étape 6 : Fin du gratuit & Verrou d'abonnement par lien officiel sécurisé.
+    - Étape 7 : Routine quotidienne active, relances 3h (Points Berger) et Rituel 20h00.
     """
     etape = onboarding.get("etape", "PHASE_1_ACCUEIL")
     clean_phone = str(sender_phone).replace("+", "").replace(" ", "").strip()
     sp = get_supabase()
+    base_url = get_public_base_url()
+    lien_abo = f"{base_url}/abonnement?phone={clean_phone}"
 
-    # 0. CERVEAU CONVERSATIONNEL INTELLIGENT (IA GEMINI 3.1 FLASH LITE - CHATGPT-LIKE)
-    # Gère les questions explicatives, retours en arrière, corrections, sauts d'étapes et politesses
-    if user_text and not media_tuple:
+    # 0. CERVEAU CONVERSATIONNEL INTELLIGENT (IA GEMINI FLASH)
+    # Intervient pour répondre aux questions libres ou explications hors-parcours
+    # Ne court-circuite JAMAIS les réponses directes aux étapes clés d'onboarding
+    etapes_reponses_directes = [
+        "PHASE_2_CHOIX_OPERATEURS",
+        "PHASE_3_IDENTIFICATION_NINEA",
+        "PHASE_3_NOM_COMMERCIAL",
+        "PHASE_3_NOM_COMMERCIAL_SANS_NINEA",
+        "PHASE_4_ANCIENS_RELEVES",
+        "PHASE_5_INVENTAIRE_CAISSE_ESPECES",
+        "PHASE_5_INVENTAIRE_IMMOBILISATIONS",
+        "PHASE_5_INVENTAIRE_STOCK",
+        "PHASE_5_INVENTAIRE_CREANCES_DETTES"
+    ]
+    if user_text and not media_tuple and etape not in etapes_reponses_directes:
         try:
             supervision = await superviser_message_onboarding(
                 sender_phone=sender_phone,
@@ -4364,198 +4344,188 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 contact_name=contact_name
             )
             action = supervision.get("action")
-            
-            # A. L'utilisateur pose une question (NINEA, SYSCOHADA, tarifs, fonctionnement) ou formule une salutation
             if action == "REPONDRE_ET_REORIENTER":
                 return supervision.get("message_reponse")
-            
-            # B. L'utilisateur veut corriger une information passée (nom d'entreprise, mode, numéro, etc.)
             if action == "APPLIQUER_CORRECTION":
                 champs_corriges = supervision.get("champs_corriges", {})
                 if "nom_entreprise" in champs_corriges:
                     n_nom = champs_corriges["nom_entreprise"]
                     update_onboarding_state(sender_phone, "nom_entreprise", n_nom)
-                    update_onboarding_state(sender_phone, "nom_entreprise_detecte", n_nom)
                     save_or_update_entreprise_resilient({"telephone_whatsapp": clean_phone, "nom_entreprise": n_nom})
                 if "mode_communication" in champs_corriges:
                     n_mode = "VOCAL" if str(champs_corriges["mode_communication"]).upper() in ["VOCAL", "AUDIO", "VOIX"] else "ECRIT"
                     update_onboarding_state(sender_phone, "mode_communication", n_mode)
-                if "numero_magasin" in champs_corriges:
-                    update_onboarding_state(sender_phone, "numero_magasin_associe", champs_corriges["numero_magasin"])
-                if "numero_orange_money" in champs_corriges:
-                    update_onboarding_state(sender_phone, "numero_orange_money", champs_corriges["numero_orange_money"])
                 return supervision.get("message_reponse")
-            
-            # C. L'utilisateur demande de sauter l'étape ou de remettre à plus tard ("plus tard", "on verra", "suba", "saute")
             if action == "SAUTER_ETAPE":
-                nouvelle_etape = supervision.get("nouvelle_etape", "PHASE_4_RAPPEL_JOURNEE")
+                nouvelle_etape = supervision.get("nouvelle_etape", "PHASE_5_INVENTAIRE_CAISSE_ESPECES")
                 update_onboarding_state(sender_phone, "etape", nouvelle_etape)
                 return supervision.get("message_reponse")
         except Exception as e_sup:
             print(f"Info superviseur onboarding : {e_sup}")
 
-    # 1. PHASE 1 : ACCUEIL & CHOIX MODE
+    # =========================================================================
+    # ÉTAPE 1 : ACCUEIL, CHOIX MODE & VIDÉO DÉMO OFFICIELLE
+    # =========================================================================
     if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
         u_txt = (user_text or "").strip().lower()
-
-        # Si le commerçant envoie un numéro de téléphone de magasin (9 chiffres ou plus)
-        chiffres = re.sub(r"[^\d]", "", u_txt)
-        if len(chiffres) >= 9:
-            num_magasin = f"221{chiffres[-9:]}" if not chiffres.startswith("221") else chiffres
-            nom_ent_mag, statut_code_mag, msg_op_mag = detecter_profil_commercant_et_operateurs(num_magasin, contact_name)
-            
-            update_onboarding_state(sender_phone, "numero_magasin_associe", num_magasin)
-            update_onboarding_state(sender_phone, "nom_entreprise_detecte", nom_ent_mag)
-            update_onboarding_state(sender_phone, "statut_operateurs", statut_code_mag)
-            
-            save_or_update_entreprise_resilient({
-                "telephone_whatsapp": clean_phone,
-                "nom_entreprise": nom_ent_mag,
-                "donnees_onboarding": {
-                    "numero_magasin": num_magasin,
-                    "numero_wave": num_magasin,
-                    "numero_om": num_magasin if statut_code_mag == "DOUBLE_ACTIF" else ""
-                }
-            })
-            
-            return (
-                f"🌿 Bonjour *{nom_ent_mag}* ! Bienvenue sur Growth, votre copilote financier et comptable SYSCOHADA.\n\n"
-                f"{msg_op_mag}\n\n"
-                f"✅ Votre compte marchand magasin (`+{num_magasin}`) est désormais relié à ce WhatsApp personnel !\n\n"
-                "Comment préférez-vous échanger avec moi au quotidien ?\n"
-                "1) Par Note vocale 🎙️ (Growth vous répondra en notes vocales)\n"
-                "2) Par Écrit ✍️ (Messages textes classiques)\n\n"
-                "👉 Répondez simplement 1 ou 2."
-            )
-
-        # Choix du mode
         choix_vocal = any(k in u_txt for k in ["1", "vocal", "voix", "audio", "parler", "micro", "note vocale"])
         choix_ecrit = any(k in u_txt for k in ["2", "ecrit", "écrit", "texte", "message", "clavier"])
+        prenom_contact = contact_name or "Chers Partenaire"
 
-        num_reference = onboarding.get("numero_magasin_associe") or sender_phone
-        nom_ent_detecte, statut_code, msg_op = detecter_profil_commercant_et_operateurs(num_reference, contact_name)
-        nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or nom_ent_detecte
-        # Si le nom d'entreprise n'était pas connu et que l'utilisateur envoie son nom commercial
-        if not nom_ent and user_text:
-            mots_txt = u_txt.split()
-            if len(mots_txt) >= 1 and not (len(mots_txt) == 1 and mots_txt[0] in ["1", "2", "1)", "2)"]):
-                nom_saisi = nettoyer_nom_entreprise(re.sub(r"\b(1|2|1\)|2\))\b", "", user_text).strip())
-                if len(nom_saisi) >= 2:
-                    nom_ent = nom_saisi
-                    update_onboarding_state(sender_phone, "nom_entreprise_detecte", nom_ent)
-                    save_or_update_entreprise_resilient({
-                        "telephone_whatsapp": clean_phone,
-                        "nom_entreprise": nom_ent
-                    })
-
-        update_onboarding_state(sender_phone, "nom_entreprise_detecte", nom_ent)
-        update_onboarding_state(sender_phone, "statut_operateurs", statut_code)
-
-        if choix_vocal or choix_ecrit:
+        if (choix_vocal or choix_ecrit) or (not is_greeting(user_text) and any(k in u_txt for k in ["ok", "vu", "d'accord", "pret", "prêt", "commencer"])):
             mode = "VOCAL" if choix_vocal else "ECRIT"
             lang = "wo" if any(k in u_txt for k in ["wolof", "ouolof"]) else "fr"
-            
             update_onboarding_state(sender_phone, "mode_communication", mode)
             update_onboarding_state(sender_phone, "langue_preferee", lang)
+            update_onboarding_state(sender_phone, "etape", "PHASE_2_CHOIX_OPERATEURS")
             mode_desc = "Note vocale 🎙️" if mode == "VOCAL" else "Messages textes ✍️"
 
-            # Si le numéro ne prend que Wave, on demande si l'entreprise a un numéro Orange Money
-            if statut_code == "WAVE_SEUL":
-                update_onboarding_state(sender_phone, "etape", "PHASE_2_NUMERO_SECONDAIRE")
-                return (
-                    f"Parfait ! Votre mode est configuré sur : {mode_desc}.\n\n"
-                    f"🏢 Votre activité est enregistrée sous le nom : *{nom_ent}*.\n\n"
-                    f"Je constate que ce numéro prend vos encaissements **Wave Business**.\n"
-                    f"Avez-vous également un numéro pour **Orange Money** au magasin ou pour vos prestations de services ?\n"
-                    f"• Si oui, écrivez-moi simplement votre numéro Orange Money.\n"
-                    f"• Si vous n'utilisez que Wave, dites simplement « Non, Wave seulement »."
-                )
-            else:
-                update_onboarding_state(sender_phone, "etape", "PHASE_2_CREATION_ENTREPRISE")
-                return (
-                    f"Parfait ! Votre mode est configuré sur : {mode_desc}.\n\n"
-                    f"🏢 Votre activité est enregistrée sous le nom : *{nom_ent}*.\n\n"
-                    "Avez-vous un document NINEA ou Registre de Commerce (RCCM) pour votre activité ?\n"
-                    "(💡 Si vous n'en avez pas, ce n'est PAS obligatoire pour démarrer, dites simplement « Non » ou « Pas encore »)."
-                )
+            return (
+                f"Parfait {prenom_contact} ! Votre mode d'échange est configuré sur : *{mode_desc}*.\n\n"
+                "💡 *Avertissement Légal & Preuves Financières* :\n"
+                "Growth ne peut vous aider à certifier vos comptes et à constituer de véritables preuves financières officielles "
+                "(reconnues par les banques pour vos demandes de prêt et par la DGID/impôts) QUE si vous utilisez un compte Wave Business et/ou Orange Business, et JAMAIS un compte personnel.\n\n"
+                "Un compte personnel mélange vos dépenses de famille avec votre boutique et n'a aucune valeur juridique pour les banques. "
+                "Un compte Business sépare votre argent professionnel et donne une valeur légale à chacune de vos ventes.\n\n"
+                "👉 *Veuillez sélectionner votre situation actuelle (répondez A, B, C, D ou E) :*\n"
+                "[Bouton A : 🌊 Wave Business uniquement]\n"
+                "[Bouton B : 🍊 Orange Business uniquement]\n"
+                "[Bouton C : 🚀 Les deux (Wave Business + Orange Business)]\n"
+                "[Bouton D : 📱 J'utilise des comptes Personnels (Wave perso / OM perso / Espèces)]\n"
+                "[Bouton E : 💼 J'ai TOUT à la fois (Comptes Business + Personnels + Espèces)]"
+            )
+
+        # Envoi de la vidéo officielle
+        tuto_video_url = f"{base_url}/static/videos/growth_demo_officielle.mp4"
+        caption = "🎬 Démo Officielle Growth : Enregistrez vos opérations en 1 note vocale WhatsApp !"
+        asyncio.create_task(send_whatsapp_video(clean_phone, tuto_video_url, caption))
 
         return (
-            f"🌿 Bonjour *{nom_ent}* !\n"
-            "Bienvenue sur Growth, votre copilote financier et comptable SYSCOHADA.\n\n"
+            f"🌿 Bonjour *{prenom_contact}* !\n"
+            "Bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA officiel.\n\n"
             "🐑 *Ma mission auprès de vous* : agir comme un berger vigilant pour votre entreprise. "
-            "Je m'assure qu'aucun franc CFA ne vous échappe et que votre bilan soit toujours prêt pour les banques.\n\n"
-            f"{msg_op}\n\n"
+            "Je m'assure qu'aucun franc CFA ne vous échappe et que votre comptabilité soit toujours prête pour les banques et la DGID.\n\n"
+            "🎬 *Je viens de vous envoyer ci-dessus notre vidéo tutoriel officielle de démonstration (28s).*\n\n"
             "Comment préférez-vous échanger avec moi au quotidien ?\n"
             "1) Par Note vocale 🎙️ (Growth vous répondra en notes vocales)\n"
             "2) Par Écrit ✍️ (Messages textes classiques)\n\n"
-            "👉 Répondez simplement 1 ou 2 pour commencer."
+            "👉 Répondez simplement 1 ou 2 pour démarrer."
         )
 
-    # 1.5. PHASE 2.1 : RACCORDEMENT DU DEUXIÈME NUMÉRO MARCHAND
-    if etape == "PHASE_2_NUMERO_SECONDAIRE":
-        u_txt = (user_text or "").strip()
-        u_low = u_txt.lower()
-        
-        # Détection numéro secondaire
-        chiffres = re.sub(r"[^\d]", "", u_txt)
-        if len(chiffres) >= 9 and not any(k in u_low for k in ["non", "pas", "wave seule"]):
-            num_sec = f"221{chiffres[-9:]}" if not chiffres.startswith("221") else chiffres
-            update_onboarding_state(sender_phone, "numero_orange_money", num_sec)
-            update_onboarding_state(sender_phone, "etape", "PHASE_2_CREATION_ENTREPRISE")
-            
-            # Sauvegarde dans la base entreprises
-            nom_e = onboarding.get("nom_entreprise_detecte") or f"Entreprise {clean_phone[-4:]}"
-            save_or_update_entreprise_resilient({
-                "telephone_whatsapp": clean_phone,
-                "nom_entreprise": nom_e,
-                "donnees_onboarding": {"numero_wave": clean_phone, "numero_om": num_sec}
-            })
-            
+    # =========================================================================
+    # ÉTAPE 2 : CHOIX OPÉRATEURS & GESTION MULTI-COMPTES (BOUTONS A À E)
+    # =========================================================================
+    if etape == "PHASE_2_CHOIX_OPERATEURS":
+        u_txt = (user_text or "").strip().lower()
+
+        # Choix A : Wave Business uniquement
+        if any(k in u_txt for k in ["bouton a", "a", "wave business", "wave seul", "wave pro", "wave marchande"]):
+            update_onboarding_state(sender_phone, "statut_operateurs", "WAVE_BUSINESS")
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
             return (
-                f"✅ Parfait ! Vos deux numéros sont désormais reliés à votre entreprise :\n"
-                f"• Compte Wave : `+{clean_phone}`\n"
-                f"• Compte Orange Money : `+{num_sec}`\n\n"
-                "Tous vos flux sur ces deux comptes seront automatiquement centralisés !\n\n"
-                "Avez-vous un document NINEA ou Registre de Commerce (RCCM) ?\n"
-                "(Si vous n'en avez pas, dites simplement « Non », ce n'est pas obligatoire pour commencer)."
-            )
-        else:
-            update_onboarding_state(sender_phone, "etape", "PHASE_2_CREATION_ENTREPRISE")
-            return (
-                "C'est bien noté : votre entreprise est configurée pour vos encaissements Wave Business (et la caisse espèces) !\n\n"
-                "Avez-vous un document NINEA ou Registre de Commerce (RCCM) ?\n"
-                "(Si vous n'en avez pas, dites simplement « Non », ce n'est pas obligatoire pour commencer)."
+                "🌊 *Configuration Wave Business Sélectionnée !*\n\n"
+                "Vos encaissements Wave Business seront reliés directement par webhook automatique.\n\n"
+                "Passons à l'identification officielle de votre commerce :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
             )
 
-    # 2. PHASE 2 : NOM DU COMMERCE & NINEA (100% OPTIONNEL)
-    if etape in ["PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
-        nom_extrait = None
-        nom_personne = "Gérant"
+        # Choix B : Orange Business uniquement
+        if any(k in u_txt for k in ["bouton b", "b", "orange business", "om business", "orange seul", "orange pro", "sonatel"]):
+            update_onboarding_state(sender_phone, "statut_operateurs", "ORANGE_BUSINESS")
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            return (
+                "🍊 *Configuration Orange Business Sélectionnée !*\n\n"
+                "Vos encaissements Orange Business Sonatel seront reliés directement par webhook partenaire.\n\n"
+                "Passons à l'identification officielle de votre commerce :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+            )
+
+        # Choix C : Les deux Business
+        if any(k in u_txt for k in ["bouton c", "c", "les deux", "deux business", "wave et orange business"]):
+            update_onboarding_state(sender_phone, "statut_operateurs", "DOUBLE_BUSINESS")
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            return (
+                "🚀 *Double Configuration Wave Business + Orange Business Sélectionnée !*\n\n"
+                "Vos deux passerelles professionnelles seront scellées sans aucun mélange avec vos fonds personnels.\n\n"
+                "Passons à l'identification officielle de votre commerce :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+            )
+
+        # Choix D : Comptes Personnels (Exact texte requis par l'utilisateur)
+        if any(k in u_txt for k in ["bouton d", "d", "perso", "personnel", "comptes personnels", "personnels"]):
+            update_onboarding_state(sender_phone, "statut_operateurs", "COMPTES_PERSO")
+            update_onboarding_state(sender_phone, "besoin_ouverture_business", True)
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            return (
+                "💡 *Étape Décisive pour Votre Commerce* :\n"
+                "Avec un compte personnel, vos flux d'argent sont mélangés avec vos dépenses de famille. "
+                "Aucune banque ne peut vous accorder un prêt avec un compte personnel, et la DGID ne peut pas certifier vos comptes.\n\n"
+                "👉 *Nous vous invitons à ouvrir un compte Wave Business ou Orange Business dès maintenant, et nous vous accompagnons de A à Z du début jusqu'à la fin !*\n\n"
+                "Passons à l'étape suivante pour enregistrer votre entreprise :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "(Envoyez une photo de votre document, ou répondez simplement « Non » si vous n'en avez pas encore)."
+            )
+
+        # Choix E : TOUT à la fois (Les 5 canaux simultanés)
+        if any(k in u_txt for k in ["bouton e", "e", "tout", "tous", "tout a la fois", "tout à la fois", "les 5", "5 en meme temps", "cinq"]):
+            update_onboarding_state(sender_phone, "statut_operateurs", "MULTI_5_CANAUX")
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            return (
+                "💼 *Excellente décision ! Growth gère vos 5 canaux à la fois sans rien mélanger* :\n"
+                "1. 🌊 Wave Business (Compte 5211)\n"
+                "2. 🍊 Orange Business (Compte 5212)\n"
+                "3. 📱 Wave Personnel (Compte 5213)\n"
+                "4. 📲 Orange Money Personnel (Compte 5214)\n"
+                "5. 💵 Caisse Espèces Tiroir (Compte 571)\n\n"
+                "Chaque soir à 20h00, votre rituel de caisse ventilera avec exactitude ces 5 poches distinctes.\n\n"
+                "Passons à l'identification officielle de votre commerce :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+            )
+
+        # Relance si choix invalide
+        return (
+            "Veuillez choisir votre situation en répondant par la lettre correspondante :\n\n"
+            "• Répondez *A* : [🌊 Wave Business uniquement]\n"
+            "• Répondez *B* : [🍊 Orange Business uniquement]\n"
+            "• Répondez *C* : [🚀 Les deux (Wave Business + Orange Business)]\n"
+            "• Répondez *D* : [📱 J'utilise des comptes Personnels (Wave perso / OM perso / Espèces)]\n"
+            "• Répondez *E* : [💼 J'ai TOUT à la fois (Comptes Business + Personnels + Espèces)]"
+        )
+
+    # =========================================================================
+    # ÉTAPE 3 : IDENTIFICATION LÉGALE NINEA / RCCM & NOM COMMERCIAL
+    # =========================================================================
+    if etape in ["PHASE_3_IDENTIFICATION_NINEA", "PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
+        nom_personne = "Gérant(e)"
         ninea = None
         rccm = "En cours d'attribution"
+        secteur = "Commerce Général"
         capital = 0
 
+        # Cas 1 : L'utilisateur n'a pas de NINEA ("Non", "Pas encore", "Amu ma")
         if not media_tuple and user_text:
-            u_clean = user_text.strip()
-            u_low = u_clean.lower()
-            mots_negatifs = [
-                "pas de ninea", "j en ai pas", "je n en ai pas", "j'en ai pas", "je n'en ai pas",
-                "aucun", "sans ninea", "non", "pas encore", "jamais", "dédéet", "dedeet", "amu ma",
-                "amuma", "pas de rccm", "sans rccm", "rien"
-            ]
-            if any(k in u_low for k in mots_negatifs):
-                nom_extrait = None
-            else:
-                nom_extrait = u_clean
+            u_clean = user_text.strip().lower()
+            mots_negatifs = ["non", "pas de ninea", "j en ai pas", "je n en ai pas", "j'en ai pas", "aucun", "pas encore", "amuma", "amu ma", "rien", "jamais"]
+            if any(k in u_clean for k in mots_negatifs):
+                update_onboarding_state(sender_phone, "etape", "PHASE_3_NOM_COMMERCIAL_SANS_NINEA")
+                update_onboarding_state(sender_phone, "ninea_rappel_hebdo", True)
+                update_onboarding_state(sender_phone, "dernier_rappel_ninea", datetime.now().isoformat())
+                return (
+                    "💡 *Conseil Officiel Growth* :\n"
+                    "L'obtention du NINEA au Sénégal est totalement **GRATUITE** et se fait en quelques minutes auprès de votre centre des services fiscaux (DGID) ou de l'APIX. "
+                    "Ce document est indispensable pour certifier vos bilans et obtenir un financement bancaire. Nous vous relancerons chaque semaine pour vous aider à l'obtenir.\n\n"
+                    "Pas d'inquiétude, vous pouvez démarrer dès aujourd'hui !\n\n"
+                    "👉 *Quel est le nom commercial ou l'enseigne de votre boutique / activité ?*"
+                )
 
+        # Cas 2 : L'utilisateur a envoyé une photo ou un document justificatif NINEA
         if media_tuple:
             media_type, media_id = media_tuple[0], media_tuple[1]
             media_bytes, mime_type = await download_meta_media(media_id)
-            ninea = "00802996"
-            nom_personne = "Titulaire NINEA"
-            rccm = "En cours d'attribution"
-            capital = 0
-
             if media_bytes:
                 if sp:
                     try:
@@ -4567,7 +4537,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                     except Exception as up_err:
                         print(f"Info upload NINEA Storage: {up_err}")
 
-                # Extraction Gemini 3.1 Flash Lite
+                # Extraction OCR Gemini
                 try:
                     from google import genai
                     from google.genai import types
@@ -4578,9 +4548,9 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                         img_part = types.Part.from_bytes(data=media_bytes, mime_type=mime_type or "image/jpeg")
                         prompt_ninea = (
                             "Analyse cette attestation d'immatriculation NINEA sénégalaise et extrais en JSON brut strict :\n"
-                            '{"ninea": "numéro NINEA (7 à 10 chiffres)", "rccm": "registre de commerce (ex: SN-DKR-...) ou null", '
-                            '"capital_social_fcfa": capital en entier ou 0, "nom_entreprise": "nom commercial ou raison sociale ou null", '
-                            '"nom_personne_physique": "nom du titulaire"}\n'
+                            '{"ninea": "numéro NINEA (7 à 10 chiffres)", "rccm": "registre de commerce ou null", '
+                            '"capital_social_fcfa": capital en entier ou 0, "secteur_activite": "activite ou null", '
+                            '"nom_personne_physique": "nom et prenom du titulaire civil"}\n'
                             "Réponds UNIQUEMENT le JSON brut sans markdown."
                         )
                         res_gem = client_gem.models.generate_content(
@@ -4591,428 +4561,192 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                         m_j = re.search(r'\{.*\}', raw, re.DOTALL)
                         if m_j:
                             rj = json.loads(m_j.group(0))
-                            if rj.get("ninea"):
-                                ninea = str(rj["ninea"])
-                            if rj.get("rccm"):
-                                rccm = str(rj["rccm"])
-                            if rj.get("capital_social_fcfa"):
-                                try:
-                                    capital = int(rj["capital_social_fcfa"])
-                                except Exception:
-                                    pass
-                            nom_extrait = rj.get("nom_entreprise")
-                            nom_personne = rj.get("nom_personne_physique") or nom_personne
+                            ninea = str(rj.get("ninea") or "00802996")
+                            rccm = str(rj.get("rccm") or "En cours d'attribution")
+                            nom_personne = str(rj.get("nom_personne_physique") or nom_personne)
+                            secteur = str(rj.get("secteur_activite") or secteur)
+                            capital = int(rj.get("capital_social_fcfa") or 0)
                 except Exception as e_ocr:
                     print(f"Info OCR Gemini NINEA: {e_ocr}")
+                    ninea = "00802996"
+
+        # Cas 3 : L'utilisateur a écrit son numéro NINEA en texte (7 à 10 chiffres)
+        if not ninea and user_text:
+            chiffres = re.sub(r"[^\d]", "", user_text)
+            if 7 <= len(chiffres) <= 10:
+                ninea = chiffres
 
         if ninea:
             update_onboarding_state(sender_phone, "ninea", ninea)
             update_onboarding_state(sender_phone, "ninea_valide_par_preuve", True)
-        update_onboarding_state(sender_phone, "nom_personne_physique", nom_personne)
-        update_onboarding_state(sender_phone, "rccm", rccm)
-        update_onboarding_state(sender_phone, "capital", capital)
+            update_onboarding_state(sender_phone, "nom_personne_physique", nom_personne)
+            update_onboarding_state(sender_phone, "rccm", rccm)
+            update_onboarding_state(sender_phone, "secteur_activite", secteur)
+            update_onboarding_state(sender_phone, "capital", capital)
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_NOM_COMMERCIAL")
 
-        cap_str = f"{capital:,} FCFA" if capital > 0 else "Non précisé"
-
-        if not nom_extrait or nom_extrait.lower() in ["null", "none", ""]:
-            # Si aucun nom dans le document ou si le commerçant a dit 'Non', on utilise le nom déterminé automatiquement
-            nom_propre = onboarding.get("nom_entreprise_detecte") or onboarding.get("nom_entreprise")
-            if not nom_propre:
-                nom_propre = f"Entreprise {clean_phone[-4:]}"
-        else:
-            nom_propre = nettoyer_nom_entreprise(nom_extrait)
-
-        update_onboarding_state(sender_phone, "nom_entreprise", nom_propre)
-        update_onboarding_state(sender_phone, "devise", "FCFA")
-
-        # A. Si le NINEA n'est pas encore fourni : on demande l'activité et la localisation du commerce
-        # et on active le rappel hebdomadaire NINEA
-        if not ninea:
-            update_onboarding_state(sender_phone, "etape", "PHASE_2_ACTIVITE_LOCALISATION")
-            update_onboarding_state(sender_phone, "ninea_rappel_hebdo", True)
-            update_onboarding_state(sender_phone, "dernier_rappel_ninea", datetime.now().isoformat())
-            save_or_update_entreprise_resilient({
-                "telephone_whatsapp": clean_phone,
-                "nom_entreprise": nom_propre,
-                "ninea": None,
-                "capital_initial_fcfa": 0,
-                "donnees_onboarding": {"ninea_en_attente": True, "rappel_hebdo": True, "date_debut": datetime.now().isoformat()}
-            })
+            # Instruction clé utilisateur : sur le NINEA il y a le nom de la personne, donc demander le nom de la boutique !
             return (
-                "C'est bien noté : pas besoin de NINEA pour commencer ! Vous pourrez nous l'envoyer plus tard pour certifier vos bilans auprès des banques.\n\n"
-                f"🏬 Entreprise *{nom_propre}* bien enregistrée !\n\n"
-                "👉 **Quelle est votre activité exacte (ce que vous vendez ou vos services) et où se trouve votre commerce ou atelier (quartier, marché ou ville) ?**\n\n"
-                "*(Exemple : « Alimentation Générale & Riz au Marché Sandaga, Dakar » ou « Vente de vêtements à la Médina »)*"
+                f"📄 Document NINEA officiel bien reçu et authentifié !\n"
+                f"• Titulaire légal d'état civil : *{nom_personne}*\n"
+                f"• NINEA officiel : *{ninea}*\n"
+                f"• Secteur d'activité : *{secteur}*\n\n"
+                "🏬 *Quel est le nom commercial ou l'enseigne de votre boutique / entreprise* (le nom écrit sur votre devanture ou connu de vos clients) ?"
             )
 
-        # B. Si le NINEA officiel a été validé avec succès
-        update_onboarding_state(sender_phone, "etape", "PHASE_3_RELEVE")
-        up_ent_ninea = {
+        return (
+            "Veuillez m'envoyer une photo claire de votre document NINEA / RCCM, ou écrivez simplement votre numéro NINEA.\n"
+            "(Si vous n'en avez pas encore, répondez simplement « Non »)."
+        )
+
+    # 3.1 VALIDATION DU NOM COMMERCIAL (AVEC NINEA)
+    if etape == "PHASE_3_NOM_COMMERCIAL":
+        u_txt = (user_text or "").strip()
+        nom_commercial = nettoyer_nom_entreprise(u_txt)
+        if len(nom_commercial) < 2:
+            nom_commercial = f"Boutique {clean_phone[-4:]}"
+
+        nom_personne = onboarding.get("nom_personne_physique") or "Gérant"
+        ninea = onboarding.get("ninea") or "00802996"
+        secteur = onboarding.get("secteur_activite") or "Commerce Général"
+
+        update_onboarding_state(sender_phone, "nom_entreprise", nom_commercial)
+        update_onboarding_state(sender_phone, "nom_commercial", nom_commercial)
+        update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
+
+        save_or_update_entreprise_resilient({
             "telephone_whatsapp": clean_phone,
-            "nom_entreprise": nom_propre,
+            "nom_entreprise": nom_commercial,
             "ninea": ninea,
-            "capital_initial_fcfa": capital if capital > 0 else 500000
-        }
-        if activite_ninea:
-            up_ent_ninea["secteur_activite"] = activite_ninea
-        if adresse_ninea:
-            up_ent_ninea["adresse_siege"] = adresse_ninea
-        save_or_update_entreprise_resilient(up_ent_ninea)
+            "secteur_activite": secteur
+        })
 
-        titre_doc = f" (NINEA : {ninea})"
-        ninea_info = f"Document officiel enregistré (NINEA : {ninea}).\n\n"
-        
-        # Vérification si des flux passés Wave / Orange Money sont déjà répertoriés
-        op_lookup = interroger_annuaire_marchand_wave_om(clean_phone)
-        nb_flux = op_lookup.get("nb_flux_passes", 0)
-        if nb_flux > 0:
-            flux_prompt = (
-                f"✅ *{nb_flux} transactions passées Wave & Orange Money ont été identifiées sur votre compte !*\n\n"
-                "Souhaitez-vous que je les intègre automatiquement à votre bilan de départ ?\n"
-                "• Répondez simplement « *Oui* » pour les synchroniser directement,\n"
-                "• Ou envoyez votre solde actuel / un relevé récent."
-            )
-        else:
-            flux_prompt = (
-                "Passons à la mise en place de votre bilan de départ :\n\n"
-                "Combien avez-vous actuellement sur votre compte Wave / Orange Money et dans votre tiroir-caisse en espèces ?\n"
-                "(Exemple : « 50 000 sur Wave et 25 000 en espèces », ou envoyez une capture d'écran de votre solde)."
+        statut_op = onboarding.get("statut_operateurs", "WAVE_BUSINESS")
+        msg_solde_perso = ""
+        if statut_op in ["COMPTES_PERSO", "MULTI_5_CANAUX"]:
+            msg_solde_perso = (
+                "\n\n📌 *Consigne officielle pour vos comptes personnels* :\n"
+                "1. Dès que possible, activez votre compte Wave Business ou Orange Business.\n"
+                "2. Envoyez-moi dès maintenant une capture d'écran du solde actuel de votre compte personnel pour sceller votre trésorerie de départ au bilan.\n"
+                "👉 *Dès que ces 2 éléments sont réunis, alors là oui, nous continuons immédiatement votre inscription !*"
             )
 
         return (
-            f"{ninea_info}"
-            f"🏬 *{nom_propre}*{titre_doc} bien enregistrée avec succès !\n\n"
-            f"{flux_prompt}"
+            f"✅ Dossier scellé pour *{nom_commercial}* !\n"
+            f"• Titulaire légal : *{nom_personne}*\n"
+            f"• NINEA officiel : *{ninea}*\n"
+            f"• Secteur d'activité : *{secteur}*\n\n"
+            "Passons à l'Étape 4 : Reconstitution de votre passé financier et bilan d'ouverture.\n"
+            "Veuillez m'envoyer votre dernier relevé de compte (PDF, photo ou capture d'écran) ou m'indiquer votre solde actuel disponible."
+            f"{msg_solde_perso}"
         )
 
-    # 2.2. PHASE 2.2 : ACTIVITÉ & LOCALISATION DU COMMERCE (SECTEUR & ADRESSE)
-    if etape == "PHASE_2_ACTIVITE_LOCALISATION":
+    # 3.2 NOM COMMERCIAL SANS NINEA
+    if etape == "PHASE_3_NOM_COMMERCIAL_SANS_NINEA":
         u_txt = (user_text or "").strip()
-        secteur, adresse = extraire_activite_et_localisation(u_txt)
-        nom_propre = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or f"Entreprise {clean_phone[-4:]}"
-        
-        update_onboarding_state(sender_phone, "secteur_activite", secteur)
-        update_onboarding_state(sender_phone, "adresse_siege", adresse)
-        update_onboarding_state(sender_phone, "etape", "PHASE_2_CAPITAL_INITIAL")
-        
+        nom_commercial = nettoyer_nom_entreprise(u_txt)
+        if len(nom_commercial) < 2:
+            nom_commercial = f"Commerce {clean_phone[-4:]}"
+
+        update_onboarding_state(sender_phone, "nom_entreprise", nom_commercial)
+        update_onboarding_state(sender_phone, "nom_commercial", nom_commercial)
+        update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
+
         save_or_update_entreprise_resilient({
             "telephone_whatsapp": clean_phone,
-            "nom_entreprise": nom_propre,
-            "secteur_activite": secteur,
-            "adresse_siege": adresse
+            "nom_entreprise": nom_commercial,
+            "ninea": None,
+            "donnees_onboarding": {"ninea_en_attente": True, "rappel_hebdo": True}
         })
-        
+
         return (
-            f"✅ C'est parfaitement noté ! Activité : *{secteur}* • Localisation : *{adresse}* 📍\n\n"
-            "Deuxième question pour votre bilan : Quel est le capital approximatif (en FCFA) que vous avez investi pour démarrer votre activité (vos économies ou apports de départ) ?\n"
-            "(Exemple : « 500 000 FCFA », ou dites simplement « Zéro » si vous avez commencé sans capital)."
+            f"✅ Entreprise *{nom_commercial}* bien enregistrée !\n\n"
+            "Passons à l'Étape 4 : Reconstitution de votre passé financier et bilan d'ouverture.\n"
+            "Veuillez m'envoyer votre dernier relevé de compte Wave ou Orange Money (en PDF, photo ou capture d'écran) ou m'indiquer vos soldes disponibles."
         )
 
-    # 2.5. PHASE 2.5 : CAPITAL DE DÉPART (DÉCLARATIF SANS JUSTIFICATION OBLIGATOIRE)
-    if etape == "PHASE_2_CAPITAL_INITIAL":
+    # =========================================================================
+    # ÉTAPE 4 : RECONSTITUTION DU PASSÉ & ANCIENS RELEVÉS
+    # =========================================================================
+    if etape in ["PHASE_4_ANCIENS_RELEVES", "PHASE_3_RELEVE", "PHASE_3_BILAN_DEPART"]:
         u_txt = (user_text or "").strip()
-        cap_val = parse_montant_fcfa(u_txt)
-        nom_propre = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or f"Entreprise {clean_phone[-4:]}"
-        
-        update_onboarding_state(sender_phone, "capital", cap_val)
-        update_onboarding_state(sender_phone, "etape", "PHASE_3_RELEVE")
-        update_onboarding_state(sender_phone, "ninea_rappel_hebdo", True)
-        update_onboarding_state(sender_phone, "dernier_rappel_ninea", datetime.now().isoformat())
-        
-        save_or_update_entreprise_resilient({
-            "telephone_whatsapp": clean_phone,
-            "nom_entreprise": nom_propre,
-            "capital_initial_fcfa": cap_val
-        })
-        
-        cap_aff = f"{cap_val:,} FCFA" if cap_val > 0 else "0 FCFA"
-        
-        # Vérification si des flux passés Wave / Orange Money sont déjà répertoriés
-        op_lookup = interroger_annuaire_marchand_wave_om(clean_phone)
-        nb_flux = op_lookup.get("nb_flux_passes", 0)
-        if nb_flux > 0:
-            flux_prompt = (
-                f"✅ *{nb_flux} transactions passées Wave & Orange Money ont été identifiées sur votre compte !*\n\n"
-                "Souhaitez-vous que je les intègre automatiquement à votre bilan de départ ?\n"
-                "• Répondez simplement « *Oui* » pour les synchroniser directement,\n"
-                "• Ou envoyez votre solde actuel / un relevé récent."
-            )
-        else:
-            flux_prompt = (
-                "Passons à la mise en place de votre bilan de départ :\n\n"
-                "Combien avez-vous actuellement sur votre compte Wave / Orange Money et dans votre tiroir-caisse en espèces ?\n"
-                "(Exemple : « 50 000 sur Wave et 25 000 en espèces », ou envoyez une capture d'écran de votre solde)."
-            )
-            
-        return (
-            f"Capital de départ enregistré : *{cap_aff}* (scellé au Compte de Capital 101/103 SYSCOHADA sans blocage) !\n\n"
-            f"{flux_prompt}"
-        )
-
-    # 3. PHASE 2.2 : NOM COMMERCIAL
-    if etape in ["PHASE_2_NOM_COMMERCIAL", "DEMANDE_NOM_COMMERCIAL"]:
-        u_txt = (user_text or "").strip()
-        nom_propre = nettoyer_nom_entreprise(u_txt)
-        if len(nom_propre) >= 2:
-            ninea = onboarding.get("ninea") or "00802996"
-            update_onboarding_state(sender_phone, "nom_entreprise", nom_propre)
-            update_onboarding_state(sender_phone, "devise", "FCFA")
-            update_onboarding_state(sender_phone, "etape", "PHASE_3_RELEVE")
-
-            # Enregistrement résilient entreprise (Supabase + SQLite)
-            save_or_update_entreprise_resilient({
-                "telephone_whatsapp": clean_phone,
-                "nom_entreprise": nom_propre,
-                "ninea": ninea,
-                "capital_initial_fcfa": int(onboarding.get("capital") or 1000000),
-                "donnees_onboarding": onboarding
-            })
-
-            return (
-                f"Entreprise « {nom_propre} » enregistrée avec succès !\n\n"
-                "Passons à la Phase 3 : Reconstitution de votre bilan de départ.\n\n"
-                "Veuillez m'envoyer votre relevé de compte Wave ou Orange Money (en PDF, photo ou capture d'écran).\n"
-                "(Si vous n'en avez pas, dites-moi simplement combien vous avez en caisse ou sur vos comptes Wave et Orange Money)."
-            )
-        else:
-            return "Veuillez m'indiquer le nom commercial de votre entreprise (par exemple : « Entreprise Fatou Ndiaye », « Keur Massar Services », « CGLT ») :"
-
-    # 4. PHASE 3.1 : RELEVÉ DE TRÉSORERIE (1 seule question courte)
-    if etape in ["PHASE_3_RELEVE", "PHASE_3_BILAN_DEPART"]:
-        u_txt = (user_text or "").strip()
-        rapport_releve_txt = ""
         nb_tx_enregistrees = 0
+        treso_val = 0
 
-        # Récupération ou création résiliente de l'entreprise cible
-        ent = get_entreprise_by_phone_resilient(clean_phone)
-        if not ent and sp:
-            ent = get_or_create_entreprise(sp, sender_phone)
-        ent_id = ent.get("id") if ent else None
-
+        # Traitement photo/document relevé ou capture de solde
         if media_tuple:
             media_type, media_id = media_tuple[0], media_tuple[1]
-            if media_type in ["DOCUMENT", "PHOTO"]:
-                filename = media_tuple[2] if len(media_tuple) > 2 else "releve.pdf"
-                mime_type = media_tuple[3] if len(media_tuple) > 3 else ""
-                media_bytes, m_mime = await download_meta_media(media_id)
-                if media_bytes:
-                    texte_doc = ""
-                    # 1. Extraction PDF ou texte direct
-                    if (filename and filename.lower().endswith(".pdf")) or "pdf" in (mime_type or m_mime).lower() or media_type == "DOCUMENT":
-                        texte_doc = extraire_texte_document(media_bytes, filename, mime_type or m_mime)
-                    
-                    # 2. Si capture d'écran image (JPEG/PNG) ou si PDF non textuel : OCR Gemini 3.1 Flash Lite
-                    if not texte_doc or len(texte_doc.strip()) < 15:
-                        api_key = os.getenv("GEMINI_API_KEY")
-                        if api_key:
-                            try:
-                                client = genai.Client(api_key=api_key)
-                                prompt_ocr = (
-                                    "Tu es un expert-comptable SYSCOHADA. Lis cette capture d'écran ou ce relevé financier (Wave Business, Orange Money, Banque ou reçu).\n"
-                                    "1. Extrais le nom officiel de l'entreprise ou enseigne marchande affiché (ex: à côté du profil/cercle ou au dessus du solde, comme 'Borel'). Indique 'Entreprise: [Nom]'.\n"
-                                    "2. Extrais l'intégralité des opérations sous forme de lignes claires avec Date, Libellé/Destinataire, Montant en FCFA, et sens (Entrée/Reçu ou Sortie/Envoyé).\n"
-                                    "3. Si tu vois le solde disponible ou solde actuel, indique également 'Solde actuel: X FCFA'."
-                                )
-                                response = await asyncio.to_thread(
-                                    client.models.generate_content,
-                                    model='gemini-3.1-flash-lite',
-                                    contents=[
-                                        types.Part.from_bytes(data=media_bytes, mime_type=mime_type or m_mime or "image/jpeg"),
-                                        prompt_ocr
-                                    ]
-                                )
-                                texte_doc = response.text or ""
-                            except Exception as e_ocr:
-                                print(f"Erreur OCR Gemini sur relevé image : {e_ocr}")
-
-                    if texte_doc and len(texte_doc.strip()) > 10:
-                        t_low = texte_doc.lower()
-                        src_type = "WAVE_BUSINESS" if "wave" in t_low else ("ORANGE_MONEY" if "orange" in t_low else "BANQUE")
-                        res_recon = reconstituer_historique(src_type, texte_doc)
-                        if res_recon.get("status") == "success":
-                            rapport_releve_txt = formater_rapport_whatsapp(res_recon, lang="fr") + "\n\n"
-                            if ent_id:
-                                for op in res_recon.get("operations", []):
-                                    tx_row = {
-                                        "entreprise_id": ent_id,
-                                        "date_operation": op.get("date") or datetime.now().strftime("%Y-%m-%d"),
-                                        "libelle": op.get("libelle") or "Écriture relevé historique",
-                                        "compte_syscohada": str(op.get("compte_syscohada") or "701"),
-                                        "type_flux": str(op.get("type_flux") or "ENTREE").upper(),
-                                        "montant_fcfa": float(op.get("montant") or 0),
-                                        "source_paiement": str(op.get("source") or src_type),
-                                        "statut_validation": "VALIDE_PME",
-                                        "reference_externe": op.get("reference") or f"REL-{uuid.uuid4().hex[:8]}",
-                                        "est_professionnel": False if op.get("categorie") == "PERSO_EXPLOITANT" else True
-                                    }
-                                    save_transaction_resilient(tx_row)
-                                    nb_tx_enregistrees += 1
-                                invalidate_dashboard_cache()
-
-                        # Si un nom d'entreprise officiel Wave Business est détecté sur la capture (ex: Borel)
-                        m_ent = re.search(r"Entreprise\s*:\s*([^\n\r,;]+)", texte_doc, re.IGNORECASE)
-                        if m_ent:
-                            nom_wave = nettoyer_nom_entreprise(m_ent.group(1).strip())
-                            if len(nom_wave) >= 2 and nom_wave.lower() not in ["null", "none", "inconnu"]:
-                                update_onboarding_state(sender_phone, "nom_entreprise", nom_wave)
-                                save_or_update_entreprise_resilient({
-                                    "telephone_whatsapp": clean_phone,
-                                    "nom_entreprise": nom_wave
-                                })
-
-        if not rapport_releve_txt and u_txt:
-            u_low = u_txt.lower()
-            if u_low.count("vous avez") >= 2 or u_low.count("transfert") >= 2 or ("relevé" in u_low and "f" in u_low):
-                res_batch = reconstituer_historique("WAVE_PERSO_SMS", u_txt)
-                if res_batch.get("status") == "success":
-                    rapport_releve_txt = formater_rapport_whatsapp(res_batch, lang="fr") + "\n\n"
-                    if ent_id:
-                        for op in res_batch.get("operations", []):
-                            tx_row = {
-                                "entreprise_id": ent_id,
-                                "date_operation": op.get("date") or datetime.now().strftime("%Y-%m-%d"),
-                                "libelle": op.get("libelle") or "Écriture SMS Wave historique",
-                                "compte_syscohada": str(op.get("compte_syscohada") or "701"),
-                                "type_flux": str(op.get("type_flux") or "ENTREE").upper(),
-                                "montant_fcfa": float(op.get("montant") or 0),
-                                "source_paiement": "WAVE",
-                                "statut_validation": "VALIDE_PME",
-                                "reference_externe": op.get("reference") or f"WAVE-{uuid.uuid4().hex[:8]}",
-                                "est_professionnel": False if op.get("categorie") == "PERSO_EXPLOITANT" else True
-                            }
-                            save_transaction_resilient(tx_row)
-                            nb_tx_enregistrees += 1
-                        invalidate_dashboard_cache()
-            else:
-                # 1. Vérification si l'utilisateur souhaite synchroniser ses transactions passées archivées
-                op_lookup = interroger_annuaire_marchand_wave_om(clean_phone)
-                txs_arch = op_lookup.get("transactions_archivees", [])
-                low_u = (u_txt or "").lower()
-                
-                if txs_arch and ent_id and (any(w in low_u for w in ["oui", "ok", "d'accord", "vas-y", "synchroniser", "importer", "connecter"]) or "flux" in low_u):
-                    for tx in txs_arch:
-                        tx_row = {
-                            "entreprise_id": ent_id,
-                            "date_operation": tx.get("date_operation") or datetime.now().strftime("%Y-%m-%d"),
-                            "libelle": tx.get("libelle") or "Écriture Wave/Orange Money",
-                            "compte_syscohada": str(tx.get("compte_syscohada") or "701"),
-                            "type_flux": str(tx.get("type_flux") or "ENTREE").upper(),
-                            "montant_fcfa": float(tx.get("montant_fcfa") or 0),
-                            "source_paiement": tx.get("source_paiement") or "WAVE_BUSINESS",
-                            "statut_validation": "VALIDE_PME",
-                            "reference_externe": tx.get("reference_externe") or f"ARCH-{uuid.uuid4().hex[:8]}",
-                            "est_professionnel": True
-                        }
-                        save_transaction_resilient(tx_row)
-                        nb_tx_enregistrees += 1
-                    invalidate_dashboard_cache()
-                    rapport_releve_txt = f"📦 *{nb_tx_enregistrees} transactions historiques Wave & Orange Money* synchronisées et certifiées SYSCOHADA !\n\n"
-                else:
-                    soldes_detectes = parse_soldes_multi_operateurs(u_txt)
-                    if soldes_detectes and ent_id:
-                        for op_nom, mnt in soldes_detectes.items():
-                            cpt = "521" if op_nom in ["WAVE", "ORANGE_MONEY", "BANQUE"] else "571"
-                            tx_row = {
-                                "entreprise_id": ent_id,
-                                "date_operation": datetime.now().strftime("%Y-%m-%d"),
-                                "libelle": f"Trésorerie de départ {op_nom}",
-                                "compte_syscohada": cpt,
-                                "type_flux": "ENTREE",
-                                "montant_fcfa": float(mnt),
-                                "source_paiement": op_nom,
-                                "statut_validation": "VALIDE_PME",
-                                "reference_externe": f"DEP-{uuid.uuid4().hex[:8]}",
-                                "est_professionnel": True
-                            }
-                            save_transaction_resilient(tx_row)
-                            nb_tx_enregistrees += 1
-                        invalidate_dashboard_cache()
-
-        update_onboarding_state(sender_phone, "bilan_tresorerie", u_txt or f"Relevé analysé ({nb_tx_enregistrees} écritures)")
-        update_onboarding_state(sender_phone, "etape", "PHASE_3_STOCK")
-        
-        intro = f"📄 Relevé financier analysé et {nb_tx_enregistrees} écritures intégrées !\n\n{rapport_releve_txt}" if rapport_releve_txt else (f"Trésorerie de départ bien enregistrée ({nb_tx_enregistrees} écritures scellées) !\n\n" if nb_tx_enregistrees > 0 else "Trésorerie de départ bien enregistrée !\n\n")
-        return (
-            f"{intro}"
-            "Deuxième question pour votre bilan : Quelle est la valeur estimée de votre stock de marchandises actuel ?\n"
-            "(Si vous n'avez pas de stock ou si vous vendez des services/prestations, dites simplement « Zéro »)."
-        )
-
-    # 5. PHASE 3.2 : VALEUR DU STOCK
-    if etape == "PHASE_3_STOCK":
-        u_txt = (user_text or "").strip()
-        u_low = u_txt.lower()
-        
-        # Gestion photo justificative éventuelle du stock / magasin
-        preuve_msg = ""
-        if media_tuple:
-            media_type, media_id = media_tuple[0], media_tuple[1]
-            m_bytes, m_mime = await download_meta_media(media_id)
-            if m_bytes:
-                sha_hash = hashlib.sha256(m_bytes).hexdigest()
-                update_onboarding_state(sender_phone, "stock_photo_hash", sha_hash)
-                if sp:
-                    try:
-                        sp.storage.from_("preuves").upload(
-                            file=m_bytes,
-                            path=f"{clean_phone}/stock_{media_id}.jpg",
-                            file_options={"content-type": m_mime or "image/jpeg", "upsert": "true"}
+            media_bytes, m_mime = await download_meta_media(media_id)
+            if media_bytes:
+                # OCR Gemini pour extraire le solde et les opérations
+                try:
+                    from google import genai
+                    from google.genai import types
+                    load_dotenv("chat_grow/.env", override=True)
+                    gem_key = os.getenv("GEMINI_API_KEY")
+                    if gem_key:
+                        client_gem = genai.Client(api_key=gem_key)
+                        img_part = types.Part.from_bytes(data=media_bytes, mime_type=m_mime or "image/jpeg")
+                        res_gem = client_gem.models.generate_content(
+                            model="gemini-3.1-flash-lite",
+                            contents=[img_part, "Extrais le solde disponible total en FCFA de cette capture de compte en JSON brut strict : {\"solde_fcfa\": 0}"]
                         )
-                    except Exception:
-                        pass
-                preuve_msg = f"\n📸 Photo de votre stock scellée avec succès dans votre dossier officiel (Empreinte SHA-256 : {sha_hash[:10]}...) !"
+                        raw = res_gem.text.strip()
+                        m_j = re.search(r'\{.*\}', raw, re.DOTALL)
+                        if m_j:
+                            rj = json.loads(m_j.group(0))
+                            treso_val = int(rj.get("solde_fcfa") or 0)
+                except Exception as e_ocr:
+                    print(f"Info OCR Solde : {e_ocr}")
 
-        # Cas 1 : L'utilisateur n'a pas de stock (Zéro / Aucun / Non / Services)
-        mots_sans_stock = ["aucun", "aucune", "zero", "zéro", "non", "rien", "pas de stock", "amul", "dara", "0", "service", "prestation"]
-        if any(m in u_low for m in mots_sans_stock) and not any(ch in u_low for ch in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]):
-            update_onboarding_state(sender_phone, "bilan_stock", "0 FCFA (Aucun stock)")
-            update_onboarding_state(sender_phone, "valeur_stock_fcfa", 0)
-            synchroniser_bilan_structurel_depart(clean_phone, "STOCK", 0, "Aucun stock")
-            update_onboarding_state(sender_phone, "etape", "PHASE_3_MATERIEL")
-            return (
-                "Valeur du stock enregistrée (0 FCFA - Aucun stock) ! 📦\n\n"
-                "Troisième question pour votre bilan : Avez-vous du matériel professionnel ou des équipements (machines à coudre, ordinateurs, véhicules, frigos, mobilier de bureau) ?\n"
-                "(Si vous en avez, précisez ce que c'est avec sa valeur estimée en FCFA ; vous pouvez aussi m'en envoyer une photo pour sceller la preuve dans votre tableau ! Sinon dites simplement « Non »)."
-            )
+        if treso_val == 0 and u_txt:
+            treso_val = parse_montant_fcfa(u_txt)
 
-        # Cas 2 : Un montant chiffré en FCFA est présent
-        mnt_stock = parse_montant_fcfa(u_txt)
-        if mnt_stock > 0:
-            desc = onboarding.get("stock_description_attente") or u_txt
-            update_onboarding_state(sender_phone, "bilan_stock", f"{desc} ({mnt_stock:,} FCFA)")
-            update_onboarding_state(sender_phone, "valeur_stock_fcfa", mnt_stock)
-            synchroniser_bilan_structurel_depart(clean_phone, "STOCK", mnt_stock, desc)
-            update_onboarding_state(sender_phone, "etape", "PHASE_3_MATERIEL")
-            return (
-                f"📦 Valeur de votre stock de marchandises scellée à *{mnt_stock:,} FCFA* au bilan SYSCOHADA !{preuve_msg}\n\n"
-                "Troisième question : Avez-vous du matériel professionnel ou des équipements (machines à coudre, ordinateurs, véhicules, frigos, mobilier) ?\n"
-                "(Si vous en avez, dites ce que c'est avec sa valeur estimée en FCFA ; vous pouvez aussi m'en envoyer une photo pour sceller la preuve dans votre tableau ! Sinon dites simplement « Non »)."
-            )
+        if treso_val > 0:
+            synchroniser_bilan_structurel_depart(clean_phone, "TRESORERIE", treso_val, "Solde de départ certifié")
+            update_onboarding_state(sender_phone, "tresorerie_depart_fcfa", treso_val)
 
-        # Cas 3 : L'utilisateur a envoyé une photo de son stock SANS montant dans le texte
-        if media_tuple and not u_txt:
-            return (
-                f"📸 Photo de vos marchandises bien reçue et scellée dans votre tableau de bord !{preuve_msg}\n\n"
-                "À combien estimez-vous la valeur globale d'achat de ce stock en FCFA ?\n"
-                "(Exemple : « 350 000 FCFA », ou dites « Zéro » si c'est négligeable)."
-            )
+        update_onboarding_state(sender_phone, "etape", "PHASE_5_INVENTAIRE_CAISSE_ESPECES")
 
-        # Cas 4 : L'utilisateur a mentionné son stock sans donner de montant
-        update_onboarding_state(sender_phone, "stock_description_attente", u_txt)
+        # Instruction capitale utilisateur (Req 10) : Demande obligatoire des espèces tiroir 571
         return (
-            f"C'est bien noté pour votre stock (*{u_txt}*) ! 📦\n\n"
-            "À combien estimez-vous la valeur totale d'achat de ces marchandises en FCFA ?\n"
-            "(Dites par exemple : « 300 000 FCFA », ou dites « Zéro » si vous n'avez pas de stock à valoriser)."
+            f"📄 Trésorerie de départ sur vos comptes enregistrée (*{treso_val:,.0f} FCFA* au Compte 521) !\n\n"
+            "Passons à l'Étape 5 : **Inventaire Initial Complet** (standards d'expertise comptable ONECCA / SYSCOHADA) :\n\n"
+            "💵 *1. Comptage Obligatoire de votre Caisse Espèces (Tiroir - Compte 571)* :\n"
+            "En dehors de vos comptes Wave et Orange Money, combien avez-vous physiquement en liquide (billets et pièces de monnaie) "
+            "dans votre tiroir-caisse, meuble ou coffre de boutique maintenant ?\n\n"
+            "👉 *Dites-moi simplement le montant exact en FCFA (exemple : « J'ai 175 000 F en espèces dans ma caisse » ou « 50 000 FCFA »).*"
         )
 
-    # 6. PHASE 3.3 : IMMOBILISATIONS / MATÉRIEL (ÉQUIPEMENTS & MACHINES)
-    if etape == "PHASE_3_MATERIEL":
+    # =========================================================================
+    # ÉTAPE 5 : INVENTAIRE INITIAL COMPLET (5 PILIERS SYSCOHADA)
+    # =========================================================================
+
+    # 5.1 COMPTAGE OBLIGATOIRE CAISSE ESPÈCES (COMPTE 571)
+    if etape == "PHASE_5_INVENTAIRE_CAISSE_ESPECES":
+        u_txt = (user_text or "").strip()
+        caisse_val = parse_montant_fcfa(u_txt)
+
+        update_onboarding_state(sender_phone, "caisse_especes_fcfa", caisse_val)
+        synchroniser_bilan_structurel_depart(clean_phone, "CAISSE_ESPECES", caisse_val, "Caisse physique tiroir")
+        update_onboarding_state(sender_phone, "etape", "PHASE_5_INVENTAIRE_IMMOBILISATIONS")
+
+        return (
+            f"💵 Caisse espèces physique scellée avec succès à *{caisse_val:,.0f} FCFA* (Compte 571 SYSCOHADA) !\n\n"
+            "🛠️ *2. Immobilisations & Équipements Professionnels* (Compte 241/244 SYSCOHADA) :\n"
+            "Avez-vous du matériel professionnel, machines, congélateurs, véhicules ou ordinateurs utilisés pour votre activité ?\n"
+            "👉 Dites-moi ce que vous possédez et sa valeur d'achat estimée (ex: « 2 congélateurs et 1 balance : 600 000 FCFA », ou dites « Aucun »). "
+            "Vous pouvez aussi m'en envoyer une photo pour sceller la preuve au bilan !\n\n"
+            "💡 *Growth calcule automatiquement vos amortissements annuels (20%/an sur 5 ans pour le matériel).* "
+        )
+
+    # 5.2 IMMOBILISATIONS PROFESSIONNELLES & AMORTISSEMENTS (COMPTE 241/244)
+    if etape in ["PHASE_5_INVENTAIRE_IMMOBILISATIONS", "PHASE_3_MATERIEL"]:
         u_txt = (user_text or "").strip()
         u_low = u_txt.lower()
+        mat_val = parse_montant_fcfa(u_txt)
+        preuve_photo = ""
 
-        # Gestion photo justificative du matériel (machines, véhicules, ordinateurs)
-        preuve_msg = ""
-        photo_scellee = False
         if media_tuple:
             media_type, media_id = media_tuple[0], media_tuple[1]
             m_bytes, m_mime = await download_meta_media(media_id)
@@ -5020,150 +4754,138 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 sha_hash = hashlib.sha256(m_bytes).hexdigest()
                 update_onboarding_state(sender_phone, "materiel_photo_hash", sha_hash)
                 update_onboarding_state(sender_phone, "materiel_photo_validee", True)
-                photo_scellee = True
-                if sp:
-                    try:
-                        sp.storage.from_("preuves").upload(
-                            file=m_bytes,
-                            path=f"{clean_phone}/materiel_{media_id}.jpg",
-                            file_options={"content-type": m_mime or "image/jpeg", "upsert": "true"}
-                        )
-                    except Exception:
-                        pass
-                preuve_msg = f"\n📸 Photo de vos équipements scellée dans votre tableau de bord officiel (Empreinte SHA-256 : {sha_hash[:10]}...) !"
+                preuve_photo = f"\n📸 Photo de vos équipements scellée dans votre dossier (SHA-256 : {sha_hash[:10]}...) !"
 
-        # Cas 1 : L'utilisateur n'a aucun matériel professionnel (Non / Aucun / Zéro)
-        mots_sans_mat = ["aucun", "aucune", "zero", "zéro", "non", "rien", "pas de materiel", "pas de matériel", "amul", "dara", "0"]
-        if any(m in u_low for m in mots_sans_mat) and not any(ch in u_low for ch in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]):
-            update_onboarding_state(sender_phone, "bilan_materiel", "0 FCFA (Aucun équipement)")
+        if any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "amul", "dara", "0"]) and mat_val == 0:
             update_onboarding_state(sender_phone, "immobilisations_fcfa", 0)
             synchroniser_bilan_structurel_depart(clean_phone, "MATERIEL", 0, "Aucun équipement")
-            update_onboarding_state(sender_phone, "etape", "PHASE_3_DETTES")
-            return (
-                "Matériel professionnel noté (0 FCFA) ! 🛠️\n\n"
-                "Dernière question pour votre bilan : Avez-vous des dettes fournisseurs à payer ou des créances clients à récupérer ?\n"
-                "(Exemple : « Moussa me doit 40 000 FCFA et je dois 25 000 au fournisseur », ou dites simplement « Aucun »)."
-            )
+        else:
+            if mat_val > 0:
+                update_onboarding_state(sender_phone, "immobilisations_fcfa", mat_val)
+                # Amortissement sur 5 ans (20% par an)
+                dotation_annuelle = mat_val * 0.20
+                update_onboarding_state(sender_phone, "amortissement_annuel_fcfa", dotation_annuelle)
+                synchroniser_bilan_structurel_depart(clean_phone, "MATERIEL", mat_val, f"Immobilisations (Amortissement : {dotation_annuelle:,.0f} F/an)")
 
-        # Cas 2 : Un montant chiffré en FCFA est détecté
-        mnt_mat = parse_montant_fcfa(u_txt)
-        if mnt_mat > 0:
-            desc_prev = onboarding.get("materiel_description_attente") or ""
-            desc_complete = f"{desc_prev} - {u_txt}".strip(" -")
-            update_onboarding_state(sender_phone, "bilan_materiel", f"{desc_complete} ({mnt_mat:,} FCFA)")
-            update_onboarding_state(sender_phone, "immobilisations_fcfa", mnt_mat)
-            synchroniser_bilan_structurel_depart(clean_phone, "MATERIEL", mnt_mat, desc_complete)
-            update_onboarding_state(sender_phone, "etape", "PHASE_3_DETTES")
-            
-            conseil_photo = "" if (photo_scellee or onboarding.get("materiel_photo_validee")) else "\n💡 Vous pourrez également m'envoyer une photo de vos machines ou de vos factures pour certifier la preuve auprès des banques."
-            return (
-                f"🛠️ Matériel professionnel (*{mnt_mat:,} FCFA*) bien enregistré et valorisé à l'actif de votre bilan SYSCOHADA !{preuve_msg}{conseil_photo}\n\n"
-                "Dernière question pour votre bilan : Avez-vous des dettes fournisseurs à payer ou des créances clients à récupérer ?\n"
-                "(Exemple : « Moussa me doit 40 000 FCFA et je dois 25 000 au fournisseur », ou dites simplement « Aucun »)."
-            )
+        update_onboarding_state(sender_phone, "etape", "PHASE_5_INVENTAIRE_STOCK")
 
-        # Cas 3 : L'utilisateur a envoyé une photo de son matériel SANS montant dans le texte
-        if photo_scellee and not u_txt:
-            return (
-                f"📸 Photo de vos équipements reçue et scellée avec succès dans votre tableau de bord (Empreinte SHA-256 certifiée) !{preuve_msg}\n\n"
-                "À combien estimez-vous la valeur totale de ce matériel en FCFA ?\n"
-                "(Exemple : « 450 000 FCFA », ou dites « Zéro » si vous ne souhaitez pas l'inscrire à l'actif)."
-            )
-
-        # Cas 4 : L'utilisateur a mentionné son matériel (ex: "Oui des ordinateurs", "J'ai 2 machines à coudre") SANS montant
-        update_onboarding_state(sender_phone, "materiel_description_attente", u_txt)
+        immo_aff = f"{mat_val:,.0f} FCFA" if mat_val > 0 else "0 FCFA"
         return (
-            f"Bien noté pour votre matériel (*{u_txt}*) ! 🛠️\n\n"
-            "1) À combien estimez-vous la valeur totale de ces équipements en FCFA ? (Exemple : « 400 000 FCFA »).\n"
-            "2) 📸 Vous pouvez également m'envoyer dès maintenant une photo de vos machines ou de vos équipements pour sceller la preuve dans votre tableau de bord !"
+            f"🛠️ Immobilisations scellées à l'actif du bilan (*{immo_aff}* - Compte 241/244 SYSCOHADA) avec amortissement linéaire programmé !{preuve_photo}\n\n"
+            "📦 *3. Stock de Marchandises au Magasin* (Compte 311/321 SYSCOHADA) :\n"
+            "Quelle est la valeur totale de votre stock actuel évaluée au **coût d'achat grossiste** "
+            "(le prix auquel vous l'avez acheté chez vos grossistes et fournisseurs, et non au prix de vente client) ?\n\n"
+            "👉 Donnez votre estimation en FCFA (ex: « 450 000 FCFA », ou « Zéro » si vous faites des prestations de services)."
         )
 
-    # 7. PHASE 3.4 : DETTES & CRÉANCES
-    if etape == "PHASE_3_DETTES":
+    # 5.3 STOCK AU COÛT GROSSISTE (COMPTE 311/321)
+    if etape in ["PHASE_5_INVENTAIRE_STOCK", "PHASE_3_STOCK"]:
         u_txt = (user_text or "").strip()
         u_low = u_txt.lower()
-        nom_ent = onboarding.get("nom_entreprise") or "Votre Entreprise"
+        stk_val = parse_montant_fcfa(u_txt)
 
-        # Cas 1 : Aucun impayé ni dette (Aucun / Zéro / Non / Rien)
-        mots_aucun = ["aucun", "aucune", "zero", "zéro", "non", "rien", "amul", "dara", "0", "pas de dette", "pas de créance", "pas de creance"]
-        if any(m in u_low for m in mots_aucun) and not any(ch in u_low for ch in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]):
-            update_onboarding_state(sender_phone, "bilan_dettes", "Aucune dette ni créance (0 FCFA)")
-            update_onboarding_state(sender_phone, "dettes_fournisseurs_fcfa", 0)
-            update_onboarding_state(sender_phone, "creances_clients_fcfa", 0)
-            synchroniser_bilan_structurel_depart(clean_phone, "DETTE", 0, "Aucune dette")
-            synchroniser_bilan_structurel_depart(clean_phone, "CREANCE", 0, "Aucune créance")
-            update_onboarding_state(sender_phone, "etape", "PHASE_4_RAPPEL_JOURNEE")
-            return (
-                f"Bilan patrimonial de départ de « {nom_ent} » entièrement scellé et certifié sur Growth !\n\n"
-                "Passons à la Phase 4 : chaque soir à 21h00, Growth vous enverra un rappel pour faire le point sur votre journée et clôturer vos comptes.\n\n"
-                "Êtes-vous prêt à démarrer ? Répondez simplement « Oui » ou « Prêt » !"
-            )
+        if any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "service", "prestation", "amul", "dara", "0"]) and stk_val == 0:
+            stk_val = 0
 
-        # Cas 2 : Un montant chiffré en FCFA est présent
-        mnt_dette = parse_montant_fcfa(u_txt)
-        if mnt_dette > 0:
-            est_creance = any(k in u_low for k in ["me doit", "créance", "creance", "client", "crédit", "credit dehors", "on me doit"])
-            est_dette = any(k in u_low for k in ["je dois", "dette", "fournisseur", "facture à payer", "facture a payer", "emprunt"])
-            
-            if est_creance and not est_dette:
-                synchroniser_bilan_structurel_depart(clean_phone, "CREANCE", mnt_dette, u_txt)
-                type_msg = f"Créance client de *{mnt_dette:,} FCFA*"
-            elif est_dette and not est_creance:
-                synchroniser_bilan_structurel_depart(clean_phone, "DETTE", mnt_dette, u_txt)
-                type_msg = f"Dette fournisseur de *{mnt_dette:,} FCFA*"
-            else:
-                synchroniser_bilan_structurel_depart(clean_phone, "CREANCE", mnt_dette, u_txt)
-                type_msg = f"Montant de *{mnt_dette:,} FCFA* inscrit au suivi des créances/dettes"
+        update_onboarding_state(sender_phone, "valeur_stock_fcfa", stk_val)
+        synchroniser_bilan_structurel_depart(clean_phone, "STOCK", stk_val, "Stock marchandises au coût grossiste")
+        update_onboarding_state(sender_phone, "etape", "PHASE_5_INVENTAIRE_CREANCES_DETTES")
 
-            desc_prev = onboarding.get("dettes_description_attente") or ""
-            desc_complete = f"{desc_prev} - {u_txt}".strip(" -")
-            update_onboarding_state(sender_phone, "bilan_dettes", desc_complete)
-            update_onboarding_state(sender_phone, "etape", "PHASE_4_RAPPEL_JOURNEE")
-            return (
-                f"🤝 {type_msg} bien enregistrée dans votre tableau de bord !\n\n"
-                f"Bilan patrimonial de départ de « {nom_ent} » entièrement scellé et certifié sur Growth !\n\n"
-                "Passons à la Phase 4 : chaque soir à 21h00, Growth vous enverra un rappel pour faire le point sur votre journée et clôturer vos comptes.\n\n"
-                "Êtes-vous prêt à démarrer ? Répondez simplement « Oui » ou « Prêt » !"
-            )
-
-        # Cas 3 : L'utilisateur a mentionné des dettes ou créances SANS montant
-        update_onboarding_state(sender_phone, "dettes_description_attente", u_txt)
+        stk_aff = f"{stk_val:,.0f} FCFA" if stk_val > 0 else "0 FCFA"
         return (
-            "C'est bien noté pour vos créances ou dettes ! 🤝\n\n"
-            "Pour que Growth les intègre avec précision dans votre tableau de bord :\n"
-            "Combien vous doit-on ou combien devez-vous en FCFA, et quel est le nom du client ou fournisseur ?\n"
-            "(Exemple : « Moussa me doit 40 000 FCFA » ou « Je dois 25 000 au fournisseur », ou dites « Zéro » si c'est réglé)."
+            f"📦 Stock de marchandises scellé à *{stk_aff}* au bilan SYSCOHADA (évalué au coût grossiste PUMP) !\n\n"
+            "🤝 *4 & 5. Créances Clients & Dettes Fournisseurs* (Comptes 411 & 401 SYSCOHADA) :\n"
+            "Des clients vous doivent-ils de l'argent (crédit accordé) ? Devez-vous de l'argent à des fournisseurs grossistes ou à une microfinance (Baobab, ACEP, CMS) ?\n\n"
+            "👉 Exemple : « Des clients me doivent 80 000 F et je dois 120 000 F au grossiste » (ou répondez simplement « Aucun »)."
         )
 
-    # 8. PHASE 4 : RAPPELS 21H -> VALIDATION ET PASSAGE EN PHASE 5
-    if etape == "PHASE_4_RAPPEL_JOURNEE":
-        u_txt_low = (user_text or "").strip().lower()
-        if any(k in u_txt_low for k in ["oui", "prêt", "pret", "ok", "d'accord", "dac", "c'est bon", "cest bon", "yes", "allons-y", "commencer", "on peut", "parti"]):
+    # 5.4 CRÉANCES CLIENTS & DETTES FOURNISSEURS (COMPTES 411 & 401)
+    if etape in ["PHASE_5_INVENTAIRE_CREANCES_DETTES", "PHASE_3_DETTES"]:
+        u_txt = (user_text or "").strip()
+        u_low = u_txt.lower()
+        mnt = parse_montant_fcfa(u_txt)
+        nom_ent = onboarding.get("nom_entreprise") or "Votre Entreprise"
+
+        creances_val = 0
+        dettes_val = 0
+
+        if any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "amul", "dara", "0"]):
+            creances_val = 0
+            dettes_val = 0
+        elif mnt > 0:
+            if any(k in u_low for k in ["doit", "client", "crédit", "creance", "créance"]):
+                creances_val = mnt
+            if any(k in u_low for k in ["dois", "dette", "fournisseur", "grossiste", "emprunt"]):
+                dettes_val = mnt
+            if creances_val == 0 and dettes_val == 0:
+                creances_val = mnt
+
+        update_onboarding_state(sender_phone, "creances_clients_fcfa", creances_val)
+        update_onboarding_state(sender_phone, "dettes_fournisseurs_fcfa", dettes_val)
+        synchroniser_bilan_structurel_depart(clean_phone, "CREANCE", creances_val, "Créances clients de départ")
+        synchroniser_bilan_structurel_depart(clean_phone, "DETTE", dettes_val, "Dettes fournisseurs de départ")
+
+        # =====================================================================
+        # ÉTAPE 6 : SCELLAGE BILAN D'OUVERTURE & VERROU D'ABONNEMENT PROFESSIONNEL
+        # =====================================================================
+        update_onboarding_state(sender_phone, "etape", "PHASE_6_VERROU_ABONNEMENT")
+        update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_ABONNEMENT")
+
+        caisse_especes = onboarding.get("caisse_especes_fcfa") or 0
+        treso_comptes = onboarding.get("tresorerie_depart_fcfa") or 0
+        stock_fcfa = onboarding.get("valeur_stock_fcfa") or 0
+        immo_fcfa = onboarding.get("immobilisations_fcfa") or 0
+
+        return (
+            f"🎉 *Félicitations {nom_ent} ! Votre dossier d'entreprise et votre Bilan d'Ouverture initial sont 100% scellés conformes SYSCOHADA SMT !*\n\n"
+            "📊 **Votre Bilan d'Ouverture Certifié :**\n"
+            f"• 💵 Caisse Espèces Tiroir (571) : *{caisse_especes:,.0f} FCFA*\n"
+            f"• 📱 Trésorerie Comptes Marchands (521) : *{treso_comptes:,.0f} FCFA*\n"
+            f"• 📦 Stock de Marchandises Grossiste (311) : *{stock_fcfa:,.0f} FCFA*\n"
+            f"• 🛠️ Immobilisations & Équipements (241) : *{immo_fcfa:,.0f} FCFA* (Amortissements programmés)\n"
+            f"• 🤝 Créances Clients (411) : *{creances_val:,.0f} FCFA*\n"
+            f"• 💼 Dettes Fournisseurs (401) : *{dettes_val:,.0f} FCFA*\n\n"
+            "🔒 **Activation de votre Routine Quotidienne (Pack d'Accueil Gratuit Terminé) :**\n"
+            "Pour démarrer votre copilote au quotidien (saisie de vos ventes par note vocale Wolof/Français en 1.5s chrono, "
+            "points d'étape du Berger toutes les 3h, grand rituel de clôture de caisse à 20h00 avec note vocale audio et Journal Web sécurisé), "
+            "veuillez activer votre abonnement mensuel Growth.\n\n"
+            "💳 *Lien de Paiement Officiel Sécurisé :*\n"
+            f"{lien_abo}\n"
+            "*(Paiement direct et instantané par Wave, Orange Money ou Carte Bancaire - 100% sécurisé et professionnel)*\n\n"
+            "💡 *Dès que votre règlement est effectué, répondez simplement « J'ai payé » pour débloquer votre accès actif immédiat !*"
+        )
+
+    # =========================================================================
+    # ÉTAPE 6 (SUITE) : VERROU STRICT EN ATTENTE D'ABONNEMENT
+    # =========================================================================
+    if etape in ["PHASE_6_VERROU_ABONNEMENT", "EN_ATTENTE_ABONNEMENT"]:
+        u_txt = (user_text or "").strip().lower()
+        if is_paiement_keyword(u_txt) or any(k in u_txt for k in ["paye", "payé", "payer", "fey naa", "feynaa", "active", "activé"]):
+            update_onboarding_state(sender_phone, "abonnement_valide", True)
             update_onboarding_state(sender_phone, "etape", "TERMINE")
             update_onboarding_state(sender_phone, "statut", "COMPLET")
-            update_onboarding_state(sender_phone, "abonnement_valide", True)
-            
             nom_ent = onboarding.get("nom_entreprise") or "Votre Entreprise"
             mode_comm = onboarding.get("mode_communication") or "VOCAL"
-            mode_str = "en note vocale" if mode_comm == "VOCAL" else "par message écrit"
-            
+            mode_str = "en note vocale 🎙️" if mode_comm == "VOCAL" else "par message écrit ✍️"
+
             return (
-                f"Félicitations ! « {nom_ent} » entre officiellement dans la Phase 5 de Growth : votre accompagnement comptable permanent à vie.\n\n"
-                "📌 RÈGLE D'OR DE CERTIFICATION COMPTABLE :\n"
-                "Pour toute dépense ou vente en espèces, n'oubliez pas d'envoyer la photo du reçu pour sceller l'écriture.\n\n"
-                f"Je suis à votre écoute {mode_str}. Vous pouvez me déclarer votre première opération dès maintenant !"
-            )
-        else:
-            ancien_bilan = onboarding.get("bilan_depart_declare", "")
-            nouveau_bilan = f"{ancien_bilan} | {user_text}".strip(" |")
-            update_onboarding_state(sender_phone, "bilan_depart_declare", nouveau_bilan)
-            return (
-                "Bien noté ! Cette précision a été scellée et ajoutée à votre bilan de départ.\n\n"
-                "Êtes-vous prêt pour votre premier rappel de clôture à 21h00 ?\n"
-                "👉 Répondez simplement « Oui » ou « Prêt » pour valider !"
+                f"🎉 *Paiement Validé avec Succès !*\n\n"
+                f"Félicitations, votre copilote Growth pour *{nom_ent}* est désormais activé 24h/24 ! 🚀\n\n"
+                f"Je suis prêt à enregistrer vos opérations {mode_str}.\n\n"
+                "👉 *Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu !*"
             )
 
-    return "Bienvenue sur Growth ! Envoyez un message ou une note vocale pour débuter."
+        return (
+            "🔒 *Votre Bilan d'Ouverture est scellé - Abonnement en attente d'activation*\n\n"
+            "Pour activer la saisie vocale en direct et débloquer vos clôtures quotidiennes, veuillez finaliser votre abonnement mensuel :\n\n"
+            f"👉 *Lien de Paiement Officiel Sécurisé :*\n{lien_abo}\n\n"
+            "💡 Si vous avez déjà effectué votre paiement, répondez simplement *« J'ai payé »* pour débloquer votre compte à la seconde !"
+        )
+
+    # =========================================================================
+    # ÉTAPE 7 : ROUTINE QUOTIDIENNE ACTIVE (PAR DÉFAUT)
+    # =========================================================================
+    return "Bienvenue sur Growth ! Dictez votre vente ou dépense par message vocal ou écrit."
 
 
 async def download_meta_media(media_id: str) -> tuple[bytes, str]:

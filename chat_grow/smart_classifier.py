@@ -281,40 +281,39 @@ def generer_point_flash_journee(nom_entreprise: str, txs_du_jour: list, treso_st
 
     if 7 <= h_int <= 11:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Point d'Étape du Berger (Matin)* 📋 :\n"
-            "1. 📦 Stock (601) : Arrivage de marchandise ce matin ?\n"
-            "2. 💼 Dette Fournisseur (401) : Stock pris à crédit ?\n"
-            "3. 🏗️ Matériel (244) : Achat ou réparation d'équipement ?\n"
-            "4. 🚗 Frais (605/624) : Transport, taxi ou dockers ?\n"
-            "👉 Dictez tout en 1 vocal rapide !"
+            "\n\n🐑 *Point d'Étape du Berger (11h30 - Espèces, Popote & Achats)* 📋 :\n"
+            "1. 💵 Caisse Espèces (571) : Avez-vous pris du liquide dans votre tiroir (popote midi, transport, dockers) ?\n"
+            "2. 📦 Stock & Prix Grossistes (601) : Nouvel arrivage ce matin ? Un grossiste a-t-il augmenté ou baissé un prix ?\n"
+            "3. 🛠️ Matériel & Équipements (244) : Achat, réparation ou matériel changé (pour mise à jour de l'amortissement) ?\n"
+            "4. 💼 Dettes / Crédits (401/411) : Marchandise prise à crédit ou client à qui vous avez fait crédit ?\n"
+            "👉 *Dictez tout en 1 seule note vocale rapide (Wolof ou Français)* !"
         )
     elif 12 <= h_int <= 14:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Point d'Étape du Berger (Mi-journée)* 📋 :\n"
-            "1. 🍲 Popote/Maison (104) : Retrait pour le repas de midi ?\n"
-            "2. 🤝 Crédits Clients (411) : Marchandise donnée à crédit ?\n"
-            "3. 📦 Stock (601) : Achat de stock payé ce midi ?\n"
-            "4. ⚡ Charges Cash (605/661) : Transport, taxi ou dockers ?\n"
-            "5. ⚠️ Avaries (654) : Marchandise abîmée ou perdue ?\n"
-            "👉 Dictez tout en 1 vocal (ex : « 5000 popote, Modou doit 12000 ») !"
+            "\n\n🐑 *Point d'Étape du Berger (15h00 - Stocks, Grossistes & Caisse)* 📋 :\n"
+            "1. 💵 Tiroir Caisse Espèces (571) : Vos dépenses en liquide du midi sont-elles bien toutes déclarées ?\n"
+            "2. 📦 Stocks & Variations de Prix (601/311) : Le stock a-t-il diminué ou augmenté ? Le prix d'achat exact a-t-il changé ?\n"
+            "3. 🍲 Dépenses Perso / Popote (104) : Retrait pour les besoins de la famille pris sur la caisse ?\n"
+            "4. 🤝 Crédits Clients (411) : De nouveaux clients ont-ils pris à crédit ?\n"
+            "👉 *Dictez simplement un court vocal (ex : « 5000 popote, reçu 1 carton huile à 18 000, 2000 dockers »)* !"
         )
     elif 15 <= h_int <= 17:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Point d'Étape du Berger (Après-midi)* 📋 :\n"
-            "1. 💼 Dettes Grossistes (401) : Facture en attente ?\n"
-            "2. 🤝 Crédits Clients (411) : Nouveaux crédits accordés ?\n"
-            "3. 💳 Règlements reçus (411) : Dette client remboursée ?\n"
-            "4. 🏦 Trésorerie (585) : Dépôt caisse vers Wave/Banque ?\n"
-            "👉 Un mot rapide pour ajuster votre situation en direct."
+            "\n\n🐑 *Point d'Étape du Berger (18h00 - Matériel, Amortissements & Dettes)* 📋 :\n"
+            "1. 🛠️ Matériel Professionnel (241/244) : Un équipement en panne, réparé ou remplacé aujourd'hui ? (Suivi amortissement 5/10 ans)\n"
+            "2. 💵 Espèces Tiroir (571) : Combien reste-t-il à peu près en billets/pièces avant la fermeture ?\n"
+            "3. 💼 Dettes Fournisseurs (401) : Factures fournisseurs payées ou en attente d'échéance ?\n"
+            "4. 💳 Règlements Clients (411) : Un client est-il venu rembourser sa dette ?\n"
+            "👉 *Un mot vocal rapide pour ajuster votre situation en direct avant la clôture du soir.*"
         )
     else:
         berger_nouvelles_bilan = (
-            "\n\n🐑 *Point d'Étape du Berger (Clôture & Bilan)* 📋 :\n"
-            "1. 💵 Caisse Physique (571) : Cash réel compté au tiroir ?\n"
-            "2. 🍲 Total Popote (104) : Autres retraits pour la maison ?\n"
-            "3. 🤝 Crédits (411) : Tous les impayés du jour notés ?\n"
-            "4. 📸 Justificatifs : Reçus ou factures à photographier ?\n"
-            "👉 Validez votre caisse pour certifier votre Bilan !"
+            "\n\n🐑 *Grand Rituel du Berger (20h00 - Clôture Totale & Caisse)* 📋 :\n"
+            "1. 💵 Comptage Caisse Espèces (571) : Quel est le montant exact en billets et pièces dans votre tiroir ce soir ?\n"
+            "2. 📱 Comptes Wave & Orange Money : Vos soldes correspondent-ils aux flux reçus ?\n"
+            "3. 🍲 Popote & Prélèvements (104) : Toutes les sorties familiales sont-elles comptabilisées ?\n"
+            "4. 📸 Factures & Pièces : Une facture grossiste à photographier pour sceller le justificatif ?\n"
+            "👉 *Validez votre caisse du soir pour sceller votre journée conforme SYSCOHADA !*"
         )
 
     return (
