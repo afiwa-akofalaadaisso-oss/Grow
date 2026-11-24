@@ -1029,7 +1029,7 @@
         style="display: none;">
 
         <div
-            class="w-full max-w-[400px] bg-[#111622] rounded-3xl p-6 sm:p-7 border border-white/10 shadow-2xl relative my-auto text-white">
+            class="w-full max-w-[400px] bg-[#222222] rounded-3xl p-6 sm:p-7 border border-white/15 shadow-2xl relative my-auto text-white">
 
             <!-- Bouton de fermeture croix (X) -->
             <button type="button" onclick="fermerModalConnexionCabinet()"
@@ -1049,7 +1049,7 @@
             </div>
 
             <!-- Commutateur Connexion / Inscription sobre -->
-            <div class="p-1 bg-[#07090e] rounded-xl flex items-center gap-1 mb-4 border border-white/10">
+            <div class="p-1 bg-[#181818] rounded-xl flex items-center gap-1 mb-4 border border-white/10">
                 <button type="button" id="modalTabBtnLogin" onclick="switchModalAuthMode('login')"
                     class="flex-1 py-2 text-center text-xs font-black rounded-lg transition-all flex items-center justify-center gap-1.5 bg-white text-black shadow-xs cursor-pointer">
                     <span>Se connecter</span>
@@ -1074,7 +1074,7 @@
                         </label>
                         <input type="text" id="modalLoginEmail" required value="autoengine9ai.automation@gmail.com"
                             placeholder="votre@email.com"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#07090e] border border-white/10 text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#181818] border border-white/10 text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                     </div>
 
                     <div>
@@ -1084,7 +1084,7 @@
                         <div class="relative flex items-center">
                             <input type="password" id="modalLoginPassword" required value="Grow@Dakar2026!"
                                 placeholder="••••••••"
-                                class="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-[#07090e] border border-white/10 text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                                class="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-[#181818] border border-white/10 text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                             <button type="button" onclick="toggleModalPasswordVisibility('modalLoginPassword', this)"
                                 class="absolute right-3 text-slate-400 hover:text-white cursor-pointer transition">
                                 <i class="fa-solid fa-eye text-xs"></i>
@@ -1098,7 +1098,7 @@
                         </label>
                         <input type="text" id="modalLoginCodePartenaire" required
                             placeholder="Code partenaire obligatoire"
-                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#07090e] border border-white/15 text-xs font-mono font-bold text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-[#181818] border border-white/15 text-xs font-mono font-bold text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                         <p class="text-[10.5px] text-slate-400 mt-1 leading-snug">
                             Réservé aux cabinets partenaires. Pour toute adoption et partenariat : 
                             <a href="mailto:autoengine9ai.automation@gmail.com?subject=Demande%20de%20Code%20Partenariat%20Cabinet%20Growth" class="text-white underline font-semibold hover:text-slate-300">autoengine9ai.automation@gmail.com</a>
@@ -1129,39 +1129,39 @@
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nom &amp; Prénom</label>
                         <input type="text" id="modalRegNomComplet" required placeholder="Babacar Ndiaye"
-                            class="w-full px-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                            class="w-full px-3 py-2 rounded-xl bg-[#181818] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nom du Cabinet</label>
                         <input type="text" id="modalRegNomCabinet" required placeholder="Cabinet Audit &amp; Conseil"
-                            class="w-full px-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                            class="w-full px-3 py-2 rounded-xl bg-[#181818] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-300 mb-1">N° Ordre (optionnel)</label>
                             <input type="text" id="modalRegNumeroOrdre" placeholder="SEC-2024"
-                                class="w-full px-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                                class="w-full px-3 py-2 rounded-xl bg-[#181818] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-300 mb-1">Téléphone</label>
                             <input type="tel" id="modalRegTelephone" required placeholder="+221..."
-                                class="w-full px-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                                class="w-full px-3 py-2 rounded-xl bg-[#181818] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                         </div>
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Email</label>
                         <input type="email" id="modalRegEmail" required placeholder="autoengine9ai.automation@gmail.com"
-                            class="w-full px-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                            class="w-full px-3 py-2 rounded-xl bg-[#181818] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mot de passe</label>
                         <input type="password" id="modalRegPassword" required placeholder="••••••••"
-                            class="w-full px-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                            class="w-full px-3 py-2 rounded-xl bg-[#181818] border border-white/10 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-300 mb-1">Code Partenaire Growth *</label>
                         <input type="text" id="modalRegCodePartenaire" required placeholder="Code partenaire officiel"
-                            class="w-full px-3 py-2 rounded-xl bg-[#07090e] border border-white/15 text-xs font-mono font-bold text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
+                            class="w-full px-3 py-2 rounded-xl bg-[#181818] border border-white/15 text-xs font-mono font-bold text-white placeholder:text-slate-500 focus:outline-none focus:border-white transition-all">
                         <p class="text-[10.5px] text-slate-400 mt-1 leading-snug">
                             Obtenir votre code partenaire par mail : 
                             <a href="mailto:autoengine9ai.automation@gmail.com?subject=Demande%20de%20Code%20Partenariat%20Cabinet%20Growth" class="text-white underline font-semibold hover:text-slate-300">autoengine9ai.automation@gmail.com</a>
