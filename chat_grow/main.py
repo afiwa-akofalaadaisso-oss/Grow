@@ -3071,7 +3071,13 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
     update_onboarding_state(clean_p, "abonnement_valide", True)
     update_onboarding_state(clean_p, "plan_abonnement", plan)
     update_onboarding_state(clean_p, "montant_abonnement", montant)
-    update_onboarding_state(clean_p, "statut", "EN_COURS")
+
+    st_actuel = get_onboarding_state(clean_p)
+    if st_actuel.get("etape") in ["PHASE_6_VERROU_ABONNEMENT", "EN_ATTENTE_ABONNEMENT"]:
+        update_onboarding_state(clean_p, "etape", "TERMINE")
+        update_onboarding_state(clean_p, "statut", "COMPLET")
+    else:
+        update_onboarding_state(clean_p, "statut", "EN_COURS")
 
     try:
         from chat_grow.database import enregistrer_paiement_abonnement
