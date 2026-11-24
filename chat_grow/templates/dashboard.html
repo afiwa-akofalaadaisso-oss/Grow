@@ -197,12 +197,10 @@
             }
 
             .btn-piece-comptable {
-                padding: 4px 6px !important;
+                width: 26px !important;
+                height: 26px !important;
+                padding: 0 !important;
                 font-size: 10px !important;
-            }
-
-            .btn-piece-comptable span {
-                display: none;
             }
         }
 
@@ -235,27 +233,26 @@
         .btn-piece-comptable {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 5px 10px;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
             background: #ffffff;
             border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 11px;
-            font-weight: 700;
             color: #0f172a;
             cursor: pointer;
             transition: all 0.15s;
-            white-space: nowrap;
         }
 
         .btn-piece-comptable:hover {
-            background: #0f172a;
-            color: #ffffff;
-            border-color: #0f172a;
+            background: #a0d9d2;
+            color: #142b27;
+            border-color: #7bc8bf;
         }
 
         .btn-piece-comptable:hover i {
-            color: #ffffff !important;
+            color: #142b27 !important;
         }
 
         .badge-archive-10ans {
@@ -663,7 +660,9 @@
                         <th class="col-libelle">Opération</th>
                         <th class="col-debit" style="text-align: right;">Débit</th>
                         <th class="col-credit" style="text-align: right;">Crédit</th>
-                        <th class="col-piece" style="text-align: center;">Pièce</th>
+                        <th class="col-piece" style="text-align: center;">
+                            <span class="hidden sm:inline">Pièce</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -890,7 +889,8 @@
                         class="bg-white border border-slate-300 rounded-2xl p-5 shadow-sm font-mono text-slate-800 relative">
                         <!-- En-tête du ticket -->
                         <div class="text-center pb-3 border-b border-dashed border-slate-300 space-y-0.5">
-                            <div class="font-black text-sm text-slate-900 uppercase" id="pcTicketPme">VOTRE ENTREPRISE</div>
+                            <div class="font-black text-sm text-slate-900 uppercase" id="pcTicketPme">VOTRE ENTREPRISE
+                            </div>
                             <div class="text-[10.5px] text-slate-600">Dakar, Sénégal</div>
                             <div class="text-[10px] text-slate-500">NINEA : 005489210 2Y3 &bull; RCCM :
                                 SN-DKR-2022-B-4819</div>
@@ -2809,7 +2809,7 @@
                 const dateAnnee = dateParts.length >= 3 ? dateParts[2] : '';
 
                 // Formatage propre des montants numériques
-                const fmtDebit = (ec.debit && ec.debit !== '-' && ec.debit !== '0' && ec.debit !== '0.0') 
+                const fmtDebit = (ec.debit && ec.debit !== '-' && ec.debit !== '0' && ec.debit !== '0.0')
                     ? Math.round(parseFloat(String(ec.debit).replace(/[^0-9.-]/g, '')) || 0).toLocaleString('fr-FR')
                     : '-';
                 const fmtCredit = (ec.credit && ec.credit !== '-' && ec.credit !== '0' && ec.credit !== '0.0')
@@ -2835,14 +2835,11 @@
                         <td class="col-debit text-right font-black ${fmtDebit !== '-' ? 'text-[#168078]' : 'text-slate-300'}">${fmtDebit}</td>
                         <td class="col-credit text-right font-black ${fmtCredit !== '-' ? 'text-[#168078]' : 'text-slate-300'}">${fmtCredit}</td>
                         <td class="col-piece text-center">
-                            <div class="flex items-center justify-center gap-1 sm:gap-2">
-                                <button type="button" class="btn-piece-comptable"
+                            <div class="flex items-center justify-center">
+                                <button type="button" class="btn-piece-comptable" title="Voir la pièce justificative"
                                     onclick="ouvrirPieceComptableModal('${safeRef}', '${escapeQuotes(ec.libelle)}', '${montantAffiche}', '${ec.date}', '${escapeQuotes(rawCpt)}', '${escapeQuotes(safeTiers)}', '${safeImg}')">
-                                    <i class="fa-solid fa-file-invoice text-[#222222]"></i>
-                                    <span>Pièce</span>
+                                    <i class="fa-solid fa-file-invoice text-slate-800"></i>
                                 </button>
-                                <span class="badge-archive-10ans"><i class="fa-solid fa-shield-check"></i> 10 ans</span>
-                                <span class="badge-status badge-validee">✓ Validée</span>
                             </div>
                         </td>
                     </tr>
