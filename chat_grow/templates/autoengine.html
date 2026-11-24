@@ -1197,8 +1197,8 @@
 
                 <ul class="nav-menu">
                     <li><a href="#piliers" class="nav-link">Piliers IA</a></li>
-                    <li><a href="/" class="nav-link" style="color: #ffffff;" title="Accéder au site officiel Growth"><i class="fa-solid fa-bolt"
-                                style="font-size: 11px;"></i> Agent Growth</a></li>
+                    <li><a href="/" class="nav-link" style="color: #ffffff;" title="Accéder au site officiel Growth"><i
+                                class="fa-solid fa-bolt" style="font-size: 11px;"></i> Agent Growth</a></li>
                     <li><a href="#secteurs" class="nav-link">Secteurs</a></li>
                     <li><a href="#methodologie" class="nav-link">Méthodologie</a></li>
                     <li><a href="#simulateur" class="nav-link">Simulateur ROI</a></li>
@@ -1417,7 +1417,8 @@
                     <div>
                         <div class="qr-live-card">
                             <div class="qr-card-header">
-                                <a href="/" class="qr-brand" style="text-decoration: none; color: inherit;" title="Accéder au site officiel Growth">
+                                <a href="/" class="qr-brand" style="text-decoration: none; color: inherit;"
+                                    title="Accéder au site officiel Growth">
                                     <img src="/static/grow_icon_squircle.png?v=4" alt="Logo Growth"
                                         style="width: 24px; height: 24px; border-radius: 6px; object-fit: contain; display: inline-block;">
                                     <span>Agent Growth</span>
@@ -1760,13 +1761,18 @@
                 </form>
 
                 <div id="auditSuccessNotice"
-                    style="display: none; text-align: center; padding: 24px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid rgba(255, 255, 255, 0.25); border-radius: 14px; margin-top: 18px;">
+                    style="display: none; text-align: center; padding: 28px 24px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid rgba(255, 255, 255, 0.25); border-radius: 14px; margin-top: 18px;">
                     <i class="fa-solid fa-circle-check"
-                        style="color: #ffffff; font-size: 32px; margin-bottom: 10px;"></i>
-                    <h4 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-bottom: 4px;">Demande d'Audit
-                        Reçue avec Succès !</h4>
-                    <p style="font-size: 13.5px; color: #cbd5e1;">Un ingénieur AutoEngine vous contactera sous 2 heures
-                        ouvrées pour convenir du créneau de 30 minutes.</p>
+                        style="color: #ffffff; font-size: 36px; margin-bottom: 12px;"></i>
+                    <h4 style="font-size: 20px; font-weight: 800; color: #ffffff; margin-bottom: 6px;">Demande d'Audit Reçue &amp; Enregistrée !</h4>
+                    <p style="font-size: 14px; color: #cbd5e1; max-width: 500px; margin: 0 auto 18px auto;">
+                        Votre dossier a été enregistré sur le serveur d'AutoEngine. Un ingénieur vous contactera sous 2 heures ouvrées par email ou téléphone.
+                    </p>
+                    <a id="auditWaDirectAction" href="https://wa.me/221788773827" target="_blank"
+                        style="display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #ffffff; font-weight: 800; font-size: 13.5px; padding: 11px 20px; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i>
+                        <span>Accélérer : Échanger directement sur WhatsApp</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1855,21 +1861,41 @@
             document.getElementById('hoursSavedYear').textContent = `${automatedHours.toLocaleString('fr-FR')} h`;
         }
 
-        function handleAuditSubmit(event) {
+        async function handleAuditSubmit(event) {
             event.preventDefault();
-            const nom = document.getElementById('auditNom').value;
-            const entreprise = document.getElementById('auditEntreprise').value;
-            const email = document.getElementById('auditEmail').value;
-            const tel = document.getElementById('auditTel').value;
+            const nom = document.getElementById('auditNom').value.trim();
+            const entreprise = document.getElementById('auditEntreprise').value.trim();
+            const email = document.getElementById('auditEmail').value.trim();
+            const tel = document.getElementById('auditTel').value.trim();
             const besoin = document.getElementById('auditBesoin').value;
-            const message = document.getElementById('auditMessage').value;
+            const message = document.getElementById('auditMessage').value.trim();
 
-            // Masquer le formulaire et afficher le mot de confirmation
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Transmission en cours...';
+            }
+
+            try {
+                await fetch('/api/autoengine/audit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nom, entreprise, email, tel, besoin, message })
+                });
+            } catch (err) {
+                console.warn("Transmission réseau :", err);
+            }
+
+            // Lien WhatsApp pré-rempli vers le numéro officiel AutoEngine
+            const waText = encodeURIComponent(`Bonjour AutoEngine,\nJe viens de soumettre une demande d'audit pour mon entreprise *${entreprise}*.\n- Nom : ${nom}\n- Téléphone : ${tel}\n- Email : ${email}\n- Priorité : ${besoin}\n- Message : ${message}`);
+            const waAction = document.getElementById('auditWaDirectAction');
+            if (waAction) {
+                waAction.href = `https://wa.me/221788773827?text=${waText}`;
+            }
+
+            // Affichage de la confirmation
             document.getElementById('auditForm').style.display = 'none';
             document.getElementById('auditSuccessNotice').style.display = 'block';
-
-            // Optionnel : Envoi webhook ou notification
-            console.log("Demande d'audit AutoEngine :", { nom, entreprise, email, tel, besoin, message });
         }
 
         // Initialiser le simulateur au chargement

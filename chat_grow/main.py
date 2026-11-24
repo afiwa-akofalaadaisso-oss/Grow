@@ -749,6 +749,64 @@ async def serve_autoengine_page():
     return HTMLResponse(content="<h1>AutoEngine AI en cours d'initialisation</h1>", status_code=200)
 
 
+AUTOENGINE_LEADS_FILE = os.path.join(BASE_DIR, "autoengine_leads.json")
+
+@app.post("/api/autoengine/audit")
+async def api_autoengine_audit(request: Request):
+    """Enregistre une demande d'audit stratégique d'automatisation IA (Lead Entreprise)."""
+    try:
+        data = await request.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Requête invalide.")
+
+    nom = (data.get("nom") or "").strip()
+    entreprise = (data.get("entreprise") or "").strip()
+    email = (data.get("email") or "").strip()
+    tel = (data.get("tel") or "").strip()
+    besoin = (data.get("besoin") or "").strip()
+    message = (data.get("message") or "").strip()
+
+    lead_entry = {
+        "id": f"LEAD-{int(time.time())}",
+        "date": datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        "nom": nom,
+        "entreprise": entreprise,
+        "email": email,
+        "tel": tel,
+        "besoin": besoin,
+        "message": message,
+        "statut": "Nouveau",
+        "ip": request.client.host if request.client else "127.0.0.1"
+    }
+
+    leads = []
+    if os.path.exists(AUTOENGINE_LEADS_FILE):
+        try:
+            with open(AUTOENGINE_LEADS_FILE, "r", encoding="utf-8") as f:
+                leads = json.load(f)
+        except Exception:
+            leads = []
+
+    leads.append(lead_entry)
+    with open(AUTOENGINE_LEADS_FILE, "w", encoding="utf-8") as f:
+        json.dump(leads, f, ensure_ascii=False, indent=2)
+
+    logger.info(f"🚀 NOUVEAU LEAD AUTOENGINE REÇU : {entreprise} ({nom}) - Contact: {tel} | {email}")
+    return {"status": "ok", "lead_id": lead_entry["id"], "message": "Demande d'audit reçue avec succès."}
+
+
+@app.get("/api/autoengine/leads")
+async def api_autoengine_leads():
+    """Consulte la liste des demandes d'audit enregistrées pour AutoEngine."""
+    if os.path.exists(AUTOENGINE_LEADS_FILE):
+        try:
+            with open(AUTOENGINE_LEADS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
+
+
 @app.get("/dashboard", response_class=HTMLResponse)
 @app.get("/client", response_class=HTMLResponse)
 async def serve_dashboard(request: Request, phone: str = None, id: str = None):
