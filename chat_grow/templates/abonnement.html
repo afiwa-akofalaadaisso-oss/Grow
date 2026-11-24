@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#f8fafc">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>Paiement Abonnement • GROW</title>
+    <title>Paiement Copilote • GROW</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -29,143 +29,164 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px 16px;
+            padding: 24px 16px;
         }
 
         .checkout-wrapper {
-            max-width: 400px;
+            max-width: 390px;
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
-        /* BARRE SUPÉRIEURE ÉPURÉE */
-        .top-nav {
+        /* HEADER CENTRÉ ET PARFAITEMENT ÉQUILIBRÉ */
+        .top-brand-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 8px;
+            padding-bottom: 4px;
+        }
+
+        .app-logo {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: #0f172a;
+            object-fit: contain;
+            padding: 2px;
+        }
+
+        .app-title {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #0f172a;
+        }
+
+        /* BOUTON RETOUR HAUT SUBTIL */
+        .top-back-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
             padding: 0 4px;
         }
 
-        .btn-cancel {
+        .link-back {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13.5px;
+            gap: 7px;
+            font-size: 13px;
             font-weight: 600;
             color: #64748b;
             text-decoration: none;
             transition: color 0.15s ease;
         }
 
-        .btn-cancel:hover {
+        .link-back:hover {
             color: #0f172a;
         }
 
-        .app-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: #0f172a;
-        }
-
-        .app-logo {
-            width: 22px;
-            height: 22px;
-            border-radius: 5px;
-            background: #0f172a;
-            object-fit: contain;
-            padding: 2px;
-        }
-
-        /* CARTE BLANCHE SOBRE ET NATURELLE */
+        /* CARTE DE PAIEMENT CENTRÉE ET ALIGNÉE */
         .checkout-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 28px 22px;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+            border-radius: 22px;
+            padding: 26px 20px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
             text-align: center;
         }
 
         .plan-title {
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 800;
             color: #0f172a;
             letter-spacing: -0.3px;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
         .plan-desc {
             font-size: 13px;
             color: #64748b;
             font-weight: 500;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            line-height: 1.4;
         }
 
-        /* TARIF CLAIR SANS ARTIFICE */
-        .price-section {
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-            gap: 6px;
+        /* BLOC TARIF NET ET HARMONIEUX */
+        .price-box {
             padding-bottom: 20px;
             border-bottom: 1px solid #f1f5f9;
             margin-bottom: 20px;
         }
 
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
         .price-val {
-            font-size: 38px;
+            font-size: 36px;
             font-weight: 800;
             color: #0f172a;
-            letter-spacing: -1px;
+            letter-spacing: -0.8px;
             line-height: 1;
         }
 
         .price-curr {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 700;
             color: #0f172a;
+            line-height: 1;
         }
 
         .price-period {
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 500;
             color: #64748b;
+            margin-top: 6px;
         }
 
-        /* LIGNES RÉCAPITULATIVES DISCRÈTES */
-        .summary-list {
+        /* CADRE DES DÉTAILS SANS NOTION D'ENGAGEMENT */
+        .summary-box {
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 22px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            text-align: left;
-            margin-bottom: 26px;
+            gap: 11px;
             font-size: 13px;
+            text-align: left;
         }
 
-        .summary-item {
+        .summary-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #64748b;
         }
 
-        .summary-item strong {
+        .summary-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .summary-val {
             color: #0f172a;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: -0.1px;
         }
 
         .text-emerald {
             color: #059669 !important;
-            font-weight: 600;
+            font-weight: 700;
         }
 
-        /* BOUTON OFFICIEL WAVE BUSINESS */
+        /* BOUTON OFFICIEL WAVE BUSINESS AVEC LOGO BADGE NET */
         .btn-wave-action {
             display: flex;
             align-items: center;
@@ -175,19 +196,19 @@
             background-color: #1dc3ec;
             color: #ffffff;
             text-decoration: none;
-            padding: 15px 20px;
-            border-radius: 14px;
+            padding: 12px 18px;
+            border-radius: 15px;
             font-size: 15.5px;
             font-weight: 700;
             letter-spacing: -0.2px;
-            box-shadow: 0 4px 12px rgba(29, 195, 236, 0.3);
+            box-shadow: 0 4px 14px rgba(29, 195, 236, 0.35);
             transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
-            min-height: 58px;
+            min-height: 56px;
         }
 
         .btn-wave-action:hover {
             background-color: #00adef;
-            box-shadow: 0 6px 16px rgba(29, 195, 236, 0.4);
+            box-shadow: 0 6px 18px rgba(29, 195, 236, 0.45);
             transform: translateY(-1px);
             color: #ffffff;
             text-decoration: none;
@@ -197,28 +218,57 @@
             transform: scale(0.98);
         }
 
-        /* LOGO WAVE NET, PROPORTIONNÉ SANS DÉFORMATION */
-        .wave-icon {
-            height: 36px;
-            width: auto;
+        /* BADGE BLANC WAVE POUR CONTRASTE PARFAIT */
+        .wave-badge-img {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
             object-fit: contain;
-            display: block;
             flex-shrink: 0;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
         }
 
-        /* NOTICE BAS DE PAGE SOBRE */
-        .checkout-note {
-            text-align: center;
-            font-size: 12px;
+        .btn-wave-label {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* NOTE DE BAS DE CARTE */
+        .reassurance-note {
+            margin-top: 14px;
+            font-size: 11.5px;
             color: #94a3b8;
-            line-height: 1.5;
-            padding: 0 8px;
+            line-height: 1.45;
         }
 
-        .checkout-note a {
-            color: #64748b;
-            text-decoration: underline;
+        /* BOUTON RETOUR DONNÉES FINANCIÈRES BAS DE PAGE */
+        .btn-financial-back-full {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 14px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 700;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+        }
+
+        .btn-financial-back-full:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+            text-decoration: none;
+            border-color: #cbd5e1;
+        }
+
+        .btn-financial-back-full i {
+            color: #10b981;
         }
     </style>
 </head>
@@ -227,58 +277,69 @@
 
     <div class="checkout-wrapper">
 
-        <!-- EN-TÊTE SOBRE -->
-        <header class="top-nav">
-            <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="btn-cancel">
-                <i class="fa-solid fa-arrow-left"></i> Retour
-            </a>
-            <div class="app-brand">
-                <img src="/static/images/grow_logo.png" alt="GROW" class="app-logo"
-                    onerror="this.style.display='none'">
-                <span>GROW</span>
-            </div>
-            <div style="width: 50px;"></div> <!-- Équilibre visuel du header -->
+        <!-- LOGO BRAND CENTRÉ AU SOMMET -->
+        <header class="top-brand-header">
+            <img src="/static/images/grow_logo.png" alt="GROW" class="app-logo"
+                onerror="this.style.display='none'">
+            <span class="app-title">GROW</span>
         </header>
+
+        <!-- LIEN RETOUR VERS DONNÉES FINANCIÈRES -->
+        <div class="top-back-row">
+            <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="link-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Voir mes données financières</span>
+            </a>
+        </div>
 
         <!-- CARTE DE PAIEMENT CENTRÉE -->
         <main class="checkout-card">
             <h1 class="plan-title">Copilote WhatsApp</h1>
-            <p class="plan-desc">Accès complet à votre assistant comptable 24h/24</p>
+            <p class="plan-desc">Accès illimité à votre assistant comptable 24h/24</p>
 
-            <!-- TARIF MENSUEL -->
-            <div class="price-section">
-                <span class="price-val">10 000</span>
-                <span class="price-curr">FCFA</span>
-                <span class="price-period">/ mois</span>
+            <!-- BLOC TARIF NET ET HARMONIEUX -->
+            <div class="price-box">
+                <div class="price-row">
+                    <span class="price-val">10 000</span>
+                    <span class="price-curr">FCFA</span>
+                </div>
+                <div class="price-period">Pour 30 jours d'accès complet</div>
             </div>
 
-            <!-- RÉCAPITULATIF COMMANDE -->
-            <div class="summary-list">
-                <div class="summary-item">
-                    <span>Compte WhatsApp</span>
-                    <strong id="displayPhone">+221 78 877 38 27</strong>
+            <!-- RÉCAPITULATIF SANS NOTION ANXIOGÈNE D'ENGAGEMENT -->
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span class="summary-label">Compte WhatsApp</span>
+                    <strong class="summary-val" id="displayPhone">+221 78 877 38 27</strong>
                 </div>
-                <div class="summary-item">
-                    <span>Engagement</span>
-                    <strong>Sans engagement</strong>
+                <div class="summary-row">
+                    <span class="summary-label">Validité</span>
+                    <strong class="summary-val">1 mois (30 jours)</strong>
                 </div>
-                <div class="summary-item">
-                    <span>Activation</span>
-                    <span class="text-emerald">Automatique après paiement</span>
+                <div class="summary-row">
+                    <span class="summary-label">Activation</span>
+                    <strong class="summary-val text-emerald">
+                        <i class="fa-solid fa-circle-check"></i> Immédiate
+                    </strong>
                 </div>
             </div>
 
-            <!-- BOUTON OFFICIEL WAVE BUSINESS -->
+            <!-- BOUTON OFFICIEL WAVE BUSINESS AVEC BADGE BLANC NET -->
             <a id="btnWaveDirect" href="https://pay.wave.com/m/M_sn_YgEkibrMRghV/c/sn/?a=10000" class="btn-wave-action">
-                <img src="/static/images/wave_business_logo.png" alt="Wave" class="wave-icon">
-                <span>Payer avec Wave Business</span>
+                <img src="/static/images/wave_app_badge.png" alt="Wave Business" class="wave-badge-img">
+                <span class="btn-wave-label">Payer 10 000 F avec Wave</span>
             </a>
+
+            <p class="reassurance-note">
+                <i class="fa-solid fa-shield-halved"></i> Paiement direct et sécurisé sur l'application Wave
+            </p>
         </main>
 
-        <!-- NOTE BAS DE PAGE -->
-        <footer class="checkout-note">
-            En cliquant, votre application Wave s'ouvrira directement pour finaliser le règlement en toute sécurité.
-        </footer>
+        <!-- BOUTON CLAIR POUR RETOURNER AU TABLEAU DE BORD FINANCIER -->
+        <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="btn-financial-back-full">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Voir mes données financières</span>
+        </a>
 
     </div>
 
@@ -287,11 +348,22 @@
         const userPhone = urlParams.get('phone') || '221788773827';
         const montantAbo = 10000;
 
-        // Mise à jour de l'affichage du numéro client
+        // Formatage aéré et élégant du numéro sénégalais (+221 78 877 38 27)
+        function formaterTelephone(raw) {
+            if (!raw) return '+221 78 877 38 27';
+            const clean = raw.replace(/\D/g, '');
+            if (clean.length === 12 && clean.startsWith('221')) {
+                return `+221 ${clean.substring(3, 5)} ${clean.substring(5, 8)} ${clean.substring(8, 10)} ${clean.substring(10, 12)}`;
+            }
+            if (clean.length === 9) {
+                return `+221 ${clean.substring(0, 2)} ${clean.substring(2, 5)} ${clean.substring(5, 7)} ${clean.substring(7, 9)}`;
+            }
+            return '+' + clean;
+        }
+
         const displayPhoneEl = document.getElementById('displayPhone');
         if (displayPhoneEl) {
-            const clean = userPhone.replace(/\D/g, '');
-            displayPhoneEl.textContent = clean.length >= 9 ? '+' + clean : userPhone;
+            displayPhoneEl.textContent = formaterTelephone(userPhone);
         }
 
         // Configuration dynamique du lien direct Wave Business
