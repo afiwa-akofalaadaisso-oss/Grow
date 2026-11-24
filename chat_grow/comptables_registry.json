@@ -24,5 +24,18 @@
     "scelle_a_jamais": true,
     "date_inscription": "2024-01-01 00:00:00",
     "dernier_acces": "2026-11-23 01:00:00"
+  },
+  "afiwa-akofala.adaisso@ism.edu.sn": {
+    "id": "cbt_ca859b52ffb9",
+    "nom_complet": "Afiwa Akofala Adaisso",
+    "nom_cabinet": "Cabinet Adaisso & Partenaires",
+    "numero_ordre": "SEC-2024-ADAISSO",
+    "email": "afiwa-akofala.adaisso@ism.edu.sn",
+    "telephone": "+221770000000",
+    "mot_de_passe_hash": "pbkdf2$a5f5cf20f15eaff42746c5236772b0579c3a2145b25d9d9549985b8aacf645f2",
+    "statut_validation": "valide",
+    "date_inscription": "2026-11-24 12:25:55",
+    "dernier_acces": "2026-11-24 12:25:55",
+    "scelle_a_jamais": true
   }
 }

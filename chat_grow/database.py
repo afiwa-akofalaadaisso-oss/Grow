@@ -46,13 +46,9 @@ def verifier_mot_de_passe_robuste(mot_de_passe: str, hash_stocke: str) -> bool:
     return False
 
 def valider_force_mot_de_passe(mot_de_passe: str) -> Tuple[bool, str]:
-    """Exige un mot de passe robuste conforme aux normes de sécurité OWASP / Fintech."""
-    if len(mot_de_passe) < 8:
-        return False, "Le mot de passe doit comporter au moins 8 caractères."
-    if not any(c.isupper() for c in mot_de_passe) and not any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in mot_de_passe):
-        return False, "Le mot de passe doit comporter au moins une lettre majuscule ou un caractère spécial."
-    if not any(c.isdigit() for c in mot_de_passe):
-        return False, "Le mot de passe doit comporter au moins un chiffre (0-9)."
+    """Valide le mot de passe (au moins 3 caractères)."""
+    if not mot_de_passe or len(mot_de_passe.strip()) < 3:
+        return False, "Le mot de passe doit comporter au moins 3 caractères."
     return True, ""
 
 SUPABASE_TRANSACTION_COLUMNS = {
