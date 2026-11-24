@@ -14,30 +14,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* Élimination totale et invisible de toutes les barres de défilement (Windows, Mac, Chrome, Edge, Firefox) */
-        html, body, * {
+        html,
+        body,
+        * {
             scrollbar-width: none !important;
             -ms-overflow-style: none !important;
         }
 
-        ::-webkit-scrollbar, *::-webkit-scrollbar {
+        ::-webkit-scrollbar,
+        *::-webkit-scrollbar {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
             background: transparent !important;
         }
 
-        ::-webkit-scrollbar-button, *::-webkit-scrollbar-button {
+        ::-webkit-scrollbar-button,
+        *::-webkit-scrollbar-button {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
         }
 
-        ::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
+        ::-webkit-scrollbar-thumb,
+        *::-webkit-scrollbar-thumb {
             display: none !important;
             background: transparent !important;
         }
 
-        ::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
+        ::-webkit-scrollbar-track,
+        *::-webkit-scrollbar-track {
             display: none !important;
             background: transparent !important;
         }
@@ -255,6 +261,25 @@
             background: #222222;
             color: #a0d9d2;
             box-shadow: 0 4px 14px rgba(11, 18, 34, 0.2);
+        }
+
+        .badge-indispo {
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+            padding: 2px 6px;
+            border-radius: 6px;
+            margin-left: 6px;
+        }
+
+        .plan-tab-btn.active .badge-indispo {
+            background: rgba(245, 158, 11, 0.25);
+            color: #fcd34d;
+            border-color: rgba(245, 158, 11, 0.45);
         }
 
         .plan-ribbon {
@@ -772,6 +797,7 @@
             </button>
             <button type="button" class="plan-tab-btn" id="tabPro" onclick="choisirPlan('Multi', 15000)">
                 <i class="fa-solid fa-layer-group"></i> Multi • 3 Entreprises (15 000 F)
+                <span class="badge-indispo">Pas encore dispo</span>
             </button>
         </div>
 
@@ -784,7 +810,8 @@
             <div class="plan-header">
                 <div>
                     <div class="plan-name" id="planNameText">Copilote Gestion &amp; Caisse</div>
-                    <div class="plan-sub" id="planSubText">1 seule entreprise &bull; Sans engagement &bull; Résiliable à tout moment</div>
+                    <div class="plan-sub" id="planSubText">1 seule entreprise &bull; Sans engagement &bull; Résiliable à
+                        tout moment</div>
                 </div>
                 <div class="plan-price-box">
                     <div class="plan-price" id="planPriceText">10 000</div>
@@ -810,8 +837,11 @@
                     <span>Relances actives toutes les 3h &amp; Grand Rituel de clôture à 20h00 avec note vocale</span>
                 </li>
                 <li class="feature-item" style="opacity: 0.85;">
-                    <div class="feature-check" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-minus"></i></div>
-                    <span style="color: #64748b; font-size: 13px;"><em>Tout inclus sauf export des bilans officiels et montage des dossiers bancaires</em></span>
+                    <div class="feature-check"
+                        style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">
+                        <i class="fa-solid fa-minus"></i></div>
+                    <span style="color: #64748b; font-size: 13px;"><em>Tout inclus sauf export des bilans officiels et
+                            montage des dossiers bancaires</em></span>
                 </li>
             </ul>
         </div>
@@ -957,8 +987,15 @@
             const omPill = document.getElementById('omPricePill');
 
             if (plan === 'Starter') {
-                if (ribbon) ribbon.innerHTML = '<i class="fa-solid fa-bolt"></i> Pack Solo • 1 Entreprise';
+                if (ribbon) {
+                    ribbon.innerHTML = '<i class="fa-solid fa-bolt"></i> Pack Solo • 1 Entreprise';
+                    ribbon.style.background = 'rgba(160, 217, 210, 0.18)';
+                    ribbon.style.borderColor = 'var(--grow-mint)';
+                    ribbon.style.color = 'var(--grow-mint)';
+                }
                 if (pName) pName.textContent = 'Copilote Gestion & Caisse';
+                const pSub = document.getElementById('planSubText');
+                if (pSub) pSub.textContent = '1 seule entreprise • Sans engagement • Résiliable à tout moment';
                 if (pPrice) pPrice.textContent = '10 000';
                 if (wavePill) wavePill.textContent = '10 000 F';
                 if (omPill) omPill.textContent = '10 000 F';
@@ -987,30 +1024,44 @@
                     `;
                 }
             } else {
-                if (ribbon) ribbon.innerHTML = '<i class="fa-solid fa-layer-group"></i> Pack Multi • 3 Entreprises';
+                if (ribbon) {
+                    ribbon.innerHTML = '<i class="fa-solid fa-clock"></i> Pas encore disponible • Pack Multi (3 Entreprises)';
+                    ribbon.style.background = 'rgba(245, 158, 11, 0.2)';
+                    ribbon.style.borderColor = '#f59e0b';
+                    ribbon.style.color = '#fbbf24';
+                }
                 if (pName) pName.textContent = 'Copilote Multi-Commerces (3 PME)';
+                const pSub = document.getElementById('planSubText');
+                if (pSub) pSub.textContent = '3 entreprises distinctes • En cours de finalisation';
                 if (pPrice) pPrice.textContent = '15 000';
-                if (wavePill) wavePill.textContent = '15 000 F';
-                if (omPill) omPill.textContent = '15 000 F';
+                if (wavePill) wavePill.textContent = 'Bientôt dispo';
+                if (omPill) omPill.textContent = 'Bientôt dispo';
                 if (pFeatures) {
                     pFeatures.innerHTML = `
-                        <li class="feature-item">
+                        <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; color: #fef3c7; display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-triangle-exclamation" style="color: #fbbf24; font-size: 20px; flex-shrink: 0;"></i>
+                            <div>
+                                <strong style="color: #fbbf24;">Pas encore disponible</strong><br>
+                                La gestion multi-boutiques (3 PME sous le même numéro WhatsApp) arrive très prochainement. Veuillez activer le <strong>Pack Solo (10 000 FCFA)</strong> pour démarrer dès aujourd'hui.
+                            </div>
+                        </div>
+                        <li class="feature-item" style="opacity: 0.75;">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
                             <span><strong>Gestion de 3 entreprises / commerces distincts</strong> sous votre même WhatsApp</span>
                         </li>
-                        <li class="feature-item">
+                        <li class="feature-item" style="opacity: 0.75;">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
                             <span>Même accompagnement illimité 24h/24 pour chacune de vos 3 activités</span>
                         </li>
-                        <li class="feature-item">
+                        <li class="feature-item" style="opacity: 0.75;">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
                             <span>Rapprochements multi-webhooks Wave Business &amp; Orange Business par boutique</span>
                         </li>
-                        <li class="feature-item">
+                        <li class="feature-item" style="opacity: 0.75;">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
                             <span>Ventilation et clôtures de caisse séparées pour chaque commerce à 20h00</span>
                         </li>
-                        <li class="feature-item" style="opacity: 0.85;">
+                        <li class="feature-item" style="opacity: 0.65;">
                             <div class="feature-check" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-minus"></i></div>
                             <span style="color: #64748b; font-size: 13px;"><em>Tout inclus pour vos 3 commerces (sauf export des bilans officiels et dossiers bancaires)</em></span>
                         </li>
@@ -1020,6 +1071,11 @@
         }
 
         async function effectuerPaiement(operateur) {
+            if (currentPlan === 'Multi') {
+                alert("Le Pack Multi-Entreprises (3 PME) n'est pas encore disponible.\n\nVeuillez sélectionner le Pack Solo (10 000 FCFA) pour activer votre copilote immédiatement.");
+                choisirPlan('Starter', 10000);
+                return;
+            }
             try {
                 // Appel API d'activation serveur
                 const res = await fetch('/api/valider-abonnement-client', {

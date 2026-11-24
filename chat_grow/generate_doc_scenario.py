@@ -312,8 +312,8 @@ def create_document():
     p_pay.add_run("La configuration Wave/Orange Business, l'identification légale, l'analyse du passé et le bilan d'ouverture initial sont offerts. Pour démarrer la gestion active quotidienne, l'abonnement mensuel est obligatoire.\n\n")
 
     p_pay.add_run("6.2 Grille Tarifaire Officielle Growth :\n").bold = True
-    p_pay.add_run("• ⭐ Pack Solo (1 Entreprise) : 10 000 FCFA / mois — Tout inclus (Assistant WhatsApp 24h/24 en Wolof/Français, saisie vocale 1.5s, webhooks Wave & OM, relances 3h, rituel 20h00, caisse 571 & stocks) SAUF l'export des bilans officiels et le montage des dossiers bancaires.\n"
-                  "• 🚀 Pack Multi-Entreprises (3 Entreprises) : 15 000 FCFA / mois — Même chose en illimité mais pour jusqu'à 3 entreprises / commerces distincts pilotés par le même dirigeant sous le même compte WhatsApp !\n\n")
+    p_pay.add_run("• ⭐ Pack Solo (1 Entreprise) : 10 000 FCFA / mois — Tout inclus (Assistant WhatsApp 24h/24 en Wolof/Français, saisie vocale 1.5s, webhooks Wave & OM, relances 3h, rituel 20h00, caisse 571 & stocks) SAUF l'export des bilans officiels et le montage des dossiers bancaires (Disponible immédiatement).\n"
+                  "• 🚀 Pack Multi-Entreprises (3 Entreprises) : 15 000 FCFA / mois — Pas encore disponible (Bientôt disponible — déploiement prochain pour la gestion de 3 commerces sous le même compte WhatsApp).\n\n")
 
     p_pay.add_run("6.3 Message de Scellage avec Lien Officiel Sécurisé :\n").bold = True
     
@@ -324,8 +324,8 @@ def create_document():
     p_m6 = c6.paragraphs[0]
     p_m6.add_run("« 🎉 Félicitations [Prénom] ! Votre dossier initial et votre bilan d'ouverture sont prêts et scellés conformes SYSCOHADA SMT.\n\n"
                  "Pour activer dès maintenant votre copilote au quotidien (saisie de vos ventes par note vocale Wolof/Français, clôture automatique de caisse à 20h00, alertes Wave Business / Orange Business en direct et accès à votre Journal Web sécurisé), veuillez activer votre abonnement mensuel Growth.\n\n"
-                 "⭐ Pack Solo (1 Entreprise) : 10 000 FCFA / mois\n"
-                 "🚀 Pack Multi-Entreprises (3 Entreprises) : 15 000 FCFA / mois\n\n"
+                 "⭐ Pack Solo (1 Entreprise) : 10 000 FCFA / mois (Disponible immédiatement)\n"
+                 "🚀 Pack Multi-Entreprises (3 Entreprises) : 15 000 FCFA / mois (Pas encore disponible — Bientôt)\n\n"
                  "💳 Lien de Paiement Officiel Sécurisé :\n"
                  "https://grow-2epo.onrender.com/abonnement?phone=[Son_Telephone]\n"
                  "(Paiement instantané par Wave, Orange Money ou Carte Bancaire - 100% sécurisé et professionnel) »").font.size = Pt(9.5)
