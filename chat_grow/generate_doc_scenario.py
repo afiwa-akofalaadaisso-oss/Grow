@@ -241,11 +241,27 @@ def create_document():
     doc.add_paragraph()
 
     # =========================================================================
-    # ÉTAPE 5
+    # ÉTAPE 5 : INVENTAIRE ET CAISSE
     # =========================================================================
     doc.add_heading("ÉTAPE 5 : INVENTAIRE INITIAL COMPLET (STANDARDS ONECCA / SYSCOHADA)", level=1)
     p_inv = doc.add_paragraph()
-    p_inv.add_run("Growth déploie le protocole complet d'un cabinet d'audit dakarois en 5 piliers patrimoniaux avec justificatifs obligatoires :\n\n")
+    p_inv.add_run("Growth déploie le protocole complet d'un cabinet d'audit dakarois en 5 piliers patrimoniaux avec pièces justificatives obligatoires et comptage physique des espèces :\n\n")
+
+    p_cash_alert = doc.add_paragraph()
+    p_cash_alert.add_run("💵 RAPPEL CAPITAL : LE COMPTAGE PHYSIQUE DES ESPÈCES (COMPTE 571) :\n").bold = True
+    p_cash_alert.add_run("Au Sénégal, une part prépondérante du commerce tourne en liquide. Growth ne se contente pas des flux Mobile Money : il exige le recensement exact des billets et pièces en caisse physique :\n")
+
+    t_msg_cash = doc.add_table(rows=1, cols=1)
+    c_cash = t_msg_cash.rows[0].cells[0]
+    set_cell_background(c_cash, "FEFCE8")
+    set_cell_margins(c_cash, 120, 120, 160, 160)
+    p_mcash = c_cash.paragraphs[0]
+    p_mcash.add_run("« 💵 Comptage Obligatoire de votre Caisse Espèces (Tiroir) :\n"
+                    "En dehors de vos comptes Wave et Orange Money, combien avez-vous physiquement en liquide (billets et pièces de monnaie) "
+                    "dans votre tiroir-caisse, meuble ou coffre de boutique maintenant ?\n\n"
+                    "👉 Dites-moi simplement le montant exact en FCFA (exemple : « J'ai 175 000 F en espèces dans ma caisse »). »").font.size = Pt(9.5)
+
+    doc.add_paragraph()
 
     # Tableau Récapitulatif Inventaire
     t_inv = doc.add_table(rows=6, cols=3)
