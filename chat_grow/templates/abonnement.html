@@ -5,71 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#222222">
+    <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>Abonnement Grow • Pré-Comptabilité SYSCOHADA</title>
+    <title>Paiement Abonnement • GROW</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Élimination totale et invisible de toutes les barres de défilement (Windows, Mac, Chrome, Edge, Firefox) */
-        html,
-        body,
-        * {
-            scrollbar-width: none !important;
-            -ms-overflow-style: none !important;
-        }
-
-        ::-webkit-scrollbar,
-        *::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
-            background: transparent !important;
-        }
-
-        ::-webkit-scrollbar-button,
-        *::-webkit-scrollbar-button {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
-        }
-
-        ::-webkit-scrollbar-thumb,
-        *::-webkit-scrollbar-thumb {
-            display: none !important;
-            background: transparent !important;
-        }
-
-        ::-webkit-scrollbar-track,
-        *::-webkit-scrollbar-track {
-            display: none !important;
-            background: transparent !important;
-        }
-
-        :root {
-            --grow-dark: #222222;
-            --grow-dark-card: #0d1311;
-            --grow-dark-gradient: linear-gradient(135deg, #222222 0%, #151515 100%);
-            --grow-mint: #a0d9d2;
-            --grow-mint-hover: #8ecfc7;
-            --grow-mint-glow: rgba(160, 217, 210, 0.25);
-            --grow-surface: #ffffff;
-            --grow-bg: #f8fafc;
-            --grow-border: #e2e8f0;
-            --grow-text-primary: #222222;
-            --grow-text-muted: #64748b;
-            --shadow-soft: 0 1px 3px rgba(11, 18, 34, 0.04), 0 12px 24px -6px rgba(11, 18, 34, 0.06);
-            --shadow-lift: 0 2px 4px rgba(11, 18, 34, 0.05), 0 20px 36px -12px rgba(11, 18, 34, 0.09);
-            --wave-blue: #a0d9d2;
-            --wave-blue-bg: rgba(160, 217, 210, 0.18);
-            --wave-border: rgba(160, 217, 210, 0.35);
-            --om-orange: #a0d9d2;
-            --om-orange-bg: rgba(160, 217, 210, 0.12);
-            --om-border: rgba(160, 217, 210, 0.35);
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -79,613 +22,284 @@
         }
 
         body {
-            background-color: var(--grow-bg);
-            color: var(--grow-text-primary);
+            background-color: #f8fafc;
+            color: #0f172a;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 0 84px 0;
-            /* Espace pour la bottom bar */
+            justify-content: center;
+            padding: 16px;
         }
 
-        /* BARRE SUPÉRIEURE FLOTTANTE */
-        .top-app-bar {
+        .checkout-container {
+            max-width: 420px;
             width: 100%;
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 12px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* HEADER MINIMALISTE */
+        .checkout-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            padding: 0 4px;
         }
 
-        .top-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .btn-back-round {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #334155;
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-back-round:active {
-            background: #e2e8f0;
-            transform: scale(0.95);
-        }
-
-        .brand-header-mini {
+        .brand-pill {
             display: flex;
             align-items: center;
             gap: 8px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
         }
 
-        .brand-logo-img {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            background: #222222;
-            border: 1px solid var(--grow-mint);
+        .brand-logo {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: #111827;
             object-fit: contain;
             padding: 2px;
         }
 
-        .brand-name {
-            font-size: 16px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            color: var(--grow-dark);
-        }
-
-        .brand-tag {
-            font-size: 9px;
+        .brand-title {
+            font-size: 13px;
             font-weight: 800;
-            color: #0d5f47;
-            background: rgba(160, 217, 210, 0.22);
-            padding: 2px 7px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
+            color: #111827;
         }
 
-        .security-badge-top {
+        .security-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             font-size: 11px;
             font-weight: 700;
-            color: #a0d9d2;
-            background: rgba(160, 217, 210, 0.12);
-            padding: 4px 9px;
-            border-radius: 20px;
+            color: #059669;
+            background: #ecfdf5;
             border: 1px solid #a7f3d0;
+            padding: 6px 12px;
+            border-radius: 30px;
         }
 
-        /* CONTENEUR PRINCIPAL */
-        .abonnement-main {
-            max-width: 460px;
-            width: 100%;
-            padding: 20px 16px 24px 16px;
-        }
-
-        .title-block {
+        /* CARTE DE PAIEMENT ÉPURÉE FINTECH */
+        .payment-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
             text-align: center;
-            margin-bottom: 20px;
         }
 
-        .title-block h1 {
-            font-size: 21px;
-            font-weight: 900;
-            color: var(--grow-dark);
-            margin-bottom: 6px;
-            letter-spacing: -0.3px;
-        }
-
-        .title-block p {
-            font-size: 13px;
-            color: var(--grow-text-muted);
-            line-height: 1.45;
-        }
-
-        /* CARTE FORFAIT PRESTIGE CHARTE GROW (NOIR #222222 + BLEU MENTHE #a0d9d2) */
-        .plan-card-prestige {
-            background: linear-gradient(135deg, #222222 0%, #151515 100%);
-            border: 1.5px solid rgba(160, 217, 210, 0.35);
-            border-radius: 20px;
-            padding: 22px 20px;
-            margin-bottom: 22px;
-            box-shadow: 0 16px 36px -10px rgba(11, 18, 34, 0.35), 0 0 0 1px rgba(160, 217, 210, 0.2);
-            position: relative;
-            overflow: hidden;
-            color: #ffffff;
-        }
-
-        .plan-card-prestige::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(160, 217, 210, 0.22) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        /* SÉLECTEUR DE FORFAIT STARTER / PRO */
-        .plans-toggle-container {
-            display: flex;
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 16px;
-            gap: 6px;
-            margin-bottom: 16px;
-            width: 100%;
-        }
-
-        .plan-tab-btn {
-            flex: 1;
-            padding: 10px 14px;
-            border: none;
-            border-radius: 12px;
-            background: transparent;
-            font-size: 13px;
-            font-weight: 800;
-            color: #64748b;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .plan-tab-btn.active {
-            background: #222222;
-            color: #a0d9d2;
-            box-shadow: 0 4px 14px rgba(11, 18, 34, 0.2);
-        }
-
-        .badge-indispo {
-            font-size: 9px;
+        .card-plan-label {
+            display: inline-block;
+            font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
-            background: #fef3c7;
-            color: #b45309;
-            border: 1px solid #fde68a;
-            padding: 2px 6px;
-            border-radius: 6px;
-            margin-left: 6px;
-        }
-
-        .plan-tab-btn.active .badge-indispo {
-            background: rgba(245, 158, 11, 0.25);
-            color: #fcd34d;
-            border-color: rgba(245, 158, 11, 0.45);
-        }
-
-        .plan-ribbon {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(160, 217, 210, 0.18);
-            border: 1px solid var(--grow-mint);
-            color: var(--grow-mint);
-            font-size: 10px;
-            font-weight: 900;
+            letter-spacing: 0.8px;
+            color: #64748b;
+            background: #f1f5f9;
             padding: 4px 10px;
             border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             margin-bottom: 12px;
         }
 
-        .plan-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 16px;
-        }
-
-        .plan-name {
-            font-size: 16px;
+        .card-title {
+            font-size: 20px;
             font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 2px;
+            color: #0f172a;
+            margin-bottom: 4px;
         }
 
-        .plan-sub {
-            font-size: 11px;
-            color: #94a3b8;
-            font-weight: 500;
+        .card-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
         }
 
-        .plan-price-box {
-            text-align: right;
+        /* BLOC MONTANT GÉANT */
+        .amount-box {
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 16px 12px;
+            margin-bottom: 22px;
         }
 
-        .plan-price {
-            font-size: 32px;
+        .amount-value {
+            font-size: 34px;
             font-weight: 900;
-            color: var(--grow-mint);
-            line-height: 1;
+            color: #0f172a;
+            line-height: 1.1;
             letter-spacing: -0.5px;
         }
 
-        .plan-price-unit {
-            font-size: 11px;
+        .amount-unit {
+            font-size: 12px;
             font-weight: 600;
-            color: #cbd5e1;
-            margin-top: 2px;
+            color: #64748b;
+            margin-top: 4px;
         }
 
-        .features-list {
-            list-style: none;
+        /* DÉTAILS SOMMAIRES (2 LIGNES PROPRES) */
+        .order-summary {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 16px;
-        }
-
-        .feature-item {
+            padding-bottom: 22px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid #f1f5f9;
+            text-align: left;
             font-size: 12.5px;
-            color: #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            line-height: 1.35;
         }
 
-        .feature-check {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: rgba(160, 217, 210, 0.16);
-            color: var(--grow-mint);
+        .summary-row {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            flex-shrink: 0;
-            border: 1px solid rgba(160, 217, 210, 0.4);
+            color: #64748b;
         }
 
-        /* SECTION CHOIX DU PAIEMENT (SOBRE, ÉLÉGANTE, HAUT DE GAMME) */
-        .section-label {
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--grow-text-muted);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .summary-row strong {
+            color: #0f172a;
+            font-weight: 700;
         }
 
-        .payment-tiles-grid {
+        /* BOUTONS DE PAIEMENT WAVE & ORANGE MONEY */
+        .payment-buttons {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-bottom: 22px;
         }
 
-        /* TUILE DE PAIEMENT WAVE (ÉLÉGANTE SUR FOND BLANC) */
-        .payment-card-tile {
-            background: #ffffff;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 18px;
-            padding: 16px 18px;
+        .btn-pay {
+            width: 100%;
+            border: none;
+            border-radius: 16px;
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
-            text-align: left;
-            width: 100%;
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
         }
 
-        .payment-card-tile:active {
+        .btn-pay:active {
             transform: scale(0.98);
         }
 
-        .payment-card-tile.wave:hover,
-        .payment-card-tile.wave:focus {
-            border-color: var(--wave-blue);
-            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.14);
+        /* WAVE STYLE OFFICIEL */
+        .btn-wave {
+            background: linear-gradient(135deg, #1dc3ec 0%, #0099cc 100%);
+            box-shadow: 0 6px 18px rgba(29, 195, 236, 0.35);
         }
 
-        .payment-card-tile.orange-money:hover,
-        .payment-card-tile.orange-money:focus {
-            border-color: var(--om-orange);
-            box-shadow: 0 8px 24px rgba(234, 88, 12, 0.14);
+        .btn-wave:hover {
+            box-shadow: 0 8px 24px rgba(29, 195, 236, 0.45);
         }
 
-        .tile-left {
+        /* ORANGE MONEY STYLE OFFICIEL */
+        .btn-orange {
+            background: linear-gradient(135deg, #ff7900 0%, #e05b00 100%);
+            box-shadow: 0 6px 18px rgba(255, 121, 0, 0.35);
+        }
+
+        .btn-orange:hover {
+            box-shadow: 0 8px 24px rgba(255, 121, 0, 0.45);
+        }
+
+        .btn-content-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .tile-icon-box {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .tile-icon-box.wave-box {
-            background: var(--wave-blue-bg);
-            color: var(--wave-blue);
-            border: 1px solid var(--wave-border);
-        }
-
-        .tile-icon-box.om-box {
-            background: var(--om-orange-bg);
-            color: var(--om-orange);
-            border: 1px solid var(--om-border);
-        }
-
-        .tile-title {
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--grow-text-primary);
-            margin-bottom: 2px;
-        }
-
-        .tile-sub {
-            font-size: 11.5px;
-            color: var(--grow-text-muted);
-            font-weight: 500;
-        }
-
-        .tile-action-pill {
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 12.5px;
-            font-weight: 800;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .tile-action-pill.wave-pill {
-            background: var(--wave-blue);
-            color: #ffffff;
-            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
-        }
-
-        .tile-action-pill.om-pill {
-            background: var(--om-orange);
-            color: #ffffff;
-            box-shadow: 0 3px 10px rgba(234, 88, 12, 0.25);
-        }
-
-        /* REASSURANCE CARDS */
-        .reassurance-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .reassurance-item {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 11.5px;
-            font-weight: 700;
-            color: #334155;
-        }
-
-        .reassurance-item i {
-            font-size: 15px;
-            color: #a0d9d2;
-            background: rgba(160, 217, 210, 0.2);
-            padding: 8px;
-            border-radius: 10px;
-        }
-
-        /* NOTE DE PIED DE PAGE & RETOUR */
-        .onboarding-hint {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 14px 16px;
-            font-size: 12px;
-            color: #475569;
-            line-height: 1.5;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        .onboarding-hint strong {
-            color: var(--grow-dark);
-            font-weight: 800;
-        }
-
-        .btn-direct-dash {
-            width: 100%;
-            background: #ffffff;
-            color: #334155;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 14px;
-            padding: 12px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-
-        .btn-direct-dash:hover {
-            border-color: var(--grow-dark);
-            color: var(--grow-dark);
-        }
-
-        /* ========================================================================= */
-        /* BOTTOM NAVIGATION BAR MOBILE CONFORME CHARTE GROW (IMAGE 1 FOURNIE)       */
-        /* ========================================================================= */
-        .mobile-bottom-nav {
-            display: flex;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background: #ffffff;
-            border-top: 1px solid #e2e8f0;
-            z-index: 999;
-            align-items: center;
-            justify-content: space-around;
-            padding: 0 8px calc(env(safe-area-inset-bottom, 0px) + 2px) 8px;
-            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
-        }
-
-        .bottom-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 700;
-            gap: 3px;
-            flex: 1;
-            background: none;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            padding: 6px 0;
-            min-height: 54px;
-            transition: all 0.2s ease;
-        }
-
-        .bottom-nav-item i {
-            font-size: 19px;
-            color: #64748b;
-            transition: all 0.2s ease;
-        }
-
-        .bottom-nav-item span {
-            color: #64748b;
-            transition: all 0.2s ease;
-        }
-
-        /* ÉTAT ACTIF ABONNEMENT VIBRANT ET ÉCLATANT (CHARTE GROW VERT MENTHE & NOIR) */
-        .bottom-nav-item.active {
-            color: #222222;
-        }
-
-        .bottom-nav-item.active i {
-            color: #a0d9d2;
-            transform: scale(1.18) translateY(-1px);
-            filter: drop-shadow(0 2px 6px rgba(160, 217, 210, 0.7));
-        }
-
-        .bottom-nav-item.active span {
-            color: #222222;
-            font-weight: 900;
-        }
-
-        .bottom-nav-item.active::after {
-            content: '';
-            display: block;
-            width: 22px;
-            height: 3.5px;
-            background: var(--grow-mint);
-            border-radius: 4px;
-            margin-top: 2px;
-            box-shadow: 0 0 8px rgba(160, 217, 210, 0.9);
-        }
-
-        .bottom-nav-center-btn {
-            width: 48px;
-            height: 48px;
+        .btn-icon-circle {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #222222;
-            color: #a0d9d2;
-            border: 2px solid #a0d9d2;
+            background: rgba(255, 255, 255, 0.22);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 4px 14px rgba(34, 34, 34, 0.4);
-            margin-top: -18px;
-            cursor: pointer;
-            transition: transform 0.2s;
+            font-size: 14px;
         }
 
-        .bottom-nav-center-btn:active {
-            transform: scale(0.92);
+        .btn-arrow {
+            font-size: 13px;
+            opacity: 0.9;
         }
 
-        /* MODALE DE CONFIRMATION SUCCÈS MODERNE */
-        .modal-success-backdrop {
+        /* FOOTER DE RÉASSURANCE */
+        .checkout-footer {
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        .footer-secure-text {
+            font-size: 11.5px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-back-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .btn-back-link:hover {
+            color: #0f172a;
+        }
+
+        /* MODALE SUCCÈS MODERNE */
+        .modal-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(6px);
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(8px);
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
+            z-index: 9999;
             padding: 20px;
         }
 
-        .modal-success-box {
+        .modal-box {
             background: #ffffff;
-            border: 2px solid var(--grow-mint);
-            border-radius: 24px;
-            max-width: 400px;
+            border-radius: 28px;
+            max-width: 360px;
             width: 100%;
-            padding: 28px 22px;
+            padding: 32px 24px;
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-            animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes popIn {
+        @keyframes modalPop {
             from {
-                transform: scale(0.85);
+                transform: scale(0.9);
                 opacity: 0;
             }
 
@@ -695,430 +309,201 @@
             }
         }
 
-        .success-icon-circle {
-            width: 60px;
-            height: 60px;
+        .modal-icon {
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
-            background: rgba(160, 217, 210, 0.2);
-            color: #a0d9d2;
+            background: #ecfdf5;
+            color: #059669;
             font-size: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 16px auto;
-            border: 2px solid var(--grow-mint);
+            margin: 0 auto 18px auto;
+            border: 2px solid #a7f3d0;
         }
 
-        .success-title {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--grow-dark);
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
             margin-bottom: 8px;
         }
 
-        .success-desc {
+        .modal-desc {
             font-size: 13px;
-            color: #475569;
+            color: #64748b;
             line-height: 1.5;
-            margin-bottom: 22px;
+            margin-bottom: 24px;
         }
 
-        .btn-return-wa {
+        .btn-modal-wa {
             width: 100%;
             background: #25D366;
             color: #ffffff;
             border: none;
-            border-radius: 14px;
-            padding: 14px;
-            font-size: 14px;
+            border-radius: 16px;
+            padding: 15px;
+            font-size: 14.5px;
             font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
             text-decoration: none;
-            margin-bottom: 10px;
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
         }
 
-        .btn-view-dash-modal {
-            width: 100%;
-            background: #222222;
-            color: var(--grow-mint);
-            border: none;
-            border-radius: 14px;
-            padding: 12px;
-            font-size: 13px;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
+        .btn-modal-wa:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
 
 <body>
 
-    <!-- TOP APP BAR -->
-    <header class="top-app-bar">
-        <div class="top-bar-left">
-            <button type="button" class="btn-back-round" onclick="retournerAuDashboard()"
-                title="Retour au tableau de bord">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <div class="brand-header-mini">
-                <img src="/static/images/grow_logo.png" alt="Logo Grow" class="brand-logo-img">
-                <span class="brand-name">GROW</span>
-                <span class="brand-tag">SYSCOHADA</span>
+    <div class="checkout-container">
+
+        <!-- HEADER MINIMALISTE -->
+        <header class="checkout-header">
+            <div class="brand-pill">
+                <img src="/static/images/grow_logo.png" alt="GROW" class="brand-logo"
+                    onerror="this.style.display='none'">
+                <span class="brand-title">GROW</span>
             </div>
-        </div>
-        <div class="security-badge-top">
-            <i class="fa-solid fa-shield-halved"></i>
-            <span>Paiement 100% Sécurisé</span>
-        </div>
-    </header>
-
-    <!-- CONTENU PRINCIPAL -->
-    <main class="abonnement-main">
-        <div class="title-block">
-            <h1>Abonnement Pré-Comptable</h1>
-            <p>Activez la certification financière SYSCOHADA de votre PME et l'ouverture de vos dossiers de crédits
-                bancaires.</p>
-        </div>
-
-        <!-- SÉLECTEUR DE FORFAIT (STARTER 10K VS MULTI-ENTREPRISES 15K) -->
-        <div class="plans-toggle-container">
-            <button type="button" class="plan-tab-btn active" id="tabStarter" onclick="choisirPlan('Starter', 10000)">
-                <i class="fa-solid fa-store"></i> Solo • 1 Entreprise (10 000 F)
-            </button>
-            <button type="button" class="plan-tab-btn" id="tabPro" onclick="choisirPlan('Multi', 15000)">
-                <i class="fa-solid fa-layer-group"></i> Multi • 3 Entreprises (15 000 F)
-                <span class="badge-indispo">Pas encore dispo</span>
-            </button>
-        </div>
-
-        <!-- CARTE FORFAIT PRESTIGE CHARTE GROW -->
-        <div class="plan-card-prestige">
-            <div class="plan-ribbon" id="planRibbonText">
-                <i class="fa-solid fa-bolt"></i> Pack Solo • 1 Entreprise
-            </div>
-
-            <div class="plan-header">
-                <div>
-                    <div class="plan-name" id="planNameText">Copilote Gestion &amp; Caisse</div>
-                    <div class="plan-sub" id="planSubText">1 seule entreprise &bull; Sans engagement &bull; Résiliable à
-                        tout moment</div>
-                </div>
-                <div class="plan-price-box">
-                    <div class="plan-price" id="planPriceText">10 000</div>
-                    <div class="plan-price-unit">FCFA / mois</div>
-                </div>
-            </div>
-
-            <ul class="features-list" id="planFeaturesList">
-                <li class="feature-item">
-                    <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                    <span>Assistant WhatsApp 24h/24 en Wolof ou Français (saisie vocale en 1.5s)</span>
-                </li>
-                <li class="feature-item">
-                    <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                    <span>Interception automatique des flux Wave Business &amp; Orange Money</span>
-                </li>
-                <li class="feature-item">
-                    <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                    <span>Suivi complet : Caisse espèces (571), stocks grossistes et dettes/créances</span>
-                </li>
-                <li class="feature-item">
-                    <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                    <span>Relances actives toutes les 3h &amp; Grand Rituel de clôture à 20h00 avec note vocale</span>
-                </li>
-                <li class="feature-item" style="opacity: 0.85;">
-                    <div class="feature-check"
-                        style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);">
-                        <i class="fa-solid fa-minus"></i></div>
-                    <span style="color: #64748b; font-size: 13px;"><em>Tout inclus sauf export des bilans officiels et
-                            montage des dossiers bancaires</em></span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- SECTION CHOIX DU PAIEMENT (SOBRE ET ÉLÉGANTE) -->
-        <div class="section-label">
-            <i class="fa-solid fa-wallet" style="color: var(--grow-dark);"></i> Choisissez votre mode de règlement :
-        </div>
-
-        <div class="payment-tiles-grid">
-            <!-- TUILE WAVE (STYLE FINTECH RECHERCHÉ) -->
-            <button type="button" class="payment-card-tile wave" onclick="effectuerPaiement('Wave')">
-                <div class="tile-left">
-                    <div class="tile-icon-box wave-box">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <div>
-                        <div class="tile-title">Wave Mobile Money</div>
-                        <div class="tile-sub">Validation instantanée &bull; 0 FCFA de frais</div>
-                    </div>
-                </div>
-                <div class="tile-action-pill wave-pill">
-                    <span id="wavePricePill">10 000 F</span>
-                    <i class="fa-solid fa-chevron-right"></i>
-                </div>
-            </button>
-
-            <!-- TUILE ORANGE MONEY (STYLE FINTECH RECHERCHÉ) -->
-            <button type="button" class="payment-card-tile orange-money" onclick="effectuerPaiement('Orange Money')">
-                <div class="tile-left">
-                    <div class="tile-icon-box om-box">
-                        <i class="fa-solid fa-mobile-screen-button"></i>
-                    </div>
-                    <div>
-                        <div class="tile-title">Orange Money</div>
-                        <div class="tile-sub">Débit sécurisé sur votre compte OM</div>
-                    </div>
-                </div>
-                <div class="tile-action-pill om-pill">
-                    <span id="omPricePill">10 000 F</span>
-                    <i class="fa-solid fa-chevron-right"></i>
-                </div>
-            </button>
-        </div>
-
-        <!-- RÉASSURANCE SÉCURITÉ -->
-        <div class="reassurance-grid">
-            <div class="reassurance-item">
+            <div class="security-badge">
                 <i class="fa-solid fa-lock"></i>
-                <span>Chiffrement bancaire agréé BCEAO</span>
+                <span>Paiement sécurisé</span>
             </div>
-            <div class="reassurance-item">
-                <i class="fa-solid fa-file-invoice"></i>
-                <span>Reçu certifié déductible sur WhatsApp</span>
+        </header>
+
+        <!-- CARTE DE PAIEMENT ÉPURÉE -->
+        <main class="payment-card">
+            <span class="card-plan-label">Abonnement Mensuel</span>
+            <h1 class="card-title">Copilote WhatsApp</h1>
+            <p class="card-subtitle">Accès illimité 24h/24 • Relances &amp; Clôture de caisse</p>
+
+            <!-- MONTANT -->
+            <div class="amount-box">
+                <div class="amount-value">10 000 FCFA</div>
+                <div class="amount-unit">par mois • sans engagement</div>
             </div>
-        </div>
 
-        <!-- INSTRUCTIONS ONBOARDING & RETOUR -->
-        <div class="onboarding-hint">
-            Après votre paiement, renvoyez simplement <strong>« Fey naa »</strong> (Wolof) ou <strong>« J'ai payé
-                »</strong> sur WhatsApp pour démarrer immédiatement vos opérations.
-        </div>
+            <!-- RÉCAPITULATIF 2 LIGNES -->
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Numéro associé</span>
+                    <strong id="displayPhone">+221 78 877 38 27</strong>
+                </div>
+                <div class="summary-row">
+                    <span>Activation</span>
+                    <strong>Instantanée</strong>
+                </div>
+            </div>
 
-        <button type="button" class="btn-direct-dash" onclick="retournerAuDashboard()">
-            <i class="fa-solid fa-arrow-left"></i> Accéder au tableau de bord
-        </button>
-    </main>
+            <!-- BOUTONS DE PAIEMENT DIRECTS -->
+            <div class="payment-buttons">
+                <!-- BOUTON WAVE -->
+                <button type="button" class="btn-pay btn-wave" onclick="payer('Wave')">
+                    <div class="btn-content-left">
+                        <div class="btn-icon-circle">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <span>Payer 10 000 F avec Wave</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right btn-arrow"></i>
+                </button>
 
-    <!-- BARRE DE NAVIGATION INFÉRIEURE MOBILE (IDENTIQUE DASHBOARD, ONGLET ABONNEMENT ACTIF) -->
-    <nav class="mobile-bottom-nav">
-        <button type="button" class="bottom-nav-item" onclick="retournerAuDashboard()"
-            title="Tableau de bord financier">
-            <i class="fa-solid fa-house"></i>
-            <span>Accueil</span>
-        </button>
+                <!-- BOUTON ORANGE MONEY -->
+                <button type="button" class="btn-pay btn-orange" onclick="payer('Orange Money')">
+                    <div class="btn-content-left">
+                        <div class="btn-icon-circle">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <span>Payer 10 000 F avec Orange</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right btn-arrow"></i>
+                </button>
+            </div>
+        </main>
 
-        <button type="button" class="bottom-nav-item" onclick="allerVersDashboardOnglet('prets')"
-            title="Financements et prêts bancaires">
-            <i class="fa-solid fa-hand-holding-dollar"></i>
-            <span>Prêts</span>
-        </button>
+        <!-- FOOTER DISCRET -->
+        <footer class="checkout-footer">
+            <div class="footer-secure-text">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Validation automatique dès réception de votre règlement</span>
+            </div>
+            <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="btn-back-link">
+                &larr; Revenir au tableau de bord
+            </a>
+        </footer>
 
-        <button type="button" class="bottom-nav-center-btn" onclick="allerVersDashboardOnglet('add')"
-            title="Ajouter une vente ou dépense">
-            <i class="fa-solid fa-plus"></i>
-        </button>
+    </div>
 
-        <button type="button" class="bottom-nav-item active" title="Mon abonnement Grow">
-            <i class="fa-solid fa-credit-card"></i>
-            <span>Abonnement</span>
-        </button>
-
-        <button type="button" class="bottom-nav-item" onclick="allerVersDashboardOnglet('about')"
-            title="Tout savoir sur Grow">
-            <i class="fa-solid fa-circle-info"></i>
-            <span>Grow</span>
-        </button>
-    </nav>
-
-    <!-- MODALE POPUP CONFIRMATION SUCCÈS -->
-    <div id="modalSuccess" class="modal-success-backdrop" onclick="fermerModalSuccess()">
-        <div class="modal-success-box" onclick="event.stopPropagation()">
-            <div class="success-icon-circle">
+    <!-- MODALE DE SUCCÈS -->
+    <div id="modalSuccess" class="modal-backdrop">
+        <div class="modal-box">
+            <div class="modal-icon">
                 <i class="fa-solid fa-check"></i>
             </div>
-            <h3 class="success-title" id="modalOpTitle">Paiement Validé avec Succès !</h3>
-            <p class="success-desc" id="modalOpDesc">
-                Votre abonnement Grow PME de <strong>10 000 FCFA</strong> a été validé. Vos services pré-comptables
-                SYSCOHADA sont désormais actifs.
+            <h2 class="modal-title" id="modalTitle">Paiement Validé !</h2>
+            <p class="modal-desc" id="modalDesc">
+                Votre règlement de <strong>10 000 FCFA</strong> a été validé. Votre copilote WhatsApp est maintenant actif 24h/24.
             </p>
-
-            <a href="javascript:void(0)" onclick="allerVersWhatsApp()" class="btn-return-wa">
-                <i class="fa-brands fa-whatsapp"></i> Retourner sur WhatsApp (« J'ai payé »)
-            </a>
-            <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="btn-view-dash-modal">
-                <i class="fa-solid fa-table-columns"></i> Consulter le Tableau de Bord
-            </a>
+            <button type="button" class="btn-modal-wa" onclick="ouvrirWhatsApp()">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>Ouvrir WhatsApp</span>
+            </button>
         </div>
     </div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const userPhone = urlParams.get('phone') || '221788773827';
-        let currentPlan = 'Starter';
-        let currentMontant = 10000;
 
-        function choisirPlan(plan, montant) {
-            currentPlan = plan;
-            currentMontant = montant;
-
-            const tabStarter = document.getElementById('tabStarter');
-            const tabPro = document.getElementById('tabPro');
-            if (tabStarter && tabPro) {
-                tabStarter.classList.toggle('active', plan === 'Starter');
-                tabPro.classList.toggle('active', plan === 'Pro');
-            }
-
-            const ribbon = document.getElementById('planRibbonText');
-            const pName = document.getElementById('planNameText');
-            const pPrice = document.getElementById('planPriceText');
-            const pFeatures = document.getElementById('planFeaturesList');
-            const wavePill = document.getElementById('wavePricePill');
-            const omPill = document.getElementById('omPricePill');
-
-            if (plan === 'Starter') {
-                if (ribbon) {
-                    ribbon.innerHTML = '<i class="fa-solid fa-bolt"></i> Pack Solo • 1 Entreprise';
-                    ribbon.style.background = 'rgba(160, 217, 210, 0.18)';
-                    ribbon.style.borderColor = 'var(--grow-mint)';
-                    ribbon.style.color = 'var(--grow-mint)';
-                }
-                if (pName) pName.textContent = 'Copilote Gestion & Caisse';
-                const pSub = document.getElementById('planSubText');
-                if (pSub) pSub.textContent = '1 seule entreprise • Sans engagement • Résiliable à tout moment';
-                if (pPrice) pPrice.textContent = '10 000';
-                if (wavePill) wavePill.textContent = '10 000 F';
-                if (omPill) omPill.textContent = '10 000 F';
-                if (pFeatures) {
-                    pFeatures.innerHTML = `
-                        <li class="feature-item">
-                            <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Assistant WhatsApp 24h/24 en Wolof ou Français (saisie vocale en 1.5s)</span>
-                        </li>
-                        <li class="feature-item">
-                            <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Interception automatique des flux Wave Business &amp; Orange Money</span>
-                        </li>
-                        <li class="feature-item">
-                            <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Suivi complet : Caisse espèces (571), stocks grossistes et dettes/créances</span>
-                        </li>
-                        <li class="feature-item">
-                            <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Relances actives toutes les 3h &amp; Grand Rituel de clôture à 20h00 avec note vocale</span>
-                        </li>
-                        <li class="feature-item" style="opacity: 0.85;">
-                            <div class="feature-check" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-minus"></i></div>
-                            <span style="color: #64748b; font-size: 13px;"><em>Tout inclus sauf export des bilans officiels et montage des dossiers bancaires</em></span>
-                        </li>
-                    `;
-                }
+        // Mise à jour de l'affichage du numéro
+        const displayPhoneEl = document.getElementById('displayPhone');
+        if (displayPhoneEl) {
+            const clean = userPhone.replace(/\D/g, '');
+            if (clean.length >= 9) {
+                displayPhoneEl.textContent = '+' + clean;
             } else {
-                if (ribbon) {
-                    ribbon.innerHTML = '<i class="fa-solid fa-clock"></i> Pas encore disponible • Pack Multi (3 Entreprises)';
-                    ribbon.style.background = 'rgba(245, 158, 11, 0.2)';
-                    ribbon.style.borderColor = '#f59e0b';
-                    ribbon.style.color = '#fbbf24';
-                }
-                if (pName) pName.textContent = 'Copilote Multi-Commerces (3 PME)';
-                const pSub = document.getElementById('planSubText');
-                if (pSub) pSub.textContent = '3 entreprises distinctes • En cours de finalisation';
-                if (pPrice) pPrice.textContent = '15 000';
-                if (wavePill) wavePill.textContent = 'Bientôt dispo';
-                if (omPill) omPill.textContent = 'Bientôt dispo';
-                if (pFeatures) {
-                    pFeatures.innerHTML = `
-                        <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; color: #fef3c7; display: flex; align-items: center; gap: 10px;">
-                            <i class="fa-solid fa-triangle-exclamation" style="color: #fbbf24; font-size: 20px; flex-shrink: 0;"></i>
-                            <div>
-                                <strong style="color: #fbbf24;">Pas encore disponible</strong><br>
-                                La gestion multi-boutiques (3 PME sous le même numéro WhatsApp) arrive très prochainement. Veuillez activer le <strong>Pack Solo (10 000 FCFA)</strong> pour démarrer dès aujourd'hui.
-                            </div>
-                        </div>
-                        <li class="feature-item" style="opacity: 0.75;">
-                            <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span><strong>Gestion de 3 entreprises / commerces distincts</strong> sous votre même WhatsApp</span>
-                        </li>
-                        <li class="feature-item" style="opacity: 0.75;">
-                            <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Même accompagnement illimité 24h/24 pour chacune de vos 3 activités</span>
-                        </li>
-                        <li class="feature-item" style="opacity: 0.75;">
-                            <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Rapprochements multi-webhooks Wave Business &amp; Orange Business par boutique</span>
-                        </li>
-                        <li class="feature-item" style="opacity: 0.75;">
-                            <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Ventilation et clôtures de caisse séparées pour chaque commerce à 20h00</span>
-                        </li>
-                        <li class="feature-item" style="opacity: 0.65;">
-                            <div class="feature-check" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-minus"></i></div>
-                            <span style="color: #64748b; font-size: 13px;"><em>Tout inclus pour vos 3 commerces (sauf export des bilans officiels et dossiers bancaires)</em></span>
-                        </li>
-                    `;
-                }
+                displayPhoneEl.textContent = userPhone;
             }
         }
 
-        async function effectuerPaiement(operateur) {
-            if (currentPlan === 'Multi') {
-                alert("Le Pack Multi-Entreprises (3 PME) n'est pas encore disponible.\n\nVeuillez sélectionner le Pack Solo (10 000 FCFA) pour activer votre copilote immédiatement.");
-                choisirPlan('Starter', 10000);
-                return;
-            }
+        async function payer(operateur) {
             try {
-                // Appel API d'activation serveur
-                const res = await fetch('/api/valider-abonnement-client', {
+                // Appel API d'activation immédiate
+                await fetch('/api/valider-abonnement-client', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         phone: userPhone,
                         operateur: operateur,
-                        montant: currentMontant,
-                        plan: currentPlan
+                        montant: 10000,
+                        plan: 'Starter'
                     })
                 });
 
-                document.getElementById('modalOpTitle').textContent = `Paiement ${operateur} Confirmé !`;
-                document.getElementById('modalOpDesc').innerHTML = `Votre règlement de <strong>${currentMontant.toLocaleString()} FCFA</strong> pour le forfait <strong>${currentPlan}</strong> via <strong>${operateur}</strong> est enregistré. Votre compte Growth pour le numéro <strong>+${userPhone}</strong> est activé 24h/24.`;
+                document.getElementById('modalTitle').textContent = `Paiement ${operateur} Reçu !`;
+                document.getElementById('modalDesc').innerHTML = `Votre règlement de <strong>10 000 FCFA</strong> via <strong>${operateur}</strong> est confirmé.<br>Votre copilote WhatsApp pour le <strong>+${userPhone}</strong> est activé immédiatement.`;
                 document.getElementById('modalSuccess').style.display = 'flex';
             } catch (e) {
-                document.getElementById('modalOpTitle').textContent = `Paiement ${operateur} Réussi !`;
-                document.getElementById('modalOpDesc').innerHTML = `Votre règlement de <strong>${currentMontant.toLocaleString()} FCFA</strong> via <strong>${operateur}</strong> est validé avec succès.`;
+                document.getElementById('modalTitle').textContent = `Paiement ${operateur} Reçu !`;
+                document.getElementById('modalDesc').innerHTML = `Votre règlement de <strong>10 000 FCFA</strong> via <strong>${operateur}</strong> est confirmé.`;
                 document.getElementById('modalSuccess').style.display = 'flex';
             }
         }
 
-        function fermerModalSuccess() {
-            document.getElementById('modalSuccess').style.display = 'none';
-        }
-
-        function allerVersWhatsApp() {
+        function ouvrirWhatsApp() {
             const clean = userPhone.replace(/\D/g, '');
-            const waUrl = `https://wa.me/221788773827?text=${encodeURIComponent("J'ai payé mon abonnement Grow via Wave/OM")}`;
-            window.location.href = waUrl;
+            window.location.href = `https://wa.me/221788773827?text=${encodeURIComponent("J'ai payé mon abonnement Grow de 10 000 FCFA")}`;
         }
 
         function retournerAuDashboard() {
             window.location.href = `/dashboard?phone=${encodeURIComponent(userPhone)}`;
-        }
-
-        function allerVersDashboardOnglet(tab) {
-            if (tab === 'add') {
-                window.location.href = `/dashboard?phone=${encodeURIComponent(userPhone)}#add`;
-            } else {
-                window.location.href = `/dashboard?phone=${encodeURIComponent(userPhone)}#${tab}`;
-            }
         }
     </script>
 </body>
