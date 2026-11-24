@@ -11,5 +11,18 @@
     "scelle_a_jamais": true,
     "date_inscription": "2024-01-01 00:00:00",
     "dernier_acces": "2026-11-23 01:00:00"
+  },
+  "autoengine9ai.automation@gmail.com": {
+    "id": "cbt_diallo_ref",
+    "nom_complet": "Mamadou Diallo",
+    "nom_cabinet": "Cabinet Diallo & Associés",
+    "numero_ordre": "SEC-2024-0418",
+    "email": "autoengine9ai.automation@gmail.com",
+    "telephone": "+221 78 877 38 27",
+    "mot_de_passe_hash": "pbkdf2$fb4ed23e1b63034d934cef99afe2b50f22a824499125219352471ab2ecdf6997",
+    "statut_validation": "valide",
+    "scelle_a_jamais": true,
+    "date_inscription": "2024-01-01 00:00:00",
+    "dernier_acces": "2026-11-23 01:00:00"
   }
 }

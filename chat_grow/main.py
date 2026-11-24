@@ -751,6 +751,14 @@ async def serve_autoengine_page():
 
 AUTOENGINE_LEADS_FILE = os.path.join(BASE_DIR, "autoengine_leads.json")
 COMPTABLES_REGISTRY_FILE = os.path.join(BASE_DIR, "comptables_registry.json")
+GROWTH_OFFICIAL_CONTACT_EMAIL = "autoengine9ai.automation@gmail.com"
+GROWTH_PARTNER_CODES = {
+    os.environ.get("GROWTH_PARTNER_CODE", "GROWTH-PARTNER-K9X7-Q4M2-V8W1-SEC2026!"),
+    "GROWTH-PARTNER-K9X7-Q4M2-V8W1-SEC2026!",
+    "GROWTH-PARTNER-DAKAR-8F3A-7C2B-9E1D-2026",
+    "GROWTH#PARTNER#SECURE#9942!X"
+}
+
 ONBOARDING_STATES_FILE = ONBOARDING_FILE
 
 @app.post("/api/autoengine/audit")
@@ -2126,6 +2134,14 @@ async def api_comptable_inscription(payload: Dict[str, Any], response: Response)
     email = payload.get("email", "").strip()
     telephone = payload.get("telephone", "").strip()
     mot_de_passe = payload.get("mot_de_passe", "")
+    code_partenaire = payload.get("code_partenaire", "").strip()
+
+    # Contrôle strict du Code Partenaire Cabinet Growth
+    if not code_partenaire or code_partenaire not in GROWTH_PARTNER_CODES:
+        return {
+            "status": "error",
+            "message": f"Code Partenaire Growth obligatoire et invalide. L'inscription est réservée aux cabinets agréés partenaires. Veuillez nous contacter à {GROWTH_OFFICIAL_CONTACT_EMAIL} pour recevoir votre code officiel."
+        }
 
     if not nom_complet or not nom_cabinet or not email or not mot_de_passe:
         return {"status": "error", "message": "Veuillez renseigner tous les champs obligatoires (*)."}
@@ -2165,6 +2181,15 @@ async def api_comptable_connexion(request: Request, payload: Dict[str, Any], res
 
     identifiant = payload.get("identifiant", "").strip()
     mot_de_passe = payload.get("mot_de_passe", "")
+    code_partenaire = payload.get("code_partenaire", "").strip()
+
+    # Contrôle strict du Code Partenaire Cabinet Growth
+    if not code_partenaire or code_partenaire not in GROWTH_PARTNER_CODES:
+        print(f"[AUTH CABINET] Tentative accès sans code partenaire valide: identifiant={identifiant}")
+        return {
+            "status": "error",
+            "message": f"Code Partenaire Growth obligatoire et invalide. L'accès est strictement réservé aux cabinets partenaires. Pour toute demande d'adoption et de partenariat dans votre cabinet, contactez-nous par mail à {GROWTH_OFFICIAL_CONTACT_EMAIL} pour recevoir votre code officiel."
+        }
 
     if not identifiant or not mot_de_passe:
         return {"status": "error", "message": "Identifiant et mot de passe requis."}
@@ -2180,6 +2205,7 @@ async def api_comptable_connexion(request: Request, payload: Dict[str, Any], res
     if res.get("status") == "success":
         reinitialiser_echecs_auth(identifiant)
         c = res.get("comptable", {})
+        response.set_cookie("growth_partner_verified", "1", max_age=31536000, path="/", samesite="lax")
         response.set_cookie("growth_cabinet_nom", c.get("nom_cabinet", ""), max_age=31536000, path="/", samesite="lax")
         response.set_cookie("growth_cabinet_expert", c.get("nom_complet", ""), max_age=31536000, path="/", samesite="lax")
         response.set_cookie("growth_cabinet_email", c.get("email", ""), max_age=31536000, path="/", samesite="lax")
