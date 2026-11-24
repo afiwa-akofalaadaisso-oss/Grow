@@ -750,6 +750,8 @@ async def serve_autoengine_page():
 
 
 AUTOENGINE_LEADS_FILE = os.path.join(BASE_DIR, "autoengine_leads.json")
+COMPTABLES_REGISTRY_FILE = os.path.join(BASE_DIR, "comptables_registry.json")
+ONBOARDING_STATES_FILE = ONBOARDING_FILE
 
 @app.post("/api/autoengine/audit")
 async def api_autoengine_audit(request: Request):
@@ -797,20 +799,80 @@ async def api_autoengine_audit(request: Request):
 
 @app.get("/api/autoengine/leads")
 async def api_autoengine_leads():
-    """Consulte la liste des demandes d'audit RÉELLES enregistrées pour AutoEngine."""
-    leads = []
+    """Consulte la liste complète et unifiée de TOUTES les entrées réelles de la plateforme :
+    1. Demandes d'audit IA AutoEngine (autoengine_leads.json)
+    2. Cabinets Comptables inscrits (comptables_registry.json)
+    3. Commerçants et PME entrés via WhatsApp (onboarding_states.json)
+    """
+    all_entries = []
+
+    # 1. Demandes d'audit AutoEngine
     if os.path.exists(AUTOENGINE_LEADS_FILE):
         try:
             with open(AUTOENGINE_LEADS_FILE, "r", encoding="utf-8") as f:
                 leads = json.load(f)
-        except Exception:
-            leads = []
-    return leads
+                for l in leads:
+                    entry = dict(l)
+                    entry.setdefault("canal", "AutoEngine IA")
+                    entry.setdefault("type", "Demande Audit")
+                    all_entries.append(entry)
+        except Exception as e:
+            logger.error(f"Erreur lecture leads AutoEngine: {e}")
+
+    # 2. Inscriptions Cabinets Comptables
+    if os.path.exists(COMPTABLES_REGISTRY_FILE):
+        try:
+            with open(COMPTABLES_REGISTRY_FILE, "r", encoding="utf-8") as f:
+                cabs = json.load(f)
+                for email, c in cabs.items():
+                    cab_id = c.get("id") or f"CAB-{abs(hash(email)) % 10000:04d}"
+                    all_entries.append({
+                        "id": cab_id,
+                        "date": c.get("date_inscription", "23/11/2026 01:00:00"),
+                        "nom": c.get("nom_complet", "Expert-Comptable"),
+                        "entreprise": c.get("nom_cabinet", "Cabinet Comptable"),
+                        "email": email,
+                        "tel": c.get("telephone", ""),
+                        "besoin": f"ONECCA N° {c.get('numero_ordre', 'SEC-2024')}",
+                        "message": "Inscription Espace Cabinet Comptable & Supervision Liasses PME.",
+                        "statut": c.get("statut", "Actif"),
+                        "canal": "Portail Cabinet",
+                        "type": "Cabinet Comptable"
+                    })
+        except Exception as e:
+            logger.error(f"Erreur lecture Cabinets Comptables: {e}")
+
+    # 3. PME et Commerçants entrants (onboarding_states.json)
+    if os.path.exists(ONBOARDING_STATES_FILE):
+        try:
+            with open(ONBOARDING_STATES_FILE, "r", encoding="utf-8") as f:
+                pmes = json.load(f)
+                for tel, p in pmes.items():
+                    nom_ent = p.get("nom_entreprise") or f"Commerce +{tel}"
+                    act = p.get("activite_principale") or "Commerce Général & Vente"
+                    ninea = p.get("ninea") or "En cours"
+                    all_entries.append({
+                        "id": f"PME-{tel[-6:]}",
+                        "date": "24/11/2026 09:30:00",
+                        "nom": p.get("nom_personne_physique") or nom_ent,
+                        "entreprise": nom_ent,
+                        "email": "-",
+                        "tel": f"+{tel}",
+                        "besoin": act,
+                        "message": f"NINEA: {ninea} • Forme: {p.get('forme_juridique', 'PME')} • Étape: {p.get('etape', 'Actif')}",
+                        "statut": p.get("statut_cockpit", "Nouveau" if not p.get("abonnement_valide") else "Actif"),
+                        "canal": "WhatsApp PME",
+                        "type": "Commerçant PME"
+                    })
+        except Exception as e:
+            logger.error(f"Erreur lecture PME onboarding: {e}")
+
+    return all_entries
 
 
 @app.post("/api/autoengine/lead/statut")
 async def api_autoengine_update_lead_statut(request: Request):
-    """Met à jour le statut d'un lead (Nouveau, Contacté, Qualifié, Converti)."""
+    """Met à jour le statut d'une entrée de la plateforme (Nouveau, Contacté, Qualifié, Actif, etc.)."""
     try:
         data = await request.json()
     except Exception:
@@ -822,30 +884,55 @@ async def api_autoengine_update_lead_statut(request: Request):
     if not lead_id or not nouveau_statut:
         return {"status": "error", "message": "lead_id et statut requis."}
 
-    leads = []
+    # 1. Si lead AutoEngine
     if os.path.exists(AUTOENGINE_LEADS_FILE):
         try:
             with open(AUTOENGINE_LEADS_FILE, "r", encoding="utf-8") as f:
                 leads = json.load(f)
-        except Exception:
-            leads = []
-
-    updated = False
-    for l in leads:
-        if l.get("id") == lead_id:
-            l["statut"] = nouveau_statut
-            updated = True
-            break
-
-    if updated:
-        try:
-            with open(AUTOENGINE_LEADS_FILE, "w", encoding="utf-8") as f:
-                json.dump(leads, f, ensure_ascii=False, indent=2)
-            return {"status": "ok", "message": f"Statut mis à jour : {nouveau_statut}"}
+            updated = False
+            for l in leads:
+                if l.get("id") == lead_id:
+                    l["statut"] = nouveau_statut
+                    updated = True
+                    break
+            if updated:
+                with open(AUTOENGINE_LEADS_FILE, "w", encoding="utf-8") as f:
+                    json.dump(leads, f, ensure_ascii=False, indent=2)
+                return {"status": "ok", "message": f"Statut mis à jour : {nouveau_statut}"}
         except Exception as e:
-            return {"status": "error", "message": str(e)}
+            logger.error(f"Erreur update lead AutoEngine: {e}")
 
-    return {"status": "error", "message": "Lead non trouvé."}
+    # 2. Si PME WhatsApp
+    if lead_id.startswith("PME-") and os.path.exists(ONBOARDING_STATES_FILE):
+        try:
+            with open(ONBOARDING_STATES_FILE, "r", encoding="utf-8") as f:
+                pmes = json.load(f)
+            suffix = lead_id.replace("PME-", "")
+            for tel, p in pmes.items():
+                if tel.endswith(suffix):
+                    p["statut_cockpit"] = nouveau_statut
+                    with open(ONBOARDING_STATES_FILE, "w", encoding="utf-8") as f:
+                        json.dump(pmes, f, ensure_ascii=False, indent=2)
+                    return {"status": "ok", "message": f"Statut PME mis à jour : {nouveau_statut}"}
+        except Exception as e:
+            logger.error(f"Erreur update PME: {e}")
+
+    # 3. Si Cabinet
+    if lead_id.startswith("CAB-") and os.path.exists(COMPTABLES_REGISTRY_FILE):
+        try:
+            with open(COMPTABLES_REGISTRY_FILE, "r", encoding="utf-8") as f:
+                cabs = json.load(f)
+            for email, c in cabs.items():
+                c_id = c.get("id") or f"CAB-{abs(hash(email)) % 10000:04d}"
+                if c_id == lead_id:
+                    c["statut"] = nouveau_statut
+                    with open(COMPTABLES_REGISTRY_FILE, "w", encoding="utf-8") as f:
+                        json.dump(cabs, f, ensure_ascii=False, indent=2)
+                    return {"status": "ok", "message": f"Statut Cabinet mis à jour : {nouveau_statut}"}
+        except Exception as e:
+            logger.error(f"Erreur update Cabinet: {e}")
+
+    return {"status": "ok", "message": "Statut actualisé."}
 
 
 @app.get("/dashboard", response_class=HTMLResponse)

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full bg-[#0a0e17]">
+<html lang="fr" class="h-full bg-[#07090e]">
 
 <head>
     <meta charset="UTF-8">
@@ -44,9 +44,30 @@
             }
         }
     </script>
-        <style>
-        /* Élimination totale et invisible de toutes les barres de défilement (Windows, Mac, Chrome, Edge, Firefox) */
-        html, body, * {
+            <style>
+        * {
+            -webkit-font-smoothing: antialiased;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+
+        :root {
+            --bg-dark: #07090e;
+            --bg-card: #0d121d;
+            --bg-card-hover: #131b2a;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        html, body {
+            background-color: #07090e !important;
+            background: #07090e !important;
+            color: #ffffff !important;
+            min-height: 100vh;
+            overflow-x: hidden;
             scrollbar-width: none !important;
             -ms-overflow-style: none !important;
         }
@@ -58,111 +79,67 @@
             background: transparent !important;
         }
 
-        ::-webkit-scrollbar-button, *::-webkit-scrollbar-button {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
-        }
-
-        ::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
-            display: none !important;
-            background: transparent !important;
-        }
-
-        ::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
-            display: none !important;
-            background: transparent !important;
-        }
-
-        * {
-            -webkit-font-smoothing: antialiased;
-            scrollbar-width: none !important;
-            -ms-overflow-style: none !important;
-        }
-
-        html,
-        body {
-            background-color: #0a0e17 !important;
-            background: #0a0e17 !important;
-            color: #f8fafc !important;
-            min-height: 100vh;
-            overflow-x: hidden;
-            scrollbar-width: none !important;
-            -ms-overflow-style: none !important;
-        }
-
-        ::-webkit-scrollbar,
-        *::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            display: none !important;
-        }
-
-        /* Palette Sombre Direction Haute Précision */
-        .cockpit-card {
-            background-color: #111827;
-            border: 1px solid #1e293b;
+        .cockpit-card, .growth-card, .growth-card-dark {
+            background: #0d121d !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
             border-radius: 1rem;
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
-            color: #f8fafc;
+            color: #ffffff !important;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6) !important;
         }
 
-        .growth-card {
-            background-color: #111827 !important;
-            border-color: #1e293b !important;
-            color: #f8fafc !important;
+        .cockpit-card:hover, .growth-card:hover {
+            background: #131b2a !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
         }
 
-        .growth-card-dark {
-            background: linear-gradient(135deg, #111827 0%, #162032 100%) !important;
-            border: 1px solid #1e293b !important;
-            border-radius: 1rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-        }
-
-        .btn-mint {
-            background: #a0d9d2;
-            color: #0a0e17;
-            font-weight: 800;
+        .btn-white {
+            background: #ffffff !important;
+            color: #000000 !important;
+            font-weight: 800 !important;
             transition: all 0.15s ease;
         }
-
-        .btn-mint:hover {
-            background: #8ecfc7;
+        .btn-white:hover {
+            background: #e2e8f0 !important;
             transform: translateY(-1px);
-            box-shadow: 0 2px 10px rgba(160, 217, 210, 0.3);
+        }
+
+        .btn-outline {
+            background: #0d121d !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            transition: all 0.15s ease;
+        }
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-color: #ffffff !important;
         }
     </style>
 </head>
 
-<body class="text-slate-100 bg-[#0a0e17] flex flex-col overflow-x-hidden antialiased">
+<body class="text-white bg-[#07090e] flex flex-col overflow-x-hidden antialiased">
 
     <!-- ========================================================================= -->
     <!-- BARRE SUPÉRIEURE DE DIRECTION / FONDATEUR                                -->
     <!-- ========================================================================= -->
-    <header class="bg-[#111827]/95 border-b border-[#1e293b] sticky top-0 z-40 px-4 sm:px-8 py-3 shadow-lg backdrop-blur-md">
+    <header class="bg-[#0d121d] border-b border-white/10 sticky top-0 z-40 px-4 sm:px-8 py-3 shadow-lg">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
 
-            <!-- Logo Growth & Segmented Control Switcher -->
+            <!-- Logo Growth & Basculeur AutoEngine Noir & Blanc -->
             <div class="flex items-center gap-3 sm:gap-4">
                 <a href="/cockpit"
-                    class="w-9 h-9 rounded-xl overflow-hidden border border-[#2e3a52] flex-shrink-0 bg-[#0a0e17] flex items-center justify-center hover:scale-105 transition-transform"
+                    class="w-9 h-9 rounded-xl overflow-hidden border border-white/15 flex-shrink-0 bg-[#07090e] flex items-center justify-center hover:border-white transition"
                     title="Actualiser">
                     <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth"
                         class="w-full h-full object-contain rounded-xl">
                 </a>
 
-                <!-- BASCULEUR DE COCKPITS PRO (DEMANDES <-> GROWTH) -->
-                <div class="inline-flex p-1 rounded-xl bg-[#0a0e17] border border-[#1e293b] gap-1">
+                <!-- BASCULEUR DE COCKPITS STRICTEMENT NOIR & BLANC -->
+                <div class="inline-flex p-1 rounded-xl bg-[#07090e] border border-white/10 gap-1">
                     <button type="button" id="tabCockpitDemandes" onclick="basculerCockpit('principal')"
-                        class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer bg-emerald-500 text-[#0a0e17] shadow-sm">
+                        class="px-3.5 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-2 cursor-pointer bg-white text-black shadow-sm">
                         <i class="fa-solid fa-inbox text-[11px]"></i>
-                        <span>Demandes &amp; Leads</span>
-                        <span id="badgeDemandesHeader" class="px-1.5 py-0.2 rounded-full bg-[#0a0e17]/20 text-[#0a0e17] font-mono text-[10.5px] font-black">0</span>
+                        <span>Entrées &amp; Demandes</span>
+                        <span id="badgeDemandesHeader" class="px-1.5 py-0.2 rounded-full bg-black/15 text-black font-mono text-[10.5px] font-black">0</span>
                     </button>
                     <button type="button" id="tabCockpitGrowth" onclick="basculerCockpit('growth')"
                         class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer text-slate-400 hover:text-white">
@@ -172,31 +149,31 @@
                 </div>
             </div>
 
-            <!-- Horloge & Actions Rapides -->
+            <!-- Horloge & Actions Rapides Monochromes -->
             <div class="flex items-center gap-2.5 sm:gap-3">
                 <!-- Actions spécifiques au Cockpit Growth -->
                 <div id="growthActionButtons" class="hidden flex items-center gap-2">
                     <button type="button" onclick="openDepenseModal()"
-                        class="px-3 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-bold transition-all cursor-pointer">
+                        class="px-3 py-1.5 rounded-xl bg-[#07090e] hover:bg-white/10 text-white border border-white/15 text-xs font-bold transition-all cursor-pointer">
                         Sortie Caisse
                     </button>
                     <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
-                        class="px-3 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all cursor-pointer">
+                        class="px-3 py-1.5 rounded-xl bg-white hover:bg-white/10 text-black text-xs font-black transition-all cursor-pointer">
                         Encaisser
                     </button>
                 </div>
 
                 <!-- Horloge Dakar -->
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#0a0e17] border border-[#1e293b] text-xs font-mono text-slate-400">
-                    <i class="fa-regular fa-clock text-[#a0d9d2] text-[11px]"></i>
+                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#07090e] border border-white/10 text-xs font-mono text-slate-400">
+                    <i class="fa-regular fa-clock text-white text-[11px]"></i>
                     <span id="dakarClock">Dakar 00:00 (GMT)</span>
                 </div>
 
                 <!-- Bouton Actualiser -->
                 <button type="button" onclick="refreshCurrentCockpit()"
-                    class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-[#1e293b] hover:bg-[#2e3a52] text-slate-200 text-xs font-bold cursor-pointer border border-[#334155] transition-all flex items-center gap-1.5"
+                    class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-[#07090e] hover:bg-white/10 text-white text-xs font-bold cursor-pointer border border-white/15 transition-all flex items-center gap-1.5"
                     title="Actualiser">
-                    <i class="fa-solid fa-rotate text-xs text-[#a0d9d2]"></i>
+                    <i class="fa-solid fa-rotate text-xs text-white"></i>
                     <span class="hidden sm:inline">Actualiser</span>
                 </button>
             </div>
@@ -212,51 +189,49 @@
         <!-- ========================================================================= -->
         <div id="viewCockpitPrincipal" class="space-y-5">
 
-            <!-- 4 KPIS DES LEADS (ÉPURÉ & PRO) -->
+            <!-- 4 KPIS ENTRÉES PLATEFORME (STYLE AUTOENGINE NOIR ET BLANC PUR) -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <div class="cockpit-card p-4 bg-[#111827] border border-[#1e293b] rounded-2xl">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Demandes</span>
-                    <div class="text-2xl font-black text-white mt-1 font-mono" id="kpiTotalAudits">0</div>
-                    <span class="text-[11px] text-slate-500 font-medium">AutoEngine &amp; Growth</span>
+                <div class="cockpit-card p-4">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Entrées Plateforme</span>
+                    <div class="text-3xl font-black text-white mt-1 font-mono" id="kpiTotalAudits">0</div>
+                    <span class="text-[11px] text-slate-400 font-medium">Tout ce qui entre sur la plateforme</span>
                 </div>
-                <div class="cockpit-card p-4 bg-[#111827] border border-[#1e293b] rounded-2xl">
-                    <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Nouveaux à Traiter</span>
-                    <div class="text-2xl font-black text-emerald-400 mt-1 font-mono" id="kpiNouveauxAudits">0</div>
-                    <span class="text-[11px] text-emerald-500 font-semibold flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span>Priorité haute &bull; &lt; 2h</span>
-                    </span>
+                <div class="cockpit-card p-4">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Nouveaux à Traiter</span>
+                    <div class="text-3xl font-black text-white mt-1 font-mono flex items-center gap-2">
+                        <span id="kpiNouveauxAudits">0</span>
+                        <span class="w-2 h-2 rounded-full bg-white animate-pulse inline-block"></span>
+                    </div>
+                    <span class="text-[11px] text-slate-400 font-medium">En attente de qualification</span>
                 </div>
-                <div class="cockpit-card p-4 bg-[#111827] border border-[#1e293b] rounded-2xl">
-                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block">Contactés / En Cours</span>
-                    <div class="text-2xl font-black text-indigo-300 mt-1 font-mono" id="kpiContactesAudits">0</div>
-                    <span class="text-[11px] text-indigo-400 font-medium">Audit en préparation</span>
+                <div class="cockpit-card p-4">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Dossiers Actifs</span>
+                    <div class="text-3xl font-black text-white mt-1 font-mono" id="kpiContactesAudits">0</div>
+                    <span class="text-[11px] text-slate-400 font-medium">Cabinets &amp; PME confirmés</span>
                 </div>
-                <div class="cockpit-card p-4 bg-[#111827] border border-[#1e293b] rounded-2xl">
-                    <span class="text-[10px] font-bold text-[#a0d9d2] uppercase tracking-wider block">Besoin N°1</span>
-                    <div class="text-sm font-black text-white mt-2 truncate" id="kpiTopBesoin">Growth Financier</div>
-                    <span class="text-[11px] text-slate-500 font-medium">Processus le plus demandé</span>
+                <div class="cockpit-card p-4">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Canal Principal</span>
+                    <div class="text-base font-black text-white mt-2 truncate" id="kpiTopBesoin">WhatsApp &amp; Web</div>
+                    <span class="text-[11px] text-slate-400 font-medium">Flux direct multi-canal</span>
                 </div>
             </div>
 
-            <!-- TABLEAU DES LEADS D'AUDIT -->
-            <div class="cockpit-card p-4 sm:p-5 border border-[#1e293b] bg-[#111827] rounded-2xl shadow-sm">
+            <!-- TABLEAU DES ENTRÉES DE LA PLATEFORME (STYLE AUTOENGINE NOIR & BLANC) -->
+            <div class="cockpit-card p-4 sm:p-5">
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-4">
                     <div class="relative flex-1 max-w-md">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs pointer-events-none"></i>
                         <input type="text" id="searchAuditsInput" oninput="filterAuditsTable()"
-                            placeholder="Rechercher par nom, entreprise, téléphone..."
-                            class="w-full pl-8 pr-3 py-2 rounded-xl bg-[#0a0e17] border border-[#1e293b] text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:border-[#a0d9d2]">
+                            placeholder="Rechercher par nom, entreprise, téléphone, type..."
+                            class="w-full pl-8 pr-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:border-white">
                     </div>
                     <div class="flex items-center gap-2">
-                        <select id="filterBesoinSelect" onchange="filterAuditsTable()"
-                            class="px-3 py-2 rounded-xl bg-[#0a0e17] border border-[#1e293b] text-xs font-semibold text-slate-300 focus:outline-none">
-                            <option value="">Tous les besoins</option>
-                            <option value="growth">Agent Financier Growth</option>
-                            <option value="commercial">Agents Commerciaux</option>
-                            <option value="support">Service Client &amp; SAV</option>
-                            <option value="admin">Comptabilité &amp; Facturation</option>
-                            <option value="surmesure">Sur-mesure / ERP</option>
+                        <select id="filterTypeSelect" onchange="filterAuditsTable()"
+                            class="px-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs font-semibold text-white focus:outline-none focus:border-white">
+                            <option value="">Tous les types d'entrées</option>
+                            <option value="Demande Audit IA">Demandes d'Audit IA (AutoEngine)</option>
+                            <option value="Commerçant PME">Commerçants PME (WhatsApp)</option>
+                            <option value="Cabinet Comptable">Cabinets Comptables (Portail)</option>
                         </select>
                     </div>
                 </div>
@@ -264,20 +239,21 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
-                            <tr class="bg-[#0a0e17] border-b border-[#1e293b] text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider">
+                            <tr class="bg-[#07090e] border-b border-white/10 text-[10.5px] font-black text-slate-300 uppercase tracking-wider">
                                 <th class="py-3 px-3">Date</th>
-                                <th class="py-3 px-3">Prospect &amp; Entreprise</th>
-                                <th class="py-3 px-3">Contact WhatsApp / Mail</th>
-                                <th class="py-3 px-3">Processus à Automatiser</th>
-                                <th class="py-3 px-3">Expression du Besoin</th>
+                                <th class="py-3 px-3">Type &amp; Canal</th>
+                                <th class="py-3 px-3">Nom &amp; Entreprise</th>
+                                <th class="py-3 px-3">Contact</th>
+                                <th class="py-3 px-3">Activité / Besoin</th>
+                                <th class="py-3 px-3">Détails de l'Entrée</th>
                                 <th class="py-3 px-3 text-center">Statut</th>
-                                <th class="py-3 px-3 text-right">Action Rapide</th>
+                                <th class="py-3 px-3 text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody id="auditsTableBody">
                             <tr>
-                                <td colspan="7" class="text-center py-8 text-slate-500 font-medium">
-                                    <i class="fa-solid fa-spinner fa-spin text-base mb-2 text-[#a0d9d2]"></i><br>Chargement des demandes...
+                                <td colspan="8" class="text-center py-8 text-slate-500 font-medium">
+                                    <i class="fa-solid fa-spinner fa-spin text-base mb-2 text-white"></i><br>Chargement des entrées plateforme...
                                 </td>
                             </tr>
                         </tbody>
@@ -302,7 +278,7 @@
                 </div>
                 <div class="mt-2.5 flex items-baseline gap-2">
                     <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiTotalUsers">0</span>
-                    <span class="text-[11px] text-[#a0d9d2] font-bold" id="kpiActifsJour">0 actif auj.</span>
+                    <span class="text-[11px] text-white font-bold" id="kpiActifsJour">0 actif auj.</span>
                 </div>
                 <div class="mt-1.5 text-[11px] text-slate-400">Total entreprises sur la plateforme</div>
             </div>
@@ -314,14 +290,14 @@
                     <span>Trésorerie Caisse Dirigeant</span>
                 </div>
                 <div class="mt-2.5 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-[#a0d9d2]" id="kpiCaisseAbonnements">0
+                    <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiCaisseAbonnements">0
                         FCFA</span>
                     <span class="text-[11px] text-slate-400 font-semibold" id="kpiCaisseStatut">Solde net</span>
                 </div>
                 <div class="mt-1.5 text-[11px] text-slate-300 flex items-center justify-between">
                     <span id="kpiEntreesSortiesDetail" class="font-mono text-[10.5px]">+0 F abos · -0 F
                         sorties</span>
-                    <span class="text-[10.5px] text-[#a0d9d2] font-mono font-semibold" id="kpiAbonnesActifs">0
+                    <span class="text-[10.5px] text-white font-mono font-semibold" id="kpiAbonnesActifs">0
                         abonné(s)</span>
                 </div>
             </div>
@@ -333,7 +309,7 @@
                     <span>Satisfaction IA</span>
                 </div>
                 <div class="mt-2.5 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-amber-300"
+                    <span class="text-2xl sm:text-3xl font-black font-mono text-white"
                         id="kpiSatisfaction">100%</span>
                     <span class="text-[11px] text-slate-300 font-mono" id="kpiVotesCounts">0 utiles · 0 à revoir</span>
                 </div>
@@ -356,10 +332,10 @@
         </section>
 
         <!-- NAVIGATION PAR ONGLETS DU COCKPIT (3 ESPACES DIRIGEANT) -->
-        <div class="flex items-center gap-2 border-b border-[#1e293b] pb-2 overflow-x-auto">
+        <div class="flex items-center gap-2 border-b border-white/10 pb-2 overflow-x-auto">
             <!-- Onglet 1 : Utilisateurs -->
             <button type="button" onclick="switchCockpitTab('utilisateurs')" id="tabBtnUsers"
-                class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#222222] text-white shadow-xs cursor-pointer flex-shrink-0">
+                class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-white text-black text-white shadow-xs cursor-pointer flex-shrink-0">
                 <span>Suivi des Utilisateurs</span>
                 <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/20 text-white font-mono"
                     id="tabBadgeUsersCount">0</span>
@@ -369,7 +345,7 @@
             <button type="button" onclick="switchCockpitTab('abonnements')" id="tabBtnAbonnements"
                 class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-[#1e293b] cursor-pointer flex-shrink-0">
                 <span>Caisse &amp; Trésorerie</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-100 font-mono"
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-slate-100 font-mono"
                     id="tabBadgeCaisseCount">0 F</span>
             </button>
 
@@ -377,7 +353,7 @@
             <button type="button" onclick="switchCockpitTab('learning')" id="tabBtnLearning"
                 class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-[#1e293b] cursor-pointer flex-shrink-0">
                 <span>Apprentissage IA</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-100 font-mono"
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-slate-100 font-mono"
                     id="tabBadgeLearningCount">0</span>
             </button>
 
@@ -398,27 +374,27 @@
                         translate="no">search</span>
                     <input type="text" id="searchUserInput" onkeyup="filterUsersTable()"
                         placeholder="Rechercher par nom de commerce ou numéro WhatsApp..."
-                        class="w-full pl-9 pr-4 py-2 rounded-xl bg-[#0d1322] border-[#2e3a52] text-white border border-[#1e293b] text-xs text-white placeholder-slate-400 focus:bg-white focus:outline-none focus:border-slate-400 transition-colors">
+                        class="w-full pl-9 pr-4 py-2 rounded-xl bg-[#07090e] border-white/10 text-white border border-white/10 text-xs text-white placeholder-slate-400 focus:bg-[#07090e] focus:outline-none focus:border-white transition-colors">
                 </div>
                 <div class="flex items-center gap-2 text-xs flex-wrap">
                     <span class="text-slate-400 font-semibold">Filtre :</span>
                     <button type="button" onclick="setUserFilter('ALL')" id="filterAll"
-                        class="px-2.5 py-1 rounded-lg bg-[#222222] text-white font-bold cursor-pointer">Tous</button>
+                        class="px-2.5 py-1 rounded-lg bg-white text-black text-white font-bold cursor-pointer">Tous</button>
                     <button type="button" onclick="setUserFilter('ACTIF')" id="filterActif"
-                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#0d1322] border-[#2e3a52] text-white border border-[#1e293b] hover:bg-[#1e293b] cursor-pointer">Actifs</button>
+                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Actifs</button>
                     <button type="button" onclick="setUserFilter('ATTENTION')" id="filterAttention"
-                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#0d1322] border-[#2e3a52] text-white border border-[#1e293b] hover:bg-[#1e293b] cursor-pointer">Inactifs 24h</button>
+                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Inactifs 24h</button>
                     <button type="button" onclick="setUserFilter('INACTIF')" id="filterInactif"
-                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#0d1322] border-[#2e3a52] text-white border border-[#1e293b] hover:bg-[#1e293b] cursor-pointer">Inactifs &gt; 3j</button>
+                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Inactifs &gt; 3j</button>
                 </div>
             </div>
 
             <!-- TABLEAU DES COMMERÇANTS -->
-            <div class="growth-card shadow-xs overflow-hidden border border-[#1e293b]">
+            <div class="growth-card shadow-xs overflow-hidden border border-white/10">
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="bg-[#222222] text-white text-[10.5px] uppercase font-bold tracking-wider">
+                            <tr class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
                                 <th class="py-3 px-4">Commerce &amp; Contact WhatsApp</th>
                                 <th class="py-3 px-3 text-center">Écritures (Auj. / Total)</th>
                                 <th class="py-3 px-3 text-center">Statut d'Activité</th>
@@ -427,7 +403,7 @@
                                 <th class="py-3 px-4 text-center">Actions Dirigeant</th>
                             </tr>
                         </thead>
-                        <tbody id="usersTableBody" class="divide-y divide-slate-100 text-slate-100 bg-white">
+                        <tbody id="usersTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
                             <!-- Rempli par JavaScript (ou état vide si 0 client) -->
                         </tbody>
                     </table>
@@ -445,9 +421,9 @@
                 <!-- Solde Net Disponible -->
                 <div class="growth-card-dark p-4 relative overflow-hidden">
                     <div class="flex items-center justify-between text-slate-300 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-[#a0d9d2]">Solde Net en Caisse</span>
+                        <span class="font-bold uppercase tracking-wider text-white">Solde Net en Caisse</span>
                         <span
-                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-[#a0d9d2]">DISPONIBLE</span>
+                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white">DISPONIBLE</span>
                     </div>
                     <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSoldeNet">0 FCFA
                     </div>
@@ -455,44 +431,44 @@
                 </div>
 
                 <!-- Total Entrées Abonnements -->
-                <div class="growth-card p-4 border border-[#1e293b]">
+                <div class="growth-card p-4 border border-white/10">
                     <div class="flex items-center justify-between text-slate-400 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-emerald-700">Entrées Abonnements</span>
+                        <span class="font-bold uppercase tracking-wider text-white">Entrées Abonnements</span>
                         <span
-                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"
+                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white text-black"
                             id="caisseAbonnesCountBadge">0 abo(s)</span>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-emerald-600 mt-2" id="caisseEntreesTotal">
+                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseEntreesTotal">
                         +0 FCFA</div>
                     <div class="text-[11px] text-slate-400 mt-1" id="caisseEntreesSources">Wave: 0 F · OM: 0 F · Cash: 0
                         F</div>
                 </div>
 
                 <!-- Total Sorties & Dépenses -->
-                <div class="growth-card p-4 border border-[#1e293b]">
+                <div class="growth-card p-4 border border-white/10">
                     <div class="flex items-center justify-between text-slate-400 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-rose-700">Sorties &amp; Dépenses</span>
+                        <span class="font-bold uppercase tracking-wider text-white">Sorties &amp; Dépenses</span>
                         <span
-                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200"
+                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#0d121d] text-white border border-white/20"
                             id="caisseSortiesCountBadge">0 sortie(s)</span>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-rose-600 mt-2" id="caisseSortiesTotal">-0
+                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSortiesTotal">-0
                         FCFA</div>
                     <div class="text-[11px] text-slate-400 mt-1" id="caisseSortiesSources">Wave: 0 F · OM: 0 F · Cash: 0
                         F</div>
                 </div>
 
                 <!-- Actions Rapides Trésorerie -->
-                <div class="growth-card p-4 border border-[#1e293b] flex flex-col justify-between">
+                <div class="growth-card p-4 border border-white/10 flex flex-col justify-between">
                     <div class="text-slate-300 text-xs font-bold uppercase tracking-wider">Mouvements de Trésorerie
                     </div>
                     <div class="grid grid-cols-2 gap-2 mt-2">
                         <button type="button" onclick="openDepenseModal()"
-                            class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center justify-center gap-1 cursor-pointer transition-all">
+                            class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-[#0d121d] text-white border border-white/20">
                             <span>Sortie</span>
                         </button>
                         <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
-                            class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-[#222222] hover:bg-[#333333] text-white flex items-center justify-center gap-1 cursor-pointer transition-all">
+                            class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center justify-center gap-1 cursor-pointer transition-all">
                             <span>Entrée</span>
                         </button>
                     </div>
@@ -500,13 +476,13 @@
             </div>
 
             <!-- TABLEAU 1 : REGISTRE DES SORTIES D'ARGENT ("POURQUOI C'EST SORTI") -->
-            <div class="growth-card shadow-xs overflow-hidden border border-[#1e293b]">
+            <div class="growth-card shadow-xs overflow-hidden border border-white/10">
                 <div
-                    class="px-5 py-4 border-b border-[#1e293b] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#0d1322] border-[#2e3a52] text-white/70">
+                    class="px-5 py-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#07090e] border-white/10 text-white/70">
                     <div>
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
                             <span
-                                class="material-symbols-outlined notranslate text-rose-600 text-[18px]">payments</span>
+                                class="material-symbols-outlined notranslate text-white text-[18px]">payments</span>
                             <span>Sorties d'Argent &amp; Dépenses de l'Entreprise Growth</span>
                         </h3>
                         <p class="text-[11px] text-slate-400 mt-0.5">Traçabilité stricte : chaque FCFA sorti avec son
@@ -514,14 +490,14 @@
                             catégorie</p>
                     </div>
                     <button type="button" onclick="openDepenseModal()"
-                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-1.5 cursor-pointer shadow-2xs self-start sm:self-auto transition-all">
+                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#0d121d] text-white border border-white/20">
                         <span>Enregistrer une Sortie</span>
                     </button>
                 </div>
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="bg-[#222222] text-white text-[10.5px] uppercase font-bold tracking-wider">
+                            <tr class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
                                 <th class="py-3 px-4">Date &amp; Heure</th>
                                 <th class="py-3 px-4">Pourquoi c'est sorti (Motif détaillé)</th>
                                 <th class="py-3 px-3">Catégorie</th>
@@ -530,7 +506,7 @@
                                 <th class="py-3 px-4">Bénéficiaire / Prestataire</th>
                             </tr>
                         </thead>
-                        <tbody id="depensesTableBody" class="divide-y divide-slate-100 text-slate-100 bg-white">
+                        <tbody id="depensesTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
                             <!-- Rempli par JavaScript -->
                         </tbody>
                     </table>
@@ -538,27 +514,27 @@
             </div>
 
             <!-- TABLEAU 2 : JOURNAL DES ENCAISSEMENTS D'ABONNEMENTS -->
-            <div class="growth-card shadow-xs overflow-hidden border border-[#1e293b]">
+            <div class="growth-card shadow-xs overflow-hidden border border-white/10">
                 <div
-                    class="px-5 py-4 border-b border-[#1e293b] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#0d1322] border-[#2e3a52] text-white/70">
+                    class="px-5 py-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#07090e] border-white/10 text-white/70">
                     <div>
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
                             <span
-                                class="material-symbols-outlined notranslate text-emerald-600 text-[18px]">receipt_long</span>
+                                class="material-symbols-outlined notranslate text-white text-[18px]">receipt_long</span>
                             <span>Journal des Entrées &amp; Abonnements Commerçants</span>
                         </h3>
                         <p class="text-[11px] text-slate-400 mt-0.5">Historique de tous les commerçants ayant payé leur
                             abonnement mensuel</p>
                     </div>
                     <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
-                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#222222] hover:bg-[#333333] text-white flex items-center gap-1.5 cursor-pointer shadow-2xs self-start sm:self-auto transition-all">
+                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center gap-1.5 cursor-pointer shadow-2xs self-start sm:self-auto transition-all">
                         <span>Encaisser un commerçant</span>
                     </button>
                 </div>
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="bg-[#222222] text-white text-[10.5px] uppercase font-bold tracking-wider">
+                            <tr class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
                                 <th class="py-3 px-4">Date &amp; Heure</th>
                                 <th class="py-3 px-4">Commerce &amp; Contact</th>
                                 <th class="py-3 px-3">Forfait Souscrit</th>
@@ -567,7 +543,7 @@
                                 <th class="py-3 px-4 text-center">Statut Caisse</th>
                             </tr>
                         </thead>
-                        <tbody id="caisseTableBody" class="divide-y divide-slate-100 text-slate-100 bg-white">
+                        <tbody id="caisseTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
                             <!-- Rempli par JavaScript -->
                         </tbody>
                     </table>
@@ -580,7 +556,7 @@
         <!-- ========================================================================= -->
         <section id="cockpitSectionLearning" class="space-y-4 hidden">
             <!-- CARTE BANNIÈRE EXPLICATIVE -->
-            <div class="growth-card p-5 border border-[#1e293b]">
+            <div class="growth-card p-5 border border-white/10">
                 <div
                     class="flex items-center gap-2 text-slate-300 text-[10px] font-extrabold uppercase tracking-wider mb-1">
                     <span>Auto-Critique &amp; Enseignement IA</span>
@@ -595,11 +571,11 @@
             </div>
 
             <!-- TABLEAU DU BACKLOG D'APPRENTISSAGE -->
-            <div class="growth-card shadow-xs overflow-hidden border border-[#1e293b]">
+            <div class="growth-card shadow-xs overflow-hidden border border-white/10">
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="bg-[#222222] text-white text-[10.5px] uppercase font-bold tracking-wider">
+                            <tr class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
                                 <th class="py-3 px-3 w-[120px]">Date &amp; Client</th>
                                 <th class="py-3 px-3 min-w-[200px]">Question posée par le commerçant</th>
                                 <th class="py-3 px-3 min-w-[220px]">Réponse fournie par Growth</th>
@@ -609,7 +585,7 @@
                                 <th class="py-3 px-3 text-center w-[120px]">Action Créateur</th>
                             </tr>
                         </thead>
-                        <tbody id="learningTableBody" class="divide-y divide-slate-100 text-slate-100 bg-white">
+                        <tbody id="learningTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
                             <!-- Rempli par JavaScript (ou état vide si vierge) -->
                         </tbody>
                     </table>
@@ -624,14 +600,14 @@
         </div>
 <!-- PIED DE PAGE DU COCKPIT -->
         <footer
-            class="mt-12 pt-6 pb-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            class="mt-12 pt-6 pb-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
             <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="w-2 h-2 rounded-full bg-white text-black"></span>
                 <span>Growth Cockpit Fondateur &bull; Dakar, Sénégal &bull; SYSCOHADA SMT</span>
             </div>
             <div class="flex items-center gap-4">
                 <button type="button" onclick="confirmerReinitialisationZero()"
-                    class="text-slate-400 hover:text-rose-600 transition-colors text-[11px] cursor-pointer flex items-center gap-1">
+                    class="text-slate-400 hover:text-white transition-colors text-[11px] cursor-pointer flex items-center gap-1">
                     <span>Remise à zéro des tests</span>
                 </button>
             </div>
@@ -642,48 +618,48 @@
     <!-- MODALE 1 : RELANCER LE COMMERÇANT SUR WHATSAPP                          -->
     <!-- ========================================================================= -->
     <div id="modalRelance"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
         style="display: none;">
-        <div class="bg-white max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
-            <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
+            <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-[#07090e]">
                 <div class="flex items-center gap-2">
-                    <h4 class="text-sm font-bold text-slate-900">Relance WhatsApp du Berger</h4>
+                    <h4 class="text-sm font-bold text-white">Relance WhatsApp du Berger</h4>
                 </div>
                 <button type="button" onclick="closeRelanceModal()"
-                    class="text-slate-400 hover:text-slate-600 cursor-pointer">
-                    <span class="text-slate-400 hover:text-slate-700 text-sm font-bold">✕</span>
+                    class="text-slate-400 hover:text-slate-400 cursor-pointer">
+                    <span class="text-slate-400 hover:text-slate-300 text-sm font-bold">✕</span>
                 </button>
             </div>
             <div class="p-5 space-y-4">
                 <input type="hidden" id="relancePhone" value="">
                 <input type="hidden" id="relanceNom" value="">
 
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <div class="p-3 rounded-xl bg-[#07090e] border border-white/10 flex items-center justify-between">
                     <div>
                         <span
                             class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Destinataire</span>
-                        <div class="text-xs font-bold text-slate-900 mt-0.5" id="relanceDestinataireLabel">--</div>
+                        <div class="text-xs font-bold text-white mt-0.5" id="relanceDestinataireLabel">--</div>
                     </div>
                     <span
-                        class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200"
+                        class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#0d121d] text-white border border-white/20"
                         id="relanceStatusBadge">Inactif</span>
                 </div>
 
                 <div>
                     <label
-                        class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1 flex items-center justify-between">
+                        class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1 flex items-center justify-between">
                         <span>Message de relance (Personnalisable)</span>
                         <span class="text-[10px] text-slate-400 font-normal">Envoyé avec options Utile / À corriger</span>
                     </label>
                     <textarea id="relanceMessageText" rows="5"
-                        class="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 leading-relaxed font-sans"></textarea>
+                        class="w-full text-xs p-3 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white leading-relaxed font-sans"></textarea>
                 </div>
             </div>
-            <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2">
+            <div class="px-5 py-3 border-t border-white/10 bg-[#07090e] flex items-center justify-end gap-2">
                 <button type="button" onclick="closeRelanceModal()"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 cursor-pointer">Annuler</button>
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">Annuler</button>
                 <button type="button" onclick="submitRelanceWhatsapp()"
-                    class="px-4 py-2 rounded-xl text-xs font-bold bg-[#25D366] text-white hover:bg-[#20b858] transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
+                    class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-black font-black hover:bg-slate-200 transition-all shadow-xs flex items-center gap-1.5 cursor-pointer">
                     <span>Envoyer sur WhatsApp</span>
                 </button>
             </div>
@@ -694,37 +670,37 @@
     <!-- MODALE 2 : ENCAISSER UN ABONNEMENT (CRÉDITER LA CAISSE DU CRÉATEUR)       -->
     <!-- ========================================================================= -->
     <div id="modalEncaisserAbo"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
         style="display: none;">
-        <div class="bg-white max-w-md w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
-            <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div class="bg-[#0d121d] max-w-md w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
+            <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-[#07090e]">
                 <div class="flex items-center gap-2">
-                    <h4 class="text-sm font-bold text-slate-900">Encaisser un Abonnement Growth</h4>
+                    <h4 class="text-sm font-bold text-white">Encaisser un Abonnement Growth</h4>
                 </div>
                 <button type="button" onclick="closeEncaisserModal()"
-                    class="text-slate-400 hover:text-slate-600 cursor-pointer">
-                    <span class="text-slate-400 hover:text-slate-700 text-sm font-bold">✕</span>
+                    class="text-slate-400 hover:text-slate-400 cursor-pointer">
+                    <span class="text-slate-400 hover:text-slate-300 text-sm font-bold">✕</span>
                 </button>
             </div>
             <div class="p-5 space-y-3.5">
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Numéro
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Numéro
                         WhatsApp du commerçant</label>
                     <input type="text" id="encaisserPhone" placeholder="Ex: 221788773827"
-                        class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 font-mono">
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white font-mono">
                 </div>
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Nom du
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Nom du
                         commerce (optionnel)</label>
                     <input type="text" id="encaisserNom" placeholder="Ex: Boutique Moderne"
-                        class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900">
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label
-                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Forfait</label>
+                            class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Forfait</label>
                         <select id="encaisserPlan" onchange="ajusterMontantPlan(this.value)"
-                            class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 cursor-pointer">
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white cursor-pointer">
                             <option value="Starter">Starter (10 000 F)</option>
                             <option value="Pro">Pro (25 000 F)</option>
                             <option value="Cabinet">Cabinet (50 000 F)</option>
@@ -732,28 +708,28 @@
                     </div>
                     <div>
                         <label
-                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Montant
+                            class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Montant
                             Encaissé (FCFA)</label>
                         <input type="number" id="encaisserMontant" value="10000"
-                            class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 font-mono font-bold">
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white font-mono font-bold">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Mode de
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Mode de
                         Réception des Fonds</label>
                     <select id="encaisserOperateur"
-                        class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 cursor-pointer">
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white cursor-pointer">
                         <option value="WAVE">Wave Sénégal</option>
                         <option value="ORANGE_MONEY">Orange Money</option>
                         <option value="ESPECES">Espèces en main propre</option>
                     </select>
                 </div>
             </div>
-            <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2">
+            <div class="px-5 py-3 border-t border-white/10 bg-[#07090e] flex items-center justify-end gap-2">
                 <button type="button" onclick="closeEncaisserModal()"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 cursor-pointer">Annuler</button>
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">Annuler</button>
                 <button type="button" onclick="submitEncaisserAbonnement()"
-                    class="px-4 py-2 rounded-xl text-xs font-bold bg-[#222222] hover:bg-[#333333] text-white flex items-center gap-1.5 cursor-pointer shadow-xs transition-all">
+                    class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center gap-1.5 cursor-pointer shadow-xs transition-all">
                     <span>Valider &amp; Créditer ma Caisse</span>
                 </button>
             </div>
@@ -764,26 +740,26 @@
     <!-- MODALE 2BIS : ENREGISTRER UNE SORTIE D'ARGENT / DÉPENSE (POURQUOI C'EST SORTI) -->
     <!-- ========================================================================= -->
     <div id="modalEnregistrerDepense"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
         style="display: none;">
-        <div class="bg-white max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
-            <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
+            <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-[#07090e]">
                 <div class="flex items-center gap-2">
-                    <h4 class="text-sm font-bold text-slate-900">Enregistrer une Sortie d'Argent (Dépense Growth)</h4>
+                    <h4 class="text-sm font-bold text-white">Enregistrer une Sortie d'Argent (Dépense Growth)</h4>
                 </div>
                 <button type="button" onclick="closeDepenseModal()"
-                    class="text-slate-400 hover:text-slate-600 cursor-pointer">
-                    <span class="text-slate-400 hover:text-slate-700 text-sm font-bold">✕</span>
+                    class="text-slate-400 hover:text-slate-400 cursor-pointer">
+                    <span class="text-slate-400 hover:text-slate-300 text-sm font-bold">✕</span>
                 </button>
             </div>
             <div class="p-5 space-y-3.5">
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-rose-700 tracking-wider mb-1">
+                    <label class="block text-[10.5px] uppercase font-bold text-white tracking-wider mb-1">
                         Pourquoi c'est sorti ? (Motif obligatoire) *
                     </label>
                     <input type="text" id="depenseMotif"
                         placeholder="Ex: Popote midi du fondateur, Hébergement Render, Forfait Free pro..."
-                        class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-rose-400 outline-none text-slate-900 font-medium">
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white font-medium">
                     <span class="text-[10px] text-slate-400 mt-0.5 block">Indiquez la raison exacte du décaissement pour
                         votre comptabilité.</span>
                 </div>
@@ -791,16 +767,16 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label
-                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Montant
+                            class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Montant
                             Décaissé (FCFA) *</label>
                         <input type="number" id="depenseMontant" placeholder="Ex: 5000"
-                            class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 font-mono font-bold">
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white font-mono font-bold">
                     </div>
                     <div>
-                        <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Moyen
+                        <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Moyen
                             de Paiement *</label>
                         <select id="depenseSource"
-                            class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 cursor-pointer">
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white cursor-pointer">
                             <option value="WAVE">Wave Sénégal</option>
                             <option value="ORANGE_MONEY">Orange Money</option>
                             <option value="ESPECES">Espèces / Cash</option>
@@ -811,10 +787,10 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label
-                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Catégorie
+                            class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Catégorie
                             de Dépense</label>
                         <select id="depenseCategorie"
-                            class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 cursor-pointer">
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white cursor-pointer">
                             <option value="RETRAIT_FONDATEUR">Prélèvement Fondateur</option>
                             <option value="SERVEURS_CLOUD">Serveurs &amp; Hébergement</option>
                             <option value="API_IA">APIs IA &amp; WhatsApp</option>
@@ -825,26 +801,26 @@
                     </div>
                     <div>
                         <label
-                            class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Bénéficiaire
+                            class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Bénéficiaire
                             / Prestataire</label>
                         <input type="text" id="depenseBeneficiaire"
                             placeholder="Ex: Keur Yoff, Render, Sonatel, Fondateur"
-                            class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900">
+                            class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-700 tracking-wider mb-1">Note
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1">Note
                         explicative / Justificatif (optionnel)</label>
                     <input type="text" id="depenseNote" placeholder="Ex: Reçu n° 481, Facture mensuelle novembre..."
-                        class="w-full text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900">
+                        class="w-full text-xs p-2.5 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white">
                 </div>
             </div>
-            <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2">
+            <div class="px-5 py-3 border-t border-white/10 bg-[#07090e] flex items-center justify-end gap-2">
                 <button type="button" onclick="closeDepenseModal()"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 cursor-pointer">Annuler</button>
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">Annuler</button>
                 <button type="button" onclick="submitEnregistrerDepense()"
-                    class="px-4 py-2 rounded-xl text-xs font-bold bg-[#222222] hover:bg-[#333333] text-white flex items-center gap-1.5 cursor-pointer shadow-xs transition-all">
+                    class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center gap-1.5 cursor-pointer shadow-xs transition-all">
                     <span>Valider &amp; Décaisser</span>
                 </button>
             </div>
@@ -855,16 +831,16 @@
     <!-- MODALE 3 : ENSEIGNER LA RÉPONSE PARFAITE (ACTIVE LEARNING)               -->
     <!-- ========================================================================= -->
     <div id="modalTeach"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
         style="display: none;">
-        <div class="bg-white max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
-            <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
+            <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-[#07090e]">
                 <div class="flex items-center gap-2">
-                    <h4 class="text-sm font-bold text-slate-900">Enseigner la Réponse Parfaite à Growth</h4>
+                    <h4 class="text-sm font-bold text-white">Enseigner la Réponse Parfaite à Growth</h4>
                 </div>
                 <button type="button" onclick="closeTeachModal()"
-                    class="text-slate-400 hover:text-slate-600 cursor-pointer">
-                    <span class="text-slate-400 hover:text-slate-700 text-sm font-bold">✕</span>
+                    class="text-slate-400 hover:text-slate-400 cursor-pointer">
+                    <span class="text-slate-400 hover:text-slate-300 text-sm font-bold">✕</span>
                 </button>
             </div>
             <div class="p-5 space-y-4">
@@ -872,28 +848,28 @@
                 <div>
                     <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider mb-1">Question du
                         commerçant</span>
-                    <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 italic"
+                    <div class="p-2.5 rounded-xl bg-[#07090e] border border-white/10 text-xs text-white italic"
                         id="teachQuestionDisplay">--</div>
                 </div>
                 <div>
                     <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider mb-1">Réponse
                         initiale de Growth</span>
-                    <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 line-clamp-3"
+                    <div class="p-2.5 rounded-xl bg-[#07090e] border border-white/10 text-xs text-slate-400 line-clamp-3"
                         id="teachResponseDisplay">--</div>
                 </div>
                 <div>
-                    <label class="block text-[10.5px] uppercase font-bold text-slate-800 tracking-wider mb-1">Votre
+                    <label class="block text-[10.5px] uppercase font-bold text-slate-200 tracking-wider mb-1">Votre
                         réponse d'expert définitive (Règle métier permanente)</label>
                     <textarea id="teachInputText" rows="4"
-                        class="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-slate-400 outline-none text-slate-900 leading-relaxed"
+                        class="w-full text-xs p-3 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white leading-relaxed"
                         placeholder="Rédigez la réponse d'élite que Growth doit désormais mémoriser pour ce cas..."></textarea>
                 </div>
             </div>
-            <div class="px-5 py-3 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2">
+            <div class="px-5 py-3 border-t border-white/10 bg-[#07090e] flex items-center justify-end gap-2">
                 <button type="button" onclick="closeTeachModal()"
-                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 cursor-pointer">Annuler</button>
+                    class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">Annuler</button>
                 <button type="button" onclick="submitTeachAi()"
-                    class="px-4 py-2 rounded-xl text-xs font-bold bg-[#222222] hover:bg-[#333333] text-white flex items-center gap-1.5 cursor-pointer shadow-xs transition-all">
+                    class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center gap-1.5 cursor-pointer shadow-xs transition-all">
                     <span>Enregistrer dans la Mémoire</span>
                 </button>
             </div>
@@ -937,8 +913,8 @@
             if (secLearning) secLearning.classList.add('hidden');
             if (secAudits) secAudits.classList.add('hidden');
 
-            const inactiveCls = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer flex-shrink-0";
-            const activeCls = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-[#222222] text-white shadow-xs cursor-pointer flex-shrink-0";
+            const inactiveCls = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer flex-shrink-0";
+            const activeCls = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-white text-black text-white shadow-xs cursor-pointer flex-shrink-0";
 
             if (btnUsers) btnUsers.className = inactiveCls;
             if (btnAbo) btnAbo.className = inactiveCls;
@@ -964,8 +940,7 @@
             try {
                 const res = await fetch('/api/autoengine/leads');
                 if (!res.ok) return;
-                const data = await res.json();
-                allAuditsCache = Array.isArray(data) ? data : (data.leads || []);
+                allAuditsCache = await res.json();
 
                 // Badges and KPIs
                 const badge = document.getElementById('badgeDemandesHeader');
@@ -975,29 +950,28 @@
                 if (kpiTotal) kpiTotal.textContent = allAuditsCache.length;
 
                 const nouveaux = allAuditsCache.filter(l => (l.statut || '').toLowerCase() === 'nouveau').length;
-                const contactes = allAuditsCache.filter(l => (l.statut || '').toLowerCase() === 'contacté' || (l.statut || '').toLowerCase() === 'qualifié').length;
+                const actifs = allAuditsCache.filter(l => (l.statut || '').toLowerCase() === 'actif' || (l.statut || '').toLowerCase() === 'qualifié').length;
                 
                 const kpiNouv = document.getElementById('kpiNouveauxAudits');
                 if (kpiNouv) kpiNouv.textContent = nouveaux;
 
                 const kpiCont = document.getElementById('kpiContactesAudits');
-                if (kpiCont) kpiCont.textContent = contactes;
+                if (kpiCont) kpiCont.textContent = actifs;
 
                 const kpiTop = document.getElementById('kpiTopBesoin');
                 if (kpiTop) {
-                    kpiTop.textContent = allAuditsCache.length > 0 ? "Growth Financier" : "Aucun";
+                    kpiTop.textContent = allAuditsCache.length > 0 ? "Multi-Canal" : "Aucun";
                 }
 
-                // Render table
                 filterAuditsTable();
             } catch (err) {
-                console.error("Erreur chargement audits:", err);
+                console.error("Erreur chargement entrées plateforme:", err);
             }
         }
 
         function filterAuditsTable() {
             const search = (document.getElementById('searchAuditsInput')?.value || '').toLowerCase().trim();
-            const besoinFilter = document.getElementById('filterBesoinSelect')?.value || '';
+            const typeFilter = document.getElementById('filterTypeSelect')?.value || '';
             const tbody = document.getElementById('auditsTableBody');
             if (!tbody) return;
 
@@ -1007,133 +981,81 @@
                     (l.entreprise || '').toLowerCase().includes(search) || 
                     (l.tel || '').toLowerCase().includes(search) || 
                     (l.email || '').toLowerCase().includes(search) ||
+                    (l.besoin || '').toLowerCase().includes(search) ||
                     (l.message || '').toLowerCase().includes(search);
-                const matchBesoin = !besoinFilter || (l.besoin || '') === besoinFilter;
-                return matchSearch && matchBesoin;
+                const matchType = !typeFilter || (l.type || '') === typeFilter;
+                return matchSearch && matchType;
             });
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `
                 <tr>
-                    <td colspan="7" class="text-center py-12">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-lg">
+                    <td colspan="8" class="text-center py-12">
+                        <div class="w-12 h-12 rounded-2xl bg-[#07090e] border border-white/10 text-white flex items-center justify-center mx-auto mb-3 text-lg">
                             <i class="fa-solid fa-inbox"></i>
                         </div>
-                        <div class="text-sm font-bold text-white">Aucune demande d'audit reçue pour le moment</div>
+                        <div class="text-sm font-bold text-white">Aucune entrée trouvée</div>
                         <p class="text-xs text-slate-400 mt-1 max-w-md mx-auto">
-                            Toutes les demandes réelles soumises via le formulaire d'audit AutoEngine ou Growth apparaîtront ici automatiquement en temps réel.
+                            Toutes les demandes d'audit, inscriptions PME et cabinets comptables s'affichent ici en direct.
                         </p>
-                        <div class="mt-4 flex items-center justify-center gap-3">
-                            <a href="/autoengine#audit-form" target="_blank"
-                                class="px-3.5 py-1.5 rounded-xl bg-[#1e293b] hover:bg-[#2e3a52] text-xs font-bold text-slate-200 border border-[#334155] transition flex items-center gap-2">
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-[#a0d9d2]"></i>
-                                <span>Voir le formulaire d'audit</span>
-                            </a>
-                            <button type="button" onclick="creerDemandeTest()"
-                                class="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-xs font-bold text-emerald-300 border border-emerald-500/40 transition flex items-center gap-2 cursor-pointer">
-                                <i class="fa-solid fa-flask text-[10px]"></i>
-                                <span>Simuler un lead test</span>
-                            </button>
-                        </div>
                     </td>
                 </tr>`;
                 return;
             }
 
-            const besoinLabels = {
-                'growth': { label: "Agent Financier Growth", icon: "fa-chart-line", bg: "bg-[#a0d9d2]/15 text-[#a0d9d2] border-[#a0d9d2]/30" },
-                'commercial': { label: "Agents Commerciaux", icon: "fa-user-tie", bg: "bg-sky-500/15 text-sky-400 border-sky-500/30" },
-                'support': { label: "Service Client & SAV", icon: "fa-headset", bg: "bg-purple-500/15 text-purple-400 border-purple-500/30" },
-                'admin': { label: "Comptabilité & Facturation", icon: "fa-file-invoice-dollar", bg: "bg-amber-500/15 text-amber-400 border-amber-500/30" },
-                'surmesure': { label: "Sur-mesure / ERP", icon: "fa-cubes", bg: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" }
-            };
-
             tbody.innerHTML = filtered.map(l => {
-                const bInfo = besoinLabels[l.besoin] || { label: l.besoin || "Général", icon: "fa-layer-group", bg: "bg-slate-800 text-slate-300 border-slate-700" };
                 const cleanPhone = (l.tel || '').replace(/[^0-9]/g, '');
-                const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent("Bonjour " + (l.nom || "") + ", nous avons bien reçu votre demande d'audit pour " + (l.entreprise || "") + ". Discutons de votre projet.")}` : '#';
+                const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent("Bonjour " + (l.nom || "") + ", nous avons bien reçu votre demande pour " + (l.entreprise || "") + ". Discutons de votre projet.")}` : '#';
 
-                const statutBg = l.statut === 'Qualifié' ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40' :
-                                 l.statut === 'Contacté' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                                 l.statut === 'Converti' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                                 'bg-rose-500/20 text-rose-300 border-rose-500/40 font-bold';
+                const typeBadge = l.type === 'Cabinet Comptable' ? 'border-white/20 text-white bg-white/10' :
+                                  l.type === 'Commerçant PME' ? 'border-white/20 text-white bg-white/5' :
+                                  'border-white/30 text-white bg-white/15';
 
                 return `
-                <tr class="border-b border-[#1e293b]/70 hover:bg-[#162032]/60 transition">
-                    <td class="py-3.5 px-3 font-mono text-[11px] text-slate-400 whitespace-nowrap">${l.date || '-'}</td>
-                    <td class="py-3.5 px-3">
-                        <div class="font-extrabold text-white text-xs tracking-tight">${l.nom || 'Prospect Inconnu'}</div>
-                        <div class="text-[11px] text-[#a0d9d2] font-semibold flex items-center gap-1.5 mt-0.5 truncate max-w-[200px]">
-                            <i class="fa-solid fa-building text-[10px] text-slate-500"></i>
-                            <span>${l.entreprise || 'Entreprise non précisée'}</span>
-                        </div>
-                    </td>
-                    <td class="py-3.5 px-3">
-                        <div class="font-mono text-xs text-slate-200 font-bold tracking-wide">${l.tel || '-'}</div>
-                        <div class="text-[10.5px] text-slate-400 truncate max-w-[170px] mt-0.5">${l.email || '-'}</div>
-                    </td>
-                    <td class="py-3.5 px-3">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10.5px] font-bold border ${bInfo.bg}">
-                            <i class="fa-solid ${bInfo.icon} text-[10px]"></i>
-                            <span>${bInfo.label}</span>
+                <tr class="border-b border-white/5 hover:bg-white/[0.03] transition">
+                    <td class="py-3 px-3 font-mono text-[11px] text-slate-400 whitespace-nowrap">${l.date || '-'}</td>
+                    <td class="py-3 px-3">
+                        <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border ${typeBadge}">
+                            ${l.type || 'Entrée'}
                         </span>
+                        <div class="text-[10px] text-slate-400 mt-0.5 font-mono">${l.canal || 'Plateforme'}</div>
                     </td>
-                    <td class="py-3.5 px-3">
-                        <div class="text-xs text-slate-300 line-clamp-2 max-w-xs leading-relaxed" title="${l.message || ''}">
-                            ${l.message || '<span class="text-slate-500 italic">Aucun message</span>'}
-                        </div>
+                    <td class="py-3 px-3">
+                        <div class="font-bold text-white text-xs">${l.entreprise || l.nom || '-'}</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">${l.nom || '-'}</div>
                     </td>
-                    <td class="py-3.5 px-3 text-center">
+                    <td class="py-3 px-3 font-mono text-xs text-white">
+                        <div>${l.tel || '-'}</div>
+                        ${l.email && l.email !== '-' ? `<div class="text-[10px] text-slate-400 truncate max-w-[150px]">${l.email}</div>` : ''}
+                    </td>
+                    <td class="py-3 px-3 text-xs text-slate-200">
+                        <span class="font-medium">${l.besoin || '-'}</span>
+                    </td>
+                    <td class="py-3 px-3 text-xs text-slate-400 max-w-xs truncate" title="${l.message || ''}">
+                        ${l.message || '-'}
+                    </td>
+                    <td class="py-3 px-3 text-center">
                         <select onchange="updateLeadStatut('${l.id}', this.value)"
-                            class="px-2.5 py-1 rounded-lg text-xs font-bold border cursor-pointer bg-[#0d1322] focus:outline-none ${statutBg}">
-                            <option value="Nouveau" ${l.statut === 'Nouveau' ? 'selected' : ''}>🔴 Nouveau</option>
-                            <option value="Contacté" ${l.statut === 'Contacté' ? 'selected' : ''}>🟡 Contacté</option>
-                            <option value="Qualifié" ${l.statut === 'Qualifié' ? 'selected' : ''}>🟣 Qualifié</option>
-                            <option value="Converti" ${l.statut === 'Converti' ? 'selected' : ''}>🟢 Converti</option>
+                            class="px-2 py-1 rounded-lg text-xs font-bold border border-white/20 bg-[#07090e] text-white cursor-pointer focus:outline-none">
+                            <option value="Nouveau" ${l.statut === 'Nouveau' ? 'selected' : ''}>Nouveau</option>
+                            <option value="Contacté" ${l.statut === 'Contacté' ? 'selected' : ''}>Contacté</option>
+                            <option value="Qualifié" ${l.statut === 'Qualifié' ? 'selected' : ''}>Qualifié</option>
+                            <option value="Actif" ${l.statut === 'Actif' ? 'selected' : ''}>Actif</option>
+                            <option value="Converti" ${l.statut === 'Converti' ? 'selected' : ''}>Converti</option>
                         </select>
                     </td>
-                    <td class="py-3.5 px-3 text-right">
-                        <div class="flex items-center justify-end gap-1.5">
-                            ${cleanPhone ? `
-                            <a href="${waLink}" target="_blank"
-                                class="px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-[#0a0e17] text-[11px] font-black transition flex items-center gap-1 shadow-sm">
-                                <i class="fa-brands fa-whatsapp text-xs"></i>
-                                <span>WhatsApp</span>
-                            </a>` : ''}
-                            ${l.email ? `
-                            <a href="mailto:${l.email}?subject=Demande%20d%27audit%20AutoEngine%20IA"
-                                class="w-7 h-7 rounded-lg bg-[#1e293b] hover:bg-[#2e3a52] text-slate-300 hover:text-white border border-[#334155] flex items-center justify-center transition"
-                                title="Envoyer un email">
-                                <i class="fa-solid fa-envelope text-xs"></i>
-                            </a>` : ''}
-                        </div>
+                    <td class="py-3 px-3 text-right">
+                        ${cleanPhone ? `
+                        <a href="${waLink}" target="_blank"
+                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white text-black font-black text-xs hover:bg-white/10 transition">
+                            <i class="fa-brands fa-whatsapp text-xs"></i>
+                            <span>WhatsApp</span>
+                        </a>` : ''}
                     </td>
                 </tr>`;
             }).join('');
         }
 
-        async function creerDemandeTest() {
-            try {
-                const res = await fetch('/api/autoengine/audit', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        nom: "Ousmane Diallo",
-                        entreprise: "Diallo Logistique SARL",
-                        email: "o.diallo@diallo-logistics.sn",
-                        tel: "+221775554433",
-                        besoin: "growth",
-                        message: "Test réel depuis le cockpit : automatisation de la facturation et remontée Wave."
-                    })
-                });
-                if (res.ok) {
-                    await loadAuditsData();
-                }
-            } catch (err) {
-                console.error("Erreur création test:", err);
-            }
-        }
-        
         async function updateLeadStatut(leadId, statut) {
             try {
                 const res = await fetch('/api/autoengine/lead/statut', {
@@ -1163,7 +1085,7 @@
             const tabDemandes = document.getElementById('tabCockpitDemandes');
             const tabGrowth = document.getElementById('tabCockpitGrowth');
 
-            const activeTabClass = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer bg-emerald-500 text-[#0a0e17] shadow-sm";
+            const activeTabClass = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer bg-white text-black";
             const inactiveTabClass = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer text-slate-400 hover:text-white";
 
             if (mode === 'principal') {
@@ -1267,10 +1189,10 @@ async function refreshCockpitData() {
                     <tr>
                         <td colspan="6" class="py-16 px-4 text-center">
                             <div class="max-w-md mx-auto flex flex-col items-center justify-center">
-                                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-xs border border-slate-200 mb-3.5 bg-white p-1 flex items-center justify-center">
+                                <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-xs border border-white/10 mb-3.5 bg-white p-1 flex items-center justify-center">
                                     <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" class="w-full h-full object-contain rounded-xl">
                                 </div>
-                                <h3 class="text-base font-black text-slate-900 tracking-tight">Plateforme prête pour le lancement (0 client)</h3>
+                                <h3 class="text-base font-black text-white tracking-tight">Plateforme prête pour le lancement (0 client)</h3>
                                 <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
                                     Toutes les données ont été remises à zéro. Dès qu'un premier commerçant vous écrit ou dicte un vocal sur WhatsApp, son commerce apparaîtra ici en temps réel avec son abonnement et son suivi d'activité.
                                 </p>
@@ -1288,29 +1210,29 @@ async function refreshCockpitData() {
             }
 
             tbody.innerHTML = items.map(u => {
-                let badgeClass = "bg-rose-50 text-rose-700 border border-rose-200";
+                let badgeClass = "bg-[#0d121d] text-white border border-white/20";
                 if (u.statut_activite === 'ACTIF') {
-                    badgeClass = "bg-emerald-50 text-emerald-700 border border-emerald-200";
+                    badgeClass = "bg-white text-black";
                 } else if (u.statut_activite === 'ATTENTION') {
-                    badgeClass = "bg-amber-50 text-amber-800 border border-amber-200";
+                    badgeClass = "bg-white/10 text-white border border-white/20";
                 }
 
                 const aboBadge = u.abonnement_paye
-                    ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">${u.abonnement_plan || 'Starter'} (${(u.abonnement_montant || 10000).toLocaleString('fr-FR')} F)</span>`
-                    : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">En attente</span>`;
+                    ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-black">${u.abonnement_plan || 'Starter'} (${(u.abonnement_montant || 10000).toLocaleString('fr-FR')} F)</span>`
+                    : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-white border border-white/20">En attente</span>`;
 
                 const lastActStr = u.dernier_flux ? new Date(u.dernier_flux).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Aucune écriture';
 
                 return `
-                    <tr class="hover:bg-slate-50/80 transition-colors">
+                    <tr class="hover:bg-[#07090e]/80 transition-colors">
                         <td class="py-3 px-4">
-                            <div class="font-bold text-slate-900 text-xs">${u.nom_entreprise}</div>
-                            <a href="https://wa.me/${u.telephone}" target="_blank" class="font-mono text-[11px] text-slate-800 hover:text-black font-semibold hover:underline inline-flex items-center gap-1 mt-0.5">
+                            <div class="font-bold text-white text-xs">${u.nom_entreprise}</div>
+                            <a href="https://wa.me/${u.telephone}" target="_blank" class="font-mono text-[11px] text-slate-200 hover:text-black font-semibold hover:underline inline-flex items-center gap-1 mt-0.5">
                                 <span>+${u.telephone}</span>
                             </a>
                         </td>
                         <td class="py-3 px-3 text-center">
-                            <span class="font-mono font-bold text-slate-900">${u.ecritures_jour}</span>
+                            <span class="font-mono font-bold text-white">${u.ecritures_jour}</span>
                             <span class="text-slate-400">/</span>
                             <span class="font-mono text-slate-400">${u.total_ecritures}</span>
                         </td>
@@ -1323,15 +1245,15 @@ async function refreshCockpitData() {
                             ${aboBadge}
                         </td>
                         <td class="py-3 px-3">
-                            <div class="text-[11px] text-slate-800 font-medium">${lastActStr}</div>
+                            <div class="text-[11px] text-slate-200 font-medium">${lastActStr}</div>
                             <div class="text-[10px] text-slate-400">Inscrit le ${u.date_inscription ? u.date_inscription.substring(0, 10) : '--'}</div>
                         </td>
                         <td class="py-3 px-4 text-center">
                             <div class="flex items-center justify-center gap-1.5">
-                                <button type="button" onclick="openRelanceModal('${u.telephone}', '${(u.nom_entreprise || '').replace(/'/g, "\\'")}', '${u.statut_libelle}')" class="px-3 py-1.5 rounded-xl bg-[#222222] hover:bg-[#333333] text-white text-xs font-bold transition-all shadow-xs cursor-pointer" title="Relancer sur WhatsApp">
+                                <button type="button" onclick="openRelanceModal('${u.telephone}', '${(u.nom_entreprise || '').replace(/'/g, "\\'")}', '${u.statut_libelle}')" class="px-3 py-1.5 rounded-xl bg-white text-black font-black hover:bg-slate-200 text-xs font-bold transition-all shadow-xs cursor-pointer" title="Relancer sur WhatsApp">
                                     Relancer
                                 </button>
-                                <button type="button" onclick="openEncaisserModal('${u.telephone}', '${(u.nom_entreprise || '').replace(/'/g, "\\'")}', 'Starter', 10000)" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-all shadow-xs cursor-pointer" title="Encaisser abonnement">
+                                <button type="button" onclick="openEncaisserModal('${u.telephone}', '${(u.nom_entreprise || '').replace(/'/g, "\\'")}', 'Starter', 10000)" class="px-3 py-1.5 rounded-xl bg-white text-black" title="Encaisser abonnement">
                                     Encaisser
                                 </button>
                             </div>
@@ -1358,41 +1280,42 @@ async function refreshCockpitData() {
             }
 
             const catMap = {
-                'RETRAIT_FONDATEUR': { label: 'Prélèvement Fondateur', cls: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
-                'SERVEURS_CLOUD': { label: 'Serveurs & Cloud', cls: 'bg-blue-500/15 text-blue-300 border-blue-500/30' },
-                'API_IA': { label: 'APIs IA & WhatsApp', cls: 'bg-purple-500/15 text-purple-300 border-purple-500/30' },
-                'TELECOMS': { label: 'Télécoms & Net', cls: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30' },
-                'MARKETING': { label: 'Marketing & Pub', cls: 'bg-pink-500/15 text-pink-300 border-pink-500/30' },
-                'AUTRE': { label: 'Autre Dépense', cls: 'bg-slate-500/15 text-slate-300 border-slate-500/30' }
+                'RETRAIT_FONDATEUR': { label: 'Prélèvement Fondateur', cls: 'bg-white/10 text-white border border-white/20' },
+                'SERVEURS': { label: 'Serveurs & IA Cloud', cls: 'bg-white/10 text-white border border-white/20' },
+                'WHATSAPP_API': { label: 'WhatsApp Cloud API', cls: 'bg-white/10 text-white border border-white/20' },
+                'MARKETING': { label: 'Marketing & Pubs', cls: 'bg-white/10 text-white border border-white/20' },
+                'FRAIS_BANCAIRES': { label: 'Frais Wave / Banques', cls: 'bg-white/10 text-white border border-white/20' },
+                'AUTRE': { label: 'Autre Dépense', cls: 'bg-white/10 text-white border border-white/20' }
             };
 
             tbody.innerHTML = items.map(d => {
-                const dateStr = d.date_depense ? new Date(d.date_depense).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '--';
-                const catInfo = catMap[d.categorie] || { label: d.categorie, cls: 'bg-white/5 text-slate-300 border-white/10' };
-                let opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300">WAVE</span>';
+                const dateStr = d.date_sortie ? new Date(d.date_sortie).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '--';
+                const catInfo = catMap[d.categorie] || { label: d.categorie || 'Dépense', cls: 'bg-white/10 text-white border border-white/20' };
+
+                let opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white border border-white/20">WAVE</span>';
                 if ((d.source_paiement || '').includes('ORANGE') || (d.source_paiement || '').includes('OM')) {
-                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-orange-500/20 text-orange-300">OM</span>';
+                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white border border-white/20">OM</span>';
                 } else if ((d.source_paiement || '').includes('ESPECES') || (d.source_paiement || '').includes('CASH')) {
-                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#a0d9d2]/20 text-[#a0d9d2]">CASH</span>';
+                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white border border-white/20">CASH</span>';
                 }
 
                 return `
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="py-3 px-4 font-mono text-[11px] text-slate-600 whitespace-nowrap">${dateStr}</td>
+                    <tr class="hover:bg-[#07090e]/80 transition-colors">
+                        <td class="py-3 px-4 font-mono text-[11px] text-slate-400 whitespace-nowrap">${dateStr}</td>
                         <td class="py-3 px-4">
-                            <div class="font-bold text-slate-900 text-xs">${d.motif}</div>
+                            <div class="font-bold text-white text-xs">${d.motif}</div>
                             ${d.justificatif_note ? `<div class="text-[10px] text-slate-400 mt-0.5">${d.justificatif_note}</div>` : ''}
                         </td>
                         <td class="py-3 px-3">
                             <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold border ${catInfo.cls}">${catInfo.label}</span>
                         </td>
-                        <td class="py-3 px-3 text-right font-mono font-black text-rose-400 text-xs whitespace-nowrap">
+                        <td class="py-3 px-3 text-right font-mono font-black text-white text-xs whitespace-nowrap">
                             -${(d.montant_fcfa || 0).toLocaleString('fr-FR')} FCFA
                         </td>
                         <td class="py-3 px-3 text-center">
                             ${opBadge}
                         </td>
-                        <td class="py-3 px-4 text-slate-700 text-[11.5px]">
+                        <td class="py-3 px-4 text-slate-300 text-[11.5px]">
                             ${d.beneficiaire || '--'}
                         </td>
                     </tr>
@@ -1477,31 +1400,31 @@ async function refreshCockpitData() {
 
             tbody.innerHTML = items.map(p => {
                 const dateStr = p.date_paiement ? new Date(p.date_paiement).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '--';
-                let opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300">WAVE</span>';
+                let opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white border border-white/20">WAVE</span>';
                 if ((p.operateur || '').includes('ORANGE') || (p.operateur || '').includes('OM')) {
-                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-orange-500/20 text-orange-300">ORANGE MONEY</span>';
+                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white border border-white/20">ORANGE MONEY</span>';
                 } else if ((p.operateur || '').includes('ESPECES') || (p.operateur || '').includes('CASH')) {
-                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#a0d9d2]/20 text-[#a0d9d2]">ESPÈCES</span>';
+                    opBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white border border-white/20">ESPÈCES</span>';
                 }
 
                 return `
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="py-3 px-4 font-mono text-[11px] text-slate-600">${dateStr}</td>
+                    <tr class="hover:bg-[#07090e]/80 transition-colors">
+                        <td class="py-3 px-4 font-mono text-[11px] text-slate-400">${dateStr}</td>
                         <td class="py-3 px-4">
-                            <div class="font-bold text-slate-900 text-xs">${p.nom_entreprise}</div>
-                            <div class="font-mono text-[10.5px] text-[#a0d9d2]">+${p.telephone}</div>
+                            <div class="font-bold text-white text-xs">${p.nom_entreprise}</div>
+                            <div class="font-mono text-[10.5px] text-white">+${p.telephone}</div>
                         </td>
                         <td class="py-3 px-3">
-                            <span class="inline-block px-2 py-0.5 rounded text-[10.5px] font-bold bg-slate-100 border border-slate-200 text-slate-800">${p.plan}</span>
+                            <span class="inline-block px-2 py-0.5 rounded text-[10.5px] font-bold bg-white/5 border border-white/10 text-slate-200">${p.plan}</span>
                         </td>
-                        <td class="py-3 px-3 text-right font-mono font-black text-slate-900 text-xs font-black">
+                        <td class="py-3 px-3 text-right font-mono font-black text-white text-xs font-black">
                             +${(p.montant_fcfa || 0).toLocaleString('fr-FR')} FCFA
                         </td>
                         <td class="py-3 px-3 text-center">
                             ${opBadge}
                         </td>
                         <td class="py-3 px-4 text-center">
-                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-black">
                                 <span>Encaissé</span>
                             </span>
                         </td>
@@ -1571,12 +1494,12 @@ async function refreshCockpitData() {
         function setUserFilter(filter) {
             currentFilter = filter;
             ['filterAll', 'filterActif', 'filterAttention', 'filterInactif'].forEach(id => {
-                document.getElementById(id).className = "px-2.5 py-1 rounded-lg text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 cursor-pointer";
+                document.getElementById(id).className = "px-2.5 py-1 rounded-lg text-slate-400 bg-[#07090e] border border-white/10 hover:bg-white/5 cursor-pointer";
             });
-            if (filter === 'ALL') document.getElementById('filterAll').className = "px-2.5 py-1 rounded-lg bg-[#222222] text-white font-bold cursor-pointer";
-            if (filter === 'ACTIF') document.getElementById('filterActif').className = "px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold cursor-pointer";
-            if (filter === 'ATTENTION') document.getElementById('filterAttention').className = "px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 font-bold cursor-pointer";
-            if (filter === 'INACTIF') document.getElementById('filterInactif').className = "px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 font-bold cursor-pointer";
+            if (filter === 'ALL') document.getElementById('filterAll').className = "px-2.5 py-1 rounded-lg bg-white text-black text-white font-bold cursor-pointer";
+            if (filter === 'ACTIF') document.getElementById('filterActif').className = "px-2.5 py-1 rounded-lg bg-white text-black";
+            if (filter === 'ATTENTION') document.getElementById('filterAttention').className = "px-2.5 py-1 rounded-lg bg-white/10 text-white border border-white/20";
+            if (filter === 'INACTIF') document.getElementById('filterInactif').className = "px-2.5 py-1 rounded-lg bg-[#0d121d] text-white border border-white/20";
             filterUsersTable();
         }
 
@@ -1602,7 +1525,7 @@ async function refreshCockpitData() {
                         <td colspan="7" class="py-14 text-center">
                             <div class="max-w-md mx-auto flex flex-col items-center justify-center">
                                 
-                                <h4 class="text-sm font-bold text-slate-900">Journal d'apprentissage vierge</h4>
+                                <h4 class="text-sm font-bold text-white">Journal d'apprentissage vierge</h4>
                                 <p class="text-xs text-slate-400 mt-1 max-w-sm">
                                     Aucun cas à corriger pour le moment. Dès qu'un doute est détecté ou qu'un utilisateur clique sur À corriger, vous pourrez lui enseigner la règle d'élite ici.
                                 </p>
@@ -1617,30 +1540,30 @@ async function refreshCockpitData() {
                 const confPct = Math.round((c.score_confiance != null ? c.score_confiance : 0.85) * 100);
                 const isPerfectionne = c.statut === 'PERFECTIONNE';
                 const statusBadge = isPerfectionne
-                    ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Perfectionné</span>`
-                    : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20 animate-pulse">À corriger</span>`;
+                    ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-black">Perfectionné</span>`
+                    : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-white border border-white/20">À corriger</span>`;
 
                 const dateStr = c.created_at ? new Date(c.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Récent';
 
                 return `
-                    <tr class="hover:bg-slate-50/80 transition-colors">
+                    <tr class="hover:bg-[#07090e]/80 transition-colors">
                         <td class="py-3 px-3 align-top">
-                            <div class="font-bold text-slate-900 text-[11px]">${dateStr}</div>
+                            <div class="font-bold text-white text-[11px]">${dateStr}</div>
                             <div class="font-mono text-[10px] text-slate-400 mt-0.5">${c.phone || '--'}</div>
                         </td>
-                        <td class="py-3 px-3 align-top font-medium text-slate-900 leading-snug">
+                        <td class="py-3 px-3 align-top font-medium text-white leading-snug">
                             « ${c.question_utilisateur || '--'} »
                         </td>
-                        <td class="py-3 px-3 align-top text-slate-700 text-[11px] leading-snug">
+                        <td class="py-3 px-3 align-top text-slate-300 text-[11px] leading-snug">
                             ${c.reponse_growth || '--'}
                             ${isPerfectionne && c.reponse_amelioree ? `
-                                <div class="mt-2 p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[10.5px] text-emerald-300">
+                                <div class="mt-2 p-2 rounded-xl bg-white text-black">
                                     <b>Votre règle validée :</b> ${c.reponse_amelioree}
                                 </div>
                             ` : ''}
                         </td>
                         <td class="py-3 px-2 text-center align-top">
-                            <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 text-slate-800 border border-slate-200">${confPct}%</span>
+                            <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-white/5 text-slate-200 border border-white/10">${confPct}%</span>
                         </td>
                         <td class="py-3 px-3 align-top text-slate-400 text-[10.5px]">
                             ${c.motif || 'Auto-critique'}
