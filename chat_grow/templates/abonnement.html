@@ -393,12 +393,12 @@
             <!-- RÉCAPITULATIF 2 LIGNES -->
             <div class="order-summary">
                 <div class="summary-row">
-                    <span>Numéro associé</span>
+                    <span>Votre compte</span>
                     <strong id="displayPhone">+221 78 877 38 27</strong>
                 </div>
                 <div class="summary-row">
-                    <span>Activation</span>
-                    <strong>Instantanée</strong>
+                    <span>Numéro de réception</span>
+                    <strong id="displayDestPhone">+221 78 877 38 27</strong>
                 </div>
             </div>
 
@@ -461,45 +461,73 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const userPhone = urlParams.get('phone') || '221788773827';
+        // Numéro de réception du paiement Growth (personnalisable via ?dest= ou ?to=)
+        const recipientPhone = urlParams.get('dest') || urlParams.get('to') || '221788773827';
+        const cleanRecipient = recipientPhone.replace(/\D/g, '');
+        const localRecipient = cleanRecipient.startsWith('221') ? cleanRecipient.substring(3) : cleanRecipient;
+        const montantAbo = 10000;
 
-        // Mise à jour de l'affichage du numéro
+        // Mise à jour de l'affichage du numéro client
         const displayPhoneEl = document.getElementById('displayPhone');
         if (displayPhoneEl) {
             const clean = userPhone.replace(/\D/g, '');
-            if (clean.length >= 9) {
-                displayPhoneEl.textContent = '+' + clean;
-            } else {
-                displayPhoneEl.textContent = userPhone;
-            }
+            displayPhoneEl.textContent = clean.length >= 9 ? '+' + clean : userPhone;
+        }
+
+        // Mise à jour de l'affichage du numéro destinataire
+        const displayDestEl = document.getElementById('displayDestPhone');
+        if (displayDestEl) {
+            displayDestEl.textContent = '+' + cleanRecipient;
         }
 
         async function payer(operateur) {
+            // 1. Enregistrement en tâche de fond pour activer le compte dès le clic
             try {
-                // Appel API d'activation immédiate
-                await fetch('/api/valider-abonnement-client', {
+                fetch('/api/valider-abonnement-client', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         phone: userPhone,
                         operateur: operateur,
-                        montant: 10000,
+                        montant: montantAbo,
                         plan: 'Starter'
                     })
                 });
-
-                document.getElementById('modalTitle').textContent = `Paiement ${operateur} Reçu !`;
-                document.getElementById('modalDesc').innerHTML = `Votre règlement de <strong>10 000 FCFA</strong> via <strong>${operateur}</strong> est confirmé.<br>Votre copilote WhatsApp pour le <strong>+${userPhone}</strong> est activé immédiatement.`;
-                document.getElementById('modalSuccess').style.display = 'flex';
             } catch (e) {
-                document.getElementById('modalTitle').textContent = `Paiement ${operateur} Reçu !`;
-                document.getElementById('modalDesc').innerHTML = `Votre règlement de <strong>10 000 FCFA</strong> via <strong>${operateur}</strong> est confirmé.`;
+                console.warn("Log paiement", e);
+            }
+
+            // 2. Redirection directe vers l'application de paiement avec numéro et montant pré-remplis
+            if (operateur === 'Wave') {
+                // Lien officiel universel Wave : ouvre directement Wave avec destinataire et montant pré-saisis
+                const waveDeepLink = `https://wave.com/send?phone=+${cleanRecipient}&amount=${montantAbo}`;
+
+                document.getElementById('modalTitle').textContent = "Ouverture de Wave...";
+                document.getElementById('modalDesc').innerHTML = `L'application <strong>Wave</strong> s'ouvre avec le montant de <strong>${montantAbo.toLocaleString()} FCFA</strong> et le destinataire <strong>+${cleanRecipient}</strong> déjà saisis.<br><br>Il vous suffit de confirmer votre code PIN, puis de revenir ici pour continuer sur WhatsApp.`;
                 document.getElementById('modalSuccess').style.display = 'flex';
+
+                setTimeout(() => {
+                    window.location.href = waveDeepLink;
+                }, 350);
+
+            } else if (operateur === 'Orange Money') {
+                // Code USSD direct Orange Money Sénégal avec destinataire et montant pré-remplis
+                const ussdCode = `*144*2*1*${localRecipient}*${montantAbo}#`;
+                const omTelLink = `tel:${encodeURIComponent(ussdCode)}`;
+
+                document.getElementById('modalTitle').textContent = "Orange Money";
+                document.getElementById('modalDesc').innerHTML = `Validation de <strong>${montantAbo.toLocaleString()} FCFA</strong> vers le <strong>${localRecipient}</strong>.<br><br>Composez simplement le code direct :<br><strong style="font-size:16px; color:#ff7900;">${ussdCode}</strong><br><br>Dès confirmation, cliquez ci-dessous pour revenir sur WhatsApp.`;
+                document.getElementById('modalSuccess').style.display = 'flex';
+
+                setTimeout(() => {
+                    window.location.href = omTelLink;
+                }, 350);
             }
         }
 
         function ouvrirWhatsApp() {
             const clean = userPhone.replace(/\D/g, '');
-            window.location.href = `https://wa.me/221788773827?text=${encodeURIComponent("J'ai payé mon abonnement Grow de 10 000 FCFA")}`;
+            window.location.href = `https://wa.me/221788773827?text=${encodeURIComponent("J'ai validé mon règlement d'abonnement Grow de 10 000 FCFA")}`;
         }
 
         function retournerAuDashboard() {
