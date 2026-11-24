@@ -205,6 +205,23 @@ def is_duplicate_message(msg_id: str) -> bool:
     PROCESSED_MESSAGE_IDS[msg_id] = now
     return False
 
+# Cache anti-répétition / anti-spam pour les notifications de paiement (cooldown 10 min)
+DERNIERE_NOTIFICATION_PAIEMENT: dict[str, float] = {}
+
+def peut_envoyer_confirmation_paiement(phone: str, cooldown_seconds: int = 600) -> bool:
+    """Empêche rigoureusement d'envoyer plusieurs fois le même message de confirmation de paiement."""
+    if not phone:
+        return False
+    import time
+    clean = str(phone).replace("+", "").replace(" ", "").strip()
+    now = time.time()
+    last_time = DERNIERE_NOTIFICATION_PAIEMENT.get(clean, 0.0)
+    if (now - last_time) < cooldown_seconds:
+        print(f"[ANTI-DOUBLON PAIEMENT] Message déjà envoyé à {clean} il y a {now - last_time:.1f}s -> Annulé pour éviter tout spam.")
+        return False
+    DERNIERE_NOTIFICATION_PAIEMENT[clean] = now
+    return True
+
 scheduler = AsyncIOScheduler()
 
 VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "grow_dakar_secret_2026")
@@ -3110,29 +3127,31 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
         except Exception as e:
             print(f"Info enregistrement transaction abonnement : {e}")
 
-    # Envoi AUTOMATIQUE du message de confirmation de paiement sur WhatsApp
+    # Envoi AUTOMATIQUE du message de confirmation de paiement sur WhatsApp UNIQUEMENT si pas déjà notifié
     try:
         onboarding = get_onboarding_state(clean_p)
         etape = onboarding.get("etape", "PHASE_1_ACCUEIL")
         
-        msg_felicitations = (
-            f"🎉 *Paiement {operateur} Validé avec Succès !*\n\n"
-            f"Félicitations ! Votre abonnement Growth *Pack {plan}* ({montant:,.0f} FCFA / mois) est désormais activé 24h/24 ! 🚀\n\n"
-            "Votre copilote comptable et financier SYSCOHADA est 100% débloqué.\n\n"
-        )
-        if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"] or not onboarding.get("mode_communication"):
-            msg_felicitations += (
-                "Comment préférez-vous échanger avec moi au quotidien ?\n"
-                "1) Par Note vocale 🎙️ (Growth vous répondra en notes vocales)\n"
-                "2) Par Écrit ✍️ (Messages textes classiques)\n\n"
-                "👉 Répondez simplement 1 ou 2 pour démarrer !"
+        # Anti-spam absolu : si déjà envoyé dans les 10 dernières minutes, ne rien renvoyer
+        if peut_envoyer_confirmation_paiement(clean_p, cooldown_seconds=600):
+            msg_felicitations = (
+                f"🎉 *Paiement {operateur} Validé avec Succès !*\n\n"
+                f"Félicitations ! Votre abonnement Growth *Pack {plan}* ({montant:,.0f} FCFA / mois) est désormais activé 24h/24 ! 🚀\n\n"
+                "Votre copilote comptable et financier SYSCOHADA est 100% débloqué.\n\n"
             )
-        elif etape != "TERMINE":
-            msg_felicitations += "Reprenons la configuration : vous pouvez m'envoyer dès maintenant votre première vente, dépense ou note vocale !"
-        else:
-            msg_felicitations += "Votre espace est opérationnel ! Vous pouvez m'envoyer dès maintenant vos ventes, dépenses, reçus Wave/OM ou notes vocales."
+            if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"] or not onboarding.get("mode_communication"):
+                msg_felicitations += (
+                    "Comment préférez-vous échanger avec moi au quotidien ?\n"
+                    "1) Par Note vocale 🎙️ (Growth vous répondra en notes vocales)\n"
+                    "2) Par Écrit ✍️ (Messages textes classiques)\n\n"
+                    "👉 Répondez simplement 1 ou 2 pour démarrer !"
+                )
+            elif etape != "TERMINE":
+                msg_felicitations += "Reprenons la configuration : vous pouvez m'envoyer dès maintenant votre première vente, dépense ou note vocale !"
+            else:
+                msg_felicitations += "Votre espace est opérationnel ! Vous pouvez m'envoyer dès maintenant vos ventes, dépenses, reçus Wave/OM ou notes vocales."
 
-        asyncio.create_task(deliver_whatsapp_response(clean_p, msg_felicitations))
+            asyncio.create_task(deliver_whatsapp_response(clean_p, msg_felicitations))
     except Exception as e_wa:
         print(f"Erreur envoi notification WhatsApp abonnement : {e_wa}")
 
@@ -3563,6 +3582,10 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         onboarding = get_onboarding_state(sender_phone)
         is_abonne = True
         plan_actuel = onboarding.get("plan_abonnement", "Starter")
+
+        # Anti-spam : si déjà notifié récemment, ne JAMAIS répéter le grand pavé
+        if not peut_envoyer_confirmation_paiement(sender_phone, cooldown_seconds=600):
+            return "✅ Votre abonnement est déjà validé et actif ! Vous pouvez m'envoyer dès maintenant vos ventes, dépenses ou notes vocales."
         
         msg_confirm = (
             f"🎉 *Paiement Validé avec Succès !*\n\n"
@@ -4951,6 +4974,10 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             nom_ent = onboarding.get("nom_entreprise") or "Votre Entreprise"
             mode_comm = onboarding.get("mode_communication") or "VOCAL"
             mode_str = "en note vocale 🎙️" if mode_comm == "VOCAL" else "par message écrit ✍️"
+
+            # Anti-spam : si déjà notifié récemment, ne JAMAIS répéter le grand pavé
+            if not peut_envoyer_confirmation_paiement(sender_phone, cooldown_seconds=600):
+                return f"✅ Votre abonnement pour *{nom_ent}* est déjà actif ! Dictez-moi votre première opération {mode_str}."
 
             return (
                 f"🎉 *Paiement Validé avec Succès !*\n\n"

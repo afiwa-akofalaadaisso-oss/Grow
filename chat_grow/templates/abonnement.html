@@ -480,21 +480,26 @@
             displayDestEl.textContent = '+' + cleanRecipient;
         }
 
+        let paiementDejaInitie = false;
+
         async function payer(operateur) {
-            // 1. Enregistrement en tâche de fond pour activer le compte dès le clic
-            try {
-                fetch('/api/valider-abonnement-client', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        phone: userPhone,
-                        operateur: operateur,
-                        montant: montantAbo,
-                        plan: 'Starter'
-                    })
-                });
-            } catch (e) {
-                console.warn("Log paiement", e);
+            // 1. Enregistrement unique en tâche de fond (anti-doublon)
+            if (!paiementDejaInitie) {
+                paiementDejaInitie = true;
+                try {
+                    fetch('/api/valider-abonnement-client', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            phone: userPhone,
+                            operateur: operateur,
+                            montant: montantAbo,
+                            plan: 'Starter'
+                        })
+                    });
+                } catch (e) {
+                    console.warn("Log paiement", e);
+                }
             }
 
             // 2. Redirection directe vers l'application de paiement avec numéro et montant pré-remplis
@@ -526,8 +531,7 @@
         }
 
         function ouvrirWhatsApp() {
-            const clean = userPhone.replace(/\D/g, '');
-            window.location.href = `https://wa.me/221788773827?text=${encodeURIComponent("J'ai validé mon règlement d'abonnement Grow de 10 000 FCFA")}`;
+            window.location.href = "https://wa.me/221788773827";
         }
 
         function retournerAuDashboard() {
