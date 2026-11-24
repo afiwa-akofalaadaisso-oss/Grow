@@ -257,6 +257,11 @@ RÈGLES FONDAMENTALES :
    - Veut sauter l'étape ou remettre à plus tard (ex: "On verra plus tard", "Saute ça", "Passe à la suite", "Je sais pas", "Dinaa ko def ëllëk"), accepte avec bienveillance sans bloquer.
    - Salue poliment ("Bonjour comment tu vas", "Merci beaucoup"), réponds chaleureusement.
    - Répond normalement à l'étape en cours, identifie qu'il s'agit d'une réponse valide.
+5. DISSOCIATION WHATSAPP & WEBHOOK / API :
+   - Si le commerçant fait remarquer ou demande s'il peut écrire depuis n'importe quel numéro WhatsApp et fournir le Webhook ou l'API d'un autre numéro / compte marchand :
+     CONFIRME AVEC FORCE ET PÉDAGOGIE : C'est exactement comme cela que Growth fonctionne !
+     Le numéro WhatsApp personnel sert de salon de commande pour recevoir les alertes et clôturer la caisse à 20h00.
+     Les encaissements Wave Business et Orange Business sont captés directement par le Webhook / l'API du magasin, sans aucune obligation d'utiliser la même puce téléphonique.
 
 CONTEXTE ACTUEL :
 - Nom de l'entreprise : {nom_ent}

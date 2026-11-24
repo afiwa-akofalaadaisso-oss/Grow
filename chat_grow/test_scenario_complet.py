@@ -132,6 +132,30 @@ async def tester_parcours_complet():
     assert "Orange Business (Compte 5212)" in r_e
     assert "Caisse Espèces Tiroir (Compte 571)" in r_e
 
+    # TEST DISSOCIATION NUMÉRO WHATSAPP ET WEBHOOK / NUMÉRO MARCHAND DU MAGASIN
+    print("\n" + "=" * 70)
+    print("🔗 TEST DISSOCIATION WHATSAPP & WEBHOOK / NUMÉRO MAGASIN DISTINCT")
+    print("=" * 70)
+    test_phone_remote = "221701112233"
+    update_onboarding_state(test_phone_remote, "etape", "PHASE_2_CHOIX_OPERATEURS")
+    # Le commerçant fournit le numéro ou webhook de son terminal magasin
+    r_rem = await handle_incoming_message(test_phone_remote, "Mon Wave Business est sur le numéro 76 555 44 33", None, contact_name="Ousmane")
+    print(f"Commerçant (WhatsApp 70...): Mon Wave Business est sur le 76 555 44 33\nGrowth:\n{r_rem}\n")
+    assert "221765554433" in r_rem or "Compte Marchand Magasin" in r_rem
+
+    # Test d'arrivée d'un webhook sur le numéro magasin 221765554433
+    from chat_grow.main import process_payment_notification
+    webhook_payload = {
+        "amount": 25000,
+        "merchant_phone": "221765554433",
+        "client_name": "Fatou Fall",
+        "txnid": "WV-REMOTE-TEST-99"
+    }
+    res_notif = await process_payment_notification(webhook_payload, operator="WAVE")
+    print(f"Webhook reçu pour le magasin 221765554433 -> Résolution Growth:\n{res_notif}\n")
+    # Vérification que Growth a bien résolu vers le WhatsApp du gérant (221701112233)
+    assert res_notif.get("phone") == "221701112233"
+
     print("\n" + "=" * 70)
     print("✅ TOUS LES TESTS DU SCÉNARIO COMPLET SONT VALIDÉS AVEC SUCCÈS 100% !")
     print("=" * 70)

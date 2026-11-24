@@ -1204,26 +1204,21 @@ def is_test_webhook_request(text: str) -> bool:
 def get_webhook_guide_message(base_url: str, sender_phone: str) -> str:
     clean_p = str(sender_phone).replace("+", "").replace(" ", "").strip()
     return (
-        "ASSISTANT DE CONFIGURATION WEBHOOK & PAIEMENTS AUTOMATIQUES\n\n"
-        "Growth intercepte et enregistre automatiquement chacun de vos encaissements Wave ou Orange Money dans votre comptabilité SYSCOHADA, sans aucune saisie manuelle de votre part.\n\n"
-        "3 SOLUTIONS POUR CONNECTER VOS PAIEMENTS :\n\n"
-        "1. Wave Business (Portail Marchand officiel PME) :\n"
-        "• Connectez-vous sur votre espace : business.wave.com\n"
-        "• Allez dans Paramètres Développeur > Webhooks > Ajouter un webhook\n"
-        "• Collez votre URL personnelle Growth :\n"
-        f"{base_url}/webhook/wave?phone={clean_p}\n"
-        "• Cochez les événements d'encaissement et enregistrez.\n\n"
-        "2. Passerelle Relais SMS Android (Idéal compte Wave Personnel / Orange Money) :\n"
-        "• Installez l'application gratuite « SMS Forwarder » sur le smartphone Android du magasin.\n"
-        "• Créez une règle de transfert automatique vers votre URL Growth :\n"
-        f"{base_url}/api/sms-gateway?phone={clean_p}\n"
-        "• Dès qu'un SMS de vente est reçu, il est relayé silencieusement sans action de l'employé.\n\n"
-        "3. Capture d'écran WhatsApp (Zéro configuration technique) :\n"
-        "• Prenez une capture d'écran du reçu ou de la notification push Wave et envoyez-la moi directement ici.\n\n"
-        "TESTER VOTRE LIAISON IMMÉDIATEMENT :\n"
-        "Pour tester votre connexion en direct avec une simulation certifiée de 1 000 FCFA, répondez simplement « TESTER WEBHOOK ».\n\n"
-        "Guide interactif pas à pas et testeur en 1 clic disponibles sur votre tableau de bord :\n"
-        f"{base_url}/dashboard?phone={clean_p}&open_webhook=1"
+        "🔗 *ASSISTANT WEBHOOK, API & NUMÉRO MARCHAND MAGASIN*\n\n"
+        "💡 *Règle d'or : Vous n'avez pas besoin que votre numéro WhatsApp soit le même que celui de votre magasin !*\n"
+        "Ce WhatsApp est votre cockpit personnel (où vous recevez les alertes en direct, dictez vos dépenses et clôturez vos comptes le soir).\n"
+        "Vos encaissements Wave Business ou Orange Business sont captés en direct via le **Webhook / l'API**, même si votre compte marchand est sur un autre numéro ou dans votre terminal TPE au magasin.\n\n"
+        "👉 *3 FAÇONS SIMPLES DE RELIER VOS ENCAISSEMENTS :*\n\n"
+        "1. **Wave Business (Portail Marchand business.wave.com) :**\n"
+        "• Dans votre espace Wave Business > Paramètres Développeur > Webhooks > Ajouter un Webhook\n"
+        f"• Collez l'URL de votre passerelle Growth :\n`{base_url}/webhook/wave?phone={clean_p}`\n"
+        "• Cochez 'Paiements reçus' et enregistrez. Dès lors, chaque vente en boutique vous notifie ici instantanément !\n\n"
+        "2. **Fournir votre Numéro Marchand Magasin ou Account ID :**\n"
+        "• Dites-moi simplement : « Mon numéro magasin est le 76... » ou « Mon ID Wave est M_sn_... ».\n"
+        "• Growth relie immédiatement cette ligne marchande à votre WhatsApp !\n\n"
+        "3. **Passerelle Relais SMS ou Captures d'écran :**\n"
+        "• Si vous utilisez un smartphone magasin ou des captures d'écran de reçus, transférez-les simplement ici.\n\n"
+        "🧪 *Pour tester votre liaison immédiatement avec une simulation de 1 000 FCFA, répondez simplement « TESTER WEBHOOK » !*"
     )
 
 async def executer_simulation_test_webhook(clean_phone: str, provider: str = "WAVE", amount: int = 1000) -> dict:
@@ -1334,7 +1329,9 @@ async def process_payment_notification(payload: dict, query_params: dict = None,
         )
 
         phone = (
-            data_obj.get("merchant_phone")
+            query_params.get("phone")
+            or query_params.get("merchant_phone")
+            or data_obj.get("merchant_phone")
             or payload.get("merchant_phone")
             or data_obj.get("merchant_msisdn")
             or payload.get("merchant_msisdn")
@@ -1344,18 +1341,20 @@ async def process_payment_notification(payload: dict, query_params: dict = None,
             or payload.get("payee_phone")
             or data_obj.get("client_reference")
             or payload.get("client_reference")
-            or query_params.get("phone")
-            or query_params.get("merchant_phone")
             or data_obj.get("phone")
             or payload.get("phone")
-            or payload.get("customer_phone")
-            or data_obj.get("customer_phone")
             or "221788773827"
         )
 
+        # Résolution intelligente du commerçant :
+        # Si le commerçant discute depuis un WhatsApp A, mais que son TPE/magasin Wave/OM est sur le numéro B ou un Account ID C
+        clean_target_phone = str(phone).replace("+", "").replace(" ", "").strip()
+        matched_whatsapp = None
+
+        # 1. Recherche par Account ID / Merchant ID (ex: M_sn_...)
         if operator_account_id:
             if operator_account_id == "M_sn_YgEkibrMRghV":
-                phone = "221788773827"
+                matched_whatsapp = "221788773827"
             else:
                 sp_lookup = get_supabase()
                 if sp_lookup:
@@ -1367,10 +1366,48 @@ async def process_payment_notification(payload: dict, query_params: dict = None,
                                 d_onb.get("wave_merchant_id") == operator_account_id or
                                 d_onb.get("om_merchant_id") == operator_account_id or
                                 d_onb.get("orange_merchant_key") == operator_account_id):
-                                phone = e.get("telephone_whatsapp")
+                                matched_whatsapp = e.get("telephone_whatsapp")
                                 break
                     except Exception as e_lk:
                         print(f"Info lookup operator_account_id: {e_lk}")
+
+        # 2. Recherche par numéro marchand magasin / terminal distinct du WhatsApp gérant
+        if not matched_whatsapp and clean_target_phone:
+            sp_lookup = get_supabase()
+            if sp_lookup:
+                try:
+                    res_lookup = sp_lookup.table("entreprises").select("telephone_whatsapp, donnees_onboarding").execute()
+                    for e in res_lookup.data or []:
+                        d_onb = e.get("donnees_onboarding") or {}
+                        nums_associes = [
+                            str(d_onb.get("numero_magasin") or "").replace("+", "").strip(),
+                            str(d_onb.get("numero_magasin_associe") or "").replace("+", "").strip(),
+                            str(d_onb.get("numero_wave") or "").replace("+", "").strip(),
+                            str(d_onb.get("numero_om") or "").replace("+", "").strip(),
+                            str(d_onb.get("merchant_phone") or "").replace("+", "").strip(),
+                        ]
+                        if any(n and (n in clean_target_phone or clean_target_phone in n) for n in nums_associes):
+                            matched_whatsapp = e.get("telephone_whatsapp")
+                            break
+                except Exception as e_num:
+                    print(f"Info lookup numero_magasin: {e_num}")
+
+            # Vérification locale si pas encore synchronisé Supabase
+            if not matched_whatsapp:
+                local_states = load_onboarding_states()
+                for p_wa, st in local_states.items():
+                    nums_loc = [
+                        str(st.get("numero_magasin_associe") or "").replace("+", "").strip(),
+                        str(st.get("numero_wave") or "").replace("+", "").strip(),
+                        str(st.get("numero_om") or "").replace("+", "").strip(),
+                        str(st.get("merchant_phone") or "").replace("+", "").strip(),
+                    ]
+                    if any(n and (n in clean_target_phone or clean_target_phone in n) for n in nums_loc):
+                        matched_whatsapp = p_wa
+                        break
+
+        if matched_whatsapp:
+            phone = matched_whatsapp
 
         customer_info = data_obj.get("customer") if isinstance(data_obj.get("customer"), dict) else {}
         default_client_label = "Client Orange Money" if is_om else "Client Wave"
@@ -4481,6 +4518,47 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 "4. 📲 Orange Money Personnel (Compte 5214)\n"
                 "5. 💵 Caisse Espèces Tiroir (Compte 571)\n\n"
                 "Chaque soir à 20h00, votre rituel de caisse ventilera avec exactitude ces 5 poches distinctes.\n\n"
+                "Passons à l'identification officielle de votre commerce :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+            )
+
+        # Choix explicite par numéro marchand magasin ou webhook fourni directement
+        chiffres = re.sub(r"[^\d]", "", u_txt)
+        if len(chiffres) >= 9 and not any(k in u_txt for k in ["ninea", "rccm", "capital", "fcfa", "f"]):
+            num_mag = f"221{chiffres[-9:]}" if not chiffres.startswith("221") else chiffres
+            update_onboarding_state(sender_phone, "numero_magasin_associe", num_mag)
+            update_onboarding_state(sender_phone, "numero_wave", num_mag)
+            update_onboarding_state(sender_phone, "statut_operateurs", "WAVE_BUSINESS")
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            save_or_update_entreprise_resilient({
+                "telephone_whatsapp": clean_phone,
+                "donnees_onboarding": {"numero_magasin_associe": num_mag, "numero_wave": num_mag}
+            })
+            return (
+                f"🌊 *Compte Marchand Magasin Relié avec Succès (`+{num_mag}`) !*\n\n"
+                f"C'est parfaitement noté : vous échangez avec Growth depuis ce WhatsApp (`+{clean_phone}`), "
+                f"et vos encaissements Wave Business du magasin (`+{num_mag}`) sont automatiquement synchronisés par le webhook !\n\n"
+                "Passons à l'identification officielle de votre commerce :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+            )
+
+        # Détection Webhook URL, API ou Account ID fourni par le commerçant
+        if any(w in u_txt for w in ["webhook", "web hook", "http", "api", "m_sn_", "acc_"]):
+            m_acc = re.search(r"(m_sn_[a-zA-Z0-9_]+|acc_[a-zA-Z0-9_]+)", u_txt, re.IGNORECASE)
+            acc_val = m_acc.group(1) if m_acc else "WEBHOOK_CUSTOM"
+            update_onboarding_state(sender_phone, "wave_account_id", acc_val)
+            update_onboarding_state(sender_phone, "statut_operateurs", "WAVE_BUSINESS")
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            save_or_update_entreprise_resilient({
+                "telephone_whatsapp": clean_phone,
+                "donnees_onboarding": {"wave_account_id": acc_val, "webhook_actif": True}
+            })
+            return (
+                "🌊 *Passerelle Webhook / API Enregistrée avec Succès !*\n\n"
+                f"Exactement ! Vous écrivez depuis votre WhatsApp personnel (`+{clean_phone}`), et vos encaissements "
+                "sont captés directement par le Webhook / l'API de votre compte marchand officiel.\n\n"
                 "Passons à l'identification officielle de votre commerce :\n"
                 "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
                 "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
