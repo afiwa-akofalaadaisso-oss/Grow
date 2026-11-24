@@ -442,8 +442,8 @@
 
             <!-- BOUTONS DE PAIEMENT DIRECTS (REDIRECTION NATIVE SANS BLOCAGE) -->
             <div class="payment-buttons">
-                <!-- BOUTON WAVE BUSINESS -->
-                <a id="btnWaveDirect" href="https://wave.com/send?phone=+221788773827&amount=10000" class="btn-pay btn-wave">
+                <!-- BOUTON WAVE BUSINESS OFFICIEL (PAY.WAVE.COM) -->
+                <a id="btnWaveDirect" href="https://pay.wave.com/m/M_sn_YgEkibrMRghV/c/sn/?a=10000" class="btn-pay btn-wave">
                     <div class="btn-content-left">
                         <img src="/static/images/wave_business_logo.png" alt="Wave Business" class="btn-operator-logo">
                         <div class="btn-text-block">
@@ -518,10 +518,11 @@
             copyTargetEl.textContent = '+' + cleanRecipient;
         }
 
-        // Configuration dynamique des liens directs Wave et Orange Money
+        // Configuration dynamique des liens directs Wave Business et Orange Business
+        const waveMerchantId = urlParams.get('wave_id') || urlParams.get('merchant_id') || 'M_sn_YgEkibrMRghV';
         const btnWave = document.getElementById('btnWaveDirect');
         if (btnWave) {
-            btnWave.href = `https://wave.com/send?phone=+${cleanRecipient}&amount=${montantAbo}`;
+            btnWave.href = `https://pay.wave.com/m/${waveMerchantId}/c/sn/?a=${montantAbo}`;
         }
 
         const btnOrange = document.getElementById('btnOrangeDirect');
