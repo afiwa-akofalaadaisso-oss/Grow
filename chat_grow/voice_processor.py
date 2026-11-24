@@ -596,25 +596,14 @@ def generer_note_vocale_mms_wolof(texte: str) -> str | None:
 
 async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
     """
-    Génère une note vocale OGG OPUS (PTT) pour WhatsApp.
-    - 'wo' : Meta MMS Wolof (mms-tts-wol) natif avec normalisation intégrale en toutes lettres.
-    - 'fr' : fr-FR-VivienneMultilingualNeural (Studio Français)
-    - 'en' : en-US-JennyNeural (Studio Anglais)
+    Génère une note vocale OGG OPUS (PTT) pour WhatsApp avec la voix officielle unique choisie :
+    -> Ava (en-US-AvaMultilingualNeural) : Voix de femme de 25-30 ans, dynamique, chaleureuse, humaine.
+    Ava est Multilingue et s'adapte à TOUS les vocaux sans exception (Français, Wolof, chiffres, bilans).
     """
-    # Forcer Français pur par défaut (sauf si explicitement Wolof)
-    if langue != "wo":
-        langue = "fr"
-
-    # 1. Extraction d'une phrase orale naturelle (concise, 1 à 2 phrases max, sans tableaux ni puces)
-    phrase_orale = extraire_phrase_orale(texte, langue=langue)
+    # 1. Extraction d'une phrase orale naturelle (concise, fluide, sans puces ni caractères bizarres)
+    phrase_orale = extraire_phrase_orale(texte, langue="fr")
     if not phrase_orale:
         phrase_orale = texte
-
-    # 2. Si Wolof : Synthèse native Meta MMS Wolof en priorité absolue
-    if langue == "wo":
-        mms_ogg = generer_note_vocale_mms_wolof(phrase_orale)
-        if mms_ogg:
-            return mms_ogg
 
     try:
         import edge_tts
@@ -622,35 +611,25 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
         print("Erreur : edge-tts n'est pas installé")
         return None
 
-    # 3. Adaptation selon la langue pour le moteur fallback
-    texte_a_lire = adapter_texte_pour_oral(phrase_orale, langue=langue)
+    # 2. Adaptation orale fluide pour un parlé naturel et sans hésitation
+    texte_a_lire = adapter_texte_pour_oral(phrase_orale, langue="fr")
 
-    if langue == "wo":
-        # Fallback si Meta MMS n'est pas disponible
-        if not re.search(r'\b(jaay|diaye|jënd|diènde|dug|doug|jërejëf|jerejef|naka|xaalis|xaliss)\b', texte_a_lire, re.IGNORECASE):
-            texte_a_lire = await traduire_texte_en_wolof_oral(texte_a_lire)
+    # Si le texte contient des expressions en Wolof, on applique la phonétique dakaroise pour Ava
+    if re.search(r'\b(jaay|diaye|jënd|diènde|dug|doug|jërejëf|jerejef|naka|xaalis|xaliss|waaw|deedet)\b', texte_a_lire, re.IGNORECASE):
         texte_a_lire = adapter_phonetique_wolof(texte_a_lire)
-        voix_candidates = ["fr-FR-EloiseNeural", "fr-FR-RemyMultilingualNeural"]
-        print(f"[WOLOF PUR PARLÉ FALLBACK] : « {texte_a_lire} »")
-    elif langue == "en":
-        if not re.search(r'\b(sale|sold|bought|recorded|payment|balance|thank|hello)\b', texte_a_lire, re.IGNORECASE):
-            texte_a_lire = await traduire_texte_en_anglais(texte_a_lire)
-            texte_a_lire = adapter_texte_pour_oral(texte_a_lire, langue="en")
-        voix_candidates = ["en-US-JennyNeural", "en-US-GuyNeural"]
-        print(f"[ANGLAIS PUR PARLÉ SANS ÉPELLATION] : « {texte_a_lire} »")
-    else:  # fr
-        # Voix neurales féminines naturelles de 25 ans et plus (Ava: 25-30 ans vive & moderne, Charline: 30-35 ans douce & posée)
-        pref_voice = os.getenv("GROW_VOICE", "en-US-AvaMultilingualNeural")
-        voix_candidates = [pref_voice, "fr-BE-CharlineNeural", "fr-FR-EloiseNeural", "fr-FR-DeniseNeural"]
-        print(f"[FRANÇAIS PUR PARLÉ FEMME 25+ ANS] : « {texte_a_lire} »")
 
     # Nettoyage final des caractères spéciaux
     texte_a_lire = re.sub(r'[\"«»_~^]', '', texte_a_lire).strip()
 
+    # 3. Voix officielle unique verrouillée pour 100% des vocaux Growth : Ava Multilingue
+    voix_officielle = os.getenv("GROW_VOICE", "en-US-AvaMultilingualNeural")
+    voix_candidates = [voix_officielle, "en-US-AvaMultilingualNeural", "fr-FR-VivienneMultilingualNeural"]
+    print(f"[VOIX UNIQUE OFFICIELLE AVA SUR TOUS LES VOCAUX] : « {texte_a_lire} »")
+
     audio_dir = os.path.join(os.path.dirname(__file__), "static", "audio")
     os.makedirs(audio_dir, exist_ok=True)
 
-    filename = f"grow_voice_{langue}_{uuid.uuid4().hex[:8]}.mp3"
+    filename = f"grow_voice_ava_{uuid.uuid4().hex[:8]}.mp3"
     filepath = os.path.join(audio_dir, filename)
 
     speech_rate = os.getenv("GROW_VOICE_RATE", "-2%")
@@ -662,11 +641,13 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
             if os.path.exists(filepath) and os.path.getsize(filepath) > 500:
                 integrer_logo_mp3(filepath)
                 ogg_fn = convertir_mp3_en_ogg_opus(filepath)
-                print(f"[NOTE VOCALE OFFICIELLE GÉNÉRÉE ({langue.upper()})] : {ogg_fn}")
+                print(f"[NOTE VOCALE OFFICIELLE GÉNÉRÉE (VOIX AVA)] : {ogg_fn}")
                 return ogg_fn
         except Exception as e_v:
             print(f"Tentative voix {v} échouée : {e_v}")
             continue
+
+    return None
 
     return None
 

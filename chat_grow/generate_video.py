@@ -50,8 +50,8 @@ def get_fonts():
     return font_title, font_h2, font_body, font_body_bold, font_small, font_big_kpi
 
 async def generer_audio():
-    print("[1/3] Génération de la voix off avec edge-tts...")
-    communicate = edge_tts.Communicate(VOICEOVER_TEXT, "fr-FR-HenriNeural", rate="+8%")
+    print("[1/3] Génération de la voix off avec edge-tts (Ava Multilingual)...")
+    communicate = edge_tts.Communicate(VOICEOVER_TEXT, "en-US-AvaMultilingualNeural", rate="-2%")
     await communicate.save(TEMP_AUDIO)
     print(f"Voix off générée : {TEMP_AUDIO}")
 
