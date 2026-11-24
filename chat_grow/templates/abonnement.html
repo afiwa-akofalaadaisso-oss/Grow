@@ -193,6 +193,12 @@
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             color: #ffffff;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            text-decoration: none;
+        }
+
+        .btn-pay:hover {
+            color: #ffffff;
+            text-decoration: none;
         }
 
         .btn-pay:active {
@@ -433,30 +439,41 @@
                 </div>
             </div>
 
-            <!-- BOUTONS DE PAIEMENT DIRECTS -->
+            <!-- BOUTONS DE PAIEMENT DIRECTS (REDIRECTION NATIVE SANS BLOCAGE) -->
             <div class="payment-buttons">
                 <!-- BOUTON WAVE BUSINESS -->
-                <button type="button" class="btn-pay btn-wave" onclick="payer('Wave')">
+                <a id="btnWaveDirect" href="https://wave.com/send?phone=+221788773827&amount=10000" class="btn-pay btn-wave">
                     <div class="btn-content-left">
                         <img src="/static/images/wave_business_logo.png" alt="Wave Business" class="btn-operator-logo">
                         <div class="btn-text-block">
                             <span class="btn-text-main">Payer 10 000 F avec Wave</span>
-                            <span class="btn-text-sub">Wave Business officiel</span>
+                            <span class="btn-text-sub">Ouvre votre application Wave</span>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right btn-arrow"></i>
-                </button>
+                    <i class="fa-solid fa-arrow-up-right-from-square btn-arrow"></i>
+                </a>
 
                 <!-- BOUTON ORANGE BUSINESS -->
-                <button type="button" class="btn-pay btn-orange" onclick="payer('Orange Money')">
+                <a id="btnOrangeDirect" href="tel:*144*2*1*788773827*10000%23" class="btn-pay btn-orange">
                     <div class="btn-content-left">
                         <img src="/static/images/orange_business_logo.png" alt="Orange Business" class="btn-operator-logo">
                         <div class="btn-text-block">
                             <span class="btn-text-main">Payer 10 000 F avec Orange</span>
-                            <span class="btn-text-sub">Orange Business officiel</span>
+                            <span class="btn-text-sub">Transfert direct Orange Money</span>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right btn-arrow"></i>
+                    <i class="fa-solid fa-arrow-up-right-from-square btn-arrow"></i>
+                </a>
+            </div>
+
+            <!-- BLOC COPIE MANUELLE DU NUMÉRO EN CAS DE BESOIN -->
+            <div style="margin-top: 14px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #475569;">
+                <div>
+                    <span>Numéro de réception :</span>
+                    <strong style="color: #0f172a; margin-left: 4px;" id="copyTargetNumber">+221 78 877 38 27</strong>
+                </div>
+                <button type="button" onclick="copierNumero()" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; color: #0f172a; cursor: pointer;">
+                    <i class="fa-regular fa-copy"></i> Copier
                 </button>
             </div>
         </main>
@@ -465,31 +482,13 @@
         <footer class="checkout-footer">
             <div class="footer-secure-text">
                 <i class="fa-solid fa-shield-halved"></i>
-                <span>Validation automatique dès réception de votre règlement</span>
+                <span>Votre compte est débloqué dès détection du transfert</span>
             </div>
             <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="btn-back-link">
                 &larr; Revenir au tableau de bord
             </a>
         </footer>
 
-    </div>
-
-    <!-- MODALE DE SUCCÈS -->
-    <div id="modalSuccess" class="modal-backdrop">
-        <div class="modal-box">
-            <div class="modal-icon">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <h2 class="modal-title" id="modalTitle">Paiement Validé !</h2>
-            <p class="modal-desc" id="modalDesc">
-                Votre règlement de <strong>10 000 FCFA</strong> a été validé. Votre copilote WhatsApp est maintenant
-                actif 24h/24.
-            </p>
-            <button type="button" class="btn-modal-wa" onclick="ouvrirWhatsApp()">
-                <i class="fa-brands fa-whatsapp"></i>
-                <span>Ouvrir WhatsApp</span>
-            </button>
-        </div>
     </div>
 
     <script>
@@ -513,59 +512,28 @@
         if (displayDestEl) {
             displayDestEl.textContent = '+' + cleanRecipient;
         }
-
-        let paiementDejaInitie = false;
-
-        async function payer(operateur) {
-            // 1. Enregistrement unique en tâche de fond (anti-doublon)
-            if (!paiementDejaInitie) {
-                paiementDejaInitie = true;
-                try {
-                    fetch('/api/valider-abonnement-client', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            phone: userPhone,
-                            operateur: operateur,
-                            montant: montantAbo,
-                            plan: 'Starter'
-                        })
-                    });
-                } catch (e) {
-                    console.warn("Log paiement", e);
-                }
-            }
-
-            // 2. Redirection directe vers l'application de paiement avec numéro et montant pré-remplis
-            if (operateur === 'Wave') {
-                // Lien officiel universel Wave : ouvre directement Wave avec destinataire et montant pré-saisis
-                const waveDeepLink = `https://wave.com/send?phone=+${cleanRecipient}&amount=${montantAbo}`;
-
-                document.getElementById('modalTitle').textContent = "Ouverture de Wave...";
-                document.getElementById('modalDesc').innerHTML = `L'application <strong>Wave</strong> s'ouvre avec le montant de <strong>${montantAbo.toLocaleString()} FCFA</strong> et le destinataire <strong>+${cleanRecipient}</strong> déjà saisis.<br><br>Il vous suffit de confirmer votre code PIN, puis de revenir ici pour continuer sur WhatsApp.`;
-                document.getElementById('modalSuccess').style.display = 'flex';
-
-                setTimeout(() => {
-                    window.location.href = waveDeepLink;
-                }, 350);
-
-            } else if (operateur === 'Orange Money') {
-                // Code USSD direct Orange Money Sénégal avec destinataire et montant pré-remplis
-                const ussdCode = `*144*2*1*${localRecipient}*${montantAbo}#`;
-                const omTelLink = `tel:${encodeURIComponent(ussdCode)}`;
-
-                document.getElementById('modalTitle').textContent = "Orange Money";
-                document.getElementById('modalDesc').innerHTML = `Validation de <strong>${montantAbo.toLocaleString()} FCFA</strong> vers le <strong>${localRecipient}</strong>.<br><br>Composez simplement le code direct :<br><strong style="font-size:16px; color:#ff7900;">${ussdCode}</strong><br><br>Dès confirmation, cliquez ci-dessous pour revenir sur WhatsApp.`;
-                document.getElementById('modalSuccess').style.display = 'flex';
-
-                setTimeout(() => {
-                    window.location.href = omTelLink;
-                }, 350);
-            }
+        const copyTargetEl = document.getElementById('copyTargetNumber');
+        if (copyTargetEl) {
+            copyTargetEl.textContent = '+' + cleanRecipient;
         }
 
-        function ouvrirWhatsApp() {
-            window.location.href = "https://wa.me/221788773827";
+        // Configuration dynamique des liens directs Wave et Orange Money
+        const btnWave = document.getElementById('btnWaveDirect');
+        if (btnWave) {
+            btnWave.href = `https://wave.com/send?phone=+${cleanRecipient}&amount=${montantAbo}`;
+        }
+
+        const btnOrange = document.getElementById('btnOrangeDirect');
+        if (btnOrange) {
+            btnOrange.href = `tel:*144*2*1*${localRecipient}*${montantAbo}%23`;
+        }
+
+        function copierNumero() {
+            navigator.clipboard.writeText('+' + cleanRecipient).then(() => {
+                alert(`Numéro +${cleanRecipient} copié dans votre presse-papier !`);
+            }).catch(() => {
+                prompt("Copiez le numéro ci-dessous :", '+' + cleanRecipient);
+            });
         }
 
         function retournerAuDashboard() {
