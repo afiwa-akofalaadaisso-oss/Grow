@@ -639,10 +639,10 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
         voix_candidates = ["en-US-JennyNeural", "en-US-GuyNeural"]
         print(f"[ANGLAIS PUR PARLÉ SANS ÉPELLATION] : « {texte_a_lire} »")
     else:  # fr
-        # Voix neurales chaleureuses et authentiques (Éloïse: féminine naturelle & vivante, Henri: masculin calme & posé)
-        pref_voice = os.getenv("GROW_VOICE", "fr-FR-EloiseNeural")
-        voix_candidates = [pref_voice, "fr-FR-HenriNeural", "fr-FR-RemyMultilingualNeural"]
-        print(f"[FRANÇAIS PUR PARLÉ NATUREL & HUMAIN] : « {texte_a_lire} »")
+        # Voix neurales féminines naturelles de 25 ans et plus (Ava: 25-30 ans vive & moderne, Charline: 30-35 ans douce & posée)
+        pref_voice = os.getenv("GROW_VOICE", "en-US-AvaMultilingualNeural")
+        voix_candidates = [pref_voice, "fr-BE-CharlineNeural", "fr-FR-EloiseNeural", "fr-FR-DeniseNeural"]
+        print(f"[FRANÇAIS PUR PARLÉ FEMME 25+ ANS] : « {texte_a_lire} »")
 
     # Nettoyage final des caractères spéciaux
     texte_a_lire = re.sub(r'[\"«»_~^]', '', texte_a_lire).strip()
