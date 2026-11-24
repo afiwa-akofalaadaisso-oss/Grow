@@ -19,20 +19,39 @@
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #f8fafc;
+            background:
+                radial-gradient(circle at 12% 18%, rgba(160, 217, 210, 0.45) 0%, transparent 45%),
+                radial-gradient(circle at 88% 25%, rgba(160, 217, 210, 0.38) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(160, 217, 210, 0.25) 0%, transparent 55%),
+                linear-gradient(180deg, #ffffff 0%, #f4fbf9 45%, #ffffff 100%);
+            background-attachment: fixed;
             color: #0f172a;
             -webkit-tap-highlight-color: transparent;
+            min-height: 100vh;
+            position: relative;
         }
 
-        /* Table & Containers */
+        /* Glassmorphism Header */
+        header {
+            background: rgba(255, 255, 255, 0.94) !important;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(160, 217, 210, 0.45) !important;
+        }
+
+        /* Table & Containers avec fond épuré haute lisibilité */
         .table-container {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(160, 217, 210, 0.45);
+            border-radius: 16px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 10px 25px -5px rgba(20, 43, 39, 0.05), 0 4px 10px -2px rgba(20, 43, 39, 0.02);
             width: 100%;
+            position: relative;
+            z-index: 10;
         }
 
         table.agency-table {
@@ -222,7 +241,49 @@
     </style>
 </head>
 
-<body class="min-h-full flex flex-col">
+<body class="min-h-full flex flex-col relative overflow-x-hidden">
+
+    <!-- ========================================================================= -->
+    <!-- FOND CRÉATIF VECTORIEL : DESSINS FINTECH, COURBES DE FLUX & GRILLE GÉOMÉTRIQUE -->
+    <!-- ALIGNÉ SUR LA PAGE D'ACCUEIL OFFICIELLE GROWTH                           -->
+    <!-- ========================================================================= -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden select-none z-0">
+        <!-- Grille géométrique comptable contrastée -->
+        <svg class="absolute w-full h-full opacity-65" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="fintechGridDash" width="48" height="48" patternUnits="userSpaceOnUse">
+                    <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.45" />
+                    <circle cx="0" cy="0" r="1.8" fill="#a0d9d2" opacity="0.9" />
+                </pattern>
+                <linearGradient id="curveGradDash1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#a0d9d2" stop-opacity="0.8" />
+                    <stop offset="50%" stop-color="#8ecfc7" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#a0d9d2" stop-opacity="0.3" />
+                </linearGradient>
+                <linearGradient id="curveGradDash2" x1="100%" y1="0%" x2="0%" y2="0%">
+                    <stop offset="0%" stop-color="#222222" stop-opacity="0.3" />
+                    <stop offset="50%" stop-color="#a0d9d2" stop-opacity="0.7" />
+                    <stop offset="100%" stop-color="#8ecfc7" stop-opacity="0.5" />
+                </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#fintechGridDash)" />
+
+            <!-- Schéma vectoriel des flux financiers -->
+            <path d="M -100,220 C 250,120 400,380 750,220 C 1100,60 1350,320 1800,160" fill="none"
+                stroke="url(#curveGradDash1)" stroke-width="3" />
+            <path d="M -50,300 C 300,180 450,460 850,280 C 1250,100 1450,400 1900,220" fill="none"
+                stroke="url(#curveGradDash2)" stroke-width="2" stroke-dasharray="8,8" />
+
+            <!-- Nœuds du réseau financier -->
+            <circle cx="16%" cy="24%" r="6" fill="#a0d9d2" stroke="#222222" stroke-width="2" />
+            <circle cx="16%" cy="24%" r="28" fill="none" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" />
+            <circle cx="16%" cy="24%" r="140" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.35" />
+
+            <circle cx="84%" cy="32%" r="6" fill="#a0d9d2" stroke="#222222" stroke-width="2" />
+            <circle cx="84%" cy="32%" r="36" fill="none" stroke="#a0d9d2" stroke-width="1.5" stroke-dasharray="4,4" />
+            <circle cx="84%" cy="32%" r="180" fill="none" stroke="#a0d9d2" stroke-width="1" opacity="0.25" />
+        </svg>
+    </div>
 
     <!-- ========================================================================= -->
     <!-- BARRE SUPÉRIEURE (HEADER DE LA PME) : RESPONSIVE SUR MOBILE & PC          -->
@@ -295,7 +356,7 @@
     <!-- ========================================================================= -->
     <!-- CONTENU PRINCIPAL : JOURNAL DES ÉCRITURES DE LA PME                      -->
     <!-- ========================================================================= -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7 relative z-10">
 
         <!-- BANDEAU SYNTHÈSE DE TRÉSORERIE & PISTE D'AUDIT (BACKGROUND SÉCURISÉ #222222) -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
