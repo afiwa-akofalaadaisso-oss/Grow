@@ -203,7 +203,7 @@
             border: 1px solid #a7f3d0;
         }
 
-        /* BOUTONS DE PAIEMENT WAVE & ORANGE BUSINESS */
+        /* BOUTON DE PAIEMENT WAVE BUSINESS */
         .payment-buttons {
             display: flex;
             flex-direction: column;
@@ -214,7 +214,7 @@
             width: 100%;
             border: none;
             border-radius: 18px;
-            padding: 14px 18px;
+            padding: 16px 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -223,13 +223,13 @@
             color: #ffffff;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
             text-decoration: none;
-            min-height: 72px;
+            min-height: 76px;
         }
 
         .btn-pay:hover {
             color: #ffffff;
             text-decoration: none;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
         .btn-pay:active {
@@ -239,21 +239,11 @@
         /* WAVE BUSINESS (STYLE BLEU FINTECH ULTRA PRO) */
         .btn-wave {
             background: linear-gradient(135deg, #1dc3ec 0%, #009ceb 100%);
-            box-shadow: 0 8px 22px rgba(29, 195, 236, 0.35);
+            box-shadow: 0 8px 24px rgba(29, 195, 236, 0.4);
         }
 
         .btn-wave:hover {
-            box-shadow: 0 10px 28px rgba(29, 195, 236, 0.45);
-        }
-
-        /* ORANGE BUSINESS (STYLE ORANGE FINTECH ULTRA PRO) */
-        .btn-orange {
-            background: linear-gradient(135deg, #ff7900 0%, #e05b00 100%);
-            box-shadow: 0 8px 22px rgba(255, 121, 0, 0.35);
-        }
-
-        .btn-orange:hover {
-            box-shadow: 0 10px 28px rgba(255, 121, 0, 0.45);
+            box-shadow: 0 12px 30px rgba(29, 195, 236, 0.5);
         }
 
         .btn-content-left {
@@ -399,29 +389,16 @@
                 </div>
             </div>
 
-            <!-- BOUTONS DE PAIEMENT DIRECTS NATIVE REDIRECTION -->
+            <!-- BOUTON DE PAIEMENT WAVE BUSINESS DIRECT -->
             <div class="payment-buttons">
                 <!-- BOUTON WAVE BUSINESS OFFICIEL -->
-                <a id="btnWaveDirect" href="https://pay.wave.com/m/M_sn_YgEkibrMRghV/c/sn/?a=10000" class="btn-pay btn-wave">
+                <a id="btnWaveDirect" href="https://pay.wave.com/m/M_sn_YgEkibrMRghV/c/sn/?a=10000"
+                    class="btn-pay btn-wave">
                     <div class="btn-content-left">
                         <img src="/static/images/wave_business_logo.png" alt="Wave Business" class="btn-operator-logo">
                         <div class="btn-text-block">
                             <span class="btn-text-main">Payer 10 000 F par Wave Business</span>
-                            <span class="btn-text-sub">Ouvre votre application Wave</span>
-                        </div>
-                    </div>
-                    <div class="btn-action-bubble">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </div>
-                </a>
-
-                <!-- BOUTON ORANGE BUSINESS -->
-                <a id="btnOrangeDirect" href="tel:*144*2*1*788773827*10000%23" class="btn-pay btn-orange">
-                    <div class="btn-content-left">
-                        <img src="/static/images/orange_business_logo.png" alt="Orange Business" class="btn-operator-logo">
-                        <div class="btn-text-block">
-                            <span class="btn-text-main">Payer 10 000 F par Orange Business</span>
-                            <span class="btn-text-sub">Transfert direct Orange Money</span>
+                            <span class="btn-text-sub">Ouvre directement votre application Wave</span>
                         </div>
                     </div>
                     <div class="btn-action-bubble">
@@ -447,10 +424,6 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const userPhone = urlParams.get('phone') || '221788773827';
-        // Numéro de réception du paiement Growth (personnalisable via ?dest= ou ?to=)
-        const recipientPhone = urlParams.get('dest') || urlParams.get('to') || '221788773827';
-        const cleanRecipient = recipientPhone.replace(/\D/g, '');
-        const localRecipient = cleanRecipient.startsWith('221') ? cleanRecipient.substring(3) : cleanRecipient;
         const montantAbo = 10000;
 
         // Mise à jour de l'affichage du numéro client
@@ -460,16 +433,16 @@
             displayPhoneEl.textContent = clean.length >= 9 ? '+' + clean : userPhone;
         }
 
-        // Configuration dynamique des liens directs Wave Business et Orange Business
+        // Configuration dynamique du lien direct Wave Business
+        const customWaveUrl = urlParams.get('wave_url') || urlParams.get('wave_link');
         const waveMerchantId = urlParams.get('wave_id') || urlParams.get('merchant_id') || 'M_sn_YgEkibrMRghV';
         const btnWave = document.getElementById('btnWaveDirect');
         if (btnWave) {
-            btnWave.href = `https://pay.wave.com/m/${waveMerchantId}/c/sn/?a=${montantAbo}`;
-        }
-
-        const btnOrange = document.getElementById('btnOrangeDirect');
-        if (btnOrange) {
-            btnOrange.href = `tel:*144*2*1*${localRecipient}*${montantAbo}%23`;
+            if (customWaveUrl) {
+                btnWave.href = customWaveUrl;
+            } else {
+                btnWave.href = `https://pay.wave.com/m/${waveMerchantId}/c/sn/?a=${montantAbo}`;
+            }
         }
 
         function retournerAuDashboard() {
