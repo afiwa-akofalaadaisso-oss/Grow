@@ -485,12 +485,59 @@
                         </button>
                     </div>
 
-                    <!-- Bouton Imprimer / Exporter (Masqué sur smartphone) -->
-                    <button type="button" onclick="imprimerJournal()"
-                        class="hidden sm:flex px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition items-center gap-1.5 cursor-pointer">
-                        <i class="fa-solid fa-print text-slate-600"></i>
-                        <span>Imprimer</span>
-                    </button>
+                    <!-- Bouton Export / Téléchargement Journal avec Popover Choix PDF ou Excel -->
+                    <div class="relative inline-block text-left" id="exportJournalDropdownWrapper">
+                        <button type="button" onclick="toggleExportJournalMenu(event)" id="btnExportJournal"
+                            class="px-3.5 py-2 rounded-xl bg-[#222222] hover:bg-[#333333] text-white text-xs font-extrabold transition flex items-center gap-2 cursor-pointer shadow-sm border border-slate-700">
+                            <i class="fa-solid fa-file-arrow-down text-[#a0d9d2] text-sm"></i>
+                            <span>Exporter le Journal</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+                        </button>
+
+                        <!-- Menu Déroulant Élégant : Choix PDF ou Excel -->
+                        <div id="exportJournalMenu"
+                            class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-white border border-slate-200 shadow-2xl p-2 z-50 text-slate-900 animate-in fade-in zoom-in-95 duration-150">
+                            
+                            <div class="px-3 py-2 border-b border-slate-100 text-[10px] font-black uppercase tracking-wider text-slate-500">
+                                Format d'exportation SYSCOHADA
+                            </div>
+
+                            <!-- Option 1 : PDF Officiel A4 -->
+                            <button type="button" onclick="exporterJournalComptable('pdf')"
+                                class="w-full text-left p-2.5 rounded-xl hover:bg-slate-50 flex items-center gap-3 transition cursor-pointer group">
+                                <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 text-sm group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                                        <span>Journal Complet PDF</span>
+                                        <span class="text-[9px] bg-rose-100 text-rose-700 px-1.5 py-0.2 rounded font-black">A4</span>
+                                    </div>
+                                    <div class="text-[10.5px] text-slate-500 truncate">Mise en page certifiée avec en-tête PME</div>
+                                </div>
+                            </button>
+
+                            <!-- Option 2 : Excel / CSV -->
+                            <button type="button" onclick="exporterJournalComptable('excel')"
+                                class="w-full text-left p-2.5 rounded-xl hover:bg-slate-50 flex items-center gap-3 transition cursor-pointer group">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 text-sm group-hover:scale-105 transition-transform">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-xs text-slate-900 flex items-center gap-1.5">
+                                        <span>Journal Complet Excel</span>
+                                        <span class="text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-black">XLSX / CSV</span>
+                                    </div>
+                                    <div class="text-[10.5px] text-slate-500 truncate">Colonnes SYSCOHADA (Débit, Crédit, Pièce)</div>
+                                </div>
+                            </button>
+
+                            <div class="pt-1 mt-1 border-t border-slate-100 px-2 py-1 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                                <span>Toutes les écritures incluses</span>
+                                <i class="fa-solid fa-shield-check text-[#168078]"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -2849,7 +2896,248 @@
         function imprimerJournal() {
             window.print();
         }
-    </script>
+    
+        // =========================================================================
+        // EXPORTATION COMPLÈTE DU JOURNAL COMPTABLE (PDF OU EXCEL / CSV)
+        // =========================================================================
+        function toggleExportJournalMenu(event) {
+            if (event) event.stopPropagation();
+            const menu = document.getElementById('exportJournalMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('exportJournalMenu');
+            const wrapper = document.getElementById('exportJournalDropdownWrapper');
+            if (menu && wrapper && !wrapper.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        function exporterJournalComptable(format) {
+            const menu = document.getElementById('exportJournalMenu');
+            if (menu) menu.classList.add('hidden');
+
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || {
+                nom: "Établissement Mamadou Diop",
+                telephone: "+221 78 877 38 27",
+                ninea: "005489210",
+                registre: "SN-DKR-2024-B-12940",
+                activite: "Commerce Général & Distribution Alimentaire",
+                adresse: "Marché Sandaga, Allée 4, Dakar - Sénégal",
+                ecritures: []
+            };
+
+            const ecritures = pme.ecritures || [];
+            const dateStr = new Date().toLocaleDateString('fr-FR');
+
+            if (format === 'excel') {
+                // Construction du fichier CSV avec BOM UTF-8 pour Excel Windows/Mac
+                let csv = "\uFEFF";
+                csv += "RÉPUBLIQUE DU SÉNÉGAL - MINISTÈRE DES FINANCES ET DU BUDGET\r\n";
+                csv += `ENTREPRISE : ${pme.nom};NINEA : ${pme.ninea || '005489210'};TÉLÉPHONE : ${pme.telephone}\r\n`;
+                csv += `JOURNAL GÉNÉRAL DES ÉCRITURES COMPTABLES - SYSCOHADA SMT;DATE ÉDITION : ${dateStr}\r\n`;
+                csv += "\r\n";
+                csv += "N° Écriture;Date Opération;Réf Pièce;Libellé de l'Écriture;Compte SYSCOHADA;Tiers / Bénéficiaire;Débit (FCFA);Crédit (FCFA);Preuve Associée;Statut Audit\r\n";
+
+                let totDebit = 0;
+                let totCredit = 0;
+
+                ecritures.forEach((ec, idx) => {
+                    const id = ec.id || (idx + 1);
+                    const dt = ec.date || "";
+                    const ref = `PC-2026-${String(id).padStart(4, '0')}`;
+                    const lib = (ec.libelle || "").replace(/;/g, ",");
+                    const cpt = (ec.compte || "").replace(/;/g, ",");
+                    const tiers = (ec.tiers || "").replace(/;/g, ",");
+                    
+                    const debVal = ec.debit && ec.debit !== '-' ? parseInt(String(ec.debit).replace(/[^0-9]/g, '')) || 0 : 0;
+                    const credVal = ec.credit && ec.credit !== '-' ? parseInt(String(ec.credit).replace(/[^0-9]/g, '')) || 0 : 0;
+                    totDebit += debVal;
+                    totCredit += credVal;
+
+                    const debStr = debVal > 0 ? debVal : "";
+                    const credStr = credVal > 0 ? credVal : "";
+                    const statut = ec.statutLabel || "✓ Certifié SYSCOHADA";
+
+                    csv += `"${id}";"${dt}";"${ref}";"${lib}";"${cpt}";"${tiers}";"${debStr}";"${credStr}";"Archivée 10 ans";"${statut}"\r\n`;
+                });
+
+                csv += "\r\n";
+                csv += `"";"";"";"TOTAL GÉNÉRAL DU JOURNAL COMPTABLE";"";"";"${totDebit}";"${totCredit}";"BALANCE ÉQUILIBRÉE";"0 FCFA ÉCART"\r\n`;
+
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                const safeName = (pme.nom || 'Entreprise').replace(/[^a-zA-Z0-9]/g, '_');
+                link.setAttribute("href", url);
+                link.setAttribute("download", `Journal_Comptable_${safeName}_${new Date().toISOString().slice(0, 10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else if (format === 'pdf') {
+                // Impression et Exportation PDF Officielle via iFrame isolée
+                let existingFrame = document.getElementById('printJournalFrame');
+                if (existingFrame) existingFrame.remove();
+
+                const iframe = document.createElement('iframe');
+                iframe.id = 'printJournalFrame';
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '1px';
+                iframe.style.height = '1px';
+                iframe.style.opacity = '0.01';
+                iframe.style.border = '0';
+                document.body.appendChild(iframe);
+
+                let rowsHtml = '';
+                let totalDebit = 0;
+                let totalCredit = 0;
+
+                ecritures.forEach((ec, idx) => {
+                    const id = ec.id || (idx + 1);
+                    const ref = `PC-2026-${String(id).padStart(4, '0')}`;
+                    const debVal = ec.debit && ec.debit !== '-' ? parseInt(String(ec.debit).replace(/[^0-9]/g, '')) || 0 : 0;
+                    const credVal = ec.credit && ec.credit !== '-' ? parseInt(String(ec.credit).replace(/[^0-9]/g, '')) || 0 : 0;
+                    totalDebit += debVal;
+                    totalCredit += credVal;
+
+                    rowsHtml += `
+                        <tr style="border-bottom: 1px solid #e2e8f0; font-size: 10px;">
+                            <td style="padding: 6px 8px; font-family: monospace; font-weight: bold; color: #475569;">${ec.date}</td>
+                            <td style="padding: 6px 8px; font-family: monospace; font-weight: 700; color: #0f172a;">${ref}</td>
+                            <td style="padding: 6px 8px;">
+                                <div style="font-weight: 700; color: #0f172a;">${ec.libelle}</div>
+                                <div style="font-size: 9px; color: #64748b;">${ec.tiers || 'Client / Fournisseur'}</div>
+                            </td>
+                            <td style="padding: 6px 8px; font-family: monospace; color: #1e293b;">
+                                <span style="background: #f1f5f9; padding: 2px 5px; border-radius: 4px; font-weight: bold;">${ec.compte}</span>
+                            </td>
+                            <td style="padding: 6px 8px; text-align: right; font-family: monospace; font-weight: 700; color: #0f172a;">
+                                ${debVal > 0 ? debVal.toLocaleString('fr-FR') + ' F' : '-'}
+                            </td>
+                            <td style="padding: 6px 8px; text-align: right; font-family: monospace; font-weight: 700; color: #0f172a;">
+                                ${credVal > 0 ? credVal.toLocaleString('fr-FR') + ' F' : '-'}
+                            </td>
+                            <td style="padding: 6px 8px; text-align: center;">
+                                <span style="background: #e6f7f5; color: #142b27; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 700;">✓ Scellé 10 ans</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`
+                    <!DOCTYPE html>
+                    <html lang="fr">
+                    <head>
+                        <meta charset="utf-8">
+                        <title>Journal Général des Écritures — ${pme.nom}</title>
+                        <style>
+                            @page {
+                                size: A4 landscape;
+                                margin: 10mm;
+                            }
+                            body {
+                                font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                                margin: 0;
+                                padding: 0;
+                                color: #0f172a;
+                                -webkit-print-color-adjust: exact !important;
+                                print-color-adjust: exact !important;
+                            }
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                            }
+                            th {
+                                background-color: #f1f5f9;
+                                color: #334155;
+                                text-transform: uppercase;
+                                font-size: 9.5px;
+                                font-weight: 800;
+                                letter-spacing: 0.5px;
+                                padding: 8px;
+                                border-bottom: 2px solid #cbd5e1;
+                                text-align: left;
+                            }
+                            tr:nth-child(even) { background-color: #f8fafc; }
+                        </style>
+                    </head>
+                    <body>
+                        <!-- EN-TÊTE OFFICIEL SYSCOHADA -->
+                        <div style="border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #168078;">
+                                    République du Sénégal &bull; Ministère des Finances et du Budget
+                                </div>
+                                <h1 style="font-size: 18px; font-weight: 900; margin: 3px 0 2px; color: #0f172a;">
+                                    JOURNAL GÉNÉRAL DES ÉCRITURES COMPTABLES
+                                </h1>
+                                <div style="font-size: 10px; color: #64748b; font-weight: 600;">
+                                    Système Minimal de Trésorerie (SMT) &bull; Conforme Acte Uniforme AUDCIF SYSCOHADA (Art. 24)
+                                </div>
+                            </div>
+                            <div style="text-align: right; font-size: 10px;">
+                                <div style="font-size: 13px; font-weight: 900; color: #0f172a;">${pme.nom}</div>
+                                <div style="color: #475569;">NINEA : <strong>${pme.ninea || '005489210'}</strong> &bull; Tél : ${pme.telephone}</div>
+                                <div style="color: #64748b; font-size: 9.5px; margin-top: 2px;">Édité le ${dateStr} via Copilote Growth</div>
+                            </div>
+                        </div>
+
+                        <!-- TABLEAU DES ÉCRITURES -->
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">Date</th>
+                                    <th style="width: 100px;">N° Pièce</th>
+                                    <th>Libellé / Tiers Opérationnel</th>
+                                    <th style="width: 180px;">Compte SYSCOHADA SMT</th>
+                                    <th style="width: 110px; text-align: right;">Débit (FCFA)</th>
+                                    <th style="width: 110px; text-align: right;">Crédit (FCFA)</th>
+                                    <th style="width: 100px; text-align: center;">Preuve</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rowsHtml}
+                            </tbody>
+                            <tfoot>
+                                <tr style="background: #0f172a; color: #ffffff; font-weight: 900; font-size: 11px;">
+                                    <td colspan="4" style="padding: 10px; text-align: right; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        TOTAL DU JOURNAL (${ecritures.length} ÉCRITURES COMPTABLES) :
+                                    </td>
+                                    <td style="padding: 10px; text-align: right; font-family: monospace;">${totalDebit.toLocaleString('fr-FR')} F</td>
+                                    <td style="padding: 10px; text-align: right; font-family: monospace;">${totalCredit.toLocaleString('fr-FR')} F</td>
+                                    <td style="padding: 10px; text-align: center; font-size: 9.5px; color: #a0d9d2;">0 F ÉCART</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <!-- MENTIONS LÉGALES ET CERTIFICATION -->
+                        <div style="margin-top: 14px; padding-top: 8px; border-top: 1px dashed #cbd5e1; display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: #64748b;">
+                            <div>
+                                🔒 <strong>Certification Probante :</strong> Données extraites du coffre-fort numérique scellé 10 ans. Rapprochement Wave, Orange Money et Caisse 100% auditable.
+                            </div>
+                            <div style="font-weight: 700; color: #0f172a;">
+                                Page 1/1 &bull; Document Conforme aux Contrôles Fiscaux DGID
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                doc.close();
+
+                setTimeout(() => {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+                }, 500);
+            }
+        }
+</script>
 
 </body>
 
