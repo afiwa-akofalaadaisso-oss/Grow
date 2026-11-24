@@ -2309,6 +2309,16 @@
                                     style="font-size: 10.5px; color: #94a3b8; margin-left: 2px;">(1)</span>
                             </button>
                         </div>
+
+                        <!-- Bouton Nouveau Dossier PME -->
+                        <div>
+                            <button type="button" onclick="ouvrirModalAjouterPme()"
+                                style="background: #18181b; color: #ffffff; border: 1px solid #334155; padding: 8px 16px; border-radius: 9px; font-weight: 800; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; transition: all 0.15s; box-shadow: 0 2px 6px rgba(0,0,0,0.12);"
+                                onmouseover="this.style.background='#000000';" onmouseout="this.style.background='#18181b';">
+                                <i class="fa-solid fa-plus" style="color: #2dd4bf;"></i>
+                                <span>Nouveau Dossier PME</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Tableau du Portefeuille PME Clientes (Design Prestige & Avatars) -->
@@ -4919,37 +4929,32 @@
             'Transports Express Yoff SARL': 'Transports Express'
         };
 
+        const PME_NAME_TO_KEY = {
+            'Établissement Mamadou Diop': 'diop',
+            'Boutique Touba Électronique': 'touba',
+            'Pressing Moderne Dakar': 'pressing',
+            'Atelier Fatou Ndiaye Couture': 'fatou',
+            'Transports Express Yoff SARL': 'sahel',
+            'Transports Express Sahel': 'sahel'
+        };
+
         function selectionnerPmeDossier(nom) {
-            switchAgencyTab('tableau');
-            const sideName = document.getElementById('sidebarActivePmeName');
-            if (sideName) {
-                const shortNom = PME_SHORT_LABELS[nom] || nom;
-                sideName.innerHTML = `<span>${shortNom}</span><i class="fa-solid fa-circle-check" style="color: #168078; font-size: 10.5px; margin-left: 4px;"></i>`;
-                sideName.title = nom;
-            }
-            const sideDetails = document.getElementById('sidebarActivePmeDetails');
-            if (sideDetails) {
-                const conf = PMES_CONFIG[nom] || { regime: 'SYSCOHADA SMT', ville: 'Dakar' };
-                sideDetails.innerHTML = `${conf.regime} &bull; ${conf.ville}`;
-            }
-            const selector = document.querySelector('.pme-badge-selector');
-            if (selector) {
-                selector.innerHTML = `Nom de la PME : <strong style="color: #0e7647;">${nom}</strong> &bull; Mai 2026`;
-            }
-            const sideTitle = document.querySelector('.pme-name-title');
-            if (sideTitle) {
-                sideTitle.textContent = nom;
-                sideTitle.title = nom;
-            }
-            const sideTreso = document.getElementById('sidebarActivePmeTreso');
-            if (sideTreso) {
+            let key = PME_NAME_TO_KEY[nom];
+            if (!key) {
                 for (const k in PME_DATABASE) {
-                    if (PME_DATABASE[k].nom === nom) {
-                        sideTreso.textContent = PME_DATABASE[k].tresoFinale || (PME_DATABASE[k].bilan?.treso ? PME_DATABASE[k].bilan.treso + ' FCFA' : '1 850 000 FCFA');
+                    if (PME_DATABASE[k].nom === nom || nom.includes(PME_DATABASE[k].nom) || PME_DATABASE[k].nom.includes(nom)) {
+                        key = k;
                         break;
                     }
                 }
             }
+            if (!key) key = 'diop';
+
+            switchAgencyTab('tableau');
+            if (typeof changerPmeActive === 'function') {
+                changerPmeActive(key);
+            }
+            showToast(`Dossier « ${nom} » chargé avec succès.`);
         }
 
         function telechargerFec(pmeName) {
@@ -5527,10 +5532,114 @@
             }
         }
 
+        function ouvrirModalAjouterPme() {
+            const m = document.getElementById('modalAjouterPme');
+            if (m) m.style.display = 'flex';
+        }
+        function fermerModalAjouterPme() {
+            const m = document.getElementById('modalAjouterPme');
+            if (m) m.style.display = 'none';
+        }
         function ajouterPmeModal() {
-            const nom = prompt("Entrez le nom de la nouvelle PME cliente à ajouter au cabinet :");
-            if (nom && nom.trim()) {
-                showToast(`Dossier « ${nom.trim()} » créé et rattaché au cabinet.`);
+            ouvrirModalAjouterPme();
+        }
+        async function enregistrerNouveauDossierPme(e) {
+            e.preventDefault();
+            const nom = document.getElementById('addPmeNom').value.trim();
+            const secteur = document.getElementById('addPmeSecteur').value.trim();
+            const ninea = document.getElementById('addPmeNinea').value.trim();
+            const tel = document.getElementById('addPmeTel').value.trim();
+            const regime = document.getElementById('addPmeRegime').value;
+            const btn = document.getElementById('btnSubmitAddPme');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Enregistrement...`;
+
+            try {
+                const res = await fetch('/api/comptable/ajouter-pme', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nom_entreprise: nom,
+                        secteur: secteur,
+                        ninea: ninea,
+                        telephone: tel,
+                        regime: regime
+                    })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    const slugKey = 'pme_' + Date.now();
+                    PME_DATABASE[slugKey] = {
+                        id: slugKey,
+                        nom: nom,
+                        activite: secteur || 'Commerce & Services',
+                        adresse: 'Dakar, Sénégal',
+                        telephone: tel || '+221 77 000 00 00',
+                        ninea: ninea || '009845210',
+                        regime: regime || 'SYSCOHADA SMT',
+                        ca: '0 FCFA',
+                        score: '90/100',
+                        tauxValidation: '100%',
+                        totalActifPassif: '0 FCFA',
+                        beneficeNet: '0 FCFA',
+                        tresoFinale: '0 FCFA',
+                        bilan: { immo: '0', stocks: '0', creances: '0', treso: '0', capital: '0', resultat: '0', fournisseurs: '0', dettesFiscales: '0', total: '0' },
+                        resultatLignes: [
+                            { label: "Chiffre d'Affaires (701100)", mnt: "0 FCFA", color: "#0e7647", bold: true },
+                            { label: "RÉSULTAT NET COMPTABLE", mnt: "0 FCFA", color: "#4ade80", bold: true, isFinal: true }
+                        ],
+                        fluxLignes: [
+                            { label: "Trésorerie de départ", mnt: "0 FCFA", bold: true },
+                            { label: "TRÉSORERIE DE CLÔTURE", mnt: "0 FCFA", color: "#ffffff", bold: true, isFinalTreso: true }
+                        ],
+                        notes: [
+                            "Note 1 — Référentiel Comptable : Dossier ouvert en Système Minimal de Trésorerie (SMT) SYSCOHADA.",
+                            "Note 2 — Rapprochement automatique Wave, OM et Caisse activé."
+                        ],
+                        ecritures: [
+                            { id: 1, date: new Date().toLocaleDateString('fr-FR'), libelle: "Ouverture du Dossier Cabinet", compte: "103000 - Capital personnel", debit: "-", credit: "1 000 000", tiers: nom, preuve: null, statut: "validee", statutLabel: "✓ Scellée", hasValBtn: false }
+                        ]
+                    };
+
+                    const tbody = document.getElementById('pmeTableBody');
+                    if (tbody) {
+                        const tr = document.createElement('tr');
+                        tr.style.cssText = "border-bottom: 1px solid #f1f5f9; transition: background 0.15s; background: #f0fdf4;";
+                        tr.innerHTML = `
+                            <td style="padding: 13px 18px;">
+                                <div style="font-weight: 800; color: #0f172a; font-size: 13.5px;">${nom}</div>
+                                <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">${tel || '+221 --'} &bull; NINEA: ${ninea || 'En cours'}</div>
+                            </td>
+                            <td style="padding: 13px 16px;">
+                                <div style="font-weight: 700; color: #1e293b; font-size: 12.5px;">${secteur || 'Commerce'}</div>
+                                <div style="font-size: 11px; color: #64748b; margin-top: 2px;"><i class="fa-solid fa-location-dot" style="color: #168078;"></i> Dakar</div>
+                            </td>
+                            <td style="padding: 13px 18px; text-align: right; font-weight: 900; color: #0f172a;">0 FCFA</td>
+                            <td style="padding: 13px 16px; text-align: center;">
+                                <span style="display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
+                                    ● ${regime}
+                                </span>
+                            </td>
+                            <td style="padding: 13px 18px; text-align: center;">
+                                <button onclick="selectionnerPmeDossier('${nom.replace(/'/g, "\'")}')" style="padding: 7px 14px; background: #18181b; color: #ffffff; border: none; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                                    <i class="fa-solid fa-folder-open" style="color: #2dd4bf;"></i> Gérer
+                                </button>
+                            </td>
+                        `;
+                        tbody.insertBefore(tr, tbody.firstChild);
+                    }
+
+                    fermerModalAjouterPme();
+                    showToast(data.message || `Dossier « ${nom} » rattaché au cabinet.`);
+                } else {
+                    showToast(data.message || "Erreur lors de l'enregistrement", false);
+                }
+            } catch (err) {
+                showToast("Erreur de communication serveur", false);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Créer & Rattacher le Dossier</span>`;
             }
         }
 
@@ -9705,6 +9814,70 @@
             }
         }
 </script>
+
+    <!-- ========================================================================= -->
+    <!-- MODALE : CRÉATION D'UN NOUVEAU DOSSIER PME AU CABINET                      -->
+    <!-- ========================================================================= -->
+    <div id="modalAjouterPme" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 16px;">
+        <div style="background: #ffffff; border-radius: 18px; width: 100%; max-width: 520px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; overflow: hidden; animation: fadeIn 0.2s ease-out;">
+            <div style="padding: 18px 24px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; background: #fafafa;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #18181b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 14px;">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: #0f172a;">Nouveau Dossier PME</h3>
+                        <p style="margin: 0; font-size: 11px; color: #64748b;">Rattachement immédiat d'une PME au portefeuille du cabinet</p>
+                    </div>
+                </div>
+                <button type="button" onclick="fermerModalAjouterPme()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer; padding: 4px;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form onsubmit="enregistrerNouveauDossierPme(event)" style="padding: 20px 24px;">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Nom de l'Entreprise ou Enseigne *</label>
+                    <input type="text" id="addPmeNom" required placeholder="Ex: Boulangerie Moderne Dakar" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; box-sizing: border-box;">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                    <div>
+                        <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Secteur d'Activité</label>
+                        <input type="text" id="addPmeSecteur" placeholder="Ex: Boulangerie & Pâtisserie" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Numéro NINEA</label>
+                        <input type="text" id="addPmeNinea" placeholder="Ex: 009845210" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; box-sizing: border-box;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;">
+                    <div>
+                        <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Téléphone WhatsApp</label>
+                        <input type="text" id="addPmeTel" placeholder="Ex: +221 77 123 45 67" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Régime Fiscal</label>
+                        <select id="addPmeRegime" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; background: #fff; box-sizing: border-box;">
+                            <option value="SYSCOHADA SMT">SYSCOHADA SMT (Par défaut)</option>
+                            <option value="SYSCOHADA NORMAL">SYSCOHADA Réel Normal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+                    <button type="button" onclick="fermerModalAjouterPme()" style="padding: 9px 16px; border-radius: 9px; border: 1px solid #cbd5e1; background: #fff; font-size: 12px; font-weight: 700; color: #475569; cursor: pointer;">
+                        Annuler
+                    </button>
+                    <button type="submit" id="btnSubmitAddPme" style="padding: 9px 20px; border-radius: 9px; border: none; background: #18181b; font-size: 12px; font-weight: 800; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Créer & Rattacher le Dossier</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </body>
 
