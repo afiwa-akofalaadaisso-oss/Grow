@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#f8fafc">
+    <meta name="theme-color" content="#f0fdf9">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Paiement Copilote • GROWTH</title>
@@ -21,81 +21,131 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* FOND ULTRA-NATUREL, VIVANT, DOUX ET AÉRÉ */
         body {
-            background-color: #f8fafc;
+            background: 
+                radial-gradient(circle at 50% -10%, #dcfce7 0%, #ecfdf5 25%, #f0fdfa 50%, #f8fafc 90%);
+            background-attachment: fixed;
             color: #0f172a;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 12px 16px;
+            padding: 16px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* HALOS NATURELS EN ARRIÈRE-PLAN POUR CRÉER DU RELIEF ET DE LA DOUCEUR */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 420px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(29, 195, 236, 0.08) 50%, transparent 75%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(40px);
         }
 
         .checkout-wrapper {
-            max-width: 380px;
+            position: relative;
+            z-index: 1;
+            max-width: 390px;
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
+            align-items: center;
         }
 
-        /* HEADER CENTRÉ ET PARFAITEMENT ÉQUILIBRÉ */
+        /* HEADER BRAND ÉLÉGANT ET NATUREL */
         .top-brand-header {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding-bottom: 2px;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 100px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+            margin-bottom: 2px;
         }
 
         .app-logo {
-            width: 22px;
-            height: 22px;
-            border-radius: 6px;
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
             background: #0f172a;
             object-fit: contain;
             padding: 2px;
         }
 
         .app-title {
-            font-size: 14.5px;
+            font-size: 13.5px;
             font-weight: 800;
             letter-spacing: 0.8px;
             color: #0f172a;
         }
 
-        /* CARTE DE PAIEMENT CENTRÉE ET ALIGNÉE */
+        /* CARTE DE PAIEMENT NATURELLE, SOYEUSE ET PROFILEE */
         .checkout-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 20px 18px 16px 18px;
-            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.85);
+            border-radius: 28px;
+            padding: 24px 22px 20px 22px;
+            box-shadow: 
+                0 20px 45px -12px rgba(15, 23, 42, 0.07),
+                0 4px 16px -2px rgba(16, 185, 129, 0.04);
             text-align: center;
+            width: 100%;
         }
 
         .plan-title {
-            font-size: 19px;
+            font-size: 21px;
             font-weight: 800;
             color: #0f172a;
-            letter-spacing: -0.3px;
-            margin-bottom: 2px;
+            letter-spacing: -0.4px;
+            margin-bottom: 3px;
         }
 
         .plan-desc {
             font-size: 12.5px;
             color: #64748b;
             font-weight: 500;
-            margin-bottom: 14px;
-            line-height: 1.35;
+            margin-bottom: 16px;
+            line-height: 1.4;
         }
 
-        /* BLOC TARIF NET ET HARMONIEUX */
+        /* BADGE QUOTIDIEN SUBTIL ET NATUREL */
+        .badge-daily {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ecfdf5;
+            border: 1px solid #d1fae5;
+            color: #047857;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 100px;
+            margin-bottom: 10px;
+        }
+
+        /* BLOC TARIF HARMONIEUX */
         .price-box {
             padding-bottom: 14px;
             border-bottom: 1px solid #f1f5f9;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
 
         .price-row {
@@ -106,15 +156,15 @@
         }
 
         .price-val {
-            font-size: 34px;
+            font-size: 36px;
             font-weight: 800;
             color: #0f172a;
-            letter-spacing: -0.8px;
+            letter-spacing: -1px;
             line-height: 1;
         }
 
         .price-curr {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 700;
             color: #0f172a;
             line-height: 1;
@@ -124,20 +174,20 @@
             font-size: 12px;
             font-weight: 600;
             color: #64748b;
-            margin-top: 5px;
+            margin-top: 6px;
         }
 
-        /* CADRE DES DÉTAILS SANS NOTION D'ENGAGEMENT */
+        /* CADRE DES DÉTAILS ÉPURÉ ET SANS RIGIDITÉ */
         .summary-box {
             background: #f8fafc;
             border: 1px solid #edf2f7;
-            border-radius: 12px;
-            padding: 10px 14px;
-            margin-bottom: 16px;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
             display: flex;
             flex-direction: column;
-            gap: 7px;
-            font-size: 12.5px;
+            gap: 9px;
+            font-size: 13px;
             text-align: left;
         }
 
@@ -150,12 +200,14 @@
         .summary-label {
             color: #64748b;
             font-weight: 500;
+            font-size: 12.5px;
         }
 
         .summary-val {
             color: #0f172a;
             font-weight: 700;
             letter-spacing: -0.1px;
+            font-size: 13px;
         }
 
         .text-emerald {
@@ -163,30 +215,29 @@
             font-weight: 700;
         }
 
-        /* BOUTON OFFICIEL WAVE BUSINESS AVEC LOGO BADGE NET */
+        /* BOUTON OFFICIEL WAVE BUSINESS AVEC OMBRE NATURELLE */
         .btn-wave-action {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             width: 100%;
-            background-color: #1dc3ec;
+            background: linear-gradient(135deg, #1dc3ec 0%, #00b4e6 100%);
             color: #ffffff;
             text-decoration: none;
-            padding: 11px 16px;
-            border-radius: 14px;
-            font-size: 15px;
+            padding: 12px 18px;
+            border-radius: 16px;
+            font-size: 15.5px;
             font-weight: 700;
             letter-spacing: -0.2px;
-            box-shadow: 0 4px 14px rgba(29, 195, 236, 0.35);
-            transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
-            min-height: 50px;
+            box-shadow: 0 8px 24px -4px rgba(29, 195, 236, 0.45);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            min-height: 52px;
         }
 
         .btn-wave-action:hover {
-            background-color: #00adef;
-            box-shadow: 0 6px 18px rgba(29, 195, 236, 0.45);
-            transform: translateY(-1px);
+            transform: translateY(-1.5px);
+            box-shadow: 0 12px 28px -4px rgba(29, 195, 236, 0.55);
             color: #ffffff;
             text-decoration: none;
         }
@@ -195,14 +246,13 @@
             transform: scale(0.98);
         }
 
-        /* BADGE BLANC WAVE POUR CONTRASTE PARFAIT */
         .wave-badge-img {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
             object-fit: contain;
             flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
         }
 
         .btn-wave-label {
@@ -210,42 +260,45 @@
             font-weight: 700;
         }
 
-        /* NOTE DE BAS DE CARTE */
+        /* NOTE DE RÉASSURANCE DISCRÈTE */
         .reassurance-note {
-            margin-top: 10px;
+            margin-top: 11px;
             font-size: 11px;
             color: #94a3b8;
             line-height: 1.35;
         }
 
-        /* BOUTON RETOUR DONNÉES FINANCIÈRES BAS DE PAGE */
-        .btn-financial-back-full {
-            display: flex;
+        /* RETOUR DISCRET ET ÉLÉGANT VERS LE TABLEAU DE BORD */
+        .subtle-dash-link {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 7px;
-            width: 100%;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            padding: 10px 14px;
-            border-radius: 12px;
-            color: #334155;
+            color: #64748b;
+            font-size: 12.5px;
+            font-weight: 600;
             text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
+            padding: 9px 16px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.7);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
             transition: all 0.15s ease;
-            box-shadow: 0 2px 5px rgba(15, 23, 42, 0.03);
+            margin-top: 2px;
         }
 
-        .btn-financial-back-full:hover {
-            background: #f1f5f9;
+        .subtle-dash-link:hover {
+            background: rgba(255, 255, 255, 0.9);
             color: #0f172a;
-            text-decoration: none;
             border-color: #cbd5e1;
+            text-decoration: none;
         }
 
-        .btn-financial-back-full i {
+        .subtle-dash-link i {
             color: #10b981;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -267,7 +320,7 @@
 
             <!-- BLOC TARIF NET ET HARMONIEUX (330 F / JOUR SOIT 10 000 F / MOIS) -->
             <div class="price-box">
-                <div style="display: inline-flex; align-items: center; gap: 5px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-bottom: 8px;">
+                <div class="badge-daily">
                     <i class="fa-solid fa-bolt"></i> 330 F / jour • Sans engagement
                 </div>
                 <div class="price-row">
@@ -306,10 +359,10 @@
             </p>
         </main>
 
-        <!-- BOUTON CLAIR POUR RETOURNER AU TABLEAU DE BORD FINANCIER -->
-        <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="btn-financial-back-full">
+        <!-- RETOUR DISCRET VERS LE TABLEAU DE BORD FINANCIER -->
+        <a href="javascript:void(0)" onclick="retournerAuDashboard()" class="subtle-dash-link">
             <i class="fa-solid fa-chart-line"></i>
-            <span>Voir mes données financières</span>
+            <span>Accéder aux données financières</span>
         </a>
 
     </div>
@@ -325,10 +378,9 @@
             montantAbo = 9000;
             const priceVal = document.querySelector('.price-val');
             if (priceVal) priceVal.textContent = '9 000';
-            const priceBox = document.querySelector('.price-box');
-            if (priceBox) {
-                const badge = priceBox.querySelector('div:first-child');
-                if (badge) badge.innerHTML = '<i class="fa-solid fa-gift"></i> 300 F / jour • Réduction fidélité';
+            const badgeDaily = document.querySelector('.badge-daily');
+            if (badgeDaily) {
+                badgeDaily.innerHTML = '<i class="fa-solid fa-gift"></i> 300 F / jour • Réduction fidélité';
             }
             const pricePeriod = document.querySelector('.price-period');
             if (pricePeriod) {
@@ -338,9 +390,11 @@
             if (btnLabel) btnLabel.textContent = 'Payer 9 000 F avec Wave';
         }
 
-        // Formatage aéré et élégant du numéro sénégalais
+        // Formatage aéré et naturel du numéro WhatsApp
         function formaterTelephone(raw) {
-            if (!raw) return 'Votre compte';
+            if (!raw || raw === '221788773827' || raw === '+221788773827') {
+                return 'Votre compte WhatsApp';
+            }
             const clean = raw.replace(/\D/g, '');
             if (clean.length === 12 && clean.startsWith('221')) {
                 return `+221 ${clean.substring(3, 5)} ${clean.substring(5, 8)} ${clean.substring(8, 10)} ${clean.substring(10, 12)}`;
@@ -369,7 +423,11 @@
         }
 
         function retournerAuDashboard() {
-            window.location.href = `/dashboard?phone=${encodeURIComponent(userPhone)}`;
+            if (userPhone && userPhone !== '221788773827') {
+                window.location.href = `/dashboard?phone=${encodeURIComponent(userPhone)}`;
+            } else {
+                window.location.href = `/dashboard`;
+            }
         }
     </script>
 </body>
