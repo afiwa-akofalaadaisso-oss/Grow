@@ -602,10 +602,12 @@
                 const res = await response.json();
 
                 if (res.status === 'success') {
-                    // Basculer sur l'onglet Connexion
+                    // Basculer sur l'onglet Connexion et pré-remplir les identifiants
                     switchAuthMode('login');
                     const loginIdInput = document.getElementById('loginIdentifiant');
                     if (loginIdInput) loginIdInput.value = email;
+                    const loginPwdInput = document.getElementById('loginPassword');
+                    if (loginPwdInput) loginPwdInput.value = password;
 
                     const alertBox = document.getElementById('loginAlert');
                     if (alertBox) {
