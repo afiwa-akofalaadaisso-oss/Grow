@@ -6774,6 +6774,8 @@ async def monthly_closure_check():
             nom = ent.get("nom_entreprise", "Entreprise")
             lang = ent.get("langue_preferee") or "fr"
 
+            clean_p = re.sub(r"\D", "", str(phone or ""))
+            lien_abo = f"{get_public_base_url()}/abonnement?phone={clean_p}"
             msg = (
                 f"Bonjour {nom}.\n\n"
                 f"C'est la fin du mois, faisons le point pour clôturer vos comptes :\n\n"
@@ -6785,7 +6787,7 @@ async def monthly_closure_check():
                 f"Votre récapitulatif du mois est en préparation pour votre comptable.\n\n"
                 f"4. Renouvellement de votre abonnement Growth :\n"
                 f"Pour continuer à suivre vos comptes automatiquement chaque jour, renouvelez votre abonnement mensuel sur ce lien sécurisé :\n"
-                f"{get_public_base_url()}/abonnement"
+                f"{lien_abo}"
             )
             # Envoi Texte + Note Vocale
             await send_whatsapp_text_and_audio(phone, msg, langue=lang)
