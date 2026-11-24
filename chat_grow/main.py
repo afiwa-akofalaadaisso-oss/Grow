@@ -5214,7 +5214,9 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             "• Saisie vocale de vos ventes et dépenses en 1.5s chrono (Wolof ou Français)\n"
             "• Encaissements numériques Wave Business silencieux et automatiques\n"
             "• Grand Rituel de Clôture consolidé chaque soir à 00h00 (avec note vocale audio et Journal Web)\n\n"
-            f"👉 *Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu {mode_str} !*"
+            f"👉 *Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu {mode_str} !*\n\n"
+            "💡 *Tranquillité d'esprit (Optionnel) :* Si vous souhaitez régler votre abonnement mensuel dès aujourd'hui sans attendre la fin des 7 jours, vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
+            f"👉 *Lien de règlement Wave :* {lien_abo}"
         )
 
     # =========================================================================

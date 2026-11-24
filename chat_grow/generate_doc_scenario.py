@@ -334,17 +334,27 @@ def create_document():
                  "• Saisie vocale de vos ventes et dépenses en 1.5s chrono (Wolof ou Français)\n"
                  "• Encaissements numériques Wave Business silencieux et automatiques\n"
                  "• Grand Rituel de Clôture consolidé chaque soir à 00h00 (avec note vocale audio et Journal Web)\n\n"
-                 "👉 Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu en note vocale 🎙️ ! »").font.size = Pt(9.5)
+                 "👉 Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu en note vocale 🎙️ !\n\n"
+                 "💡 Tranquillité d'esprit (Optionnel) : Si vous souhaitez régler votre abonnement dès aujourd'hui sans attendre, vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
+                 "👉 Lien de règlement Wave : https://grow-2epo.onrender.com/abonnement?phone=[Telephone] »").font.size = Pt(9.5)
 
     doc.add_paragraph()
+    p_anti = doc.add_paragraph()
+    p_anti.add_run("6.3 Liberté de Paiement Immédiat Anticipé (Cumul 7j + 30j = 37 Jours de Sérénité) :\n").bold = True
+    p_anti.add_run("Si le commerçant est immédiatement convaincu lors de son inscription et souhaite régler sur-le-champ pour avoir l'esprit tranquille "
+                   "et ne pas se soucier des relances, Growth lui offre cette liberté totale sans friction :\n"
+                   "• Le règlement de l'abonnement par le lien Wave est pris en compte instantanément.\n"
+                   "• L'algorithme prolonge automatiquement l'échéance de 30 jours au-delà des 7 jours d'essai déjà offerts.\n"
+                   "• Le commerçant bénéficie ainsi de 37 jours consécutifs d'assistance 24h/24 sans aucune interruption de service.\n\n")
+
     p_rel = doc.add_paragraph()
-    p_rel.add_run("6.3 Relance Bienveillante à J-2 de l'Échéance (48h avant la Fin de l'Essai) :\n").bold = True
-    p_rel.add_run("À 48 heures de la clôture des 7 jours, le système envoie une notification amicale avec une offre de bienvenue exclusive :\n"
+    p_rel.add_run("6.4 Relance Bienveillante à J-2 de l'Échéance (48h avant la Fin de l'Essai) :\n").bold = True
+    p_rel.add_run("Pour les commerçants n'ayant pas payé d'avance, à 48 heures de la clôture des 7 jours, le système envoie une notification amicale avec une offre de bienvenue exclusive :\n"
                   "• 1 000 FCFA de réduction fidélité : 9 000 FCFA au lieu de 10 000 FCFA pour le premier mois si renouvelé avant la coupure.\n"
                   "• Les 30 jours payés s'ajoutent à la suite des jours d'essai restants (aucun jour offert n'est perdu).\n\n")
 
     p_paylock = doc.add_paragraph()
-    p_paylock.add_run("6.4 Coupure Stricte à J+7 & Verrou de Paiement Wave Officiel :\n").bold = True
+    p_paylock.add_run("6.5 Coupure Stricte à J+7 & Verrou de Paiement Wave Officiel :\n").bold = True
     p_paylock.add_run("• Dès que les 7 jours sont écoulés sans souscription, Growth suspend strictement tout enregistrement d'écriture.\n"
                       "• Le message de verrouillage annonce poliment la fin de l'essai et fournit le lien Wave officiel sécurisé (10 000 FCFA / mois) :\n"
                       "  https://grow-2epo.onrender.com/abonnement?phone=[Telephone]\n"
