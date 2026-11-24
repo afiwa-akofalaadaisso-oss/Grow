@@ -118,6 +118,69 @@
             color: #1e293b;
         }
 
+        /* Adaptation Responsive Table 100% visible sans scroll horizontal */
+        @media (max-width: 768px) {
+            .table-container {
+                overflow-x: hidden !important;
+                border-radius: 14px;
+            }
+
+            table.agency-table {
+                table-layout: fixed;
+                width: 100% !important;
+                font-size: 11px;
+            }
+
+            table.agency-table thead th {
+                padding: 9px 4px !important;
+                font-size: 9.5px !important;
+                letter-spacing: 0;
+            }
+
+            table.agency-table td {
+                padding: 8px 4px !important;
+                font-size: 11px !important;
+            }
+
+            .col-date {
+                width: 48px !important;
+                font-size: 10px !important;
+            }
+
+            .col-libelle {
+                width: auto !important;
+            }
+
+            .col-debit {
+                width: 64px !important;
+                font-size: 10.5px !important;
+            }
+
+            .col-credit {
+                width: 64px !important;
+                font-size: 10.5px !important;
+            }
+
+            .col-piece {
+                width: 40px !important;
+                padding: 6px 2px !important;
+            }
+
+            .badge-archive-10ans,
+            .badge-validee {
+                display: none !important;
+            }
+
+            .btn-piece-comptable {
+                padding: 4px 6px !important;
+                font-size: 10px !important;
+            }
+
+            .btn-piece-comptable span {
+                display: none;
+            }
+        }
+
         /* Badges de compte SYSCOHADA */
         .acc-pill {
             display: inline-flex;
@@ -546,15 +609,14 @@
             <table class="agency-table" id="journalTable">
                 <thead>
                     <tr>
-                        <th style="width: 110px;">Date</th>
-                        <th>Libellé / Compte SYSCOHADA (Attribution)</th>
-                        <th style="text-align: right; width: 140px;">Débit (FCFA)</th>
-                        <th style="text-align: right; width: 140px;">Crédit (FCFA)</th>
-                        <th style="text-align: center; width: 220px;">
+                        <th class="col-date" style="width: 100px;">Date</th>
+                        <th class="col-libelle">Libellé / Compte SYSCOHADA</th>
+                        <th class="col-debit" style="text-align: right; width: 130px;">Débit (FCFA)</th>
+                        <th class="col-credit" style="text-align: right; width: 130px;">Crédit (FCFA)</th>
+                        <th class="col-piece" style="text-align: center; width: 160px;">
                             <div class="flex flex-col items-center">
-                                <span>Pièce Comptable</span>
-                                <span class="text-[9.5px] text-slate-400 font-semibold normal-case">Archivage Légal 10
-                                    Ans</span>
+                                <span>Pièce</span>
+                                <span class="text-[9px] text-slate-400 font-semibold normal-case hidden sm:inline">10 Ans</span>
                             </div>
                         </th>
                     </tr>
@@ -2702,20 +2764,20 @@
                 // TABLE ROW
                 tableHtml += `
                     <tr id="row-${ec.id}">
-                        <td class="font-medium text-slate-600">${ec.date}</td>
-                        <td>
-                            <div class="flex flex-col gap-1">
-                                <span class="font-bold text-slate-900">${ec.libelle}</span>
-                                <div class="inline-flex items-center gap-1.5">
+                        <td class="col-date font-medium text-slate-600">${ec.date}</td>
+                        <td class="col-libelle">
+                            <div class="flex flex-col gap-0.5">
+                                <span class="font-bold text-slate-900 leading-snug line-clamp-2">${ec.libelle}</span>
+                                <div class="inline-flex items-center gap-1">
                                     <span class="acc-badge">${cptPrefix}</span>
-                                    <span class="text-xs font-semibold text-slate-600">${rawCpt}</span>
+                                    <span class="text-[10.5px] sm:text-xs font-semibold text-slate-600 truncate max-w-[110px] sm:max-w-none">${rawCpt}</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="text-right font-black ${isDebit ? 'text-slate-900' : 'text-slate-300'}">${ec.debit || '-'}</td>
-                        <td class="text-right font-black ${!isDebit ? 'text-emerald-600' : 'text-slate-300'}">${ec.credit || '-'}</td>
-                        <td class="text-center">
-                            <div class="flex items-center justify-center gap-2">
+                        <td class="col-debit text-right font-black ${isDebit ? 'text-slate-900' : 'text-slate-300'}">${ec.debit || '-'}</td>
+                        <td class="col-credit text-right font-black ${!isDebit ? 'text-emerald-600' : 'text-slate-300'}">${ec.credit || '-'}</td>
+                        <td class="col-piece text-center">
+                            <div class="flex items-center justify-center gap-1 sm:gap-2">
                                 <button type="button" class="btn-piece-comptable"
                                     onclick="ouvrirPieceComptableModal('${safeRef}', '${escapeQuotes(ec.libelle)}', '${montantAffiche}', '${ec.date}', '${escapeQuotes(rawCpt)}', '${escapeQuotes(safeTiers)}', '${safeImg}')">
                                     <i class="fa-solid fa-file-invoice text-[#222222]"></i>
