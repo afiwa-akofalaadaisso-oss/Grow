@@ -118,6 +118,32 @@
             color: #1e293b;
         }
 
+        /* Largeurs relatives des colonnes */
+        .col-date {
+            width: 13%;
+            text-align: left;
+        }
+
+        .col-libelle {
+            width: 45%;
+            text-align: left;
+        }
+
+        .col-debit {
+            width: 18%;
+            text-align: right;
+        }
+
+        .col-credit {
+            width: 18%;
+            text-align: right;
+        }
+
+        .col-piece {
+            width: 6%;
+            text-align: center;
+        }
+
         /* Adaptation Responsive Table 100% visible sans scroll horizontal */
         @media (max-width: 768px) {
             .table-container {
@@ -128,42 +154,41 @@
             table.agency-table {
                 table-layout: fixed;
                 width: 100% !important;
-                font-size: 11px;
             }
 
             table.agency-table thead th {
-                padding: 9px 4px !important;
-                font-size: 9.5px !important;
+                padding: 10px 4px !important;
+                font-size: 10px !important;
                 letter-spacing: 0;
+                white-space: normal !important;
             }
 
             table.agency-table td {
-                padding: 8px 4px !important;
+                padding: 10px 4px !important;
                 font-size: 11px !important;
+                vertical-align: middle;
             }
 
             .col-date {
-                width: 48px !important;
-                font-size: 10px !important;
+                width: 13% !important;
             }
 
             .col-libelle {
-                width: auto !important;
+                width: 45% !important;
             }
 
             .col-debit {
-                width: 64px !important;
-                font-size: 10.5px !important;
+                width: 18% !important;
+                font-size: 11px !important;
             }
 
             .col-credit {
-                width: 64px !important;
-                font-size: 10.5px !important;
+                width: 18% !important;
+                font-size: 11px !important;
             }
 
             .col-piece {
-                width: 40px !important;
-                padding: 6px 2px !important;
+                width: 6% !important;
             }
 
             .badge-archive-10ans,
@@ -634,17 +659,11 @@
             <table class="agency-table" id="journalTable">
                 <thead>
                     <tr>
-                        <th class="col-date" style="width: 100px;">Date</th>
-                        <th class="col-libelle">Libellé / Compte SYSCOHADA</th>
-                        <th class="col-debit" style="text-align: right; width: 130px;">Débit (FCFA)</th>
-                        <th class="col-credit" style="text-align: right; width: 130px;">Crédit (FCFA)</th>
-                        <th class="col-piece" style="text-align: center; width: 160px;">
-                            <div class="flex flex-col items-center">
-                                <span>Pièce</span>
-                                <span class="text-[9px] text-slate-400 font-semibold normal-case hidden sm:inline">10
-                                    Ans</span>
-                            </div>
-                        </th>
+                        <th class="col-date">Date</th>
+                        <th class="col-libelle">Opération</th>
+                        <th class="col-debit" style="text-align: right;">Débit</th>
+                        <th class="col-credit" style="text-align: right;">Crédit</th>
+                        <th class="col-piece" style="text-align: center;">Pièce</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -2784,21 +2803,37 @@
                 const safeTiers = ec.tiers || pme.nom || 'Fournisseur / Client';
                 const safeImg = ec.preuve || '/static/mock_receipt_photo.png';
 
+                const rawDate = ec.date || '';
+                const dateParts = rawDate.split('/');
+                const dateCourt = dateParts.length >= 2 ? `${dateParts[0]}/${dateParts[1]}` : rawDate;
+                const dateAnnee = dateParts.length >= 3 ? dateParts[2] : '';
+
+                // Formatage propre des montants numériques
+                const fmtDebit = (ec.debit && ec.debit !== '-' && ec.debit !== '0' && ec.debit !== '0.0') 
+                    ? Math.round(parseFloat(String(ec.debit).replace(/[^0-9.-]/g, '')) || 0).toLocaleString('fr-FR')
+                    : '-';
+                const fmtCredit = (ec.credit && ec.credit !== '-' && ec.credit !== '0' && ec.credit !== '0.0')
+                    ? Math.round(parseFloat(String(ec.credit).replace(/[^0-9.-]/g, '')) || 0).toLocaleString('fr-FR')
+                    : '-';
+
                 // TABLE ROW
                 tableHtml += `
                     <tr id="row-${ec.id}">
-                        <td class="col-date font-medium text-slate-600">${ec.date}</td>
+                        <td class="col-date font-bold text-slate-800 text-[11px] leading-tight">
+                            <span>${dateCourt}</span>
+                            ${dateAnnee ? `<span class="text-[9.5px] text-slate-400 font-normal hidden sm:inline">/${dateAnnee}</span>` : ''}
+                        </td>
                         <td class="col-libelle">
                             <div class="flex flex-col gap-0.5">
                                 <span class="font-bold text-slate-900 leading-snug line-clamp-2">${ec.libelle}</span>
                                 <div class="inline-flex items-center gap-1">
                                     <span class="acc-badge">${cptPrefix}</span>
-                                    <span class="text-[10.5px] sm:text-xs font-semibold text-slate-600 truncate max-w-[110px] sm:max-w-none">${rawCpt}</span>
+                                    <span class="text-[10px] sm:text-xs font-semibold text-slate-600 truncate max-w-[100px] sm:max-w-none">${rawCpt}</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="col-debit text-right font-black ${isDebit ? 'text-slate-900' : 'text-slate-300'}">${ec.debit || '-'}</td>
-                        <td class="col-credit text-right font-black ${!isDebit ? 'text-slate-900' : 'text-slate-300'}">${ec.credit || '-'}</td>
+                        <td class="col-debit text-right font-black ${fmtDebit !== '-' ? 'text-slate-900' : 'text-slate-300'}">${fmtDebit}</td>
+                        <td class="col-credit text-right font-black ${fmtCredit !== '-' ? 'text-slate-900' : 'text-slate-300'}">${fmtCredit}</td>
                         <td class="col-piece text-center">
                             <div class="flex items-center justify-center gap-1 sm:gap-2">
                                 <button type="button" class="btn-piece-comptable"
