@@ -630,7 +630,7 @@ def get_message_abonnement_expire(info_abo: dict, base_url: str, phone: str) -> 
         "⚠️ *Collecte et enregistrement interrompus :*\n"
         "Tant que votre abonnement n'est pas actif, je ne peux plus recevoir, traiter ni stocker vos opérations de vente, dépenses ou caisse.\n\n"
         "👉 *Pour réactiver immédiatement votre copilote Growth :*\n"
-        f"Réglez votre mensualité (10 000 FCFA / mois) en 1 clic par Wave :\n{lien_abo}\n\n"
+        f"Réglez votre mensualité (seulement 330 F par jour, soit 10 000 FCFA / mois) en 1 clic par Wave :\n{lien_abo}\n\n"
         "💡 *Dès votre règlement validé, répondez simplement « J'ai payé » pour reprendre instantanément vos services !*"
     )
 
@@ -3860,7 +3860,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             return (
                 "🔒 *Espace Growth en attente d'activation d'abonnement*\n\n"
                 "Votre dossier d'ouverture est finalisé.\n"
-                "Pour commencer à enregistrer vos opérations par note vocale 24h/24 et profiter du point de caisse quotidien, activez votre abonnement mensuel (10 000 FCFA pour 30 jours) :\n\n"
+                "Pour commencer à enregistrer vos opérations par note vocale 24h/24 et profiter du point de caisse quotidien, activez votre abonnement mensuel (seulement 330 F par jour, soit 10 000 FCFA / mois) :\n\n"
                 f"👉 *Activez votre accès en 1 clic via Wave :*\n{lien_abo}\n\n"
                 "💡 Dès votre règlement effectué, répondez simplement *« J'ai payé »* pour débloquer immédiatement votre copilote !"
             )
@@ -5215,7 +5215,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             "• Encaissements numériques Wave Business silencieux et automatiques\n"
             "• Grand Rituel de Clôture consolidé chaque soir à 00h00 (avec note vocale audio et Journal Web)\n\n"
             f"👉 *Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu {mode_str} !*\n\n"
-            "💡 *Tranquillité d'esprit (Optionnel) :* Si vous souhaitez régler votre abonnement mensuel dès aujourd'hui sans attendre la fin des 7 jours, vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
+            "💡 *Tranquillité d'esprit (Optionnel) :* Si vous souhaitez régler votre abonnement mensuel dès aujourd'hui sans attendre la fin des 7 jours (seulement 330 F par jour, soit 10 000 FCFA / mois), vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
             f"👉 *Lien de règlement Wave :* {lien_abo}"
         )
 
@@ -7015,7 +7015,7 @@ async def check_and_send_abonnement_j7_reminders():
                         f"Bonjour ! Votre période de 7 jours d'essai gratuit offert prendra fin le *{date_fin_fr}* (dans {jours} {'jour' if jours == 1 else 'jours'}).\n\n"
                         "Pour que vos enregistrements de ventes par note vocale et vos clôtures de minuit continuent sans interruption, activez votre abonnement mensuel dès maintenant.\n\n"
                         "🎁 *Offre spéciale nouveau commerçant :*\n"
-                        "Activez votre abonnement avant la fin de votre essai et profitez de *1 000 FCFA de réduction*, soit votre premier mois à *9 000 FCFA* au lieu de 10 000 FCFA !\n\n"
+                        "Activez votre abonnement avant la fin de votre essai et profitez de *1 000 FCFA de réduction*, soit votre premier mois à seulement *300 F par jour (9 000 FCFA / mois)* au lieu de 330 F par jour (10 000 FCFA) !\n\n"
                         f"👉 *Activez votre copilote en 1 clic via Wave :*\n{lien_promo}\n\n"
                         "💡 Vos 30 jours complets démarreront après la fin de votre essai, vous profitez de vos 7 jours offerts jusqu'au bout !"
                     )
@@ -7025,7 +7025,7 @@ async def check_and_send_abonnement_j7_reminders():
                         f"Bonjour ! Votre abonnement actuel, actif depuis le {date_deb}, arrive à échéance le *{date_fin_fr}* (dans {jours} jours).\n\n"
                         "Pour que la collecte et l'enregistrement automatique de vos ventes et de votre caisse ne s'arrêtent pas, vous pouvez renouveler dès maintenant.\n\n"
                         "🎁 *Offre fidélité anticipée :*\n"
-                        "En renouvelant avant votre date de fin, vous bénéficiez de *1 000 FCFA de réduction*, soit votre mois à *9 000 FCFA* au lieu de 10 000 FCFA !\n\n"
+                        "En renouvelant avant votre date de fin, vous bénéficiez de *1 000 FCFA de réduction*, soit votre mois à seulement *300 F par jour (9 000 FCFA / mois)* au lieu de 330 F par jour (10 000 FCFA) !\n\n"
                         f"👉 *Renouvelez en 1 clic via Wave avec votre réduction :*\n{lien_promo}\n\n"
                         "💡 Vos 30 jours supplémentaires s'ajouteront à la suite de votre période actuelle, vous ne perdez aucun jour !"
                     )

@@ -265,13 +265,16 @@
             <h1 class="plan-title">Copilote WhatsApp</h1>
             <p class="plan-desc">Accès illimité à votre assistant comptable 24h/24</p>
 
-            <!-- BLOC TARIF NET ET HARMONIEUX -->
+            <!-- BLOC TARIF NET ET HARMONIEUX (330 F / JOUR SOIT 10 000 F / MOIS) -->
             <div class="price-box">
+                <div style="display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; font-size: 13px; font-weight: 700; padding: 4px 14px; border-radius: 20px; margin-bottom: 10px;">
+                    <i class="fa-solid fa-bolt"></i> Seulement 330 F / jour
+                </div>
                 <div class="price-row">
                     <span class="price-val">10 000</span>
                     <span class="price-curr">FCFA</span>
                 </div>
-                <div class="price-period">Pour 30 jours d'accès complet</div>
+                <div class="price-period">Soit 10 000 FCFA / mois (30 jours d'accès complet)</div>
             </div>
 
             <!-- RÉCAPITULATIF SANS NOTION ANXIOGÈNE D'ENGAGEMENT -->
@@ -322,9 +325,14 @@
             montantAbo = 9000;
             const priceVal = document.querySelector('.price-val');
             if (priceVal) priceVal.textContent = '9 000';
+            const priceBox = document.querySelector('.price-box');
+            if (priceBox) {
+                const badge = priceBox.querySelector('div:first-child');
+                if (badge) badge.innerHTML = '<i class="fa-solid fa-gift"></i> Seulement 300 F / jour';
+            }
             const pricePeriod = document.querySelector('.price-period');
             if (pricePeriod) {
-                pricePeriod.innerHTML = '<span style="color: #059669; font-weight: 700;"><i class="fa-solid fa-gift"></i> Réduction fidélité anticipée (-1 000 FCFA)</span><br>Pour 30 jours d\'accès complet';
+                pricePeriod.innerHTML = '<span style="color: #059669; font-weight: 700;">Soit 9 000 FCFA / mois (Réduction fidélité anticipée)</span>';
             }
             const btnLabel = document.querySelector('.btn-wave-label');
             if (btnLabel) btnLabel.textContent = 'Payer 9 000 F avec Wave';
