@@ -3593,9 +3593,9 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         return (
             "🔒 *Espace Growth en attente d'activation d'abonnement*\n\n"
             "Votre Bilan d'Ouverture initial est scellé conforme SYSCOHADA SMT.\n"
-            "Pour continuer à saisir vos ventes par note vocale 24h/24, bénéficier des relances de caisse et certifier vos bilans bancaires, veuillez activer votre abonnement mensuel :\n\n"
-            "⭐ *Pack Starter* (10 000 FCFA / mois) : Assistant WhatsApp 24h/24, rapprochement Wave & OM, bilans SYSCOHADA.\n"
-            "🚀 *Pack Pro* (25 000 FCFA / mois) : Tout Starter + Dossiers bancaires certifiés ONECCA, multi-caisses & Webhooks instantanés.\n\n"
+            "Pour continuer à saisir vos opérations par note vocale 24h/24, bénéficier des relances de caisse et de la clôture de 20h00, veuillez activer votre abonnement mensuel :\n\n"
+            "⭐ *Pack Solo* (10 000 FCFA / mois) : Tout inclus pour 1 entreprise (Assistant WhatsApp 24h/24, relances 3h, rituel 20h, caisse 571 & stocks) — *sauf bilans & dossiers bancaires*.\n"
+            "🚀 *Pack Multi-Entreprises* (15 000 FCFA / mois) : Même chose en illimité pour jusqu'à 3 entreprises dirigées par vous sous le même compte WhatsApp !\n\n"
             f"👉 *Activez votre accès en 1 clic via Wave ou Orange Money :*\n{lien_abo}\n\n"
             "💡 Dès votre paiement effectué, répondez simplement *« J'ai payé »* pour débloquer immédiatement votre copilote !"
         )

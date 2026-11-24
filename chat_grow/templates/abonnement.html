@@ -765,26 +765,26 @@
                 bancaires.</p>
         </div>
 
-        <!-- SÉLECTEUR DE FORFAIT (STARTER VS PRO) -->
+        <!-- SÉLECTEUR DE FORFAIT (STARTER 10K VS MULTI-ENTREPRISES 15K) -->
         <div class="plans-toggle-container">
             <button type="button" class="plan-tab-btn active" id="tabStarter" onclick="choisirPlan('Starter', 10000)">
-                <i class="fa-solid fa-seedling"></i> Starter (10 000 F)
+                <i class="fa-solid fa-store"></i> Solo • 1 Entreprise (10 000 F)
             </button>
-            <button type="button" class="plan-tab-btn" id="tabPro" onclick="choisirPlan('Pro', 25000)">
-                <i class="fa-solid fa-crown"></i> Pro VIP (25 000 F)
+            <button type="button" class="plan-tab-btn" id="tabPro" onclick="choisirPlan('Multi', 15000)">
+                <i class="fa-solid fa-layer-group"></i> Multi • 3 Entreprises (15 000 F)
             </button>
         </div>
 
         <!-- CARTE FORFAIT PRESTIGE CHARTE GROW -->
         <div class="plan-card-prestige">
             <div class="plan-ribbon" id="planRibbonText">
-                <i class="fa-solid fa-certificate"></i> Pack Officiel SYSCOHADA
+                <i class="fa-solid fa-bolt"></i> Pack Solo • 1 Entreprise
             </div>
 
             <div class="plan-header">
                 <div>
-                    <div class="plan-name" id="planNameText">Comptabilité PME &amp; WhatsApp</div>
-                    <div class="plan-sub" id="planSubText">Sans engagement &bull; Résiliable à tout moment</div>
+                    <div class="plan-name" id="planNameText">Copilote Gestion &amp; Caisse</div>
+                    <div class="plan-sub" id="planSubText">1 seule entreprise &bull; Sans engagement &bull; Résiliable à tout moment</div>
                 </div>
                 <div class="plan-price-box">
                     <div class="plan-price" id="planPriceText">10 000</div>
@@ -795,19 +795,23 @@
             <ul class="features-list" id="planFeaturesList">
                 <li class="feature-item">
                     <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                    <span>Assistant WhatsApp 24h/7j en Wolof, Français ou Anglais</span>
+                    <span>Assistant WhatsApp 24h/24 en Wolof ou Français (saisie vocale en 1.5s)</span>
                 </li>
                 <li class="feature-item">
                     <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                    <span>Interception automatique des flux Wave &amp; Orange Money</span>
+                    <span>Interception automatique des flux Wave Business &amp; Orange Money</span>
                 </li>
                 <li class="feature-item">
                     <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                    <span>Bilans &amp; Grand Livre SYSCOHADA certifiés conformes pour Cabinets Comptables</span>
+                    <span>Suivi complet : Caisse espèces (571), stocks grossistes et dettes/créances</span>
                 </li>
                 <li class="feature-item">
                     <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                    <span>Accès direct aux crédits bancaires chez nos agences partenaires</span>
+                    <span>Relances actives toutes les 3h &amp; Grand Rituel de clôture à 20h00 avec note vocale</span>
+                </li>
+                <li class="feature-item" style="opacity: 0.85;">
+                    <div class="feature-check" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-minus"></i></div>
+                    <span style="color: #64748b; font-size: 13px;"><em>Tout inclus sauf export des bilans officiels et montage des dossiers bancaires</em></span>
                 </li>
             </ul>
         </div>
@@ -953,8 +957,8 @@
             const omPill = document.getElementById('omPricePill');
 
             if (plan === 'Starter') {
-                if (ribbon) ribbon.innerHTML = '<i class="fa-solid fa-certificate"></i> Pack Officiel SYSCOHADA';
-                if (pName) pName.textContent = 'Comptabilité PME & WhatsApp';
+                if (ribbon) ribbon.innerHTML = '<i class="fa-solid fa-bolt"></i> Pack Solo • 1 Entreprise';
+                if (pName) pName.textContent = 'Copilote Gestion & Caisse';
                 if (pPrice) pPrice.textContent = '10 000';
                 if (wavePill) wavePill.textContent = '10 000 F';
                 if (omPill) omPill.textContent = '10 000 F';
@@ -962,45 +966,53 @@
                     pFeatures.innerHTML = `
                         <li class="feature-item">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Assistant WhatsApp 24h/7j en Wolof, Français ou Anglais</span>
+                            <span>Assistant WhatsApp 24h/24 en Wolof ou Français (saisie vocale en 1.5s)</span>
                         </li>
                         <li class="feature-item">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Interception automatique des flux Wave &amp; Orange Money</span>
+                            <span>Interception automatique des flux Wave Business &amp; Orange Money</span>
                         </li>
                         <li class="feature-item">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Bilans &amp; Grand Livre SYSCOHADA certifiés conformes pour Cabinets Comptables</span>
+                            <span>Suivi complet : Caisse espèces (571), stocks grossistes et dettes/créances</span>
                         </li>
                         <li class="feature-item">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Accès direct aux crédits bancaires chez nos agences partenaires</span>
+                            <span>Relances actives toutes les 3h &amp; Grand Rituel de clôture à 20h00 avec note vocale</span>
+                        </li>
+                        <li class="feature-item" style="opacity: 0.85;">
+                            <div class="feature-check" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-minus"></i></div>
+                            <span style="color: #64748b; font-size: 13px;"><em>Tout inclus sauf export des bilans officiels et montage des dossiers bancaires</em></span>
                         </li>
                     `;
                 }
             } else {
-                if (ribbon) ribbon.innerHTML = '<i class="fa-solid fa-crown"></i> Pack Pro VIP Certifié';
-                if (pName) pName.textContent = 'Comptabilité Pro & Multi-Boutiques';
-                if (pPrice) pPrice.textContent = '25 000';
-                if (wavePill) wavePill.textContent = '25 000 F';
-                if (omPill) omPill.textContent = '25 000 F';
+                if (ribbon) ribbon.innerHTML = '<i class="fa-solid fa-layer-group"></i> Pack Multi • 3 Entreprises';
+                if (pName) pName.textContent = 'Copilote Multi-Commerces (3 PME)';
+                if (pPrice) pPrice.textContent = '15 000';
+                if (wavePill) wavePill.textContent = '15 000 F';
+                if (omPill) omPill.textContent = '15 000 F';
                 if (pFeatures) {
                     pFeatures.innerHTML = `
                         <li class="feature-item">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Tout le Pack Starter inclus en illimité 24h/24</span>
+                            <span><strong>Gestion de 3 entreprises / commerces distincts</strong> sous votre même WhatsApp</span>
                         </li>
                         <li class="feature-item">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Attestation de solvabilité &amp; dossier bancaire prioritaire certifié Cabinet Comptable</span>
+                            <span>Même accompagnement illimité 24h/24 pour chacune de vos 3 activités</span>
                         </li>
                         <li class="feature-item">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Multi-magasins, gestion multi-caisses &amp; experts dédiés</span>
+                            <span>Rapprochements multi-webhooks Wave Business &amp; Orange Business par boutique</span>
                         </li>
                         <li class="feature-item">
                             <div class="feature-check"><i class="fa-solid fa-check"></i></div>
-                            <span>Interception Webhook temps réel Wave &amp; Orange Money instantanée</span>
+                            <span>Ventilation et clôtures de caisse séparées pour chaque commerce à 20h00</span>
+                        </li>
+                        <li class="feature-item" style="opacity: 0.85;">
+                            <div class="feature-check" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);"><i class="fa-solid fa-minus"></i></div>
+                            <span style="color: #64748b; font-size: 13px;"><em>Tout inclus pour vos 3 commerces (sauf export des bilans officiels et dossiers bancaires)</em></span>
                         </li>
                     `;
                 }
