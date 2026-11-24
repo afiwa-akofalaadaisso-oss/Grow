@@ -2973,18 +2973,18 @@ async def api_pme_journal_data(request: Request, phone: str = ""):
         except Exception as e_ob:
             print(f"[JOURNAL PME ONBOARDING ERROR] {e_ob}")
 
-    # 3. Fallback PME de référence si aucun numéro fourni ou numéro de test
+    # 3. Fallback PME neutre si aucun numéro fourni ou compte vierge
     if not matched_ent:
         if all_ents:
             matched_ent = all_ents[0]
         else:
             matched_ent = {
-                "id": "ent_diop_ref",
-                "nom_entreprise": "Établissement Mamadou Diop",
-                "telephone_whatsapp": "+221 78 877 38 27",
-                "ninea": "009845210",
-                "activite": "Alimentation Générale & Distribution de Riz",
-                "adresse": "Marché Sandaga, Dakar - Sénégal"
+                "id": "ent_nouvelle",
+                "nom_entreprise": "Votre Entreprise",
+                "telephone_whatsapp": "Votre compte WhatsApp",
+                "ninea": "En cours d'attribution",
+                "activite": "Commerce Général",
+                "adresse": "Dakar, Sénégal"
             }
 
     ent_id = matched_ent.get("id")

@@ -241,10 +241,11 @@
         }
 
         .filter-pill.active {
-            background: #0f172a;
-            color: #ffffff;
-            border-color: #0f172a;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            background: #a0d9d2;
+            color: #142b27;
+            border-color: #7bc8bf;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(160, 217, 210, 0.45);
         }
 
         /* Custom Scrollbar */
@@ -303,15 +304,14 @@
                     <!-- Badge PME Actuelle -->
                     <div id="pmeIdentityBadge"
                         class="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
-                        <div class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs"
+                        <div class="w-7 h-7 rounded-lg bg-[#a0d9d2] text-[#142b27] flex items-center justify-center font-bold text-xs"
                             id="pmeAvatarInitials">
-                            MD
+                            VE
                         </div>
                         <div class="text-left">
-                            <div class="text-xs font-bold text-slate-900 leading-tight" id="pmeHeaderNom">Établissement
-                                Mamadou Diop</div>
+                            <div class="text-xs font-bold text-slate-900 leading-tight" id="pmeHeaderNom">Votre Entreprise</div>
                             <div class="text-[10.5px] font-medium text-slate-500 flex items-center gap-1.5">
-                                <span id="pmeHeaderTel">+221 78 877 38 27</span>
+                                <span id="pmeHeaderTel">Votre compte WhatsApp</span>
                             </div>
                         </div>
                     </div>
@@ -333,11 +333,9 @@
         <!-- Sous-barre mobile : Nom de la PME sur petit écran -->
         <div class="sm:hidden bg-slate-50 border-t border-slate-200/80 px-4 py-2.5 flex items-center justify-between">
             <div class="flex items-center gap-2 min-w-0">
-                <span class="text-xs font-bold text-slate-900 truncate" id="pmeMobileNom">Établissement Mamadou
-                    Diop</span>
+                <span class="text-xs font-bold text-slate-900 truncate" id="pmeMobileNom">Votre Entreprise</span>
             </div>
-            <span class="text-[11px] font-mono font-bold text-slate-700 shrink-0" id="pmeMobileTel">+221 78 877 38
-                27</span>
+            <span class="text-[11px] font-mono font-bold text-slate-700 shrink-0" id="pmeMobileTel">Votre compte WhatsApp</span>
         </div>
     </header>
 
@@ -373,7 +371,8 @@
                     <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Recettes</span>
                 </div>
                 <div>
-                    <div class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight" id="kpiCreditVal">14 850 000
+                    <div class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight" id="kpiCreditVal">14 850
+                        000
                         <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>
                     </div>
                     <div class="text-xs font-medium text-slate-500 mt-1">
@@ -389,7 +388,8 @@
                     <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Dépenses</span>
                 </div>
                 <div>
-                    <div class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight" id="kpiDebitVal">13 200 000
+                    <div class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight" id="kpiDebitVal">13 200
+                        000
                         <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>
                     </div>
                     <div class="text-xs font-medium text-slate-500 mt-1">
@@ -424,8 +424,7 @@
 
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
                 <div>
-                    <div
-                        class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                    <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
                         Norme SYSCOHADA Révisé
                     </div>
                     <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
@@ -455,10 +454,10 @@
                     <!-- Bouton Export / Téléchargement Journal avec Popover Pro Sobre -->
                     <div class="relative inline-block text-left" id="exportJournalDropdownWrapper">
                         <button type="button" onclick="toggleExportJournalMenu(event)" id="btnExportJournal"
-                            class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-black active:bg-slate-950 text-white text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-xs border border-slate-800">
-                            <i class="fa-solid fa-arrow-down-to-bracket text-slate-300 text-xs"></i>
+                            class="px-3.5 py-2 rounded-xl bg-[#a0d9d2] hover:bg-[#8fd0c8] active:bg-[#7bc8bf] text-[#142b27] text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-xs border border-[#7bc8bf]">
+                            <i class="fa-solid fa-arrow-down-to-bracket text-[#142b27] text-xs"></i>
                             <span>Exporter</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-[#142b27]/80"></i>
                         </button>
 
                         <!-- Menu Déroulant Fintech Épuré : Choix PDF ou Excel sans fioritures -->
@@ -562,7 +561,7 @@
             <div class="text-sm font-bold text-slate-700">Aucune écriture ne correspond à vos critères</div>
             <p class="text-xs text-slate-500 mt-1">Essayez un autre mot-clé ou réinitialisez les filtres.</p>
             <button type="button" onclick="reinitialiserFiltres()"
-                class="mt-3 px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold">
+                class="mt-3 px-3.5 py-2 rounded-xl bg-[#a0d9d2] hover:bg-[#8fd0c8] text-[#142b27] text-xs font-bold border border-[#7bc8bf] transition shadow-xs">
                 Réinitialiser les filtres
             </button>
         </div>
@@ -640,9 +639,9 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-black active:bg-slate-950 text-white text-sm font-bold transition shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                    class="w-full py-3.5 rounded-xl bg-[#a0d9d2] hover:bg-[#8fd0c8] active:bg-[#7bc8bf] text-[#142b27] text-sm font-bold border border-[#7bc8bf] transition shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                     <span>Accéder à mon Journal</span>
-                    <i class="fa-solid fa-arrow-right text-xs text-slate-300"></i>
+                    <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
                 </button>
             </form>
 
@@ -837,12 +836,12 @@
         const PME_DATABASE = {
             diop: {
                 id: 'diop',
-                nom: "Établissement Mamadou Diop",
+                nom: "Votre Entreprise",
                 activite: "Commerce Général & Distribution Alimentaire",
-                adresse: "Marché Keur Yoff, Dakar",
-                telephone: "+221 78 877 38 27",
-                ninea: "005489210 2Y3",
-                rccm: "SN-DKR-2022-B-4819",
+                adresse: "Dakar, Sénégal",
+                telephone: "Votre compte WhatsApp",
+                ninea: "En cours d'attribution",
+                rccm: "SN-DKR-2024-B-12940",
                 regime: "SYSCOHADA SMT (Système Minimal de Trésorerie)",
                 ca: "3 850 000 FCFA",
                 score: "92/100",
@@ -2635,7 +2634,7 @@
                     }
                     for (let p = startPage; p <= endPage; p++) {
                         const isActive = p === ecrituresCurrentPage;
-                        numsHtml += `<button type="button" onclick="allerPageEcritures(${p})" class="w-7 h-7 rounded-lg text-xs font-bold ${isActive ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'} transition cursor-pointer">${p}</button>`;
+                        numsHtml += `<button type="button" onclick="allerPageEcritures(${p})" class="w-7 h-7 rounded-lg text-xs font-bold ${isActive ? 'bg-[#a0d9d2] text-[#142b27] font-black border border-[#7bc8bf] shadow-xs' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'} transition cursor-pointer">${p}</button>`;
                     }
                     numsContainer.innerHTML = numsHtml;
                 }
@@ -2807,7 +2806,7 @@
 
             const ticketMode = document.getElementById('pcTicketMode');
             if (ticketMode) {
-                const tel = (pme && pme.telephone) ? pme.telephone : '+221 78 877 38 27';
+                const tel = (pme && pme.telephone) ? pme.telephone : 'Votre compte';
                 ticketMode.textContent = isWave ? `Wave Business (${tel})` : 'Caisse Principale (Espèces)';
             }
 
@@ -2885,12 +2884,12 @@
             if (menu) menu.classList.add('hidden');
 
             const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || {
-                nom: "Établissement Mamadou Diop",
-                telephone: "+221 78 877 38 27",
-                ninea: "005489210",
+                nom: "Votre Entreprise",
+                telephone: "Votre compte WhatsApp",
+                ninea: "En cours d'attribution",
                 registre: "SN-DKR-2024-B-12940",
-                activite: "Commerce Général & Distribution Alimentaire",
-                adresse: "Marché Sandaga, Allée 4, Dakar - Sénégal",
+                activite: "Commerce Général",
+                adresse: "Dakar, Sénégal",
                 ecritures: []
             };
 
