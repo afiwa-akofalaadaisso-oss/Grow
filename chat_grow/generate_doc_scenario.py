@@ -93,8 +93,8 @@ def create_document():
         "4. Étape 3 : Fiche d'Identité de l'Entreprise (NINEA, RCCM, Nom Commercial & Verrou)",
         "5. Étape 4 : Historique Passé & Bilan d'Ouverture (Tutos Relevés & Règle Capture Solde)",
         "6. Étape 5 : Inventaire Initial Complet (Protocole d'Expert-Comptable ONECCA / SYSCOHADA)",
-        "7. Étape 6 : Fin du Gratuit & Verrouillage d'Abonnement par Lien Professionnel",
-        "8. Étape 7 : Routine Quotidienne Active (Saisie Vocale 1.5s, Webhooks, Relances 3h & Rituel 20h)",
+        "7. Étape 6 : Essai Gratuit 7 Jours Offert & Verrouillage Post-Essai par Lien Wave Officiel",
+        "8. Étape 7 : Routine Quotidienne Active (Saisie Vocale 1.5s, Encaissement Silencieux & Clôture à 00h00)",
         "9. Synchronisation avec l'Espace Cabinet Comptable & Export DGID"
     ]
     for s in sommaire_items:
@@ -306,60 +306,75 @@ def create_document():
     # =========================================================================
     # ÉTAPE 6
     # =========================================================================
-    doc.add_heading("ÉTAPE 6 : FIN DU GRATUIT & VERROU D'ABONNEMENT PROFESSIONNEL", level=1)
+    doc.add_heading("ÉTAPE 6 : ESSAI GRATUIT 7 JOURS OFFERT & VERROUILLAGE POST-ESSAI", level=1)
     p_pay = doc.add_paragraph()
-    p_pay.add_run("6.1 Clôture du Pack d'Accueil Gratuit :\n").bold = True
-    p_pay.add_run("La configuration Wave/Orange Business, l'identification légale, l'analyse du passé et le bilan d'ouverture initial sont offerts. Pour démarrer la gestion active quotidienne, l'abonnement mensuel est obligatoire.\n\n")
+    p_pay.add_run("6.1 Cadeau de Bienvenue : 7 Jours d'Essai Gratuit 100% Offerts :\n").bold = True
+    p_pay.add_run("Dès que le Bilan d'Ouverture initial est scellé, Growth n'impose aucun blocage prématuré ni carte bancaire. "
+                  "Le commerçant reçoit automatiquement un Pack Découverte de 7 jours complets d'accès illimité (statut ESSAI_7J) "
+                  "pour tester l'assistant vocal en conditions réelles dans son commerce.\n\n")
 
-    p_pay.add_run("6.2 Grille Tarifaire Officielle Growth :\n").bold = True
-    p_pay.add_run("• ⭐ Pack Solo (1 Entreprise) : 10 000 FCFA / mois — Tout inclus (Assistant WhatsApp 24h/24 en Wolof/Français, saisie vocale 1.5s, webhooks Wave & OM, relances 3h, rituel 20h00, caisse 571 & stocks) SAUF l'export des bilans officiels et le montage des dossiers bancaires (Disponible immédiatement).\n"
-                  "• 🚀 Pack Multi-Entreprises (3 Entreprises) : 15 000 FCFA / mois — Pas encore disponible (Bientôt disponible — déploiement prochain pour la gestion de 3 commerces sous le même compte WhatsApp).\n\n")
-
-    p_pay.add_run("6.3 Message de Scellage avec Lien Officiel Sécurisé :\n").bold = True
+    p_pay.add_run("6.2 Message de Scellage et Déblocage Immédiat :\n").bold = True
     
     t_msg6 = doc.add_table(rows=1, cols=1)
     c6 = t_msg6.rows[0].cells[0]
-    set_cell_background(c6, "F5F3FF")
+    set_cell_background(c6, "F0FDF4")
     set_cell_margins(c6, 120, 120, 160, 160)
     p_m6 = c6.paragraphs[0]
-    p_m6.add_run("« 🎉 Félicitations [Prénom] ! Votre dossier initial et votre bilan d'ouverture sont prêts et scellés conformes SYSCOHADA SMT.\n\n"
-                 "Pour activer dès maintenant votre copilote au quotidien (saisie de vos ventes par note vocale Wolof/Français, clôture automatique de caisse à 20h00, alertes Wave Business / Orange Business en direct et accès à votre Journal Web sécurisé), veuillez activer votre abonnement mensuel Growth.\n\n"
-                 "⭐ Pack Solo (1 Entreprise) : 10 000 FCFA / mois (Disponible immédiatement)\n"
-                 "🚀 Pack Multi-Entreprises (3 Entreprises) : 15 000 FCFA / mois (Pas encore disponible — Bientôt)\n\n"
-                 "💳 Lien de Paiement Officiel Sécurisé :\n"
-                 "https://grow-2epo.onrender.com/abonnement?phone=[Son_Telephone]\n"
-                 "(Paiement instantané par Wave, Orange Money ou Carte Bancaire - 100% sécurisé et professionnel) »").font.size = Pt(9.5)
+    p_m6.add_run("« 🎉 Félicitations [Nom Entreprise] ! Votre dossier d'entreprise et votre Bilan d'Ouverture initial sont 100% scellés conformes SYSCOHADA SMT !\n\n"
+                 "📊 Votre Bilan d'Ouverture Certifié :\n"
+                 "• 💵 Caisse Espèces Tiroir (571) : [Montant] FCFA\n"
+                 "• 📱 Trésorerie Comptes Marchands (521) : [Montant] FCFA\n"
+                 "• 📦 Stock de Marchandises Grossiste (311) : [Montant] FCFA\n"
+                 "• 🛠️ Immobilisations & Équipements (241) : [Montant] FCFA (Amortissements programmés)\n"
+                 "• 🤝 Créances Clients (411) : [Montant] FCFA\n"
+                 "• 💼 Dettes Fournisseurs (401) : [Montant] FCFA\n\n"
+                 "🎁 VOTRE CADEAU DE BIENVENUE : 7 JOURS D'ESSAI GRATUIT OFFERTS !\n"
+                 "Pour vous permettre de vivre l'expérience Growth en situation réelle dans votre boutique, nous vous offrons 7 jours d'accès complet 100% gratuit jusqu'au [Date J+7] (aucun engagement, aucune carte requise).\n\n"
+                 "⚡ Toutes vos fonctionnalités sont débloquées dès maintenant :\n"
+                 "• Saisie vocale de vos ventes et dépenses en 1.5s chrono (Wolof ou Français)\n"
+                 "• Encaissements numériques Wave Business silencieux et automatiques\n"
+                 "• Grand Rituel de Clôture consolidé chaque soir à 00h00 (avec note vocale audio et Journal Web)\n\n"
+                 "👉 Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu en note vocale 🎙️ ! »").font.size = Pt(9.5)
 
     doc.add_paragraph()
+    p_rel = doc.add_paragraph()
+    p_rel.add_run("6.3 Relance Bienveillante à J-2 de l'Échéance (48h avant la Fin de l'Essai) :\n").bold = True
+    p_rel.add_run("À 48 heures de la clôture des 7 jours, le système envoie une notification amicale avec une offre de bienvenue exclusive :\n"
+                  "• 1 000 FCFA de réduction fidélité : 9 000 FCFA au lieu de 10 000 FCFA pour le premier mois si renouvelé avant la coupure.\n"
+                  "• Les 30 jours payés s'ajoutent à la suite des jours d'essai restants (aucun jour offert n'est perdu).\n\n")
+
     p_paylock = doc.add_paragraph()
-    p_paylock.add_run("🔒 RÈGLES STRICTES DU VERROU DE PAIEMENT :\n").bold = True
-    p_paylock.add_run("• Aucun numéro de téléphone personnel n'est communiqué (aucun « envoie sur ma puce Wave »). Seule la passerelle officielle sécurisée est utilisée.\n"
-                      "• Blocage total en attente du paiement : Tant que le webhook de paiement d'abonnement n'a pas validé l'encaissement, Growth maintient le statut EN_ATTENTE_ABONNEMENT, refuse toute saisie d'écriture et ne répond à aucune question financière.")
+    p_paylock.add_run("6.4 Coupure Stricte à J+7 & Verrou de Paiement Wave Officiel :\n").bold = True
+    p_paylock.add_run("• Dès que les 7 jours sont écoulés sans souscription, Growth suspend strictement tout enregistrement d'écriture.\n"
+                      "• Le message de verrouillage annonce poliment la fin de l'essai et fournit le lien Wave officiel sécurisé (10 000 FCFA / mois) :\n"
+                      "  https://grow-2epo.onrender.com/abonnement?phone=[Telephone]\n"
+                      "• Dès le paiement validé (ou mot-clé « J'ai payé »), le compte est réactivé instantanément 24h/24 pour 30 jours.")
 
     doc.add_paragraph()
 
     # =========================================================================
     # ÉTAPE 7
     # =========================================================================
-    doc.add_heading("ÉTAPE 7 : ROUTINE QUOTIDIENNE ACTIVE & RITUEL DU SOIR", level=1)
+    doc.add_heading("ÉTAPE 7 : ROUTINE QUOTIDIENNE ACTIVE & RITUELS DE CLÔTURE", level=1)
     p_rout = doc.add_paragraph()
-    p_rout.add_run("Dès que l'abonnement est confirmé par le système, le compte bascule en ACTIF.\n\n")
+    p_rout.add_run("Pendant l'essai gratuit de 7 jours et dès validation de l'abonnement mensuel, le compte fonctionne en régime de croisière actif :\n\n")
 
     p_rout.add_run("7.1 Enregistrement des Ventes et Dépenses en Journée :\n").bold = True
     p_rout.add_run("• Ventes/dépenses dictées en note vocale (Wolof ou Français dakarois) ou par texte -> Imputées au compte SYSCOHADA (701 Ventes, 601 Achats, 605 Charges) en 1.5 seconde chrono.\n"
-                   "• Encaissements Wave Business et Orange Business reçus par webhook direct -> Enregistrés automatiquement sans intervention.\n"
-                   "• Flux reçus exceptionnellement sur compte personnel -> Dictés par vocal avec conseil bienveillant de faire scanner le QR Business officiel.\n\n")
+                   "• Encaissements Wave Business reçus par webhook en direct -> Enregistrés 100% silencieusement sans notification intempestive en journée pour zéro saturation WhatsApp.\n"
+                   "• Flux reçus exceptionnellement sur compte personnel -> Dictés par vocal avec conseil bienveillant de faire scanner le QR Wave Business officiel.\n\n")
 
     p_rout.add_run("7.2 Système des Relances Actives Toutes les 3 Heures :\n").bold = True
     p_rout.add_run("• ⏰ 11h30 (Point Espèces & Popote) : Rappel amical pour enregistrer les sorties liquides (repas midi, monnaie, déchargement).\n"
                    "• ⏰ 15h00 (Point Stocks & Grossistes) : Rappel pour noter les arrivages de marchandises et variations de prix d'achat grossistes.\n"
                    "• ⏰ 18h00 (Point Matériel & Grosses Dépenses) : Vérification des réparations, pannes ou achats d'équipements de l'après-midi.\n\n")
 
-    p_rout.add_run("7.3 À 20h00 : Le Grand Rituel de Caisse Consolidé :\n").bold = True
+    p_rout.add_run("7.3 À 00h00 (Minuit pile) : Le Grand Rituel de Caisse Consolidé :\n").bold = True
     p_rout.add_run("Envoi automatique du bilan de la journée comprenant :\n"
-                   "1. Le message texte synthétique avec ventilation des 5 poches de trésorerie (Wave Business, Orange Business, Wave Perso, OM Perso, Cash tiroir).\n"
-                   "2. La Note Vocale Audio officielle lue en français dakarois pour que le commerçant puisse l'écouter en fermant son commerce.\n"
-                   "3. Les boutons interactifs [✅ Valider ma caisse] ou [✏️ Ajouter une dépense oubliée].\n\n")
+                   "1. Le message texte synthétique avec ventilation des 5 poches de trésorerie (Wave Business, OM Business, Wave Perso, OM Perso, Cash tiroir).\n"
+                   "2. La Note Vocale Audio officielle (Voix unique multilingue Ava) lue avec chaleur et clarté.\n"
+                   "3. La consigne de repos : « Il est minuit, dormez en paix ! Vous pourrez valider votre caisse ou me répondre demain matin dès 06h00 à votre réveil... ».\n"
+                   "4. Accueil matinal à 06h00 avec le point du jour et le rattrapage éventuel.\n\n")
 
     p_rout.add_run("7.4 Consultation Journal & Espace Cabinet :\n").bold = True
     p_rout.add_run("• Le commerçant accède à son journal scellé en direct sur https://grow-2epo.onrender.com/journal?phone=...\n"

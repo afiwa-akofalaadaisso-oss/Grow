@@ -614,15 +614,24 @@ def get_message_abonnement_expire(info_abo: dict, base_url: str, phone: str) -> 
     lien_abo = f"{base_url}/abonnement?phone={clean_p}"
     date_deb = info_abo.get("date_paiement_fr", "récemment")
     date_fin = info_abo.get("date_expiration_fr", "récemment")
+    st = get_onboarding_state(clean_p)
+    est_essai = st.get("type_abonnement") == "ESSAI_7J" or "Essai" in str(st.get("plan_abonnement", ""))
+
+    if est_essai:
+        titre = "🔒 *Période d'Essai de 7 Jours Écoulée — Passage à l'Abonnement Professionnel*"
+        intro_motif = f"Bonjour ! Votre période de **7 jours d'essai gratuit offert**, démarrée le {date_deb}, a pris fin le *{date_fin}*."
+    else:
+        titre = "🔒 *Service Growth temporairement suspendu*"
+        intro_motif = f"Bonjour ! Votre abonnement pour votre boutique, démarré le {date_deb}, est arrivé à échéance le *{date_fin}*."
 
     return (
-        "🔒 *Service Growth temporairement suspendu*\n\n"
-        f"Bonjour ! Votre abonnement pour votre boutique, démarré le {date_deb}, est arrivé à échéance le *{date_fin}*.\n\n"
+        f"{titre}\n\n"
+        f"{intro_motif}\n\n"
         "⚠️ *Collecte et enregistrement interrompus :*\n"
-        "Tant que votre abonnement n'est pas renouvelé, je ne peux plus recevoir, traiter ni stocker vos opérations de vente, dépenses ou caisse.\n\n"
-        "👉 *Pour réactiver immédiatement votre copilote :*\n"
-        f"Réglez votre mensualité en 1 clic par Wave :\n{lien_abo}\n\n"
-        "💡 Dès votre règlement validé, vos services reprennent instantanément !"
+        "Tant que votre abonnement n'est pas actif, je ne peux plus recevoir, traiter ni stocker vos opérations de vente, dépenses ou caisse.\n\n"
+        "👉 *Pour réactiver immédiatement votre copilote Growth :*\n"
+        f"Réglez votre mensualité (10 000 FCFA / mois) en 1 clic par Wave :\n{lien_abo}\n\n"
+        "💡 *Dès votre règlement validé, répondez simplement « J'ai payé » pour reprendre instantanément vos services !*"
     )
 
 
@@ -5166,15 +5175,29 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         synchroniser_bilan_structurel_depart(clean_phone, "DETTE", dettes_val, "Dettes fournisseurs de départ")
 
         # =====================================================================
-        # ÉTAPE 6 : SCELLAGE BILAN D'OUVERTURE & VERROU D'ABONNEMENT PROFESSIONNEL
+        # ÉTAPE 6 : SCELLAGE BILAN D'OUVERTURE & ACTIVATION ESSAI GRATUIT 7 JOURS
         # =====================================================================
-        update_onboarding_state(sender_phone, "etape", "PHASE_6_VERROU_ABONNEMENT")
-        update_onboarding_state(sender_phone, "statut", "EN_ATTENTE_ABONNEMENT")
+        now_dt = datetime.now()
+        exp_essai = now_dt + timedelta(days=7)
+        now_str = now_dt.strftime("%Y-%m-%d %H:%M:%S")
+        exp_str = exp_essai.strftime("%Y-%m-%d %H:%M:%S")
+        exp_fr = exp_essai.strftime("%d/%m/%Y")
+
+        update_onboarding_state(sender_phone, "abonnement_valide", True)
+        update_onboarding_state(sender_phone, "type_abonnement", "ESSAI_7J")
+        update_onboarding_state(sender_phone, "plan_abonnement", "Essai Gratuit 7 Jours")
+        update_onboarding_state(sender_phone, "date_debut_essai", now_str)
+        update_onboarding_state(sender_phone, "date_paiement_abonnement", now_str)
+        update_onboarding_state(sender_phone, "date_expiration_abonnement", exp_str)
+        update_onboarding_state(sender_phone, "etape", "TERMINE")
+        update_onboarding_state(sender_phone, "statut", "COMPLET")
 
         caisse_especes = onboarding.get("caisse_especes_fcfa") or 0
         treso_comptes = onboarding.get("tresorerie_depart_fcfa") or 0
         stock_fcfa = onboarding.get("valeur_stock_fcfa") or 0
         immo_fcfa = onboarding.get("immobilisations_fcfa") or 0
+        mode_comm = onboarding.get("mode_communication") or "VOCAL"
+        mode_str = "en note vocale 🎙️" if mode_comm == "VOCAL" else "par message écrit ✍️"
 
         return (
             f"🎉 *Félicitations {nom_ent} ! Votre dossier d'entreprise et votre Bilan d'Ouverture initial sont 100% scellés conformes SYSCOHADA SMT !*\n\n"
@@ -5185,18 +5208,17 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             f"• 🛠️ Immobilisations & Équipements (241) : *{immo_fcfa:,.0f} FCFA* (Amortissements programmés)\n"
             f"• 🤝 Créances Clients (411) : *{creances_val:,.0f} FCFA*\n"
             f"• 💼 Dettes Fournisseurs (401) : *{dettes_val:,.0f} FCFA*\n\n"
-            "🔒 **Activation de votre Routine Quotidienne (Pack d'Accueil Gratuit Terminé) :**\n"
-            "Pour démarrer votre copilote au quotidien (saisie de vos ventes par note vocale Wolof/Français en 1.5s chrono, "
-            "points d'étape du Berger toutes les 3h, grand rituel de clôture de caisse à 20h00 avec note vocale audio et Journal Web sécurisé), "
-            "veuillez activer votre abonnement mensuel Growth.\n\n"
-            "💳 *Lien de Paiement Officiel Sécurisé :*\n"
-            f"{lien_abo}\n"
-            "*(Paiement direct et instantané par Wave, Orange Money ou Carte Bancaire - 100% sécurisé et professionnel)*\n\n"
-            "💡 *Dès que votre règlement est effectué, répondez simplement « J'ai payé » pour débloquer votre accès actif immédiat !*"
+            "🎁 **VOTRE CADEAU DE BIENVENUE : 7 JOURS D'ESSAI GRATUIT OFFERTS !**\n"
+            f"Pour vous permettre de vivre l'expérience Growth en situation réelle dans votre boutique, nous vous offrons **7 jours d'accès complet 100% gratuit jusqu'au {exp_fr}** (aucun engagement, aucune carte requise).\n\n"
+            "⚡ **Toutes vos fonctionnalités sont débloquées dès maintenant :**\n"
+            "• Saisie vocale de vos ventes et dépenses en 1.5s chrono (Wolof ou Français)\n"
+            "• Encaissements numériques Wave Business silencieux et automatiques\n"
+            "• Grand Rituel de Clôture consolidé chaque soir à 00h00 (avec note vocale audio et Journal Web)\n\n"
+            f"👉 *Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu {mode_str} !*"
         )
 
     # =========================================================================
-    # ÉTAPE 6 (SUITE) : VERROU STRICT EN ATTENTE D'ABONNEMENT
+    # ÉTAPE 6 (SUITE) : COMPTES EN ATTENTE D'ABONNEMENT (HISTORIQUE OU POST-ESSAI)
     # =========================================================================
     if etape in ["PHASE_6_VERROU_ABONNEMENT", "EN_ATTENTE_ABONNEMENT"]:
         u_txt = (user_text or "").strip().lower()
@@ -6958,8 +6980,9 @@ async def check_and_send_ninea_weekly_reminders():
 
 async def check_and_send_abonnement_j7_reminders():
     """
-    Rappel proactif automatique 7 jours avant expiration :
-    Propose 1 000 FCFA de réduction immédiate (9 000 FCFA au lieu de 10 000 FCFA) pour renouveler avant la date de fin.
+    Rappel proactif automatique avant expiration :
+    - 2 jours avant pour l'Essai Gratuit de 7 jours (avec offre bienvenue 9 000 FCFA)
+    - 7 jours avant pour l'Abonnement standard (avec réduction fidélité 9 000 FCFA au lieu de 10 000 FCFA).
     """
     try:
         states = load_onboarding_states()
@@ -6970,8 +6993,11 @@ async def check_and_send_abonnement_j7_reminders():
                 continue
 
             info = obtenir_info_abonnement(phone)
-            # Vérifier si l'abonnement est actif et qu'il reste entre 1 et 7 jours
-            if info.get("est_abonne") and 0 < info.get("jours_restants", 99) <= 7:
+            est_essai = st.get("type_abonnement") == "ESSAI_7J" or "Essai" in str(st.get("plan_abonnement", ""))
+            seuil_jours = 2 if est_essai else 7
+
+            # Vérifier si l'abonnement/essai est actif et qu'il reste entre 1 et seuil_jours
+            if info.get("est_abonne") and 0 < info.get("jours_restants", 99) <= seuil_jours:
                 date_fin_fr = info.get("date_expiration_fr")
                 if st.get("dernier_rappel_j7_date_fin") == date_fin_fr:
                     continue
@@ -6981,19 +7007,30 @@ async def check_and_send_abonnement_j7_reminders():
                 jours = info.get("jours_restants")
                 date_deb = info.get("date_paiement_fr")
 
-                msg_j7 = (
-                    "⏳ *Rappel Renouvellement Copilote Growth*\n\n"
-                    f"Bonjour ! Votre abonnement actuel, actif depuis le {date_deb}, arrive à échéance le *{date_fin_fr}* (dans {jours} jours).\n\n"
-                    "Pour que la collecte et l'enregistrement automatique de vos ventes et de votre caisse ne s'arrêtent pas, vous pouvez renouveler dès maintenant.\n\n"
-                    "🎁 *Offre fidélité anticipée :*\n"
-                    "En renouvelant avant votre date de fin, vous bénéficiez de *1 000 FCFA de réduction*, soit votre mois à *9 000 FCFA* au lieu de 10 000 FCFA !\n\n"
-                    f"👉 *Renouvelez en 1 clic via Wave avec votre réduction :*\n{lien_promo}\n\n"
-                    "💡 Vos 30 jours supplémentaires s'ajouteront à la suite de votre période actuelle, vous ne perdez aucun jour !"
-                )
+                if est_essai:
+                    msg_rem = (
+                        "⏳ *Votre Essai Gratuit Growth se termine bientôt !*\n\n"
+                        f"Bonjour ! Votre période de 7 jours d'essai gratuit offert prendra fin le *{date_fin_fr}* (dans {jours} {'jour' if jours == 1 else 'jours'}).\n\n"
+                        "Pour que vos enregistrements de ventes par note vocale et vos clôtures de minuit continuent sans interruption, activez votre abonnement mensuel dès maintenant.\n\n"
+                        "🎁 *Offre spéciale nouveau commerçant :*\n"
+                        "Activez votre abonnement avant la fin de votre essai et profitez de *1 000 FCFA de réduction*, soit votre premier mois à *9 000 FCFA* au lieu de 10 000 FCFA !\n\n"
+                        f"👉 *Activez votre copilote en 1 clic via Wave :*\n{lien_promo}\n\n"
+                        "💡 Vos 30 jours complets démarreront après la fin de votre essai, vous profitez de vos 7 jours offerts jusqu'au bout !"
+                    )
+                else:
+                    msg_rem = (
+                        "⏳ *Rappel Renouvellement Copilote Growth*\n\n"
+                        f"Bonjour ! Votre abonnement actuel, actif depuis le {date_deb}, arrive à échéance le *{date_fin_fr}* (dans {jours} jours).\n\n"
+                        "Pour que la collecte et l'enregistrement automatique de vos ventes et de votre caisse ne s'arrêtent pas, vous pouvez renouveler dès maintenant.\n\n"
+                        "🎁 *Offre fidélité anticipée :*\n"
+                        "En renouvelant avant votre date de fin, vous bénéficiez de *1 000 FCFA de réduction*, soit votre mois à *9 000 FCFA* au lieu de 10 000 FCFA !\n\n"
+                        f"👉 *Renouvelez en 1 clic via Wave avec votre réduction :*\n{lien_promo}\n\n"
+                        "💡 Vos 30 jours supplémentaires s'ajouteront à la suite de votre période actuelle, vous ne perdez aucun jour !"
+                    )
 
-                await deliver_whatsapp_response(clean_p, msg_j7)
+                await deliver_whatsapp_response(clean_p, msg_rem)
                 update_onboarding_state(phone, "dernier_rappel_j7_date_fin", date_fin_fr)
-                print(f"[RAPPEL J-7 ABONNEMENT ENVOYÉ] à {clean_p} (Échéance: {date_fin_fr})")
+                print(f"[RAPPEL EXPIRATION ENVOYÉ] à {clean_p} (Essai: {est_essai}, Échéance: {date_fin_fr})")
     except Exception as e_rem:
         print(f"Info check_and_send_abonnement_j7_reminders: {e_rem}")
 
