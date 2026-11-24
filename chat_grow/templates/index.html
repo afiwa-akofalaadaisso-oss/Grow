@@ -1201,7 +1201,7 @@
                 <div id="alertPMEError"
                     class="hidden mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
                     <i class="fa-solid fa-circle-exclamation text-rose-500 text-sm shrink-0"></i>
-                    <span id="txtPMEError">Numéro non reconnu en base.</span>
+                    <span id="txtPMEError">Numéro non reconnu chez Growth.</span>
                 </div>
 
                 <form onsubmit="demanderCodeOtpPME(event)" class="space-y-4">
@@ -1453,7 +1453,7 @@
 
             if (alertBox) alertBox.classList.add('hidden');
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Création du compte en base...</span>`;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Création du compte chez Growth...</span>`;
 
             try {
                 const response = await fetch('/api/comptable/inscription', {
@@ -1583,7 +1583,7 @@
 
             currentPmePhone = digits;
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Vérification en base & envoi WhatsApp...</span>`;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Vérification chez Growth & envoi WhatsApp...</span>`;
 
             try {
                 const response = await fetch('/api/pme/demander-otp', {

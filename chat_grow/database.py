@@ -1657,7 +1657,7 @@ def authentifier_comptable(identifiant: str, mot_de_passe: str) -> Dict[str, Any
             conn.close()
             return {
                 "status": "error",
-                "message": "Ce cabinet n'est pas inscrit dans la base de données. Veuillez créer votre compte dans l'onglet Inscription Cabinet."
+                "message": "Ce cabinet n'est pas inscrit chez Growth. Veuillez créer votre compte dans l'onglet Inscription Cabinet."
             }
 
         hash_stocke = row["mot_de_passe_hash"]
