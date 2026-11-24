@@ -113,6 +113,20 @@
             background: rgba(255, 255, 255, 0.08) !important;
             border-color: #ffffff !important;
         }
+    
+        /* Sécurité absolue lisibilité : tout bouton ou élément sur fond blanc a un texte NOIR PUR */
+        .bg-white, .btn-white {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+        }
+        .bg-white span, .bg-white i, .bg-white div, .bg-white p, .btn-white * {
+            color: #000000 !important;
+        }
+        .bg-white .font-mono, .bg-white .badge-count {
+            background-color: rgba(0, 0, 0, 0.12) !important;
+            color: #000000 !important;
+        }
+
     </style>
 </head>
 
@@ -335,9 +349,9 @@
         <div class="flex items-center gap-2 border-b border-white/10 pb-2 overflow-x-auto">
             <!-- Onglet 1 : Utilisateurs -->
             <button type="button" onclick="switchCockpitTab('utilisateurs')" id="tabBtnUsers"
-                class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-white text-black text-white shadow-xs cursor-pointer flex-shrink-0">
+                class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-white text-black shadow-xs cursor-pointer flex-shrink-0">
                 <span>Suivi des Utilisateurs</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/20 text-white font-mono"
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-black/15 text-black font-mono font-black"
                     id="tabBadgeUsersCount">0</span>
             </button>
 
@@ -379,7 +393,7 @@
                 <div class="flex items-center gap-2 text-xs flex-wrap">
                     <span class="text-slate-400 font-semibold">Filtre :</span>
                     <button type="button" onclick="setUserFilter('ALL')" id="filterAll"
-                        class="px-2.5 py-1 rounded-lg bg-white text-black text-white font-bold cursor-pointer">Tous</button>
+                        class="px-2.5 py-1 rounded-lg bg-white text-black font-bold cursor-pointer">Tous</button>
                     <button type="button" onclick="setUserFilter('ACTIF')" id="filterActif"
                         class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Actifs</button>
                     <button type="button" onclick="setUserFilter('ATTENTION')" id="filterAttention"
@@ -914,7 +928,7 @@
             if (secAudits) secAudits.classList.add('hidden');
 
             const inactiveCls = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer flex-shrink-0";
-            const activeCls = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-white text-black text-white shadow-xs cursor-pointer flex-shrink-0";
+            const activeCls = "px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-white text-black shadow-xs cursor-pointer flex-shrink-0";
 
             if (btnUsers) btnUsers.className = inactiveCls;
             if (btnAbo) btnAbo.className = inactiveCls;
@@ -1496,7 +1510,7 @@ async function refreshCockpitData() {
             ['filterAll', 'filterActif', 'filterAttention', 'filterInactif'].forEach(id => {
                 document.getElementById(id).className = "px-2.5 py-1 rounded-lg text-slate-400 bg-[#07090e] border border-white/10 hover:bg-white/5 cursor-pointer";
             });
-            if (filter === 'ALL') document.getElementById('filterAll').className = "px-2.5 py-1 rounded-lg bg-white text-black text-white font-bold cursor-pointer";
+            if (filter === 'ALL') document.getElementById('filterAll').className = "px-2.5 py-1 rounded-lg bg-white text-black font-bold cursor-pointer";
             if (filter === 'ACTIF') document.getElementById('filterActif').className = "px-2.5 py-1 rounded-lg bg-white text-black";
             if (filter === 'ATTENTION') document.getElementById('filterAttention').className = "px-2.5 py-1 rounded-lg bg-white/10 text-white border border-white/20";
             if (filter === 'INACTIF') document.getElementById('filterInactif').className = "px-2.5 py-1 rounded-lg bg-[#0d121d] text-white border border-white/20";
