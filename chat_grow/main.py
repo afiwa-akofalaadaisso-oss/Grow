@@ -2134,14 +2134,7 @@ async def api_comptable_inscription(payload: Dict[str, Any], response: Response)
     email = payload.get("email", "").strip()
     telephone = payload.get("telephone", "").strip()
     mot_de_passe = payload.get("mot_de_passe", "")
-    code_partenaire = payload.get("code_partenaire", "").strip()
 
-    # Contrôle strict du Code Partenaire Cabinet Growth
-    if not code_partenaire or code_partenaire not in GROWTH_PARTNER_CODES:
-        return {
-            "status": "error",
-            "message": f"Code Partenaire Growth obligatoire et invalide. L'inscription est réservée aux cabinets agréés partenaires. Veuillez nous contacter à {GROWTH_OFFICIAL_CONTACT_EMAIL} pour recevoir votre code officiel."
-        }
 
     if not nom_complet or not nom_cabinet or not email or not mot_de_passe:
         return {"status": "error", "message": "Veuillez renseigner tous les champs obligatoires (*)."}
