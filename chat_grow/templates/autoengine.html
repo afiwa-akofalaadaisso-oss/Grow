@@ -7,11 +7,13 @@
     <title>AUTOENGINE • AI & Business Automation | Systèmes Intelligents & Agents IA</title>
     <meta name="description"
         content="AutoEngine transforme les processus des entreprises en systèmes intelligents et automatisés. Ingénierie d'agents IA, automatisation de workflows et intégration omnicanale (Web, Logiciels Internes, CRM, ERP, API & Messageries).">
-    
+
     <!-- Polices Google Font & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -20,13 +22,13 @@
             --bg-card: #0d121d;
             --bg-card-hover: #131b2a;
             --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(160, 217, 210, 0.3);
+            --border-glow: rgba(255, 255, 255, 0.15);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
-            --cyan-glow: #a0d9d2;
+            --cyan-glow: #ffffff;
             --blue-tech: #142b27;
-            --emerald-grow: #a0d9d2;
+            --emerald-grow: #ffffff;
             --wa-green: #25D366;
             --font-main: 'Plus Jakarta Sans', -apple-system, sans-serif;
             --font-display: 'Space Grotesk', var(--font-main);
@@ -54,7 +56,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: 
+            background-image:
                 linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -68,7 +70,7 @@
             left: 20vw;
             width: 60vw;
             height: 60vw;
-            background: radial-gradient(circle, rgba(160, 217, 210, 0.05) 0%, rgba(20, 43, 39, 0.1) 40%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, rgba(15, 23, 42, 0.05) 40%, transparent 70%);
             filter: blur(100px);
             pointer-events: none;
             z-index: 0;
@@ -80,7 +82,7 @@
             right: 10vw;
             width: 55vw;
             height: 55vw;
-            background: radial-gradient(circle, rgba(20, 43, 39, 0.15) 0%, rgba(160, 217, 210, 0.03) 50%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.015) 0%, transparent 50%, transparent 70%);
             filter: blur(120px);
             pointer-events: none;
             z-index: 0;
@@ -127,11 +129,11 @@
             height: 38px;
             border-radius: 10px;
             background: #142b27;
-            border: 1.5px solid #a0d9d2;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 14px rgba(20, 43, 39, 0.4);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
         }
 
         .logo-symbol i {
@@ -213,7 +215,7 @@
         .btn-nav-cta {
             background: #142b27;
             color: #ffffff;
-            border: 1.5px solid #a0d9d2;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
             border: none;
             border-radius: 10px;
             padding: 9px 18px;
@@ -221,7 +223,7 @@
             font-weight: 800;
             text-decoration: none;
             transition: all 0.2s;
-            box-shadow: 0 4px 18px rgba(20, 43, 39, 0.4);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -229,7 +231,7 @@
 
         .btn-nav-cta:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(20, 43, 39, 0.55);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
         }
 
         /* Hero Section */
@@ -246,13 +248,13 @@
             gap: 9px;
             padding: 6px 16px;
             border-radius: 99px;
-            background: rgba(160, 217, 210, 0.08);
-            border: 1px solid rgba(160, 217, 210, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             font-size: 12.5px;
             font-weight: 700;
             color: var(--cyan-glow);
             margin-bottom: 24px;
-            box-shadow: 0 0 20px rgba(160, 217, 210, 0.12);
+            box-shadow: none;
         }
 
         .hero-pill .pulse-dot {
@@ -265,8 +267,17 @@
         }
 
         @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.4); opacity: 0.6; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.4);
+                opacity: 0.6;
+            }
         }
 
         .hero-title {
@@ -281,7 +292,7 @@
         }
 
         .hero-title .gradient-text {
-            background: linear-gradient(135deg, #ffffff 40%, #a0d9d2 100%);
+            background: linear-gradient(135deg, #ffffff 60%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -314,7 +325,7 @@
         .btn-hero-primary {
             background: #142b27;
             color: #ffffff;
-            border: 1.5px solid #a0d9d2;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
             padding: 15px 32px;
             border-radius: 12px;
             font-weight: 800;
@@ -323,13 +334,13 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 10px 30px rgba(20, 43, 39, 0.45);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
             transition: all 0.25s;
         }
 
         .btn-hero-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 40px rgba(20, 43, 39, 0.6);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
         }
 
         .btn-hero-secondary {
@@ -384,8 +395,13 @@
             margin-bottom: 6px;
         }
 
-        .metric-value.cyan { color: var(--cyan-glow); }
-        .metric-value.emerald { color: var(--emerald-grow); }
+        .metric-value.cyan {
+            color: var(--cyan-glow);
+        }
+
+        .metric-value.emerald {
+            color: var(--emerald-grow);
+        }
 
         .metric-label {
             font-size: 12.5px;
@@ -450,7 +466,7 @@
 
         .pillar-card:hover {
             background: var(--bg-card-hover);
-            border-color: rgba(20, 43, 39, 0.4);
+            border-color: rgba(0, 0, 0, 0.4);
             transform: translateY(-4px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
@@ -459,8 +475,8 @@
             width: 52px;
             height: 52px;
             border-radius: 14px;
-            background: rgba(20, 43, 39, 0.6);
-            border: 1px solid rgba(160, 217, 210, 0.25);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -514,11 +530,11 @@
         /* SECTION FLAGSHIP : GROWTH - 1ER AGENT IA D'AUTOENGINE                      */
         /* ------------------------------------------------------------------------- */
         .flagship-box {
-            background: linear-gradient(135deg, rgba(13, 18, 29, 0.95) 0%, rgba(9, 28, 24, 0.85) 100%);
-            border: 1.5px solid rgba(20, 43, 39, 0.45);
+            background: linear-gradient(135deg, #0d121d 0%, #111827 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 28px;
             padding: 48px;
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), 0 0 50px rgba(20, 43, 39, 0.35);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), none;
             position: relative;
             overflow: hidden;
         }
@@ -527,9 +543,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(20, 43, 39, 0.5);
-            border: 1px solid rgba(160, 217, 210, 0.3);
-            color: #a0d9d2;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
             padding: 5px 14px;
             border-radius: 99px;
             font-size: 12px;
@@ -556,7 +572,7 @@
         }
 
         .flagship-title span {
-            color: #a0d9d2;
+            color: #ffffff;
         }
 
         .flagship-desc {
@@ -582,7 +598,7 @@
         }
 
         .ff-item i {
-            color: #a0d9d2;
+            color: #ffffff;
             margin-top: 3px;
             font-size: 14px;
         }
@@ -597,7 +613,7 @@
         .btn-growth-portal {
             background: #142b27;
             color: #ffffff;
-            border: 1.5px solid #a0d9d2;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
             padding: 13px 26px;
             border-radius: 12px;
             font-weight: 800;
@@ -606,13 +622,13 @@
             display: inline-flex;
             align-items: center;
             gap: 9px;
-            box-shadow: 0 8px 24px rgba(20, 43, 39, 0.45);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
             transition: all 0.2s;
         }
 
         .btn-growth-portal:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(20, 43, 39, 0.6);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
         }
 
         .btn-growth-cabinet {
@@ -665,7 +681,7 @@
         }
 
         .qr-brand i {
-            color: #a0d9d2;
+            color: #ffffff;
         }
 
         .qr-badge-wa {
@@ -743,7 +759,7 @@
         }
 
         .uc-card:hover {
-            border-color: rgba(160, 217, 210, 0.3);
+            border-color: rgba(255, 255, 255, 0.15);
             transform: translateY(-3px);
             background: var(--bg-card-hover);
         }
@@ -856,8 +872,8 @@
         }
 
         .calc-result-panel {
-            background: rgba(20, 43, 39, 0.35);
-            border: 1px solid rgba(160, 217, 210, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 18px;
             padding: 32px;
             text-align: center;
@@ -900,7 +916,7 @@
         .pricing-card.featured {
             background: linear-gradient(180deg, #101928 0%, #0d121d 100%);
             border: 1.5px solid var(--cyan-glow);
-            box-shadow: 0 0 40px rgba(20, 43, 39, 0.45);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
         }
 
         .featured-tag {
@@ -910,7 +926,7 @@
             transform: translateX(-50%);
             background: #142b27;
             color: #ffffff;
-            border: 1.5px solid #a0d9d2;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
             font-size: 10.5px;
             font-weight: 900;
             text-transform: uppercase;
@@ -976,7 +992,7 @@
         .btn-pricing.primary {
             background: #142b27;
             color: #ffffff;
-            border: 1.5px solid #a0d9d2;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
             border: none;
         }
 
@@ -1018,8 +1034,8 @@
 
         .form-input:focus {
             border-color: var(--cyan-glow);
-            background: rgba(20, 43, 39, 0.25);
-            box-shadow: 0 0 15px rgba(20, 43, 39, 0.3);
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Footer */
@@ -1086,25 +1102,74 @@
 
         /* Responsive Media Queries */
         @media (max-width: 992px) {
-            .metrics-banner { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-            .metric-item:nth-child(2) { border-right: none; }
-            .pillars-grid { grid-template-columns: 1fr; }
-            .flagship-grid { grid-template-columns: 1fr; }
-            .use-cases-grid { grid-template-columns: 1fr; }
-            .method-steps { grid-template-columns: 1fr; }
-            .roi-calculator-box { grid-template-columns: 1fr; }
-            .pricing-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .metrics-banner {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .metric-item:nth-child(2) {
+                border-right: none;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flagship-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .method-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .roi-calculator-box {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (max-width: 640px) {
-            .nav-menu { display: none; }
-            .form-row { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr; }
-            .metrics-banner { grid-template-columns: 1fr; }
-            .metric-item { border-right: none !important; border-bottom: 1px solid var(--border-subtle); padding-bottom: 14px; }
-            .flagship-box { padding: 28px 20px; }
-            .flagship-features { grid-template-columns: 1fr; }
+            .nav-menu {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-banner {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-item {
+                border-right: none !important;
+                border-bottom: 1px solid var(--border-subtle);
+                padding-bottom: 14px;
+            }
+
+            .flagship-box {
+                padding: 28px 20px;
+            }
+
+            .flagship-features {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1132,7 +1197,8 @@
 
                 <ul class="nav-menu">
                     <li><a href="#piliers" class="nav-link">Piliers IA</a></li>
-                    <li><a href="#growth" class="nav-link" style="color: #a0d9d2;"><i class="fa-solid fa-bolt" style="font-size: 11px;"></i> Agent Growth</a></li>
+                    <li><a href="#growth" class="nav-link" style="color: #ffffff;"><i class="fa-solid fa-bolt"
+                                style="font-size: 11px;"></i> Agent Growth</a></li>
                     <li><a href="#secteurs" class="nav-link">Secteurs</a></li>
                     <li><a href="#methodologie" class="nav-link">Méthodologie</a></li>
                     <li><a href="#simulateur" class="nav-link">Simulateur ROI</a></li>
@@ -1158,11 +1224,13 @@
             </div>
 
             <h1 class="hero-title">
-                Nous transformons les processus des entreprises en <span class="gradient-text">systèmes intelligents et automatisés.</span>
+                Nous transformons les processus des entreprises en <span class="gradient-text">systèmes intelligents et
+                    automatisés.</span>
             </h1>
 
             <p class="hero-subtitle">
-                Conception d'agents IA verticaux, automatisation de workflows critiques et intégration de systèmes intelligents.
+                Conception d'agents IA verticaux, automatisation de workflows critiques et intégration de systèmes
+                intelligents.
                 <span class="hero-tagline">Less manual work. More intelligent business.</span>
             </p>
 
@@ -1172,7 +1240,7 @@
                     <span>Auditer Mon Entreprise</span>
                 </a>
                 <a href="#growth" class="btn-hero-secondary">
-                    <i class="fa-solid fa-shield-halved" style="color: #a0d9d2;"></i>
+                    <i class="fa-solid fa-shield-halved" style="color: #ffffff;"></i>
                     <span>Découvrir notre 1er Agent : Growth</span>
                 </a>
             </div>
@@ -1206,7 +1274,8 @@
                 <span class="section-tag">Notre Savoir-Faire d'Ingénierie</span>
                 <h2 class="section-title">Quatre Piliers d'Automatisation Intelligente</h2>
                 <p class="section-desc">
-                    Nous concevons des architectures d'automatisation cognitive d'envergure pour transformer vos opérations manuelles en systèmes autonomes et résilients.
+                    Nous concevons des architectures d'automatisation cognitive d'envergure pour transformer vos
+                    opérations manuelles en systèmes autonomes et résilients.
                 </p>
             </div>
 
@@ -1219,7 +1288,9 @@
                     </div>
                     <h3 class="pillar-title">Systèmes Multi-Agents &amp; Copilotes Décisionnels</h3>
                     <p class="pillar-text">
-                        Déploiement d'agents IA hautement spécialisés qui collaborent en essaim : prospection B2B grands comptes, assistants exécutifs de direction, analyse prédictive de données financières et support opérationnel L1/L2/L3.
+                        Déploiement d'agents IA hautement spécialisés qui collaborent en essaim : prospection B2B grands
+                        comptes, assistants exécutifs de direction, analyse prédictive de données financières et support
+                        opérationnel L1/L2/L3.
                     </p>
                     <div class="pillar-tags">
                         <span class="tech-pill">Intelligence Collective (Swarms)</span>
@@ -1237,7 +1308,9 @@
                     </div>
                     <h3 class="pillar-title">Automatisation des Processus Métiers Critiques</h3>
                     <p class="pillar-text">
-                        Élimination des goulots d'étranglement sur toute la chaîne de valeur : cycles Purchase-to-Pay, réconciliation multi-comptes bancaires, vérifications de conformité (KYC, AML, audits), et gestion des opérations de supply chain.
+                        Élimination des goulots d'étranglement sur toute la chaîne de valeur : cycles Purchase-to-Pay,
+                        réconciliation multi-comptes bancaires, vérifications de conformité (KYC, AML, audits), et
+                        gestion des opérations de supply chain.
                     </p>
                     <div class="pillar-tags">
                         <span class="tech-pill">Supply Chain &amp; Logistique</span>
@@ -1255,7 +1328,9 @@
                     </div>
                     <h3 class="pillar-title">Intégration d'Architectures d'Entreprise &amp; ERP</h3>
                     <p class="pillar-text">
-                        Connexion robuste et sécurisée avec les infrastructures maîtresses : ERP industriels (SAP, Oracle, Odoo, Sage), CRM d'envergure (Salesforce, HubSpot), entrepôts de données (BigQuery, PostgreSQL, Snowflake) et API propriétaires.
+                        Connexion robuste et sécurisée avec les infrastructures maîtresses : ERP industriels (SAP,
+                        Oracle, Odoo, Sage), CRM d'envergure (Salesforce, HubSpot), entrepôts de données (BigQuery,
+                        PostgreSQL, Snowflake) et API propriétaires.
                     </p>
                     <div class="pillar-tags">
                         <span class="tech-pill">SAP &bull; Oracle &bull; Odoo &bull; Sage</span>
@@ -1273,7 +1348,9 @@
                     </div>
                     <h3 class="pillar-title">Raisonnement Cognitif &amp; RAG d'Entreprise</h3>
                     <p class="pillar-text">
-                        Moteurs d'IA entraînés sur vos bases de connaissances propriétaires : analyse instantanée de milliers de pages de contrats juridiques, extraction de données non structurées sur documents scannés, et prise de décision sous garde-fous stricts.
+                        Moteurs d'IA entraînés sur vos bases de connaissances propriétaires : analyse instantanée de
+                        milliers de pages de contrats juridiques, extraction de données non structurées sur documents
+                        scannés, et prise de décision sous garde-fous stricts.
                     </p>
                     <div class="pillar-tags">
                         <span class="tech-pill">RAG Haute Précision</span>
@@ -1302,7 +1379,10 @@
                             Rencontrez <span>Growth</span> : Le Premier Agent Financier &amp; Comptable d'Afrique
                         </h2>
                         <p class="flagship-desc">
-                            Conçu et propulsé par l'ingénierie AutoEngine, <strong>Growth</strong> est un écosystème d'ingénierie financière complet : un portail Web avancé pour les experts-comptables, un tableau de bord dirigeant et un accès mobile instantané pour capturer les flux financiers en temps réel.
+                            Conçu et propulsé par l'ingénierie AutoEngine, <strong>Growth</strong> est un écosystème
+                            d'ingénierie financière complet : un portail Web avancé pour les experts-comptables, un
+                            tableau de bord dirigeant et un accès mobile instantané pour capturer les flux financiers en
+                            temps réel.
                         </p>
 
                         <div class="flagship-features">
@@ -1325,7 +1405,8 @@
                         </div>
 
                         <div class="flagship-actions">
-                            <a href="/" class="btn-growth-portal" title="Accéder à la page d'accueil officielle de Growth">
+                            <a href="/" class="btn-growth-portal"
+                                title="Accéder à la page d'accueil officielle de Growth">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 <span>Accéder au Portail Growth</span>
                             </a>
@@ -1337,7 +1418,8 @@
                         <div class="qr-live-card">
                             <div class="qr-card-header">
                                 <div class="qr-brand">
-                                    <img src="/static/grow_icon_squircle.png?v=4" alt="Logo Growth" style="width: 24px; height: 24px; border-radius: 6px; object-fit: contain; display: inline-block;">
+                                    <img src="/static/grow_icon_squircle.png?v=4" alt="Logo Growth"
+                                        style="width: 24px; height: 24px; border-radius: 6px; object-fit: contain; display: inline-block;">
                                     <span>Agent Growth</span>
                                 </div>
                                 <span class="qr-badge-wa">
@@ -1346,7 +1428,8 @@
                             </div>
 
                             <div class="qr-img-box">
-                                <img src="/static/qr_code_whatsapp.png?v=black_3" alt="QR Code WhatsApp Growth (Noir)" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&amp;color=0-0-0&amp;data=https%3A%2F%2Fwa.me%2F221788773827%3Ftext%3DBonjour%2520Grow';" />
+                                <img src="/static/qr_code_whatsapp.png?v=black_3" alt="QR Code WhatsApp Growth (Noir)"
+                                    onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&amp;color=0-0-0&amp;data=https%3A%2F%2Fwa.me%2F221788773827%3Ftext%3DBonjour%2520Grow';" />
                             </div>
 
                             <p class="qr-prompt-text">
@@ -1354,7 +1437,8 @@
                                 Envoyez un vocal ou une photo sur WhatsApp au <strong>+221 78 877 38 27</strong>
                             </p>
 
-                            <a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank" class="btn-wa-direct">
+                            <a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank"
+                                class="btn-wa-direct">
                                 <i class="fa-brands fa-whatsapp"></i>
                                 <span>Discuter avec Growth sur WhatsApp</span>
                             </a>
@@ -1372,7 +1456,8 @@
                 <span class="section-tag">Adaptabilité Industrielle</span>
                 <h2 class="section-title">Des Agents IA Taillés pour Votre Métier</h2>
                 <p class="section-desc">
-                    De la finance de marché à la chaîne logistique internationale, nos agents IA s'intègrent au cœur des opérations les plus critiques.
+                    De la finance de marché à la chaîne logistique internationale, nos agents IA s'intègrent au cœur des
+                    opérations les plus critiques.
                 </p>
             </div>
 
@@ -1382,7 +1467,8 @@
                     <div class="uc-icon"><i class="fa-solid fa-building-columns"></i></div>
                     <h3 class="uc-title">Banque, Assurance &amp; Fintech</h3>
                     <p class="uc-desc">
-                        Onboarding KYC/KYB automatisé, scoring crédit instantané, détection des fraudes financières, conciliation des flux interbancaires et conformité réglementaire continue.
+                        Onboarding KYC/KYB automatisé, scoring crédit instantané, détection des fraudes financières,
+                        conciliation des flux interbancaires et conformité réglementaire continue.
                     </p>
                 </div>
 
@@ -1391,7 +1477,8 @@
                     <div class="uc-icon"><i class="fa-solid fa-truck-fast"></i></div>
                     <h3 class="uc-title">Industrie, Fret &amp; Supply Chain</h3>
                     <p class="uc-desc">
-                        Suivi automatisé des expéditions de fret, gestion prédictive des stocks multi-entrepôts, dédouanement documentaire et dispatch intelligent des flottes.
+                        Suivi automatisé des expéditions de fret, gestion prédictive des stocks multi-entrepôts,
+                        dédouanement documentaire et dispatch intelligent des flottes.
                     </p>
                 </div>
 
@@ -1400,7 +1487,8 @@
                     <div class="uc-icon"><i class="fa-solid fa-scale-balanced"></i></div>
                     <h3 class="uc-title">Juridique, Notaires &amp; Conformité</h3>
                     <p class="uc-desc">
-                        Audit contractuel assisté par IA, extraction des clauses critiques et de risque, génération d'actes juridiques normalisés et synthèse de volumineux dossiers contentieux.
+                        Audit contractuel assisté par IA, extraction des clauses critiques et de risque, génération
+                        d'actes juridiques normalisés et synthèse de volumineux dossiers contentieux.
                     </p>
                 </div>
 
@@ -1409,7 +1497,8 @@
                     <div class="uc-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
                     <h3 class="uc-title">Cabinets d'Audit &amp; Experts-Comptables</h3>
                     <p class="uc-desc">
-                        Collecte automatisée de pièces comptables probantes, lettrage de masse, détection des ruptures de FEC et génération des liasses financières officielles (SYSCOHADA / IFRS).
+                        Collecte automatisée de pièces comptables probantes, lettrage de masse, détection des ruptures
+                        de FEC et génération des liasses financières officielles (SYSCOHADA / IFRS).
                     </p>
                 </div>
 
@@ -1418,7 +1507,8 @@
                     <div class="uc-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
                     <h3 class="uc-title">Télécoms, Énergie &amp; Infrastructures</h3>
                     <p class="uc-desc">
-                        Gestion omnicanale de millions d'interactions abonnés, traitement autonome des réclamations de facturation et supervision des incidents d'infrastructure réseau.
+                        Gestion omnicanale de millions d'interactions abonnés, traitement autonome des réclamations de
+                        facturation et supervision des incidents d'infrastructure réseau.
                     </p>
                 </div>
 
@@ -1427,7 +1517,8 @@
                     <div class="uc-icon"><i class="fa-solid fa-hospital"></i></div>
                     <h3 class="uc-title">Santé, Cliniques &amp; Laboratoires</h3>
                     <p class="uc-desc">
-                        Numérisation et synthèse sécurisée de dossiers médicaux, coordination automatisée des examens, acheminement des résultats d'analyses et conformité des données de santé.
+                        Numérisation et synthèse sécurisée de dossiers médicaux, coordination automatisée des examens,
+                        acheminement des résultats d'analyses et conformité des données de santé.
                     </p>
                 </div>
             </div>
@@ -1441,7 +1532,8 @@
                 <span class="section-tag">Rigueur &amp; Gouvernance</span>
                 <h2 class="section-title">L'Ingénierie AutoEngine en 5 Étapes</h2>
                 <p class="section-desc">
-                    Nous suivons un protocole rigoureux pour garantir que chaque système automatisé livre des résultats concrets sans perturber vos opérations.
+                    Nous suivons un protocole rigoureux pour garantir que chaque système automatisé livre des résultats
+                    concrets sans perturber vos opérations.
                 </p>
             </div>
 
@@ -1449,27 +1541,32 @@
                 <div class="step-item">
                     <div class="step-badge">ÉTAPE 01</div>
                     <h4 class="step-title">Audit Opérationnel</h4>
-                    <p class="step-text">Cartographie de vos flux et identification des tâches chronophages à fort ROI.</p>
+                    <p class="step-text">Cartographie de vos flux et identification des tâches chronophages à fort ROI.
+                    </p>
                 </div>
                 <div class="step-item">
                     <div class="step-badge">ÉTAPE 02</div>
                     <h4 class="step-title">Architecture IA</h4>
-                    <p class="step-text">Conception des instructions de l'agent, des règles métier et de la mémoire de travail.</p>
+                    <p class="step-text">Conception des instructions de l'agent, des règles métier et de la mémoire de
+                        travail.</p>
                 </div>
                 <div class="step-item">
                     <div class="step-badge">ÉTAPE 03</div>
                     <h4 class="step-title">Connexion &amp; API</h4>
-                    <p class="step-text">Intégration technique complète à vos logiciels internes, bases de données, CRM, ERP et canaux de communication.</p>
+                    <p class="step-text">Intégration technique complète à vos logiciels internes, bases de données, CRM,
+                        ERP et canaux de communication.</p>
                 </div>
                 <div class="step-item">
                     <div class="step-badge">ÉTAPE 04</div>
                     <h4 class="step-title">Tests &amp; Pilote</h4>
-                    <p class="step-text">Déploiement sous supervision étroite avec des garde-fous stricts contre les erreurs.</p>
+                    <p class="step-text">Déploiement sous supervision étroite avec des garde-fous stricts contre les
+                        erreurs.</p>
                 </div>
                 <div class="step-item">
                     <div class="step-badge">ÉTAPE 05</div>
                     <h4 class="step-title">Optimisation Continue</h4>
-                    <p class="step-text">Maintenance active, monitoring des performances et montée en puissance progressive.</p>
+                    <p class="step-text">Maintenance active, monitoring des performances et montée en puissance
+                        progressive.</p>
                 </div>
             </div>
         </div>
@@ -1482,7 +1579,8 @@
                 <span class="section-tag">Impact Mesurable</span>
                 <h2 class="section-title">Simulateur de Gain Financier</h2>
                 <p class="section-desc">
-                    Calculez en quelques secondes les heures et les ressources financières récupérées grâce à l'automatisation intelligente.
+                    Calculez en quelques secondes les heures et les ressources financières récupérées grâce à
+                    l'automatisation intelligente.
                 </p>
             </div>
 
@@ -1493,7 +1591,8 @@
                             <span>Taille de votre équipe opérationnelle</span>
                             <strong id="teamSizeLabel" style="color: var(--cyan-glow);">5 collaborateurs</strong>
                         </div>
-                        <input type="range" class="calc-slider" id="teamSizeSlider" min="1" max="50" value="5" oninput="updateRoiCalc()">
+                        <input type="range" class="calc-slider" id="teamSizeSlider" min="1" max="50" value="5"
+                            oninput="updateRoiCalc()">
                     </div>
 
                     <div class="calc-control-group">
@@ -1501,7 +1600,8 @@
                             <span>Heures manuelles perdues par employé / semaine</span>
                             <strong id="hoursLabel" style="color: var(--cyan-glow);">12 heures / semaine</strong>
                         </div>
-                        <input type="range" class="calc-slider" id="hoursSlider" min="2" max="30" value="12" oninput="updateRoiCalc()">
+                        <input type="range" class="calc-slider" id="hoursSlider" min="2" max="30" value="12"
+                            oninput="updateRoiCalc()">
                     </div>
 
                     <div class="calc-control-group">
@@ -1509,20 +1609,24 @@
                             <span>Taux horaire moyen estimé</span>
                             <strong id="rateLabel" style="color: var(--cyan-glow);">5 000 FCFA / h</strong>
                         </div>
-                        <input type="range" class="calc-slider" id="rateSlider" min="2000" max="25000" step="500" value="5000" oninput="updateRoiCalc()">
+                        <input type="range" class="calc-slider" id="rateSlider" min="2000" max="25000" step="500"
+                            value="5000" oninput="updateRoiCalc()">
                     </div>
                 </div>
 
                 <div class="calc-result-panel">
-                    <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+                    <div
+                        style="font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
                         Économie Annuelle Potentielle
                     </div>
                     <div class="calc-res-big" id="annualSavings">14 400 000</div>
                     <div class="calc-res-sub">FCFA récupérés par an sur la masse horaire perdue</div>
 
-                    <div style="padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around;">
+                    <div
+                        style="padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around;">
                         <div>
-                            <div style="font-size: 18px; font-weight: 800; color: #ffffff;" id="hoursSavedYear">2 880 h</div>
+                            <div style="font-size: 18px; font-weight: 800; color: #ffffff;" id="hoursSavedYear">2 880 h
+                            </div>
                             <div style="font-size: 11px; color: var(--text-muted);">Heures libérées / an</div>
                         </div>
                         <div>
@@ -1542,7 +1646,8 @@
                 <span class="section-tag">Partenariat &amp; Valeur</span>
                 <h2 class="section-title">Notre Modèle Économique Hybride</h2>
                 <p class="section-desc">
-                    Des prestations sur-mesure pour les besoins spécifiques et des abonnements clé-en-main pour nos agents IA propriétaires.
+                    Des prestations sur-mesure pour les besoins spécifiques et des abonnements clé-en-main pour nos
+                    agents IA propriétaires.
                 </p>
             </div>
 
@@ -1612,7 +1717,8 @@
                 <span class="section-tag">Passez à la Vitesse Supérieure</span>
                 <h2 class="section-title">Réservez Votre Audit d'Automatisation (30 min)</h2>
                 <p class="section-desc">
-                    Nos ingénieurs analysent vos processus actuels et vous présentent un plan d'automatisation concret avec estimation de votre ROI.
+                    Nos ingénieurs analysent vos processus actuels et vous présentent un plan d'automatisation concret
+                    avec estimation de votre ROI.
                 </p>
             </div>
 
@@ -1620,35 +1726,47 @@
                 <form id="auditForm" onsubmit="handleAuditSubmit(event)">
                     <div class="form-row">
                         <input type="text" id="auditNom" class="form-input" placeholder="Votre nom complet" required>
-                        <input type="text" id="auditEntreprise" class="form-input" placeholder="Nom de votre entreprise" required>
+                        <input type="text" id="auditEntreprise" class="form-input" placeholder="Nom de votre entreprise"
+                            required>
                     </div>
                     <div class="form-row">
-                        <input type="email" id="auditEmail" class="form-input" placeholder="Adresse email professionnelle" required>
-                        <input type="tel" id="auditTel" class="form-input" placeholder="Téléphone / WhatsApp (ex: +221 ...)" required>
+                        <input type="email" id="auditEmail" class="form-input"
+                            placeholder="Adresse email professionnelle" required>
+                        <input type="tel" id="auditTel" class="form-input"
+                            placeholder="Téléphone / WhatsApp (ex: +221 ...)" required>
                     </div>
                     <div style="margin-bottom: 16px;">
-                        <select id="auditBesoin" class="form-input" style="background: #0f172a; color: #ffffff;" required>
-                            <option value="" disabled selected>Quel processus souhaitez-vous automatiser en priorité ?</option>
+                        <select id="auditBesoin" class="form-input" style="background: #0f172a; color: #ffffff;"
+                            required>
+                            <option value="" disabled selected>Quel processus souhaitez-vous automatiser en priorité ?
+                            </option>
                             <option value="commercial">Agents commerciaux, qualification de prospects & RDV</option>
-                            <option value="support">Service client & SAV autonome omnicanal (Web, Email, Chat, Voix)</option>
+                            <option value="support">Service client & SAV autonome omnicanal (Web, Email, Chat, Voix)
+                            </option>
                             <option value="admin">Facturation, comptabilité & gestion administrative</option>
                             <option value="growth">Déploiement de l'Agent Financier Growth</option>
                             <option value="surmesure">Système complet sur-mesure / Intégration ERP</option>
                         </select>
                     </div>
                     <div style="margin-bottom: 24px;">
-                        <textarea id="auditMessage" class="form-input" rows="3" placeholder="Décrivez brièvement les tâches qui vous font perdre du temps au quotidien..."></textarea>
+                        <textarea id="auditMessage" class="form-input" rows="3"
+                            placeholder="Décrivez brièvement les tâches qui vous font perdre du temps au quotidien..."></textarea>
                     </div>
-                    <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center; border: none; cursor: pointer;">
+                    <button type="submit" class="btn-hero-primary"
+                        style="width: 100%; justify-content: center; border: none; cursor: pointer;">
                         <i class="fa-solid fa-paper-plane"></i>
                         <span>Confirmer ma Demande d'Audit Gratuit</span>
                     </button>
                 </form>
 
-                <div id="auditSuccessNotice" style="display: none; text-align: center; padding: 24px; background: rgba(20, 43, 39, 0.5); border: 1.5px solid #a0d9d2; border-radius: 14px; margin-top: 18px;">
-                    <i class="fa-solid fa-circle-check" style="color: #a0d9d2; font-size: 32px; margin-bottom: 10px;"></i>
-                    <h4 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-bottom: 4px;">Demande d'Audit Reçue avec Succès !</h4>
-                    <p style="font-size: 13.5px; color: #cbd5e1;">Un ingénieur AutoEngine vous contactera sous 2 heures ouvrées pour convenir du créneau de 30 minutes.</p>
+                <div id="auditSuccessNotice"
+                    style="display: none; text-align: center; padding: 24px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid rgba(255, 255, 255, 0.25); border-radius: 14px; margin-top: 18px;">
+                    <i class="fa-solid fa-circle-check"
+                        style="color: #ffffff; font-size: 32px; margin-bottom: 10px;"></i>
+                    <h4 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-bottom: 4px;">Demande d'Audit
+                        Reçue avec Succès !</h4>
+                    <p style="font-size: 13.5px; color: #cbd5e1;">Un ingénieur AutoEngine vous contactera sous 2 heures
+                        ouvrées pour convenir du créneau de 30 minutes.</p>
                 </div>
             </div>
         </div>
@@ -1668,7 +1786,8 @@
                         </div>
                     </a>
                     <p>
-                        Studio d'ingénierie et d'automatisation par intelligence artificielle. Nous concevons la force de travail autonome des entreprises modernes.
+                        Studio d'ingénierie et d'automatisation par intelligence artificielle. Nous concevons la force
+                        de travail autonome des entreprises modernes.
                     </p>
                     <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
                         Dakar &bull; Abidjan &bull; International
@@ -1688,10 +1807,12 @@
                 <div class="footer-col">
                     <h4>Produits IA</h4>
                     <ul class="footer-links">
-                        <li><a href="/" style="color: #a0d9d2; font-weight: 700;"><i class="fa-solid fa-bolt" style="font-size: 11px;"></i> Growth (Page d'Accueil)</a></li>
+                        <li><a href="/" style="color: #ffffff; font-weight: 700;"><i class="fa-solid fa-bolt"
+                                    style="font-size: 11px;"></i> Growth (Page d'Accueil)</a></li>
                         <li><a href="/comptable">Portail Cabinet SYSCOHADA</a></li>
                         <li><a href="/dashboard">Espace Démo PME</a></li>
-                        <li><a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank">WhatsApp Growth Live</a></li>
+                        <li><a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank">WhatsApp Growth
+                                Live</a></li>
                         <li><a href="#offres">Abonnements SaaS</a></li>
                     </ul>
                 </div>
@@ -1712,7 +1833,8 @@
                     &copy; 2026 AUTOENGINE AI &bull; Tous droits réservés. Less manual work. More intelligent business.
                 </div>
                 <div>
-                    Propulseur de l'écosystème <a href="/" style="color: #a0d9d2; text-decoration: none; font-weight: 700;">Growth SYSCOHADA</a>.
+                    Propulseur de l'écosystème <a href="/"
+                        style="color: #ffffff; text-decoration: none; font-weight: 700;">Growth SYSCOHADA</a>.
                 </div>
             </div>
         </div>
