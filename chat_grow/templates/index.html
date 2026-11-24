@@ -1470,27 +1470,36 @@
                 });
                 const res = await response.json();
                 if (res.status === 'success') {
-                    localStorage.setItem('growth_cabinet_nom', nomCabinet);
-                    localStorage.setItem('growth_cabinet_expert', nomComplet);
-                    localStorage.setItem('growth_cabinet_email', email);
-                    localStorage.setItem('growth_cabinet_ordre', numeroOrdre);
-                    if (telephone) localStorage.setItem('growth_cabinet_phone', telephone);
-                    localStorage.setItem('growth_cabinet_scelle', '1');
+                    // 1. Basculer immédiatement sur l'onglet Se connecter
+                    switchModalAuthMode('login');
 
-                    document.cookie = `growth_cabinet_nom=${encodeURIComponent(nomCabinet)}; max-age=31536000; path=/; SameSite=Lax`;
-                    document.cookie = `growth_cabinet_expert=${encodeURIComponent(nomComplet)}; max-age=31536000; path=/; SameSite=Lax`;
-                    document.cookie = `growth_cabinet_email=${encodeURIComponent(email)}; max-age=31536000; path=/; SameSite=Lax`;
-                    if (telephone) document.cookie = `growth_cabinet_phone=${encodeURIComponent(telephone)}; max-age=31536000; path=/; SameSite=Lax`;
-                    document.cookie = `growth_cabinet_scelle=1; max-age=31536000; path=/; SameSite=Lax`;
+                    // 2. Pré-remplir l'email dans l'onglet Se connecter
+                    const loginEmailInput = document.getElementById('modalLoginEmail');
+                    if (loginEmailInput) loginEmailInput.value = email;
 
-                    if (alertBox) {
-                        alertBox.className = "mb-3 p-3 rounded-2xl text-xs font-bold flex items-center gap-2 bg-[#a0d9d2]/15 border border-[#a0d9d2]/30 text-[#a0d9d2]";
-                        alertBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> <span>Compte cabinet créé avec succès ! Scellé à jamais. Redirection...</span>`;
-                        alertBox.classList.remove('hidden');
+                    // 3. Afficher l'alerte explicative
+                    const loginAlert = document.getElementById('modalLoginAlert');
+                    if (loginAlert) {
+                        loginAlert.className = "mb-3 p-3 rounded-xl text-xs font-semibold bg-emerald-50 border border-emerald-200 text-emerald-800 flex flex-col gap-1";
+                        loginAlert.innerHTML = `
+                            <div class="flex items-center gap-1.5 font-bold text-emerald-900">
+                                <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                                <span>Compte cabinet enregistré avec succès !</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 leading-snug">
+                                Vos identifiants sont créés. Pour obtenir votre Code Partenaire officiel et activer votre accès, contactez-nous à <strong>autoengine9ai.automation@gmail.com</strong>.
+                            </div>
+                        `;
+                        loginAlert.classList.remove('hidden');
                     }
+
+                    // 4. Donner le focus au champ Code Partenaire
                     setTimeout(() => {
-                        window.location.href = '/comptable';
-                    }, 600);
+                        const codeInput = document.getElementById('modalLoginCodePartenaire');
+                        if (codeInput) codeInput.focus();
+                    }, 300);
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Créer mon Accès Cabinet</span> <i class="fa-solid fa-arrow-right text-[11px] text-[#a0d9d2]"></i>`;
                 } else {
                     if (alertBox) {
                         alertBox.className = "mb-2 p-2 rounded-xl text-xs font-bold flex items-start gap-2 bg-rose-50 border border-rose-200 text-rose-700";

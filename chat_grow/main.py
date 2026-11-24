@@ -2149,17 +2149,16 @@ async def api_comptable_inscription(payload: Dict[str, Any], response: Response)
     )
 
     if res.get("status") == "success":
-        # Scellage persistant par cookie (valide 1 an)
-        response.set_cookie("growth_cabinet_nom", nom_cabinet, max_age=31536000, path="/", samesite="lax")
-        response.set_cookie("growth_cabinet_expert", nom_complet, max_age=31536000, path="/", samesite="lax")
-        response.set_cookie("growth_cabinet_email", email, max_age=31536000, path="/", samesite="lax")
-        response.set_cookie("growth_cabinet_phone", telephone, max_age=31536000, path="/", samesite="lax")
-        response.set_cookie("growth_cabinet_scelle", "1", max_age=31536000, path="/", samesite="lax")
-
-        # Générer l'email officiel de bienvenue et de validation
-        email_html = generer_email_bienvenue_comptable_html(nom_complet, nom_cabinet, numero_ordre, email)
-        res["email_html"] = email_html
-        res["email_envoye"] = True
+        # Compte enregistré avec succès dans le registre (comptables_registry.json)
+        # Ne donne pas accès direct : le cabinet doit se connecter avec ses identifiants
+        # et son Code Partenaire officiel Growth obtenu auprès de autoengine9ai.automation@gmail.com
+        return {
+            "status": "success",
+            "message": f"Compte cabinet enregistré avec succès ! Veuillez vous connecter avec vos identifiants et votre Code Partenaire officiel.",
+            "email": email,
+            "nom_cabinet": nom_cabinet,
+            "comptable": res.get("comptable")
+        }
 
     return res
 
