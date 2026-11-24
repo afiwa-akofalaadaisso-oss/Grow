@@ -3452,6 +3452,24 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             f"{reponse_interne}"
         )
 
+    # 0.05 DÉTECTION DEMANDE DE VIDÉO OU TUTORIEL DÉMONSTRATION
+    user_txt_lower = (user_text or "").lower().strip()
+    mots_video = ["video", "vidéo", "tuto", "tutoriel", "comment utiliser", "comment ça marche", "démo vidéo", "demo video", "montre moi"]
+    if any(m in user_txt_lower for m in mots_video):
+        clean_p = str(sender_phone).replace("+", "").replace(" ", "").strip()
+        tuto_video_url = "https://raw.githubusercontent.com/mediaelement/mediaelement-files/master/big_buck_bunny.mp4"
+        caption = "🎬 Démo Growth : Enregistrez vos ventes et dépenses en 1 note vocale WhatsApp !"
+        asyncio.create_task(send_whatsapp_video(clean_p, tuto_video_url, caption))
+        return (
+            "🎬 *TUTORIEL VIDÉO GROWTH EN COURS D'ENVOI*\n\n"
+            "Je viens de vous envoyer la vidéo de démonstration ci-dessus !\n\n"
+            "👉 *Comment utiliser Growth au quotidien :*\n"
+            "1. Envoyez-moi un message vocal ou texte (ex: 'Vente 50 000 FCFA de tissu' ou 'Achat carburant 10 000 FCFA').\n"
+            "2. Ou transférez vos reçus Wave et Orange Money.\n"
+            "3. Chaque soir à 20h00, je vous envoie votre Bilan de Caisse certifié conforme SYSCOHADA SMT !\n\n"
+            "Faites le test tout de suite : dictez-moi votre première opération ou posez-moi votre question !"
+        )
+
     # 0.1 ACCOMPAGNEMENT & TEST DE CONFIGURATION WEBHOOK EN DIRECT
     if is_test_webhook_request(user_text):
         clean_p = str(sender_phone).replace("+", "").replace(" ", "").strip()
