@@ -2421,7 +2421,7 @@ async def serve_cockpit_createur(request: Request, key: str = None):
 
     # Écran de verrouillage haute sécurité Direction
     lock_html = f"""<!DOCTYPE html>
-<html lang="fr" class="h-full bg-[#f8fafc]">
+<html lang="fr" class="h-full bg-[#0a0e17]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2436,8 +2436,8 @@ async def serve_cockpit_createur(request: Request, key: str = None):
         body {{ font-family: 'Plus Jakarta Sans', sans-serif; }}
     </style>
 </head>
-<body class="bg-[#f8fafc] text-slate-900 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white border border-slate-200/90 rounded-3xl p-8 sm:p-10 shadow-xl shadow-slate-200/50 text-center space-y-6">
+<body class="bg-[#0a0e17] text-slate-100 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#111827] border border-[#1e293b] rounded-3xl p-8 sm:p-10 shadow-2xl text-center space-y-6">
         <!-- Logo officiel Growth -->
         <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-xs border border-slate-200 flex items-center justify-center mx-auto bg-white p-1">
             <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth" class="w-full h-full object-contain rounded-xl">
@@ -2447,15 +2447,15 @@ async def serve_cockpit_createur(request: Request, key: str = None):
                 <i class="fa-solid fa-shield-halved text-emerald-600 text-[10px]"></i>
                 <span>Espace Souverain Direction</span>
             </div>
-            <h1 class="text-2xl font-black text-slate-900 tracking-tight">Cockpit Dirigeant</h1>
-            <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">
+            <h1 class="text-2xl font-black text-white tracking-tight">Cockpit Dirigeant</h1>
+            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
                 Supervision des commerçants, caisse abonnements et apprentissage IA. Saisissez votre clé secrète.
             </p>
         </div>
         <form method="POST" action="/cockpit-createur" class="space-y-4">
             <div>
                 <input type="password" name="key" required autofocus placeholder="Saisir la clé secrète..."
-                    class="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-sm font-mono text-center focus:bg-white focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200 transition">
+                    class="w-full px-4 py-3.5 rounded-xl bg-[#0d1322] border border-[#2e3a52] text-white placeholder:text-slate-400 text-sm font-mono text-center focus:bg-white focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-200 transition">
             </div>
             <button type="submit"
                 class="w-full py-3.5 rounded-xl bg-[#222222] hover:bg-[#333333] active:scale-[0.99] text-white font-bold text-xs uppercase tracking-wider transition shadow-md shadow-black/10 cursor-pointer flex items-center justify-center gap-2">
