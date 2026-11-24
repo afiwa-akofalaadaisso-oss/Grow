@@ -43,6 +43,35 @@
     <link rel="icon" type="image/png" href="/static/grow_icon_official.png?v=7">
 
     <style>
+        /* Élimination totale et invisible de toutes les barres de défilement (Windows, Mac, Chrome, Edge, Firefox) */
+        html, body, * {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+
+        ::-webkit-scrollbar, *::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: transparent !important;
+        }
+
+        ::-webkit-scrollbar-button, *::-webkit-scrollbar-button {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        ::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
+            display: none !important;
+            background: transparent !important;
+        }
+
+        ::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
+            display: none !important;
+            background: transparent !important;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #ffffff;
@@ -51,10 +80,7 @@
         }
 
         /* Élimination définitive des ascenseurs disgracieux de Windows et de leurs flèches */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
+        
 
         ::-webkit-scrollbar-button {
             display: none !important;

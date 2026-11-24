@@ -45,6 +45,35 @@
         }
     </script>
         <style>
+        /* Élimination totale et invisible de toutes les barres de défilement (Windows, Mac, Chrome, Edge, Firefox) */
+        html, body, * {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+
+        ::-webkit-scrollbar, *::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            background: transparent !important;
+        }
+
+        ::-webkit-scrollbar-button, *::-webkit-scrollbar-button {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        ::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
+            display: none !important;
+            background: transparent !important;
+        }
+
+        ::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
+            display: none !important;
+            background: transparent !important;
+        }
+
         * {
             -webkit-font-smoothing: antialiased;
             scrollbar-width: none !important;
