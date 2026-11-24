@@ -386,13 +386,16 @@ def adapter_texte_pour_oral(texte: str, langue: str = "fr") -> str:
     t = re.sub(r'\bTTC\b', 'toutes taxes comprises', t, flags=re.IGNORECASE)
 
     if langue == "fr":
-        t = re.sub(r'\bFCFA\b', 'francs CFA', t, flags=re.IGNORECASE)
-        t = re.sub(r'\bCFA\b', 'francs CFA', t, flags=re.IGNORECASE)
+        t = re.sub(r'\bfrancs?\s*CFA\b', 'francs CFA', t, flags=re.IGNORECASE)
+        t = re.sub(r'(?<!francs\s)\b(?:FCFA|CFA)\b', 'francs CFA', t, flags=re.IGNORECASE)
+        t = re.sub(r'\bfrancs?\s+francs?\s*CFA\b', 'francs CFA', t, flags=re.IGNORECASE)
     elif langue == "en":
-        t = re.sub(r'\bFCFA\b', 'CFA francs', t, flags=re.IGNORECASE)
-        t = re.sub(r'\bCFA\b', 'CFA francs', t, flags=re.IGNORECASE)
+        t = re.sub(r'\bCFA\s*francs?\b', 'CFA francs', t, flags=re.IGNORECASE)
+        t = re.sub(r'(?<!CFA\s)\b(?:FCFA|CFA)\b', 'CFA francs', t, flags=re.IGNORECASE)
     elif langue == "wo":
-        t = re.sub(r'\bFCFA\b', 'francs CFA', t, flags=re.IGNORECASE)
+        t = re.sub(r'\bfrancs?\s*CFA\b', 'francs CFA', t, flags=re.IGNORECASE)
+        t = re.sub(r'(?<!francs\s)\b(?:FCFA|CFA)\b', 'francs CFA', t, flags=re.IGNORECASE)
+        t = re.sub(r'\bfrancs?\s+francs?\s*CFA\b', 'francs CFA', t, flags=re.IGNORECASE)
 
     return t
 
@@ -627,7 +630,7 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
         if not re.search(r'\b(jaay|diaye|jënd|diènde|dug|doug|jërejëf|jerejef|naka|xaalis|xaliss)\b', texte_a_lire, re.IGNORECASE):
             texte_a_lire = await traduire_texte_en_wolof_oral(texte_a_lire)
         texte_a_lire = adapter_phonetique_wolof(texte_a_lire)
-        voix_candidates = ["fr-FR-RemyMultilingualNeural", "fr-FR-VivienneMultilingualNeural"]
+        voix_candidates = ["fr-FR-EloiseNeural", "fr-FR-RemyMultilingualNeural"]
         print(f"[WOLOF PUR PARLÉ FALLBACK] : « {texte_a_lire} »")
     elif langue == "en":
         if not re.search(r'\b(sale|sold|bought|recorded|payment|balance|thank|hello)\b', texte_a_lire, re.IGNORECASE):
@@ -636,8 +639,10 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
         voix_candidates = ["en-US-JennyNeural", "en-US-GuyNeural"]
         print(f"[ANGLAIS PUR PARLÉ SANS ÉPELLATION] : « {texte_a_lire} »")
     else:  # fr
-        voix_candidates = ["fr-FR-VivienneMultilingualNeural", "fr-FR-DeniseNeural"]
-        print(f"[FRANÇAIS PUR PARLÉ SANS ÉPELLATION] : « {texte_a_lire} »")
+        # Voix neurales chaleureuses et authentiques (Éloïse: féminine naturelle & vivante, Henri: masculin calme & posé)
+        pref_voice = os.getenv("GROW_VOICE", "fr-FR-EloiseNeural")
+        voix_candidates = [pref_voice, "fr-FR-HenriNeural", "fr-FR-RemyMultilingualNeural"]
+        print(f"[FRANÇAIS PUR PARLÉ NATUREL & HUMAIN] : « {texte_a_lire} »")
 
     # Nettoyage final des caractères spéciaux
     texte_a_lire = re.sub(r'[\"«»_~^]', '', texte_a_lire).strip()
@@ -648,9 +653,11 @@ async def generer_note_vocale_audio(texte: str, langue: str = "fr") -> str:
     filename = f"grow_voice_{langue}_{uuid.uuid4().hex[:8]}.mp3"
     filepath = os.path.join(audio_dir, filename)
 
+    speech_rate = os.getenv("GROW_VOICE_RATE", "-2%")
+
     for v in voix_candidates:
         try:
-            communicate = edge_tts.Communicate(texte_a_lire, v)
+            communicate = edge_tts.Communicate(texte_a_lire, v, rate=speech_rate)
             await communicate.save(filepath)
             if os.path.exists(filepath) and os.path.getsize(filepath) > 500:
                 integrer_logo_mp3(filepath)
