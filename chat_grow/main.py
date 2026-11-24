@@ -5215,7 +5215,9 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             "• Encaissements numériques Wave Business silencieux et automatiques\n"
             "• Grand Rituel de Clôture consolidé chaque soir à 00h00 (avec note vocale audio et Journal Web)\n\n"
             f"👉 *Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu {mode_str} !*\n\n"
-            "💡 *Tranquillité d'esprit (Optionnel) :* Si vous souhaitez régler votre abonnement mensuel dès aujourd'hui sans attendre la fin des 7 jours (seulement 330 F par jour, soit 10 000 FCFA / mois), vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
+            "💡 *Pourquoi 10 000 F (seulement 330 F/jour) avec Growth ?*\n"
+            "Là où un cabinet comptable classique vous demande plus de 50 000 FCFA/mois rien que pour récolter péniblement vos reçus et vous en redemande encore pour monter le bilan, chez Growth la collecte est 100% vocale et automatique avec une simplicité absolue pour seulement 330 F / jour ! Et en cas de besoin de bilan officiel (demande de prêt bancaire, visa fiscal DGID, etc.), rendez-vous directement chez nos cabinets comptables partenaires agréés avec vos données déjà 100% prêtes.\n\n"
+            "👉 *Tranquillité d'esprit (Optionnel) :* Si vous souhaitez régler votre abonnement dès aujourd'hui sans attendre, vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
             f"👉 *Lien de règlement Wave :* {lien_abo}"
         )
 

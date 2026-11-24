@@ -335,7 +335,9 @@ def create_document():
                  "• Encaissements numériques Wave Business silencieux et automatiques\n"
                  "• Grand Rituel de Clôture consolidé chaque soir à 00h00 (avec note vocale audio et Journal Web)\n\n"
                  "👉 Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu en note vocale 🎙️ !\n\n"
-                 "💡 Tranquillité d'esprit (Optionnel) : Si vous souhaitez régler votre abonnement dès aujourd'hui sans attendre (seulement 330 F par jour, soit 10 000 FCFA / mois), vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
+                 "💡 Pourquoi 10 000 F (seulement 330 F/jour) avec Growth ?\n"
+                 "Là où un cabinet comptable classique vous demande plus de 50 000 FCFA/mois rien que pour récolter péniblement vos reçus et vous en redemande encore pour monter le bilan, chez Growth la collecte est 100% vocale et automatique avec une simplicité absolue pour seulement 330 F / jour ! Et en cas de besoin de bilan officiel (demande de prêt bancaire, visa fiscal DGID, etc.), rendez-vous directement chez nos cabinets comptables partenaires agréés avec vos données déjà 100% prêtes.\n\n"
+                 "👉 Tranquillité d'esprit (Optionnel) : Si vous souhaitez régler votre abonnement dès aujourd'hui sans attendre, vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
                  "👉 Lien de règlement Wave : https://grow-2epo.onrender.com/abonnement?phone=[Telephone] »").font.size = Pt(9.5)
 
     doc.add_paragraph()
@@ -359,7 +361,53 @@ def create_document():
     p_paylock.add_run("• Dès que les 7 jours sont écoulés sans souscription, Growth suspend strictement tout enregistrement d'écriture.\n"
                       "• Le message de verrouillage annonce poliment la fin de l'essai et fournit le lien Wave officiel sécurisé (seulement 330 F par jour, soit 10 000 FCFA / mois) :\n"
                       "  https://grow-2epo.onrender.com/abonnement?phone=[Telephone]\n"
-                      "• Dès le paiement validé (ou mot-clé « J'ai payé »), le compte est réactivé instantanément 24h/24 pour 30 jours.")
+                      "• Dès le paiement validé (ou mot-clé « J'ai payé »), le compte est réactivé instantanément 24h/24 pour 30 jours.\n\n")
+
+    # SOUS-SECTION COMPARATIF STRATÉGIQUE CABINET TRADITIONNEL VS GROWTH
+    p_comp = doc.add_paragraph()
+    p_comp.add_run("6.6 Modèle Économique Révolutionnaire : Comparatif Cabinet Traditionnel vs GROWTH :\n").bold = True
+    p_comp.add_run("Pourquoi payer plus de 50 000 FCFA / mois pour collecter des reçus papier ? Growth propose une rupture totale sur le marché sénégalais :\n\n")
+
+    t_comp = doc.add_table(rows=5, cols=3)
+    t_comp.alignment = WD_TABLE_ALIGNMENT.CENTER
+    comp_headers = ["Critère Opérationnel", "Cabinet Comptable Traditionnel", "Solution Hybride GROWTH"]
+    for j, h in enumerate(comp_headers):
+        cell = t_comp.rows[0].cells[j]
+        set_cell_background(cell, "0F172A")
+        set_cell_margins(cell, 100, 100, 120, 120)
+        p_h = cell.paragraphs[0]
+        r = p_h.add_run(h)
+        r.font.bold = True
+        r.font.size = Pt(9)
+        r.font.color.rgb = RGBColor(255, 255, 255)
+
+    comp_data = [
+        ("Collecte & Saisie des Flux Quotidiens", 
+         "+50 000 F à 100 000 F / mois rien que pour récolter et saisir à la main des factures froissées et carnets.", 
+         "Seulement 330 F / jour (10 000 F / mois) avec une simplicité absolue : dictée vocale 1.5s Wolof/Français & encaissements Wave 100% automatiques."),
+        ("Charge Mentale & Déplacements", 
+         "Lourde : allers-retours physiques, reçus égarés, relances incessantes, saisie tardive.", 
+         "Nulle : zéro déplacement, zéro logiciel à installer, caisse scellée et réconciliée chaque soir à 00h00 sur WhatsApp."),
+        ("Bilans Officiels & Demandes de Prêt Bancaire", 
+         "Surfacturation très élevée en fin d'année ou lors d'une demande de crédit bancaire pour reconstruire l'historique.", 
+         "Données 100% conformes SYSCOHADA SMT en temps réel. Le commerçant se rend chez nos Cabinets Comptables Partenaires Agréés ONECCA qui certifient le bilan en 1 clic à tarif négocié !"),
+        ("Rentabilité & Économies pour la PME", 
+         "Coût prohibitif et réservé aux grandes structures.", 
+         "Plus de 80% d'économies directes tout en offrant un dossier financier irréprochable aux banques.")
+    ]
+
+    for i, row in enumerate(comp_data):
+        r_cells = t_comp.rows[i+1].cells
+        for j, val in enumerate(row):
+            cell = r_cells[j]
+            set_cell_background(cell, "F8FAFC" if i % 2 == 0 else "FFFFFF")
+            set_cell_margins(cell, 80, 80, 100, 100)
+            p_c = cell.paragraphs[0]
+            r = p_c.add_run(val)
+            r.font.size = Pt(8.5)
+            if j == 2:
+                r.font.bold = True
+                r.font.color.rgb = RGBColor(5, 150, 105)
 
     doc.add_paragraph()
 
