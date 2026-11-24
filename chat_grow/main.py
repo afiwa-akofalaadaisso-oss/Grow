@@ -432,6 +432,183 @@ def is_paiement_keyword(text: str) -> bool:
     return any(k in t for k in keywords)
 
 
+def obtenir_info_abonnement(phone: str) -> dict:
+    """
+    Retourne le statut d'abonnement complet pour un client :
+    - est_abonne: bool (True si abonnement actif et non expiré)
+    - est_expire: bool (True si la date de fin est dépassée)
+    - jamais_paye: bool
+    - jours_restants: int
+    - date_paiement_fr: str
+    - date_expiration_fr: str
+    """
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    st = get_onboarding_state(clean_p)
+    now = datetime.now()
+
+    date_pay_str = st.get("date_paiement_abonnement")
+    date_exp_str = st.get("date_expiration_abonnement")
+
+    # Si pas de date dans onboarding_state, regarder dans abonnements_growth
+    if not date_pay_str:
+        try:
+            from chat_grow.database import get_sqlite_conn
+            conn = get_sqlite_conn()
+            cur = conn.cursor()
+            cur.execute("SELECT date_paiement, plan, montant_fcfa FROM abonnements_growth WHERE telephone=? AND statut='PAYE' ORDER BY id DESC LIMIT 1", (clean_p,))
+            row = cur.fetchone()
+            conn.close()
+            if row and row[0]:
+                date_pay_str = row[0]
+                try:
+                    dt_p = datetime.strptime(date_pay_str, "%Y-%m-%d %H:%M:%S")
+                    dt_e = dt_p + timedelta(days=30)
+                    date_exp_str = dt_e.strftime("%Y-%m-%d %H:%M:%S")
+                    update_onboarding_state(clean_p, "date_paiement_abonnement", date_pay_str)
+                    update_onboarding_state(clean_p, "date_expiration_abonnement", date_exp_str)
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    if not date_exp_str:
+        return {
+            "est_abonne": False,
+            "est_expire": False,
+            "jamais_paye": True,
+            "jours_restants": 0,
+            "date_paiement_fr": "Non renseigné",
+            "date_expiration_fr": "Non renseigné"
+        }
+
+    try:
+        if "T" in date_exp_str:
+            dt_exp = datetime.fromisoformat(date_exp_str)
+        elif " " in date_exp_str:
+            dt_exp = datetime.strptime(date_exp_str, "%Y-%m-%d %H:%M:%S")
+        else:
+            dt_exp = datetime.strptime(date_exp_str, "%Y-%m-%d")
+
+        dt_pay = None
+        if date_pay_str:
+            try:
+                if "T" in date_pay_str:
+                    dt_pay = datetime.fromisoformat(date_pay_str)
+                elif " " in date_pay_str:
+                    dt_pay = datetime.strptime(date_pay_str, "%Y-%m-%d %H:%M:%S")
+                else:
+                    dt_pay = datetime.strptime(date_pay_str, "%Y-%m-%d")
+            except Exception:
+                pass
+
+        date_pay_fr = dt_pay.strftime("%d/%m/%Y") if dt_pay else "récemment"
+        date_exp_fr = dt_exp.strftime("%d/%m/%Y")
+
+        diff = dt_exp - now
+        jours_restants = diff.days
+
+        if now > dt_exp:
+            # Expiré !
+            return {
+                "est_abonne": False,
+                "est_expire": True,
+                "jamais_paye": False,
+                "jours_restants": 0,
+                "date_paiement_fr": date_pay_fr,
+                "date_expiration_fr": date_exp_fr,
+                "dt_expiration": dt_exp
+            }
+        else:
+            return {
+                "est_abonne": True,
+                "est_expire": False,
+                "jamais_paye": False,
+                "jours_restants": max(1, jours_restants),
+                "date_paiement_fr": date_pay_fr,
+                "date_expiration_fr": date_exp_fr,
+                "dt_expiration": dt_exp
+            }
+    except Exception as e:
+        print(f"Info parse dates abo: {e}")
+        return {
+            "est_abonne": st.get("abonnement_valide", False),
+            "est_expire": False,
+            "jamais_paye": False,
+            "jours_restants": 30,
+            "date_paiement_fr": "récemment",
+            "date_expiration_fr": "30 jours"
+        }
+
+
+def activer_ou_renouveler_abonnement(phone: str, montant: float = 10000.0, operateur: str = "WAVE", reference: str = "", plan: str = "Starter") -> dict:
+    """
+    Active ou prolonge de 30 jours l'abonnement du client.
+    Si le client renouvelle avant la fin, on ajoute 30 jours à son échéance sans perdre de jours.
+    """
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    now = datetime.now()
+    st = get_onboarding_state(clean_p)
+    exp_actuelle_str = st.get("date_expiration_abonnement")
+
+    date_base = now
+    if exp_actuelle_str:
+        try:
+            if "T" in exp_actuelle_str:
+                dt_act = datetime.fromisoformat(exp_actuelle_str)
+            elif " " in exp_actuelle_str:
+                dt_act = datetime.strptime(exp_actuelle_str, "%Y-%m-%d %H:%M:%S")
+            else:
+                dt_act = datetime.strptime(exp_actuelle_str, "%Y-%m-%d")
+            if dt_act > now:
+                date_base = dt_act
+        except Exception:
+            date_base = now
+
+    nouvelle_exp = date_base + timedelta(days=30)
+    now_str = now.strftime("%Y-%m-%d %H:%M:%S")
+    exp_str = nouvelle_exp.strftime("%Y-%m-%d %H:%M:%S")
+    exp_fr = nouvelle_exp.strftime("%d/%m/%Y")
+    now_fr = now.strftime("%d/%m/%Y")
+
+    update_onboarding_state(clean_p, "abonnement_valide", True)
+    update_onboarding_state(clean_p, "date_paiement_abonnement", now_str)
+    update_onboarding_state(clean_p, "date_expiration_abonnement", exp_str)
+    update_onboarding_state(clean_p, "plan_abonnement", plan)
+    update_onboarding_state(clean_p, "montant_abonnement", float(montant))
+    update_onboarding_state(clean_p, "dernier_rappel_j7_date_fin", None)
+
+    try:
+        from chat_grow.database import enregistrer_paiement_abonnement
+        enregistrer_paiement_abonnement(clean_p, st.get("nom_entreprise") or "", plan, float(montant), operateur, reference)
+    except Exception as e_db:
+        print(f"Info enregistrement db abo: {e_db}")
+
+    return {
+        "date_paiement": now_str,
+        "date_expiration": exp_str,
+        "date_paiement_fr": now_fr,
+        "date_expiration_fr": exp_fr,
+        "jours_accordes": 30
+    }
+
+
+def get_message_abonnement_expire(info_abo: dict, base_url: str, phone: str) -> str:
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    lien_abo = f"{base_url}/abonnement?phone={clean_p}"
+    date_deb = info_abo.get("date_paiement_fr", "récemment")
+    date_fin = info_abo.get("date_expiration_fr", "récemment")
+
+    return (
+        "🔒 *Service Growth temporairement suspendu*\n\n"
+        f"Bonjour ! Votre abonnement pour votre boutique, démarré le {date_deb}, est arrivé à échéance le *{date_fin}*.\n\n"
+        "⚠️ *Collecte et enregistrement interrompus :*\n"
+        "Tant que votre abonnement n'est pas renouvelé, je ne peux plus recevoir, traiter ni stocker vos opérations de vente, dépenses ou caisse.\n\n"
+        "👉 *Pour réactiver immédiatement votre copilote :*\n"
+        f"Réglez votre mensualité en 1 clic par Wave :\n{lien_abo}\n\n"
+        "💡 Dès votre règlement validé, vos services reprennent instantanément !"
+    )
+
+
 def get_onboarding_state(phone: str) -> dict:
     clean_p = str(phone).replace("+", "").replace(" ", "").strip()
     states = load_onboarding_states()
@@ -3014,7 +3191,6 @@ async def api_createur_encaisser_abonnement(request: Request, payload: dict = Bo
     """Enregistrement d'abonnement (Sécurisé)."""
     if not check_creator_access(request):
         raise HTTPException(status_code=403, detail="Accès non autorisé au Cockpit Créateur.")
-    from chat_grow.database import enregistrer_paiement_abonnement
     phone = str(payload.get("telephone") or "").strip()
     nom = str(payload.get("nom_entreprise") or "").strip()
     plan = str(payload.get("plan") or "Starter").strip()
@@ -3026,11 +3202,8 @@ async def api_createur_encaisser_abonnement(request: Request, payload: dict = Bo
         raise HTTPException(status_code=400, detail="Numéro de téléphone requis")
 
     clean_p = phone.replace("+", "").replace(" ", "").strip()
-    res = enregistrer_paiement_abonnement(clean_p, nom, plan, montant, operateur, reference)
-    update_onboarding_state(clean_p, "abonnement_valide", True)
-    update_onboarding_state(clean_p, "plan_abonnement", plan)
-    update_onboarding_state(clean_p, "montant_abonnement", montant)
-    return res
+    res = activer_ou_renouveler_abonnement(clean_p, montant, operateur, reference, plan)
+    return {"status": "success", "message": f"Abonnement activé jusqu'au {res.get('date_expiration_fr')}", "info": res}
 
 
 @app.post("/api/createur/enregistrer-depense")
@@ -3075,7 +3248,7 @@ async def serve_abonnement():
 
 @app.post("/api/valider-abonnement-client")
 async def api_valider_abonnement_client(payload: dict = Body(...)):
-    """Valide automatiquement l'abonnement d'un commerçant après paiement Wave ou Orange Money."""
+    """Valide automatiquement l'abonnement d'un commerçant après paiement Wave."""
     phone = payload.get("phone")
     operateur = payload.get("operateur", "WAVE")
     montant = payload.get("montant", 10000)
@@ -3085,22 +3258,14 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
         return {"status": "error", "message": "Numéro de téléphone requis"}
 
     clean_p = str(phone).replace("+", "").replace(" ", "").strip()
-    update_onboarding_state(clean_p, "abonnement_valide", True)
-    update_onboarding_state(clean_p, "plan_abonnement", plan)
-    update_onboarding_state(clean_p, "montant_abonnement", montant)
+    res = activer_ou_renouveler_abonnement(clean_p, float(montant), operateur, "WEB_ABONNEMENT", plan)
 
     st_actuel = get_onboarding_state(clean_p)
     if st_actuel.get("etape") in ["PHASE_6_VERROU_ABONNEMENT", "EN_ATTENTE_ABONNEMENT"]:
         update_onboarding_state(clean_p, "etape", "TERMINE")
         update_onboarding_state(clean_p, "statut", "COMPLET")
     else:
-        update_onboarding_state(clean_p, "statut", "EN_COURS")
-
-    try:
-        from chat_grow.database import enregistrer_paiement_abonnement
-        enregistrer_paiement_abonnement(clean_p, "", plan, float(montant), operateur, "WEB_ABONNEMENT")
-    except Exception as e_abo_db:
-        print(f"Info enregistrer abonnement: {e_abo_db}")
+        update_onboarding_state(clean_p, "statut", "COMPLET")
 
     sp = get_supabase()
     if sp:
@@ -3576,21 +3741,22 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
 
     # GESTION PAIEMENT INSTANTANÉ SUR MOT-CLÉ (« J'ai payé », « Fey naa », etc.)
     if user_text and is_paiement_keyword(user_text):
-        update_onboarding_state(sender_phone, "abonnement_valide", True)
+        res_abo = activer_ou_renouveler_abonnement(sender_phone, montant=10000.0, operateur="WAVE", reference="MOT_CLE_PAIEMENT")
         update_onboarding_state(sender_phone, "statut", "COMPLET")
         update_onboarding_state(sender_phone, "etape", "TERMINE")
         onboarding = get_onboarding_state(sender_phone)
         is_abonne = True
         plan_actuel = onboarding.get("plan_abonnement", "Starter")
+        date_fin = res_abo.get("date_expiration_fr", "dans 30 jours")
 
         # Anti-spam : si déjà notifié récemment, ne JAMAIS répéter le grand pavé
         if not peut_envoyer_confirmation_paiement(sender_phone, cooldown_seconds=600):
-            return "✅ Votre abonnement est déjà validé et actif ! Vous pouvez m'envoyer dès maintenant vos ventes, dépenses ou notes vocales."
+            return f"✅ Votre abonnement Copilote Growth est actif jusqu'au *{date_fin}* ! Vous pouvez m'envoyer dès maintenant vos ventes, dépenses ou notes vocales."
         
         msg_confirm = (
             f"🎉 *Paiement Validé avec Succès !*\n\n"
-            f"Félicitations, votre abonnement Growth *Pack {plan_actuel}* est désormais activé 24h/24 ! 🚀\n\n"
-            "Votre copilote comptable et financier SYSCOHADA est entièrement débloqué.\n\n"
+            f"Félicitations, votre abonnement Copilote Growth est activé 24h/24 jusqu'au *{date_fin}* ! 🚀\n\n"
+            "Votre copilote est entièrement débloqué pour la collecte automatique de vos ventes, dépenses et caisse.\n\n"
         )
         if not onboarding.get("mode_communication"):
             msg_confirm += (
@@ -3605,23 +3771,28 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             return msg_confirm
 
     # 1. PARCOURS D'ONBOARDING ET RECONSTITUTION INITIALE (ÉTAPES 1 À 6)
-    # Les Étapes 1 à 5 (configuration Wave/Orange, NINEA, reconstitution du passé, inventaire caisse espèces)
+    # Les Étapes 1 à 5 (configuration Wave, NINEA, reconstitution du passé, inventaire caisse espèces)
     # constituent le Pack d'Accueil Gratuit et sont traitées par process_onboarding_step.
     if etape != "TERMINE" and statut not in ["COMPLET"]:
         return await process_onboarding_step(sender_phone, user_text, media_tuple, onboarding, contact_name)
 
-    # 2. VERROUILLAGE ABONNEMENT EN ROUTINE ACTIVE (ÉTAPE 7)
-    if not is_abonne:
-        lien_abo = f"{base_url}/abonnement?phone={clean_p}"
-        return (
-            "🔒 *Espace Growth en attente d'activation d'abonnement*\n\n"
-            "Votre Bilan d'Ouverture initial est scellé conforme SYSCOHADA SMT.\n"
-            "Pour continuer à saisir vos opérations par note vocale 24h/24, bénéficier des relances de caisse et de la clôture de 20h00, veuillez activer votre abonnement mensuel :\n\n"
-            "⭐ *Pack Solo* (10 000 FCFA / mois) : Tout inclus pour 1 entreprise (Assistant WhatsApp 24h/24, relances 3h, rituel 20h, caisse 571 & stocks) — *sauf bilans & dossiers bancaires* (Disponible immédiatement).\n"
-            "🚀 *Pack Multi-Entreprises* (15 000 FCFA / mois pour 3 entreprises) : _Pas encore disponible_ (Bientôt disponible — gestion multi-boutiques en cours de déploiement).\n\n"
-            f"👉 *Activez votre accès en 1 clic via Wave ou Orange Money :*\n{lien_abo}\n\n"
-            "💡 Dès votre paiement effectué, répondez simplement *« J'ai payé »* pour débloquer immédiatement votre copilote !"
-        )
+    # 2. VÉRIFICATION DU CYCLE D'ABONNEMENT POUR TOUS LES CLIENTS APRÈS ONBOARDING
+    info_abo = obtenir_info_abonnement(sender_phone)
+    if not info_abo.get("est_abonne"):
+        if info_abo.get("est_expire"):
+            # ABONNEMENT EXPIRÉ : COUPURE STRICTE DU SERVICE
+            # Refuse poliment et fermement de traiter, recevoir ou stocker la moindre donnée
+            return get_message_abonnement_expire(info_abo, base_url, sender_phone)
+        else:
+            # EN ATTENTE DE PREMIER ABONNEMENT (JAMAIS PAYÉ)
+            lien_abo = f"{base_url}/abonnement?phone={clean_p}"
+            return (
+                "🔒 *Espace Growth en attente d'activation d'abonnement*\n\n"
+                "Votre dossier d'ouverture est finalisé.\n"
+                "Pour commencer à enregistrer vos opérations par note vocale 24h/24 et profiter du point de caisse quotidien, activez votre abonnement mensuel (10 000 FCFA pour 30 jours) :\n\n"
+                f"👉 *Activez votre accès en 1 clic via Wave :*\n{lien_abo}\n\n"
+                "💡 Dès votre règlement effectué, répondez simplement *« J'ai payé »* pour débloquer immédiatement votre copilote !"
+            )
 
     # 2. PHASE 5 (À VIE EN CONTINU) :
     # A. Filtre Hors-Sujet Strict : "Désolé, je n'ai pas été créé pour répondre à cette demande."
@@ -6723,6 +6894,48 @@ async def check_and_send_ninea_weekly_reminders():
         print(f"Info check_and_send_ninea_weekly_reminders: {e_rapp}")
 
 
+async def check_and_send_abonnement_j7_reminders():
+    """
+    Rappel proactif automatique 7 jours avant expiration :
+    Propose 1 000 FCFA de réduction immédiate (9 000 FCFA au lieu de 10 000 FCFA) pour renouveler avant la date de fin.
+    """
+    try:
+        states = load_onboarding_states()
+        base_url = get_public_base_url()
+
+        for phone, st in states.items():
+            if st.get("statut") != "COMPLET" and st.get("etape") != "TERMINE":
+                continue
+
+            info = obtenir_info_abonnement(phone)
+            # Vérifier si l'abonnement est actif et qu'il reste entre 1 et 7 jours
+            if info.get("est_abonne") and 0 < info.get("jours_restants", 99) <= 7:
+                date_fin_fr = info.get("date_expiration_fr")
+                if st.get("dernier_rappel_j7_date_fin") == date_fin_fr:
+                    continue
+
+                clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+                lien_promo = f"{base_url}/abonnement?phone={clean_p}&promo=RENOUV1K&montant=9000"
+                jours = info.get("jours_restants")
+                date_deb = info.get("date_paiement_fr")
+
+                msg_j7 = (
+                    "⏳ *Rappel Renouvellement Copilote Growth*\n\n"
+                    f"Bonjour ! Votre abonnement actuel, actif depuis le {date_deb}, arrive à échéance le *{date_fin_fr}* (dans {jours} jours).\n\n"
+                    "Pour que la collecte et l'enregistrement automatique de vos ventes et de votre caisse ne s'arrêtent pas, vous pouvez renouveler dès maintenant.\n\n"
+                    "🎁 *Offre fidélité anticipée :*\n"
+                    "En renouvelant avant votre date de fin, vous bénéficiez de *1 000 FCFA de réduction*, soit votre mois à *9 000 FCFA* au lieu de 10 000 FCFA !\n\n"
+                    f"👉 *Renouvelez en 1 clic via Wave avec votre réduction :*\n{lien_promo}\n\n"
+                    "💡 Vos 30 jours supplémentaires s'ajouteront à la suite de votre période actuelle, vous ne perdez aucun jour !"
+                )
+
+                await deliver_whatsapp_response(clean_p, msg_j7)
+                update_onboarding_state(phone, "dernier_rappel_j7_date_fin", date_fin_fr)
+                print(f"[RAPPEL J-7 ABONNEMENT ENVOYÉ] à {clean_p} (Échéance: {date_fin_fr})")
+    except Exception as e_rem:
+        print(f"Info check_and_send_abonnement_j7_reminders: {e_rem}")
+
+
 @app.on_event("startup")
 async def start_scheduler():
     """Demarrage du planificateur de taches de fond rigoureusement cale sur le fuseau Africa/Dakar (GMT)."""
@@ -6744,6 +6957,9 @@ async def start_scheduler():
     # 4.bis Rappel hebdomadaire NINEA pour certifier le dossier bancaire des commerçants sans document (lundis 10h15 & quotidien 10h30)
     scheduler.add_job(check_and_send_ninea_weekly_reminders, "cron", day_of_week="mon", hour="10", minute="15", timezone=TZ_DAKAR)
     scheduler.add_job(check_and_send_ninea_weekly_reminders, "cron", hour="10", minute="30", timezone=TZ_DAKAR)
+
+    # 4.ter Rappel renouvellement d'abonnement 7 jours avant expiration avec -1 000 FCFA de réduction (tous les jours à 09h30)
+    scheduler.add_job(check_and_send_abonnement_j7_reminders, "cron", hour="09", minute="30", timezone=TZ_DAKAR)
 
     # 6. Synchronisation continue et résiliente de la file d'attente (Supabase <-> SQLite en non-bloquant)
     async def async_flush_sync_queue():

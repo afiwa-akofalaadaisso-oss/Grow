@@ -314,7 +314,21 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const userPhone = urlParams.get('phone') || '221788773827';
-        const montantAbo = 10000;
+        const promo = urlParams.get('promo');
+        let montantAbo = parseInt(urlParams.get('montant') || '10000', 10);
+
+        // Application de l'offre de renouvellement anticipé J-7 (-1 000 FCFA de réduction)
+        if (promo === 'RENOUV1K' || montantAbo === 9000) {
+            montantAbo = 9000;
+            const priceVal = document.querySelector('.price-val');
+            if (priceVal) priceVal.textContent = '9 000';
+            const pricePeriod = document.querySelector('.price-period');
+            if (pricePeriod) {
+                pricePeriod.innerHTML = '<span style="color: #059669; font-weight: 700;"><i class="fa-solid fa-gift"></i> Réduction fidélité anticipée (-1 000 FCFA)</span><br>Pour 30 jours d\'accès complet';
+            }
+            const btnLabel = document.querySelector('.btn-wave-label');
+            if (btnLabel) btnLabel.textContent = 'Payer 9 000 F avec Wave';
+        }
 
         // Formatage aéré et élégant du numéro sénégalais (+221 78 877 38 27)
         function formaterTelephone(raw) {
