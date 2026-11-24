@@ -543,9 +543,23 @@ def obtenir_info_abonnement(phone: str) -> dict:
 def activer_ou_renouveler_abonnement(phone: str, montant: float = 10000.0, operateur: str = "WAVE", reference: str = "", plan: str = "Starter") -> dict:
     """
     Active ou prolonge de 30 jours l'abonnement du client.
-    Si le client renouvelle avant la fin, on ajoute 30 jours à son échéance sans perdre de jours.
+    Vérifie impérativement que le montant est conforme (10 000 FCFA ou 9 000 FCFA tarif fidélité J-7).
+    Si le montant est insuffisant (ex: 10 F), l'abonnement est REFUSÉ.
     """
     clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    montant_f = float(montant or 0.0)
+
+    # VÉRIFICATION STRICTE DU MONTANT : 10 000 FCFA (ou 9 000 FCFA tarif fidélité anticipé)
+    if montant_f < 9000.0:
+        print(f"[REFUS ABONNEMENT] Montant insuffisant pour {clean_p} : {montant_f} FCFA reçus au lieu de 10 000 FCFA requis.")
+        return {
+            "status": "error",
+            "valide": False,
+            "motif": f"Montant insuffisant ({montant_f:,.0f} FCFA reçus au lieu de 10 000 FCFA requis).",
+            "montant_recu": montant_f,
+            "montant_attendu": 10000.0
+        }
+
     now = datetime.now()
     st = get_onboarding_state(clean_p)
     exp_actuelle_str = st.get("date_expiration_abonnement")
@@ -574,21 +588,24 @@ def activer_ou_renouveler_abonnement(phone: str, montant: float = 10000.0, opera
     update_onboarding_state(clean_p, "date_paiement_abonnement", now_str)
     update_onboarding_state(clean_p, "date_expiration_abonnement", exp_str)
     update_onboarding_state(clean_p, "plan_abonnement", plan)
-    update_onboarding_state(clean_p, "montant_abonnement", float(montant))
+    update_onboarding_state(clean_p, "montant_abonnement", float(montant_f))
     update_onboarding_state(clean_p, "dernier_rappel_j7_date_fin", None)
 
     try:
         from chat_grow.database import enregistrer_paiement_abonnement
-        enregistrer_paiement_abonnement(clean_p, st.get("nom_entreprise") or "", plan, float(montant), operateur, reference)
+        enregistrer_paiement_abonnement(clean_p, st.get("nom_entreprise") or "", plan, float(montant_f), operateur, reference)
     except Exception as e_db:
         print(f"Info enregistrement db abo: {e_db}")
 
     return {
+        "status": "success",
+        "valide": True,
         "date_paiement": now_str,
         "date_expiration": exp_str,
         "date_paiement_fr": now_fr,
         "date_expiration_fr": exp_fr,
-        "jours_accordes": 30
+        "jours_accordes": 30,
+        "montant": montant_f
     }
 
 
@@ -1547,8 +1564,53 @@ async def process_payment_notification(payload: dict, query_params: dict = None,
 
         # 1. Recherche par Account ID / Merchant ID (ex: M_sn_...)
         if operator_account_id:
-            if operator_account_id == "M_sn_YgEkibrMRghV":
-                matched_whatsapp = "221788773827"
+            # Traitement prioritaire : si c'est le compte marchand officiel de Growth (règlement d'abonnement client)
+            if operator_account_id == "M_sn_YgEkibrMRghV" or "abonnement" in str(description).lower() or "copilote" in str(description).lower() or str(query_params.get("for_subscription") or "").lower() in ["1", "true"]:
+                customer_info = data_obj.get("customer") if isinstance(data_obj.get("customer"), dict) else {}
+                client_payeur = (
+                    customer_info.get("phone")
+                    or payload.get("customer_phone")
+                    or query_params.get("phone")
+                    or payload.get("client_reference")
+                    or payload.get("phone")
+                    or "221788773827"
+                )
+                clean_client = str(client_payeur).replace("+", "").replace(" ", "").strip()
+
+                # VÉRIFICATION DU MONTANT : doit être >= 9 000 FCFA (tarif fidélité J-7) ou 10 000 FCFA (standard)
+                if amount < 9000:
+                    print(f"[PAIEMENT WAVE INSUFFISANT] Reçu {amount} FCFA de {clean_client} pour abonnement (Requis : 10 000 FCFA).")
+                    msg_refus = (
+                        f"⚠️ *Paiement Wave Incomplet Reçu ({amount:,.0f} FCFA)*\n\n"
+                        f"Nous avons bien reçu votre paiement de *{amount:,.0f} FCFA* via Wave (Réf: `{tx_id}`).\n\n"
+                        f"Cependant, le tarif de l'abonnement Copilote Growth est de *10 000 FCFA* (ou 9 000 FCFA tarif fidélité).\n\n"
+                        f"Votre accès n'a pas pu être activé avec ce montant. Merci de régler le complément pour activer votre assistant."
+                    )
+                    asyncio.create_task(send_whatsapp_message(clean_client, msg_refus))
+                    return {
+                        "status": "refused_insufficient_amount",
+                        "amount": amount,
+                        "phone": clean_client,
+                        "tx_id": tx_id,
+                        "message": f"Montant insuffisant ({amount} FCFA reçus au lieu de 10 000 FCFA requis)."
+                    }
+                else:
+                    res_abo = activer_ou_renouveler_abonnement(clean_client, float(amount), "WAVE", tx_id)
+                    date_fin = res_abo.get("date_expiration_fr", "dans 30 jours")
+                    msg_succes = (
+                        f"🎉 *Paiement d'Abonnement Validé !*\n\n"
+                        f"Nous confirmons la bonne réception de votre règlement de *{amount:,.0f} FCFA* via Wave Business (Réf: `{tx_id}`).\n\n"
+                        f"✅ Votre accès complet au Copilote Growth est débloqué 24h/24 jusqu'au *{date_fin}* ! 🚀\n\n"
+                        f"Vous pouvez m'envoyer dès maintenant vos ventes, vos dépenses ou vos notes vocales."
+                    )
+                    asyncio.create_task(send_whatsapp_message(clean_client, msg_succes))
+                    return {
+                        "status": "subscription_activated",
+                        "amount": amount,
+                        "phone": clean_client,
+                        "tx_id": tx_id,
+                        "expiration": date_fin
+                    }
             else:
                 sp_lookup = get_supabase()
                 if sp_lookup:
@@ -1719,7 +1781,7 @@ async def webhook_wave_direct(request: Request):
         )
         amount = res.get("amount", 0)
         tx_id = res.get("tx_id", "")
-        if amount > 0 and phone_dest:
+        if amount > 0 and phone_dest and res.get("status") not in ["subscription_activated", "refused_insufficient_amount"]:
             msg = f"🌊 *Encaissement Wave reçu !*\n\n💰 Montant : *{amount:,.0f} FCFA*\n🔖 Réf : `{tx_id}`\n\n✅ Imputé en comptabilité SYSCOHADA (Compte 5213 Wave)."
             asyncio.create_task(send_whatsapp_message(str(phone_dest), msg))
             
