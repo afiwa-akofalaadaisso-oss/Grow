@@ -206,13 +206,13 @@ def generer_message_rituel_soir(nom_entreprise: str, txs_du_jour: list, treso_st
 
     msg = (
         f"Bonsoir {nom_entreprise} !\n\n"
-        f"C'est l'heure de votre grand bilan financier officiel de clôture de la journée.\n\n"
+        f"Il est minuit (00h00) : voici votre grand bilan financier consolidé de clôture de la journée.\n\n"
         f"Point Trésorerie en direct :\n"
         f"• Compte Wave : {wave:,.0f} FCFA\n"
         f"• Compte Orange Money : {om:,.0f} FCFA\n"
         f"• Caisse Espèces : {especes:,.0f} FCFA\n"
         f"• Total Trésorerie disponible : {total_dispo:,.0f} FCFA\n\n"
-        f"Bilan de votre journée d'aujourd'hui :\n"
+        f"Bilan de votre journée terminée :\n"
         f"• Opérations comptabilisées : {total_tx}\n"
         f"• Chiffre d'affaires encaissé : {total_in:,.0f} FCFA\n"
         f"• Dépenses certifiées : {total_out:,.0f} FCFA\n"
@@ -235,19 +235,22 @@ def generer_message_rituel_soir(nom_entreprise: str, txs_du_jour: list, treso_st
             msg += f"{i}. {m:,.0f} FCFA ({lib})\n"
 
         msg += (
-            "\nPour tout valider d'un coup, envoyez simplement une note vocale ou un court message "
+            "\nPour tout valider d'un coup, vous pourrez simplement envoyer une note vocale ou un court message "
             "(exemple : « Le 1 c'est du carburant, le 2 c'est le taxi »).\n"
         )
 
     msg += (
         "\n🐑 *LE POINTAGE DU BERGER (Rien ne doit échapper au bilan)* :\n"
-        "Avant de clôturer définitivement vos comptes ce soir :\n"
+        "Avant de clôturer définitivement vos comptes :\n"
         "1. 💵 *Caisse physique* : Votre cash réel en main correspond-il au solde ?\n"
         "2. 🍲 *Popote / Famille (104)* : Avez-vous pris de l'argent dans la caisse pour la maison ?\n"
         "3. 🤝 *Crédits clients (411)* : Quelqu'un est-il parti avec de la marchandise sans payer ?\n"
         "4. 📦 *Stock & Pertes (601/654)* : Achat de nouveau stock ou marchandise abîmée aujourd'hui ?\n"
         "5. 🏗️ *Matériel & Équipements (244)* : Avez-vous acheté, réparé ou installé du matériel pour le commerce ?\n\n"
-        "👉 *Une seule petite note vocale rapide suffit* (ex: « Caisse 45 000, pris 5 000 popote, et Modou me doit 10 000 ») !"
+        "🌙 *REPOS & SÉRÉNITÉ* :\n"
+        "Il est minuit, dormez en paix et reposez-vous ! Vous n'avez pas besoin de répondre cette nuit.\n"
+        "👉 Vous pourrez valider votre caisse ou me répondre demain matin dès 06h00 à votre réveil par une simple note vocale (ex: « Caisse 45 000, pris 5 000 popote, et Modou me doit 10 000 ») !\n\n"
+        "Bonne nuit et bon repos !"
     )
 
     return msg

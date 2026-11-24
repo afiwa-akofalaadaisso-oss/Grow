@@ -47,16 +47,15 @@ KNOWLEDGE_BASE = [
         )
     },
     {
-        "keywords": [r"rituel", r"20h", r"cloture", r"clôture", r"fin de journee", r"fin de journée", r"bilan du soir"],
-        "titre": "Le Rituel de Clôture Quotidien de 20h00",
+        "keywords": [r"rituel", r"00h", r"minuit", r"20h", r"cloture", r"clôture", r"fin de journee", r"fin de journée", r"bilan du soir"],
+        "titre": "Le Bilan de Clôture Quotidien de Minuit (00h00)",
         "reponse": (
-            "Chaque soir à 20h00 (ou à l'heure de votre choix), Grow réalise automatiquement la clôture de votre journée :\n\n"
+            "Chaque nuit à 00h00 (minuit pile), Growth dresse automatiquement le grand bilan consolidé de votre journée terminée :\n\n"
             "• Total des ventes encaissées (Wave, Orange Money, Caisse)\n"
             "• Total des dépenses certifiées avec justificatifs\n"
             "• Marge nette réelle de la journée\n"
-            "• Solde restant dans chaque caisse\n"
-            "• Rappel des pièces en attente (attestation NINEA, reçus de cash manquants)\n\n"
-            "Vous pouvez modifier l'heure de ce rappel à tout moment en écrivant simplement par exemple : « Change l'heure du rituel à 21h30 »."
+            "• Solde exact restant dans chaque compte de trésorerie\n\n"
+            "🌙 Pas besoin de répondre la nuit ! Vous pouvez vous reposer en paix et valider votre pointage le lendemain dès 06h00 à votre réveil par une simple note vocale."
         )
     },
     {

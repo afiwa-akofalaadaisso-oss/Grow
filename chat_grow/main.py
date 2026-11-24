@@ -6553,8 +6553,8 @@ async def daily_ritual_check():
     try:
         res = sp.table("entreprises").select("*").execute()
         for ent in res.data or []:
-            # Heure par défaut à 23:00 heure de Dakar (clôture consolidée de fin de journée)
-            heure_conf = (ent.get("heure_rappel_quotidien") or "23:00")[:5]
+            # Heure par défaut à 00:00 (Minuit pile heure de Dakar - réponse possible dès 06h00 au réveil)
+            heure_conf = (ent.get("heure_rappel_quotidien") or "00:00")[:5]
             if heure_conf == now_hm:
                 phone = ent.get("telephone_whatsapp")
                 ent_id = ent.get("id")
@@ -7001,7 +7001,7 @@ async def check_and_send_abonnement_j7_reminders():
 @app.on_event("startup")
 async def start_scheduler():
     """Demarrage du planificateur de taches de fond rigoureusement cale sur le fuseau Africa/Dakar (GMT)."""
-    # 1. Vérification minute par minute pour le Grand Bilan du Soir (23h00 par défaut ou heure personnalisée)
+    # 1. Vérification minute par minute pour le Grand Bilan de Minuit (00h00 par défaut ou heure personnalisée)
     scheduler.add_job(daily_ritual_check, "cron", minute="*", timezone=TZ_DAKAR)
     
     # En production, les encaissements numériques Wave/OM sont comptabilisés silencieusement en temps réel
