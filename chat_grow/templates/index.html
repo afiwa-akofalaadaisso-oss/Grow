@@ -865,87 +865,158 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 6. BANNIÈRE FINALE D'APPEL À L'ACTION (FOND ANTHRACITE ET BOUTON MENTHE)  -->
+    <!-- 6. BANNIÈRE D'APPEL À L'ACTION & CODE QR INTERACTIF WHATSAPP              -->
     <!-- ========================================================================= -->
-    <section class="py-20 bg-[#222222] text-white relative overflow-hidden">
+    <section class="py-16 sm:py-20 bg-[#142b27] text-white relative overflow-hidden border-t border-[#a0d9d2]/30">
 
         <!-- Lueur de fond menthe pour réchauffer la section sombre -->
-        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-[#a0d9d2]/20 blur-3xl pointer-events-none">
-        </div>
-        <div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-[#a0d9d2]/20 blur-3xl pointer-events-none">
-        </div>
+        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-[#a0d9d2]/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-[#a0d9d2]/15 blur-3xl pointer-events-none"></div>
 
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
-            <div
-                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#a0d9d2]/40 text-[#a0d9d2] text-xs font-black uppercase tracking-wider">
-                <i class="fa-solid fa-sparkles text-[#a0d9d2]"></i> Déploiement Immédiat
+                <!-- Colonne Gauche : Appel à l'action pour les cabinets -->
+                <div class="lg:col-span-7 space-y-6 text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#a0d9d2]/40 text-[#a0d9d2] text-xs font-black uppercase tracking-wider">
+                        <i class="fa-solid fa-sparkles text-[#a0d9d2]"></i> Déploiement Immédiat &bull; SYSCOHADA SMT
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white">
+                        Prêt à moderniser la comptabilité de vos PME clientes ?
+                    </h2>
+
+                    <p class="text-slate-200 text-sm sm:text-base leading-relaxed max-w-xl">
+                        Connectez votre cabinet en moins de 2 minutes pour piloter les dossiers de vos commerçants, vérifier en direct leurs preuves financières et éditer des liasses fiscales conformes DGID.
+                    </p>
+
+                    <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                        <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
+                            class="px-8 py-4 rounded-xl bg-[#a0d9d2] hover:bg-[#ffffff] text-[#142b27] text-sm sm:text-base font-black transition-all shadow-xl shadow-black/40 flex items-center justify-center gap-2.5 cursor-pointer">
+                            <i class="fa-solid fa-lock text-[#142b27]"></i>
+                            <span>Se connecter à mon Cabinet</span>
+                            <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
+                        </a>
+                        <a href="/autoengine"
+                            class="px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/20 text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2">
+                            <span>Ingénierie AutoEngine AI &rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Colonne Droite : Le Code QR interactif officiel Growth (Noir & Blanc + Logo) -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="bg-white rounded-3xl p-6 sm:p-7 text-center shadow-2xl shadow-black/50 max-w-sm w-full border border-slate-100">
+                        <div class="flex items-center justify-between pb-3.5 mb-4 border-b border-slate-100">
+                            <div class="flex items-center gap-2.5 text-slate-900 font-extrabold text-sm">
+                                <img src="/static/grow_icon_squircle.png?v=4" alt="Growth" class="w-6 h-6 rounded-md object-contain">
+                                <span>Agent Growth</span>
+                            </div>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black border border-emerald-200">
+                                <i class="fa-brands fa-whatsapp text-emerald-600"></i> Live 24/7
+                            </span>
+                        </div>
+
+                        <!-- Cadre du Code QR Haute Définition Noir -->
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 inline-block mb-3.5">
+                            <img src="/static/qr_code_whatsapp.png?v=black_3" alt="Code QR WhatsApp Growth" class="w-48 h-48 mx-auto object-contain block rounded-lg" />
+                        </div>
+
+                        <p class="text-slate-600 text-[11.5px] leading-snug mb-4">
+                            <strong class="text-slate-900">Scannez pour tester l'Agent en direct</strong><br>
+                            Envoyez une photo de reçu ou une note vocale au <strong>+221 78 877 38 27</strong>
+                        </p>
+
+                        <a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank"
+                            class="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white py-3 px-4 rounded-xl font-extrabold text-xs transition shadow-md shadow-emerald-600/30">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Discuter avec Growth sur WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+
             </div>
-
-            <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white">
-                Prêt à moderniser la comptabilité de vos PME clientes ?
-            </h2>
-
-            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                Connectez votre cabinet en moins de 2 minutes pour consulter les preuves financières de vos PME et
-                éditer leurs liasses fiscales SYSCOHADA.
-            </p>
-
-            <div class="pt-4 flex items-center justify-center">
-                <!-- LE BOUTON SE CONNECTER EN MENTHE #a0d9d2 QUI RESPLENDIT -->
-                <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
-                    class="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#a0d9d2] hover:bg-[#8ecfc7] active:scale-95 text-[#142b27] text-base font-black transition-all shadow-2xl shadow-[#a0d9d2]/40 hover:scale-105 duration-150 flex items-center justify-center gap-2.5 border border-[#8ecfc7] cursor-pointer">
-                    <i class="fa-solid fa-lock text-[#142b27]"></i>
-                    <span>Se connecter à mon Cabinet</span>
-                    <i class="fa-solid fa-arrow-right text-xs text-[#142b27]"></i>
-                </a>
-            </div>
-
         </div>
 
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 7. FOOTER INSTITUTIONNEL                                                  -->
+    <!-- 7. FOOTER INSTITUTIONNEL HAUTE-FIDÉLITÉ (DESIGN ENTERPRISE ÉPURÉ)        -->
     <!-- ========================================================================= -->
-    <footer class="bg-white border-t border-slate-200 py-12 text-xs text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-100">
+    <footer class="bg-white border-t border-slate-200 pt-14 pb-10 text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
-                <div class="flex items-center gap-3">
-                    <img src="/static/grow_icon_official.png?v=7" alt="Growth"
-                        class="w-8 h-8 rounded-xl object-contain">
-                    <div>
-                        <span class="font-black text-sm text-[#222222]">Growth</span>
-                        <span class="text-slate-400 ml-1">&bull; Copilote Financier &amp; Comptable SYSCOHADA</span>
+            <!-- Ligne 1 : Navigation structurée par pôles de compétence -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+
+                <!-- Col 1 : Marque & Statut Institutionnel -->
+                <div class="lg:col-span-2 space-y-3.5">
+                    <div class="flex items-center gap-3">
+                        <img src="/static/grow_icon_official.png?v=7" alt="Growth" class="w-9 h-9 rounded-xl object-contain">
+                        <div>
+                            <span class="font-black text-base text-[#142b27] tracking-tight">Growth</span>
+                            <span class="text-slate-400 text-xs ml-1.5">&bull; Copilote Financier &amp; Comptable</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 text-xs leading-relaxed max-w-sm">
+                        Système d'ingénierie et de pré-comptabilité automatisée SYSCOHADA pour PME et cabinets comptables. Normalisation instantanée des flux Wave, Orange Money et espèces en pièces comptables probantes.
+                    </p>
+                    <div class="pt-1 flex items-center gap-3 text-[11px] text-slate-400 font-medium">
+                        <span>Dakar, Sénégal</span>
+                        <span>&bull;</span>
+                        <span>Zone OHADA &bull; UEMOA</span>
                     </div>
                 </div>
 
-                <div>
-                    <a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()"
-                        class="text-[#142b27] font-black hover:underline flex items-center gap-1.5 bg-[#a0d9d2]/30 hover:bg-[#a0d9d2]/50 px-4 py-2 rounded-xl transition border border-[#a0d9d2]/60 cursor-pointer">
-                        <i class="fa-solid fa-lock text-xs"></i>
-                        <span>Connexion Cabinet</span>
-                    </a>
+                <!-- Col 2 : Architecture du Flux -->
+                <div class="space-y-2.5">
+                    <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Architecture</h4>
+                    <ul class="space-y-2 text-[11.5px]">
+                        <li><a href="#schema" class="hover:text-[#142b27] transition">Preuves Financières</a></li>
+                        <li><a href="#schema" class="hover:text-[#142b27] transition">Moteur d'Intelligence SMT</a></li>
+                        <li><a href="#schema" class="hover:text-[#142b27] transition">Liasses &amp; FEC DGID</a></li>
+                        <li><a href="#schema" class="hover:text-[#142b27] transition">Scellement Probant 10 Ans</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 : Plateforme -->
+                <div class="space-y-2.5">
+                    <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Plateforme</h4>
+                    <ul class="space-y-2 text-[11.5px]">
+                        <li><a href="javascript:void(0)" onclick="ouvrirModalConnexionCabinet()" class="hover:text-[#142b27] transition font-semibold">Portail Cabinet Comptable</a></li>
+                        <li><a href="/dashboard" class="hover:text-[#142b27] transition">Espace Dirigeant PME</a></li>
+                        <li><a href="https://wa.me/221788773827?text=Bonjour%20Grow" target="_blank" class="hover:text-[#142b27] transition">Assistant WhatsApp Live</a></li>
+                        <li><a href="/carte-comptoir" class="hover:text-[#142b27] transition">Présentoir &amp; QR Comptoir</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4 : Cadre Légal -->
+                <div class="space-y-2.5">
+                    <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Réglementation</h4>
+                    <ul class="space-y-2 text-[11.5px]">
+                        <li><span class="text-slate-600">Acte Uniforme OHADA</span></li>
+                        <li><span class="text-slate-600">SYSCOHADA Révisé SMT</span></li>
+                        <li><span class="text-slate-600">Conformité DGID Art. 24</span></li>
+                        <li><span class="text-slate-600">Données Chiffrées &amp; Scellées</span></li>
+                    </ul>
                 </div>
 
             </div>
 
-            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
+            <!-- Ligne 2 : Copyright & Mention Professionnelle AutoEngine AI -->
+            <div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
                 <p>
-                    &copy; 2026 Growth Technologies Inc. Conçu à Dakar, Sénégal. Solution de pré-comptabilité conforme
-                    aux normes SYSCOHADA SMT et aux exigences fiscales de la DGID.
+                    &copy; 2026 Growth Technologies Inc. Tous droits réservés. Conçu à Dakar, Sénégal.
                 </p>
-                <div class="flex items-center gap-4">
-                    <span>SYSCOHADA Révisé SMT</span>
-                    <span>&bull;</span>
-                    <span>Conformité DGID Art. 24</span>
-                    <span>&bull;</span>
-                    <a href="/autoengine" class="font-bold text-slate-700 hover:text-cyan-700 transition inline-flex items-center gap-1.5 bg-slate-100 hover:bg-cyan-50 px-2.5 py-1 rounded-lg border border-slate-200">
-                        <i class="fa-solid fa-cube text-cyan-600 text-[10px]"></i> Propulsé par AutoEngine AI
+                <div class="flex items-center gap-1.5">
+                    <span>Propulsé par l'ingénierie</span>
+                    <a href="/autoengine" class="font-bold text-[#142b27] hover:underline inline-flex items-center gap-1 transition">
+                        AutoEngine AI <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                     </a>
                 </div>
             </div>
+
         </div>
     </footer>
 
