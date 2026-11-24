@@ -871,9 +871,8 @@
                         class="bg-white border border-slate-300 rounded-2xl p-5 shadow-sm font-mono text-slate-800 relative">
                         <!-- En-tête du ticket -->
                         <div class="text-center pb-3 border-b border-dashed border-slate-300 space-y-0.5">
-                            <div class="font-black text-sm text-slate-900 uppercase" id="pcTicketPme">ÉTABLISSEMENT
-                                MAMADOU DIOP &amp; FILS</div>
-                            <div class="text-[10.5px] text-slate-600">Marché Keur Yoff &bull; Dakar, Sénégal</div>
+                            <div class="font-black text-sm text-slate-900 uppercase" id="pcTicketPme">VOTRE ENTREPRISE</div>
+                            <div class="text-[10.5px] text-slate-600">Dakar, Sénégal</div>
                             <div class="text-[10px] text-slate-500">NINEA : 005489210 2Y3 &bull; RCCM :
                                 SN-DKR-2022-B-4819</div>
                             <div class="text-[9.5px] text-slate-400 font-bold tracking-widest uppercase mt-1">PIÈCE
@@ -2799,7 +2798,7 @@
                             </div>
                         </td>
                         <td class="col-debit text-right font-black ${isDebit ? 'text-slate-900' : 'text-slate-300'}">${ec.debit || '-'}</td>
-                        <td class="col-credit text-right font-black ${!isDebit ? 'text-emerald-600' : 'text-slate-300'}">${ec.credit || '-'}</td>
+                        <td class="col-credit text-right font-black ${!isDebit ? 'text-slate-900' : 'text-slate-300'}">${ec.credit || '-'}</td>
                         <td class="col-piece text-center">
                             <div class="flex items-center justify-center gap-1 sm:gap-2">
                                 <button type="button" class="btn-piece-comptable"
@@ -2827,7 +2826,7 @@
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
-                                <div class="text-base font-black ${montantColor}">${sign} ${montantAffiche}</div>
+                                <div class="text-base font-black text-slate-900">${sign} ${montantAffiche}</div>
                                 <span class="badge-status badge-validee text-[10px] mt-1">✓ Validée</span>
                             </div>
                         </div>
