@@ -1781,9 +1781,10 @@ async def webhook_wave_direct(request: Request):
         )
         amount = res.get("amount", 0)
         tx_id = res.get("tx_id", "")
-        if amount > 0 and phone_dest and res.get("status") not in ["subscription_activated", "refused_insufficient_amount"]:
-            msg = f"🌊 *Encaissement Wave reçu !*\n\n💰 Montant : *{amount:,.0f} FCFA*\n🔖 Réf : `{tx_id}`\n\n✅ Imputé en comptabilité SYSCOHADA (Compte 5213 Wave)."
-            asyncio.create_task(send_whatsapp_message(str(phone_dest), msg))
+        # Les encaissements numériques Wave sont comptabilisés silencieusement en temps réel (ZÉRO saturation WhatsApp en journée).
+        # Le commerçant reçoit un bilan consolidé complet à 23h00 récapitulant toutes ses ventes.
+        if amount > 0 and phone_dest:
+            print(f"[ENCAISSEMENT WAVE ENREGISTRÉ SILENCIEUSEMENT] {amount:,.0f} FCFA pour {phone_dest} - Réf: {tx_id} (Comptabilité à jour, résumé consolidé à 23h00).")
             
         return res
     except Exception as e:
@@ -1828,8 +1829,7 @@ async def webhook_orange_money(request: Request):
         amount = res.get("amount", 0)
         tx_id = res.get("tx_id", "")
         if amount > 0 and phone_dest:
-            msg = f"🍊 *Encaissement Orange Money reçu !*\n\n💰 Montant : *{amount:,.0f} FCFA*\n🔖 Réf OM : `{tx_id}`\n\n✅ Imputé automatiquement en Compte 5214 (Orange Money) / 701 (Vente)."
-            asyncio.create_task(send_whatsapp_message(str(phone_dest), msg))
+            print(f"[ENCAISSEMENT ORANGE MONEY ENREGISTRÉ SILENCIEUSEMENT] {amount:,.0f} FCFA pour {phone_dest} - Réf: {tx_id} (Comptabilité à jour, résumé consolidé à 23h00).")
 
         return {
             "status": "SUCCESS",
@@ -6553,8 +6553,8 @@ async def daily_ritual_check():
     try:
         res = sp.table("entreprises").select("*").execute()
         for ent in res.data or []:
-            # Heure par défaut à 19:00 heure de Dakar (fermeture du commerce, avant que le commerçant ne rentre ou ne dorme)
-            heure_conf = (ent.get("heure_rappel_quotidien") or "19:00")[:5]
+            # Heure par défaut à 23:00 heure de Dakar (clôture consolidée de fin de journée)
+            heure_conf = (ent.get("heure_rappel_quotidien") or "23:00")[:5]
             if heure_conf == now_hm:
                 phone = ent.get("telephone_whatsapp")
                 ent_id = ent.get("id")
@@ -7001,11 +7001,12 @@ async def check_and_send_abonnement_j7_reminders():
 @app.on_event("startup")
 async def start_scheduler():
     """Demarrage du planificateur de taches de fond rigoureusement cale sur le fuseau Africa/Dakar (GMT)."""
-    # 1. Vérification minute par minute pour le Grand Bilan du Soir (21h00 par défaut ou heure personnalisée)
+    # 1. Vérification minute par minute pour le Grand Bilan du Soir (23h00 par défaut ou heure personnalisée)
     scheduler.add_job(daily_ritual_check, "cron", minute="*", timezone=TZ_DAKAR)
     
-    # 2. Point Flash flux Mobile Money : Vérification toutes les 1 minute (Mode Démo Jury, remplace les 3h)
-    scheduler.add_job(notifier_nouveaux_flux_wave_om, "interval", minutes=1)
+    # En production, les encaissements numériques Wave/OM sont comptabilisés silencieusement en temps réel
+    # pour ZÉRO saturation WhatsApp. Le récapitulatif complet consolidé est délivré à 23h00.
+    # scheduler.add_job(notifier_nouveaux_flux_wave_om, "interval", minutes=1)
     # Point Flash classique toutes les 3 heures pendant la journée (09h00, 12h00, 15h00, 18h00, 21h00 heure de Dakar)
     scheduler.add_job(flash_summary_3h_check, "cron", hour="09,12,15,18,21", minute="00", timezone=TZ_DAKAR)
     scheduler.add_job(relance_preuves_manquantes_3h, "interval", hours=3)
