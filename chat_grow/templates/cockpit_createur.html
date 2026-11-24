@@ -144,49 +144,37 @@
     <!-- ========================================================================= -->
     <!-- BARRE SUPÉRIEURE DE DIRECTION / FONDATEUR                                -->
     <!-- ========================================================================= -->
-    <header
-        class="bg-[#111827]/95 border-b border-[#1e293b] sticky top-0 z-40 px-4 sm:px-8 py-3.5 shadow-lg backdrop-blur-md">
+    <header class="bg-[#111827]/95 border-b border-[#1e293b] sticky top-0 z-40 px-4 sm:px-8 py-3 shadow-lg backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
 
-            <!-- Logo & Titre dynamique du Cockpit -->
-            <div class="flex items-center gap-3">
+            <!-- Logo Growth & Segmented Control Switcher -->
+            <div class="flex items-center gap-3 sm:gap-4">
                 <a href="/cockpit"
-                    class="w-10 h-10 rounded-2xl overflow-hidden shadow-xs border border-[#2e3a52] flex-shrink-0 bg-[#0a0e17] flex items-center justify-center hover:scale-105 transition-transform"
-                    title="Actualiser le Cockpit">
+                    class="w-9 h-9 rounded-xl overflow-hidden border border-[#2e3a52] flex-shrink-0 bg-[#0a0e17] flex items-center justify-center hover:scale-105 transition-transform"
+                    title="Actualiser">
                     <img src="/static/grow_icon_squircle.png?v=3" alt="Logo Growth"
-                        class="w-full h-full object-contain rounded-2xl">
+                        class="w-full h-full object-contain rounded-xl">
                 </a>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span id="cockpitHeaderTitle"
-                            class="font-extrabold text-base sm:text-lg tracking-tight text-white font-sans">Cockpit Principal</span>
-                        <span id="cockpitHeaderBadge"
-                            class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
-                            Réception des Demandes
-                        </span>
-                    </div>
-                    <p id="cockpitHeaderDesc" class="text-[11px] text-slate-400 font-body hidden sm:block">
-                        Hub Central des Demandes &bull; Leads AutoEngine &amp; Prospects Entrants
-                    </p>
+
+                <!-- BASCULEUR DE COCKPITS PRO (DEMANDES <-> GROWTH) -->
+                <div class="inline-flex p-1 rounded-xl bg-[#0a0e17] border border-[#1e293b] gap-1">
+                    <button type="button" id="tabCockpitDemandes" onclick="basculerCockpit('principal')"
+                        class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer bg-emerald-500 text-[#0a0e17] shadow-sm">
+                        <i class="fa-solid fa-inbox text-[11px]"></i>
+                        <span>Demandes &amp; Leads</span>
+                        <span id="badgeDemandesHeader" class="px-1.5 py-0.2 rounded-full bg-[#0a0e17]/20 text-[#0a0e17] font-mono text-[10.5px] font-black">0</span>
+                    </button>
+                    <button type="button" id="tabCockpitGrowth" onclick="basculerCockpit('growth')"
+                        class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-chart-pie text-[11px]"></i>
+                        <span>Cockpit Growth</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Passerelle Inter-Cockpit & Actions Rapides -->
+            <!-- Horloge & Actions Rapides -->
             <div class="flex items-center gap-2.5 sm:gap-3">
-
-                <!-- BOUTON PASSERELLE : BASCULE COCKPIT PRINCIPAL <-> COCKPIT GROWTH -->
-                <div id="cockpitSwitcherBtnContainer">
-                    <!-- Généré dynamiquement en JS (Accéder au Cockpit Growth OU ← Cockpit Principal) -->
-                </div>
-
-                <!-- Horloge Dakar -->
-                <div
-                    class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#0a0e17] border border-[#1e293b] text-xs font-mono text-slate-400">
-                    <i class="fa-regular fa-clock text-[#a0d9d2] text-[11px]"></i>
-                    <span id="dakarClock">Dakar 00:00 (GMT)</span>
-                </div>
-
-                <!-- Actions spécifiques au Cockpit Growth (cachées sur Cockpit Principal) -->
+                <!-- Actions spécifiques au Cockpit Growth -->
                 <div id="growthActionButtons" class="hidden flex items-center gap-2">
                     <button type="button" onclick="openDepenseModal()"
                         class="px-3 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 text-xs font-bold transition-all cursor-pointer">
@@ -198,9 +186,16 @@
                     </button>
                 </div>
 
-                <!-- Bouton Actualiser Global -->
+                <!-- Horloge Dakar -->
+                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#0a0e17] border border-[#1e293b] text-xs font-mono text-slate-400">
+                    <i class="fa-regular fa-clock text-[#a0d9d2] text-[11px]"></i>
+                    <span id="dakarClock">Dakar 00:00 (GMT)</span>
+                </div>
+
+                <!-- Bouton Actualiser -->
                 <button type="button" onclick="refreshCurrentCockpit()"
-                    class="px-3 py-1.5 rounded-xl bg-[#1e293b] hover:bg-[#2e3a52] text-slate-200 text-xs font-bold cursor-pointer border border-[#334155] transition-all flex items-center gap-1.5">
+                    class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-[#1e293b] hover:bg-[#2e3a52] text-slate-200 text-xs font-bold cursor-pointer border border-[#334155] transition-all flex items-center gap-1.5"
+                    title="Actualiser">
                     <i class="fa-solid fa-rotate text-xs text-[#a0d9d2]"></i>
                     <span class="hidden sm:inline">Actualiser</span>
                 </button>
@@ -215,99 +210,47 @@
         <!-- ========================================================================= -->
         <!-- VUE 1 : COCKPIT PRINCIPAL (RÉCEPTION DES DEMANDES & LEADS ENTRANTS)       -->
         <!-- ========================================================================= -->
-        <div id="viewCockpitPrincipal" class="space-y-6">
+        <div id="viewCockpitPrincipal" class="space-y-5">
 
-            <!-- BANNIÈRE D'ACCUEIL DU COCKPIT PRINCIPAL -->
-            <div class="cockpit-card p-5 sm:p-6 bg-gradient-to-r from-[#111827] via-[#162032] to-[#111827] border border-[#1e293b] relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-                    <div>
-                        <div class="flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-wider mb-1">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span>Cockpit Principal &bull; Hub Central des Demandes</span>
-                        </div>
-                        <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">Réception des Demandes &amp; Prospects</h2>
-                        <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                            Toutes les demandes d'audit d'automatisation IA soumises sur la plateforme sont centralisées ici.
-                            Contactez et qualifiez vos prospects immédiatement par WhatsApp en 1 clic.
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-3 shrink-0">
-                        <!-- Bouton passerelle vers Cockpit Growth -->
-                        <button type="button" onclick="basculerCockpit('growth')"
-                            class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 active:scale-95 text-[#0a0e17] text-xs font-black transition-all shadow-lg shadow-emerald-500/25 flex items-center gap-2 cursor-pointer">
-                            <i class="fa-solid fa-chart-line text-xs"></i>
-                            <span>Accéder au Cockpit Growth</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION DES DEMANDES D'AUDIT -->
-            <section id="cockpitSectionAudits" class="space-y-5">
-            <!-- CARTE BANNIÈRE EXPLICATIVE -->
-            <div class="growth-card p-5 border border-[#1e293b] bg-gradient-to-r from-slate-900 via-[#222222] to-[#0f172a] text-white rounded-2xl">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                        <div class="flex items-center gap-2 text-[#a0d9d2] text-[10px] font-extrabold uppercase tracking-wider mb-1">
-                            <i class="fa-solid fa-robot"></i>
-                            <span>Studio d'Automatisation IA &bull; AutoEngine Leads</span>
-                        </div>
-                        <h3 class="text-base sm:text-lg font-black text-white">Demandes d'Audit Reçues &bull; Prospects Entreprises</h3>
-                        <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                            Chaque formulaire soumis sur la landing page AutoEngine est répertorié ici en temps réel.
-                            Relancez vos prospects directement par WhatsApp ou email en un clic.
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button type="button" onclick="loadAuditsData()"
-                            class="px-3 py-2 rounded-xl bg-[#111827] border-[#1e293b] text-white/10 hover:bg-[#111827] border-[#1e293b] text-white/20 text-white text-xs font-bold transition flex items-center gap-1.5 border border-white/20 cursor-pointer">
-                            <i class="fa-solid fa-rotate text-xs text-[#a0d9d2]"></i>
-                            <span>Actualiser</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4 KPIS DES LEADS -->
+            <!-- 4 KPIS DES LEADS (ÉPURÉ & PRO) -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <div class="growth-card p-4 border border-[#1e293b] bg-[#111827] border-[#1e293b] text-white">
+                <div class="cockpit-card p-4 bg-[#111827] border border-[#1e293b] rounded-2xl">
                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Demandes</span>
-                    <div class="text-xl sm:text-2xl font-black text-white mt-1" id="kpiTotalAudits">0</div>
-                    <span class="text-[10.5px] text-slate-400 font-medium">depuis AutoEngine.ai</span>
+                    <div class="text-2xl font-black text-white mt-1 font-mono" id="kpiTotalAudits">0</div>
+                    <span class="text-[11px] text-slate-500 font-medium">AutoEngine &amp; Growth</span>
                 </div>
-                <div class="growth-card p-4 border border-[#1e293b] bg-[#111827] border-[#1e293b] text-white">
-                    <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Nouveaux à Traiter</span>
-                    <div class="text-xl sm:text-2xl font-black text-emerald-600 mt-1" id="kpiNouveauxAudits">0</div>
-                    <span class="text-[10.5px] text-emerald-700 font-semibold flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Répondre sous 2h
+                <div class="cockpit-card p-4 bg-[#111827] border border-[#1e293b] rounded-2xl">
+                    <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Nouveaux à Traiter</span>
+                    <div class="text-2xl font-black text-emerald-400 mt-1 font-mono" id="kpiNouveauxAudits">0</div>
+                    <span class="text-[11px] text-emerald-500 font-semibold flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Priorité haute &bull; &lt; 2h</span>
                     </span>
                 </div>
-                <div class="growth-card p-4 border border-[#1e293b] bg-[#111827] border-[#1e293b] text-white">
-                    <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">Contactés / En Cours</span>
-                    <div class="text-xl sm:text-2xl font-black text-indigo-700 mt-1" id="kpiContactesAudits">0</div>
-                    <span class="text-[10.5px] text-indigo-600 font-medium">Audit en préparation</span>
+                <div class="cockpit-card p-4 bg-[#111827] border border-[#1e293b] rounded-2xl">
+                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider block">Contactés / En Cours</span>
+                    <div class="text-2xl font-black text-indigo-300 mt-1 font-mono" id="kpiContactesAudits">0</div>
+                    <span class="text-[11px] text-indigo-400 font-medium">Audit en préparation</span>
                 </div>
-                <div class="growth-card p-4 border border-[#1e293b] bg-[#111827] border-[#1e293b] text-white">
-                    <span class="text-[10px] font-bold text-[#222222] uppercase tracking-wider block">Besoin N°1</span>
+                <div class="cockpit-card p-4 bg-[#111827] border border-[#1e293b] rounded-2xl">
+                    <span class="text-[10px] font-bold text-[#a0d9d2] uppercase tracking-wider block">Besoin N°1</span>
                     <div class="text-sm font-black text-white mt-2 truncate" id="kpiTopBesoin">Growth Financier</div>
-                    <span class="text-[10.5px] text-slate-400 font-medium">Processus le plus demandé</span>
+                    <span class="text-[11px] text-slate-500 font-medium">Processus le plus demandé</span>
                 </div>
             </div>
 
             <!-- TABLEAU DES LEADS D'AUDIT -->
-            <div class="growth-card p-5 border border-[#1e293b] bg-[#111827] border-[#1e293b] text-white rounded-2xl shadow-xs">
+            <div class="cockpit-card p-4 sm:p-5 border border-[#1e293b] bg-[#111827] rounded-2xl shadow-sm">
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-4">
                     <div class="relative flex-1 max-w-md">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs pointer-events-none"></i>
                         <input type="text" id="searchAuditsInput" oninput="filterAuditsTable()"
                             placeholder="Rechercher par nom, entreprise, téléphone..."
-                            class="w-full pl-8 pr-3 py-2 rounded-xl bg-[#0d1322] border-[#2e3a52] text-white border border-[#1e293b] text-xs font-semibold text-white placeholder:text-slate-400 focus:bg-[#111827] border-[#1e293b] text-white focus:outline-none focus:border-[#a0d9d2]">
+                            class="w-full pl-8 pr-3 py-2 rounded-xl bg-[#0a0e17] border border-[#1e293b] text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:border-[#a0d9d2]">
                     </div>
                     <div class="flex items-center gap-2">
                         <select id="filterBesoinSelect" onchange="filterAuditsTable()"
-                            class="px-3 py-2 rounded-xl bg-[#0d1322] border-[#2e3a52] text-white border border-[#1e293b] text-xs font-semibold text-slate-200 focus:outline-none">
+                            class="px-3 py-2 rounded-xl bg-[#0a0e17] border border-[#1e293b] text-xs font-semibold text-slate-300 focus:outline-none">
                             <option value="">Tous les besoins</option>
                             <option value="growth">Agent Financier Growth</option>
                             <option value="commercial">Agents Commerciaux</option>
@@ -321,75 +264,31 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
-                            <tr class="bg-[#0d1322] border-[#2e3a52] text-white border-b border-[#1e293b] text-[11px] font-extrabold text-slate-600 uppercase tracking-wider">
+                            <tr class="bg-[#0a0e17] border-b border-[#1e293b] text-[10.5px] font-extrabold text-slate-400 uppercase tracking-wider">
                                 <th class="py-3 px-3">Date</th>
                                 <th class="py-3 px-3">Prospect &amp; Entreprise</th>
                                 <th class="py-3 px-3">Contact WhatsApp / Mail</th>
                                 <th class="py-3 px-3">Processus à Automatiser</th>
                                 <th class="py-3 px-3">Expression du Besoin</th>
                                 <th class="py-3 px-3 text-center">Statut</th>
-                                <th class="py-3 px-3 text-right">Actions Rapides</th>
+                                <th class="py-3 px-3 text-right">Action Rapide</th>
                             </tr>
                         </thead>
                         <tbody id="auditsTableBody">
                             <tr>
-                                <td colspan="7" class="text-center py-8 text-slate-400 font-medium">
-                                    <i class="fa-solid fa-spinner fa-spin text-base mb-2"></i><br>Chargement des demandes d'audit...
+                                <td colspan="7" class="text-center py-8 text-slate-500 font-medium">
+                                    <i class="fa-solid fa-spinner fa-spin text-base mb-2 text-[#a0d9d2]"></i><br>Chargement des demandes...
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </section>
-
-            <!-- CARTE PASSERELLE BAS DE PAGE -->
-            <div class="cockpit-card p-5 border border-[#1e293b] bg-[#111827] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-                <div class="flex items-center gap-3.5">
-                    <div class="w-10 h-10 rounded-xl bg-[#1e293b] border border-[#2e3a52] flex items-center justify-center text-[#a0d9d2] text-base shrink-0">
-                        <i class="fa-solid fa-building-columns"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-black text-white">Gestion Opérationnelle Growth SYSCOHADA</h4>
-                        <p class="text-xs text-slate-400 mt-0.5">Suivi des commerçants PME inscrits, caisse abonnements et apprentissage IA.</p>
-                    </div>
-                </div>
-                <button type="button" onclick="basculerCockpit('growth')"
-                    class="px-4 py-2 rounded-xl bg-[#1e293b] hover:bg-[#2e3a52] border border-[#334155] text-white text-xs font-black transition flex items-center gap-2 cursor-pointer shrink-0">
-                    <span>Ouvrir le Cockpit Growth</span>
-                    <i class="fa-solid fa-arrow-right text-[11px] text-[#a0d9d2]"></i>
-                </button>
-            </div>
         </div>
 
-        <!-- ========================================================================= -->
-        <!-- VUE 2 : COCKPIT GROWTH (FINANCE, PME & COMPTABILITÉ SYSCOHADA)             -->
-        <!-- ========================================================================= -->
         <div id="viewCockpitGrowth" class="space-y-6 hidden">
 
-            <!-- BANNIÈRE RETOUR VERS COCKPIT PRINCIPAL -->
-            <div class="cockpit-card p-4 sm:p-5 bg-[#111827] border border-[#1e293b] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-base shrink-0">
-                        <i class="fa-solid fa-chart-pie"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h2 class="text-base sm:text-lg font-black text-white">Cockpit Growth &bull; Supervision PME &amp; Finance</h2>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#a0d9d2]/20 text-[#a0d9d2] border border-[#a0d9d2]/40">SYSCOHADA SMT</span>
-                        </div>
-                        <p class="text-xs text-slate-400 mt-0.5">Dossiers commerçants, suivi de trésorerie abonnements et moteur d'intelligence comptable.</p>
-                    </div>
-                </div>
-                <button type="button" onclick="basculerCockpit('principal')"
-                    class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 text-white text-xs font-black transition shadow-md flex items-center gap-2 cursor-pointer shrink-0">
-                    <i class="fa-solid fa-arrow-left text-xs"></i>
-                    <span>← Cockpit Principal (Demandes)</span>
-                    <span id="badgeDemandesGrowthBanner" class="px-2 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-mono font-bold">0</span>
-                </button>
-            </div>
-
-            <!-- CONTENU GROWTH EXISTANT (KPIS + 3 ONGLETS PME / CAISSE / LEARNING) -->
+            <!-- CONTENU GROWTH (SUPERVISION PME & FINANCES) --> (KPIS + 3 ONGLETS PME / CAISSE / LEARNING) -->
             
 
         <!-- 4 CARTES KPIS STRATÉGIQUES (PALETTE OFFICIELLE GROWTH #222222) -->
@@ -1069,7 +968,7 @@
                 allAuditsCache = Array.isArray(data) ? data : (data.leads || []);
 
                 // Badges and KPIs
-                const badge = document.getElementById('tabBadgeAuditsCount');
+                const badge = document.getElementById('badgeDemandesHeader');
                 if (badge) badge.textContent = allAuditsCache.length;
 
                 const kpiTotal = document.getElementById('kpiTotalAudits');
@@ -1199,42 +1098,26 @@
         
         // =========================================================================
         // GESTION DE LA DOUBLE VUE : COCKPIT PRINCIPAL <-> COCKPIT GROWTH
-        // =========================================================================
-        let currentCockpitView = 'principal'; // 'principal' (Demandes) ou 'growth' (PME & Finance)
+        let currentCockpitView = 'principal';
 
         function basculerCockpit(mode) {
             currentCockpitView = mode;
             const viewP = document.getElementById('viewCockpitPrincipal');
             const viewG = document.getElementById('viewCockpitGrowth');
-            const switcherContainer = document.getElementById('cockpitSwitcherBtnContainer');
             const growthActionBtns = document.getElementById('growthActionButtons');
+            const tabDemandes = document.getElementById('tabCockpitDemandes');
+            const tabGrowth = document.getElementById('tabCockpitGrowth');
 
-            const title = document.getElementById('cockpitHeaderTitle');
-            const badge = document.getElementById('cockpitHeaderBadge');
-            const desc = document.getElementById('cockpitHeaderDesc');
+            const activeTabClass = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer bg-emerald-500 text-[#0a0e17] shadow-sm";
+            const inactiveTabClass = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer text-slate-400 hover:text-white";
 
             if (mode === 'principal') {
                 if (viewP) viewP.classList.remove('hidden');
                 if (viewG) viewG.classList.add('hidden');
                 if (growthActionBtns) growthActionBtns.classList.add('hidden');
 
-                if (title) title.textContent = "Cockpit Principal";
-                if (badge) {
-                    badge.textContent = "Réception des Demandes";
-                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider";
-                }
-                if (desc) desc.textContent = "Hub Central des Demandes • Leads AutoEngine & Prospects Entrants";
-
-                if (switcherContainer) {
-                    switcherContainer.innerHTML = `
-                        <button type="button" onclick="basculerCockpit('growth')"
-                            class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 active:scale-95 text-[#0a0e17] text-xs font-black transition-all shadow-md shadow-emerald-500/20 flex items-center gap-2 cursor-pointer">
-                            <i class="fa-solid fa-chart-pie text-xs"></i>
-                            <span>Accéder au Cockpit Growth</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </button>
-                    `;
-                }
+                if (tabDemandes) tabDemandes.className = activeTabClass;
+                if (tabGrowth) tabGrowth.className = inactiveTabClass;
 
                 loadAuditsData();
             } else {
@@ -1242,24 +1125,8 @@
                 if (viewG) viewG.classList.remove('hidden');
                 if (growthActionBtns) growthActionBtns.classList.remove('hidden');
 
-                if (title) title.textContent = "Cockpit Growth";
-                if (badge) {
-                    badge.textContent = "Finance, PME & SYSCOHADA";
-                    badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#a0d9d2]/20 text-[#a0d9d2] border border-[#a0d9d2]/40 uppercase tracking-wider";
-                }
-                if (desc) desc.textContent = "Supervision Utilisateurs • Caisse Abonnements • Active Learning IA";
-
-                if (switcherContainer) {
-                    const count = allAuditsCache ? allAuditsCache.filter(l => (l.statut || '').toLowerCase() === 'nouveau').length : 0;
-                    switcherContainer.innerHTML = `
-                        <button type="button" onclick="basculerCockpit('principal')"
-                            class="px-4 py-2 rounded-xl bg-[#1e293b] hover:bg-[#2e3a52] border border-slate-700 active:scale-95 text-white text-xs font-black transition-all flex items-center gap-2 cursor-pointer shadow-sm">
-                            <i class="fa-solid fa-arrow-left text-xs text-[#a0d9d2]"></i>
-                            <span>Cockpit Principal (Demandes)</span>
-                            <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-mono font-bold">${count}</span>
-                        </button>
-                    `;
-                }
+                if (tabDemandes) tabDemandes.className = inactiveTabClass;
+                if (tabGrowth) tabGrowth.className = activeTabClass;
 
                 refreshCockpitData();
             }
