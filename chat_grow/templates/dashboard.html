@@ -493,26 +493,28 @@
                         <i class="fa-solid fa-magnifying-glass text-xs"></i>
                     </span>
                     <input type="text" id="journalSearchInput" oninput="filtrerEcritures()"
-                        placeholder="Rechercher par libellé, compte, montant, tiers..."
+                        placeholder="Rechercher par libellé, compte SYSCOHADA, montant, client, fournisseur..."
                         class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-slate-400 focus:ring-2 focus:ring-slate-100 transition">
                 </div>
 
-                <!-- Filtres par Catégories SYSCOHADA (Pills Défilables horizontalement) -->
+                <!-- Filtres Rapides Exhaustifs par Catégories Métier & SYSCOHADA (Défilables horizontalement) -->
                 <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none"
-                    id="filterPillsContainer">
+                    id="filterPillsContainer" style="-webkit-overflow-scrolling: touch;">
                     <button type="button" class="filter-pill active" onclick="filtrerParCompte('', this)">Tous</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('701', this)">Ventes
-                        (701)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('601', this)">Achats
-                        (601)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('514', this)">Wave
-                        (514)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('571', this)">Caisse
-                        (571)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('605', this)">Énergie
-                        (605)</button>
-                    <button type="button" class="filter-pill" onclick="filtrerParCompte('401', this)">Fournisseurs
-                        (401)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('701', this)">Ventes (701)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('601', this)">Achats (601)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('wave', this)">Wave</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('orange', this)">Orange Money</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('571', this)">Espèces / Caisse (571)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('521', this)">Banque (521)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('624', this)">Transport & Courses (624)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('605', this)">Énergie & Factures (605)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('622', this)">Loyer & Charges (622)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('661', this)">Salaires & Paie (661)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('632', this)">Commissions (632)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('411', this)">Crédits Clients (411)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('401', this)">Fournisseurs & Dettes (401)</button>
+                    <button type="button" class="filter-pill" onclick="filtrerParCompte('241', this)">Matériel & Immo (241)</button>
                 </div>
 
             </div>
@@ -2573,11 +2575,33 @@
             const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
             let allList = pme.ecritures || [];
 
-            // Filtrage par compte
+            // Filtrage par compte ou par canal (Wave, Orange, Espèces, etc.)
             if (currentFilterCompte) {
+                const fKey = currentFilterCompte.toLowerCase();
                 allList = allList.filter(ec => {
                     const rawCpt = (ec.compte || '').replace(/[^0-9]/g, '');
-                    return rawCpt.startsWith(currentFilterCompte);
+                    const lib = (ec.libelle || '').toLowerCase();
+                    const tiers = (ec.tiers || '').toLowerCase();
+                    const src = (ec.source || '').toLowerCase();
+
+                    // 1. Filtrage spécial par canal de paiement
+                    if (fKey === 'wave') {
+                        return lib.includes('wave') || tiers.includes('wave') || src.includes('wave') || rawCpt.startsWith('514') || rawCpt.startsWith('521');
+                    }
+                    if (fKey === 'orange') {
+                        return lib.includes('orange') || lib.includes(' om ') || tiers.includes('orange') || src.includes('orange') || rawCpt.startsWith('514') || rawCpt.startsWith('521');
+                    }
+                    if (fKey === '571') {
+                        return rawCpt.startsWith('571') || lib.includes('espece') || lib.includes('caisse') || src.includes('caisse');
+                    }
+
+                    // 2. Filtrage par code SYSCOHADA (ex: 701, 601, 624, 605, 622, 661, 632, 411, 401, 241, 521)
+                    if (/^\d+$/.test(fKey)) {
+                        return rawCpt.startsWith(fKey);
+                    }
+
+                    // 3. Fallback textuel sur tout le champ
+                    return lib.includes(fKey) || tiers.includes(fKey) || rawCpt.includes(fKey);
                 });
             }
 
