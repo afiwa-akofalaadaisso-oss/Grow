@@ -261,6 +261,164 @@ async def transcrire_note_vocale(media_bytes: bytes, mime_type: str = "audio/ogg
     return None
 
 
+# ---------------------------------------------------------------------------
+# CONVERSION DES MONTANTS ET NOMBRES EN TOUTES LETTRES POUR TTS NATUREL
+# Évite formellement que le synthétiseur épelle les chiffres un par un
+# (ex: 50 000 FCFA -> cinquante mille francs CFA, au lieu de 'cinq zéro zéro...')
+# ---------------------------------------------------------------------------
+_UNITS_FR = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf']
+_TEENS_FR = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf']
+_TENS_FR = ['', 'dix', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante-dix', 'quatre-vingt', 'quatre-vingt-dix']
+
+
+def _centaines_en_lettres(n: int) -> str:
+    parts = []
+    c = n // 100
+    r = n % 100
+    if c == 1:
+        parts.append('cent')
+    elif c > 1:
+        parts.append(_UNITS_FR[c] + ' cent' + ('s' if r == 0 else ''))
+
+    if r > 0:
+        if r < 10:
+            parts.append(_UNITS_FR[r])
+        elif r < 20:
+            parts.append(_TEENS_FR[r - 10])
+        elif r < 70:
+            d = r // 10
+            u = r % 10
+            if u == 1 and d < 8:
+                parts.append(_TENS_FR[d] + ' et un')
+            elif u > 0:
+                parts.append(_TENS_FR[d] + '-' + _UNITS_FR[u])
+            else:
+                parts.append(_TENS_FR[d])
+        elif r < 80:
+            u = r - 60
+            if u == 11:
+                parts.append('soixante et onze')
+            else:
+                parts.append('soixante-' + (_TEENS_FR[u - 10] if u >= 10 else _UNITS_FR[u]))
+        elif r < 90:
+            u = r - 80
+            if u == 0:
+                parts.append('quatre-vingts')
+            else:
+                parts.append('quatre-vingt-' + _UNITS_FR[u])
+        else:
+            u = r - 80
+            parts.append('quatre-vingt-' + _TEENS_FR[u - 10])
+    return ' '.join(parts).strip()
+
+
+def nombre_en_lettres_fr(n: int) -> str:
+    """Convertit n'importe quel entier en français en toutes lettres naturel."""
+    try:
+        n = int(n)
+    except Exception:
+        return str(n)
+    if n == 0:
+        return 'zéro'
+    if n < 0:
+        return 'moins ' + nombre_en_lettres_fr(-n)
+
+    parts = []
+    # Milliards
+    mrd = n // 1_000_000_000
+    n %= 1_000_000_000
+    if mrd == 1:
+        parts.append('un milliard')
+    elif mrd > 1:
+        parts.append(_centaines_en_lettres(mrd) + ' milliards')
+
+    # Millions
+    mil = n // 1_000_000
+    n %= 1_000_000
+    if mil == 1:
+        parts.append('un million')
+    elif mil > 1:
+        parts.append(_centaines_en_lettres(mil) + ' millions')
+
+    # Milliers
+    mille = n // 1_000
+    r = n % 1_000
+    if mille == 1:
+        parts.append('mille')
+    elif mille > 1:
+        c_mille = _centaines_en_lettres(mille)
+        if c_mille.endswith('cents'):
+            c_mille = c_mille[:-1]
+        parts.append(c_mille + ' mille')
+
+    # Reste
+    if r > 0:
+        parts.append(_centaines_en_lettres(r))
+
+    return ' '.join(parts).strip()
+
+
+def normaliser_chiffres_en_lettres(texte: str) -> str:
+    """
+    Transforme les montants, les heures et les chiffres en mots en toutes lettres
+    pour une élocution 100% humaine, fluide et naturelle par la voix Ava.
+    """
+    if not texte:
+        return ""
+    t = texte
+
+    # 1. Heures usuelles
+    t = re.sub(r'\b00[h:]00\b', 'minuit', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b06[h:]00\b', 'six heures', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b09[h:]00\b', 'neuf heures', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b11[h:]30\b', 'onze heures trente', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b12[h:]00\b', 'midi', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b15[h:]00\b', 'quinze heures', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b18[h:]00\b', 'dix-huit heures', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b20[h:]00\b', 'vingt heures', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b21[h:]00\b', 'vingt et une heures', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b23[h:]00\b', 'vingt-trois heures', t, flags=re.IGNORECASE)
+
+    # 2. Montants avec devise (ex: 50 000 FCFA, 50,000 F, 10 000 FCFA, 330 F, 10k)
+    def _remplacer_montant(m):
+        raw_num = m.group(1).replace(' ', '').replace(',', '').replace('.', '').replace('\u00a0', '')
+        if raw_num.isdigit():
+            val = int(raw_num)
+            lettres = nombre_en_lettres_fr(val)
+            devise = m.group(2) or ''
+            if re.search(r'fcfa|cfa|francs?', devise, re.IGNORECASE):
+                devise_parlee = 'francs CFA'
+            elif re.search(r'f\b', devise, re.IGNORECASE):
+                devise_parlee = 'francs'
+            else:
+                devise_parlee = 'francs CFA'
+            return f"{lettres} {devise_parlee}".strip()
+        return m.group(0)
+
+    t = re.sub(r'\b(\d+(?:[\s,.\u00a0]\d{3})*|\d+)\s*(fcfa|cfa|francs?\s*cfa|francs?|f)\b', _remplacer_montant, t, flags=re.IGNORECASE)
+
+    # Notation k (ex: 10k -> dix mille francs CFA)
+    def _remplacer_k(m):
+        raw_num = m.group(1)
+        if raw_num.isdigit():
+            val = int(raw_num) * 1000
+            return f"{nombre_en_lettres_fr(val)} francs CFA"
+        return m.group(0)
+    t = re.sub(r'\b(\d+)\s*k\b', _remplacer_k, t, flags=re.IGNORECASE)
+
+    # 3. Nombres isolés (ex: 7 jours, 30 jours, 37 jours, 2 dépenses)
+    def _remplacer_nombre_seul(m):
+        raw = m.group(0)
+        if raw.isdigit():
+            val = int(raw)
+            if val < 10_000_000:
+                return nombre_en_lettres_fr(val)
+        return raw
+
+    t = re.sub(r'\b\d+\b', _remplacer_nombre_seul, t)
+    return t
+
+
 def extraire_phrase_orale(texte: str, langue: str = "fr") -> str:
     """
     Extrait ou compose une phrase orale concise, fluide et naturelle (1 à 2 phrases max)
@@ -280,7 +438,9 @@ def extraire_phrase_orale(texte: str, langue: str = "fr") -> str:
 
     def _fmt_amt(raw):
         clean = re.sub(r'[^\d]', '', str(raw or ""))
-        return f"{int(clean):,}".replace(",", " ") if clean else ""
+        if not clean:
+            return ""
+        return nombre_en_lettres_fr(int(clean))
 
     if langue == "wo":
         if m_vente and _fmt_amt(m_vente.group(1)):
@@ -385,17 +545,16 @@ def adapter_texte_pour_oral(texte: str, langue: str = "fr") -> str:
     t = re.sub(r'\bHT\b', 'hors taxe', t)
     t = re.sub(r'\bTTC\b', 'toutes taxes comprises', t, flags=re.IGNORECASE)
 
-    if langue == "fr":
+    if langue in ["fr", "wo"]:
         t = re.sub(r'\bfrancs?\s*CFA\b', 'francs CFA', t, flags=re.IGNORECASE)
         t = re.sub(r'(?<!francs\s)\b(?:FCFA|CFA)\b', 'francs CFA', t, flags=re.IGNORECASE)
         t = re.sub(r'\bfrancs?\s+francs?\s*CFA\b', 'francs CFA', t, flags=re.IGNORECASE)
+        # Normalisation automatique et systématique de TOUS les montants et nombres en lettres françaises
+        # Empêche catégoriquement le synthétiseur vocal d'épeler les chiffres un à un
+        t = normaliser_chiffres_en_lettres(t)
     elif langue == "en":
         t = re.sub(r'\bCFA\s*francs?\b', 'CFA francs', t, flags=re.IGNORECASE)
         t = re.sub(r'(?<!CFA\s)\b(?:FCFA|CFA)\b', 'CFA francs', t, flags=re.IGNORECASE)
-    elif langue == "wo":
-        t = re.sub(r'\bfrancs?\s*CFA\b', 'francs CFA', t, flags=re.IGNORECASE)
-        t = re.sub(r'(?<!francs\s)\b(?:FCFA|CFA)\b', 'francs CFA', t, flags=re.IGNORECASE)
-        t = re.sub(r'\bfrancs?\s+francs?\s*CFA\b', 'francs CFA', t, flags=re.IGNORECASE)
 
     return t
 
