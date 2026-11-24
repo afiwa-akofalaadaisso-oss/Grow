@@ -2487,12 +2487,29 @@
             }
         });
 
-        // Connexion via numéro de téléphone
-        function connecterParTelephone(phoneRaw) {
+        // Connexion via numéro de téléphone avec synchronisation dynamique réelle
+        async function connecterParTelephone(phoneRaw) {
             const clean = phoneRaw.replace(/[^0-9]/g, '');
             localStorage.setItem('growth_pme_phone', phoneRaw);
 
-            // Rechercher dans PME_DATABASE par téléphone
+            try {
+                const res = await fetch(`/api/pme/journal-data?phone=${encodeURIComponent(clean)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.status === 'success' && data.pme) {
+                        const dynamicKey = 'pme_' + (clean.slice(-9) || 'custom');
+                        PME_DATABASE[dynamicKey] = data.pme;
+                        currentPmeKey = dynamicKey;
+                        chargerPme(dynamicKey);
+                        fermerModalTelephoneLogin();
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.warn("[GROWTH PME] Erreur sync données réelles, repli sur le cache local :", err);
+            }
+
+            // Fallback recherche dans PME_DATABASE par téléphone
             let matchedKey = null;
             for (const [key, p] of Object.entries(PME_DATABASE)) {
                 const pTelClean = (p.telephone || '').replace(/[^0-9]/g, '');
@@ -2505,7 +2522,6 @@
             if (matchedKey) {
                 currentPmeKey = matchedKey;
             } else {
-                // Par défaut Diop
                 currentPmeKey = 'diop';
             }
 
@@ -2526,21 +2542,25 @@
             const pme = PME_DATABASE[pmeKey] || PME_DATABASE['diop'];
 
             // 1. Remplissage des en-têtes
-            document.getElementById('pmeHeaderNom').textContent = pme.nom;
-            document.getElementById('pmeHeaderTel').textContent = pme.telephone;
-            document.getElementById('pmeMobileNom').textContent = pme.nom;
-            document.getElementById('pmeMobileTel').textContent = pme.telephone;
+            document.getElementById('pmeHeaderNom').textContent = pme.nom || 'PME Growth';
+            document.getElementById('pmeHeaderTel').textContent = pme.telephone || '';
+            document.getElementById('pmeMobileNom').textContent = pme.nom || 'PME Growth';
+            document.getElementById('pmeMobileTel').textContent = pme.telephone || '';
 
             // Initiales avatar
-            const words = pme.nom.replace('Établissement ', '').replace('Boutique ', '').replace('Atelier ', '').split(' ');
-            const initials = words.length > 1 ? (words[0][0] + words[1][0]).toUpperCase() : words[0].slice(0, 2).toUpperCase();
+            const words = (pme.nom || '').replace('Établissement ', '').replace('Boutique ', '').replace('Atelier ', '').split(' ');
+            const initials = words.length > 1 ? (words[0][0] + (words[1][0] || '')).toUpperCase() : (pme.nom ? pme.nom.slice(0, 2).toUpperCase() : 'GM');
             document.getElementById('pmeAvatarInitials').textContent = initials;
 
             // 2. Remplissage des KPIs
-            document.getElementById('kpiTresoVal').innerHTML = `${pme.tresoFinale.replace(' FCFA', '')} <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>`;
-            document.getElementById('kpiCreditVal').innerHTML = `${pme.ca.replace(' FCFA', '')} <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>`;
-            document.getElementById('kpiDebitVal').innerHTML = `13 200 000 <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>`;
-            document.getElementById('kpiEcrituresCount').innerHTML = `${pme.ecritures.length} <span class="text-xs sm:text-sm font-bold text-slate-500">écritures</span>`;
+            const caText = typeof pme.ca === 'string' ? pme.ca.replace(' FCFA', '') : (pme.ca ? String(pme.ca) : '0');
+            const depText = typeof pme.depenses === 'string' ? pme.depenses.replace(' FCFA', '') : (pme.depenses ? String(pme.depenses) : '0');
+            const tresoText = typeof pme.tresoFinale === 'string' ? pme.tresoFinale.replace(' FCFA', '') : (pme.tresoFinale ? String(pme.tresoFinale) : '0');
+
+            document.getElementById('kpiTresoVal').innerHTML = `${tresoText} <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>`;
+            document.getElementById('kpiCreditVal').innerHTML = `${caText} <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>`;
+            document.getElementById('kpiDebitVal').innerHTML = `${depText} <span class="text-xs sm:text-sm font-bold text-slate-500">FCFA</span>`;
+            document.getElementById('kpiEcrituresCount').innerHTML = `${(pme.ecritures || []).length} <span class="text-xs sm:text-sm font-bold text-slate-500">écritures</span>`;
 
             // 3. Rendu du journal
             ecrituresCurrentPage = 1;

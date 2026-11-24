@@ -351,5 +351,26 @@
     "abonnement_valide": true,
     "premier_contact_effectue": true,
     "plan_abonnement": "Starter"
+  },
+  "221775556677": {
+    "etape": "DEMANDE_NINEA",
+    "langue_preferee": "fr",
+    "ninea": "009845210 2Y3",
+    "nom_entreprise": "Boulangerie Test Dakar",
+    "nom_personne_physique": null,
+    "capital": 0,
+    "forme_juridique": null,
+    "activite_principale": "Boulangerie & Traiteur",
+    "registre_commerce": null,
+    "nombre_employes": null,
+    "operateurs": null,
+    "liste_operateurs_cles": null,
+    "immobilisations": null,
+    "valeur_equipements_fcfa": null,
+    "equipements_photo_validee": false,
+    "statut": "EN_COURS",
+    "abonnement_valide": true,
+    "premier_contact_effectue": true,
+    "plan_abonnement": "Starter"
   }
 }
