@@ -1563,12 +1563,12 @@ async def process_payment_notification(payload: dict, query_params: dict = None,
             or payload.get("client_reference")
             or data_obj.get("phone")
             or payload.get("phone")
-            or "221788773827"
+            or None
         )
 
         # Résolution intelligente du commerçant :
         # Si le commerçant discute depuis un WhatsApp A, mais que son TPE/magasin Wave/OM est sur le numéro B ou un Account ID C
-        clean_target_phone = str(phone).replace("+", "").replace(" ", "").strip()
+        clean_target_phone = str(phone).replace("+", "").replace(" ", "").strip() if phone else None
         matched_whatsapp = None
 
         # 1. Recherche par Account ID / Merchant ID (ex: M_sn_...)
@@ -1582,7 +1582,7 @@ async def process_payment_notification(payload: dict, query_params: dict = None,
                     or query_params.get("phone")
                     or payload.get("client_reference")
                     or payload.get("phone")
-                    or "221788773827"
+                    or None
                 )
                 clean_client = str(client_payeur).replace("+", "").replace(" ", "").strip()
 
@@ -1786,7 +1786,7 @@ async def webhook_wave_direct(request: Request):
             or payload.get("merchant_phone")
             or payload.get("client_reference")
             or payload.get("phone")
-            or "221788773827"
+            or None
         )
         amount = res.get("amount", 0)
         tx_id = res.get("tx_id", "")
@@ -1833,7 +1833,7 @@ async def webhook_orange_money(request: Request):
             or payload.get("merchant_msisdn")
             or payload.get("client_reference")
             or payload.get("phone")
-            or "221788773827"
+            or None
         )
         amount = res.get("amount", 0)
         tx_id = res.get("tx_id", "")
@@ -6631,6 +6631,11 @@ async def flash_summary_3h_check():
 
             txs = sp.table("transactions").select("*").eq("entreprise_id", ent_id).execute().data or []
             txs_du_jour = [t for t in txs if (t.get("date_operation") or t.get("created_at") or "").startswith(today_str)]
+            
+            # MACHINE RÉELLE : Ne pas spammer le commerçant avec un point flash si aucune transaction aujourd'hui
+            if not txs_du_jour:
+                continue
+
             treso_stats = get_tresorerie_stats(sp, ent_id)
             base_url = get_public_base_url()
             dash_url = f"{base_url}/dashboard?phone={phone}" if phone else ""
@@ -6660,7 +6665,10 @@ async def morning_greeting_check():
             lang = ent.get("langue_preferee") or "fr"
 
             txs = sp.table("transactions").select("*").eq("entreprise_id", ent_id).execute().data or []
-            
+            if not txs:
+                # Commerçant sans activité : ne pas envoyer de notification matinale
+                continue
+
             # Transactions de la nuit : entre 21h hier soir et 06h ce matin
             txs_nuit = []
             for t in txs:
