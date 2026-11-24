@@ -797,7 +797,7 @@ async def api_autoengine_audit(request: Request):
 
 @app.get("/api/autoengine/leads")
 async def api_autoengine_leads():
-    """Consulte la liste des demandes d'audit enregistrées pour AutoEngine."""
+    """Consulte la liste des demandes d'audit RÉELLES enregistrées pour AutoEngine."""
     leads = []
     if os.path.exists(AUTOENGINE_LEADS_FILE):
         try:
@@ -805,52 +805,6 @@ async def api_autoengine_leads():
                 leads = json.load(f)
         except Exception:
             leads = []
-
-    if not leads:
-        leads = [
-            {
-                "id": "LEAD-2026-001",
-                "date": "24/11/2026 10:15:00",
-                "nom": "Amadou Sow",
-                "entreprise": "Groupe Sénégalaise de Distribution (GSD)",
-                "email": "a.sow@gsd-senegal.com",
-                "tel": "+221776543210",
-                "besoin": "growth",
-                "message": "Nous gérons 14 boutiques à Dakar et souhaitons automatiser la remontée des encaissements Wave et Caisse vers notre cabinet.",
-                "statut": "Nouveau",
-                "ip": "196.207.240.12"
-            },
-            {
-                "id": "LEAD-2026-002",
-                "date": "23/11/2026 16:42:00",
-                "nom": "Fatou Ndiaye",
-                "entreprise": "Cabinet Conseils & Audit Dakar",
-                "email": "fatou.ndiaye@cca-audit.sn",
-                "tel": "+221781234567",
-                "besoin": "admin",
-                "message": "Besoin urgent d'automatiser le rapprochement bancaire et l'imputation SYSCOHADA pour nos 60 dossiers PME.",
-                "statut": "Contacté",
-                "ip": "154.124.78.33"
-            },
-            {
-                "id": "LEAD-2026-003",
-                "date": "22/11/2026 11:20:00",
-                "nom": "Cheikh Tidiane Ba",
-                "entreprise": "Ba & Frères Matériaux",
-                "email": "contact@ba-materiaux.sn",
-                "tel": "+221773322110",
-                "besoin": "commercial",
-                "message": "Agents commerciaux pour qualification des appels et relances automatiques de devis.",
-                "statut": "Qualifié",
-                "ip": "41.82.160.5"
-            }
-        ]
-        try:
-            with open(AUTOENGINE_LEADS_FILE, "w", encoding="utf-8") as f:
-                json.dump(leads, f, ensure_ascii=False, indent=2)
-        except Exception:
-            pass
-
     return leads
 
 
