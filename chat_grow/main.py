@@ -388,7 +388,7 @@ def save_onboarding_states(states: dict):
         print(f"Erreur sauvegarde onboarding states : {e}")
 
 
-DEV_TEST_PHONES = ["221788773827", "221764093183", "221774093183"]
+DEV_TEST_PHONES = ["221781954086", "221788773827", "221764093183", "221774093183"]
 
 def is_phone_dev_exempt(phone: str) -> bool:
     clean = str(phone).replace("+", "").replace(" ", "").strip()
