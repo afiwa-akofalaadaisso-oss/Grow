@@ -18,30 +18,36 @@
 
     <style>
         /* Élimination totale et invisible de toutes les barres de défilement (Windows, Mac, Chrome, Edge, Firefox) */
-        html, body, * {
+        html,
+        body,
+        * {
             scrollbar-width: none !important;
             -ms-overflow-style: none !important;
         }
 
-        ::-webkit-scrollbar, *::-webkit-scrollbar {
+        ::-webkit-scrollbar,
+        *::-webkit-scrollbar {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
             background: transparent !important;
         }
 
-        ::-webkit-scrollbar-button, *::-webkit-scrollbar-button {
+        ::-webkit-scrollbar-button,
+        *::-webkit-scrollbar-button {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
         }
 
-        ::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
+        ::-webkit-scrollbar-thumb,
+        *::-webkit-scrollbar-thumb {
             display: none !important;
             background: transparent !important;
         }
 
-        ::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
+        ::-webkit-scrollbar-track,
+        *::-webkit-scrollbar-track {
             display: none !important;
             background: transparent !important;
         }
@@ -1200,7 +1206,7 @@
                 grid-template-columns: 1fr;
             }
         }
-    
+
         .custom-select-trigger:hover,
         .custom-select-trigger:focus {
             border-color: rgba(255, 255, 255, 0.4) !important;
@@ -1216,12 +1222,13 @@
                 opacity: 0;
                 transform: translateY(-6px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-</style>
+    </style>
 </head>
 
 <body>
@@ -1789,77 +1796,106 @@
                     <!-- Custom Pro Dropdown Menu (High-End Studio UI) -->
                     <div class="custom-select-wrapper" style="position: relative; margin-bottom: 16px;">
                         <input type="hidden" id="auditBesoin" required value="">
-                        
-                        <div id="customSelectTrigger" class="custom-select-trigger" onclick="toggleCustomSelect()" tabindex="0"
+
+                        <div id="customSelectTrigger" class="custom-select-trigger" onclick="toggleCustomSelect()"
+                            tabindex="0"
                             style="width: 100%; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 13px 16px; color: #94a3b8; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; user-select: none;">
-                            <span id="customSelectLabel" style="display: flex; align-items: center; gap: 10px; font-weight: 500;">
+                            <span id="customSelectLabel"
+                                style="display: flex; align-items: center; gap: 10px; font-weight: 500;">
                                 <i class="fa-solid fa-layer-group" style="color: #64748b; font-size: 13px;"></i>
                                 <span>Quel processus souhaitez-vous automatiser en priorité ?</span>
                             </span>
-                            <i id="customSelectChevron" class="fa-solid fa-chevron-down" style="font-size: 12px; color: #94a3b8; transition: transform 0.25s ease;"></i>
+                            <i id="customSelectChevron" class="fa-solid fa-chevron-down"
+                                style="font-size: 12px; color: #94a3b8; transition: transform 0.25s ease;"></i>
                         </div>
 
                         <div id="customSelectOptions" class="custom-select-menu"
                             style="display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #0c1524; border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 12px; box-shadow: 0 18px 45px -10px rgba(0, 0, 0, 0.85); z-index: 100; overflow: hidden; backdrop-filter: blur(16px); padding: 6px; animation: fadeInDropdown 0.2s ease;">
-                            
-                            <div class="custom-option" onclick="selectCustomOption('commercial', 'Agents commerciaux, qualification de prospects & RDV', 'fa-solid fa-user-tie', '#38bdf8', event)"
+
+                            <div class="custom-option"
+                                onclick="selectCustomOption('commercial', 'Agents commerciaux, qualification de prospects & RDV', 'fa-solid fa-user-tie', '#38bdf8', event)"
                                 style="padding: 11px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 11px; font-size: 13.5px; color: #f1f5f9; transition: all 0.15s;">
-                                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <div
+                                    style="width: 30px; height: 30px; border-radius: 8px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                     <i class="fa-solid fa-user-tie" style="color: #38bdf8; font-size: 12px;"></i>
                                 </div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; line-height: 1.3;">Agents commerciaux, qualification de prospects &amp; RDV</div>
-                                    <div style="font-size: 11px; color: #94a3b8;">Outbound, inbound, CRM &amp; relances intelligentes</div>
+                                    <div style="font-weight: 600; line-height: 1.3;">Agents commerciaux, qualification
+                                        de prospects &amp; RDV</div>
+                                    <div style="font-size: 11px; color: #94a3b8;">Outbound, inbound, CRM &amp; relances
+                                        intelligentes</div>
                                 </div>
-                                <i class="fa-solid fa-check option-check" style="display: none; color: #a0d9d2; font-size: 12px;"></i>
+                                <i class="fa-solid fa-check option-check"
+                                    style="display: none; color: #a0d9d2; font-size: 12px;"></i>
                             </div>
 
-                            <div class="custom-option" onclick="selectCustomOption('support', 'Service client & SAV autonome omnicanal (Web, Email, Chat, Voix)', 'fa-solid fa-headset', '#a78bfa', event)"
+                            <div class="custom-option"
+                                onclick="selectCustomOption('support', 'Service client & SAV autonome omnicanal (Web, Email, Chat, Voix)', 'fa-solid fa-headset', '#a78bfa', event)"
                                 style="padding: 11px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 11px; font-size: 13.5px; color: #f1f5f9; transition: all 0.15s;">
-                                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(167, 139, 250, 0.12); border: 1px solid rgba(167, 139, 250, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <div
+                                    style="width: 30px; height: 30px; border-radius: 8px; background: rgba(167, 139, 250, 0.12); border: 1px solid rgba(167, 139, 250, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                     <i class="fa-solid fa-headset" style="color: #a78bfa; font-size: 12px;"></i>
                                 </div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; line-height: 1.3;">Service client &amp; SAV autonome omnicanal</div>
-                                    <div style="font-size: 11px; color: #94a3b8;">Web, Email, WhatsApp, Voix &amp; résolution 24/7</div>
+                                    <div style="font-weight: 600; line-height: 1.3;">Service client &amp; SAV autonome
+                                        omnicanal</div>
+                                    <div style="font-size: 11px; color: #94a3b8;">Web, Email, WhatsApp, Voix &amp;
+                                        résolution 24/7</div>
                                 </div>
-                                <i class="fa-solid fa-check option-check" style="display: none; color: #a0d9d2; font-size: 12px;"></i>
+                                <i class="fa-solid fa-check option-check"
+                                    style="display: none; color: #a0d9d2; font-size: 12px;"></i>
                             </div>
 
-                            <div class="custom-option" onclick="selectCustomOption('admin', 'Facturation, comptabilité & gestion administrative', 'fa-solid fa-file-invoice-dollar', '#f59e0b', event)"
+                            <div class="custom-option"
+                                onclick="selectCustomOption('admin', 'Facturation, comptabilité & gestion administrative', 'fa-solid fa-file-invoice-dollar', '#f59e0b', event)"
                                 style="padding: 11px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 11px; font-size: 13.5px; color: #f1f5f9; transition: all 0.15s;">
-                                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <i class="fa-solid fa-file-invoice-dollar" style="color: #f59e0b; font-size: 12px;"></i>
+                                <div
+                                    style="width: 30px; height: 30px; border-radius: 8px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fa-solid fa-file-invoice-dollar"
+                                        style="color: #f59e0b; font-size: 12px;"></i>
                                 </div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; line-height: 1.3;">Facturation, comptabilité &amp; gestion administrative</div>
-                                    <div style="font-size: 11px; color: #94a3b8;">Extraction OCR, rapprochement bancaire, devis</div>
+                                    <div style="font-weight: 600; line-height: 1.3;">Facturation, comptabilité &amp;
+                                        gestion administrative</div>
+                                    <div style="font-size: 11px; color: #94a3b8;">Extraction OCR, rapprochement
+                                        bancaire, devis</div>
                                 </div>
-                                <i class="fa-solid fa-check option-check" style="display: none; color: #a0d9d2; font-size: 12px;"></i>
+                                <i class="fa-solid fa-check option-check"
+                                    style="display: none; color: #a0d9d2; font-size: 12px;"></i>
                             </div>
 
-                            <div class="custom-option" onclick="selectCustomOption('growth', 'Déploiement de l\'Agent Financier Growth', 'fa-solid fa-chart-line', '#a0d9d2', event)"
+                            <div class="custom-option"
+                                onclick="selectCustomOption('growth', 'Déploiement de l\'Agent Financier Growth', 'fa-solid fa-chart-line', '#a0d9d2', event)"
                                 style="padding: 11px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 11px; font-size: 13.5px; color: #f1f5f9; transition: all 0.15s;">
-                                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(160, 217, 210, 0.15); border: 1px solid rgba(160, 217, 210, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <div
+                                    style="width: 30px; height: 30px; border-radius: 8px; background: rgba(160, 217, 210, 0.15); border: 1px solid rgba(160, 217, 210, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                     <i class="fa-solid fa-chart-line" style="color: #a0d9d2; font-size: 12px;"></i>
                                 </div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; line-height: 1.3;">Déploiement de l'Agent Financier Growth</div>
-                                    <div style="font-size: 11px; color: #94a3b8;">Collecte Wave, Caisse &amp; liasses SYSCOHADA SMT</div>
+                                    <div style="font-weight: 600; line-height: 1.3;">Déploiement de l'Agent Financier
+                                        Growth</div>
+                                    <div style="font-size: 11px; color: #94a3b8;">Collecte Wave, Caisse &amp; liasses
+                                        SYSCOHADA SMT</div>
                                 </div>
-                                <i class="fa-solid fa-check option-check" style="display: none; color: #a0d9d2; font-size: 12px;"></i>
+                                <i class="fa-solid fa-check option-check"
+                                    style="display: none; color: #a0d9d2; font-size: 12px;"></i>
                             </div>
 
-                            <div class="custom-option" onclick="selectCustomOption('surmesure', 'Système complet sur-mesure / Intégration ERP', 'fa-solid fa-cubes', '#34d399', event)"
+                            <div class="custom-option"
+                                onclick="selectCustomOption('surmesure', 'Système complet sur-mesure / Intégration ERP', 'fa-solid fa-cubes', '#34d399', event)"
                                 style="padding: 11px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 11px; font-size: 13.5px; color: #f1f5f9; transition: all 0.15s;">
-                                <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(52, 211, 153, 0.12); border: 1px solid rgba(52, 211, 153, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <div
+                                    style="width: 30px; height: 30px; border-radius: 8px; background: rgba(52, 211, 153, 0.12); border: 1px solid rgba(52, 211, 153, 0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                     <i class="fa-solid fa-cubes" style="color: #34d399; font-size: 12px;"></i>
                                 </div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; line-height: 1.3;">Système complet sur-mesure / Intégration ERP</div>
-                                    <div style="font-size: 11px; color: #94a3b8;">Architecture multi-agents, connecteurs internes &amp; API</div>
+                                    <div style="font-weight: 600; line-height: 1.3;">Système complet sur-mesure /
+                                        Intégration ERP</div>
+                                    <div style="font-size: 11px; color: #94a3b8;">Architecture multi-agents, connecteurs
+                                        internes &amp; API</div>
                                 </div>
-                                <i class="fa-solid fa-check option-check" style="display: none; color: #a0d9d2; font-size: 12px;"></i>
+                                <i class="fa-solid fa-check option-check"
+                                    style="display: none; color: #a0d9d2; font-size: 12px;"></i>
                             </div>
 
                         </div>
@@ -1879,9 +1915,11 @@
                     style="display: none; text-align: center; padding: 28px 24px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid rgba(255, 255, 255, 0.25); border-radius: 14px; margin-top: 18px;">
                     <i class="fa-solid fa-circle-check"
                         style="color: #ffffff; font-size: 36px; margin-bottom: 12px;"></i>
-                    <h4 style="font-size: 20px; font-weight: 800; color: #ffffff; margin-bottom: 6px;">Demande d'Audit Reçue &amp; Enregistrée !</h4>
+                    <h4 style="font-size: 20px; font-weight: 800; color: #ffffff; margin-bottom: 6px;">Demande d'Audit
+                        Reçue &amp; Enregistrée !</h4>
                     <p style="font-size: 14px; color: #cbd5e1; max-width: 500px; margin: 0 auto 18px auto;">
-                        Votre dossier a été enregistré sur le serveur d'AutoEngine. Un ingénieur vous contactera sous 2 heures ouvrées par email ou téléphone.
+                        Votre dossier a été enregistré sur le serveur d'AutoEngine. Un ingénieur vous contactera sous 2
+                        heures ouvrées par email ou téléphone.
                     </p>
                     <a id="auditWaDirectAction" href="https://wa.me/221781954086" target="_blank"
                         style="display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #ffffff; font-weight: 800; font-size: 13.5px; padding: 11px 20px; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);">
@@ -1939,7 +1977,8 @@
                         <li><a href="#methodologie">Méthodologie</a></li>
                         <li><a href="#simulateur">Calculateur ROI</a></li>
                         <li><a href="#audit">Réserver un Audit</a></li>
-                        <li><a href="mailto:autoengine9ai.automation@gmail.com">autoengine9ai.automation@gmail.com</a></li>
+                        <li><a href="mailto:autoengine9ai.automation@gmail.com">autoengine9ai.automation@gmail.com</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -1976,7 +2015,7 @@
             document.getElementById('hoursSavedYear').textContent = `${automatedHours.toLocaleString('fr-FR')} h`;
         }
 
-        
+
         function toggleCustomSelect() {
             const menu = document.getElementById('customSelectOptions');
             const chevron = document.getElementById('customSelectChevron');
@@ -1998,7 +2037,7 @@
             const hiddenInput = document.getElementById('auditBesoin');
             const labelSpan = document.getElementById('customSelectLabel');
             const trigger = document.getElementById('customSelectTrigger');
-            
+
             if (hiddenInput) hiddenInput.value = val;
             if (labelSpan) {
                 labelSpan.innerHTML = `<i class="${iconClass}" style="color: ${iconColor}; font-size: 13px;"></i> <span style="color: #ffffff; font-weight: 600;">${text}</span>`;
@@ -2027,7 +2066,7 @@
             if (chevron) chevron.style.transform = 'rotate(0deg)';
         }
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const wrapper = document.querySelector('.custom-select-wrapper');
             const menu = document.getElementById('customSelectOptions');
             const chevron = document.getElementById('customSelectChevron');

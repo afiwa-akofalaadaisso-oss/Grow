@@ -44,7 +44,7 @@
             }
         }
     </script>
-            <style>
+    <style>
         * {
             -webkit-font-smoothing: antialiased;
             scrollbar-width: none !important;
@@ -62,7 +62,8 @@
             --text-muted: #64748b;
         }
 
-        html, body {
+        html,
+        body {
             background-color: #07090e !important;
             background: #07090e !important;
             color: #ffffff !important;
@@ -72,14 +73,17 @@
             -ms-overflow-style: none !important;
         }
 
-        ::-webkit-scrollbar, *::-webkit-scrollbar {
+        ::-webkit-scrollbar,
+        *::-webkit-scrollbar {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
             background: transparent !important;
         }
 
-        .cockpit-card, .growth-card, .growth-card-dark {
+        .cockpit-card,
+        .growth-card,
+        .growth-card-dark {
             background: #0d121d !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
             border-radius: 1rem;
@@ -87,7 +91,8 @@
             box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6) !important;
         }
 
-        .cockpit-card:hover, .growth-card:hover {
+        .cockpit-card:hover,
+        .growth-card:hover {
             background: #131b2a !important;
             border-color: rgba(255, 255, 255, 0.15) !important;
         }
@@ -98,6 +103,7 @@
             font-weight: 800 !important;
             transition: all 0.15s ease;
         }
+
         .btn-white:hover {
             background: #e2e8f0 !important;
             transform: translateY(-1px);
@@ -109,24 +115,32 @@
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             transition: all 0.15s ease;
         }
+
         .btn-outline:hover {
             background: rgba(255, 255, 255, 0.08) !important;
             border-color: #ffffff !important;
         }
-    
+
         /* Sécurité absolue lisibilité : tout bouton ou élément sur fond blanc a un texte NOIR PUR */
-        .bg-white, .btn-white {
+        .bg-white,
+        .btn-white {
             background-color: #ffffff !important;
             color: #000000 !important;
         }
-        .bg-white span, .bg-white i, .bg-white div, .bg-white p, .btn-white * {
-            color: #000000 !important;
-        }
-        .bg-white .font-mono, .bg-white .badge-count {
-            background-color: rgba(0, 0, 0, 0.12) !important;
+
+        .bg-white span,
+        .bg-white i,
+        .bg-white div,
+        .bg-white p,
+        .btn-white * {
             color: #000000 !important;
         }
 
+        .bg-white .font-mono,
+        .bg-white .badge-count {
+            background-color: rgba(0, 0, 0, 0.12) !important;
+            color: #000000 !important;
+        }
     </style>
 </head>
 
@@ -153,7 +167,8 @@
                         class="px-3.5 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-2 cursor-pointer bg-white text-black shadow-sm">
                         <i class="fa-solid fa-inbox text-[11px]"></i>
                         <span>Entrées &amp; Demandes</span>
-                        <span id="badgeDemandesHeader" class="px-1.5 py-0.2 rounded-full bg-black/15 text-black font-mono text-[10.5px] font-black">0</span>
+                        <span id="badgeDemandesHeader"
+                            class="px-1.5 py-0.2 rounded-full bg-black/15 text-black font-mono text-[10.5px] font-black">0</span>
                     </button>
                     <button type="button" id="tabCockpitGrowth" onclick="basculerCockpit('growth')"
                         class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 cursor-pointer text-slate-400 hover:text-white">
@@ -178,7 +193,8 @@
                 </div>
 
                 <!-- Horloge Dakar -->
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#07090e] border border-white/10 text-xs font-mono text-slate-400">
+                <div
+                    class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#07090e] border border-white/10 text-xs font-mono text-slate-400">
                     <i class="fa-regular fa-clock text-white text-[11px]"></i>
                     <span id="dakarClock">Dakar 00:00 (GMT)</span>
                 </div>
@@ -206,12 +222,14 @@
             <!-- 4 KPIS ENTRÉES PLATEFORME (STYLE AUTOENGINE NOIR ET BLANC PUR) -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 <div class="cockpit-card p-4">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Entrées Plateforme</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Entrées
+                        Plateforme</span>
                     <div class="text-3xl font-black text-white mt-1 font-mono" id="kpiTotalAudits">0</div>
                     <span class="text-[11px] text-slate-400 font-medium">Tout ce qui entre sur la plateforme</span>
                 </div>
                 <div class="cockpit-card p-4">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Nouveaux à Traiter</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Nouveaux à
+                        Traiter</span>
                     <div class="text-3xl font-black text-white mt-1 font-mono flex items-center gap-2">
                         <span id="kpiNouveauxAudits">0</span>
                         <span class="w-2 h-2 rounded-full bg-white animate-pulse inline-block"></span>
@@ -219,13 +237,16 @@
                     <span class="text-[11px] text-slate-400 font-medium">En attente de qualification</span>
                 </div>
                 <div class="cockpit-card p-4">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Dossiers Actifs</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Dossiers
+                        Actifs</span>
                     <div class="text-3xl font-black text-white mt-1 font-mono" id="kpiContactesAudits">0</div>
                     <span class="text-[11px] text-slate-400 font-medium">Cabinets &amp; PME confirmés</span>
                 </div>
                 <div class="cockpit-card p-4">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Canal Principal</span>
-                    <div class="text-base font-black text-white mt-2 truncate" id="kpiTopBesoin">WhatsApp &amp; Web</div>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Canal
+                        Principal</span>
+                    <div class="text-base font-black text-white mt-2 truncate" id="kpiTopBesoin">WhatsApp &amp; Web
+                    </div>
                     <span class="text-[11px] text-slate-400 font-medium">Flux direct multi-canal</span>
                 </div>
             </div>
@@ -234,7 +255,8 @@
             <div class="cockpit-card p-4 sm:p-5">
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-4">
                     <div class="relative flex-1 max-w-md">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs pointer-events-none"></i>
+                        <i
+                            class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs pointer-events-none"></i>
                         <input type="text" id="searchAuditsInput" oninput="filterAuditsTable()"
                             placeholder="Rechercher par nom, entreprise, téléphone, type..."
                             class="w-full pl-8 pr-3 py-2 rounded-xl bg-[#07090e] border border-white/10 text-xs font-semibold text-white placeholder:text-slate-500 focus:outline-none focus:border-white">
@@ -253,7 +275,8 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
-                            <tr class="bg-[#07090e] border-b border-white/10 text-[10.5px] font-black text-slate-300 uppercase tracking-wider">
+                            <tr
+                                class="bg-[#07090e] border-b border-white/10 text-[10.5px] font-black text-slate-300 uppercase tracking-wider">
                                 <th class="py-3 px-3">Date</th>
                                 <th class="py-3 px-3">Type &amp; Canal</th>
                                 <th class="py-3 px-3">Nom &amp; Entreprise</th>
@@ -267,7 +290,8 @@
                         <tbody id="auditsTableBody">
                             <tr>
                                 <td colspan="8" class="text-center py-8 text-slate-500 font-medium">
-                                    <i class="fa-solid fa-spinner fa-spin text-base mb-2 text-white"></i><br>Chargement des entrées plateforme...
+                                    <i class="fa-solid fa-spinner fa-spin text-base mb-2 text-white"></i><br>Chargement
+                                    des entrées plateforme...
                                 </td>
                             </tr>
                         </tbody>
@@ -279,340 +303,351 @@
         <div id="viewCockpitGrowth" class="space-y-6 hidden">
 
             <!-- CONTENU GROWTH (SUPERVISION PME & FINANCES) --> (KPIS + 3 ONGLETS PME / CAISSE / LEARNING) -->
-            
 
-        <!-- 4 CARTES KPIS STRATÉGIQUES (PALETTE OFFICIELLE GROWTH #222222) -->
-        <section class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
 
-            <!-- 1. Commerçants Inscrits -->
-            <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
-                <div
-                    class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
-                    <span>Commerçants Inscrits</span>
+            <!-- 4 CARTES KPIS STRATÉGIQUES (PALETTE OFFICIELLE GROWTH #222222) -->
+            <section class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+
+                <!-- 1. Commerçants Inscrits -->
+                <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
+                    <div
+                        class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                        <span>Commerçants Inscrits</span>
+                    </div>
+                    <div class="mt-2.5 flex items-baseline gap-2">
+                        <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiTotalUsers">0</span>
+                        <span class="text-[11px] text-white font-bold" id="kpiActifsJour">0 actif auj.</span>
+                    </div>
+                    <div class="mt-1.5 text-[11px] text-slate-400">Total entreprises sur la plateforme</div>
                 </div>
-                <div class="mt-2.5 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiTotalUsers">0</span>
-                    <span class="text-[11px] text-white font-bold" id="kpiActifsJour">0 actif auj.</span>
+
+                <!-- 2. Trésorerie & Caisse Dirigeant -->
+                <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
+                    <div
+                        class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                        <span>Trésorerie Caisse Dirigeant</span>
+                    </div>
+                    <div class="mt-2.5 flex items-baseline gap-2">
+                        <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiCaisseAbonnements">0
+                            FCFA</span>
+                        <span class="text-[11px] text-slate-400 font-semibold" id="kpiCaisseStatut">Solde net</span>
+                    </div>
+                    <div class="mt-1.5 text-[11px] text-slate-300 flex items-center justify-between">
+                        <span id="kpiEntreesSortiesDetail" class="font-mono text-[10.5px]">+0 F abos · -0 F
+                            sorties</span>
+                        <span class="text-[10.5px] text-white font-mono font-semibold" id="kpiAbonnesActifs">0
+                            abonné(s)</span>
+                    </div>
                 </div>
-                <div class="mt-1.5 text-[11px] text-slate-400">Total entreprises sur la plateforme</div>
+
+                <!-- 3. Satisfaction IA -->
+                <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
+                    <div
+                        class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                        <span>Satisfaction IA</span>
+                    </div>
+                    <div class="mt-2.5 flex items-baseline gap-2">
+                        <span class="text-2xl sm:text-3xl font-black font-mono text-white"
+                            id="kpiSatisfaction">100%</span>
+                        <span class="text-[11px] text-slate-300 font-mono" id="kpiVotesCounts">0 utiles · 0 à
+                            revoir</span>
+                    </div>
+                    <div class="mt-1.5 text-[11px] text-slate-400">Évaluation des réponses WhatsApp</div>
+                </div>
+
+                <!-- 4. Commerçants Inactifs à Relancer -->
+                <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
+                    <div
+                        class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                        <span>Inactifs à Relancer</span>
+                    </div>
+                    <div class="mt-2.5 flex items-baseline gap-2">
+                        <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiInactifs">0</span>
+                        <span class="text-[11px] text-slate-300 font-semibold" id="kpiInactifsLabel">&gt; 24h sans
+                            écriture</span>
+                    </div>
+                    <div class="mt-1.5 text-[11px] text-slate-400">Prêts pour réactivation WhatsApp</div>
+                </div>
+            </section>
+
+            <!-- NAVIGATION PAR ONGLETS DU COCKPIT (3 ESPACES DIRIGEANT) -->
+            <div class="flex items-center gap-2 border-b border-white/10 pb-2 overflow-x-auto">
+                <!-- Onglet 1 : Utilisateurs -->
+                <button type="button" onclick="switchCockpitTab('utilisateurs')" id="tabBtnUsers"
+                    class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-white text-black shadow-xs cursor-pointer flex-shrink-0">
+                    <span>Suivi des Utilisateurs</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] bg-black/15 text-black font-mono font-black"
+                        id="tabBadgeUsersCount">0</span>
+                </button>
+
+                <!-- Onglet 2 : Caisse & Trésorerie Dirigeant -->
+                <button type="button" onclick="switchCockpitTab('abonnements')" id="tabBtnAbonnements"
+                    class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-[#1e293b] cursor-pointer flex-shrink-0">
+                    <span>Caisse &amp; Trésorerie</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-slate-100 font-mono"
+                        id="tabBadgeCaisseCount">0 F</span>
+                </button>
+
+                <!-- Onglet 3 : Active Learning IA -->
+                <button type="button" onclick="switchCockpitTab('learning')" id="tabBtnLearning"
+                    class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-[#1e293b] cursor-pointer flex-shrink-0">
+                    <span>Apprentissage IA</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-slate-100 font-mono"
+                        id="tabBadgeLearningCount">0</span>
+                </button>
+
+
             </div>
 
-            <!-- 2. Trésorerie & Caisse Dirigeant -->
-            <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
-                <div
-                    class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
-                    <span>Trésorerie Caisse Dirigeant</span>
-                </div>
-                <div class="mt-2.5 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiCaisseAbonnements">0
-                        FCFA</span>
-                    <span class="text-[11px] text-slate-400 font-semibold" id="kpiCaisseStatut">Solde net</span>
-                </div>
-                <div class="mt-1.5 text-[11px] text-slate-300 flex items-center justify-between">
-                    <span id="kpiEntreesSortiesDetail" class="font-mono text-[10.5px]">+0 F abos · -0 F
-                        sorties</span>
-                    <span class="text-[10.5px] text-white font-mono font-semibold" id="kpiAbonnesActifs">0
-                        abonné(s)</span>
-                </div>
-            </div>
 
-            <!-- 3. Satisfaction IA -->
-            <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
-                <div
-                    class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
-                    <span>Satisfaction IA</span>
-                </div>
-                <div class="mt-2.5 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-white"
-                        id="kpiSatisfaction">100%</span>
-                    <span class="text-[11px] text-slate-300 font-mono" id="kpiVotesCounts">0 utiles · 0 à revoir</span>
-                </div>
-                <div class="mt-1.5 text-[11px] text-slate-400">Évaluation des réponses WhatsApp</div>
-            </div>
+            <!-- ========================================================================= -->
+            <!-- SECTION 1 : SUIVI & RELANCE DES UTILISATEURS                            -->
+            <!-- ========================================================================= -->
+            <section id="cockpitSectionUsers" class="space-y-4">
 
-            <!-- 4. Commerçants Inactifs à Relancer -->
-            <div class="growth-card-dark p-4 sm:p-5 relative overflow-hidden group">
-                <div
-                    class="flex items-center justify-between text-slate-300 text-xs font-semibold uppercase tracking-wider">
-                    <span>Inactifs à Relancer</span>
-                </div>
-                <div class="mt-2.5 flex items-baseline gap-2">
-                    <span class="text-2xl sm:text-3xl font-black font-mono text-white" id="kpiInactifs">0</span>
-                    <span class="text-[11px] text-slate-300 font-semibold" id="kpiInactifsLabel">&gt; 24h sans
-                        écriture</span>
-                </div>
-                <div class="mt-1.5 text-[11px] text-slate-400">Prêts pour réactivation WhatsApp</div>
-            </div>
-        </section>
-
-        <!-- NAVIGATION PAR ONGLETS DU COCKPIT (3 ESPACES DIRIGEANT) -->
-        <div class="flex items-center gap-2 border-b border-white/10 pb-2 overflow-x-auto">
-            <!-- Onglet 1 : Utilisateurs -->
-            <button type="button" onclick="switchCockpitTab('utilisateurs')" id="tabBtnUsers"
-                class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 bg-white text-black shadow-xs cursor-pointer flex-shrink-0">
-                <span>Suivi des Utilisateurs</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-black/15 text-black font-mono font-black"
-                    id="tabBadgeUsersCount">0</span>
-            </button>
-
-            <!-- Onglet 2 : Caisse & Trésorerie Dirigeant -->
-            <button type="button" onclick="switchCockpitTab('abonnements')" id="tabBtnAbonnements"
-                class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-[#1e293b] cursor-pointer flex-shrink-0">
-                <span>Caisse &amp; Trésorerie</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-slate-100 font-mono"
-                    id="tabBadgeCaisseCount">0 F</span>
-            </button>
-
-            <!-- Onglet 3 : Active Learning IA -->
-            <button type="button" onclick="switchCockpitTab('learning')" id="tabBtnLearning"
-                class="px-4 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 text-slate-300 hover:text-white hover:bg-[#1e293b] cursor-pointer flex-shrink-0">
-                <span>Apprentissage IA</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-slate-100 font-mono"
-                    id="tabBadgeLearningCount">0</span>
-            </button>
-
-            
-        </div>
-
-
-        <!-- ========================================================================= -->
-        <!-- SECTION 1 : SUIVI & RELANCE DES UTILISATEURS                            -->
-        <!-- ========================================================================= -->
-        <section id="cockpitSectionUsers" class="space-y-4">
-
-            <!-- Barre de Recherche & Filtres d'Activité -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 growth-card p-4">
-                <div class="relative flex-1 max-w-md">
-                    <span
-                        class="material-symbols-outlined notranslate absolute left-3 top-2.5 text-slate-400 text-[18px]"
-                        translate="no">search</span>
-                    <input type="text" id="searchUserInput" onkeyup="filterUsersTable()"
-                        placeholder="Rechercher par nom de commerce ou numéro WhatsApp..."
-                        class="w-full pl-9 pr-4 py-2 rounded-xl bg-[#07090e] border-white/10 text-white border border-white/10 text-xs text-white placeholder-slate-400 focus:bg-[#07090e] focus:outline-none focus:border-white transition-colors">
-                </div>
-                <div class="flex items-center gap-2 text-xs flex-wrap">
-                    <span class="text-slate-400 font-semibold">Filtre :</span>
-                    <button type="button" onclick="setUserFilter('ALL')" id="filterAll"
-                        class="px-2.5 py-1 rounded-lg bg-white text-black font-bold cursor-pointer">Tous</button>
-                    <button type="button" onclick="setUserFilter('ACTIF')" id="filterActif"
-                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Actifs</button>
-                    <button type="button" onclick="setUserFilter('ATTENTION')" id="filterAttention"
-                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Inactifs 24h</button>
-                    <button type="button" onclick="setUserFilter('INACTIF')" id="filterInactif"
-                        class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Inactifs &gt; 3j</button>
-                </div>
-            </div>
-
-            <!-- TABLEAU DES COMMERÇANTS -->
-            <div class="growth-card shadow-xs overflow-hidden border border-white/10">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
-                                <th class="py-3 px-4">Commerce &amp; Contact WhatsApp</th>
-                                <th class="py-3 px-3 text-center">Écritures (Auj. / Total)</th>
-                                <th class="py-3 px-3 text-center">Statut d'Activité</th>
-                                <th class="py-3 px-3 text-center">Abonnement Growth</th>
-                                <th class="py-3 px-3">Dernière Activité</th>
-                                <th class="py-3 px-4 text-center">Actions Dirigeant</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
-                            <!-- Rempli par JavaScript (ou état vide si 0 client) -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========================================================================= -->
-        <!-- SECTION 2 : CAISSE PERSO & TRÉSORERIE DU CRÉATEUR (ENTRÉES & SORTIES)      -->
-        <!-- ========================================================================= -->
-        <section id="cockpitSectionAbonnements" class="space-y-5 hidden">
-
-            <!-- 4 Cartes Synthèse Trésorerie Growth -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                <!-- Solde Net Disponible -->
-                <div class="growth-card-dark p-4 relative overflow-hidden">
-                    <div class="flex items-center justify-between text-slate-300 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-white">Solde Net en Caisse</span>
+                <!-- Barre de Recherche & Filtres d'Activité -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 growth-card p-4">
+                    <div class="relative flex-1 max-w-md">
                         <span
-                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white">DISPONIBLE</span>
+                            class="material-symbols-outlined notranslate absolute left-3 top-2.5 text-slate-400 text-[18px]"
+                            translate="no">search</span>
+                        <input type="text" id="searchUserInput" onkeyup="filterUsersTable()"
+                            placeholder="Rechercher par nom de commerce ou numéro WhatsApp..."
+                            class="w-full pl-9 pr-4 py-2 rounded-xl bg-[#07090e] border-white/10 text-white border border-white/10 text-xs text-white placeholder-slate-400 focus:bg-[#07090e] focus:outline-none focus:border-white transition-colors">
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSoldeNet">0 FCFA
+                    <div class="flex items-center gap-2 text-xs flex-wrap">
+                        <span class="text-slate-400 font-semibold">Filtre :</span>
+                        <button type="button" onclick="setUserFilter('ALL')" id="filterAll"
+                            class="px-2.5 py-1 rounded-lg bg-white text-black font-bold cursor-pointer">Tous</button>
+                        <button type="button" onclick="setUserFilter('ACTIF')" id="filterActif"
+                            class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Actifs</button>
+                        <button type="button" onclick="setUserFilter('ATTENTION')" id="filterAttention"
+                            class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Inactifs
+                            24h</button>
+                        <button type="button" onclick="setUserFilter('INACTIF')" id="filterInactif"
+                            class="px-2.5 py-1 rounded-lg text-slate-300 bg-[#07090e] border-white/10 text-white border border-white/10 hover:bg-[#1e293b] cursor-pointer">Inactifs
+                            &gt; 3j</button>
                     </div>
-                    <div class="text-[11px] text-slate-400 mt-1">Trésorerie nette disponible pour le créateur</div>
                 </div>
 
-                <!-- Total Entrées Abonnements -->
-                <div class="growth-card p-4 border border-white/10">
-                    <div class="flex items-center justify-between text-slate-400 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-white">Entrées Abonnements</span>
-                        <span
-                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white text-black"
-                            id="caisseAbonnesCountBadge">0 abo(s)</span>
+                <!-- TABLEAU DES COMMERÇANTS -->
+                <div class="growth-card shadow-xs overflow-hidden border border-white/10">
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
+                                    <th class="py-3 px-4">Commerce &amp; Contact WhatsApp</th>
+                                    <th class="py-3 px-3 text-center">Écritures (Auj. / Total)</th>
+                                    <th class="py-3 px-3 text-center">Statut d'Activité</th>
+                                    <th class="py-3 px-3 text-center">Abonnement Growth</th>
+                                    <th class="py-3 px-3">Dernière Activité</th>
+                                    <th class="py-3 px-4 text-center">Actions Dirigeant</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
+                                <!-- Rempli par JavaScript (ou état vide si 0 client) -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseEntreesTotal">
-                        +0 FCFA</div>
-                    <div class="text-[11px] text-slate-400 mt-1" id="caisseEntreesSources">Wave: 0 F · OM: 0 F · Cash: 0
-                        F</div>
+                </div>
+            </section>
+
+            <!-- ========================================================================= -->
+            <!-- SECTION 2 : CAISSE PERSO & TRÉSORERIE DU CRÉATEUR (ENTRÉES & SORTIES)      -->
+            <!-- ========================================================================= -->
+            <section id="cockpitSectionAbonnements" class="space-y-5 hidden">
+
+                <!-- 4 Cartes Synthèse Trésorerie Growth -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <!-- Solde Net Disponible -->
+                    <div class="growth-card-dark p-4 relative overflow-hidden">
+                        <div class="flex items-center justify-between text-slate-300 text-xs">
+                            <span class="font-bold uppercase tracking-wider text-white">Solde Net en Caisse</span>
+                            <span
+                                class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white">DISPONIBLE</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSoldeNet">0 FCFA
+                        </div>
+                        <div class="text-[11px] text-slate-400 mt-1">Trésorerie nette disponible pour le créateur</div>
+                    </div>
+
+                    <!-- Total Entrées Abonnements -->
+                    <div class="growth-card p-4 border border-white/10">
+                        <div class="flex items-center justify-between text-slate-400 text-xs">
+                            <span class="font-bold uppercase tracking-wider text-white">Entrées Abonnements</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white text-black"
+                                id="caisseAbonnesCountBadge">0 abo(s)</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseEntreesTotal">
+                            +0 FCFA</div>
+                        <div class="text-[11px] text-slate-400 mt-1" id="caisseEntreesSources">Wave: 0 F · OM: 0 F ·
+                            Cash: 0
+                            F</div>
+                    </div>
+
+                    <!-- Total Sorties & Dépenses -->
+                    <div class="growth-card p-4 border border-white/10">
+                        <div class="flex items-center justify-between text-slate-400 text-xs">
+                            <span class="font-bold uppercase tracking-wider text-white">Sorties &amp; Dépenses</span>
+                            <span
+                                class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#0d121d] text-white border border-white/20"
+                                id="caisseSortiesCountBadge">0 sortie(s)</span>
+                        </div>
+                        <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSortiesTotal">-0
+                            FCFA</div>
+                        <div class="text-[11px] text-slate-400 mt-1" id="caisseSortiesSources">Wave: 0 F · OM: 0 F ·
+                            Cash: 0
+                            F</div>
+                    </div>
+
+                    <!-- Actions Rapides Trésorerie -->
+                    <div class="growth-card p-4 border border-white/10 flex flex-col justify-between">
+                        <div class="text-slate-300 text-xs font-bold uppercase tracking-wider">Mouvements de Trésorerie
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <button type="button" onclick="openDepenseModal()"
+                                class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-[#0d121d] text-white border border-white/20">
+                                <span>Sortie</span>
+                            </button>
+                            <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
+                                class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center justify-center gap-1 cursor-pointer transition-all">
+                                <span>Entrée</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Total Sorties & Dépenses -->
-                <div class="growth-card p-4 border border-white/10">
-                    <div class="flex items-center justify-between text-slate-400 text-xs">
-                        <span class="font-bold uppercase tracking-wider text-white">Sorties &amp; Dépenses</span>
-                        <span
-                            class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#0d121d] text-white border border-white/20"
-                            id="caisseSortiesCountBadge">0 sortie(s)</span>
-                    </div>
-                    <div class="text-xl sm:text-2xl font-black font-mono text-white mt-2" id="caisseSortiesTotal">-0
-                        FCFA</div>
-                    <div class="text-[11px] text-slate-400 mt-1" id="caisseSortiesSources">Wave: 0 F · OM: 0 F · Cash: 0
-                        F</div>
-                </div>
-
-                <!-- Actions Rapides Trésorerie -->
-                <div class="growth-card p-4 border border-white/10 flex flex-col justify-between">
-                    <div class="text-slate-300 text-xs font-bold uppercase tracking-wider">Mouvements de Trésorerie
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 mt-2">
+                <!-- TABLEAU 1 : REGISTRE DES SORTIES D'ARGENT ("POURQUOI C'EST SORTI") -->
+                <div class="growth-card shadow-xs overflow-hidden border border-white/10">
+                    <div
+                        class="px-5 py-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#07090e] border-white/10 text-white/70">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined notranslate text-white text-[18px]">payments</span>
+                                <span>Sorties d'Argent &amp; Dépenses de l'Entreprise Growth</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Traçabilité stricte : chaque FCFA sorti avec
+                                son
+                                <strong class="text-slate-200">motif explicite (« Pourquoi c'est sorti »)</strong> et sa
+                                catégorie
+                            </p>
+                        </div>
                         <button type="button" onclick="openDepenseModal()"
-                            class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-[#0d121d] text-white border border-white/20">
-                            <span>Sortie</span>
+                            class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#0d121d] text-white border border-white/20">
+                            <span>Enregistrer une Sortie</span>
                         </button>
+                    </div>
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
+                                    <th class="py-3 px-4">Date &amp; Heure</th>
+                                    <th class="py-3 px-4">Pourquoi c'est sorti (Motif détaillé)</th>
+                                    <th class="py-3 px-3">Catégorie</th>
+                                    <th class="py-3 px-3 text-right">Montant Décaissé</th>
+                                    <th class="py-3 px-3 text-center">Moyen Paiement</th>
+                                    <th class="py-3 px-4">Bénéficiaire / Prestataire</th>
+                                </tr>
+                            </thead>
+                            <tbody id="depensesTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
+                                <!-- Rempli par JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TABLEAU 2 : JOURNAL DES ENCAISSEMENTS D'ABONNEMENTS -->
+                <div class="growth-card shadow-xs overflow-hidden border border-white/10">
+                    <div
+                        class="px-5 py-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#07090e] border-white/10 text-white/70">
+                        <div>
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span
+                                    class="material-symbols-outlined notranslate text-white text-[18px]">receipt_long</span>
+                                <span>Journal des Entrées &amp; Abonnements Commerçants</span>
+                            </h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Historique de tous les commerçants ayant payé
+                                leur
+                                abonnement mensuel</p>
+                        </div>
                         <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
-                            class="px-2.5 py-2 rounded-xl text-[11px] font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center justify-center gap-1 cursor-pointer transition-all">
-                            <span>Entrée</span>
+                            class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center gap-1.5 cursor-pointer shadow-2xs self-start sm:self-auto transition-all">
+                            <span>Encaisser un commerçant</span>
                         </button>
                     </div>
-                </div>
-            </div>
-
-            <!-- TABLEAU 1 : REGISTRE DES SORTIES D'ARGENT ("POURQUOI C'EST SORTI") -->
-            <div class="growth-card shadow-xs overflow-hidden border border-white/10">
-                <div
-                    class="px-5 py-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#07090e] border-white/10 text-white/70">
-                    <div>
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            <span
-                                class="material-symbols-outlined notranslate text-white text-[18px]">payments</span>
-                            <span>Sorties d'Argent &amp; Dépenses de l'Entreprise Growth</span>
-                        </h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Traçabilité stricte : chaque FCFA sorti avec son
-                            <strong class="text-slate-200">motif explicite (« Pourquoi c'est sorti »)</strong> et sa
-                            catégorie</p>
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
+                                    <th class="py-3 px-4">Date &amp; Heure</th>
+                                    <th class="py-3 px-4">Commerce &amp; Contact</th>
+                                    <th class="py-3 px-3">Forfait Souscrit</th>
+                                    <th class="py-3 px-3 text-right">Montant Encaissé</th>
+                                    <th class="py-3 px-3 text-center">Mode de Paiement</th>
+                                    <th class="py-3 px-4 text-center">Statut Caisse</th>
+                                </tr>
+                            </thead>
+                            <tbody id="caisseTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
+                                <!-- Rempli par JavaScript -->
+                            </tbody>
+                        </table>
                     </div>
-                    <button type="button" onclick="openDepenseModal()"
-                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#0d121d] text-white border border-white/20">
-                        <span>Enregistrer une Sortie</span>
-                    </button>
                 </div>
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
-                                <th class="py-3 px-4">Date &amp; Heure</th>
-                                <th class="py-3 px-4">Pourquoi c'est sorti (Motif détaillé)</th>
-                                <th class="py-3 px-3">Catégorie</th>
-                                <th class="py-3 px-3 text-right">Montant Décaissé</th>
-                                <th class="py-3 px-3 text-center">Moyen Paiement</th>
-                                <th class="py-3 px-4">Bénéficiaire / Prestataire</th>
-                            </tr>
-                        </thead>
-                        <tbody id="depensesTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
-                            <!-- Rempli par JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            </section>
 
-            <!-- TABLEAU 2 : JOURNAL DES ENCAISSEMENTS D'ABONNEMENTS -->
-            <div class="growth-card shadow-xs overflow-hidden border border-white/10">
-                <div
-                    class="px-5 py-4 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#07090e] border-white/10 text-white/70">
-                    <div>
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            <span
-                                class="material-symbols-outlined notranslate text-white text-[18px]">receipt_long</span>
-                            <span>Journal des Entrées &amp; Abonnements Commerçants</span>
-                        </h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Historique de tous les commerçants ayant payé leur
-                            abonnement mensuel</p>
+            <!-- ========================================================================= -->
+            <!-- SECTION 3 : APPRENTISSAGE CONTINU IA (ACTIVE LEARNING)                  -->
+            <!-- ========================================================================= -->
+            <section id="cockpitSectionLearning" class="space-y-4 hidden">
+                <!-- CARTE BANNIÈRE EXPLICATIVE -->
+                <div class="growth-card p-5 border border-white/10">
+                    <div
+                        class="flex items-center gap-2 text-slate-300 text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                        <span>Auto-Critique &amp; Enseignement IA</span>
                     </div>
-                    <button type="button" onclick="openEncaisserModal('', '', 'Starter', 10000)"
-                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white text-black font-black hover:bg-slate-200 flex items-center gap-1.5 cursor-pointer shadow-2xs self-start sm:self-auto transition-all">
-                        <span>Encaisser un commerçant</span>
-                    </button>
+                    <h3 class="text-base sm:text-lg font-black text-white">Journal des Questions &amp; Hésitations de
+                        Growth</h3>
+                    <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                        Dès que Growth a un doute ou qu'un commerçant clique sur À corriger, le cas est répertorié ici.
+                        Rédigez la réponse parfaite pour enrichir l'intelligence de votre copilote sans redévelopper de
+                        code.
+                    </p>
                 </div>
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
-                                <th class="py-3 px-4">Date &amp; Heure</th>
-                                <th class="py-3 px-4">Commerce &amp; Contact</th>
-                                <th class="py-3 px-3">Forfait Souscrit</th>
-                                <th class="py-3 px-3 text-right">Montant Encaissé</th>
-                                <th class="py-3 px-3 text-center">Mode de Paiement</th>
-                                <th class="py-3 px-4 text-center">Statut Caisse</th>
-                            </tr>
-                        </thead>
-                        <tbody id="caisseTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
-                            <!-- Rempli par JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
 
-        <!-- ========================================================================= -->
-        <!-- SECTION 3 : APPRENTISSAGE CONTINU IA (ACTIVE LEARNING)                  -->
-        <!-- ========================================================================= -->
-        <section id="cockpitSectionLearning" class="space-y-4 hidden">
-            <!-- CARTE BANNIÈRE EXPLICATIVE -->
-            <div class="growth-card p-5 border border-white/10">
-                <div
-                    class="flex items-center gap-2 text-slate-300 text-[10px] font-extrabold uppercase tracking-wider mb-1">
-                    <span>Auto-Critique &amp; Enseignement IA</span>
+                <!-- TABLEAU DU BACKLOG D'APPRENTISSAGE -->
+                <div class="growth-card shadow-xs overflow-hidden border border-white/10">
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
+                                    <th class="py-3 px-3 w-[120px]">Date &amp; Client</th>
+                                    <th class="py-3 px-3 min-w-[200px]">Question posée par le commerçant</th>
+                                    <th class="py-3 px-3 min-w-[220px]">Réponse fournie par Growth</th>
+                                    <th class="py-3 px-2 text-center w-[90px]">Confiance</th>
+                                    <th class="py-3 px-3 w-[150px]">Motif du Doute</th>
+                                    <th class="py-3 px-2 text-center w-[110px]">Statut</th>
+                                    <th class="py-3 px-3 text-center w-[120px]">Action Créateur</th>
+                                </tr>
+                            </thead>
+                            <tbody id="learningTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
+                                <!-- Rempli par JavaScript (ou état vide si vierge) -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <h3 class="text-base sm:text-lg font-black text-white">Journal des Questions &amp; Hésitations de
-                    Growth</h3>
-                <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                    Dès que Growth a un doute ou qu'un commerçant clique sur À corriger, le cas est répertorié ici.
-                    Rédigez la réponse parfaite pour enrichir l'intelligence de votre copilote sans redévelopper de
-                    code.
-                </p>
-            </div>
+            </section>
 
-            <!-- TABLEAU DU BACKLOG D'APPRENTISSAGE -->
-            <div class="growth-card shadow-xs overflow-hidden border border-white/10">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-[#07090e] text-slate-300 text-[10.5px] uppercase font-black tracking-wider border-b border-white/10">
-                                <th class="py-3 px-3 w-[120px]">Date &amp; Client</th>
-                                <th class="py-3 px-3 min-w-[200px]">Question posée par le commerçant</th>
-                                <th class="py-3 px-3 min-w-[220px]">Réponse fournie par Growth</th>
-                                <th class="py-3 px-2 text-center w-[90px]">Confiance</th>
-                                <th class="py-3 px-3 w-[150px]">Motif du Doute</th>
-                                <th class="py-3 px-2 text-center w-[110px]">Statut</th>
-                                <th class="py-3 px-3 text-center w-[120px]">Action Créateur</th>
-                            </tr>
-                        </thead>
-                        <tbody id="learningTableBody" class="divide-y divide-white/5 text-white bg-[#0d121d]">
-                            <!-- Rempli par JavaScript (ou état vide si vierge) -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+            <!-- ========================================================================= -->
+            <!-- SECTION 4 : DEMANDES D'AUDIT & LEADS AUTOENGINE AI                       -->
+            <!-- ========================================================================= -->
 
-        <!-- ========================================================================= -->
-        <!-- SECTION 4 : DEMANDES D'AUDIT & LEADS AUTOENGINE AI                       -->
-        <!-- ========================================================================= -->
-        
         </div>
-<!-- PIED DE PAGE DU COCKPIT -->
+        <!-- PIED DE PAGE DU COCKPIT -->
         <footer
             class="mt-12 pt-6 pb-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
             <div class="flex items-center gap-2">
@@ -631,10 +666,10 @@
     <!-- ========================================================================= -->
     <!-- MODALE 1 : RELANCER LE COMMERÇANT SUR WHATSAPP                          -->
     <!-- ========================================================================= -->
-    <div id="modalRelance"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+    <div id="modalRelance" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
         style="display: none;">
-        <div class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
+        <div
+            class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
             <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-[#07090e]">
                 <div class="flex items-center gap-2">
                     <h4 class="text-sm font-bold text-white">Relance WhatsApp du Berger</h4>
@@ -663,7 +698,8 @@
                     <label
                         class="block text-[10.5px] uppercase font-bold text-slate-300 tracking-wider mb-1 flex items-center justify-between">
                         <span>Message de relance (Personnalisable)</span>
-                        <span class="text-[10px] text-slate-400 font-normal">Envoyé avec options Utile / À corriger</span>
+                        <span class="text-[10px] text-slate-400 font-normal">Envoyé avec options Utile / À
+                            corriger</span>
                     </label>
                     <textarea id="relanceMessageText" rows="5"
                         class="w-full text-xs p-3 rounded-xl bg-[#07090e] border border-white/10 focus:bg-[#07090e] focus:border-white outline-none text-white leading-relaxed font-sans"></textarea>
@@ -686,7 +722,8 @@
     <div id="modalEncaisserAbo"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
         style="display: none;">
-        <div class="bg-[#0d121d] max-w-md w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
+        <div
+            class="bg-[#0d121d] max-w-md w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
             <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-[#07090e]">
                 <div class="flex items-center gap-2">
                     <h4 class="text-sm font-bold text-white">Encaisser un Abonnement Growth</h4>
@@ -756,7 +793,8 @@
     <div id="modalEnregistrerDepense"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
         style="display: none;">
-        <div class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
+        <div
+            class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
             <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-[#07090e]">
                 <div class="flex items-center gap-2">
                     <h4 class="text-sm font-bold text-white">Enregistrer une Sortie d'Argent (Dépense Growth)</h4>
@@ -844,10 +882,10 @@
     <!-- ========================================================================= -->
     <!-- MODALE 3 : ENSEIGNER LA RÉPONSE PARFAITE (ACTIVE LEARNING)               -->
     <!-- ========================================================================= -->
-    <div id="modalTeach"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+    <div id="modalTeach" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
         style="display: none;">
-        <div class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
+        <div
+            class="bg-[#0d121d] max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 text-white">
             <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-[#07090e]">
                 <div class="flex items-center gap-2">
                     <h4 class="text-sm font-bold text-white">Enseigner la Réponse Parfaite à Growth</h4>
@@ -965,7 +1003,7 @@
 
                 const nouveaux = allAuditsCache.filter(l => (l.statut || '').toLowerCase() === 'nouveau').length;
                 const actifs = allAuditsCache.filter(l => (l.statut || '').toLowerCase() === 'actif' || (l.statut || '').toLowerCase() === 'qualifié').length;
-                
+
                 const kpiNouv = document.getElementById('kpiNouveauxAudits');
                 if (kpiNouv) kpiNouv.textContent = nouveaux;
 
@@ -990,10 +1028,10 @@
             if (!tbody) return;
 
             const filtered = allAuditsCache.filter(l => {
-                const matchSearch = !search || 
-                    (l.nom || '').toLowerCase().includes(search) || 
-                    (l.entreprise || '').toLowerCase().includes(search) || 
-                    (l.tel || '').toLowerCase().includes(search) || 
+                const matchSearch = !search ||
+                    (l.nom || '').toLowerCase().includes(search) ||
+                    (l.entreprise || '').toLowerCase().includes(search) ||
+                    (l.tel || '').toLowerCase().includes(search) ||
                     (l.email || '').toLowerCase().includes(search) ||
                     (l.besoin || '').toLowerCase().includes(search) ||
                     (l.message || '').toLowerCase().includes(search);
@@ -1022,8 +1060,8 @@
                 const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent("Bonjour " + (l.nom || "") + ", nous avons bien reçu votre demande pour " + (l.entreprise || "") + ". Discutons de votre projet.")}` : '#';
 
                 const typeBadge = l.type === 'Cabinet Comptable' ? 'border-white/20 text-white bg-white/10' :
-                                  l.type === 'Commerçant PME' ? 'border-white/20 text-white bg-white/5' :
-                                  'border-white/30 text-white bg-white/15';
+                    l.type === 'Commerçant PME' ? 'border-white/20 text-white bg-white/5' :
+                        'border-white/30 text-white bg-white/15';
 
                 return `
                 <tr class="border-b border-white/5 hover:bg-white/[0.03] transition">
@@ -1086,7 +1124,7 @@
         }
 
         // Chargement général des données
-        
+
         // =========================================================================
         // GESTION DE LA DOUBLE VUE : COCKPIT PRINCIPAL <-> COCKPIT GROWTH
         let currentCockpitView = 'principal';
@@ -1130,7 +1168,7 @@
                 refreshCockpitData();
             }
         }
-async function refreshCockpitData() {
+        async function refreshCockpitData() {
             try {
                 // 1. Stats globales créateur (inclut Caisse Perso & Abonnements)
                 const resStats = await fetch('/api/createur/stats');

@@ -3586,15 +3586,16 @@ async def receive_message(request: Request):
                 if msg_id:
                     asyncio.create_task(send_whatsapp_reaction(sender_phone, msg_id, "✅"))
 
-            # 1.bis BOUTON INTERACTIF CLIQUÉ (Feedback 👍 / 👎 ou Action rapide)
+            # 1.bis BOUTON INTERACTIF OU MENU LISTE CLIQUÉ (Feedback 👍 / 👎, Menu Opérations, Action rapide)
             elif msg_type == "interactive":
                 interactive = message.get("interactive", {})
                 btn_reply = interactive.get("button_reply", {})
-                btn_id = btn_reply.get("id", "")
-                btn_title = btn_reply.get("title", "")
+                list_reply = interactive.get("list_reply", {})
+                btn_id = btn_reply.get("id") or list_reply.get("id", "")
+                btn_title = btn_reply.get("title") or list_reply.get("title", "")
                 context = message.get("context", {})
                 ref_msg_id = context.get("id") or message.get("id")
-                print(f"[BOUTON INTERACTIF] Clic de {sender_phone} : {btn_id} ('{btn_title}') sur msg {ref_msg_id}")
+                print(f"[INTERACTION META] Clic de {sender_phone} : ID='{btn_id}' | Titre='{btn_title}' sur msg {ref_msg_id}")
 
                 if btn_id in ["feedback_like", "feedback_dislike"]:
                     rating = "LIKE" if btn_id == "feedback_like" else "DISLIKE"
@@ -3617,7 +3618,7 @@ async def receive_message(request: Request):
                         asyncio.create_task(send_whatsapp_reaction(sender_phone, ref_msg_id, reaction_emoji))
                     print(f"[FEEDBACK IA] Évaluation enregistrée pour {sender_phone} : {rating} (Réaction {reaction_emoji} posée)")
                 else:
-                    reply_text = await handle_incoming_message(sender_phone, btn_title or btn_id, None, contact_name)
+                    reply_text = await handle_incoming_message(sender_phone, btn_id or btn_title, None, contact_name)
                     await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=True)
 
             # 2. IMAGE (NINEA, Reçu papier, capture Wave)
@@ -3687,6 +3688,20 @@ async def receive_message(request: Request):
                     reply_text = "Je n'ai pas pu télécharger votre note vocale. Veuillez réessayer de me l'envoyer."
                     await deliver_whatsapp_response(sender_phone, reply_text)
 
+            # 5. LOCALISATION GPS DE LA BOUTIQUE (Géocodage officiel PME)
+            elif msg_type == "location":
+                loc = message.get("location", {})
+                lat = loc.get("latitude")
+                lon = loc.get("longitude")
+                loc_name = loc.get("name", "")
+                loc_addr = loc.get("address", "")
+                print(f"[GPS BOUTIQUE] Reçu de {sender_phone} : ({lat}, {lon}) - {loc_name} {loc_addr}")
+                from chat_grow.whatsapp_features import enregistrer_localisation_boutique
+                reply_text = enregistrer_localisation_boutique(sender_phone, lat, lon, loc_name, loc_addr)
+                await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=True)
+                if msg_id:
+                    asyncio.create_task(send_whatsapp_reaction(sender_phone, msg_id, "📍"))
+
     except Exception as e:
         print(f"Erreur traitement webhook : {e}")
 
@@ -3751,6 +3766,145 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             f"Note vocale comprise : « {texte_transcrit} »\n\n"
             f"{reponse_interne}"
         )
+
+    # 0.04 DÉCLENCHEURS DES 7 FONCTIONNALITÉS WHATSAPP OFFICIELLES (Meta Cloud API)
+    user_txt_lower = (user_text or "").lower().strip()
+    clean_p = str(sender_phone).replace("+", "").replace(" ", "").strip()
+
+    # A) MENU DÉROULANT INTERACTIF (Interactive List)
+    mots_menu = ["menu", "options", "aide", "actions", "commencer", "operations", "opérations", "op_menu"]
+    if user_txt_lower in mots_menu or user_text in ["menu", "Menu", "MENU", "#menu"]:
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+        h, b, lbl, secs, ftr = build_main_operations_list()
+        asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
+        return (
+            "📑 *Menu Déroulant Growth Affiché*\n\n"
+            "Cliquez sur le bouton *« Choisir une action »* ci-dessus pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Relance)."
+        )
+
+    # B) BILAN COMPTABLE SYSCOHADA EN DIRECT DANS WHATSAPP (PDF)
+    if user_txt_lower in ["op_bilan_pdf", "bilan", "liasse", "pdf", "mon bilan", "bilan pdf", "télécharger bilan", "telecharger bilan"]:
+        from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pme
+        asyncio.create_task(generer_et_envoyer_bilan_pme(clean_p))
+        return (
+            "📄 *Bilan SYSCOHADA SMT en cours d'envoi...*\n\n"
+            "Votre liasse officielle certifiée par le Cabinet Adaisso & Partenaires a été générée avec le scellé de conformité SHA-256.\n"
+            "Vous allez recevoir le document PDF directement ci-dessus dans quelques secondes !"
+        )
+
+    # C) INFOGRAPHIE FINANCIÈRE HEBDOMADAIRE HD (IMAGE 1080x1080)
+    if user_txt_lower in ["op_infographie", "infographie", "synthèse", "synthese", "graphique", "tableau de bord", "semaine", "mon infographie"]:
+        from chat_grow.whatsapp_features import generer_et_envoyer_infographie_pme
+        asyncio.create_task(generer_et_envoyer_infographie_pme(clean_p))
+        return (
+            "📊 *Infographie Financière HD en cours d'envoi...*\n\n"
+            "Votre carte visuelle récapitulant vos ventes, dépenses et trésorerie disponible a été générée au format haute définition.\n"
+            "Elle arrive directement ci-dessus sous forme d'image !"
+        )
+
+    # D) ÉCHÉANCES FISCALES & RETENUES DGID SÉNÉGAL
+    if user_txt_lower in ["op_fiscalite", "impot", "impôt", "impots", "impôts", "dgid", "fiscalite", "fiscalité", "declaration", "déclaration", "calendrier fiscal"]:
+        from chat_grow.whatsapp_features import calculer_alerte_fiscale_dgid
+        from chat_grow.database import get_transactions_resilient, get_entreprise_by_phone_resilient
+        ent = get_entreprise_by_phone_resilient(clean_p) or {}
+        txs = get_transactions_resilient(ent.get("id") or clean_p) or []
+        ca = sum(t.get("montant_fcfa", 0) for t in txs if t.get("type_flux") != "DEPENSE")
+        return calculer_alerte_fiscale_dgid(ca)
+
+    # E) CARNET DE CRÉDITS & RELANCE CLIENTS DÉBITEURS
+    if any(k in user_txt_lower for k in ["relance", "relancer", "crédit", "credit", "debiteur", "débiteur", "dette"]):
+        from chat_grow.whatsapp_features import generer_message_relance_debiteur, enregistrer_credit_client, obtenir_credits_clients
+        # Cas 1 : Enregistrement d'une vente à crédit "credit Modou 20000 2 sacs"
+        m_crd = re.search(r"(?:credit|crédit)\s+([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)?)\s+(\d[\d\s]*)(?:\s+(.*))?", user_text, re.IGNORECASE)
+        if m_crd and "relance" not in user_txt_lower:
+            nom_cl = m_crd.group(1).strip()
+            montant_str = re.sub(r"\D", "", m_crd.group(2))
+            desc = (m_crd.group(3) or "").strip()
+            if montant_str:
+                montant_crd = int(montant_str)
+                enregistrer_credit_client(clean_p, nom_cl, montant_crd, desc)
+                m_fmt = f"{montant_crd:,} FCFA".replace(",", " ")
+                return (
+                    f"📝 *Vente à Crédit Enregistrée !*\n\n"
+                    f"• Client : *{nom_cl}*\n"
+                    f"• Montant : *{m_fmt}*\n"
+                    f"• Détail : {desc or 'Vente à terme'}\n"
+                    f"• Statut : ⏳ Non recouvré\n\n"
+                    f"👉 Pour générer un message de relance amical, écrivez simplement : *« Relancer {nom_cl} »*."
+                )
+
+        # Cas 2 : Demande de relance "relancer Modou [montant]"
+        m_rel = re.search(r"relance[r]?\s+([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)?)(?:\s+(\d[\d\s]*))?", user_text, re.IGNORECASE)
+        if m_rel:
+            nom_cl = m_rel.group(1).strip().title()
+            montant_num = 0
+            if m_rel.group(2):
+                montant_num = int(re.sub(r"\D", "", m_rel.group(2)))
+            else:
+                credits = obtenir_credits_clients(clean_p)
+                for c in credits:
+                    if nom_cl.lower() in c.get("client", "").lower() and c.get("statut") == "NON_PAYE":
+                        montant_num = c.get("montant", 0)
+                        break
+                if montant_num == 0:
+                    montant_num = 15000
+
+            onboarding_st = get_onboarding_state(clean_p)
+            nom_boutique = onboarding_st.get("nom_entreprise") or "notre boutique"
+            return generer_message_relance_debiteur(nom_cl, montant_num, nom_boutique, clean_p)
+
+        # Cas 3 : Liste des crédits "relance" ou "carnet credit"
+        credits = obtenir_credits_clients(clean_p)
+        if credits:
+            lignes = []
+            total_creances = 0
+            for idx, c in enumerate(credits):
+                m = c.get("montant", 0)
+                total_creances += m
+                lignes.append(f"{idx+1}. *{c.get('client')}* : {m:,} FCFA ({c.get('description')})".replace(",", " "))
+            tot_fmt = f"{total_creances:,} FCFA".replace(",", " ")
+            return (
+                f"📋 *Carnet des Crédits Clients*\n\n"
+                + "\n".join(lignes) +
+                f"\n\n💰 *Total créances à recouvrer : {tot_fmt}*\n\n"
+                f"👉 Pour relancer un client, écrivez : *« Relancer [Nom] »*."
+            )
+        else:
+            return (
+                "📝 *Carnet de Crédits Clients*\n\n"
+                "Vous n'avez aucun crédit client enregistré pour le moment.\n\n"
+                "Pour enregistrer un crédit, écrivez simplement :\n"
+                "• *« Crédit Moussa Diop 20 000 FCFA pour 2 sacs riz »*\n\n"
+                "Growth générera automatiquement les messages de relance courtois prêts à transférer."
+            )
+
+    # F) LIEN DIRECT VERS LE JOURNAL WEB COMPTABLE SÉCURISÉ (CTA URL)
+    if user_txt_lower in ["op_journal_web", "journal web", "mon journal", "acceder journal", "accéder au journal", "portail"]:
+        from chat_grow.whatsapp_features import send_whatsapp_cta_url
+        url_journal = f"{get_public_base_url()}/journal-pme?phone={clean_p}"
+        asyncio.create_task(send_whatsapp_cta_url(
+            clean_p,
+            "Consultez en direct votre journal d'écritures, vos pièces justificatives scellées et votre trésorerie :",
+            "📊 Mon Journal Web",
+            url_journal,
+            header_text="🌐 PORTAIL COMPTABLE PME",
+            footer_text="Scellé cryptographique SHA-256"
+        ))
+        return (
+            "🌐 *Portail Comptable Sécurisé*\n\n"
+            f"Consultez votre journal en direct avec le lien ci-dessous :\n{url_journal}\n\n"
+            "Vous pouvez également cliquer sur le bouton interactif ci-dessus."
+        )
+
+    # G) ASSISTANCE RAPIDE SUR LES OPTIONS DU MENU
+    if user_txt_lower == "op_vente":
+        return "💵 *Enregistrement de Vente*\n\nDictez-moi une note vocale ou écrivez votre vente (ex: *« Vente 50 000 FCFA riz au comptant »* ou *« Encaissement Wave 25 000 FCFA »*).\nJe l'impute automatiquement au Compte SYSCOHADA 701."
+    if user_txt_lower == "op_depense":
+        return "🛒 *Enregistrement de Dépense*\n\nDictez-moi ou écrivez votre dépense, ou photographiez une facture (ex: *« Achat 35 000 FCFA huile de palme »* ou *« Facture Senelec 18 000 FCFA »*).\nJe l'impute automatiquement en classe 6."
+    if user_txt_lower == "op_credit":
+        return "📝 *Enregistrement d'un Crédit Client*\n\nÉcrivez : *« Crédit [Nom du client] [Montant] [Article] »* (ex: *« Crédit Moussa Diop 15 000 FCFA »*).\nJe l'enregistre dans votre carnet pour vous permettre de le relancer en 1 clic."
+    if user_txt_lower == "op_stocks":
+        return "📦 *Point des Stocks*\n\nIndiquez vos mouvements d'inventaire (ex: *« Reçu 30 cartons de lait »* ou *« Stock restant 15 bidons »*).\nVotre inventaire au PUMP est mis à jour dans vos actifs SYSCOHADA."
 
     # 0.05 DÉTECTION DEMANDE DE VIDÉO OU TUTORIEL DÉMONSTRATION
     user_txt_lower = (user_text or "").lower().strip()

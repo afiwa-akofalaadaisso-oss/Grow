@@ -18,30 +18,36 @@
 
     <style>
         /* Élimination totale et invisible de toutes les barres de défilement (Windows, Mac, Chrome, Edge, Firefox) */
-        html, body, * {
+        html,
+        body,
+        * {
             scrollbar-width: none !important;
             -ms-overflow-style: none !important;
         }
 
-        ::-webkit-scrollbar, *::-webkit-scrollbar {
+        ::-webkit-scrollbar,
+        *::-webkit-scrollbar {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
             background: transparent !important;
         }
 
-        ::-webkit-scrollbar-button, *::-webkit-scrollbar-button {
+        ::-webkit-scrollbar-button,
+        *::-webkit-scrollbar-button {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
         }
 
-        ::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
+        ::-webkit-scrollbar-thumb,
+        *::-webkit-scrollbar-thumb {
             display: none !important;
             background: transparent !important;
         }
 
-        ::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
+        ::-webkit-scrollbar-track,
+        *::-webkit-scrollbar-track {
             display: none !important;
             background: transparent !important;
         }
@@ -103,7 +109,7 @@
         }
 
         /* Custom scrollbars */
-        
+
 
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
@@ -141,7 +147,8 @@
             <div>
                 <div class="flex items-center gap-2 mb-4">
                     <span class="w-2.5 h-2.5 rounded-full bg-white text-black font-black"></span>
-                    <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Connexion Sécurisée Conforme SMT</span>
+                    <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">Connexion Sécurisée
+                        Conforme SMT</span>
                 </div>
 
                 <!-- Commutateur élégant Connexion / Inscription -->
@@ -163,14 +170,18 @@
                 <!-- ================================================================= -->
                 <div id="viewLogin">
                     <!-- Bannière d'alerte si tentative d'accès non autorisé au portail cabinet -->
-                    <div id="authRequiredBanner" class="hidden mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center gap-2">
+                    <div id="authRequiredBanner"
+                        class="hidden mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold flex items-center gap-2">
                         <i class="fa-solid fa-shield-halved text-amber-600 text-sm shrink-0"></i>
-                        <span>Accès restreint : Le Portail Cabinet est réservé aux experts authentifiés. Veuillez vous connecter.</span>
+                        <span>Accès restreint : Le Portail Cabinet est réservé aux experts authentifiés. Veuillez vous
+                            connecter.</span>
                     </div>
 
                     <div class="mb-5">
-                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Connexion à votre espace</h1>
-                        <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de vos PME clientes.</p>
+                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Connexion à votre
+                            espace</h1>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Accédez aux dossiers comptables et liasses de
+                            vos PME clientes.</p>
                     </div>
 
                     <form onsubmit="handleConnexionSubmit(event)" class="space-y-3.5">
@@ -182,7 +193,7 @@
                                 <span class="absolute left-3.5 text-slate-400 pointer-events-none">
                                     <i class="fa-solid fa-envelope text-[13px]"></i>
                                 </span>
-                                <input type="text" id="loginEmail" required 
+                                <input type="text" id="loginEmail" required
                                     placeholder="autoengine9ai.automation@gmail.com"
                                     class="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[12.5px] font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                             </div>
@@ -209,17 +220,19 @@
                                 </button>
                             </div>
                         </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
-                                    Code Partenaire Growth *
-                                </label>
-                                <input type="text" id="loginCodePartenaire" required
-                                    placeholder="Code partenaire obligatoire"
-                                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-black transition-all">
-                                <p class="text-[11px] text-slate-500 mt-1 leading-snug">
-                            Accès réservé aux cabinets agréés. Pour toute demande de partenariat, nous contacter au : <a href="mailto:autoengine9ai.automation@gmail.com?subject=Demande%20de%20Code%20Partenariat%20Cabinet%20Growth" class="text-slate-900 font-bold underline hover:text-black">autoengine9ai.automation@gmail.com</a>
-                        </p>
-                            </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Code Partenaire Growth *
+                            </label>
+                            <input type="text" id="loginCodePartenaire" required
+                                placeholder="Code partenaire obligatoire"
+                                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono font-bold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-black transition-all">
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">
+                                Accès réservé aux cabinets agréés. Pour toute demande de partenariat, nous contacter au
+                                : <a href="mailto:autoengine9ai.automation@gmail.com?subject=Demande%20de%20Code%20Partenariat%20Cabinet%20Growth"
+                                    class="text-slate-900 font-bold underline hover:text-black">autoengine9ai.automation@gmail.com</a>
+                            </p>
+                        </div>
 
                         <div class="flex items-center justify-between pt-1">
                             <label class="flex items-center gap-2 cursor-pointer select-none">
@@ -246,7 +259,8 @@
                     <div class="mb-4">
                         <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Inscription Cabinet
                             Comptable</h1>
-                        <p class="text-xs text-slate-500 font-medium mt-1">Créez votre accès professionnel cabinet et recevez
+                        <p class="text-xs text-slate-500 font-medium mt-1">Créez votre accès professionnel cabinet et
+                            recevez
                             votre email de validation officiel.</p>
                     </div>
 
@@ -317,7 +331,8 @@
                                 <span class="absolute left-3 text-slate-400 pointer-events-none">
                                     <i class="fa-solid fa-envelope text-[12px]"></i>
                                 </span>
-                                <input type="email" id="regEmail" required placeholder="autoengine9ai.automation@gmail.com"
+                                <input type="email" id="regEmail" required
+                                    placeholder="autoengine9ai.automation@gmail.com"
                                     class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[12px] font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-white/20 focus:ring-2 focus:ring-[#a0d9d2]/30 transition-all">
                             </div>
                         </div>
@@ -391,8 +406,7 @@
             class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-hidden shadow-2xl border border-slate-200 flex flex-col animate-fadeIn">
 
             <!-- En-tête de la modale de validation -->
-            <div
-                class="p-5 sm:p-6 bg-[#222222] text-white flex items-center justify-between">
+            <div class="p-5 sm:p-6 bg-[#222222] text-white flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div
                         class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-lg border border-white/20">
