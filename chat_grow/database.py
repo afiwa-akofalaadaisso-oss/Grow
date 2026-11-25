@@ -195,9 +195,25 @@ def init_local_sqlite():
         operateurs_paiement TEXT,
         etape_onboarding TEXT,
         donnees_onboarding TEXT,
-        updated_at TEXT
+        updated_at TEXT,
+        cabinet_id TEXT,
+        cabinet_nom TEXT
     )
     """)
+
+    # Migration dynamique des colonnes de cloisonnement multi-cabinets
+    cur.execute("PRAGMA table_info(entreprises)")
+    cols_ent = [c["name"] for c in cur.fetchall()]
+    if "cabinet_id" not in cols_ent:
+        try:
+            cur.execute("ALTER TABLE entreprises ADD COLUMN cabinet_id TEXT")
+        except Exception:
+            pass
+    if "cabinet_nom" not in cols_ent:
+        try:
+            cur.execute("ALTER TABLE entreprises ADD COLUMN cabinet_nom TEXT")
+        except Exception:
+            pass
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS transactions (

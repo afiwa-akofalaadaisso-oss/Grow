@@ -2565,18 +2565,42 @@ async def api_comptable_email_preview(nom_complet: str = "Mamadou Diallo", nom_c
 
 @app.get("/api/comptable/pmes")
 async def api_comptable_pmes(request: Request):
-    """Retourne la liste complète des dossiers PME supervisés par le cabinet."""
+    """Retourne la liste des dossiers PME supervisés exclusivement par le cabinet connecté (cloisonnement strict)."""
     pmes = []
     conn = None
+    cab_nom = request.cookies.get("growth_cabinet_nom")
+    cab_id = request.cookies.get("growth_cabinet_id")
+
+    if not cab_nom:
+        try:
+            from chat_grow.database import obtenir_dernier_cabinet_scelle
+            sc = obtenir_dernier_cabinet_scelle()
+            if sc and sc.get("comptable"):
+                cab_nom = sc["comptable"].get("nom_cabinet")
+                cab_id = sc["comptable"].get("id")
+        except Exception:
+            pass
+
+    cab_nom = cab_nom or "Cabinet Adaisso & Partenaires"
+
     try:
         from chat_grow.database import get_sqlite_conn
         conn = get_sqlite_conn()
         cur = conn.cursor()
-        cur.execute("""
-            SELECT id, nom_entreprise, telephone_whatsapp, ninea, secteur_activite, adresse_siege
-            FROM entreprises
-            ORDER BY nom_entreprise ASC
-        """)
+        if cab_id:
+            cur.execute("""
+                SELECT id, nom_entreprise, telephone_whatsapp, ninea, secteur_activite, adresse_siege, cabinet_nom, cabinet_id
+                FROM entreprises
+                WHERE lower(cabinet_nom) = lower(?) OR cabinet_id = ?
+                ORDER BY nom_entreprise ASC
+            """, (cab_nom, cab_id))
+        else:
+            cur.execute("""
+                SELECT id, nom_entreprise, telephone_whatsapp, ninea, secteur_activite, adresse_siege, cabinet_nom, cabinet_id
+                FROM entreprises
+                WHERE lower(cabinet_nom) = lower(?)
+                ORDER BY nom_entreprise ASC
+            """, (cab_nom,))
         rows = cur.fetchall()
         for r in rows:
             pme_id = r["id"]
@@ -2599,55 +2623,33 @@ async def api_comptable_pmes(request: Request):
                 "secteur": r["secteur_activite"] or "Commerce & Distribution",
                 "adresse": r["adresse_siege"] or "Dakar, Sénégal",
                 "regime": "SYSCOHADA SMT",
+                "cabinet_nom": r["cabinet_nom"] or cab_nom,
                 "chiffre_affaires": f"{ca:,.0f} FCFA".replace(",", " ") if ca > 0 else "0 FCFA",
                 "depenses": f"{dep:,.0f} FCFA".replace(",", " ") if dep > 0 else "0 FCFA",
                 "nb_transactions": nb_trans,
                 "statut": "Actif"
             })
     except Exception as e:
-        print(f"Erreur lecture SQLite entreprises: {e}")
+        print(f"Erreur lecture SQLite entreprises par cabinet: {e}")
     finally:
         if conn:
             conn.close()
 
-    # Enrichissement avec les PMEs onboarding réelles WhatsApp
-    if os.path.exists(ONBOARDING_STATES_FILE):
-        try:
-            with open(ONBOARDING_STATES_FILE, "r", encoding="utf-8") as f:
-                onb = json.load(f)
-                existing_noms = {p["nom"].lower() for p in pmes}
-                for tel, data in onb.items():
-                    nom = data.get("nom_entreprise")
-                    if nom and nom.lower() not in existing_noms:
-                        pmes.append({
-                            "id": f"pme_{tel}",
-                            "nom": nom,
-                            "telephone": f"+{tel}" if not tel.startswith("+") else tel,
-                            "ninea": data.get("ninea") or f"00{tel[-6:]} 2V3",
-                            "secteur": data.get("activite_principale") or "Commerce & Services",
-                            "adresse": data.get("localisation") or "Dakar, Sénégal",
-                            "regime": "SYSCOHADA SMT",
-                            "chiffre_affaires": "1 800 000 FCFA",
-                            "depenses": "620 000 FCFA",
-                            "nb_transactions": 12,
-                            "statut": "Actif"
-                        })
-                        existing_noms.add(nom.lower())
-        except Exception as e_onb:
-            print(f"Erreur lecture onboarding pmes: {e_onb}")
-
-    return {"status": "success", "pmes": pmes, "total": len(pmes)}
+    return {"status": "success", "pmes": pmes, "total": len(pmes), "cabinet": cab_nom}
 
 
 @app.post("/api/comptable/ajouter-pme")
 async def api_comptable_ajouter_pme(payload: Dict[str, Any], request: Request):
-    """Permet au cabinet d'ajouter une nouvelle PME cliente à son portefeuille en base."""
+    """Permet au cabinet d'ajouter une nouvelle PME cliente rattachée exclusivement à son portefeuille."""
     nom = payload.get("nom_entreprise", "").strip()
     telephone = payload.get("telephone", "").strip()
     ninea = payload.get("ninea", "").strip()
     secteur = payload.get("secteur", "").strip() or "Commerce & Services"
     adresse = payload.get("adresse", "").strip() or "Dakar, Sénégal"
     regime = payload.get("regime", "SYSCOHADA SMT").strip()
+
+    cab_nom = request.cookies.get("growth_cabinet_nom") or "Cabinet Adaisso & Partenaires"
+    cab_id = request.cookies.get("growth_cabinet_id") or ""
 
     if not nom:
         return {"status": "error", "message": "Le nom de l'entreprise est obligatoire."}
@@ -2660,9 +2662,9 @@ async def api_comptable_ajouter_pme(payload: Dict[str, Any], request: Request):
         conn = get_sqlite_conn()
         cur = conn.cursor()
         cur.execute("""
-            INSERT INTO entreprises (id, nom_entreprise, telephone_whatsapp, secteur_activite, ninea, adresse_siege, date_inscription, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (pme_id, nom, telephone, secteur, ninea, adresse, now, now))
+            INSERT INTO entreprises (id, nom_entreprise, telephone_whatsapp, secteur_activite, ninea, adresse_siege, date_inscription, updated_at, cabinet_id, cabinet_nom)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (pme_id, nom, telephone, secteur, ninea, adresse, now, now, cab_id, cab_nom))
         conn.commit()
         conn.close()
 
@@ -2687,13 +2689,13 @@ async def api_comptable_ajouter_pme(payload: Dict[str, Any], request: Request):
             if len(clean_p) == 9 and clean_p.startswith(("70", "75", "76", "77", "78")):
                 clean_p = "221" + clean_p
             try:
-                cab_nom = request.cookies.get("growth_cabinet_nom") or "Cabinet Adaisso & Partenaires"
                 update_onboarding_state(clean_p, "nom_entreprise", nom)
                 update_onboarding_state(clean_p, "ninea", ninea or "009845210")
                 update_onboarding_state(clean_p, "secteur", secteur)
                 update_onboarding_state(clean_p, "regime", regime)
                 update_onboarding_state(clean_p, "rattache_cabinet", True)
                 update_onboarding_state(clean_p, "cabinet_nom", cab_nom)
+                update_onboarding_state(clean_p, "cabinet_id", cab_id)
                 update_onboarding_state(clean_p, "statut", "COMPLET")
                 update_onboarding_state(clean_p, "etape", "TERMINE")
                 update_onboarding_state(clean_p, "abonnement_valide", True)
@@ -2704,7 +2706,7 @@ async def api_comptable_ajouter_pme(payload: Dict[str, Any], request: Request):
 
         return {
             "status": "success",
-            "message": f"Dossier PME « {nom} » rattaché avec succès au cabinet.",
+            "message": f"Dossier PME « {nom} » rattaché avec succès au {cab_nom}.",
             "pme": {
                 "id": pme_id,
                 "nom": nom,
@@ -2712,7 +2714,8 @@ async def api_comptable_ajouter_pme(payload: Dict[str, Any], request: Request):
                 "ninea": ninea or "009845210",
                 "secteur": secteur,
                 "adresse": adresse,
-                "regime": regime
+                "regime": regime,
+                "cabinet_nom": cab_nom
             }
         }
     except Exception as e:
