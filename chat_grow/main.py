@@ -225,6 +225,8 @@ def peut_envoyer_confirmation_paiement(phone: str, cooldown_seconds: int = 600) 
 scheduler = AsyncIOScheduler()
 
 VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "grow_dakar_secret_2026")
+DEFAULT_PHONE_NUMBER_ID = "1402996216237805"
+DEFAULT_WABA_ID = "1626510701857010"
 ONBOARDING_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "onboarding_states.json")
 
 
@@ -6162,7 +6164,7 @@ async def send_whatsapp_message(to_phone: str, text: str, with_buttons: bool = T
     """
     load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
-    phone_id = os.getenv("PHONE_NUMBER_ID")
+    phone_id = os.getenv("PHONE_NUMBER_ID", DEFAULT_PHONE_NUMBER_ID) or DEFAULT_PHONE_NUMBER_ID
 
     if not token or not phone_id or not to_phone or not text:
         return
@@ -6218,7 +6220,7 @@ async def send_whatsapp_template_otp(to_phone: str, otp_code: str, nom_entrepris
     """
     load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
-    phone_id = os.getenv("PHONE_NUMBER_ID")
+    phone_id = os.getenv("PHONE_NUMBER_ID", DEFAULT_PHONE_NUMBER_ID) or DEFAULT_PHONE_NUMBER_ID
 
     if not token or not phone_id or not to_phone:
         return False
@@ -6297,7 +6299,7 @@ async def send_whatsapp_video(to_phone: str, video_url: str, caption: str = ""):
     """
     load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
-    phone_id = os.getenv("PHONE_NUMBER_ID")
+    phone_id = os.getenv("PHONE_NUMBER_ID", DEFAULT_PHONE_NUMBER_ID) or DEFAULT_PHONE_NUMBER_ID
 
     if not token or not phone_id or not to_phone or not video_url:
         return False
@@ -6340,7 +6342,7 @@ async def mark_whatsapp_message_as_read(message_id: str):
     if not message_id:
         return
     token = os.getenv("WHATSAPP_TOKEN")
-    phone_id = os.getenv("PHONE_NUMBER_ID")
+    phone_id = os.getenv("PHONE_NUMBER_ID", DEFAULT_PHONE_NUMBER_ID) or DEFAULT_PHONE_NUMBER_ID
     if not token or not phone_id:
         return
     url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
@@ -6361,7 +6363,7 @@ async def send_whatsapp_reaction(to_phone: str, message_id: str, emoji: str):
     if not to_phone or not message_id:
         return
     token = os.getenv("WHATSAPP_TOKEN")
-    phone_id = os.getenv("PHONE_NUMBER_ID")
+    phone_id = os.getenv("PHONE_NUMBER_ID", DEFAULT_PHONE_NUMBER_ID) or DEFAULT_PHONE_NUMBER_ID
     if not token or not phone_id:
         return
     url = f"https://graph.facebook.com/v21.0/{phone_id}/messages"
@@ -6390,7 +6392,7 @@ async def send_whatsapp_interactive_buttons(to_phone: str, text: str, buttons: l
     """Envoi d'un message avec boutons interactifs cliquables de feedback (👍 Utile / 👎 À corriger)."""
     load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
-    phone_id = os.getenv("PHONE_NUMBER_ID")
+    phone_id = os.getenv("PHONE_NUMBER_ID", DEFAULT_PHONE_NUMBER_ID) or DEFAULT_PHONE_NUMBER_ID
 
     if not token or not phone_id or not to_phone or not text:
         return
@@ -6469,7 +6471,7 @@ async def send_whatsapp_audio(to_phone: str, audio_source: str):
     """
     load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
-    phone_id = os.getenv("PHONE_NUMBER_ID")
+    phone_id = os.getenv("PHONE_NUMBER_ID", DEFAULT_PHONE_NUMBER_ID) or DEFAULT_PHONE_NUMBER_ID
 
     if not token or not phone_id or not audio_source:
         return
