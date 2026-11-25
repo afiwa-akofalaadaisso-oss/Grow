@@ -2739,9 +2739,10 @@ async def api_comptable_certifier_ecritures(payload: Dict[str, Any], request: Re
 
 @app.get("/api/comptable/demandes-visa")
 async def api_comptable_demandes_visa(request: Request):
-    """Retourne la liste des demandes de visa et bilans en attente pour le cabinet comptable."""
+    """Retourne la liste des demandes de visa et bilans en attente spécifiques au cabinet connecté."""
     from chat_grow.visa_manager import obtenir_demandes_en_attente
-    demandes = obtenir_demandes_en_attente()
+    cab_nom = request.cookies.get("growth_cabinet_nom")
+    demandes = obtenir_demandes_en_attente(cab_nom)
     return {"status": "success", "demandes": demandes, "total": len(demandes)}
 
 
@@ -3863,8 +3864,8 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         nom_ent = st.get("nom_entreprise") or "Votre Entreprise"
         cab_nom = st.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
 
-        # Création de la demande officielle en attente du visa de l'expert-comptable
-        demande = creer_demande_visa(clean_p, nom_ent, "BILAN_SYSCOHADA", "Dossier bancaire et conformité")
+        # Création de la demande officielle rattachée au cabinet spécifique de la PME
+        demande = creer_demande_visa(clean_p, nom_ent, "BILAN_SYSCOHADA", "Dossier bancaire et conformité", cabinet_nom=cab_nom)
 
         return (
             f"⏳ *DEMANDE TRANSMISE À VOTRE EXPERT-COMPTABLE*\n\n"

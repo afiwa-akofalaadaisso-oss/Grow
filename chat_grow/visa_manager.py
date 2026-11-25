@@ -40,9 +40,11 @@ def creer_demande_visa(
     telephone: str,
     nom_entreprise: str,
     type_document: str = "BILAN_SYSCOHADA",
-    motif: str = "Dépôt légal ou dossier bancaire"
+    motif: str = "Dépôt légal ou dossier bancaire",
+    cabinet_nom: str = "Cabinet Adaisso & Partenaires",
+    cabinet_id: str = ""
 ) -> dict:
-    """Enregistre une nouvelle demande de visa officiel en attente d'approbation par le cabinet."""
+    """Enregistre une nouvelle demande de visa officiel rattachée à son cabinet comptable spécifique."""
     clean_p = re.sub(r"\D", "", str(telephone))
     demandes = load_demandes_visa()
 
@@ -56,6 +58,8 @@ def creer_demande_visa(
         "id": demande_id,
         "telephone": clean_p,
         "nom_entreprise": nom_entreprise or "Entreprise PME",
+        "cabinet_nom": cabinet_nom or "Cabinet Adaisso & Partenaires",
+        "cabinet_id": cabinet_id or "",
         "type_document": type_document,
         "libelle_document": "Bilan SYSCOHADA SMT & Liasse Fiscale" if type_document == "BILAN_SYSCOHADA" else "Fiche de Solvabilité & Capacité d'Emprunt",
         "motif": motif,
@@ -70,9 +74,13 @@ def creer_demande_visa(
     return nouvelle_demande
 
 
-def obtenir_demandes_en_attente() -> List[dict]:
+def obtenir_demandes_en_attente(cabinet_nom: Optional[str] = None) -> List[dict]:
     demandes = load_demandes_visa()
-    return [d for d in demandes if d.get("statut") == "EN_ATTENTE"]
+    en_attente = [d for d in demandes if d.get("statut") == "EN_ATTENTE"]
+    if cabinet_nom:
+        cab_clean = cabinet_nom.strip().lower()
+        return [d for d in en_attente if cab_clean in d.get("cabinet_nom", "").strip().lower() or not d.get("cabinet_nom")]
+    return en_attente
 
 
 def marquer_demande_approuvee(demande_id: str, cabinet_nom: str) -> Optional[dict]:
