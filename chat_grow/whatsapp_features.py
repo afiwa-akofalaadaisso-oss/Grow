@@ -561,12 +561,14 @@ async def generer_et_envoyer_bilan_pme(sender_phone: str) -> bool:
     ent = get_entreprise_by_phone_resilient(clean_p) or {}
     st = get_onboarding_state(clean_p) or {}
 
+    cab_nom = ent.get("cabinet_nom") or st.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
     pme_data = {
         "nom_entreprise": ent.get("nom") or st.get("nom_entreprise") or "Votre Entreprise PME",
         "telephone": clean_p,
         "ninea": ent.get("ninea") or st.get("ninea") or "En cours",
         "regime": "SYSCOHADA SMT (Système Minimal de Trésorerie)",
-        "secteur": st.get("secteur") or "Commerce Général"
+        "secteur": st.get("secteur") or "Commerce Général",
+        "cabinet_nom": cab_nom
     }
 
     ent_id = ent.get("id") or clean_p
@@ -593,7 +595,7 @@ async def generer_et_envoyer_bilan_pme(sender_phone: str) -> bool:
     caption = (
         f"📄 *Bilan & Liasse Fiscale Officielle SYSCOHADA SMT*\n"
         f"Entreprise : *{pme_data['nom_entreprise']}*\n"
-        f"Supervisé par le Cabinet Adaisso & Partenaires • Scellé SHA-256."
+        f"Supervisé par le *{cab_nom}* • Scellé SHA-256."
     )
 
     return await send_whatsapp_document(clean_p, public_pdf_url, pdf_filename, caption)

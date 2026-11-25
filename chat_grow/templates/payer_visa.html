@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#f0fdf9">
+    <title>Paiement du Visa Comptable • Bilan SYSCOHADA SMT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 50% -10%, #dcfce7 0%, #ecfdf5 25%, #f0fdfa 50%, #f8fafc 90%);
+            background-attachment: fixed;
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 440px;
+            height: 340px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(20, 43, 39, 0.06) 50%, transparent 75%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(40px);
+        }
+
+        .checkout-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 420px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .top-brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.7);
+            border-radius: 100px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+        }
+
+        .app-logo {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: #0f172a;
+            object-fit: contain;
+            padding: 3px;
+        }
+
+        .app-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #0f172a;
+        }
+
+        .checkout-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 24px;
+            padding: 26px 22px;
+            box-shadow:
+                0 20px 45px -12px rgba(15, 23, 42, 0.08),
+                0 4px 16px -2px rgba(16, 185, 129, 0.05);
+            text-align: center;
+            width: 100%;
+        }
+
+        .badge-official {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 5px 14px;
+            border-radius: 100px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.4px;
+            margin-bottom: 4px;
+        }
+
+        .plan-desc {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 16px;
+            line-height: 1.45;
+        }
+
+        .info-pill-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 12px 14px;
+            text-align: left;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .price-box {
+            padding-bottom: 14px;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 16px;
+        }
+
+        .price-val {
+            font-size: 34px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .price-currency {
+            font-size: 15px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-left: 3px;
+        }
+
+        .features-list {
+            list-style: none;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            margin-bottom: 20px;
+            padding: 0 4px;
+        }
+
+        .feature-item {
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            line-height: 1.4;
+        }
+
+        .feature-item i {
+            color: #10b981;
+            font-size: 13px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        /* BOUTON WAVE OFFICIEL */
+        .btn-wave-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 13px 18px;
+            background: #1dc3ec;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 800;
+            border-radius: 14px;
+            text-decoration: none;
+            box-shadow: 0 8px 20px -4px rgba(29, 195, 236, 0.4);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .btn-wave-action:active {
+            transform: scale(0.98);
+        }
+
+        .wave-badge-img {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #ffffff;
+            padding: 2px;
+        }
+
+        /* BOUTON CONFIRMATION DÉBLOCAGE */
+        .btn-confirm-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 16px;
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 800;
+            border-radius: 12px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-confirm-action:hover {
+            background: #1e293b;
+        }
+
+        .btn-confirm-action:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .reassurance-note {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* ÉCRAN DE SUCCÈS */
+        #successScreen {
+            display: none;
+            text-align: center;
+        }
+
+        .success-icon-box {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #16a34a;
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px auto;
+        }
+
+        .btn-download-pdf {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 13px 18px;
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 800;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            margin-top: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="checkout-wrapper">
+        <div class="top-brand-header">
+            <img src="/static/images/logo_growth.png" alt="Growth" class="app-logo" onerror="this.style.display='none'">
+            <span class="app-title">GROWTH &bull; CERTIFICATION OFFICIELLE</span>
+        </div>
+
+        <main class="checkout-card">
+            <!-- VUE PAIEMENT -->
+            <div id="paymentScreen">
+                <div class="badge-official">
+                    <i class="fa-solid fa-stamp"></i>
+                    <span>Expertise Comptable Agréée ONECCA</span>
+                </div>
+
+                <h1 class="plan-title">Visa Légal &amp; Bilan Certifié</h1>
+                <p class="plan-desc">
+                    Votre dossier comptable a été audité et validé. Réglez les honoraires de visa pour sceller votre attestation bancaire et liasse fiscale.
+                </p>
+
+                <!-- BLOC RÉCAPITULATIF DOSSIER -->
+                <div class="info-pill-box">
+                    <div class="info-row">
+                        <span class="info-label">PME Cliente :</span>
+                        <span class="info-value" id="displayNomEnt">Chargement...</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Téléphone WhatsApp :</span>
+                        <span class="info-value" id="displayTel">--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Cabinet Émetteur :</span>
+                        <span class="info-value" id="displayCabinet" style="color: #0f766e;">Cabinet Adaisso &amp; Partenaires</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Réf. Visa Provisoire :</span>
+                        <span class="info-value" id="displayVisaRef" style="font-family: monospace; font-size: 11px;">--</span>
+                    </div>
+                </div>
+
+                <!-- PRIX -->
+                <div class="price-box">
+                    <span class="price-val" id="displayMontant">25 000</span>
+                    <span class="price-currency">FCFA</span>
+                    <div style="font-size: 11.5px; color: #64748b; font-weight: 600; margin-top: 4px;">
+                        Honoraires d'instruction &amp; signature officielle du cabinet
+                    </div>
+                </div>
+
+                <!-- LIVRABLES -->
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Bilan &amp; Compte de Résultat sous la norme <strong>SYSCOHADA SMT</strong></span>
+                    </li>
+                    <li class="feature-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Attestation de Solvabilité &amp; Capacité d'Emprunt (33% BCEAO)</span>
+                    </li>
+                    <li class="feature-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Scellé numérique <strong>SHA-256</strong> &amp; QR Code d'authenticité bancaire</span>
+                    </li>
+                    <li class="feature-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Expédition instantanée en PDF téléchargeable sur votre WhatsApp</span>
+                    </li>
+                </ul>
+
+                <!-- BOUTON 1 : PAIEMENT WAVE 1-CLIC -->
+                <a id="btnWaveDirect" href="https://pay.wave.com/m/M_sn_YgEkibrMRghV/c/sn/?a=25000" target="_blank" class="btn-wave-action">
+                    <img src="/static/images/wave_app_badge.png" alt="Wave" class="wave-badge-img" onerror="this.style.display='none'">
+                    <span id="btnWaveLabel">Payer 25 000 F avec Wave</span>
+                </a>
+
+                <!-- BOUTON 2 : DÉBLOCAGE IMMÉDIAT -->
+                <button type="button" id="btnConfirmer" onclick="validerPaiementVisa()" class="btn-confirm-action">
+                    <i class="fa-solid fa-check"></i>
+                    <span>J'ai validé mon paiement Wave &rarr; Débloquer</span>
+                </button>
+
+                <p class="reassurance-note">
+                    <i class="fa-solid fa-shield-halved"></i> Conforme Acte Uniforme OHADA &bull; Paiement sécurisé Wave
+                </p>
+            </div>
+
+            <!-- VUE SUCCÈS -->
+            <div id="successScreen">
+                <div class="success-icon-box">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+                    Visa Comptable Officiel Délivré !
+                </h2>
+                <p style="font-size: 12.5px; color: #475569; margin-bottom: 18px; line-height: 1.5;">
+                    Votre Bilan certifié et scellé a été généré avec succès et expédié directement sur votre WhatsApp.
+                </p>
+
+                <div class="info-pill-box" style="margin-bottom: 20px;">
+                    <div class="info-row">
+                        <span class="info-label">Numéro de Visa :</span>
+                        <span class="info-value" id="successVisaRef" style="color: #168078; font-family: monospace;">--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Statut Dossier :</span>
+                        <span class="info-value" style="color: #16a34a;">Approuvé &bull; Scellé SHA-256</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Expédié au :</span>
+                        <span class="info-value" id="successPhone">--</span>
+                    </div>
+                </div>
+
+                <a id="btnDownloadPdf" href="#" target="_blank" class="btn-download-pdf">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Télécharger le Bilan Certifié (PDF)</span>
+                </a>
+
+                <p class="reassurance-note" style="margin-top: 18px;">
+                    <i class="fa-solid fa-circle-check" style="color: #16a34a;"></i> Document prêt à présenter aux banques &amp; à la DGID
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const demandeId = urlParams.get('id') || '';
+        let currentDemande = null;
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function formatPhone(raw) {
+            if (!raw) return '--';
+            const clean = raw.replace(/\D/g, '');
+            if (clean.length === 12 && clean.startsWith('221')) {
+                return `+221 ${clean.substring(3, 5)} ${clean.substring(5, 8)} ${clean.substring(8, 10)} ${clean.substring(10, 12)}`;
+            }
+            if (clean.length === 9) {
+                return `+221 ${clean.substring(0, 2)} ${clean.substring(2, 5)} ${clean.substring(5, 7)} ${clean.substring(7, 9)}`;
+            }
+            return '+' + clean;
+        }
+
+        async function chargerDetailsDemande() {
+            if (!demandeId) {
+                document.getElementById('displayNomEnt').textContent = 'Demande non spécifiée';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/demande-visa/${encodeURIComponent(demandeId)}`);
+                const data = await res.json();
+                if (data.status === 'success' && data.demande) {
+                    currentDemande = data.demande;
+                    const d = currentDemande;
+
+                    document.getElementById('displayNomEnt').textContent = d.nom_entreprise || 'Votre Entreprise';
+                    document.getElementById('displayTel').textContent = formatPhone(d.telephone);
+                    if (d.cabinet_nom) {
+                        document.getElementById('displayCabinet').textContent = d.cabinet_nom;
+                    }
+                    if (d.visa_reference) {
+                        document.getElementById('displayVisaRef').textContent = d.visa_reference;
+                    }
+
+                    const montant = d.honoraires_fcfa || 25000;
+                    document.getElementById('displayMontant').textContent = formatNumber(montant);
+                    document.getElementById('btnWaveLabel').textContent = `Payer ${formatNumber(montant)} F avec Wave`;
+
+                    const btnWave = document.getElementById('btnWaveDirect');
+                    if (btnWave) {
+                        btnWave.href = `https://pay.wave.com/m/M_sn_YgEkibrMRghV/c/sn/?a=${montant}`;
+                    }
+
+                    // Si déjà payé/approuvé
+                    if (d.statut === 'APPROUVE' && d.date_paiement) {
+                        afficherSucces(d);
+                    }
+                }
+            } catch (err) {
+                console.error("Erreur chargement détails demande:", err);
+            }
+        }
+
+        async function validerPaiementVisa() {
+            if (!demandeId) return;
+            const btn = document.getElementById('btnConfirmer');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Scellement & Expédition...`;
+
+            try {
+                const res = await fetch('/api/pme/valider-paiement-visa', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ demande_id: demandeId })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    afficherSucces(data.demande || currentDemande, data.pdf_url);
+                } else {
+                    alert(data.message || "Erreur de validation");
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>J'ai validé mon paiement Wave &rarr; Débloquer</span>`;
+                }
+            } catch (e) {
+                alert("Erreur de connexion lors de la confirmation");
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>J'ai validé mon paiement Wave &rarr; Débloquer</span>`;
+            }
+        }
+
+        function afficherSucces(d, pdfUrl) {
+            document.getElementById('paymentScreen').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+
+            if (d) {
+                document.getElementById('successVisaRef').textContent = d.visa_reference || 'VISA-SYSCOHADA-OFFICIEL';
+                document.getElementById('successPhone').textContent = formatPhone(d.telephone);
+            }
+
+            const safePhone = (d && d.telephone) ? d.telephone.replace(/\D/g, '').slice(-9) : 'pme';
+            const dlUrl = pdfUrl || `/static/documents/bilan_syscohada_${safePhone}.pdf`;
+            const btnDl = document.getElementById('btnDownloadPdf');
+            if (btnDl) btnDl.href = dlUrl;
+        }
+
+        // Chargement initial
+        chargerDetailsDemande();
+    </script>
+</body>
+
+</html>

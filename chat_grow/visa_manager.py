@@ -83,16 +83,43 @@ def obtenir_demandes_en_attente(cabinet_nom: Optional[str] = None) -> List[dict]
     return en_attente
 
 
-def marquer_demande_approuvee(demande_id: str, cabinet_nom: str) -> Optional[dict]:
+def obtenir_demande_par_id(demande_id: str) -> Optional[dict]:
+    demandes = load_demandes_visa()
+    for d in demandes:
+        if d.get("id") == demande_id:
+            return d
+    return None
+
+
+def marquer_demande_approuvee(demande_id: str, cabinet_nom: str, honoraires_fcfa: int = 25000) -> Optional[dict]:
     demandes = load_demandes_visa()
     for d in demandes:
         if d.get("id") == demande_id:
             now_str = datetime.now().strftime("%d/%m/%Y à %H:%M")
             visa_ref = f"VISA-SYSCOHADA-{int(datetime.now().timestamp()) % 1000000:06d}"
-            d["statut"] = "APPROUVE"
             d["date_approbation"] = now_str
             d["visa_reference"] = visa_ref
             d["signataire"] = cabinet_nom
+            d["honoraires_fcfa"] = int(honoraires_fcfa)
+            if int(honoraires_fcfa) > 0:
+                d["statut"] = "EN_ATTENTE_PAIEMENT"
+                d["lien_paiement"] = f"/payer-visa?id={demande_id}"
+            else:
+                d["statut"] = "APPROUVE"
+                d["lien_paiement"] = None
+            save_demandes_visa(demandes)
+            return d
+    return None
+
+
+def confirmer_paiement_visa(demande_id: str) -> Optional[dict]:
+    """Confirme le règlement des honoraires de visa et débloque définitivement le Bilan certifié."""
+    demandes = load_demandes_visa()
+    for d in demandes:
+        if d.get("id") == demande_id:
+            now_str = datetime.now().strftime("%d/%m/%Y à %H:%M")
+            d["statut"] = "APPROUVE"
+            d["date_paiement"] = now_str
             save_demandes_visa(demandes)
             return d
     return None

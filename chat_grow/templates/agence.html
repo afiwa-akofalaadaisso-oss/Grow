@@ -1539,11 +1539,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <button type="button" onclick="approuverVisaEnAttente()"
-                                    style="padding: 8px 16px; background: #168078; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(22,128,120,0.2);">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 5px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 5px 10px;">
+                                    <span style="font-size: 11px; font-weight: 700; color: #64748b;">Honoraires :</span>
+                                    <input type="number" id="inputHonorairesTableau" value="25000" min="0" step="5000"
+                                        style="width: 72px; border: none; font-size: 12px; font-weight: 800; color: #0f172a; text-align: right; outline: none;">
+                                    <span style="font-size: 11px; font-weight: 700; color: #0f172a;">FCFA</span>
+                                </div>
+                                <button type="button" onclick="setHonorairesZero('Tableau')"
+                                    style="padding: 6px 10px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 11px; font-weight: 700; color: #475569; cursor: pointer;">
+                                    Forfait (0 F)
+                                </button>
+                                <button type="button" onclick="approuverVisaEnAttente('Tableau')"
+                                    style="padding: 8px 16px; background: #0f172a; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(15,23,42,0.15);">
                                     <i class="fa-solid fa-signature"></i>
-                                    <span>Approuver &amp; Viser le Bilan</span>
+                                    <span>Viser &amp; Facturer</span>
                                 </button>
                             </div>
                         </div>
@@ -1997,11 +2007,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <button type="button" onclick="approuverVisaEnAttente()"
-                                    style="padding: 8px 16px; background: #168078; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(22,128,120,0.2);">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 5px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 5px 10px;">
+                                    <span style="font-size: 11px; font-weight: 700; color: #64748b;">Honoraires :</span>
+                                    <input type="number" id="inputHonorairesTableau" value="25000" min="0" step="5000"
+                                        style="width: 72px; border: none; font-size: 12px; font-weight: 800; color: #0f172a; text-align: right; outline: none;">
+                                    <span style="font-size: 11px; font-weight: 700; color: #0f172a;">FCFA</span>
+                                </div>
+                                <button type="button" onclick="setHonorairesZero('Tableau')"
+                                    style="padding: 6px 10px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 11px; font-weight: 700; color: #475569; cursor: pointer;">
+                                    Forfait (0 F)
+                                </button>
+                                <button type="button" onclick="approuverVisaEnAttente('Tableau')"
+                                    style="padding: 8px 16px; background: #0f172a; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(15,23,42,0.15);">
                                     <i class="fa-solid fa-signature"></i>
-                                    <span>Approuver &amp; Viser le Bilan</span>
+                                    <span>Viser &amp; Facturer</span>
                                 </button>
                             </div>
                         </div>
@@ -4252,23 +4272,38 @@
             }
         }
 
-        async function approuverVisaEnAttente() {
+        function setHonorairesZero(suffix) {
+            const inp = document.getElementById('inputHonoraires' + suffix) || document.getElementById('inputHonorairesTableau') || document.getElementById('inputHonorairesPme');
+            if (inp) inp.value = 0;
+        }
+
+        async function approuverVisaEnAttente(suffix = 'Tableau') {
             if (!derniereDemandeVisaEnAttente) return;
+            const inp = document.getElementById('inputHonoraires' + suffix) || document.getElementById('inputHonorairesTableau') || document.getElementById('inputHonorairesPme');
+            const honoraires = inp ? parseInt(inp.value || '25000', 10) : 25000;
+
             const btn = event?.currentTarget || document.getElementById('btnApprouverVisaDirect');
             if (btn) {
                 btn.disabled = true;
-                btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Visa en cours...`;
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Traitement...`;
             }
 
             try {
                 const res = await fetch('/api/comptable/approuver-visa', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ demande_id: derniereDemandeVisaEnAttente.id })
+                    body: JSON.stringify({
+                        demande_id: derniereDemandeVisaEnAttente.id,
+                        honoraires_fcfa: honoraires
+                    })
                 });
                 const data = await res.json();
                 if (data.status === 'success') {
-                    showToast(`🎉 Visa ${data.visa_reference} apposé ! Le Bilan PDF certifié a été envoyé sur WhatsApp au commerçant.`);
+                    if (honoraires > 0) {
+                        showToast(`🎉 Dossier validé ! Lien de paiement Wave (${honoraires.toLocaleString('fr-FR')} FCFA) envoyé sur WhatsApp.`);
+                    } else {
+                        showToast(`🎉 Visa ${data.visa_reference} apposé ! Le Bilan PDF certifié a été envoyé sur WhatsApp.`);
+                    }
                     const banners = [document.getElementById('visaRequestsBannerTableau'), document.getElementById('visaRequestsBannerPme')];
                     banners.forEach(b => {
                         if (b) {
@@ -4278,7 +4313,9 @@
                             const title = b.querySelector('.visa-banner-title');
                             const desc = b.querySelector('.visa-banner-desc');
                             if (title) title.innerHTML = `✅ Bilan Visé avec Succès : <strong>${derniereDemandeVisaEnAttente.nom_entreprise}</strong>`;
-                            if (desc) desc.innerHTML = `Réf: ${data.visa_reference} • Expédié sur WhatsApp au ${derniereDemandeVisaEnAttente.telephone}`;
+                            if (desc) desc.innerHTML = (honoraires > 0)
+                                ? `Lien de paiement Wave (${honoraires.toLocaleString('fr-FR')} FCFA) transmis sur WhatsApp au ${derniereDemandeVisaEnAttente.telephone}`
+                                : `Réf: ${data.visa_reference} • Expédié sur WhatsApp au ${derniereDemandeVisaEnAttente.telephone}`;
                         }
                     });
                     setTimeout(() => chargerDemandesVisa(), 4000);
@@ -4290,7 +4327,7 @@
             } finally {
                 if (btn) {
                     btn.disabled = false;
-                    btn.innerHTML = `<i class="fa-solid fa-signature"></i> <span>Approuver &amp; Viser</span>`;
+                    btn.innerHTML = `<i class="fa-solid fa-signature"></i> <span>Viser &amp; Facturer</span>`;
                 }
             }
         }

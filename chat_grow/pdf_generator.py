@@ -256,11 +256,12 @@ def generer_bilan_pdf(pme: dict, ecritures: list = None, out_path: str = None) -
     story.append(Spacer(1, 16))
 
     # 6. Scellé de conformité & Signature Expert
+    nom_cab = pme.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
     sha_hash = hashlib.sha256(f"{nom_ent}_{date_jour}_{total_credit}".encode("utf-8")).hexdigest()[:16].upper()
     legal_footer = [
         [
             Paragraph(f"<b>SCELLÉ NUMÉRIQUE DE CONFORMITÉ :</b><br/><font color='#64748b' size='7.5'>SHA-256 : {sha_hash} &bull; Horodatage certifié conforme à la loi sénégalaise sur les transactions électroniques et aux exigences d'archivage légal de 10 ans de l'Acte Uniforme SYSCOHADA.</font>", small_muted),
-            Paragraph("<b>VISA EXPERT-COMPTABLE</b><br/><font color='#168078' size='7.5'>Cabinet Adaisso &amp; Partenaires<br/>Dossier Certifié Régulier</font>", ParagraphStyle('Visa', parent=small_muted, alignment=2))
+            Paragraph(f"<b>VISA EXPERT-COMPTABLE</b><br/><font color='#168078' size='7.5'>{nom_cab}<br/>Dossier Certifié Régulier</font>", ParagraphStyle('Visa', parent=small_muted, alignment=2))
         ]
     ]
     t_foot = Table(legal_footer, colWidths=[13*cm, 5*cm])

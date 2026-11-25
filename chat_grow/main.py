@@ -2779,42 +2779,152 @@ async def api_comptable_demandes_visa(request: Request):
 async def api_comptable_approuver_visa(payload: Dict[str, Any], request: Request):
     """
     Approuve et vise officiellement le Bilan ou l'Attestation d'une PME.
-    Génère le PDF certifié avec Visa SHA-256 et l'envoie instantanément sur WhatsApp au commerçant !
+    Si honoraires > 0 FCFA :
+      - Marque la demande en EN_ATTENTE_PAIEMENT
+      - Envoie sur WhatsApp à la PME le lien Wave de règlement des honoraires
+    Si honoraires == 0 FCFA :
+      - Marque la demande en APPROUVE
+      - Génère le PDF certifié avec Visa SHA-256 et l'envoie instantanément sur WhatsApp !
     """
     demande_id = payload.get("demande_id", "").strip()
+    try:
+        honoraires_fcfa = int(payload.get("honoraires_fcfa", 25000))
+    except (ValueError, TypeError):
+        honoraires_fcfa = 25000
+
     cab_nom = request.cookies.get("growth_cabinet_nom") or "Cabinet Adaisso & Partenaires"
     expert_nom = request.cookies.get("growth_cabinet_expert") or "Afiwa Akofala Adaisso"
 
     from chat_grow.visa_manager import marquer_demande_approuvee
-    demande = marquer_demande_approuvee(demande_id, cab_nom)
+    demande = marquer_demande_approuvee(demande_id, cab_nom, honoraires_fcfa=honoraires_fcfa)
     if not demande:
         return {"status": "error", "message": "Demande de visa introuvable ou déjà traitée."}
 
     phone = demande.get("telephone")
     nom_ent = demande.get("nom_entreprise")
     visa_ref = demande.get("visa_reference")
+    base_url = get_public_base_url()
 
-    # Génération et expédition automatique du Bilan PDF certifié
-    from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pme, send_whatsapp_message
+    from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pme
+
+    if honoraires_fcfa > 0:
+        lien_paiement = f"{base_url}/payer-visa?id={demande_id}"
+        msg_paiement = (
+            f"🎉 *VOTRE BILAN A ÉTÉ AUDITÉ ET APPROUVÉ PAR VOTRE CABINET !*\n\n"
+            f"Votre expert-comptable (*{cab_nom}*) a examiné l'ensemble de vos écritures SYSCOHADA et validé votre dossier.\n\n"
+            f"Pour apposer son visa officiel légal et débloquer le téléchargement instantané de votre Bilan certifié scellé (avec QR Code d'authenticité bancaire), veuillez régler les honoraires de visa du cabinet :\n\n"
+            f"• *Montant des honoraires :* {honoraires_fcfa:,} FCFA\n"
+            f"• *Cabinet émetteur :* {cab_nom}\n"
+            f"• *Objet :* Visa Légal & Attestation Bancaire SYSCOHADA\n\n"
+            f"👉 *Lien de règlement sécurisé Wave :*\n"
+            f"{lien_paiement}\n\n"
+            f"*(Dès confirmation de votre règlement, votre Bilan certifié PDF sera expédié automatiquement ici sur WhatsApp !)*"
+        ).replace(",", " ")
+        asyncio.create_task(send_whatsapp_message(phone, msg_paiement, with_buttons=True))
+
+        return {
+            "status": "success",
+            "statut_visa": "EN_ATTENTE_PAIEMENT",
+            "message": f"Dossier validé ! Le lien de paiement des honoraires ({honoraires_fcfa:,} FCFA) a été envoyé sur WhatsApp à {nom_ent}.".replace(",", " "),
+            "visa_reference": visa_ref,
+            "lien_paiement": lien_paiement,
+            "honoraires_fcfa": honoraires_fcfa,
+            "signataire": cab_nom
+        }
+    else:
+        # Honoraires = 0 FCFA (Client sous contrat ou gratuit)
+        asyncio.create_task(generer_et_envoyer_bilan_pme(phone))
+
+        msg_congrat = (
+            f"🎉 *EXCELLENTE NOUVELLE ! VOTRE BILAN A ÉTÉ VALIDÉ & SIGNÉ*\n\n"
+            f"Votre expert-comptable (*{cab_nom}*) vient d'approuver et d'apposer son visa officiel sur votre dossier :\n"
+            f"• Référence Visa : `{visa_ref}`\n"
+            f"• Signataire : {expert_nom}\n"
+            f"• Norme : SYSCOHADA SMT (Conforme DGID & Banques)\n\n"
+            f"📄 Votre Bilan officiel certifié au format PDF arrive ci-dessus en pièce jointe téléchargeable !\n\n"
+            f"Vous pouvez l'imprimer ou le transférer directement à votre banque ou inspecteur fiscal."
+        )
+        asyncio.create_task(send_whatsapp_message(phone, msg_congrat, with_buttons=True))
+
+        return {
+            "status": "success",
+            "statut_visa": "APPROUVE",
+            "message": f"Visa officiel apposé avec succès ! Le document a été expédié directement sur le WhatsApp de {nom_ent}.",
+            "visa_reference": visa_ref,
+            "honoraires_fcfa": 0,
+            "date_approbation": demande.get("date_approbation"),
+            "signataire": cab_nom
+        }
+
+
+@app.get("/api/demande-visa/{demande_id}")
+async def api_demande_visa_details(demande_id: str):
+    """Retourne les détails d'une demande de visa pour le checkout et la vérification."""
+    from chat_grow.visa_manager import obtenir_demande_par_id
+    demande = obtenir_demande_par_id(demande_id.strip())
+    if not demande:
+        return {"status": "error", "message": "Demande de visa introuvable"}
+    return {"status": "success", "demande": demande}
+
+
+@app.get("/payer-visa", response_class=HTMLResponse)
+async def serve_payer_visa():
+    """Page de règlement sécurisé Wave pour les honoraires de visa comptable du Bilan."""
+    html_path = os.path.join(TEMPLATES_DIR, "payer_visa.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Page de paiement de visa en cours de chargement...</h1>", status_code=200)
+
+
+@app.post("/api/pme/valider-paiement-visa")
+async def api_pme_valider_paiement_visa(payload: Dict[str, Any]):
+    """
+    Valide le paiement des honoraires de visa par la PME,
+    scelle définitivement le Bilan et l'expédie instantanément sur WhatsApp.
+    """
+    demande_id = payload.get("demande_id", "").strip()
+    if not demande_id:
+        return {"status": "error", "message": "ID de demande requis"}
+
+    from chat_grow.visa_manager import confirmer_paiement_visa, obtenir_demande_par_id
+    demande = confirmer_paiement_visa(demande_id)
+    if not demande:
+        # Peut-être déjà approuvé ?
+        demande = obtenir_demande_par_id(demande_id)
+        if not demande:
+            return {"status": "error", "message": "Demande de visa introuvable"}
+
+    phone = demande.get("telephone")
+    nom_ent = demande.get("nom_entreprise")
+    cab_nom = demande.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
+    visa_ref = demande.get("visa_reference")
+    montant = demande.get("honoraires_fcfa", 25000)
+
+    from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pme
     asyncio.create_task(generer_et_envoyer_bilan_pme(phone))
 
-    msg_congrat = (
-        f"🎉 *EXCELLENTE NOUVELLE ! VOTRE BILAN A ÉTÉ VALIDÉ & SIGNÉ*\n\n"
-        f"Votre expert-comptable (*{cab_nom}*) vient d'approuver et d'apposer son visa officiel sur votre dossier :\n"
+    msg_confirm = (
+        f"🎉 *PAIEMENT CONFIRMÉ & VISA COMPTABLE DÉLIVRÉ !*\n\n"
+        f"Votre règlement de *{montant:,} FCFA* d'honoraires pour le visa officiel auprès de *{cab_nom}* a bien été validé.\n\n"
+        f"🛡️ *Authentification & Visa Légal :*\n"
         f"• Référence Visa : `{visa_ref}`\n"
-        f"• Signataire : {expert_nom}\n"
-        f"• Norme : SYSCOHADA SMT (Conforme DGID & Banques)\n\n"
-        f"📄 Votre Bilan officiel certifié au format PDF arrive ci-dessus en pièce jointe téléchargeable !\n\n"
-        f"Vous pouvez l'imprimer ou le transférer directement à votre banque ou inspecteur fiscal."
-    )
-    asyncio.create_task(send_whatsapp_message(phone, msg_congrat, with_buttons=True))
+        f"• Statut : Certifié conforme SYSCOHADA\n"
+        f"• Empreinte SHA-256 : Inaltérable & Vérifiable\n\n"
+        f"📄 Votre Bilan certifié et scellé au format PDF arrive ci-dessus en pièce jointe !\n\n"
+        f"Vous pouvez le présenter directement aux banques (CBAO, BDK, PAMECAS, Baobab, ACEP) et à la DGID."
+    ).replace(",", " ")
+    asyncio.create_task(send_whatsapp_message(phone, msg_confirm, with_buttons=True))
+
+    safe_tel = "".join(filter(str.isdigit, phone))[-9:] if phone else "pme"
+    pdf_url = f"/static/documents/bilan_syscohada_{safe_tel}.pdf"
 
     return {
         "status": "success",
-        "message": f"Visa officiel apposé avec succès ! Le document a été expédié directement sur le WhatsApp de {nom_ent}.",
+        "message": f"Paiement validé avec succès ! Le Bilan certifié a été expédié sur le WhatsApp de {nom_ent}.",
         "visa_reference": visa_ref,
-        "date_approbation": demande.get("date_approbation"),
-        "signataire": cab_nom
+        "pdf_url": pdf_url,
+        "demande": demande
     }
 
 
