@@ -2737,6 +2737,57 @@ async def api_comptable_certifier_ecritures(payload: Dict[str, Any], request: Re
     }
 
 
+@app.get("/api/comptable/demandes-visa")
+async def api_comptable_demandes_visa(request: Request):
+    """Retourne la liste des demandes de visa et bilans en attente pour le cabinet comptable."""
+    from chat_grow.visa_manager import obtenir_demandes_en_attente
+    demandes = obtenir_demandes_en_attente()
+    return {"status": "success", "demandes": demandes, "total": len(demandes)}
+
+
+@app.post("/api/comptable/approuver-visa")
+async def api_comptable_approuver_visa(payload: Dict[str, Any], request: Request):
+    """
+    Approuve et vise officiellement le Bilan ou l'Attestation d'une PME.
+    Génère le PDF certifié avec Visa SHA-256 et l'envoie instantanément sur WhatsApp au commerçant !
+    """
+    demande_id = payload.get("demande_id", "").strip()
+    cab_nom = request.cookies.get("growth_cabinet_nom") or "Cabinet Adaisso & Partenaires"
+    expert_nom = request.cookies.get("growth_cabinet_expert") or "Afiwa Akofala Adaisso"
+
+    from chat_grow.visa_manager import marquer_demande_approuvee
+    demande = marquer_demande_approuvee(demande_id, cab_nom)
+    if not demande:
+        return {"status": "error", "message": "Demande de visa introuvable ou déjà traitée."}
+
+    phone = demande.get("telephone")
+    nom_ent = demande.get("nom_entreprise")
+    visa_ref = demande.get("visa_reference")
+
+    # Génération et expédition automatique du Bilan PDF certifié
+    from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pme, send_whatsapp_message
+    asyncio.create_task(generer_et_envoyer_bilan_pme(phone))
+
+    msg_congrat = (
+        f"🎉 *EXCELLENTE NOUVELLE ! VOTRE BILAN A ÉTÉ VALIDÉ & SIGNÉ*\n\n"
+        f"Votre expert-comptable (*{cab_nom}*) vient d'approuver et d'apposer son visa officiel sur votre dossier :\n"
+        f"• Référence Visa : `{visa_ref}`\n"
+        f"• Signataire : {expert_nom}\n"
+        f"• Norme : SYSCOHADA SMT (Conforme DGID & Banques)\n\n"
+        f"📄 Votre Bilan officiel certifié au format PDF arrive ci-dessus en pièce jointe téléchargeable !\n\n"
+        f"Vous pouvez l'imprimer ou le transférer directement à votre banque ou inspecteur fiscal."
+    )
+    asyncio.create_task(send_whatsapp_message(phone, msg_congrat, with_buttons=True))
+
+    return {
+        "status": "success",
+        "message": f"Visa officiel apposé avec succès ! Le document a été expédié directement sur le WhatsApp de {nom_ent}.",
+        "visa_reference": visa_ref,
+        "date_approbation": demande.get("date_approbation"),
+        "signataire": cab_nom
+    }
+
+
 # =========================================================================
 # MODULE DE SÉCURITÉ ROBUSTE & CONTRÔLE D'ACCÈS POUR LES PME SÉNÉGALAISES
 # =========================================================================
@@ -3803,14 +3854,25 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "Cliquez sur le bouton *« Choisir une action »* ci-dessus pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Relance)."
         )
 
-    # B) BILAN COMPTABLE SYSCOHADA EN DIRECT DANS WHATSAPP (PDF)
-    if user_txt_lower in ["op_bilan_pdf", "bilan", "liasse", "pdf", "mon bilan", "bilan pdf", "télécharger bilan", "telecharger bilan"]:
-        from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pme
-        asyncio.create_task(generer_et_envoyer_bilan_pme(clean_p))
+    # B) BILAN COMPTABLE SYSCOHADA & DOSSIER PRÊT AVEC CIRCUIT VISA CABINET (Human-in-the-Loop)
+    mots_bilan = ["op_bilan_pdf", "bilan", "liasse", "pdf", "mon bilan", "bilan pdf", "télécharger bilan", "telecharger bilan", "pret", "prêt", "banque", "attestation banque", "attestation", "visa"]
+    if any(k in user_txt_lower for k in ["bilan", "liasse", "attestation"]) or user_txt_lower in mots_bilan:
+        from chat_grow.visa_manager import creer_demande_visa
+        from chat_grow.main import get_onboarding_state
+        st = get_onboarding_state(clean_p) or {}
+        nom_ent = st.get("nom_entreprise") or "Votre Entreprise"
+        cab_nom = st.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
+
+        # Création de la demande officielle en attente du visa de l'expert-comptable
+        demande = creer_demande_visa(clean_p, nom_ent, "BILAN_SYSCOHADA", "Dossier bancaire et conformité")
+
         return (
-            "📄 *Bilan SYSCOHADA SMT en cours d'envoi...*\n\n"
-            "Votre liasse officielle certifiée par le Cabinet Adaisso & Partenaires a été générée avec le scellé de conformité SHA-256.\n"
-            "Vous allez recevoir le document PDF directement ci-dessus dans quelques secondes !"
+            f"⏳ *DEMANDE TRANSMISE À VOTRE EXPERT-COMPTABLE*\n\n"
+            f"Votre demande de Bilan Officiel & Attestation SYSCOHADA pour *{nom_ent}* a bien été transmise à votre cabinet (*{cab_nom}*).\n\n"
+            f"🔍 *Circuit de Contrôle & Visa Légal :*\n"
+            f"• Vos écritures et pièces Wave/OM/Caisse sont en cours d'examen par votre expert.\n"
+            f"• Dès que votre expert valide et appose son visa officiel sur son portail, je vous expédie votre document PDF certifié directement ici sur WhatsApp !\n\n"
+            f"👉 *Veuillez patienter quelques instants...* Vous recevrez une notification instantanée dès la signature !"
         )
 
     # C) INFOGRAPHIE FINANCIÈRE HEBDOMADAIRE HD (IMAGE 1080x1080)
@@ -3926,6 +3988,86 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         return "📝 *Enregistrement d'un Crédit Client*\n\nÉcrivez : *« Crédit [Nom du client] [Montant] [Article] »* (ex: *« Crédit Moussa Diop 15 000 FCFA »*).\nJe l'enregistre dans votre carnet pour vous permettre de le relancer en 1 clic."
     if user_txt_lower == "op_stocks":
         return "📦 *Point des Stocks*\n\nIndiquez vos mouvements d'inventaire (ex: *« Reçu 30 cartons de lait »* ou *« Stock restant 15 bidons »*).\nVotre inventaire au PUMP est mis à jour dans vos actifs SYSCOHADA."
+
+    # H) GESTION POPOTE & PRÉLÈVEMENTS PERSONNELS (COMPTE SYSCOHADA 108 DE L'EXPLOITANT)
+    mots_popote = ["popote", "maison", "famille", "ordonnance", "pharmacie", "dépense perso", "depense perso"]
+    if any(m in user_txt_lower for m in mots_popote) and any(char.isdigit() for char in user_text):
+        m_num = re.search(r"(\d[\d\s]*)(?:\s*(?:fcfa|f|cfa))?", user_text, re.IGNORECASE)
+        if m_num:
+            montant_pop = int(re.sub(r"\D", "", m_num.group(1)))
+            from chat_grow.pme_realites import enregistrer_prelevement_popote
+            res_pop = enregistrer_prelevement_popote(clean_p, montant_pop, user_text)
+            cumul_fmt = f"{res_pop['cumul_mois']:,} FCFA".replace(",", " ")
+            mont_fmt = f"{montant_pop:,} FCFA".replace(",", " ")
+            return (
+                f"🍛 *Prélèvement Personnel / Popote Enregistré*\n\n"
+                f"• Montant prélevé : *{mont_fmt}*\n"
+                f"• Imputation : Compte SYSCOHADA 108 (Compte de l'Exploitant)\n"
+                f"• Cumul retiré ce mois : *{cumul_fmt}*\n\n"
+                f"💡 *Conseil de Gestion Growth :*\n"
+                f"Ce prélèvement n'est pas une perte du magasin mais votre argent personnel. Votre marge et la rentabilité réelle de votre boutique restent préservées !"
+            )
+
+    # I) ACOMPTES & PAIEMENTS EN PLUSIEURS FOIS (« Dama lay fay par tranche »)
+    if "acompte" in user_txt_lower or "versement" in user_txt_lower:
+        m_ac = re.search(r"(?:acompte|versement)\s+(\d[\d\s]*)\s+(?:de\s+)?([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)?)", user_text, re.IGNORECASE)
+        if not m_ac:
+            m_ac = re.search(r"(?:acompte|versement)\s+(?:de\s+)?([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)?)\s+(\d[\d\s]*)", user_text, re.IGNORECASE)
+        if m_ac:
+            g1, g2 = m_ac.group(1), m_ac.group(2)
+            montant_ac = int(re.sub(r"\D", "", g1)) if any(c.isdigit() for c in g1) else int(re.sub(r"\D", "", g2))
+            nom_cl = g2 if any(c.isdigit() for c in g1) else g1
+            from chat_grow.pme_realites import traiter_acompte_client
+            res_ac = traiter_acompte_client(clean_p, nom_cl, montant_ac)
+            mont_fmt = f"{montant_ac:,} FCFA".replace(",", " ")
+            if res_ac.get("trouve"):
+                reste_fmt = f"{res_ac['reste_du']:,} FCFA".replace(",", " ")
+                if res_ac.get("est_solde"):
+                    return f"🎉 *Crédit Entièrement Soldé !*\n\nClient : *{res_ac['client']}*\nAcompte reçu : *{mont_fmt}*\nLe compte est à zéro (0 FCFA restant dû). Félicitations !"
+                else:
+                    return f"✅ *Acompte Enregistré avec Succès !*\n\n• Client : *{res_ac['client']}*\n• Acompte versé : *{mont_fmt}*\n• Ancien solde : {res_ac['solde_initial']:,} FCFA\n• ⏳ *Reste encore à payer : {reste_fmt}*".replace(",", " ")
+            else:
+                return f"✅ *Acompte Noté !*\n\n• Client : *{res_ac['client']}*\n• Montant reçu : *{mont_fmt}*\n(Versement enregistré directement en trésorerie caisse)."
+
+    # J) GÉNÉRATION INSTANTANÉE DE REÇU CLIENT NUMÉRIQUE
+    if "reçu" in user_txt_lower or "recu" in user_txt_lower or "facturette" in user_txt_lower:
+        m_rec = re.search(r"(?:reçu|recu)\s+(?:pour\s+)?([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)?)\s+(\d[\d\s]*)(?:\s+(.*))?", user_text, re.IGNORECASE)
+        if m_rec:
+            cl_nom = m_rec.group(1).strip()
+            mont_rec = int(re.sub(r"\D", "", m_rec.group(2)))
+            art = (m_rec.group(3) or "Achat marchandises").strip()
+            from chat_grow.pme_realites import generer_recu_client_whatsapp
+            from chat_grow.main import get_onboarding_state
+            st = get_onboarding_state(clean_p) or {}
+            nom_btq = st.get("nom_entreprise") or "Notre Boutique"
+            return generer_recu_client_whatsapp(nom_btq, cl_nom, art, mont_rec)
+
+    # K) ACHATS GROSSISTES / DETTES FOURNISSEURS (COMPTE SYSCOHADA 401)
+    if "grossiste" in user_txt_lower or "fournisseur" in user_txt_lower:
+        m_frn = re.search(r"(?:grossiste|fournisseur)\s+([A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)?)\s+(\d[\d\s]*)(?:\s+(.*))?", user_text, re.IGNORECASE)
+        if m_frn:
+            nom_gr = m_frn.group(1).strip()
+            mont_frn = int(re.sub(r"\D", "", m_frn.group(2)))
+            art_frn = (m_frn.group(3) or "Réassort").strip()
+            from chat_grow.pme_realites import enregistrer_dette_fournisseur
+            res_frn = enregistrer_dette_fournisseur(clean_p, nom_gr, mont_frn, art_frn)
+            m_fmt = f"{mont_frn:,} FCFA".replace(",", " ")
+            return (
+                f"🚛 *Achat Grossiste à Crédit Enregistré !*\n\n"
+                f"• Grossiste : *{nom_gr.title()}*\n"
+                f"• Montant dû : *{m_fmt}*\n"
+                f"• Marchandises : {art_frn}\n"
+                f"• Compte : SYSCOHADA 401100 (Dettes Fournisseurs)\n\n"
+                f"💡 Growth surveillera vos encaissements pour vous rappeler de rembourser votre grossiste avant l'échéance et garder votre crédit intact."
+            )
+
+    # L) POINT DE STOCK EXPRESS AU DICTAPHONE (INVENTAIRE RAPIDE)
+    if any(k in user_txt_lower for k in ["point stock", "inventaire", "reste en stock", "faire le point"]):
+        return (
+            "📦 *Point de Stock & Inventaire Express*\n\n"
+            "Dictez-moi ou écrivez simplement la liste de ce qui se trouve sur vos étagères (ex: *« Reste 10 sacs de riz, 6 bidons d'huile Dinor, 12 cartons de lait »*).\n\n"
+            "Je valoriserai immédiatement votre stock au PUMP (Prix Unitaire Moyen Pondéré) pour vos actifs SYSCOHADA !"
+        )
 
     # 0.05 DÉTECTION DEMANDE DE VIDÉO OU TUTORIEL DÉMONSTRATION
     user_txt_lower = (user_text or "").lower().strip()

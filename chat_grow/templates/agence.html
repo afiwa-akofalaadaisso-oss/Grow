@@ -1539,6 +1539,32 @@
                 <!-- ONGLET 1 : JOURNAL DES ÉCRITURES (VALIDATION & AUDIT) -->
                 <div id="sectionTableau" class="agency-tab-pane" style="display: none;">
 
+                    <!-- BANNIÈRE DES DEMANDES DE VISA & BILANS EN ATTENTE (HUMAN-IN-THE-LOOP) -->
+                    <div id="visaRequestsBannerTableau" style="display: none; background: #fffbeb; border: 1.5px solid #fef3c7; border-left: 4px solid #d97706; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 15px;">
+                                    <i class="fa-solid fa-stamp"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 800; color: #92400e;" class="visa-banner-title">
+                                        Demande de Bilan Officiel / Visa en attente
+                                    </div>
+                                    <div style="font-size: 11.5px; color: #b45309;" class="visa-banner-desc">
+                                        Une PME a sollicité votre signature officielle pour son dossier bancaire / fiscal.
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" onclick="approuverVisaEnAttente()"
+                                    style="padding: 8px 16px; background: #168078; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(22,128,120,0.2);">
+                                    <i class="fa-solid fa-signature"></i>
+                                    <span>Approuver &amp; Viser le Bilan</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- EN-TÊTE HARMONIEUX DU JOURNAL (TITRE + CONTRÔLES SUR LA MÊME LIGNE) -->
                     <div
                         style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0;">
@@ -1970,6 +1996,32 @@
                 <!-- ONGLET 2 : PORTEFEUILLE DES PME CLIENTES DU CABINET COMPTABLE             -->
                 <!-- ========================================================================= -->
                 <div id="sectionPme" class="agency-tab-pane">
+
+                    <!-- BANNIÈRE DES DEMANDES DE VISA & BILANS EN ATTENTE (HUMAN-IN-THE-LOOP) -->
+                    <div id="visaRequestsBannerPme" style="display: none; background: #fffbeb; border: 1.5px solid #fef3c7; border-left: 4px solid #d97706; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 36px; height: 36px; border-radius: 50%; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 15px;">
+                                    <i class="fa-solid fa-stamp"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 13px; font-weight: 800; color: #92400e;" class="visa-banner-title">
+                                        Demande de Bilan Officiel / Visa en attente
+                                    </div>
+                                    <div style="font-size: 11.5px; color: #b45309;" class="visa-banner-desc">
+                                        Une PME a sollicité votre signature officielle pour son dossier bancaire / fiscal.
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" onclick="approuverVisaEnAttente()"
+                                    style="padding: 8px 16px; background: #168078; color: #ffffff; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(22,128,120,0.2);">
+                                    <i class="fa-solid fa-signature"></i>
+                                    <span>Approuver &amp; Viser le Bilan</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Barre d'outils PME Clientes Moderne & Épurée -->
                     <div
@@ -4162,10 +4214,84 @@
 
             // Chargement dynamique des dossiers PME réels du Cabinet
             chargerPmesCabinet();
+            // Chargement des demandes de visa Human-in-the-Loop en attente
+            chargerDemandesVisa();
             if (typeof renderDocLiasseCalendar === 'function') {
                 renderDocLiasseCalendar();
             }
         });
+
+        // GESTION DES VISAS ET VALIDATIONS HUMAN-IN-THE-LOOP
+        let derniereDemandeVisaEnAttente = null;
+
+        async function chargerDemandesVisa() {
+            try {
+                const resp = await fetch('/api/comptable/demandes-visa');
+                const data = await resp.json();
+                const demandes = (data && data.demandes) ? data.demandes : [];
+                const banners = [document.getElementById('visaRequestsBannerTableau'), document.getElementById('visaRequestsBannerPme')];
+
+                if (demandes.length > 0) {
+                    derniereDemandeVisaEnAttente = demandes[0];
+                    banners.forEach(b => {
+                        if (!b) return;
+                        b.style.display = 'block';
+                        const title = b.querySelector('.visa-banner-title');
+                        const desc = b.querySelector('.visa-banner-desc');
+                        if (title) title.innerHTML = `🔔 Demande de Visa Officiel en Attente : <strong>${derniereDemandeVisaEnAttente.nom_entreprise}</strong>`;
+                        if (desc) desc.innerHTML = `Le commerçant (${derniereDemandeVisaEnAttente.telephone}) a sollicité la validation de son ${derniereDemandeVisaEnAttente.libelle_document} le ${derniereDemandeVisaEnAttente.date_demande}. Cliquez pour approuver et expédier en direct sur son WhatsApp.`;
+                    });
+                } else {
+                    derniereDemandeVisaEnAttente = null;
+                    banners.forEach(b => { if (b) b.style.display = 'none'; });
+                }
+            } catch (e) {
+                console.error("Erreur chargement demandes visa :", e);
+            }
+        }
+
+        async function approuverVisaEnAttente() {
+            if (!derniereDemandeVisaEnAttente) return;
+            const btn = event?.currentTarget || document.getElementById('btnApprouverVisaDirect');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Visa en cours...`;
+            }
+
+            try {
+                const res = await fetch('/api/comptable/approuver-visa', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ demande_id: derniereDemandeVisaEnAttente.id })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    showToast(`🎉 Visa ${data.visa_reference} apposé ! Le Bilan PDF certifié a été envoyé sur WhatsApp au commerçant.`);
+                    const banners = [document.getElementById('visaRequestsBannerTableau'), document.getElementById('visaRequestsBannerPme')];
+                    banners.forEach(b => {
+                        if (b) {
+                            b.style.background = '#f0fdf4';
+                            b.style.borderColor = '#bbf7d0';
+                            b.style.borderLeftColor = '#16a34a';
+                            const title = b.querySelector('.visa-banner-title');
+                            const desc = b.querySelector('.visa-banner-desc');
+                            if (title) title.innerHTML = `✅ Bilan Visé avec Succès : <strong>${derniereDemandeVisaEnAttente.nom_entreprise}</strong>`;
+                            if (desc) desc.innerHTML = `Réf: ${data.visa_reference} • Expédié sur WhatsApp au ${derniereDemandeVisaEnAttente.telephone}`;
+                        }
+                    });
+                    setTimeout(() => chargerDemandesVisa(), 4000);
+                } else {
+                    showToast(data.message || "Erreur lors de la validation");
+                }
+            } catch (err) {
+                showToast("Erreur de connexion au serveur");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-signature"></i> <span>Approuver &amp; Viser</span>`;
+                }
+            }
+        }
 
         // Fonctions pour Comptes
         function filtrerComptesTable() {
