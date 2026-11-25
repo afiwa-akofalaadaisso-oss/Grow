@@ -230,6 +230,32 @@ DEFAULT_WABA_ID = "1626510701857010"
 ONBOARDING_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "onboarding_states.json")
 
 
+def trouver_cabinet_partenaire(nom_cherche: str) -> Optional[Dict[str, Any]]:
+    """Recherche un cabinet comptable partenaire certifié dans la base scellée Growth."""
+    if not nom_cherche:
+        return None
+    clean = nom_cherche.lower().strip()
+    try:
+        from chat_grow.database import get_sqlite_conn
+        conn = get_sqlite_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT id, nom_complet, nom_cabinet, numero_ordre, email FROM comptables_growth")
+        rows = cur.fetchall()
+        conn.close()
+        for r in rows:
+            cab_nom = (r["nom_cabinet"] or "").lower()
+            expert_nom = (r["nom_complet"] or "").lower()
+            if clean in cab_nom or cab_nom in clean or clean in expert_nom:
+                return dict(r)
+            mots_cherche = [w for w in clean.replace("cabinet", "").split() if len(w) > 3]
+            for m in mots_cherche:
+                if m in cab_nom or m in expert_nom:
+                    return dict(r)
+    except Exception as e:
+        print(f"Erreur recherche cabinet partenaire: {e}")
+    return None
+
+
 def get_public_base_url() -> str:
     """Retourne l'URL publique active pour les liens d'abonnement et dashboard."""
     render_url = os.getenv("RENDER_EXTERNAL_URL", "").strip().rstrip("/")
@@ -3862,7 +3888,6 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     mots_bilan = ["op_bilan_pdf", "bilan", "liasse", "pdf", "mon bilan", "bilan pdf", "télécharger bilan", "telecharger bilan", "pret", "prêt", "banque", "attestation banque", "attestation", "visa"]
     if any(k in user_txt_lower for k in ["bilan", "liasse", "attestation"]) or user_txt_lower in mots_bilan:
         from chat_grow.visa_manager import creer_demande_visa
-        from chat_grow.main import get_onboarding_state
         st = get_onboarding_state(clean_p) or {}
         nom_ent = st.get("nom_entreprise") or "Votre Entreprise"
         cab_nom = st.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
@@ -4041,7 +4066,6 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             mont_rec = int(re.sub(r"\D", "", m_rec.group(2)))
             art = (m_rec.group(3) or "Achat marchandises").strip()
             from chat_grow.pme_realites import generer_recu_client_whatsapp
-            from chat_grow.main import get_onboarding_state
             st = get_onboarding_state(clean_p) or {}
             nom_btq = st.get("nom_entreprise") or "Notre Boutique"
             return generer_recu_client_whatsapp(nom_btq, cl_nom, art, mont_rec)
@@ -4163,6 +4187,34 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         else:
             msg_confirm += "Vous pouvez m'envoyer dès maintenant votre première vente, dépense ou note vocale !"
             return msg_confirm
+
+    # 0.85 SYNCHRONISATION INSTANTANÉE SI CRÉÉE DEPUIS LE PORTAIL DU CABINET COMPTABLE
+    if not onboarding.get("rattache_cabinet"):
+        try:
+            from chat_grow.database import get_sqlite_conn
+            c_tmp = get_sqlite_conn()
+            cur_tmp = c_tmp.cursor()
+            cur_tmp.execute("SELECT nom_entreprise, ninea, secteur_activite, cabinet_id, cabinet_nom FROM entreprises WHERE telephone_whatsapp = ? OR telephone_whatsapp = ? LIMIT 1", (clean_p, f"+{clean_p}"))
+            row_ent = cur_tmp.fetchone()
+            c_tmp.close()
+            if row_ent and row_ent["cabinet_nom"]:
+                update_onboarding_state(sender_phone, "rattache_cabinet", True)
+                update_onboarding_state(sender_phone, "cabinet_nom", row_ent["cabinet_nom"])
+                update_onboarding_state(sender_phone, "cabinet_id", row_ent["cabinet_id"] or "")
+                update_onboarding_state(sender_phone, "nom_entreprise", row_ent["nom_entreprise"])
+                if row_ent["ninea"]:
+                    update_onboarding_state(sender_phone, "ninea", row_ent["ninea"])
+                if row_ent["secteur_activite"]:
+                    update_onboarding_state(sender_phone, "secteur_activite", row_ent["secteur_activite"])
+                update_onboarding_state(sender_phone, "statut", "COMPLET")
+                update_onboarding_state(sender_phone, "etape", "TERMINE")
+                update_onboarding_state(sender_phone, "abonnement_valide", True)
+                onboarding = get_onboarding_state(sender_phone)
+                etape = "TERMINE"
+                statut = "COMPLET"
+                is_abonne = True
+        except Exception as e_sync:
+            print(f"Sync cabinet PME SQLite -> Onboarding: {e_sync}")
 
     # 0.9 ACCUEIL VIP POUR PME ENREGISTRÉE DIRECTEMENT PAR LE CABINET COMPTABLE
     if onboarding.get("rattache_cabinet") and not premier_contact:
@@ -4980,6 +5032,8 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         "PHASE_3_IDENTIFICATION_NINEA",
         "PHASE_3_NOM_COMMERCIAL",
         "PHASE_3_NOM_COMMERCIAL_SANS_NINEA",
+        "PHASE_3_QUESTION_CABINET",
+        "PHASE_3_CHOIX_PROPOSITION_CABINET",
         "PHASE_4_ANCIENS_RELEVES",
         "PHASE_5_INVENTAIRE_CAISSE_ESPECES",
         "PHASE_5_INVENTAIRE_IMMOBILISATIONS",
@@ -5305,7 +5359,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
 
         update_onboarding_state(sender_phone, "nom_entreprise", nom_commercial)
         update_onboarding_state(sender_phone, "nom_commercial", nom_commercial)
-        update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
+        update_onboarding_state(sender_phone, "etape", "PHASE_3_QUESTION_CABINET")
 
         save_or_update_entreprise_resilient({
             "telephone_whatsapp": clean_phone,
@@ -5314,24 +5368,15 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             "secteur_activite": secteur
         })
 
-        statut_op = onboarding.get("statut_operateurs", "WAVE_BUSINESS")
-        msg_solde_perso = ""
-        if statut_op in ["COMPTES_PERSO", "MULTI_5_CANAUX"]:
-            msg_solde_perso = (
-                "\n\n📌 *Consigne officielle pour vos comptes personnels* :\n"
-                "1. Dès que possible, activez votre compte Wave Business ou Orange Business.\n"
-                "2. Envoyez-moi dès maintenant une capture d'écran du solde actuel de votre compte personnel pour sceller votre trésorerie de départ au bilan.\n"
-                "👉 *Dès que ces 2 éléments sont réunis, alors là oui, nous continuons immédiatement votre inscription !*"
-            )
-
         return (
-            f"✅ Dossier scellé pour *{nom_commercial}* !\n"
+            f"✅ Dossier identifié pour *{nom_commercial}* !\n"
             f"• Titulaire légal : *{nom_personne}*\n"
             f"• NINEA officiel : *{ninea}*\n"
             f"• Secteur d'activité : *{secteur}*\n\n"
-            "Passons à l'Étape 4 : Reconstitution de votre passé financier et bilan d'ouverture.\n"
-            "Veuillez m'envoyer votre dernier relevé de compte (PDF, photo ou capture d'écran) ou m'indiquer votre solde actuel disponible."
-            f"{msg_solde_perso}"
+            "🤝 *Supervision Comptable & Conformité Banques / DGID :*\n"
+            "Travaillez-vous déjà avec un cabinet comptable partenaire ou agréé pour superviser vos comptes ?\n\n"
+            "👉 *Écrivez le nom de votre cabinet* (ex: « Cabinet Adaisso » ou « Cabinet Diallo »).\n"
+            "*(Si vous n'avez pas de cabinet, répondez simplement « Non »)*."
         )
 
     # 3.2 NOM COMMERCIAL SANS NINEA
@@ -5343,7 +5388,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
 
         update_onboarding_state(sender_phone, "nom_entreprise", nom_commercial)
         update_onboarding_state(sender_phone, "nom_commercial", nom_commercial)
-        update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
+        update_onboarding_state(sender_phone, "etape", "PHASE_3_QUESTION_CABINET")
 
         save_or_update_entreprise_resilient({
             "telephone_whatsapp": clean_phone,
@@ -5354,9 +5399,116 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
 
         return (
             f"✅ Entreprise *{nom_commercial}* bien enregistrée !\n\n"
-            "Passons à l'Étape 4 : Reconstitution de votre passé financier et bilan d'ouverture.\n"
-            "Veuillez m'envoyer votre dernier relevé de compte Wave ou Orange Money (en PDF, photo ou capture d'écran) ou m'indiquer vos soldes disponibles."
+            "🤝 *Supervision Comptable & Conformité Banques / DGID :*\n"
+            "Travaillez-vous déjà avec un cabinet comptable partenaire ou agréé pour superviser vos comptes ?\n\n"
+            "👉 *Écrivez le nom de votre cabinet* (ex: « Cabinet Adaisso » ou « Cabinet Diallo »).\n"
+            "*(Si vous n'avez pas de cabinet, répondez simplement « Non »)*."
         )
+
+    # 3.3 IDENTIFICATION ET VÉRIFICATION DU CABINET COMPTABLE PARTENAIRE
+    if etape == "PHASE_3_QUESTION_CABINET":
+        u_txt = (user_text or "").strip()
+        u_clean = u_txt.lower()
+        mots_sans_cabinet = ["non", "pas de cabinet", "aucun", "pas encore", "amuma", "amu ma", "je n'ai pas", "j'en ai pas", "seul", "moi meme", "moi-même"]
+        nom_commercial = onboarding.get("nom_entreprise") or f"Commerce {clean_phone[-4:]}"
+
+        if any(k in u_clean for k in mots_sans_cabinet):
+            update_onboarding_state(sender_phone, "etape", "PHASE_3_CHOIX_PROPOSITION_CABINET")
+            return (
+                "💡 *Conseil Stratégique Growth & Prêt Bancaire :*\n"
+                "Pour obtenir un financement auprès d'une banque (ou institution comme Baobab/PAMECAS) et sécuriser votre commerce devant la DGID, "
+                "le visa d'un expert-comptable agréé ONECCA est un atout indispensable.\n\n"
+                "Souhaitez-vous que nous rattachions votre dossier à l'un de nos cabinets partenaires certifiés (ex: *Cabinet Adaisso & Partenaires*) pour superviser et viser vos bilans ?\n\n"
+                "1) 🤝 Oui, me rattacher à un cabinet partenaire certifié\n"
+                "2) 👤 Non, continuer en gestion autonome"
+            )
+        else:
+            cab_trouve = trouver_cabinet_partenaire(u_txt)
+            if cab_trouve:
+                nom_cab = cab_trouve["nom_cabinet"]
+                cab_id = cab_trouve["id"]
+                num_ordre = cab_trouve.get("numero_ordre") or "ONECCA"
+                update_onboarding_state(sender_phone, "rattache_cabinet", True)
+                update_onboarding_state(sender_phone, "cabinet_nom", nom_cab)
+                update_onboarding_state(sender_phone, "cabinet_id", cab_id)
+                update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
+                save_or_update_entreprise_resilient({
+                    "telephone_whatsapp": clean_phone,
+                    "nom_entreprise": nom_commercial,
+                    "cabinet_id": cab_id,
+                    "cabinet_nom": nom_cab
+                })
+                try:
+                    from chat_grow.database import get_sqlite_conn
+                    c_up = get_sqlite_conn()
+                    c_up.execute("UPDATE entreprises SET cabinet_id = ?, cabinet_nom = ? WHERE telephone_whatsapp = ? OR telephone_whatsapp = ?", (cab_id, nom_cab, clean_phone, f"+{clean_phone}"))
+                    c_up.commit()
+                    c_up.close()
+                except Exception:
+                    pass
+
+                return (
+                    f"✅ *Cabinet Partenaire Officiel Reconnu !*\n\n"
+                    f"Votre dossier pour *{nom_commercial}* est rattaché au *{nom_cab}* (Ordre : `{num_ordre}`).\n"
+                    f"Vos écritures et pièces seront directement transmises à votre expert pour la validation de vos bilans.\n\n"
+                    "Passons à l'Étape 4 : Reconstitution de votre passé financier et solde de départ.\n"
+                    "Veuillez m'envoyer votre dernier relevé de compte (PDF, photo ou capture d'écran) ou m'indiquer votre solde actuel disponible."
+                )
+            else:
+                update_onboarding_state(sender_phone, "cabinet_saisi_non_partenaire", u_txt)
+                update_onboarding_state(sender_phone, "etape", "PHASE_3_CHOIX_PROPOSITION_CABINET")
+                return (
+                    f"🔍 Le cabinet « *{u_txt}* » ne fait pas encore partie du réseau de nos cabinets partenaires certifiés Growth.\n\n"
+                    "Pour bénéficier d'un visa officiel immédiat pour vos dossiers bancaires, souhaitez-vous être rattaché(e) à l'un de nos cabinets partenaires certifiés ONECCA (ex: *Cabinet Adaisso & Partenaires*) ?\n\n"
+                    "1) 🤝 Oui, me rattacher à un cabinet partenaire certifié\n"
+                    "2) 👤 Non, continuer en gestion autonome"
+                )
+
+    # 3.4 RÉPONSE À LA PROPOSITION DE CABINET PARTENAIRE
+    if etape == "PHASE_3_CHOIX_PROPOSITION_CABINET":
+        u_txt = (user_text or "").strip().lower()
+        nom_commercial = onboarding.get("nom_entreprise") or f"Commerce {clean_phone[-4:]}"
+
+        if any(k in u_txt for k in ["1", "oui", "d'accord", "ok", "accepte", "partenaire", "adaisso"]):
+            nom_cab = "Cabinet Adaisso & Partenaires"
+            cab_id = "cbt_ca859b52ffb9"
+            update_onboarding_state(sender_phone, "rattache_cabinet", True)
+            update_onboarding_state(sender_phone, "cabinet_nom", nom_cab)
+            update_onboarding_state(sender_phone, "cabinet_id", cab_id)
+            update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
+            save_or_update_entreprise_resilient({
+                "telephone_whatsapp": clean_phone,
+                "nom_entreprise": nom_commercial,
+                "cabinet_id": cab_id,
+                "cabinet_nom": nom_cab
+            })
+            try:
+                from chat_grow.database import get_sqlite_conn
+                c_up = get_sqlite_conn()
+                c_up.execute("UPDATE entreprises SET cabinet_id = ?, cabinet_nom = ? WHERE telephone_whatsapp = ? OR telephone_whatsapp = ?", (cab_id, nom_cab, clean_phone, f"+{clean_phone}"))
+                c_up.commit()
+                c_up.close()
+            except Exception:
+                pass
+
+            return (
+                f"🤝 *Partenariat Confirmé avec Succès !*\n\n"
+                f"Votre entreprise *{nom_commercial}* est désormais affiliée au *{nom_cab}* (Ordre des Experts-Comptables ONECCA).\n"
+                "Vos bilans financiers seront supervisés et visés par le cabinet pour garantir votre crédibilité bancaire.\n\n"
+                "Passons à l'Étape 4 : Reconstitution de votre passé financier et solde de départ.\n"
+                "Veuillez m'envoyer votre dernier relevé de compte (PDF, photo ou capture d'écran) ou m'indiquer votre solde actuel disponible."
+            )
+        else:
+            update_onboarding_state(sender_phone, "rattache_cabinet", False)
+            update_onboarding_state(sender_phone, "gestion_autonome", True)
+            update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
+            return (
+                "👍 *Option Gestion Autonome Validée !*\n\n"
+                f"C'est parfaitement noté : vous pilotez *{nom_commercial}* de manière indépendante avec votre IA Growth. "
+                "Vous pourrez à tout moment demander un visa d'expert en écrivant *« Bilan »* ou *« Cabinet »*.\n\n"
+                "Passons à l'Étape 4 : Reconstitution de votre passé financier et solde de départ.\n"
+                "Veuillez m'envoyer votre dernier relevé de compte (PDF, photo ou capture d'écran) ou m'indiquer votre solde actuel disponible."
+            )
 
     # =========================================================================
     # ÉTAPE 4 : RECONSTITUTION DU PASSÉ & ANCIENS RELEVÉS
