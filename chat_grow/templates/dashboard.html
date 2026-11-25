@@ -2821,89 +2821,128 @@
             // 2. Rendu VUE CARTES (Mobile)
             let cardsHtml = '';
 
-            displayList.forEach(ec => {
-                const safeRef = `PC-${ec.date.split('/').reverse().join('-')}-00${ec.id}`;
-                const rawCpt = ec.compte || '601100 - Achats de marchandises';
-                const cptCode = rawCpt.replace(/[^0-9]/g, '').slice(0, 6) || '601100';
-                const cptPrefix = cptCode.slice(0, 3) || '601';
-                const isDebit = ec.debit && ec.debit !== '-';
-                const montantAffiche = isDebit ? `${ec.debit} FCFA` : `${ec.credit} FCFA`;
-                const montantColor = isDebit ? 'text-rose-600' : 'text-emerald-600';
-                const sign = isDebit ? '-' : '+';
-                const safeTiers = ec.tiers || pme.nom || 'Fournisseur / Client';
-                const safeImg = ec.preuve || '/static/mock_receipt_photo.png';
-
-                const rawDate = ec.date || '';
-                const dateParts = rawDate.split('/');
-                const dateCourt = dateParts.length >= 2 ? `${dateParts[0]}/${dateParts[1]}` : rawDate;
-                const dateAnnee = dateParts.length >= 3 ? dateParts[2] : '';
-
-                // Formatage propre des montants numériques
-                const fmtDebit = (ec.debit && ec.debit !== '-' && ec.debit !== '0' && ec.debit !== '0.0')
-                    ? Math.round(parseFloat(String(ec.debit).replace(/[^0-9.-]/g, '')) || 0).toLocaleString('fr-FR')
-                    : '-';
-                const fmtCredit = (ec.credit && ec.credit !== '-' && ec.credit !== '0' && ec.credit !== '0.0')
-                    ? Math.round(parseFloat(String(ec.credit).replace(/[^0-9.-]/g, '')) || 0).toLocaleString('fr-FR')
-                    : '-';
-
-                // TABLE ROW
-                tableHtml += `
-                    <tr id="row-${ec.id}">
-                        <td class="col-date font-bold text-slate-800 text-[11px] leading-tight">
-                            <span>${dateCourt}</span>
-                            ${dateAnnee ? `<span class="text-[9.5px] text-slate-400 font-normal hidden sm:inline">/${dateAnnee}</span>` : ''}
-                        </td>
-                        <td class="col-libelle">
-                            <div class="flex flex-col gap-0.5">
-                                <span class="font-bold text-slate-900 leading-snug line-clamp-2">${ec.libelle}</span>
-                                <div class="inline-flex items-center gap-1">
-                                    <span class="acc-badge">${cptPrefix}</span>
-                                    <span class="text-[10px] sm:text-xs font-semibold text-slate-600 truncate max-w-[100px] sm:max-w-none">${rawCpt}</span>
-                                </div>
+            if (displayList.length === 0) {
+                tableHtml = `
+                    <tr>
+                        <td colspan="5" class="py-14 px-4 text-center">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-[#168078] flex items-center justify-center mx-auto mb-3 text-xl border border-emerald-100">
+                                <i class="fa-solid fa-receipt"></i>
                             </div>
-                        </td>
-                        <td class="col-debit text-right font-black ${fmtDebit !== '-' ? 'text-[#168078]' : 'text-slate-300'}">${fmtDebit}</td>
-                        <td class="col-credit text-right font-black ${fmtCredit !== '-' ? 'text-[#168078]' : 'text-slate-300'}">${fmtCredit}</td>
-                        <td class="col-piece text-center">
-                            <div class="flex items-center justify-center">
-                                <button type="button" class="btn-table-piece" title="Voir la pièce justificative"
-                                    onclick="ouvrirPieceComptableModal('${safeRef}', '${escapeQuotes(ec.libelle)}', '${montantAffiche}', '${ec.date}', '${escapeQuotes(rawCpt)}', '${escapeQuotes(safeTiers)}', '${safeImg}')">
-                                    <i class="fa-solid fa-file-invoice text-slate-800"></i>
-                                </button>
+                            <div class="text-sm font-extrabold text-slate-800">Votre journal est vierge et prêt</div>
+                            <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1 leading-relaxed">
+                                Aucune écriture enregistrée pour le moment. Envoyez votre première vente ou dépense par message vocal ou texte sur WhatsApp au <strong>+221 78 195 40 86</strong>.
+                            </p>
+                            <div class="mt-4">
+                                <a href="https://wa.me/221781954086?text=Bonjour%20Grow" target="_blank" class="inline-flex items-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#20ba59] transition shadow-xs">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                    <span>Écrire sur WhatsApp</span>
+                                </a>
                             </div>
                         </td>
                     </tr>
                 `;
-
-                // MOBILE CARD
-                cardsHtml += `
-                    <div class="mobile-entry-card flex flex-col justify-between gap-3">
-                        <div class="flex items-start justify-between gap-2">
-                            <div>
-                                <span class="text-[11px] font-bold text-slate-500">${ec.date}</span>
-                                <h4 class="text-sm font-bold text-slate-900 leading-snug mt-0.5">${ec.libelle}</h4>
-                                <div class="inline-flex items-center gap-1.5 mt-1.5">
-                                    <span class="acc-badge">${cptPrefix}</span>
-                                    <span class="text-[11px] font-medium text-slate-600">${rawCpt.split('-')[1] || rawCpt}</span>
-                                </div>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <div class="text-base font-black text-[#168078]">${sign} ${montantAffiche}</div>
-                                <span class="badge-status badge-validee text-[10px] mt-1">✓ Validée</span>
-                            </div>
+                cardsHtml = `
+                    <div class="col-span-full py-12 px-4 text-center bg-white border border-slate-200 rounded-2xl shadow-xs">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-[#168078] flex items-center justify-center mx-auto mb-3 text-xl border border-emerald-100">
+                            <i class="fa-solid fa-receipt"></i>
                         </div>
-
-                        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                            <span class="text-slate-500 font-medium truncate max-w-[160px]">${safeTiers}</span>
-                            <button type="button" class="btn-card-receipt"
-                                onclick="ouvrirPieceComptableModal('${safeRef}', '${escapeQuotes(ec.libelle)}', '${montantAffiche}', '${ec.date}', '${escapeQuotes(rawCpt)}', '${escapeQuotes(safeTiers)}', '${safeImg}')">
-                                <i class="fa-solid fa-file-invoice text-[#222222]"></i>
-                                <span>Voir le Reçu</span>
-                            </button>
+                        <div class="text-sm font-extrabold text-slate-800">Votre journal est vierge et prêt</div>
+                        <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1 leading-relaxed">
+                            Aucune opération enregistrée pour le moment. Envoyez votre première vente ou dépense par message vocal ou texte sur WhatsApp au <strong>+221 78 195 40 86</strong>.
+                        </p>
+                        <div class="mt-4">
+                            <a href="https://wa.me/221781954086?text=Bonjour%20Grow" target="_blank" class="inline-flex items-center gap-2 bg-[#25D366] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#20ba59] transition shadow-xs">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>Écrire sur WhatsApp</span>
+                            </a>
                         </div>
                     </div>
                 `;
-            });
+            } else {
+                displayList.forEach(ec => {
+                    const safeRef = `PC-${ec.date.split('/').reverse().join('-')}-00${ec.id}`;
+                    const rawCpt = ec.compte || '601100 - Achats de marchandises';
+                    const cptCode = rawCpt.replace(/[^0-9]/g, '').slice(0, 6) || '601100';
+                    const cptPrefix = cptCode.slice(0, 3) || '601';
+                    const isDebit = ec.debit && ec.debit !== '-';
+                    const montantAffiche = isDebit ? `${ec.debit} FCFA` : `${ec.credit} FCFA`;
+                    const montantColor = isDebit ? 'text-rose-600' : 'text-emerald-600';
+                    const sign = isDebit ? '-' : '+';
+                    const safeTiers = ec.tiers || pme.nom || 'Fournisseur / Client';
+                    const safeImg = ec.preuve || '/static/mock_receipt_photo.png';
+
+                    const rawDate = ec.date || '';
+                    const dateParts = rawDate.split('/');
+                    const dateCourt = dateParts.length >= 2 ? `${dateParts[0]}/${dateParts[1]}` : rawDate;
+                    const dateAnnee = dateParts.length >= 3 ? dateParts[2] : '';
+
+                    // Formatage propre des montants numériques
+                    const fmtDebit = (ec.debit && ec.debit !== '-' && ec.debit !== '0' && ec.debit !== '0.0')
+                        ? Math.round(parseFloat(String(ec.debit).replace(/[^0-9.-]/g, '')) || 0).toLocaleString('fr-FR')
+                        : '-';
+                    const fmtCredit = (ec.credit && ec.credit !== '-' && ec.credit !== '0' && ec.credit !== '0.0')
+                        ? Math.round(parseFloat(String(ec.credit).replace(/[^0-9.-]/g, '')) || 0).toLocaleString('fr-FR')
+                        : '-';
+
+                    // TABLE ROW
+                    tableHtml += `
+                        <tr id="row-${ec.id}">
+                            <td class="col-date font-bold text-slate-800 text-[11px] leading-tight">
+                                <span>${dateCourt}</span>
+                                ${dateAnnee ? `<span class="text-[9.5px] text-slate-400 font-normal hidden sm:inline">/${dateAnnee}</span>` : ''}
+                            </td>
+                            <td class="col-libelle">
+                                <div class="flex flex-col gap-0.5">
+                                    <span class="font-bold text-slate-900 leading-snug line-clamp-2">${ec.libelle}</span>
+                                    <div class="inline-flex items-center gap-1">
+                                        <span class="acc-badge">${cptPrefix}</span>
+                                        <span class="text-[10px] sm:text-xs font-semibold text-slate-600 truncate max-w-[100px] sm:max-w-none">${rawCpt}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-debit text-right font-black ${fmtDebit !== '-' ? 'text-[#168078]' : 'text-slate-300'}">${fmtDebit}</td>
+                            <td class="col-credit text-right font-black ${fmtCredit !== '-' ? 'text-[#168078]' : 'text-slate-300'}">${fmtCredit}</td>
+                            <td class="col-piece text-center">
+                                <div class="flex items-center justify-center">
+                                    <button type="button" class="btn-table-piece" title="Voir la pièce justificative"
+                                        onclick="ouvrirPieceComptableModal('${safeRef}', '${escapeQuotes(ec.libelle)}', '${montantAffiche}', '${ec.date}', '${escapeQuotes(rawCpt)}', '${escapeQuotes(safeTiers)}', '${safeImg}')">
+                                        <i class="fa-solid fa-file-invoice text-slate-800"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+
+                    // MOBILE CARD
+                    cardsHtml += `
+                        <div class="mobile-entry-card flex flex-col justify-between gap-3">
+                            <div class="flex items-start justify-between gap-2">
+                                <div>
+                                    <span class="text-[11px] font-bold text-slate-500">${ec.date}</span>
+                                    <h4 class="text-sm font-bold text-slate-900 leading-snug mt-0.5">${ec.libelle}</h4>
+                                    <div class="inline-flex items-center gap-1.5 mt-1.5">
+                                        <span class="acc-badge">${cptPrefix}</span>
+                                        <span class="text-[11px] font-medium text-slate-600">${rawCpt.split('-')[1] || rawCpt}</span>
+                                    </div>
+                                </div>
+                                <div class="text-right shrink-0">
+                                    <div class="text-base font-black text-[#168078]">${sign} ${montantAffiche}</div>
+                                    <span class="badge-status badge-validee text-[10px] mt-1">✓ Validée</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                                <span class="text-slate-500 font-medium truncate max-w-[160px]">${safeTiers}</span>
+                                <button type="button" class="btn-card-receipt"
+                                    onclick="ouvrirPieceComptableModal('${safeRef}', '${escapeQuotes(ec.libelle)}', '${montantAffiche}', '${ec.date}', '${escapeQuotes(rawCpt)}', '${escapeQuotes(safeTiers)}', '${safeImg}')">
+                                    <i class="fa-solid fa-file-invoice text-[#222222]"></i>
+                                    <span>Voir le Reçu</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
 
             document.getElementById('table-body').innerHTML = tableHtml;
             document.getElementById('containerVueCartes').innerHTML = cardsHtml;
