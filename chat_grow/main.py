@@ -2681,6 +2681,27 @@ async def api_comptable_ajouter_pme(payload: Dict[str, Any], request: Request):
         except Exception:
             pass
 
+        # Configuration immédiate du profil PME pour reconnaissance VIP sur WhatsApp
+        if telephone:
+            clean_p = re.sub(r"\D", "", telephone)
+            if len(clean_p) == 9 and clean_p.startswith(("70", "75", "76", "77", "78")):
+                clean_p = "221" + clean_p
+            try:
+                cab_nom = request.cookies.get("growth_cabinet_nom") or "Cabinet Adaisso & Partenaires"
+                update_onboarding_state(clean_p, "nom_entreprise", nom)
+                update_onboarding_state(clean_p, "ninea", ninea or "009845210")
+                update_onboarding_state(clean_p, "secteur", secteur)
+                update_onboarding_state(clean_p, "regime", regime)
+                update_onboarding_state(clean_p, "rattache_cabinet", True)
+                update_onboarding_state(clean_p, "cabinet_nom", cab_nom)
+                update_onboarding_state(clean_p, "statut", "COMPLET")
+                update_onboarding_state(clean_p, "etape", "TERMINE")
+                update_onboarding_state(clean_p, "abonnement_valide", True)
+                update_onboarding_state(clean_p, "onboarding_cree_par_cabinet", True)
+                update_onboarding_state(clean_p, "premier_contact_effectue", False)
+            except Exception as e_st:
+                print(f"[AJOUT PME CABINET] Erreur maj state: {e_st}")
+
         return {
             "status": "success",
             "message": f"Dossier PME « {nom} » rattaché avec succès au cabinet.",
@@ -3996,6 +4017,27 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         else:
             msg_confirm += "Vous pouvez m'envoyer dès maintenant votre première vente, dépense ou note vocale !"
             return msg_confirm
+
+    # 0.9 ACCUEIL VIP POUR PME ENREGISTRÉE DIRECTEMENT PAR LE CABINET COMPTABLE
+    if onboarding.get("rattache_cabinet") and not premier_contact:
+        update_onboarding_state(sender_phone, "premier_contact_effectue", True)
+        update_onboarding_state(sender_phone, "statut", "COMPLET")
+        update_onboarding_state(sender_phone, "etape", "TERMINE")
+        nom_ent = onboarding.get("nom_entreprise") or "votre entreprise"
+        cab = onboarding.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
+        ninea = onboarding.get("ninea") or "Certifié"
+        return (
+            f"👋 *Bienvenue sur Growth !*\n\n"
+            f"Votre dossier pour *{nom_ent}* a été configuré et validé par votre expert-comptable (*{cab}*).\n"
+            f"• NINEA : `{ninea}`\n"
+            f"• Régime : SYSCOHADA SMT\n"
+            f"• Supervision : 100% Automatique & Directe\n\n"
+            "Je suis votre copilote comptable 24h/24. Vos écritures et pièces justificatives sont directement transmises à votre cabinet.\n\n"
+            "👉 *Comment souhaitez-vous communiquer au quotidien ?*\n"
+            "1) 🎙️ Par Notes Vocales (Wolof ou Français)\n"
+            "2) ✍️ Par Messages Écrits\n\n"
+            "Vous pouvez dès à présent me dicter ou m'écrire votre première vente, votre première dépense, ou taper *« Menu »* pour explorer vos options !"
+        )
 
     # 1. PARCOURS D'ONBOARDING ET RECONSTITUTION INITIALE (ÉTAPES 1 À 6)
     # Les Étapes 1 à 5 (configuration Wave, NINEA, reconstitution du passé, inventaire caisse espèces)
