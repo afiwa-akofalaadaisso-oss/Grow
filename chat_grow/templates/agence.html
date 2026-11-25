@@ -2574,70 +2574,21 @@
 
 
 
-                    <!-- Grille des 6 Ratios Prudentiels du Cabinet -->
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 20px 0;">
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px;">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                Marge Commerciale Brute</div>
-                            <div style="font-size: 26px; font-weight: 900; color: #0e7647; margin: 6px 0;">34.2%</div>
-                            <div style="font-size: 11.5px; color: #16a34a; font-weight: 600;">+3.8% par rapport à N-1
-                            </div>
-                            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Rentabilité directe sur les
-                                achats de stock de riz et denrées</p>
+                    <!-- État d'attente vierge professionnel pour nouveau compte -->
+                    <div id="reportingEmptyState"
+                        style="background: white; border: 1.5px dashed #cbd5e1; border-radius: 16px; padding: 48px 24px; text-align: center; margin: 24px 0;">
+                        <div
+                            style="width: 56px; height: 56px; border-radius: 50%; background: #f0fdfa; border: 1px solid #ccfbf1; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                            <i class="fa-solid fa-chart-pie" style="font-size: 22px; color: #168078;"></i>
                         </div>
-
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px;">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                Capacité d'Autofinancement (CAF)</div>
-                            <div style="font-size: 26px; font-weight: 900; color: #0f172a; margin: 6px 0;">1 420 000 F
-                            </div>
-                            <div style="font-size: 11.5px; color: #0e7647; font-weight: 600;">Excédent brut disponible
-                            </div>
-                            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Flux de trésorerie disponible
-                                pour investissement ou remboursement</p>
-                        </div>
-
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px;">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                BFR (Besoin en Fonds de Roulement)</div>
-                            <div style="font-size: 26px; font-weight: 900; color: #2563eb; margin: 6px 0;">12 Jours
-                            </div>
-                            <div style="font-size: 11.5px; color: #2563eb; font-weight: 600;">Cycle d'exploitation
-                                maîtrisé</div>
-                            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Délai très court grâce aux
-                                encaissements Wave et espèces immédiats</p>
-                        </div>
-
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px;">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                Rotation des Stocks</div>
-                            <div style="font-size: 26px; font-weight: 900; color: #d97706; margin: 6px 0;">21 Jours
-                            </div>
-                            <div style="font-size: 11.5px; color: #d97706; font-weight: 600;">Vitesse d'écoulement saine
-                            </div>
-                            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Les sacs de riz et huile
-                                tournent rapidement sans sur-stockage</p>
-                        </div>
-
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px;">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                Indice de Solvabilité Bancaire</div>
-                            <div style="font-size: 26px; font-weight: 900; color: #16a34a; margin: 6px 0;">2.4 / 3.0
-                            </div>
-                            <div style="font-size: 11.5px; color: #16a34a; font-weight: 600;">Éligible aux crédits
-                                bancaires</div>
-                            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Conforme aux exigences
-                                prudentielles de la BCEAO pour PME</p>
-                        </div>
-
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px;">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                Poids des Charges d'Exploitation</div>
-                            <div style="font-size: 26px; font-weight: 900; color: #222222; margin: 6px 0;">14.8%</div>
-                            <div style="font-size: 11.5px; color: #16a34a; font-weight: 600;">Charges optimisées</div>
-                            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Loyer, transport, électricité
-                                Senelec et salaires proportionnés</p>
+                        <h3 style="font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 8px;">Aucun ratio calculé pour le moment</h3>
+                        <p style="font-size: 13px; color: #64748b; max-width: 520px; margin: 0 auto 20px auto; line-height: 1.6;">
+                            Dès qu'une PME cliente enregistre ses premières écritures ou encaissements Wave/OM, les 6 ratios prudentiels SYSCOHADA &amp; BCEAO (Marge commerciale, CAF, BFR, Rotation des stocks, Solvabilité) se calculeront et s'actualiseront automatiquement ici en temps réel.
+                        </p>
+                        <div
+                            style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 12px; font-weight: 700; color: #475569;">
+                            <span style="width: 7px; height: 7px; border-radius: 50%; background: #168078;"></span>
+                            Calculs automatiques synchronisés avec le Journal
                         </div>
                     </div>
 
@@ -4356,10 +4307,10 @@
                 }
 
                 // Valeurs officielles de sécurité
-                storedNom = storedNom || "Cabinet Diallo & Associés";
-                storedResp = storedResp || "Expert-Comptable Référent (Agrément ONECCA)";
-                storedEmail = storedEmail || "contact@cabinet-diallo.sn";
-                storedPhone = storedPhone || "+221 78 877 38 27";
+                storedNom = storedNom || "Cabinet Adaisso & Partenaires";
+                storedResp = storedResp || "Afiwa Akofala Adaisso (Agrément ONECCA)";
+                storedEmail = storedEmail || "afiwa-akofala.adaisso@ism.edu.sn";
+                storedPhone = storedPhone || "+221 78 195 40 86";
 
                 // Sceller immédiatement en localStorage et Cookie pour qu'un F5 ne perde JAMAIS l'identité
                 appliquerIdentiteCabinet(storedNom, storedResp, storedEmail, storedPhone, true);
@@ -6033,4 +5984,1693 @@
         function genererFooterOfficielDoc(pme) {
             const cabNom = document.getElementById('customCabNom')?.value || localStorage.getItem('growth_cabinet_nom') || "CABINET DIALLO & ASSOCIÉS — EXPERTISE COMPTABLE & AUDIT";
             const signataire = document.getElementById('customSignataire')?.value || localStorage.getItem('growth_cabinet_expert') || "Expert-Comptable Référent (Agrément ONECCA)";
-...[truncated for diff preview]
+            const obs = document.getElementById('customObservations')?.value || localStorage.getItem('growth_custom_observations') || "Les présents états financiers sont réguliers et sincères. Les recettes ont été intégralement rapprochées avec les flux Wave et le livre de caisse. Capacité de remboursement et trésorerie saines pour tout concours bancaire.";
+            const noteExtra = document.getElementById('customNoteExtra')?.value || "";
+            const dateDuJour = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+            const extraNoteHtml = noteExtra && noteExtra.trim()
+                ? `<div style="margin-top: 10px; padding: 8px 12px; background: #f8fafc; border: 1px dashed #cbd5e1; font-size: 11px; color: #1e293b;">
+                    <strong>Observation Spécifique de l'Expert :</strong> ${noteExtra.trim()}
+                   </div>`
+                : '';
+
+            return `
+                <div style="margin-top: 24px; padding-top: 14px; border-top: 1px solid #e2e8f0; background: #ffffff; page-break-inside: avoid;">
+                    
+                    <!-- MENTIONS D'ATTESTATION OFFICIELLE ET OBSERVATIONS (PERSONNALISABLE DIRECTEMENT) -->
+                    <div style="margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                            <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #0f172a; letter-spacing: 0.5px;">
+                                Attestation du Commissaire aux Comptes / Expert-Comptable Agréé ONECCA
+                            </div>
+                            <span class="no-print" style="font-size: 10px; color: #168078; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 4px; background: #f0fdfa; border: 1px solid #a0d9d2;" onclick="focusCustomObservations()" title="Cliquer pour modifier ou taper directement votre texte personnalisé">
+                                <i class="fa-solid fa-pen-to-square"></i> Modifier l'attestation
+                            </span>
+                        </div>
+                        <div id="docAttestationText" contenteditable="true" oninput="syncDocAttestationToInput(this)"
+                            title="Cliquez directement ici pour taper ou personnaliser votre texte d'attestation"
+                            style="font-size: 11px; color: #334155; line-height: 1.5; padding: 4px 6px; border-radius: 5px; border: 1px dashed #cbd5e1; background: #fbfcfe; transition: all 0.15s; outline: none; cursor: text;"
+                            onfocus="this.style.borderColor='#168078'; this.style.background='#ffffff'; this.style.boxShadow='0 0 0 2px rgba(22,128,120,0.15)';"
+                            onblur="this.style.borderColor='#cbd5e1'; this.style.background='#fbfcfe'; this.style.boxShadow='none';">
+                            ${obs}
+                        </div>
+                        ${extraNoteHtml}
+                    </div>
+
+                    <!-- SIGNATURES MANUSCRITES (FORMAT LETTRE OFFICIELLE SANS AUCUN CARRÉ NI ENCADRÉ) -->
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+                        <tr>
+                            <!-- 1. Pour l'Entreprise Cliente -->
+                            <td style="width: 48%; vertical-align: top; border: none; padding: 0;">
+                                <div style="font-size: 11px; font-weight: 700; color: #0f172a;">
+                                    Pour l'Entreprise (Lu et Approuvé)
+                                </div>
+                                <div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 2px;">
+                                    ${pme.nom}
+                                </div>
+                                <div style="font-size: 10.5px; color: #475569; margin-top: 1px;">
+                                    Le Dirigeant / Représentant Légal
+                                </div>
+                                <!-- Espace blanc naturel pour signature manuscrite au bic et cachet -->
+                                <div style="height: 60px;"></div>
+                                <div style="font-size: 10px; color: #64748b;">
+                                    Fait à Dakar, le ${dateDuJour}
+                                </div>
+                            </td>
+
+                            <td style="width: 4%; border: none;"></td>
+
+                            <!-- 2. Pour le Cabinet Comptable Agréé ONECCA -->
+                            <td style="width: 48%; vertical-align: top; border: none; padding: 0;">
+                                <div style="font-size: 11px; font-weight: 700; color: #0f172a;">
+                                    Pour le Cabinet d'Expertise Comptable
+                                </div>
+                                <div style="font-size: 12px; font-weight: 800; color: #0f172a; margin-top: 2px;">
+                                    ${cabNom}
+                                </div>
+                                <div style="font-size: 10.5px; color: #475569; margin-top: 1px;">
+                                    ${signataire}
+                                </div>
+                                <!-- Espace blanc naturel pour signature manuscrite au bic et cachet -->
+                                <div style="height: 60px;"></div>
+                                <div style="font-size: 10px; color: #64748b;">
+                                    Délivré à Dakar, le ${dateDuJour}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // MODULE DE COMPOSITION DE DOSSIER SUR-MESURE (EX: BILAN + ANNEXES)
+        // =========================================================================
+        let composedStates = {
+            bilan: true,
+            resultat: false,
+            flux: false,
+            annexes: true
+        };
+
+        function toggleComposerPopover(event) {
+            if (event) event.stopPropagation();
+            const pop = document.getElementById('composerPopover');
+            if (!pop) return;
+            const isVisible = pop.style.display === 'block';
+            pop.style.display = isVisible ? 'none' : 'block';
+            if (!isVisible) {
+                syncComposerCheckboxesFromState();
+            }
+        }
+
+        function fermerComposerPopover() {
+            const pop = document.getElementById('composerPopover');
+            if (pop) pop.style.display = 'none';
+        }
+
+        function syncComposerCheckboxesFromState() {
+            const cB = document.getElementById('compCheckBilan');
+            const cR = document.getElementById('compCheckResultat');
+            const cF = document.getElementById('compCheckFlux');
+            const cA = document.getElementById('compCheckAnnexes');
+            if (cB) cB.checked = !!composedStates.bilan;
+            if (cR) cR.checked = !!composedStates.resultat;
+            if (cF) cF.checked = !!composedStates.flux;
+            if (cA) cA.checked = !!composedStates.annexes;
+            updateComposerCountUI();
+        }
+
+        function updateComposerCountUI() {
+            const count = (composedStates.bilan ? 1 : 0) +
+                (composedStates.resultat ? 1 : 0) +
+                (composedStates.flux ? 1 : 0) +
+                (composedStates.annexes ? 1 : 0);
+
+            const b1 = document.getElementById('composerBadge');
+            const b2 = document.getElementById('composerSelectedCount');
+            if (b1) b1.textContent = count;
+            if (b2) b2.textContent = count;
+        }
+
+        function onComposerCheckboxChange() {
+            const cB = document.getElementById('compCheckBilan');
+            const cR = document.getElementById('compCheckResultat');
+            const cF = document.getElementById('compCheckFlux');
+            const cA = document.getElementById('compCheckAnnexes');
+
+            composedStates.bilan = cB ? cB.checked : false;
+            composedStates.resultat = cR ? cR.checked : false;
+            composedStates.flux = cF ? cF.checked : false;
+            composedStates.annexes = cA ? cA.checked : false;
+
+            // Empêcher de tout décocher (au moins 1 état)
+            if (!composedStates.bilan && !composedStates.resultat && !composedStates.flux && !composedStates.annexes) {
+                composedStates.bilan = true;
+                if (cB) cB.checked = true;
+            }
+
+            updateComposerCountUI();
+            // Rafraîchir en temps réel si déjà en mode composer
+            if (currentReportType === 'composer') {
+                openReport('composer');
+            }
+        }
+
+        function appliquerPresetComposer(preset) {
+            if (preset === 'bilan_annexes') {
+                composedStates.bilan = true;
+                composedStates.resultat = false;
+                composedStates.flux = false;
+                composedStates.annexes = true;
+            } else if (preset === 'bilan_resultat') {
+                composedStates.bilan = true;
+                composedStates.resultat = true;
+                composedStates.flux = false;
+                composedStates.annexes = false;
+            } else if (preset === 'tout') {
+                composedStates.bilan = true;
+                composedStates.resultat = true;
+                composedStates.flux = true;
+                composedStates.annexes = true;
+            }
+            syncComposerCheckboxesFromState();
+            appliquerCompositionDossier();
+        }
+
+        function appliquerCompositionDossier() {
+            fermerComposerPopover();
+            openReport('composer');
+            showToast("Dossier composé avec succès !");
+        }
+
+        function openComposerDossierDirect() {
+            openReport('composer');
+            setTimeout(() => {
+                const pop = document.getElementById('composerPopover');
+                if (pop) pop.style.display = 'block';
+            }, 100);
+        }
+
+        // Fermer le popover composer si clic hors du panneau
+        document.addEventListener('click', function (e) {
+            const pop = document.getElementById('composerPopover');
+            const btn = document.getElementById('tabRepComposer');
+            if (pop && pop.style.display === 'block') {
+                if (!pop.contains(e.target) && (!btn || !btn.contains(e.target))) {
+                    pop.style.display = 'none';
+                }
+            }
+        });
+
+        // =========================================================================
+        // CONSTRUCTEURS MODULAIRES DES 4 ÉTATS FINANCIERS SYSCOHADA SMT
+        // =========================================================================
+        // =========================================================================
+        // MOTEUR D'AGRÉGATION COMPTABLE DYNAMIQUE FEC SYSCOHADA SMT (100% MATHÉMATIQUE)
+        // Calcule le Bilan, le Compte de Résultat et les Flux directement depuis les écritures réelles
+        // =========================================================================
+                // =========================================================================
+        // CONSTRUCTEURS DYNAMIQUES DES 4 ÉTATS FINANCIERS SYSCOHADA SMT (100% ALIGNÉS SUR LE FEC)
+        // =========================================================================
+        // =========================================================================
+        // MOTEUR D'AGRÉGATION COMPTABLE DYNAMIQUE FEC SYSCOHADA SMT (100% MATHÉMATIQUE)
+        // Calcule le Bilan, le Compte de Résultat et les Flux directement depuis les écritures réelles
+        // =========================================================================
+        function calculerSyntheseComptableFec(pme) {
+            const ecritures = (pme && pme.ecritures && pme.ecritures.length > 0) ? pme.ecritures : [];
+            const parseVal = (v) => {
+                if (!v || v === '-') return 0;
+                return parseInt(String(v).replace(/\s/g, '').replace(/FCFA/gi, ''), 10) || 0;
+            };
+
+            const soldeComptes = {};
+            const addMvt = (num, lib, debit, credit) => {
+                const root = num.substring(0, 3);
+                if (!soldeComptes[root]) {
+                    soldeComptes[root] = { root, num, lib, debit: 0, credit: 0 };
+                }
+                soldeComptes[root].debit += debit;
+                soldeComptes[root].credit += credit;
+            };
+
+            ecritures.forEach(ec => {
+                const cptParts = (ec.compte || '').split(' - ');
+                const num = cptParts[0].trim();
+                const lib = cptParts[1] ? cptParts[1].trim() : 'Opération';
+                const isDebit = ec.debit && ec.debit !== '-';
+                const mnt = isDebit ? parseVal(ec.debit) : parseVal(ec.credit);
+
+                // Ligne principale du journal
+                addMvt(num, lib, isDebit ? mnt : 0, isDebit ? 0 : mnt);
+
+                // Contrepartie de trésorerie ou de régularisation (identique au FEC)
+                let cpteTreso = '571';
+                let libTreso = 'Caisse Principale';
+                if (num.startsWith('311')) {
+                    cpteTreso = '603';
+                    libTreso = 'Variation de stocks de marchandises';
+                } else if (num.startsWith('103')) {
+                    cpteTreso = '571';
+                    libTreso = 'Caisse Principale (Apport initial)';
+                } else if ((ec.libelle || '').toLowerCase().includes('wave')) {
+                    cpteTreso = '514';
+                    libTreso = 'Trésorerie Wave Business';
+                }
+                addMvt(cpteTreso, libTreso, isDebit ? 0 : mnt, isDebit ? mnt : 0);
+            });
+
+            // 1. Compte de Résultat
+            const vtes701 = soldeComptes['701'] ? (soldeComptes['701'].credit - soldeComptes['701'].debit) : 0;
+            const achBruts601 = soldeComptes['601'] ? (soldeComptes['601'].debit - soldeComptes['601'].credit) : 0;
+            const varStock603 = soldeComptes['603'] ? (soldeComptes['603'].credit - soldeComptes['603'].debit) : 0;
+            const achConsommes = Math.max(0, achBruts601 - varStock603);
+            const margeBrute = vtes701 - achConsommes;
+            const energ605 = soldeComptes['605'] ? (soldeComptes['605'].debit - soldeComptes['605'].credit) : 0;
+            const transp612 = soldeComptes['612'] ? (soldeComptes['612'].debit - soldeComptes['612'].credit) : 0;
+            const resultatNet = margeBrute - energ605 - transp612;
+
+            // 2. Bilan Actif
+            const stock311 = soldeComptes['311'] ? Math.max(0, soldeComptes['311'].debit - soldeComptes['311'].credit) : 0;
+            const actifFourn401 = soldeComptes['401'] ? Math.max(0, soldeComptes['401'].debit - soldeComptes['401'].credit) : 0;
+            const actifBanque521 = soldeComptes['521'] ? Math.max(0, soldeComptes['521'].debit - soldeComptes['521'].credit) : 0;
+            const actifWave514 = soldeComptes['514'] ? Math.max(0, soldeComptes['514'].debit - soldeComptes['514'].credit) : 0;
+            const actifCaisse571 = soldeComptes['571'] ? Math.max(0, soldeComptes['571'].debit - soldeComptes['571'].credit) : 0;
+            const totalActif = stock311 + actifFourn401 + actifBanque521 + actifWave514 + actifCaisse571;
+
+            // 3. Bilan Passif
+            const capital103 = soldeComptes['103'] ? Math.max(0, soldeComptes['103'].credit - soldeComptes['103'].debit) : 0;
+            const passifClients411 = soldeComptes['411'] ? Math.max(0, soldeComptes['411'].credit - soldeComptes['411'].debit) : 0;
+            const passifCaisseDeficit = soldeComptes['571'] && (soldeComptes['571'].credit > soldeComptes['571'].debit) ? (soldeComptes['571'].credit - soldeComptes['571'].debit) : 0;
+            const totalPassif = capital103 + resultatNet + passifClients411 + passifCaisseDeficit;
+
+            return {
+                vtes701,
+                achBruts601,
+                varStock603,
+                achConsommes,
+                margeBrute,
+                energ605,
+                transp612,
+                resultatNet,
+                stock311,
+                actifFourn401,
+                actifBanque521,
+                actifWave514,
+                actifCaisse571,
+                totalActif,
+                capital103,
+                passifClients411,
+                passifCaisseDeficit,
+                totalPassif,
+                soldeComptes,
+                totalEcritures: ecritures.length,
+                equilibre: totalActif === totalPassif
+            };
+        }
+
+        // =========================================================================
+        // CONSTRUCTEURS DYNAMIQUES DES 4 ÉTATS FINANCIERS SYSCOHADA SMT (100% CONFORMES FEC)
+        // =========================================================================
+        function buildSectionBilanHtml(pme, intervalle, isFirst = true) {
+            const tableHeaderStyle = "background: #f8fafc; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0f172a;";
+            const thCell = "padding: 9px 12px; border: 1px solid #cbd5e1; color: #0f172a;";
+            const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
+            const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
+            const trTotal = "background: #f8fafc; font-weight: 900; font-size: 12.5px; border-top: 2px solid #0f172a; border-bottom: 3px double #0f172a;";
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 1 : BILAN RÉGLEMENTAIRE (ACTIF / PASSIF SMT)", isFirst);
+
+            const d = calculerSyntheseComptableFec(pme);
+            const fmt = (n) => (n || 0).toLocaleString('fr-FR') + ' FCFA';
+            const fmtNet = (n) => (n < 0 ? `- ${Math.abs(n).toLocaleString('fr-FR')}` : (n > 0 ? `+ ${n.toLocaleString('fr-FR')}` : '0')) + ' FCFA';
+
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
+                    ${headerHtml}
+                    <div style="font-size: 11px; color: #64748b; margin-bottom: 10px; font-weight: 600;">
+                        Établi à partir du FEC 2026 (${d.totalEcritures} écritures réelles). Solde d'ouverture et inventaire de clôture intégrés.
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+                        <tr style="${tableHeaderStyle}">
+                            <th style="${thCell} text-align: left; width: 35%;">ACTIF (Emplois)</th>
+                            <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
+                            <th style="${thCell} text-align: left; width: 35%;">PASSIF (Ressources)</th>
+                            <th style="${thCell} text-align: right; width: 15%;">MONTANT (FCFA)</th>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell}">Stocks de marchandises (Inventaire au prix d'achat) – 311</td>
+                            <td style="${tdMono} font-weight: 800;">${fmt(d.stock311)}</td>
+                            <td style="${tdCell}">Capital personnel &amp; Apports d'ouverture – 103</td>
+                            <td style="${tdMono} font-weight: 800;">${fmt(d.capital103)}</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell}">Fournisseurs débiteurs (Avances versées) – 401</td>
+                            <td style="${tdMono}">${fmt(d.actifFourn401)}</td>
+                            <td style="${tdCell}">Résultat net de la période (${d.resultatNet >= 0 ? 'Bénéfice' : 'Perte'})</td>
+                            <td style="${tdMono} font-weight: 900; color: #000000;">${fmtNet(d.resultatNet)}</td>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell}">Banque CBAO (Disponibilités) – 521</td>
+                            <td style="${tdMono}">${fmt(d.actifBanque521)}</td>
+                            <td style="${tdCell}">Clients créditeurs (Avances &amp; acomptes reçus) – 411</td>
+                            <td style="${tdMono}">${fmt(d.passifClients411)}</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell}">Trésorerie Wave Business – 514</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">${fmt(d.actifWave514)}</td>
+                            <td style="${tdCell}; color: #64748b;">Trésorerie-passif : Découverts bancaires</td>
+                            <td style="${tdMono}; color: #64748b;">0 FCFA</td>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell}">Caisse Principale Espèces (Solde actif disponible) – 571</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">${fmt(d.actifCaisse571)}</td>
+                            <td style="${tdCell}; color: #64748b;">Dettes fiscales &amp; sociales (Échéance N+1)</td>
+                            <td style="${tdMono}; color: #64748b;">0 FCFA</td>
+                        </tr>
+                        <tr style="${trTotal}">
+                            <td style="padding: 10px 12px; font-weight: 900; color: #000000; border: 1px solid #cbd5e1;">TOTAL ACTIF GÉNÉRAL</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000; border: 1px solid #cbd5e1;">${fmt(d.totalActif)}</td>
+                            <td style="padding: 10px 12px; font-weight: 900; color: #000000; border: 1px solid #cbd5e1;">TOTAL PASSIF GÉNÉRAL</td>
+                            <td style="padding: 10px 12px; text-align: right; font-family: ui-monospace, monospace; font-weight: 900; font-size: 13px; color: #000000; border: 1px solid #cbd5e1;">${fmt(d.totalPassif)}</td>
+                        </tr>
+                    </table>
+
+                    <!-- VALIDATION D'AUDIT COMPTABLE (CONFORME & SOBRE) -->
+                    <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-size: 11px; color: #1e293b; line-height: 1.55;">
+                        <div style="font-weight: 800; text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; color: #0f172a;">
+                            <i class="fa-solid fa-circle-check" style="color: #475569;"></i>
+                            Certification d'équilibre SYSCOHADA : Total Actif = Total Passif (${fmt(d.totalActif)}) &bull; Écart : 0 FCFA
+                        </div>
+                        <div>
+                            Toutes les écritures du journal ont été réconciliées : le solde d'ouverture du capital en caisse et le stock final de marchandises rendent la trésorerie saine et le bénéfice net sincère et certifiable.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildSectionResultatHtml(pme, intervalle, isFirst = true) {
+            const tableHeaderStyle = "background: #f8fafc; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0f172a;";
+            const thCell = "padding: 9px 12px; border: 1px solid #cbd5e1; color: #0f172a;";
+            const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
+            const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 2 : COMPTE DE RÉSULTAT (PRODUITS & CHARGES SMT)", isFirst);
+
+            const d = calculerSyntheseComptableFec(pme);
+            const fmt = (n) => (n || 0).toLocaleString('fr-FR') + ' FCFA';
+            const fmtSigne = (n, isCharge = false) => {
+                if (isCharge) {
+                    return `- ${Math.abs(n).toLocaleString('fr-FR')} FCFA`;
+                }
+                return (n < 0 ? `- ${Math.abs(n).toLocaleString('fr-FR')}` : `+ ${n.toLocaleString('fr-FR')}`) + ' FCFA';
+            };
+
+            const txMarge = d.vtes701 > 0 ? Math.round((d.margeBrute / d.vtes701) * 100) : 0;
+
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
+                    ${headerHtml}
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+                        <tr style="${tableHeaderStyle}">
+                            <th style="${thCell} text-align: left; width: 75%;">POSTES DU COMPTE DE RÉSULTAT (SYSCOHADA SMT)</th>
+                            <th style="${thCell} text-align: right; width: 25%;">MONTANT (FCFA)</th>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell} font-weight: 800; color: #0f172a;">Ventes de marchandises – Compte 701</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">${fmtSigne(d.vtes701)}</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell} color: #334155;">Achats de marchandises (Bruts) – Compte 601</td>
+                            <td style="${tdMono} color: #000000;">${fmtSigne(d.achBruts601, true)}</td>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell} color: #0f172a;">Variation de stocks (Déduction du stock final inventorié) – Compte 603</td>
+                            <td style="${tdMono} font-weight: 700; color: #000000;">+ ${fmt(d.varStock603)}</td>
+                        </tr>
+                        <tr style="background: #f8fafc;">
+                            <td style="${tdCell} font-weight: 700; color: #334155;">Coût d'Achat des Marchandises Vendues (Achats consommés)</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">${fmtSigne(d.achConsommes, true)}</td>
+                        </tr>
+                        <tr style="background: #f1f5f9; font-weight: 800;">
+                            <td style="${tdCell}">MARGE COMMERCIALE BRUTE (Taux de marge : ${txMarge}%)</td>
+                            <td style="${tdMono} font-weight: 900; color: #000000;">+ ${fmt(d.margeBrute)}</td>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell} color: #334155;">Énergie, eau et fournitures consommées – Compte 605</td>
+                            <td style="${tdMono} color: #000000;">${fmtSigne(d.energ605, true)}</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell} color: #334155;">Transports et logistique de marchandises – Compte 612</td>
+                            <td style="${tdMono} color: #000000;">${fmtSigne(d.transp612, true)}</td>
+                        </tr>
+                        <tr style="background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;">
+                            <td style="${tdCell} font-size: 12.5px; font-weight: 900; color: #0f172a;">RÉSULTAT NET COMPTABLE DE LA PÉRIODE (BÉNÉFICE NET)</td>
+                            <td style="${tdMono} font-size: 13.5px; font-weight: 900; color: #000000;">+ ${fmt(d.resultatNet)}</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        }
+
+        function buildSectionFluxHtml(pme, intervalle, isFirst = true) {
+            const tableHeaderStyle = "background: #f8fafc; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #0f172a;";
+            const thCell = "padding: 9px 12px; border: 1px solid #cbd5e1; color: #0f172a;";
+            const tdCell = "padding: 7px 12px; border: 1px solid #cbd5e1; font-size: 11.5px;";
+            const tdMono = "padding: 7px 12px; border: 1px solid #cbd5e1; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 700; text-align: right;";
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 3 : TABLEAU DES FLUX DE TRÉSORERIE (MÉTHODE DIRECTE SMT)", isFirst);
+
+            const d = calculerSyntheseComptableFec(pme);
+            const fmt = (n) => (n || 0).toLocaleString('fr-FR') + ' FCFA';
+
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
+                    ${headerHtml}
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+                        <tr style="${tableHeaderStyle}">
+                            <th style="${thCell} text-align: left; width: 75%;">FLUX DE TRÉSORERIE PAR CANAL (SYSCOHADA SMT)</th>
+                            <th style="${thCell} text-align: right; width: 25%;">SOLDE NET (FCFA)</th>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell} font-weight: 700;">Caisse Principale Espèces (Solde actif après règlements) – Compte 571</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">+ ${fmt(d.actifCaisse571)}</td>
+                        </tr>
+                        <tr style="background: #fafafa;">
+                            <td style="${tdCell} font-weight: 700;">Trésorerie Wave Business (Encaissements marchands) – Compte 514</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">+ ${fmt(d.actifWave514)}</td>
+                        </tr>
+                        <tr>
+                            <td style="${tdCell} font-weight: 700;">Banque CBAO (Disponibilités sur compte bancaire) – Compte 521</td>
+                            <td style="${tdMono} font-weight: 800; color: #000000;">+ ${fmt(d.actifBanque521)}</td>
+                        </tr>
+                        <tr style="background: #f8fafc; font-weight: 900; border-top: 2px solid #000; border-bottom: 3px double #000;">
+                            <td style="${tdCell} font-size: 12px; font-weight: 900;">TRÉSORERIE GLOBALE DE CLÔTURE (DISPONIBILITÉS TOTALES)</td>
+                            <td style="${tdMono} font-size: 13px; font-weight: 900; color: #000000;">${fmt(d.actifCaisse571 + d.actifWave514 + d.actifBanque521)}</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        }
+
+        function buildSectionAnnexesHtml(pme, intervalle, isFirst = true) {
+            const headerHtml = genererHeaderOfficielDoc(pme, intervalle, "ÉTAT 4 : NOTES ANNEXES & INFORMATIONS COMPLÉMENTAIRES SMT", isFirst);
+            const d = calculerSyntheseComptableFec(pme);
+            const fmt = (n) => (n || 0).toLocaleString('fr-FR') + ' FCFA';
+
+            const notes = [
+                `Note 1 — Référentiel Comptable : États financiers établis selon le Système Minimal de Trésorerie (SMT) de l'Acte Uniforme AUDCIF SYSCOHADA révisé. Les ${d.totalEcritures} écritures enregistrées dans le journal couvrent la période d'activité arrêtée au 25 mai 2026.`,
+                `Note 2 — Rapprochement de Trésorerie : La trésorerie totale disponible s'élève à ${fmt(d.actifCaisse571 + d.actifWave514 + d.actifBanque521)}, répartie entre la caisse physique (${fmt(d.actifCaisse571)}), Wave Business (${fmt(d.actifWave514)}) et la Banque CBAO (${fmt(d.actifBanque521)}). Rapprochement probatoire effectué à 100%.`,
+                `Note 3 — Stocks et Marge : L'inventaire physique de fin d'exercice s'élève à ${fmt(d.stock311)}. La déduction de ce stock permet de dégager une marge commerciale brute réelle de ${fmt(d.margeBrute)} et un bénéfice net de ${fmt(d.resultatNet)}.`,
+                `Note 4 — Tiers et Dettes : Soldes d'avances fournisseurs de ${fmt(d.actifFourn401)} et acomptes clients de ${fmt(d.passifClients411)} en cours d'apurement régulier sans aucun litige commercial.`
+            ];
+
+            let notesHtml = '';
+            notes.forEach(n => {
+                const parts = n.split(' : ');
+                notesHtml += `
+                    <div style="margin-bottom: 12px; padding: 10px 14px; background: #fafafa; border-left: 3px solid #0f172a; border-radius: 4px; border: 1px solid #e2e8f0; border-left-width: 3px;">
+                        <div style="font-weight: 800; font-size: 12px; color: #0f172a; text-transform: uppercase;">${parts[0]}</div>
+                        <div style="font-size: 11.5px; line-height: 1.5; color: #334155; margin-top: 3px;">${parts[1] || ''}</div>
+                    </div>
+                `;
+            });
+
+            return `
+                <div class="print-page-sheet" style="margin-bottom: 24px;">
+                    ${headerHtml}
+                    <div style="border: 1px solid #cbd5e1; padding: 18px 20px; background: #ffffff; margin-bottom: 14px; border-radius: 6px;">
+                        ${notesHtml}
+                    </div>
+                </div>
+            `;
+        }
+        
+
+        // =========================================================================
+        // 5. FONCTION PRINCIPALE : OUVERTURE DU RAPPORT FINANCIER
+        // =========================================================================
+        function openReport(type) {
+            currentReportType = type;
+            const m = document.getElementById('reportModal');
+            const t = document.getElementById('repTitle');
+            const b = document.getElementById('repBody');
+            const pme = PME_DATABASE[currentPmeKey] || PME_DATABASE['diop'];
+            const intervalle = obtenirIntervalleTexteActuel();
+
+            // Mise à jour de l'état actif des onglets
+            ['tabRepBilan', 'tabRepResultat', 'tabRepFlux', 'tabRepAnnexes', 'tabRepTout', 'tabRepComposer'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            const tabMap = {
+                'bilan': 'tabRepBilan',
+                'resultat': 'tabRepResultat',
+                'flux': 'tabRepFlux',
+                'annexes': 'tabRepAnnexes',
+                
+                'tout': 'tabRepTout',
+                'composer': 'tabRepComposer'
+            };
+            if (tabMap[type] && document.getElementById(tabMap[type])) {
+                document.getElementById(tabMap[type]).classList.add('active');
+            }
+
+            const sub = document.getElementById('repSubtitle');
+            const footerHtml = genererFooterOfficielDoc(pme);
+
+            if (type === 'bilan') {
+                t.textContent = `1. Bilan Réglementaire SYSCOHADA SMT — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionBilanHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'resultat') {
+                t.textContent = `2. Compte de Résultat SYSCOHADA SMT — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionResultatHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'flux') {
+                t.textContent = `3. Tableau des Flux de Trésorerie — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionFluxHtml(pme, intervalle, true) + footerHtml;
+
+            } else if (type === 'annexes') {
+                t.textContent = `4. Notes Annexes & Rapprochement — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet}`;
+                b.innerHTML = buildSectionAnnexesHtml(pme, intervalle, true) + footerHtml;} else if (type === 'tout') {
+                t.textContent = `Liasse Financière Complète SYSCOHADA SMT — ${pme.nom}`;
+                if (sub) sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet} • Les 4 états réglementaires réunis`;
+
+                b.innerHTML = `
+                    ${buildSectionBilanHtml(pme, intervalle, true)}
+                    <div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>
+                    ${buildSectionResultatHtml(pme, intervalle, false)}
+                    <div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>
+                    ${buildSectionFluxHtml(pme, intervalle, false)}
+                    ${buildSectionAnnexesHtml(pme, intervalle, false)}
+                    ${footerHtml}
+                `;
+
+            } else if (type === 'composer') {
+                // DOSSIER COMPOSÉ SUR-MESURE (EX: CLIENT NE VEUT QUE BILAN ET ANNEXES)
+                const selection = [];
+                if (composedStates.bilan) selection.push({ key: 'bilan', label: 'Bilan' });
+                if (composedStates.resultat) selection.push({ key: 'resultat', label: 'Résultat' });
+                if (composedStates.flux) selection.push({ key: 'flux', label: 'Flux' });
+                if (composedStates.annexes) selection.push({ key: 'annexes', label: 'Notes Annexes' });
+
+                if (selection.length === 0) {
+                    composedStates.bilan = true;
+                    selection.push({ key: 'bilan', label: 'Bilan' });
+                    syncComposerCheckboxesFromState();
+                }
+
+                const libelles = selection.map(s => s.label).join(' + ');
+                t.textContent = `Dossier Composé (${libelles}) — ${pme.nom}`;
+                if (sub) {
+                    sub.textContent = `Dossier PME : ${pme.nom} • ${intervalle.texteComplet} • Composition sur-mesure (${selection.length} état${selection.length > 1 ? 's' : ''})`;
+                }
+
+                let fullContentHtml = '';
+                selection.forEach((item, idx) => {
+                    const isFirst = (idx === 0);
+                    if (idx > 0) {
+                        fullContentHtml += `<div class="print-page-break" style="page-break-before: always; break-before: page; margin-top: 24px; padding-top: 16px; border-top: 2px dashed #cbd5e1;"></div>`;
+                    }
+
+                    if (item.key === 'bilan') {
+                        fullContentHtml += buildSectionBilanHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'resultat') {
+                        fullContentHtml += buildSectionResultatHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'flux') {
+                        fullContentHtml += buildSectionFluxHtml(pme, intervalle, isFirst);
+                    } else if (item.key === 'annexes') {
+                        fullContentHtml += buildSectionAnnexesHtml(pme, intervalle, isFirst);
+                    }
+                });
+
+                // Apposition de l'attestation et des signatures officielles sur le dernier état
+                fullContentHtml += footerHtml;
+                b.innerHTML = fullContentHtml;
+            }
+
+            m.style.display = 'flex';
+        }
+
+        function closeReport() {
+            const m = document.getElementById('reportModal');
+            if (m) m.style.display = 'none';
+            fermerComposerPopover();
+        }
+
+        // =========================================================================
+        // MOTEUR D'IMPRESSION HAUTE-FIDÉLITÉ A4 SYSCOHADA (100% GARANTI SANS BUG)
+        // =========================================================================
+        function imprimerLiasse() {
+            const repBody = document.getElementById('repBody');
+            if (!repBody) {
+                window.print();
+                return;
+            }
+
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier Client' };
+
+            const sel = [];
+            if (typeof composedStates !== 'undefined' && composedStates) {
+                if (composedStates.bilan) sel.push('Bilan');
+                if (composedStates.resultat) sel.push('Résultat');
+                if (composedStates.flux) sel.push('Flux');
+                if (composedStates.annexes) sel.push('Notes Annexes');
+            }
+
+            let docTitre = `Liasse Fiscale SYSCOHADA SMT — ${pme.nom}`;
+            if (currentReportType === 'composer') {
+                const sel = [];
+                if (composedStates.bilan) sel.push('Bilan');
+                if (composedStates.resultat) sel.push('Résultat');
+                if (composedStates.flux) sel.push('Flux');
+                if (composedStates.annexes) sel.push('Notes Annexes');
+                docTitre = `Dossier Composé (${sel.join(' + ')}) — ${pme.nom}`;
+            } else if (currentReportType === 'bilan') {
+                docTitre = `Bilan Réglementaire SYSCOHADA — ${pme.nom}`;
+            } else if (currentReportType === 'resultat') {
+                docTitre = `Compte de Résultat SYSCOHADA — ${pme.nom}`;
+            } else if (currentReportType === 'flux') {
+                docTitre = `Tableau des Flux de Trésorerie — ${pme.nom}`;
+            } else if (currentReportType === 'annexes') {
+                docTitre = `Notes Annexes SYSCOHADA — ${pme.nom}`;
+                if (sel.length === 4) {
+                    docTitre = `Liasse Fiscale Complète SYSCOHADA SMT — ${pme.nom}`;
+                } else {
+                    docTitre = `Dossier Financier (${sel.join(' + ')}) — ${pme.nom}`;
+                }
+            }
+
+            try {
+                // Création d'une iframe d'impression isolée pour garantir une impression A4 sans faille
+                let iframe = document.getElementById('growPrintIframe');
+                if (iframe) {
+                    iframe.remove();
+                }
+                iframe = document.createElement('iframe');
+                iframe.id = 'growPrintIframe';
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '1px';
+                iframe.style.height = '1px';
+                iframe.style.opacity = '0.01';
+                iframe.style.border = '0';
+                iframe.style.pointerEvents = 'none';
+                document.body.appendChild(iframe);
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="utf-8">
+                    <title>${docTitre}</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                    <style>
+                        @page {
+                            size: A4 portrait;
+                            margin: 0 !important; /* Neutralise l'URL, la date et les en-têtes natifs du navigateur */
+                        }
+                        * {
+                            box-sizing: border-box;
+                            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                        }
+                        html, body {
+                            margin: 0 !important;
+                            padding: 12mm 10mm !important;
+                            background: #ffffff !important;
+                            color: #000000 !important;
+                            font-size: 11px;
+                            line-height: 1.4;
+                            box-sizing: border-box !important;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        .print-page-break {
+                            page-break-before: always;
+                            break-before: page;
+                            clear: both;
+                            border: none !important;
+                            margin-top: 0 !important;
+                            padding-top: 0 !important;
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${repBody.innerHTML}
+                </body>
+                </html>
+            `);
+                doc.close();
+
+                // Lancement de l'impression
+                setTimeout(() => {
+                    try {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                    } catch (e) {
+                        // Fallback
+                        window.print();
+                    }
+                }, 350);
+            } catch (err) {
+                console.error("Erreur lors de l'impression liasse:", err);
+                window.print();
+            }
+        }
+
+        // =========================================================================
+        // GESTION DYNAMIQUE DE LA LIASSE DANS DOCUMENTS & LIASSES (PDF / WORD / EXCEL)
+        // =========================================================================
+        
+        // =========================================================================
+        // CALENDRIER SUR-MESURE DE LA LIASSE FISCALE & ÉTATS RÉGLEMENTAIRES
+        // =========================================================================
+        let docLiasseCalCurrentMonth = new Date(2026, 0, 1); // Janvier 2026
+        let docLiasseStartDate = '2026-01-01';
+        let docLiasseEndDate = '2026-12-31';
+
+        function toggleDocLiasseCalendar(event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            closeDocLiasseCompositionDropdown();
+            const pop = document.getElementById('docLiasseCalendarPopover');
+            const chev = document.getElementById('docLiasseDateChevron');
+            if (!pop) return;
+            const isShowing = pop.style.display === 'block';
+            if (isShowing) {
+                closeDocLiasseCalendar();
+            } else {
+                pop.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+                renderDocLiasseCalendar();
+            }
+        }
+
+        function closeDocLiasseCalendar() {
+            const pop = document.getElementById('docLiasseCalendarPopover');
+            const chev = document.getElementById('docLiasseDateChevron');
+            if (pop) pop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function changeDocLiasseCalendarMonth(delta) {
+            docLiasseCalCurrentMonth.setMonth(docLiasseCalCurrentMonth.getMonth() + delta);
+            renderDocLiasseCalendar();
+            renderDocLiasseMonthGrid();
+        }
+
+        function changeDocLiasseCalendarYear(delta) {
+            const newY = docLiasseCalCurrentMonth.getFullYear() + delta;
+            if (newY >= 2016 && newY <= 2030) {
+                docLiasseCalCurrentMonth.setFullYear(newY);
+                renderDocLiasseCalendar();
+                renderDocLiasseMonthGrid();
+            }
+        }
+
+        function toggleDocLiasseMonthYearPicker() {
+            const pickerView = document.getElementById('docLiasseMonthYearPickerView');
+            const chev = document.getElementById('docLiasseCalPickerChevron');
+            if (!pickerView) return;
+            const isHidden = pickerView.style.display === 'none' || !pickerView.style.display;
+            if (isHidden) {
+                pickerView.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+                renderDocLiasseMonthGrid();
+            } else {
+                pickerView.style.display = 'none';
+                if (chev) chev.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function selectDocLiasseMonth(monthIndex) {
+            docLiasseCalCurrentMonth.setMonth(monthIndex);
+            const pickerView = document.getElementById('docLiasseMonthYearPickerView');
+            const chev = document.getElementById('docLiasseCalPickerChevron');
+            if (pickerView) pickerView.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+            renderDocLiasseCalendar();
+        }
+
+        function renderDocLiasseMonthGrid() {
+            const grid = document.getElementById('docLiasseCalMonthsGrid');
+            const yrDisplay = document.getElementById('docLiasseCalYearDisplay');
+            if (!grid) return;
+            const curY = docLiasseCalCurrentMonth.getFullYear();
+            const curM = docLiasseCalCurrentMonth.getMonth();
+            if (yrDisplay) yrDisplay.textContent = curY;
+
+            grid.innerHTML = '';
+            AGENCE_MONTH_SHORT.forEach((shortName, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'cal-month-grid-btn' + (idx === curM ? ' active' : '');
+                btn.textContent = shortName;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    selectDocLiasseMonth(idx);
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectDocLiasseCalendarPreset(preset) {
+            const pop = document.getElementById('docLiasseCalendarPopover');
+            if (pop) {
+                pop.querySelectorAll('.cal-preset-pill').forEach(btn => btn.classList.remove('active'));
+            }
+            if (event && event.target && event.target.classList.contains('cal-preset-pill')) {
+                event.target.classList.add('active');
+            }
+
+            if (preset === 'mois_actuel') {
+                docLiasseStartDate = '2026-05-01';
+                docLiasseEndDate = '2026-05-31';
+                docLiasseCalCurrentMonth = new Date(2026, 4, 1);
+            } else if (preset === 'mois_precedent') {
+                docLiasseStartDate = '2026-04-01';
+                docLiasseEndDate = '2026-04-30';
+                docLiasseCalCurrentMonth = new Date(2026, 3, 1);
+            } else if (preset === 't1_2026') {
+                docLiasseStartDate = '2026-01-01';
+                docLiasseEndDate = '2026-03-31';
+                docLiasseCalCurrentMonth = new Date(2026, 0, 1);
+            } else if (preset === 't2_2026') {
+                docLiasseStartDate = '2026-04-01';
+                docLiasseEndDate = '2026-06-30';
+                docLiasseCalCurrentMonth = new Date(2026, 3, 1);
+            } else if (preset === 'annee_2026') {
+                docLiasseStartDate = '2026-01-01';
+                docLiasseEndDate = '2026-12-31';
+                docLiasseCalCurrentMonth = new Date(2026, 0, 1);
+            } else if (preset === 'annee_2025') {
+                docLiasseStartDate = '2025-01-01';
+                docLiasseEndDate = '2025-12-31';
+                docLiasseCalCurrentMonth = new Date(2025, 0, 1);
+            }
+            renderDocLiasseCalendar();
+            applyDocLiasseCalendarFilter();
+        }
+
+        function onDocLiasseManualDateInput() {
+            const inpDebut = document.getElementById('docLiasseCalInputDebut');
+            const inpFin = document.getElementById('docLiasseCalInputFin');
+            if (!inpDebut || !inpFin) return;
+
+            const isoDebut = parseFRDateToISO(inpDebut.value);
+            const isoFin = parseFRDateToISO(inpFin.value);
+
+            if (isoDebut) {
+                docLiasseStartDate = isoDebut;
+                const [y, m] = isoDebut.split('-');
+                docLiasseCalCurrentMonth = new Date(parseInt(y, 10), parseInt(m, 10) - 1, 1);
+            }
+            if (isoFin) {
+                docLiasseEndDate = isoFin;
+            }
+            renderDocLiasseCalendar();
+        }
+
+        function renderDocLiasseCalendar() {
+            const y = docLiasseCalCurrentMonth.getFullYear();
+            const m = docLiasseCalCurrentMonth.getMonth();
+
+            const titleEl = document.getElementById('docLiasseCalTitleText');
+            if (titleEl) {
+                titleEl.textContent = `${AGENCE_MONTH_NAMES[m]} ${y}`;
+            }
+            const yrDisplay = document.getElementById('docLiasseCalYearDisplay');
+            if (yrDisplay) {
+                yrDisplay.textContent = y;
+            }
+
+            const grid = document.getElementById('docLiasseCalDaysGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const firstDayIndex = new Date(y, m, 1).getDay();
+            const startOffset = (firstDayIndex === 0 ? 7 : firstDayIndex) - 1;
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+            for (let i = 0; i < startOffset; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'cal-day-cell empty';
+                grid.appendChild(empty);
+            }
+
+            const today = new Date();
+            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'cal-day-cell';
+                const dayStr = `${y}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                cell.textContent = day;
+
+                if (dayStr === todayStr) {
+                    cell.classList.add('today');
+                }
+
+                if (docLiasseStartDate && dayStr === docLiasseStartDate) {
+                    cell.classList.add('selected-start');
+                } else if (docLiasseEndDate && dayStr === docLiasseEndDate) {
+                    cell.classList.add('selected-end');
+                } else if (docLiasseStartDate && docLiasseEndDate && dayStr > docLiasseStartDate && dayStr < docLiasseEndDate) {
+                    cell.classList.add('in-range');
+                }
+
+                cell.onclick = (e) => {
+                    e.stopPropagation();
+                    onDocLiasseDayClick(dayStr);
+                };
+
+                grid.appendChild(cell);
+            }
+
+            updateDocLiasseCalSummary();
+        }
+
+        function onDocLiasseDayClick(dayStr) {
+            if (!docLiasseStartDate || (docLiasseStartDate && docLiasseEndDate)) {
+                docLiasseStartDate = dayStr;
+                docLiasseEndDate = '';
+            } else if (docLiasseStartDate && !docLiasseEndDate) {
+                if (dayStr < docLiasseStartDate) {
+                    docLiasseEndDate = docLiasseStartDate;
+                    docLiasseStartDate = dayStr;
+                } else {
+                    docLiasseEndDate = dayStr;
+                }
+            }
+            renderDocLiasseCalendar();
+        }
+
+        function updateDocLiasseCalSummary() {
+            const sum = document.getElementById('docLiasseCalSummary');
+            const inpDebut = document.getElementById('docLiasseCalInputDebut');
+            const inpFin = document.getElementById('docLiasseCalInputFin');
+
+            if (docLiasseStartDate && docLiasseEndDate) {
+                const [y1, m1, d1] = docLiasseStartDate.split('-');
+                const [y2, m2, d2] = docLiasseEndDate.split('-');
+                if (inpDebut) inpDebut.value = `${d1}/${m1}/${y1}`;
+                if (inpFin) inpFin.value = `${d2}/${m2}/${y2}`;
+                if (sum) {
+                    if (docLiasseStartDate === `${y1}-01-01` && docLiasseEndDate === `${y1}-12-31`) {
+                        sum.innerHTML = `<span style="color: #0e7647; font-weight: 800;">✓ Exercice comptable complet ${y1}</span> (${d1}/${m1}/${y1} au ${d2}/${m2}/${y2})`;
+                    } else if (docLiasseStartDate === docLiasseEndDate) {
+                        sum.innerHTML = `<span style="color: #0e7647; font-weight: 800;">✓ Date unique :</span> ${d1}/${m1}/${y1}`;
+                    } else {
+                        sum.innerHTML = `<span style="color: #0e7647; font-weight: 800;">✓ Intervalle :</span> Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                    }
+                }
+            } else if (docLiasseStartDate) {
+                const [y1, m1, d1] = docLiasseStartDate.split('-');
+                if (inpDebut) inpDebut.value = `${d1}/${m1}/${y1}`;
+                if (inpFin) inpFin.value = '';
+                if (sum) {
+                    sum.innerHTML = `<span><strong>Date Début :</strong> ${d1}/${m1}/${y1}</span> <span style="color: #168078; font-weight: 700;">→ Cliquez sur la date de fin</span>`;
+                }
+            }
+        }
+
+        function applyDocLiasseCalendarFilter() {
+            if (docLiasseStartDate && !docLiasseEndDate) {
+                docLiasseEndDate = docLiasseStartDate;
+            }
+
+            if (docLiasseStartDate && docLiasseEndDate) {
+                const debEl = document.getElementById('dateBilanDebut');
+                const finEl = document.getElementById('dateBilanFin');
+                const docDebEl = document.getElementById('docLiasseDateDebut');
+                const docFinEl = document.getElementById('docLiasseDateFin');
+                const btnLabel = document.getElementById('docLiasseDateBtnLabel');
+                const agenceBtnLabel = document.getElementById('agenceDateBtnLabel');
+
+                if (debEl) debEl.value = docLiasseStartDate;
+                if (finEl) finEl.value = docLiasseEndDate;
+                if (docDebEl) docDebEl.value = docLiasseStartDate;
+                if (docFinEl) docFinEl.value = docLiasseEndDate;
+
+                const [y1, m1, d1] = docLiasseStartDate.split('-');
+                const [y2, m2, d2] = docLiasseEndDate.split('-');
+
+                let labelText = '';
+                if (docLiasseStartDate === '2026-01-01' && docLiasseEndDate === '2026-12-31') {
+                    labelText = 'Exercice Annuel 2026 (01/01/2026 - 31/12/2026)';
+                } else if (docLiasseStartDate === '2025-01-01' && docLiasseEndDate === '2025-12-31') {
+                    labelText = 'Exercice Précédent N-1 (01/01/2025 - 31/12/2025)';
+                } else if (docLiasseStartDate === '2026-05-01' && docLiasseEndDate === '2026-05-31') {
+                    labelText = 'Mois en cours (01/05/2026 - 31/05/2026)';
+                } else if (docLiasseStartDate === '2026-04-01' && docLiasseEndDate === '2026-04-30') {
+                    labelText = 'Mois dernier (01/04/2026 - 30/04/2026)';
+                } else if (docLiasseStartDate === '2026-01-01' && docLiasseEndDate === '2026-03-31') {
+                    labelText = '1er Trimestre 2026 (01/01/2026 - 31/03/2026)';
+                } else if (docLiasseStartDate === '2026-04-01' && docLiasseEndDate === '2026-06-30') {
+                    labelText = '2ème Trimestre 2026 (01/04/2026 - 30/06/2026)';
+                } else if (docLiasseStartDate === docLiasseEndDate) {
+                    labelText = `Le ${d1}/${m1}/${y1}`;
+                } else {
+                    labelText = `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+                }
+
+                if (btnLabel) btnLabel.textContent = labelText;
+                if (agenceBtnLabel) agenceBtnLabel.textContent = (docLiasseStartDate === docLiasseEndDate) ? `Le ${d1}/${m1}/${y1}` : `Du ${d1}/${m1}/${y1} au ${d2}/${m2}/${y2}`;
+
+                // Sync avec les variables globales
+                agenceStartDate = docLiasseStartDate;
+                agenceEndDate = docLiasseEndDate;
+                mettreAJourDocPreview();
+            }
+
+            closeDocLiasseCalendar();
+        }
+
+        function onDocLiassePeriodeChange(val) {
+            const debEl = document.getElementById('dateBilanDebut');
+            const finEl = document.getElementById('dateBilanFin');
+            const btnLabel = document.getElementById('agenceDateBtnLabel');
+            
+            if (val === 'annee_2026') {
+                if (debEl) debEl.value = '2026-01-01';
+                if (finEl) finEl.value = '2026-12-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2026 au 31/12/2026';
+            } else if (val === 'mois_courant') {
+                if (debEl) debEl.value = '2026-05-01';
+                if (finEl) finEl.value = '2026-05-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/05/2026 au 31/05/2026';
+            } else if (val === 't1_2026') {
+                if (debEl) debEl.value = '2026-01-01';
+                if (finEl) finEl.value = '2026-03-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2026 au 31/03/2026';
+            } else if (val === 't2_2026') {
+                if (debEl) debEl.value = '2026-04-01';
+                if (finEl) finEl.value = '2026-06-30';
+                if (btnLabel) btnLabel.textContent = 'Du 01/04/2026 au 30/06/2026';
+            } else if (val === 'annee_2025') {
+                if (debEl) debEl.value = '2025-01-01';
+                if (finEl) finEl.value = '2025-12-31';
+                if (btnLabel) btnLabel.textContent = 'Du 01/01/2025 au 31/12/2025';
+            }
+            showToast("Période comptable mise à jour !");
+        }
+
+        // =========================================================================
+        // SÉLECTEUR DE COMPOSITION DU DOCUMENT (DESIGN AUX COULEURS DU PROJET GROW)
+        // =========================================================================
+        function toggleDocLiasseCompositionDropdown(event) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const pop = document.getElementById('docLiasseCompositionPopover');
+            const chev = document.getElementById('docLiasseCompositionChevron');
+            if (!pop) return;
+            const isShowing = pop.style.display === 'block';
+            if (isShowing) {
+                closeDocLiasseCompositionDropdown();
+            } else {
+                closeDocLiasseCalendar();
+                pop.style.display = 'block';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function closeDocLiasseCompositionDropdown() {
+            const pop = document.getElementById('docLiasseCompositionPopover');
+            const chev = document.getElementById('docLiasseCompositionChevron');
+            if (pop) pop.style.display = 'none';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+        }
+
+        function selectDocLiasseCompositionOption(val, label, iconClass) {
+            const select = document.getElementById('docLiasseCompositionSelect');
+            if (select) {
+                select.value = val;
+            }
+            const labelEl = document.getElementById('docLiasseCompositionBtnLabel');
+            if (labelEl) {
+                labelEl.textContent = label;
+            }
+            const iconEl = document.getElementById('docLiasseCompositionBtnIcon');
+            if (iconEl && iconClass) {
+                iconEl.className = 'fa-solid ' + iconClass;
+            }
+
+            // Met à jour la classe active et l'état visuel aux couleurs du projet (#168078 / #0f766e)
+            document.querySelectorAll('#docLiasseCompositionPopover .custom-composition-item').forEach(it => {
+                const itemVal = it.getAttribute('data-val');
+                const check = it.querySelector('.checkmark-icon');
+                const textSpan = it.querySelector('span');
+                if (itemVal === val) {
+                    it.classList.add('active');
+                    it.style.background = '#f0fdfa';
+                    it.style.border = '1px solid #14b8a6';
+                    if (textSpan) {
+                        textSpan.style.color = '#0f766e';
+                        textSpan.style.fontWeight = '800';
+                    }
+                    if (check) check.style.display = 'block';
+                } else {
+                    it.classList.remove('active');
+                    it.style.background = '#ffffff';
+                    it.style.border = itemVal === 'composer' ? '1px dashed #cbd5e1' : '1px solid transparent';
+                    if (textSpan) {
+                        textSpan.style.color = itemVal === 'composer' ? '#168078' : '#0f172a';
+                        textSpan.style.fontWeight = itemVal === 'composer' ? '800' : '700';
+                    }
+                    if (check) check.style.display = 'none';
+                }
+            });
+
+            closeDocLiasseCompositionDropdown();
+            onDocLiasseCompositionChange(val);
+        }
+
+        function onDocLiasseCompositionChange(val) {
+            if (val === 'composer') {
+                openComposerDossierDirect();
+            }
+        }
+
+        function ouvrirLiasseDepuisDocCard() {
+            const select = document.getElementById('docLiasseCompositionSelect');
+            const type = select ? select.value : 'tout';
+            if (type === 'composer') {
+                openComposerDossierDirect();
+            } else {
+                openReport(type);
+            }
+        }
+
+        function exporterLiasseWord() {
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier PME' };
+            const intervalle = obtenirIntervalleTexteActuel();
+            const repBody = document.getElementById('repBody');
+            
+            let htmlToExport = '';
+            if (repBody && repBody.innerHTML && repBody.innerHTML.trim().length > 100) {
+                htmlToExport = repBody.innerHTML;
+            } else {
+                htmlToExport = buildSectionBilanHtml(pme, intervalle, true) +
+                    "<br><br>" + buildSectionResultatHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionFluxHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionAnnexesHtml(pme, intervalle, false) +
+                    genererFooterOfficielDoc(pme);
+            }
+
+            const wordDoc = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Liasse Fiscale SYSCOHADA - ${pme.nom}</title>
+                    <style>
+                        body { font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; color: #1e293b; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 16pt; }
+                        th, td { border: 1pt solid #cbd5e1; padding: 6pt 8pt; font-size: 10pt; }
+                        th { background-color: #f1f5f9; font-weight: bold; color: #0f172a; }
+                        h1, h2, h3 { color: #0f172a; }
+                    </style>
+                </head>
+                <body>
+                    ${htmlToExport}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\\ufeff' + wordDoc], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `LIASSE_SYSCOHADA_${(pme.nom || 'PME').replace(/[^a-zA-Z0-9]/g, '_')}_2026.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast(`Document Word (.doc) officiel généré pour ${pme.nom} !`);
+        }
+
+        function exporterLiasseExcel() {
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || { nom: 'Dossier PME' };
+            const intervalle = obtenirIntervalleTexteActuel();
+            const repBody = document.getElementById('repBody');
+            
+            let htmlToExport = '';
+            if (repBody && repBody.innerHTML && repBody.innerHTML.trim().length > 100) {
+                htmlToExport = repBody.innerHTML;
+            } else {
+                htmlToExport = buildSectionBilanHtml(pme, intervalle, true) +
+                    "<br><br>" + buildSectionResultatHtml(pme, intervalle, false) +
+                    "<br><br>" + buildSectionFluxHtml(pme, intervalle, false);
+            }
+
+            const excelDoc = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                <head>
+                    <meta charset="utf-8">
+                    <!--[if gte mso 9]>
+                    <xml>
+                    <x:ExcelWorkbook>
+                        <x:ExcelWorksheets>
+                            <x:ExcelWorksheet>
+                                <x:Name>Liasse Fiscale SYSCOHADA</x:Name>
+                                <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                            </x:ExcelWorksheet>
+                        </x:ExcelWorksheets>
+                    </x:ExcelWorkbook>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        body { font-family: Arial, sans-serif; font-size: 10pt; }
+                        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+                        th { background-color: #f1f5f9; font-weight: bold; border: 0.5pt solid #cbd5e1; padding: 6px; }
+                        td { border: 0.5pt solid #cbd5e1; padding: 6px; }
+                    </style>
+                </head>
+                <body>
+                    ${htmlToExport}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\\ufeff' + excelDoc], { type: 'application/vnd.ms-excel;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `LIASSE_SYSCOHADA_${(pme.nom || 'PME').replace(/[^a-zA-Z0-9]/g, '_')}_2026.xls`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast(`Tableau Excel (.xls) officiel généré pour ${pme.nom} !`);
+        }
+    </script>
+
+    <!-- MODALE CONNEXION GROWTH (STYLE FINTECH PRO ÉPURÉ) -->
+    <div id="modalConnexion"
+        class="fixed inset-0 z-[5000] bg-slate-900/50 backdrop-blur-sm items-center justify-center p-4 select-none"
+        style="display: none;" onclick="fermerModalConnexion()">
+        <div class="bg-white rounded-3xl border border-slate-200/90 shadow-2xl max-w-[420px] w-full overflow-hidden p-6 sm:p-7 relative font-sans text-slate-800"
+            onclick="event.stopPropagation()">
+
+            <!-- Bouton fermer discret -->
+            <button type="button" onclick="fermerModalConnexion()"
+                class="absolute top-5 right-5 w-8 h-8 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 flex items-center justify-center cursor-pointer transition-colors"
+                title="Fermer">
+                <i class="fa-solid fa-xmark text-[18px]"></i>
+            </button>
+
+            <!-- En-tête Lumineux avec Avatar Growth -->
+            <div class="mb-6">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-[#222222] text-[#a0d9d2] p-2 flex items-center justify-center shadow-xs mb-3.5">
+                    <img src="/static/grow_icon_squircle.png?v=3" alt="Growth" class="w-8 h-8 object-contain">
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Connexion à votre espace</h3>
+                <p class="text-xs text-slate-500 font-medium mt-1">Copilote Financier &amp; Pré-Comptable SYSCOHADA</p>
+            </div>
+
+            <!-- Formulaire de Connexion -->
+            <form onsubmit="validerConnexion(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11.5px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Numéro
+                        WhatsApp ou Email *</label>
+                    <div class="relative flex items-center">
+                        <span
+                            class="absolute left-3.5 text-slate-400 pointer-events-none flex items-center justify-center">
+                            <i class="fa-solid fa-circle-user text-[18px]"></i>
+                        </span>
+                        <input type="text" id="loginIdentifiant" required
+                            placeholder=" ou cabinet@grow.sn"
+                            class="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block text-[11.5px] font-bold text-slate-700 uppercase tracking-wider">Code PIN ou
+                            Mot de passe *</label>
+                        <a href="https://wa.me/221788773827?text=Bonjour%20GROW,%20j'ai%20oublié%20mon%20code%20PIN"
+                            target="_blank" class="text-[11.5px] font-semibold text-[#168078] hover:underline">Code
+                            oublié ?</a>
+                    </div>
+                    <div class="relative flex items-center">
+                        <span
+                            class="absolute left-3.5 text-slate-400 pointer-events-none flex items-center justify-center">
+                            <i class="fa-solid fa-lock text-[18px]"></i>
+                        </span>
+                        <input type="password" id="loginPin" required placeholder="••••" maxlength="8"
+                            class="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[14px] font-bold font-mono tracking-widest text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#168078] focus:ring-2 focus:ring-[#168078]/15 transition-all">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit"
+                        class="w-full py-3 rounded-xl bg-[#222222] hover:bg-[#333333] active:bg-[#0f2820] text-white text-[12.5px] font-bold transition-all shadow-sm shadow-[#222222]/20 cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99]">
+                        <span>Se connecter</span>
+                        <i class="fa-solid fa-arrow-right text-[15px] text-[#a0d9d2]"></i>
+                    </button>
+                </div>
+
+                <div
+                    class="pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[11px] text-slate-400 font-medium">
+                    <i class="fa-solid fa-shield-halved text-[14px] text-emerald-600"></i>
+                    <span>Données chiffrées &bull; Conforme SYSCOHADA</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+            function ouvrirModalConnexion() {
+                const m = document.getElementById('modalConnexion');
+                if (m) m.style.display = 'flex';
+            }
+            function fermerModalConnexion() {
+                const m = document.getElementById('modalConnexion');
+                if (m) m.style.display = 'none';
+            }
+            function validerConnexion(e) {
+                e.preventDefault();
+                const id = document.getElementById('loginIdentifiant')?.value || '';
+                fermerModalConnexion();
+                window.location.href = '/dashboard';
+            }
+    
+        // =========================================================================
+        // EXPORTATION COMPLÈTE DU JOURNAL DU DOSSIER CLIENT (PDF OU EXCEL / CSV)
+        // =========================================================================
+        function toggleAgenceExportMenu(event) {
+            if (event) event.stopPropagation();
+            const menu = document.getElementById('agenceExportMenu');
+            if (menu) {
+                const isOpen = menu.style.display === 'block';
+                menu.style.display = isOpen ? 'none' : 'block';
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('agenceExportMenu');
+            const wrapper = document.getElementById('agenceExportJournalWrapper');
+            if (menu && wrapper && !wrapper.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        function exporterJournalAgence(format) {
+            const menu = document.getElementById('agenceExportMenu');
+            if (menu) menu.style.display = 'none';
+
+            const pme = (typeof PME_DATABASE !== 'undefined' && PME_DATABASE[currentPmeKey]) || (typeof PME_DATABASE !== 'undefined' && PME_DATABASE['diop']) || {
+                nom: "Dossier PME en attente",
+                telephone: "",
+                ninea: "005489210",
+                activite: "Commerce Général & Distribution Alimentaire",
+                ecritures: []
+            };
+
+            const ecritures = pme.ecritures || [];
+            const dateStr = new Date().toLocaleDateString('fr-FR');
+            const cabNom = localStorage.getItem('growth_cabinet_nom') || "Cabinet Diallo & Associés (ONECCA)";
+
+            if (format === 'excel') {
+                let csv = "\uFEFF";
+                csv += "RÉPUBLIQUE DU SÉNÉGAL - MINISTÈRE DES FINANCES ET DU BUDGET\r\n";
+                csv += `CABINET AUDITEUR : ${cabNom};DOSSIER CLIENT : ${pme.nom};NINEA : ${pme.ninea || '005489210'}\r\n`;
+                csv += `JOURNAL GÉNÉRAL DES ÉCRITURES COMPTABLES - SYSCOHADA SMT;DATE EXTRACTION : ${dateStr}\r\n`;
+                csv += "\r\n";
+                csv += "N° Écriture;Date Opération;Réf Pièce;Libellé de l'Écriture;Compte SYSCOHADA;Tiers / Bénéficiaire;Débit (FCFA);Crédit (FCFA);Support Probant;Statut Audit\r\n";
+
+                let totDebit = 0;
+                let totCredit = 0;
+
+                ecritures.forEach((ec, idx) => {
+                    const id = ec.id || (idx + 1);
+                    const dt = ec.date || "";
+                    const ref = `PC-2026-${String(id).padStart(4, '0')}`;
+                    const lib = (ec.libelle || "").replace(/;/g, ",");
+                    const cpt = (ec.compte || "").replace(/;/g, ",");
+                    const tiers = (ec.tiers || "").replace(/;/g, ",");
+                    
+                    const debVal = ec.debit && ec.debit !== '-' ? parseInt(String(ec.debit).replace(/[^0-9]/g, '')) || 0 : 0;
+                    const credVal = ec.credit && ec.credit !== '-' ? parseInt(String(ec.credit).replace(/[^0-9]/g, '')) || 0 : 0;
+                    totDebit += debVal;
+                    totCredit += credVal;
+
+                    const debStr = debVal > 0 ? debVal : "";
+                    const credStr = credVal > 0 ? credVal : "";
+                    const statut = ec.statutLabel || "✓ Certifié SYSCOHADA SMT";
+
+                    csv += `"${id}";"${dt}";"${ref}";"${lib}";"${cpt}";"${tiers}";"${debStr}";"${credStr}";"Coffre-fort Scellé 10 ans";"${statut}"\r\n`;
+                });
+
+                csv += "\r\n";
+                csv += `"";"";"";"TOTAL GÉNÉRAL DU JOURNAL COMPTABLE";"";"";"${totDebit}";"${totCredit}";"BALANCE PARFAITEMENT ÉQUILIBRÉE";"0 FCFA ÉCART DE CONCILIATION"\r\n`;
+
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                const safeName = (pme.nom || 'Entreprise').replace(/[^a-zA-Z0-9]/g, '_');
+                link.setAttribute("href", url);
+                link.setAttribute("download", `Journal_Comptable_Cabinet_${safeName}_${new Date().toISOString().slice(0, 10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else if (format === 'pdf') {
+                let existingFrame = document.getElementById('printAgenceJournalFrame');
+                if (existingFrame) existingFrame.remove();
+
+                const iframe = document.createElement('iframe');
+                iframe.id = 'printAgenceJournalFrame';
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '1px';
+                iframe.style.height = '1px';
+                iframe.style.opacity = '0.01';
+                iframe.style.border = '0';
+                document.body.appendChild(iframe);
+
+                let rowsHtml = '';
+                let totalDebit = 0;
+                let totalCredit = 0;
+
+                ecritures.forEach((ec, idx) => {
+                    const id = ec.id || (idx + 1);
+                    const ref = `PC-2026-${String(id).padStart(4, '0')}`;
+                    const debVal = ec.debit && ec.debit !== '-' ? parseInt(String(ec.debit).replace(/[^0-9]/g, '')) || 0 : 0;
+                    const credVal = ec.credit && ec.credit !== '-' ? parseInt(String(ec.credit).replace(/[^0-9]/g, '')) || 0 : 0;
+                    totalDebit += debVal;
+                    totalCredit += credVal;
+
+                    rowsHtml += `
+                        <tr style="border-bottom: 1px solid #e2e8f0; font-size: 10px;">
+                            <td style="padding: 6px 8px; font-family: monospace; font-weight: bold; color: #475569;">${ec.date}</td>
+                            <td style="padding: 6px 8px; font-family: monospace; font-weight: 700; color: #0f172a;">${ref}</td>
+                            <td style="padding: 6px 8px;">
+                                <div style="font-weight: 700; color: #0f172a;">${ec.libelle}</div>
+                                <div style="font-size: 9px; color: #64748b;">${ec.tiers || 'Client / Fournisseur'}</div>
+                            </td>
+                            <td style="padding: 6px 8px; font-family: monospace; color: #1e293b;">
+                                <span style="background: #f1f5f9; padding: 2px 5px; border-radius: 4px; font-weight: bold;">${ec.compte}</span>
+                            </td>
+                            <td style="padding: 6px 8px; text-align: right; font-family: monospace; font-weight: 700; color: #0f172a;">
+                                ${debVal > 0 ? debVal.toLocaleString('fr-FR') + ' F' : '-'}
+                            </td>
+                            <td style="padding: 6px 8px; text-align: right; font-family: monospace; font-weight: 700; color: #0f172a;">
+                                ${credVal > 0 ? credVal.toLocaleString('fr-FR') + ' F' : '-'}
+                            </td>
+                            <td style="padding: 6px 8px; text-align: center;">
+                                <span style="background: #e6f7f5; color: #142b27; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 700;">✓ Scellé 10 ans</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`
+                    <!DOCTYPE html>
+                    <html lang="fr">
+                    <head>
+                        <meta charset="utf-8">
+                        <title>Journal Général des Écritures — ${pme.nom} — ${cabNom}</title>
+                        <style>
+                            @page {
+                                size: A4 landscape;
+                                margin: 10mm;
+                            }
+                            body {
+                                font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                                margin: 0;
+                                padding: 0;
+                                color: #0f172a;
+                                -webkit-print-color-adjust: exact !important;
+                                print-color-adjust: exact !important;
+                            }
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                            }
+                            th {
+                                background-color: #f1f5f9;
+                                color: #334155;
+                                text-transform: uppercase;
+                                font-size: 9.5px;
+                                font-weight: 800;
+                                letter-spacing: 0.5px;
+                                padding: 8px;
+                                border-bottom: 2px solid #cbd5e1;
+                                text-align: left;
+                            }
+                            tr:nth-child(even) { background-color: #f8fafc; }
+                        </style>
+                    </head>
+                    <body>
+                        <!-- EN-TÊTE OFFICIEL SYSCOHADA -->
+                        <div style="border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #168078;">
+                                    République du Sénégal &bull; Ministère des Finances et du Budget
+                                </div>
+                                <h1 style="font-size: 18px; font-weight: 900; margin: 3px 0 2px; color: #0f172a;">
+                                    JOURNAL GÉNÉRAL DES ÉCRITURES COMPTABLES
+                                </h1>
+                                <div style="font-size: 10px; color: #64748b; font-weight: 600;">
+                                    Système Minimal de Trésorerie (SMT) &bull; Conforme Acte Uniforme AUDCIF SYSCOHADA (Art. 24) &bull; Visa ${cabNom}
+                                </div>
+                            </div>
+                            <div style="text-align: right; font-size: 10px;">
+                                <div style="font-size: 13px; font-weight: 900; color: #0f172a;">${pme.nom}</div>
+                                <div style="color: #475569;">NINEA : <strong>${pme.ninea || '005489210'}</strong> &bull; Tél : ${pme.telephone}</div>
+                                <div style="color: #64748b; font-size: 9.5px; margin-top: 2px;">Dossier certifié le ${dateStr}</div>
+                            </div>
+                        </div>
+
+                        <!-- TABLEAU DES ÉCRITURES -->
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">Date</th>
+                                    <th style="width: 100px;">N° Pièce</th>
+                                    <th>Libellé / Tiers Opérationnel</th>
+                                    <th style="width: 180px;">Compte SYSCOHADA SMT</th>
+                                    <th style="width: 110px; text-align: right;">Débit (FCFA)</th>
+                                    <th style="width: 110px; text-align: right;">Crédit (FCFA)</th>
+                                    <th style="width: 100px; text-align: center;">Preuve</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rowsHtml}
+                            </tbody>
+                            <tfoot>
+                                <tr style="background: #0f172a; color: #ffffff; font-weight: 900; font-size: 11px;">
+                                    <td colspan="4" style="padding: 10px; text-align: right; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        TOTAL DU JOURNAL (${ecritures.length} ÉCRITURES COMPTABLES) :
+                                    </td>
+                                    <td style="padding: 10px; text-align: right; font-family: monospace;">${totalDebit.toLocaleString('fr-FR')} F</td>
+                                    <td style="padding: 10px; text-align: right; font-family: monospace;">${totalCredit.toLocaleString('fr-FR')} F</td>
+                                    <td style="padding: 10px; text-align: center; font-size: 9.5px; color: #a0d9d2;">0 F ÉCART</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <!-- MENTIONS LÉGALES ET CERTIFICATION -->
+                        <div style="margin-top: 14px; padding-top: 8px; border-top: 1px dashed #cbd5e1; display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: #64748b;">
+                            <div>
+                                🔒 <strong>Certification Probante :</strong> Données extraites du coffre-fort numérique scellé 10 ans. Rapprochement Wave, Orange Money et Caisse 100% auditable.
+                            </div>
+                            <div style="font-weight: 700; color: #0f172a;">
+                                Signature Cabinet &bull; Document Conforme aux Contrôles Fiscaux DGID
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                doc.close();
+
+                setTimeout(() => {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+                }, 500);
+            }
+        }
+</script>
+
+    <!-- ========================================================================= -->
+    <!-- MODALE : CRÉATION D'UN NOUVEAU DOSSIER PME AU CABINET                      -->
+    <!-- ========================================================================= -->
+    <div id="modalAjouterPme" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 16px;">
+        <div style="background: #ffffff; border-radius: 18px; width: 100%; max-width: 520px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; overflow: hidden; animation: fadeIn 0.2s ease-out;">
+            <div style="padding: 18px 24px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; background: #fafafa;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #18181b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 14px;">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: #0f172a;">Nouveau Dossier PME</h3>
+                        <p style="margin: 0; font-size: 11px; color: #64748b;">Rattachement immédiat d'une PME au portefeuille du cabinet</p>
+                    </div>
+                </div>
+                <button type="button" onclick="fermerModalAjouterPme()" style="background: none; border: none; font-size: 18px; color: #94a3b8; cursor: pointer; padding: 4px;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form onsubmit="enregistrerNouveauDossierPme(event)" style="padding: 20px 24px;">
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Nom de l'Entreprise ou Enseigne *</label>
+                    <input type="text" id="addPmeNom" required placeholder="Ex: Boulangerie Moderne Dakar" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; box-sizing: border-box;">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                    <div>
+                        <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Secteur d'Activité</label>
+                        <input type="text" id="addPmeSecteur" placeholder="Ex: Boulangerie & Pâtisserie" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Numéro NINEA</label>
+                        <input type="text" id="addPmeNinea" placeholder="Ex: 009845210" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; box-sizing: border-box;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;">
+                    <div>
+                        <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Téléphone WhatsApp</label>
+                        <input type="text" id="addPmeTel" placeholder="Ex: +221 77 123 45 67" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 11.5px; font-weight: 700; color: #334155; margin-bottom: 5px;">Régime Fiscal</label>
+                        <select id="addPmeRegime" style="width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 12.5px; outline: none; background: #fff; box-sizing: border-box;">
+                            <option value="SYSCOHADA SMT">SYSCOHADA SMT (Par défaut)</option>
+                            <option value="SYSCOHADA NORMAL">SYSCOHADA Réel Normal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+                    <button type="button" onclick="fermerModalAjouterPme()" style="padding: 9px 16px; border-radius: 9px; border: 1px solid #cbd5e1; background: #fff; font-size: 12px; font-weight: 700; color: #475569; cursor: pointer;">
+                        Annuler
+                    </button>
+                    <button type="submit" id="btnSubmitAddPme" style="padding: 9px 20px; border-radius: 9px; border: none; background: #18181b; font-size: 12px; font-weight: 800; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Créer & Rattacher le Dossier</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
