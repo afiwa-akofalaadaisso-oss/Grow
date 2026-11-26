@@ -225,7 +225,7 @@ def peut_envoyer_confirmation_paiement(phone: str, cooldown_seconds: int = 600) 
 scheduler = AsyncIOScheduler()
 
 VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "grow_dakar_secret_2026")
-DEFAULT_PHONE_NUMBER_ID = "1402996216237805"
+DEFAULT_PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID", "1432871489913065")
 DEFAULT_WABA_ID = "1626510701857010"
 ONBOARDING_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "onboarding_states.json")
 
