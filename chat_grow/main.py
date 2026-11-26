@@ -4077,24 +4077,30 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
 
 
     if is_competence_req:
-        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
-        h, b, lbl, secs, ftr = build_main_operations_list()
-        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
-        return (
+        msg_comp = (
             "Je suis votre copilote financier et comptable officiel SYSCOHADA ! "
             "Je vous aide à piloter votre activité en temps réel : j'enregistre vos ventes et dépenses (en note vocale ou texte, Wave, Orange Money, Caisse), "
             "je calcule votre rentabilité nette, je sécurise vos encaissements et je transmets vos comptes à votre cabinet d'expertise comptable partenaire.\n\n"
-            "👉 *Consultez le Menu interactif ci-dessus pour choisir directement votre action !*"
+            "👉 *Consultez le Menu interactif ci-dessous pour choisir directement votre action !*"
         )
-
-    if is_menu_req:
+        await send_whatsapp_message(clean_p, msg_comp, with_buttons=False)
+        await asyncio.sleep(0.4)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
-        return (
+        return ""
+
+    if is_menu_req:
+        msg_menu = (
             "📑 *MENU PRINCIPAL GROWTH*\n\n"
-            "Cliquez sur le bouton interactif *« Choisir une action »* ci-dessus pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Carnet Crédits, Outils PME)."
+            "Cliquez sur le bouton interactif *« Choisir une action »* ci-dessous pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Carnet Crédits, Outils PME)."
         )
+        await send_whatsapp_message(clean_p, msg_menu, with_buttons=False)
+        await asyncio.sleep(0.4)
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+        h, b, lbl, secs, ftr = build_main_operations_list()
+        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
+        return ""
 
     # 0.035 GESTION DE L'ENREGISTREMENT PRÉALABLE DE L'ENTREPRISE (Règle d'or : Entreprise requise pour toute action)
     st_flow = get_onboarding_state(clean_p) or {}
@@ -4107,10 +4113,6 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         nom_saisi = user_text.strip()
         if len(nom_saisi) >= 2 and not any(k in nom_saisi.lower() for k in ["menu", "annuler", "retour", "reset"]):
             res_7j = activer_essai_gratuit_7_jours(clean_p, nom_saisi)
-            from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
-            h, b, lbl, secs, ftr = build_main_operations_list()
-            await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
-
             action_prec = st_flow.get("action_en_attente")
             suite_prec = ""
             if action_prec == "op_vente":
@@ -4118,23 +4120,32 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             elif action_prec == "op_depense":
                 suite_prec = "\n\n🛒 *Vous pouvez déjà me dicter ou écrire votre première dépense !*"
 
-            return (
+            msg_confirm = (
                 f"🎉 *Félicitations ! Votre entreprise « {nom_saisi} » est officiellement enregistrée.* 🚀\n\n"
                 f"🎁 **Vos 7 jours d'essai 100% gratuit sont débloqués jusqu'au {res_7j['date_expiration_fr']}** (aucun engagement, aucune carte requise).\n\n"
-                f"Toutes vos fonctionnalités sont désormais débloquées ! Choisissez une action dans le menu ci-dessus ou dictez-moi directement vos opérations en note vocale !{suite_prec}"
+                f"Toutes vos fonctionnalités sont désormais débloquées ! Choisissez une action dans le menu ci-dessous ou dictez-moi directement vos opérations en note vocale !{suite_prec}"
             )
+            await send_whatsapp_message(clean_p, msg_confirm, with_buttons=False)
+            await asyncio.sleep(0.4)
+            from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+            h, b, lbl, secs, ftr = build_main_operations_list()
+            await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
+            return ""
 
     # Cas 2 : Premier contact d'un nouvel arrivant sans entreprise enregistrée (Salutations)
     if is_greeting(user_text) and not nom_entreprise_enregistre:
+        msg_welcome = (
+            "Bonjour et bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA officiel ! 👋\n\n"
+            "Je vous aide à piloter votre commerce en toute sérénité avec **7 jours d'essai 100% gratuit** (sans engagement).\n\n"
+            "Consultez le menu interactif ci-dessous pour découvrir vos outils !\n\n"
+            "💡 *Dès que vous sélectionnez une action dans le menu, nous enregistrerons simplement le nom de votre entreprise pour activer vos 7 jours offerts.*"
+        )
+        await send_whatsapp_message(clean_p, msg_welcome, with_buttons=False)
+        await asyncio.sleep(0.4)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
-        return (
-            "Bonjour et bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA officiel ! 👋\n\n"
-            "Je vous aide à piloter votre commerce en toute sérénité avec **7 jours d'essai 100% gratuit** (sans engagement).\n\n"
-            "Consultez le menu interactif ci-dessus pour découvrir vos outils !\n\n"
-            "💡 *Dès que vous sélectionnez une action dans le menu, nous enregistrerons simplement le nom de votre entreprise pour activer vos 7 jours offerts.*"
-        )
+        return ""
 
     # Cas 3 : Clic sur une action du menu sans entreprise enregistrée
     actions_operationnelles = [
@@ -4277,22 +4288,28 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
 
     # G) ASSISTANCE RAPIDE & NAVIGATION INTERACTIVE DANS LES MENUS
     if user_txt_lower in ["op_hub_tpe", "op_menu_innovations", "hub", "tpe", "boite", "boite a outils", "innovations", "outils", "outils avances", "outils avancés", "plus"]:
+        msg_hub = (
+            "🌟 *Arsenal & Outils Spécialisés PME*\n\n"
+            "Cliquez sur le bouton interactif *« Ouvrir l'outil »* ci-dessous pour sélectionner votre outil (Salaires, Calculateur de Marge, Contrôle Tiroir, Anti-Arnaque, Scanner OCR, Impôt CGU)."
+        )
+        await send_whatsapp_message(clean_p, msg_hub, with_buttons=False)
+        await asyncio.sleep(0.4)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_all_pme_hub_list
         h, b, lbl, secs, ftr = build_all_pme_hub_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
-        return (
-            "🌟 *Arsenal & Outils Spécialisés PME*\n\n"
-            "Cliquez sur le bouton interactif *« Ouvrir l'outil »* ci-dessus pour sélectionner votre outil (Salaires, Calculateur de Marge, Contrôle Tiroir, Anti-Arnaque, Scanner OCR, Impôt CGU)."
-        )
+        return ""
 
     if user_txt_lower == "op_menu_principal":
+        msg_back = (
+            "🔙 *Retour au Menu Principal*\n\n"
+            "Cliquez sur *« Choisir une action »* ci-dessous pour revenir aux opérations principales."
+        )
+        await send_whatsapp_message(clean_p, msg_back, with_buttons=False)
+        await asyncio.sleep(0.4)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
-        return (
-            "🔙 *Retour au Menu Principal*\n\n"
-            "Cliquez sur *« Choisir une action »* ci-dessus pour revenir aux opérations principales."
-        )
+        return ""
 
     if user_txt_lower == "op_vente":
         return "💵 *Enregistrement de Vente*\n\nDictez-moi une note vocale ou écrivez votre vente (ex: *« Vente 50 000 FCFA riz au comptant »* ou *« Encaissement Wave 25 000 FCFA »*).\nJe l'impute automatiquement au Compte SYSCOHADA 701."
