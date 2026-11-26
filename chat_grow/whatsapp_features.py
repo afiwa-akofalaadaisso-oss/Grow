@@ -131,29 +131,34 @@ def build_main_operations_list() -> tuple:
                     "description": "Sortie famille sans fausser la marge"
                 },
                 {
-                    "id": "op_acomptes",
-                    "title": "Acomptes & Tranches",
-                    "description": "Suivi versements partiels clients"
+                    "id": "op_credit",
+                    "title": "Carnet Crédits & Relance",
+                    "description": "Suivi dettes clients & acomptes"
                 },
                 {
-                    "id": "op_credit",
-                    "title": "Carnet Crédits",
-                    "description": "Dettes clients à recouvrer"
+                    "id": "op_calculateur_marge",
+                    "title": "Calculateur de Marge",
+                    "description": "Prix de vente & rentabilité nette"
                 }
             ]
         },
         {
-            "title": "◼ 𝗣𝗜𝗟𝗢𝗧𝗔𝗚𝗘 & 𝗕𝗜𝗟𝗔𝗡𝗦",
+            "title": "◼ 𝗣𝗜𝗟𝗢𝗧𝗔𝗚𝗘 & 𝗦𝗘́𝗖𝗨𝗥𝗜𝗧𝗘́",
             "rows": [
-                {
-                    "id": "op_infographie",
-                    "title": "Synthèse Visuelle HD",
-                    "description": "Tableau de bord financier en image"
-                },
                 {
                     "id": "op_bilan_pdf",
                     "title": "Mon Bilan SYSCOHADA",
                     "description": "Liasse certifiée officielle en PDF"
+                },
+                {
+                    "id": "op_infographie",
+                    "title": "Tableau de Bord HD",
+                    "description": "Synthèse financière visuelle"
+                },
+                {
+                    "id": "op_anti_arnaque",
+                    "title": "Anti-Arnaque & Scanner",
+                    "description": "Faux Wave & lecture reçus papier"
                 },
                 {
                     "id": "op_pret_express",
@@ -162,13 +167,8 @@ def build_main_operations_list() -> tuple:
                 },
                 {
                     "id": "op_cloture_soir",
-                    "title": "Rituel Clôture 20h",
-                    "description": "Arrêté de caisse & ventilation"
-                },
-                {
-                    "id": "op_hub_tpe",
-                    "title": "🌟 Tous les Outils PME",
-                    "description": "Salaires, Marge, Anti-fraude, Scanner..."
+                    "title": "Clôture de Caisse 20h",
+                    "description": "Arrêté de caisse & solde du jour"
                 }
             ]
         }
