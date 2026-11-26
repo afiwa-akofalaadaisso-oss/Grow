@@ -3739,8 +3739,11 @@ async def deliver_whatsapp_response(to_phone: str, reply_text: str, with_feedbac
         # En cas d'indisponibilité audio absolue
         await send_whatsapp_message(clean_p, reply_text)
     else:
-        # Envoi texte enrichi avec boutons interactifs de feedback systématiques
-        await send_whatsapp_message(clean_p, reply_text, with_buttons=with_feedback_buttons)
+        # Envoi texte enrichi : omet les boutons de feedback si le message contient un menu/question interactive
+        send_feedback = with_feedback_buttons
+        if any(k in reply_text.lower() for k in ["menu interactif", "menu déroulant", "choisir une action", "sélectionner votre situation", "menu interactif ci-dessus"]):
+            send_feedback = False
+        await send_whatsapp_message(clean_p, reply_text, with_buttons=send_feedback)
 
 
 @app.post("/")
@@ -5196,19 +5199,15 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             update_onboarding_state(sender_phone, "etape", "PHASE_2_CHOIX_OPERATEURS")
             mode_desc = "Note vocale 🎙️" if mode == "VOCAL" else "Messages textes ✍️"
 
+            from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_operators_choice_list
+            h, b, lbl, secs, ftr = build_operators_choice_list()
+            asyncio.create_task(send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr))
             return (
                 f"Parfait {prenom_contact} ! Votre mode d'échange est configuré sur : *{mode_desc}*.\n\n"
                 "💡 *Avertissement Légal & Preuves Financières* :\n"
-                "Growth ne peut vous aider à certifier vos comptes et à constituer de véritables preuves financières officielles "
-                "(reconnues par les banques pour vos demandes de prêt et par la DGID/impôts) QUE si vous utilisez un compte Wave Business et/ou Orange Business, et JAMAIS un compte personnel.\n\n"
-                "Un compte personnel mélange vos dépenses de famille avec votre boutique et n'a aucune valeur juridique pour les banques. "
-                "Un compte Business sépare votre argent professionnel et donne une valeur légale à chacune de vos ventes.\n\n"
-                "👉 *Veuillez sélectionner votre situation actuelle (répondez A, B, C, D ou E) :*\n"
-                "[Bouton A : 🌊 Wave Business uniquement]\n"
-                "[Bouton B : 🍊 Orange Business uniquement]\n"
-                "[Bouton C : 🚀 Les deux (Wave Business + Orange Business)]\n"
-                "[Bouton D : 📱 J'utilise des comptes Personnels (Wave perso / OM perso / Espèces)]\n"
-                "[Bouton E : 💼 J'ai TOUT à la fois (Comptes Business + Personnels + Espèces)]"
+                "Pour certifier vos comptes et vos dossiers de prêt auprès des banques et de la DGID, "
+                "Growth sépare rigoureusement vos recettes professionnelles de vos dépenses familiales.\n\n"
+                "👉 *Veuillez sélectionner votre situation dans le menu déroulant interactif ci-dessus :*"
             )
 
         # Envoi de la vidéo officielle
@@ -5216,17 +5215,20 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         caption = "🎬 Démo Officielle Growth : Enregistrez vos opérations en 1 note vocale WhatsApp !"
         asyncio.create_task(send_whatsapp_video(clean_phone, tuto_video_url, caption))
 
-        return (
+        welcome_text = (
             f"🌿 Bonjour *{prenom_contact}* !\n"
             "Bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA officiel.\n\n"
             "🐑 *Ma mission auprès de vous* : agir comme un berger vigilant pour votre entreprise. "
             "Je m'assure qu'aucun franc CFA ne vous échappe et que votre comptabilité soit toujours prête pour les banques et la DGID.\n\n"
             "🎬 *Je viens de vous envoyer ci-dessus notre vidéo tutoriel officielle de démonstration (28s).*\n\n"
-            "Comment préférez-vous échanger avec moi au quotidien ?\n"
-            "1) Par Note vocale 🎙️ (Growth vous répondra en notes vocales)\n"
-            "2) Par Écrit ✍️ (Messages textes classiques)\n\n"
-            "👉 Répondez simplement 1 ou 2 pour démarrer."
+            "Comment préférez-vous échanger avec moi au quotidien ?"
         )
+        buttons_mode = [
+            {"id": "mode_vocal", "title": "🎙️ Note vocale"},
+            {"id": "mode_ecrit", "title": "✍️ Par Écrit"}
+        ]
+        asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, welcome_text, buttons_mode))
+        return ""
 
     # =========================================================================
     # ÉTAPE 2 : CHOIX OPÉRATEURS & GESTION MULTI-COMPTES (BOUTONS A À E)
@@ -5234,73 +5236,77 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     if etape == "PHASE_2_CHOIX_OPERATEURS":
         u_txt = (user_text or "").strip().lower()
 
+        buttons_ninea = [
+            {"id": "ninea_oui", "title": "📄 J'ai un NINEA"},
+            {"id": "ninea_non", "title": "❌ Pas encore"}
+        ]
+
         # Choix A : Wave Business uniquement
-        if any(k in u_txt for k in ["bouton a", "a", "wave business", "wave seul", "wave pro", "wave marchande"]):
+        if any(k in u_txt for k in ["opt_a", "bouton a", "a", "wave business", "wave seul", "wave pro", "wave marchande"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "WAVE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            return (
+            msg_a = (
                 "🌊 *Configuration Wave Business Sélectionnée !*\n\n"
                 "Vos encaissements Wave Business seront reliés directement par webhook automatique.\n\n"
                 "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
-                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
             )
+            asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_a, buttons_ninea))
+            return ""
 
         # Choix B : Orange Business uniquement
-        if any(k in u_txt for k in ["bouton b", "b", "orange business", "om business", "orange seul", "orange pro", "sonatel"]):
+        if any(k in u_txt for k in ["opt_b", "bouton b", "b", "orange business", "om business", "orange seul", "orange pro", "sonatel"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "ORANGE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            return (
+            msg_b = (
                 "🍊 *Configuration Orange Business Sélectionnée !*\n\n"
                 "Vos encaissements Orange Business Sonatel seront reliés directement par webhook partenaire.\n\n"
                 "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
-                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
             )
+            asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_b, buttons_ninea))
+            return ""
 
         # Choix C : Les deux Business
-        if any(k in u_txt for k in ["bouton c", "c", "les deux", "deux business", "wave et orange business"]):
+        if any(k in u_txt for k in ["opt_c", "bouton c", "c", "double business", "les deux", "deux business", "wave et orange business"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "DOUBLE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            return (
+            msg_c = (
                 "🚀 *Double Configuration Wave Business + Orange Business Sélectionnée !*\n\n"
                 "Vos deux passerelles professionnelles seront scellées sans aucun mélange avec vos fonds personnels.\n\n"
                 "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
-                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
             )
+            asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_c, buttons_ninea))
+            return ""
 
         # Choix D : Comptes Personnels (Exact texte requis par l'utilisateur)
-        if any(k in u_txt for k in ["bouton d", "d", "perso", "personnel", "comptes personnels", "personnels"]):
+        if any(k in u_txt for k in ["opt_d", "bouton d", "d", "comptes perso", "perso", "personnel", "comptes personnels", "personnels"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "COMPTES_PERSO")
             update_onboarding_state(sender_phone, "besoin_ouverture_business", True)
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            return (
+            msg_d = (
                 "💡 *Étape Décisive pour Votre Commerce* :\n"
                 "Avec un compte personnel, vos flux d'argent sont mélangés avec vos dépenses de famille. "
-                "Aucune banque ne peut vous accorder un prêt avec un compte personnel, et la DGID ne peut pas certifier vos comptes.\n\n"
-                "👉 *Nous vous invitons à ouvrir un compte Wave Business ou Orange Business dès maintenant, et nous vous accompagnons de A à Z du début jusqu'à la fin !*\n\n"
-                "Passons à l'étape suivante pour enregistrer votre entreprise :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
-                "(Envoyez une photo de votre document, ou répondez simplement « Non » si vous n'en avez pas encore)."
+                "Aucune banque ne peut certifier vos comptes avec un compte personnel.\n\n"
+                "👉 *Nous vous accompagnons de A à Z pour ouvrir votre compte Business pro !*\n\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
             )
+            asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_d, buttons_ninea))
+            return ""
 
         # Choix E : TOUT à la fois (Les 5 canaux simultanés)
-        if any(k in u_txt for k in ["bouton e", "e", "tout", "tous", "tout a la fois", "tout à la fois", "les 5", "5 en meme temps", "cinq"]):
+        if any(k in u_txt for k in ["opt_e", "bouton e", "e", "mixte", "tout", "tous", "tout a la fois", "tout à la fois", "les 5", "5 en meme temps", "cinq"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "MULTI_5_CANAUX")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            return (
+            msg_e = (
                 "💼 *Excellente décision ! Growth gère vos 5 canaux à la fois sans rien mélanger* :\n"
-                "1. 🌊 Wave Business (Compte 5211)\n"
-                "2. 🍊 Orange Business (Compte 5212)\n"
-                "3. 📱 Wave Personnel (Compte 5213)\n"
-                "4. 📲 Orange Money Personnel (Compte 5214)\n"
-                "5. 💵 Caisse Espèces Tiroir (Compte 571)\n\n"
+                "1. 🌊 Wave Business • 2. 🍊 Orange Business • 3. 📱 Wave Perso • 4. 📲 OM Perso • 5. 💵 Caisse Espèces\n\n"
                 "Chaque soir à 20h00, votre rituel de caisse ventilera avec exactitude ces 5 poches distinctes.\n\n"
-                "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
-                "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
             )
+            asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_e, buttons_ninea))
+            return ""
 
         # Choix explicite par numéro marchand magasin ou webhook fourni directement
         chiffres = re.sub(r"[^\d]", "", u_txt)
@@ -5343,15 +5349,11 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
             )
 
-        # Relance si choix invalide
-        return (
-            "Veuillez choisir votre situation en répondant par la lettre correspondante :\n\n"
-            "• Répondez *A* : [🌊 Wave Business uniquement]\n"
-            "• Répondez *B* : [🍊 Orange Business uniquement]\n"
-            "• Répondez *C* : [🚀 Les deux (Wave Business + Orange Business)]\n"
-            "• Répondez *D* : [📱 J'utilise des comptes Personnels (Wave perso / OM perso / Espèces)]\n"
-            "• Répondez *E* : [💼 J'ai TOUT à la fois (Comptes Business + Personnels + Espèces)]"
-        )
+        # Relance si choix invalide : renvoi immédiat du menu déroulant interactif natif !
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_operators_choice_list
+        h, b, lbl, secs, ftr = build_operators_choice_list()
+        asyncio.create_task(send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr))
+        return "👉 Veuillez sélectionner votre situation dans le menu déroulant interactif ci-dessus :"
 
     # =========================================================================
     # ÉTAPE 3 : IDENTIFICATION LÉGALE NINEA / RCCM & NOM COMMERCIAL
@@ -5363,10 +5365,17 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         secteur = "Commerce Général"
         capital = 0
 
-        # Cas 1 : L'utilisateur n'a pas de NINEA ("Non", "Pas encore", "Amu ma")
+        # Cas 1 : L'utilisateur n'a pas de NINEA ("Non", "Pas encore", "Amu ma", bouton "❌ Pas encore")
         if not media_tuple and user_text:
             u_clean = user_text.strip().lower()
-            mots_negatifs = ["non", "pas de ninea", "j en ai pas", "je n en ai pas", "j'en ai pas", "aucun", "pas encore", "amuma", "amu ma", "rien", "jamais"]
+            if any(k in u_clean for k in ["ninea_oui", "j'ai un ninea", "oui j'ai un ninea"]):
+                return (
+                    "📄 *Parfait !*\n\n"
+                    "Prenez simplement en photo votre attestation NINEA ou RCCM et envoyez-la ici, "
+                    "ou écrivez directement votre numéro NINEA (7 à 9 chiffres) :"
+                )
+
+            mots_negatifs = ["ninea_non", "non", "pas de ninea", "j en ai pas", "je n en ai pas", "j'en ai pas", "aucun", "pas encore", "amuma", "amu ma", "rien", "jamais"]
             if any(k in u_clean for k in mots_negatifs):
                 update_onboarding_state(sender_phone, "etape", "PHASE_3_NOM_COMMERCIAL_SANS_NINEA")
                 update_onboarding_state(sender_phone, "ninea_rappel_hebdo", True)

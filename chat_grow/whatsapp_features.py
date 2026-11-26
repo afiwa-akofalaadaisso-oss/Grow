@@ -54,6 +54,53 @@ def get_media_base_url() -> str:
 # 1. ENVOI DE MENUS DÉROULANTS NATIFS (INTERACTIVE LIST MESSAGES)
 # ==============================================================================
 
+def build_operators_choice_list() -> tuple:
+    """Construit les sections et lignes du menu interactif déroulant de choix des comptes/opérateurs."""
+    header_text = "🏢 COMPTES COMMERCIAUX"
+    body_text = "Sélectionnez votre situation actuelle pour configurer votre comptabilité SYSCOHADA :"
+    button_label = "Choisir"
+    footer_text = "Growth • Copilote Certifié"
+
+    sections = [
+        {
+            "title": "Comptes Professionnels",
+            "rows": [
+                {
+                    "id": "opt_a",
+                    "title": "🌊 Wave Business",
+                    "description": "Compte marchand Wave uniquement"
+                },
+                {
+                    "id": "opt_b",
+                    "title": "🍊 Orange Business",
+                    "description": "Compte marchand Orange Business"
+                },
+                {
+                    "id": "opt_c",
+                    "title": "🚀 Double Business",
+                    "description": "Wave Business + Orange Business"
+                }
+            ]
+        },
+        {
+            "title": "Comptes Personnels",
+            "rows": [
+                {
+                    "id": "opt_d",
+                    "title": "📱 Comptes Perso",
+                    "description": "Wave perso / OM perso / Espèces"
+                },
+                {
+                    "id": "opt_e",
+                    "title": "💼 Mixte Pro & Perso",
+                    "description": "Comptes Pro + Personnels + Caisse"
+                }
+            ]
+        }
+    ]
+    return header_text, body_text, button_label, sections, footer_text
+
+
 def build_main_operations_list() -> tuple:
     """Construit les sections et lignes du menu interactif déroulant WhatsApp."""
     header_text = "📑 MENU PRINCIPAL GROWTH"
@@ -142,6 +189,20 @@ async def send_whatsapp_interactive_list(
         "Content-Type": "application/json; charset=utf-8"
     }
 
+    safe_sections = []
+    for s in (sections or []):
+        safe_rows = []
+        for r in s.get("rows", []):
+            safe_rows.append({
+                "id": str(r.get("id", ""))[:200],
+                "title": str(r.get("title", ""))[:24],
+                "description": str(r.get("description", ""))[:72]
+            })
+        safe_sections.append({
+            "title": str(s.get("title", ""))[:24],
+            "rows": safe_rows
+        })
+
     payload = {
         "messaging_product": "whatsapp",
         "recipient_type": "individual",
@@ -161,7 +222,7 @@ async def send_whatsapp_interactive_list(
             },
             "action": {
                 "button": button_label[:20],
-                "sections": sections
+                "sections": safe_sections
             }
         }
     }
