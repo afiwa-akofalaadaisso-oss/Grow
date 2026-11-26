@@ -5699,17 +5699,14 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             update_onboarding_state(sender_phone, "etape", "PHASE_2_CHOIX_OPERATEURS")
             mode_desc = "Note vocale 🎙️" if mode == "VOCAL" else "Messages textes ✍️"
 
-            from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_operators_choice_list, send_whatsapp_image, get_media_base_url
-            banner_url = f"{get_media_base_url()}/static/images/passerelles_officielles.png"
-            asyncio.create_task(send_whatsapp_image(clean_phone, banner_url, "Passerelles Agréées : Wave Business • Orange Business"))
-
+            from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_operators_choice_list
             h, b, lbl, secs, ftr = build_operators_choice_list()
             asyncio.create_task(send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr))
             return (
                 f"Parfait {prenom_contact} ! Votre mode d'échange est configuré sur : *{mode_desc}*.\n\n"
                 "Pour certifier vos comptes et vos dossiers de prêt auprès des banques et de la DGID, "
                 "Growth sépare rigoureusement vos recettes professionnelles de vos dépenses familiales.\n\n"
-                "👉 *Veuillez sélectionner votre situation dans le menu interactif ci-dessus :*"
+                "👉 *Veuillez sélectionner votre situation dans le menu interactif ci-dessous :*"
             )
 
         # Envoi de la vidéo officielle
