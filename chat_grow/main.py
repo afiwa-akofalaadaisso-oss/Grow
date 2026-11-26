@@ -4129,13 +4129,128 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "Vous pouvez également cliquer sur le bouton interactif ci-dessus."
         )
 
-    # G) ASSISTANCE RAPIDE SUR LES OPTIONS DU MENU
+    # G) ASSISTANCE RAPIDE & NAVIGATION INTERACTIVE DANS LES MENUS
+    if user_txt_lower == "op_menu_innovations" or user_txt_lower in ["innovations", "outils", "outils avances", "outils avancés", "plus"]:
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_innovations_menu_list
+        h, b, lbl, secs, ftr = build_innovations_menu_list()
+        asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
+        return (
+            "⚡ *Menu des Outils Avancés & IA Déployé !*\n\n"
+            "Cliquez sur *« Ouvrir l'outil »* ci-dessus pour sélectionner un outil spécialisé (Anti-Arnaque Wave, Scanner Reçu Froissé, Baromètre Grossistes, Reçus Clients, DGID)."
+        )
+
+    if user_txt_lower == "op_menu_principal":
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+        h, b, lbl, secs, ftr = build_main_operations_list()
+        asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
+        return (
+            "🔙 *Retour au Menu Principal*\n\n"
+            "Cliquez sur *« Choisir une action »* ci-dessus pour revenir aux opérations principales."
+        )
+
     if user_txt_lower == "op_vente":
         return "💵 *Enregistrement de Vente*\n\nDictez-moi une note vocale ou écrivez votre vente (ex: *« Vente 50 000 FCFA riz au comptant »* ou *« Encaissement Wave 25 000 FCFA »*).\nJe l'impute automatiquement au Compte SYSCOHADA 701."
+
     if user_txt_lower == "op_depense":
         return "🛒 *Enregistrement de Dépense*\n\nDictez-moi ou écrivez votre dépense, ou photographiez une facture (ex: *« Achat 35 000 FCFA huile de palme »* ou *« Facture Senelec 18 000 FCFA »*).\nJe l'impute automatiquement en classe 6."
+
+    if user_txt_lower == "op_popote":
+        return (
+            "🍛 *Compartiment Popote & Dépenses Familiales (Compte SYSCOHADA 108)*\n\n"
+            "Vous avez pris de l'argent dans la caisse pour le marché, la maison ou une ordonnance ?\n\n"
+            "👉 Écrivez simplement : *« 5 000 popote midi »* ou *« 12 000 ordonnance pharmacie »*.\n\n"
+            "💡 *Avantage Décisif Growth :*\n"
+            "Votre caisse réelle diminue fidèlement, mais ce montant est classé en prélèvement personnel de l'exploitant : "
+            "votre marge bénéficiaire et vos bilans bancaires restent 100% crédibles !"
+        )
+
+    if user_txt_lower == "op_acomptes":
+        return (
+            "⏳ *Suivi des Acomptes & Tranches (« Dama lay fay par tranche »)*\n\n"
+            "Un client vous verse une avance sur sa commande ou règle une partie de sa dette ?\n\n"
+            "👉 Écrivez simplement : *« Acompte 30 000 Fatou tissu »* ou *« Versement 20 000 Moussa »*.\n\n"
+            "Growth met à jour sa fiche client, déduit le montant et calcule le reste exact dû en 1 seconde !"
+        )
+
     if user_txt_lower == "op_credit":
         return "📝 *Enregistrement d'un Crédit Client*\n\nÉcrivez : *« Crédit [Nom du client] [Montant] [Article] »* (ex: *« Crédit Moussa Diop 15 000 FCFA »*).\nJe l'enregistre dans votre carnet pour vous permettre de le relancer en 1 clic."
+
+    if user_txt_lower in ["op_pret_express", "pret express", "capacité emprunt", "capacite emprunt"]:
+        from chat_grow.database import get_transactions_resilient, get_entreprise_by_phone_resilient
+        ent = get_entreprise_by_phone_resilient(clean_p) or {}
+        txs = get_transactions_resilient(ent.get("id") or clean_p) or []
+        ca_total = sum(t.get("montant_fcfa", 0) for t in txs if t.get("type_flux") != "DEPENSE")
+        mensualite = int((ca_total * 0.30) / 6) if ca_total > 50000 else 125000
+        pret_max = mensualite * 24
+        ca_fmt = f"{ca_total:,} FCFA".replace(",", " ")
+        mens_fmt = f"{mensualite:,} FCFA".replace(",", " ")
+        pret_fmt = f"{pret_max:,} FCFA".replace(",", " ")
+        return (
+            "🏦 *Dossier Prêt Express & Diagnostic d'Éligibilité Bancaire*\n\n"
+            f"• Total Flux Détectés : *{ca_fmt}*\n"
+            f"• Mensualité Max Remboursable (Ratio 33%) : *{mens_fmt} / mois*\n"
+            f"• Capacité d'Emprunt Estimée : *jusqu'à {pret_fmt}* (sur 24 mois)\n\n"
+            "🏛️ *Institutions Financières Partenaires :*\n"
+            "CBAO Attijariwafa, Ecobank, Banque de l'Habitat (BHS), PAMECAS, Baobab Microcred, CMS.\n\n"
+            "👉 Pour générer votre Bilan Officiel SYSCOHADA certifié pour la banque, écrivez simplement : *« Bilan »* !"
+        )
+
+    if user_txt_lower in ["op_cloture_soir", "cloture", "clôture", "rituel"]:
+        from chat_grow.database import get_transactions_resilient, get_entreprise_by_phone_resilient
+        ent = get_entreprise_by_phone_resilient(clean_p) or {}
+        txs = get_transactions_resilient(ent.get("id") or clean_p) or []
+        total_ventes = sum(t.get("montant_fcfa", 0) for t in txs if t.get("type_flux") in ["VENTE", "RECETTE"])
+        total_depenses = sum(t.get("montant_fcfa", 0) for t in txs if t.get("type_flux") == "DEPENSE")
+        v_fmt = f"{total_ventes:,} FCFA".replace(",", " ")
+        d_fmt = f"{total_depenses:,} FCFA".replace(",", " ")
+        solde_net = total_ventes - total_depenses
+        s_fmt = f"{solde_net:,} FCFA".replace(",", " ")
+        return (
+            "🌙 *Rituel de Clôture de Caisse du Soir (20h00)*\n\n"
+            f"• Total Ventes enregistrées : *{v_fmt}*\n"
+            f"• Total Dépenses & Achats : *{d_fmt}*\n"
+            f"• Solde net de la journée : *{s_fmt}*\n\n"
+            "👉 Pour ajuster vos espèces du tiroir ou vos dépenses de popote du soir, dictez simplement une note vocale : *« Caisse fermée, 35 000 en espèces, 5 000 popote »*."
+        )
+
+    if user_txt_lower in ["op_anti_arnaque", "anti arnaque", "faux wave"]:
+        return (
+            "🛡️ *Détecteur Anti-Arnaque aux Faux Transferts Wave & OM*\n\n"
+            "Un client vous montre une capture d'écran suspecte ou prétend vous avoir envoyé un virement Wave ?\n\n"
+            "👉 Envoyez la capture d'écran ici, ou écrivez : *« Vérifier 25000 »* (avec le montant).\n\n"
+            "Growth vérifie instantanément si la transaction est réellement créditée sur votre compte marchand par Webhook officiel !"
+        )
+
+    if user_txt_lower in ["op_scanner_recu", "scanner", "scan", "recu froisse", "reçu froissé"]:
+        return (
+            "📸 *Scanner OCR Intelligent de Reçus Papier & Factures Froissées*\n\n"
+            "Prenez simplement une photo de votre ticket de caisse, reçu d'essence Total, ou facture grossiste froissée avec l'appareil photo WhatsApp 📷.\n\n"
+            "Notre IA Vision extrait automatiquement le montant, la TVA et le fournisseur, puis scelle la pièce sous SHA-256 (Archivage légal 10 ans) !"
+        )
+
+    if user_txt_lower in ["op_barometre", "barometre", "prix grossiste"]:
+        return (
+            "📉 *Baromètre des Prix Grossistes & Surveillance Surfacturation*\n\n"
+            "Growth compare automatiquement vos prix d'achat grossistes (sac de riz, bidon d'huile Dinor, sucre, ciment, etc.) à vos achats précédents.\n\n"
+            "Dès qu'un grossiste augmente son prix de plus de 5%, Growth vous alerte pour ajuster votre prix de vente au détail et préserver votre marge bénéficiaire !"
+        )
+
+    if user_txt_lower in ["op_recu_client", "recu client", "reçu client"]:
+        return (
+            "🧾 *Émission de Reçu Numérique Client WhatsApp*\n\n"
+            "Pour donner un reçu de vente propre et officiel à un client :\n\n"
+            "👉 Écrivez simplement : *« Reçu pour [Nom du client] [Montant] [Article] »*\n"
+            "Exemple : *« Reçu pour Aminata Sow 45 000 FCFA 3 pièces bazin »*.\n\n"
+            "Growth vous génère une facturette électronique prête à transférer au client !"
+        )
+
+    if user_txt_lower in ["op_localisation", "gps", "localisation"]:
+        return (
+            "📍 *Envoi de la Localisation GPS de votre Boutique*\n\n"
+            "Pour enregistrer l'emplacement géographique certifié de votre magasin ou atelier dans votre fiche fiscale DGID :\n\n"
+            "👉 Cliquez sur le trombone WhatsApp 📎 ➔ *Localisation* ➔ *Envoyer votre position actuelle*."
+        )
+
     if user_txt_lower == "op_stocks":
         return "📦 *Point des Stocks*\n\nIndiquez vos mouvements d'inventaire (ex: *« Reçu 30 cartons de lait »* ou *« Stock restant 15 bidons »*).\nVotre inventaire au PUMP est mis à jour dans vos actifs SYSCOHADA."
 

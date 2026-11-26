@@ -102,7 +102,7 @@ def build_operators_choice_list() -> tuple:
 
 
 def build_main_operations_list() -> tuple:
-    """Construit les sections et lignes du menu interactif déroulant WhatsApp."""
+    """Construit les sections et lignes du menu interactif déroulant WhatsApp (10 actions clés)."""
     header_text = "MENU PRINCIPAL GROWTH"
     body_text = (
         "Bienvenue sur votre copilote comptable certifié SYSCOHADA SMT.\n\n"
@@ -113,12 +113,12 @@ def build_main_operations_list() -> tuple:
 
     sections = [
         {
-            "title": "Écritures & Caisse",
+            "title": "Gestion & Caisse PME",
             "rows": [
                 {
                     "id": "op_vente",
                     "title": "Enregistrer Vente",
-                    "description": "Vente en espèces, Wave ou Orange Money"
+                    "description": "Vente espèces, Wave ou Orange Money"
                 },
                 {
                     "id": "op_depense",
@@ -126,14 +126,19 @@ def build_main_operations_list() -> tuple:
                     "description": "Achats stocks, réassort, loyer ou facture"
                 },
                 {
-                    "id": "op_credit",
-                    "title": "Noter Crédit Client",
-                    "description": "Enregistrer une dette client à recouvrer"
+                    "id": "op_popote",
+                    "title": "Popote Maison (108)",
+                    "description": "Sortie famille sans fausser la marge"
                 },
                 {
-                    "id": "op_relance",
-                    "title": "Relancer Débiteurs",
-                    "description": "Générer les messages de rappel de paiement"
+                    "id": "op_acomptes",
+                    "title": "Acomptes & Tranches",
+                    "description": "Suivi versements partiels clients"
+                },
+                {
+                    "id": "op_credit",
+                    "title": "Carnet Crédits",
+                    "description": "Dettes clients à recouvrer"
                 }
             ]
         },
@@ -141,24 +146,95 @@ def build_main_operations_list() -> tuple:
             "title": "Pilotage & Documents",
             "rows": [
                 {
-                    "id": "op_bilan_pdf",
-                    "title": "Mon Bilan PDF",
-                    "description": "Bilan Officiel SYSCOHADA et dossier prêt"
+                    "id": "op_infographie",
+                    "title": "Synthèse Visuelle HD",
+                    "description": "Tableau de bord financier en image"
                 },
                 {
-                    "id": "op_infographie",
-                    "title": "Synthèse Financière HD",
-                    "description": "Tableau visuel de performance de votre commerce"
+                    "id": "op_bilan_pdf",
+                    "title": "Mon Bilan SYSCOHADA",
+                    "description": "Liasse certifiée officielle en PDF"
+                },
+                {
+                    "id": "op_pret_express",
+                    "title": "Dossier Prêt Express",
+                    "description": "Capacité d'emprunt & banques"
+                },
+                {
+                    "id": "op_cloture_soir",
+                    "title": "Rituel Clôture 20h",
+                    "description": "Arrêté de caisse & ventilation"
+                },
+                {
+                    "id": "op_menu_innovations",
+                    "title": "⚡ Outils Avancés & IA",
+                    "description": "Anti-arnaque, Scanner reçu, DGID..."
+                }
+            ]
+        }
+    ]
+
+    return header_text, body_text, button_label, sections, footer_text
+
+
+def build_innovations_menu_list() -> tuple:
+    """Construit le sous-menu interactif des outils avancés et innovations sénégalaises."""
+    header_text = "OUTILS AVANCÉS & IA"
+    body_text = (
+        "Technologies exclusives Growth conçues pour la réalité des commerces au Sénégal :\n\n"
+        "Sélectionnez un outil spécialisé ci-dessous :"
+    )
+    button_label = "Ouvrir l'outil"
+    footer_text = "Growth • Technologies PME"
+
+    sections = [
+        {
+            "title": "Sécurité & Contrôle IA",
+            "rows": [
+                {
+                    "id": "op_anti_arnaque",
+                    "title": "Anti-Arnaque Wave",
+                    "description": "Détecter faux transferts & SMS"
+                },
+                {
+                    "id": "op_scanner_recu",
+                    "title": "Scanner Reçu Froissé",
+                    "description": "Extraire ticket papier par photo"
+                },
+                {
+                    "id": "op_barometre",
+                    "title": "Baromètre des Prix",
+                    "description": "Surveillance hausse grossistes"
+                }
+            ]
+        },
+        {
+            "title": "Gestion & Relations",
+            "rows": [
+                {
+                    "id": "op_recu_client",
+                    "title": "Émettre Reçu Client",
+                    "description": "Reçu numérique WhatsApp instantané"
+                },
+                {
+                    "id": "op_relance",
+                    "title": "Relancer Débiteurs",
+                    "description": "Messages de rappel courtois"
                 },
                 {
                     "id": "op_fiscalite",
                     "title": "Échéances DGID",
-                    "description": "Dates limites fiscales & retenues Sénégal"
+                    "description": "Calendrier fiscal & CGU Sénégal"
                 },
                 {
                     "id": "op_journal_web",
                     "title": "Mon Journal Web",
-                    "description": "Accès direct au portail comptable sécurisé"
+                    "description": "Accès portail sécurisé SHA-256"
+                },
+                {
+                    "id": "op_menu_principal",
+                    "title": "🔙 Menu Principal",
+                    "description": "Revenir au menu général"
                 }
             ]
         }
