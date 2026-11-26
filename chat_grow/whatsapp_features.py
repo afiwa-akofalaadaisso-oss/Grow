@@ -56,9 +56,9 @@ def get_media_base_url() -> str:
 
 def build_operators_choice_list() -> tuple:
     """Construit les sections et lignes du menu interactif déroulant de choix des comptes/opérateurs."""
-    header_text = "COMPTES COMMERCIAUX"
-    body_text = "Sélectionnez votre situation actuelle pour configurer votre comptabilité SYSCOHADA :"
-    button_label = "Choisir"
+    header_text = "SÉLECTION OPÉRATEURS"
+    body_text = "Sélectionnez votre opérateur ou le mode de paiement utilisé pour vos encaissements :"
+    button_label = "Choisir l'opérateur"
     footer_text = "Growth • Système Officiel"
 
     sections = [

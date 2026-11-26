@@ -5702,7 +5702,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 f"C'est parti {prenom_contact} ! 🚀\n\n"
                 "Pour certifier vos comptes et vos dossiers de prêt auprès des banques et de la DGID, "
                 "Growth sépare rigoureusement vos recettes professionnelles de vos dépenses familiales.\n\n"
-                "👉 *Veuillez sélectionner votre situation dans le menu interactif ci-dessous :*"
+                "👉 *Veuillez sélectionner votre opérateur dans le menu interactif ci-dessous :*"
             )
 
         # Envoi de la vidéo officielle
@@ -5859,7 +5859,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_operators_choice_list
         h, b, lbl, secs, ftr = build_operators_choice_list()
         asyncio.create_task(send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr))
-        return "👉 Veuillez sélectionner votre situation dans le menu déroulant interactif ci-dessus :"
+        return "👉 Veuillez sélectionner votre opérateur dans le menu déroulant interactif ci-dessus :"
 
     # =========================================================================
     # ÉTAPE 3 : IDENTIFICATION LÉGALE NINEA / RCCM & NOM COMMERCIAL
