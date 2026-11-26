@@ -4013,31 +4013,6 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         or any(k in user_txt_lower for k in ["menu principal", "afficher le menu", "donne moi le menu", "voir le menu", "ouvrir le menu"])
     )
 
-    if is_competence_req:
-        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
-        h, b, lbl, secs, ftr = build_main_operations_list()
-        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
-        return (
-            "🌟 *GROWTH • COPILOTE FINANCIER & COMPTABLE PME*\n\n"
-            "Je suis votre assistant financier autonome d'élite, conçu pour sécuriser, structurer et propulser la gestion de votre commerce :\n\n"
-            "⚡ *1. Enregistrement Éclair (Texte ou Vocal)*\n"
-            "• Enregistrez vos ventes et dépenses (Espèces, Wave, Orange Money) en 3 secondes.\n"
-            "• Dictez vos opérations par note vocale en wolof ou en français, je les saisis instantanément.\n\n"
-            "📊 *2. Comptabilité SYSCOHADA SMT Conforme*\n"
-            "• Classement automatique dans le plan comptable officiel (701 Ventes, 601 Achats, 605 Fournitures, 108 Popote...).\n"
-            "• Journaux et livres de caisse certifiés conformes, prêts pour les contrôles.\n\n"
-            "📑 *3. Bilan Officiel PDF pour Banques & Prêts*\n"
-            "• Édition en un clic de votre bilan financier certifié et liasse SYSCOHADA en PDF pour obtenir des financements bancaires et microcrédits.\n\n"
-            "📈 *4. Tableau de Bord Financier & Synthèse HD*\n"
-            "• Génération de votre carte visuelle haute définition récapitulant vos ventes réelles, charges, marge commerciale et trésorerie disponible.\n\n"
-            "🍛 *5. Règle d'Or Popote Maison (Compte 108)*\n"
-            "• Vos retraits personnels et familiaux sont isolés pour protéger votre caisse sans jamais fausser votre rentabilité commerciale.\n\n"
-            "🤝 *6. Carnet de Crédits & Relances Débiteurs*\n"
-            "• Suivi des dettes clients, gestion des acomptes par tranches et génération de messages de relance automatiques et polis.\n\n"
-            "🏛️ *7. Fiscalité DGID & Alertes Déclarations*\n"
-            "• Suivi de la Contribution Globale Unique (CGU), retenues BRS et calendrier des échéances fiscales.\n\n"
-            "👉 *Pour passer à l'action dès maintenant, cliquez sur « Choisir une action » dans le menu interactif ci-dessus !*"
-        )
 
     if is_menu_req:
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
@@ -7065,6 +7040,11 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
                 print(f"[AUTO-APPRENTISSAGE] Question signalée pour amélioration continue ({motif})")
         except Exception as e_appr:
             print(f"Info auto-apprentissage : {e_appr}")
+
+        if any(k in txt_clean for k in ["faire", "competence", "compétence", "capable", "capacite", "capacité", "growth", "qui es-tu", "qui tu es", "menu", "option"]):
+            from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+            h, b, lbl, secs, ftr = build_main_operations_list()
+            await send_whatsapp_interactive_list(sender_phone, h, b, lbl, secs, ftr)
 
         return reponse_finale
 
