@@ -7073,8 +7073,8 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
 
 
 DEFAULT_FEEDBACK_BUTTONS = [
-    {"id": "feedback_like", "title": "🔹 Utile"},
-    {"id": "feedback_dislike", "title": "🔹 À corriger"}
+    {"id": "feedback_like", "title": "Utile"},
+    {"id": "feedback_dislike", "title": "À corriger"}
 ]
 
 
