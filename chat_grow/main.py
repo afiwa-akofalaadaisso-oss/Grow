@@ -637,6 +637,46 @@ def activer_ou_renouveler_abonnement(phone: str, montant: float = 10000.0, opera
     }
 
 
+def activer_essai_gratuit_7_jours(phone: str, nom_entreprise: str) -> dict:
+    """Active immédiatement les 7 jours d'essai gratuit pour une nouvelle entreprise enregistrée."""
+    clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    now_dt = datetime.now()
+    exp_essai = now_dt + timedelta(days=7)
+    now_str = now_dt.strftime("%Y-%m-%d %H:%M:%S")
+    exp_str = exp_essai.strftime("%Y-%m-%d %H:%M:%S")
+    exp_fr = exp_essai.strftime("%d/%m/%Y")
+    now_fr = now_dt.strftime("%d/%m/%Y")
+
+    try:
+        from chat_grow.database import save_or_update_entreprise_resilient
+        save_or_update_entreprise_resilient({
+            "telephone_whatsapp": clean_p,
+            "nom_entreprise": nom_entreprise
+        })
+    except Exception as e_db:
+        print(f"Info save entreprise essai 7j: {e_db}")
+
+    update_onboarding_state(clean_p, "nom_entreprise", nom_entreprise)
+    update_onboarding_state(clean_p, "abonnement_valide", True)
+    update_onboarding_state(clean_p, "type_abonnement", "ESSAI_7J")
+    update_onboarding_state(clean_p, "plan_abonnement", "Essai Gratuit 7 Jours")
+    update_onboarding_state(clean_p, "date_debut_essai", now_str)
+    update_onboarding_state(clean_p, "date_paiement_abonnement", now_str)
+    update_onboarding_state(clean_p, "date_expiration_abonnement", exp_str)
+    update_onboarding_state(clean_p, "etape", "TERMINE")
+    update_onboarding_state(clean_p, "statut", "COMPLET")
+    update_onboarding_state(clean_p, "en_attente_nom_entreprise", False)
+
+    return {
+        "status": "success",
+        "valide": True,
+        "nom_entreprise": nom_entreprise,
+        "date_paiement_fr": now_fr,
+        "date_expiration_fr": exp_fr,
+        "jours_accordes": 7
+    }
+
+
 def get_message_abonnement_expire(info_abo: dict, base_url: str, phone: str) -> str:
     clean_p = str(phone).replace("+", "").replace(" ", "").strip()
     lien_abo = f"{base_url}/abonnement?phone={clean_p}"
@@ -4054,6 +4094,65 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         return (
             "📑 *MENU PRINCIPAL GROWTH*\n\n"
             "Cliquez sur le bouton interactif *« Choisir une action »* ci-dessus pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Carnet Crédits, Outils PME)."
+        )
+
+    # 0.035 GESTION DE L'ENREGISTREMENT PRÉALABLE DE L'ENTREPRISE (Règle d'or : Entreprise requise pour toute action)
+    st_flow = get_onboarding_state(clean_p) or {}
+    from chat_grow.database import get_entreprise_by_phone_resilient
+    ent_flow = get_entreprise_by_phone_resilient(clean_p) or {}
+    nom_entreprise_enregistre = st_flow.get("nom_entreprise") or ent_flow.get("nom_entreprise")
+
+    # Cas 1 : L'utilisateur était invité à donner le nom de son entreprise
+    if st_flow.get("en_attente_nom_entreprise") and not is_menu_req and not is_competence_req:
+        nom_saisi = user_text.strip()
+        if len(nom_saisi) >= 2 and not any(k in nom_saisi.lower() for k in ["menu", "annuler", "retour", "reset"]):
+            res_7j = activer_essai_gratuit_7_jours(clean_p, nom_saisi)
+            from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+            h, b, lbl, secs, ftr = build_main_operations_list()
+            await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
+
+            action_prec = st_flow.get("action_en_attente")
+            suite_prec = ""
+            if action_prec == "op_vente":
+                suite_prec = "\n\n💵 *Vous pouvez déjà me dicter ou écrire votre première vente !*"
+            elif action_prec == "op_depense":
+                suite_prec = "\n\n🛒 *Vous pouvez déjà me dicter ou écrire votre première dépense !*"
+
+            return (
+                f"🎉 *Félicitations ! Votre entreprise « {nom_saisi} » est officiellement enregistrée.* 🚀\n\n"
+                f"🎁 **Vos 7 jours d'essai 100% gratuit sont débloqués jusqu'au {res_7j['date_expiration_fr']}** (aucun engagement, aucune carte requise).\n\n"
+                f"Toutes vos fonctionnalités sont désormais débloquées ! Choisissez une action dans le menu ci-dessus ou dictez-moi directement vos opérations en note vocale !{suite_prec}"
+            )
+
+    # Cas 2 : Premier contact d'un nouvel arrivant sans entreprise enregistrée (Salutations)
+    if is_greeting(user_text) and not nom_entreprise_enregistre:
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+        h, b, lbl, secs, ftr = build_main_operations_list()
+        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
+        return (
+            "Bonjour et bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA officiel ! 👋\n\n"
+            "Je vous aide à piloter votre commerce en toute sérénité avec **7 jours d'essai 100% gratuit** (sans engagement).\n\n"
+            "Consultez le menu interactif ci-dessus pour découvrir vos outils !\n\n"
+            "💡 *Dès que vous sélectionnez une action dans le menu, nous enregistrerons simplement le nom de votre entreprise pour activer vos 7 jours offerts.*"
+        )
+
+    # Cas 3 : Clic sur une action du menu sans entreprise enregistrée
+    actions_operationnelles = [
+        "op_vente", "op_depense", "op_popote", "op_credit", "op_bilan_pdf",
+        "op_infographie", "op_fiscalite", "op_pret_express", "op_cloture_soir",
+        "op_salaires", "op_calculateur_marge", "op_controle_caisse", "op_anti_arnaque",
+        "op_scanner_recu", "op_recu_client", "op_relance", "op_barometre", "op_stocks", "op_acomptes"
+    ]
+    if user_txt_lower in actions_operationnelles and not nom_entreprise_enregistre:
+        update_onboarding_state(clean_p, "en_attente_nom_entreprise", True)
+        update_onboarding_state(clean_p, "action_en_attente", user_txt_lower)
+        return (
+            "⚠️ *ENREGISTREMENT DE VOTRE ENTREPRISE REQUIS*\n\n"
+            "Pour utiliser les fonctionnalités du menu et activer vos **7 jours d'essai 100% gratuit**, vous devez d'abord enregistrer votre entreprise !\n\n"
+            "Tant que votre entreprise n'est pas enregistrée, aucune fonctionnalité ne peut être utilisée.\n\n"
+            "👉 *Quel est le nom ou l'enseigne de votre entreprise / boutique ?*\n"
+            "(Exemple : *Keur Fatou Cosmétiques*, *Établissement Diallo*, *Atelier Moussa Couture*).\n\n"
+            "Dès que vous m'indiquez le nom de votre commerce, toutes les fonctionnalités et vos 7 jours offerts s'activent instantanément !"
         )
 
     # B) BILAN COMPTABLE SYSCOHADA & DOSSIER PRÊT AVEC CIRCUIT VISA CABINET (Human-in-the-Loop)
