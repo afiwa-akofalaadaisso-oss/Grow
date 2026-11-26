@@ -35,8 +35,8 @@ def get_description_etape(etape: str, onboarding: dict) -> str:
 
     if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
         return (
-            "ÉTAPE : ACCUEIL ET CHOIX DU MODE D'ÉCHANGE.\n"
-            "Action attendue : Choisir son mode d'échange entre 1) Note vocale ou 2) Par écrit."
+            "ÉTAPE : ACCUEIL ET CONFIRMATION DE DÉPART.\n"
+            "Action attendue : Dire 'Oui' ou 'Je suis prêt' pour démarrer la configuration."
         )
     if etape == "PHASE_2_NUMERO_SECONDAIRE":
         return (
@@ -107,7 +107,7 @@ def prompt_rappel_etape(etape: str, onboarding: dict) -> str:
 
     if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
         return (
-            "Vous pouvez m'écrire par message ou m'envoyer directement des notes vocales en français ou en wolof à tout moment !"
+            "Êtes-vous prêt à commencer la configuration de votre entreprise ? Dites-moi simplement 'Oui' ou cliquez sur le bouton !"
         )
     if etape == "PHASE_2_NUMERO_SECONDAIRE":
         return (
@@ -175,9 +175,9 @@ def sauter_vers_etape_suivante(etape_actuelle: str, onboarding: dict) -> tuple[s
     nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or "votre entreprise"
 
     if etape_actuelle in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
-        return "PHASE_2_CREATION_ENTREPRISE", (
-            "Pas de problème, nous utiliserons les messages écrits par défaut (vous pourrez changer pour les notes vocales à tout moment).\n\n"
-            + prompt_rappel_etape("PHASE_2_CREATION_ENTREPRISE", onboarding)
+        return "PHASE_2_CHOIX_OPERATEURS", (
+            "C'est parti, commençons la configuration de votre entreprise !\n\n"
+            + prompt_rappel_etape("PHASE_2_CHOIX_OPERATEURS", onboarding)
         )
     if etape_actuelle == "PHASE_2_NUMERO_SECONDAIRE":
         return "PHASE_2_CREATION_ENTREPRISE", (
@@ -236,12 +236,9 @@ async def superviser_message_onboarding(
     u_txt = user_text.strip()
     u_low = u_txt.lower()
 
-    # Raccourcis directs évidents (ex: juste "1", "2", ou un numéro pur de 9 chiffres)
+    # Raccourcis directs évidents (ex: "pret", "oui", "1", "ok")
     if etape_actuelle in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
-        if u_low in ["1", "1)", "1.", "vocal", "2", "2)", "2.", "ecrit", "écrit"]:
-            return {"action": "PASSTHROUGH_REPONSE_ETAPE"}
-        chiffres = re.sub(r"[^\d]", "", u_txt)
-        if len(chiffres) >= 9 and len(u_txt.split()) <= 2:
+        if any(k in u_low for k in ["pret", "prêt", "commencer", "oui", "ok", "d'accord", "allons-y", "1"]):
             return {"action": "PASSTHROUGH_REPONSE_ETAPE"}
 
     client = get_gemini_client()
@@ -295,7 +292,7 @@ RÈGLES FONDAMENTALES :
      CONFIRME AVEC FORCE ET PÉDAGOGIE : C'est exactement comme cela que Growth fonctionne !
      Le numéro WhatsApp personnel sert de salon de commande pour recevoir les alertes et clôturer la caisse à 20h00.
      Les encaissements Wave Business et Orange Business sont captés directement par le Webhook / l'API du compte marchand officiel.
-   - INTERDICTION ABSOLUE de proposer de ton propre chef un "numéro de magasin" ou de demander des numéros annexes à l'Étape 1 ou 2 : à l'étape 1, on demande uniquement le choix du mode (Vocal ou Écrit), et à l'étape 2 le choix de l'opérateur (A, B, C, D, E).
+   - INTERDICTION ABSOLUE de proposer de ton propre chef un "numéro de magasin" ou de demander des numéros annexes à l'Étape 1 ou 2 : à l'étape 1, on accueille chaleureusement le commerçant et on lui demande s'il est prêt à commencer (il est libre d'échanger en vocal ou par écrit selon sa convenance), et à l'étape 2 le choix de l'opérateur (A, B, C, D, E).
 
 6. RÈGLE D'OR SUR LE BILAN (LÉGALITÉ & DÉONTOLOGIE COMPTABLE) :
    - Growth NE GÉNÈRE PAS lui-même les bilans de l'entreprise !

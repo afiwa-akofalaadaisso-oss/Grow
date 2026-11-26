@@ -27,17 +27,15 @@ async def tester_parcours_complet():
     update_onboarding_state(test_phone, "premier_contact_effectue", False)
 
     # ÉTAPE 1 : Accueil
-    print("\n--- [ÉTAPE 1] Accueil & Choix du mode ---")
+    print("\n--- [ÉTAPE 1] Accueil & Prêt à commencer ---")
     r1 = await handle_incoming_message(test_phone, "Bonjour Growth", None, contact_name="Modou")
     print(f"Commerçant: Bonjour Growth\nGrowth:\n{r1}\n")
-    assert "vidéo tutoriel" in r1 or "Mode" in r1 or "vocal" in r1.lower()
 
-    # Choix Vocal (1)
-    print("\n--- [ÉTAPE 1 -> 2] Choix du mode Vocal (1) ---")
-    r2 = await handle_incoming_message(test_phone, "1", None, contact_name="Modou")
-    print(f"Commerçant: 1\nGrowth:\n{r2}\n")
-    assert "Avertissement Légal" in r2
-    assert "Bouton A" in r2 and "Bouton D" in r2 and "Bouton E" in r2
+    # Démarrage ("Oui" ou clic sur pret_commencer)
+    print("\n--- [ÉTAPE 1 -> 2] Prêt à commencer ---")
+    r2 = await handle_incoming_message(test_phone, "pret_commencer", None, contact_name="Modou")
+    print(f"Commerçant: pret_commencer\nGrowth:\n{r2}\n")
+    assert "C'est parti" in r2 or "menu interactif" in r2
 
     # ÉTAPE 2 : Choix D (Comptes Personnels)
     print("\n--- [ÉTAPE 2] Choix Bouton D (Comptes Personnels) ---")

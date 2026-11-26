@@ -4749,9 +4749,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             f"• Régime : SYSCOHADA SMT\n"
             f"• Supervision : 100% Automatique & Directe\n\n"
             "Je suis votre copilote comptable 24h/24. Vos écritures et pièces justificatives sont directement transmises à votre cabinet.\n\n"
-            "👉 *Comment souhaitez-vous communiquer au quotidien ?*\n"
-            "1) 🎙️ Par Notes Vocales (Wolof ou Français)\n"
-            "2) ✍️ Par Messages Écrits\n\n"
+            "Vous pouvez m'écrire par message ou m'envoyer directement des notes vocales en wolof ou en français à tout moment !\n\n"
             "Vous pouvez dès à présent me dicter ou m'écrire votre première vente, votre première dépense, ou taper *« Menu »* pour explorer vos options !"
         )
 
@@ -5642,7 +5640,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     # Ne s'exécute pas si l'utilisateur clique sur un bouton interactif prédéfini.
     boutons_directs = [
         "opt_a", "opt_b", "opt_c", "opt_d", "opt_e",
-        "ninea_oui", "ninea_non", "mode_vocal", "mode_ecrit"
+        "ninea_oui", "ninea_non", "pret_commencer", "mode_vocal", "mode_ecrit"
     ]
     u_strip_lower = (user_text or "").strip().lower()
     est_clic_bouton = u_strip_lower in boutons_directs
@@ -5683,27 +5681,25 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             print(f"Info superviseur onboarding : {e_sup}")
 
     # =========================================================================
-    # ÉTAPE 1 : ACCUEIL, CHOIX MODE & VIDÉO DÉMO OFFICIELLE
+    # ÉTAPE 1 : ACCUEIL & VIDÉO DÉMO OFFICIELLE (PRÊT À COMMENCER)
     # =========================================================================
     if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
         u_txt = (user_text or "").strip().lower()
-        choix_vocal = any(k in u_txt for k in ["1", "vocal", "voix", "audio", "parler", "micro", "note vocale"])
-        choix_ecrit = any(k in u_txt for k in ["2", "ecrit", "écrit", "texte", "message", "clavier"])
         prenom_contact = contact_name or "Chers Partenaire"
+        mots_declencheurs_pret = [
+            "pret", "prêt", "commencer", "oui", "ok", "vu", "d'accord", "daccord",
+            "allons-y", "parti", "1", "c'est parti", "cest parti", "pret_commencer",
+            "go", "en avant", "demarrer", "démarrer", "vocal", "ecrit", "écrit"
+        ]
+        est_pret = any(k in u_txt for k in mots_declencheurs_pret)
 
-        if (choix_vocal or choix_ecrit) or (not is_greeting(user_text) and any(k in u_txt for k in ["ok", "vu", "d'accord", "pret", "prêt", "commencer"])):
-            mode = "VOCAL" if choix_vocal else "ECRIT"
-            lang = "wo" if any(k in u_txt for k in ["wolof", "ouolof"]) else "fr"
-            update_onboarding_state(sender_phone, "mode_communication", mode)
-            update_onboarding_state(sender_phone, "langue_preferee", lang)
+        if est_pret and not is_greeting(user_text):
             update_onboarding_state(sender_phone, "etape", "PHASE_2_CHOIX_OPERATEURS")
-            mode_desc = "Note vocale 🎙️" if mode == "VOCAL" else "Messages textes ✍️"
-
             from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_operators_choice_list
             h, b, lbl, secs, ftr = build_operators_choice_list()
             asyncio.create_task(send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr))
             return (
-                f"Parfait {prenom_contact} ! Votre mode d'échange est configuré sur : *{mode_desc}*.\n\n"
+                f"C'est parti {prenom_contact} ! 🚀\n\n"
                 "Pour certifier vos comptes et vos dossiers de prêt auprès des banques et de la DGID, "
                 "Growth sépare rigoureusement vos recettes professionnelles de vos dépenses familiales.\n\n"
                 "👉 *Veuillez sélectionner votre situation dans le menu interactif ci-dessous :*"
@@ -5717,12 +5713,12 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         welcome_text = (
             f"Bonjour *{prenom_contact}* !\n\n"
             "Bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA officiel.\n\n"
-            "Ma mission est d'assurer la rigueur de votre trésorerie et de veiller à ce que votre comptabilité soit toujours prête pour les banques et la DGID.\n\n"
-            "Comment préférez-vous échanger avec moi au quotidien ?"
+            "Ma mission est d'assurer la rigueur de votre trésorerie et de veiller à ce que la comptabilité de votre entreprise soit toujours prête pour les banques et la DGID.\n\n"
+            "Vous êtes totalement libre d'échanger avec moi par notes vocales ou par écrit (en Wolof ou en Français), selon votre convenance à tout moment !\n\n"
+            "👉 *Êtes-vous prêt à commencer ?*"
         )
         buttons_mode = [
-            {"id": "mode_vocal", "title": "Note vocale"},
-            {"id": "mode_ecrit", "title": "Par Écrit"}
+            {"id": "pret_commencer", "title": "Oui, je suis prêt ! 🚀"}
         ]
         asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, welcome_text, buttons_mode))
         return ""
