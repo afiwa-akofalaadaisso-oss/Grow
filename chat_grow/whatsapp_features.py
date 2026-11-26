@@ -113,7 +113,52 @@ def build_main_operations_list() -> tuple:
 
     sections = [
         {
-            "title": "◼ 𝗘́𝗖𝗥𝗜𝗧𝗨𝗥𝗘𝗦 & 𝗖𝗔𝗜𝗦𝗦𝗘",
+            "title": "◼ 𝗦𝗘́𝗖𝗨𝗥𝗜𝗧𝗘́ & 𝗘́𝗤𝗨𝗜𝗣𝗘",
+            "rows": [
+                {
+                    "id": "op_salaires",
+                    "title": "Salaires & Avances",
+                    "description": "Livre de paie commis & apprentis"
+                },
+                {
+                    "id": "op_calculateur_marge",
+                    "title": "Calculateur de Marge",
+                    "description": "Prix de vente & rentabilité nette"
+                },
+                {
+                    "id": "op_controle_caisse",
+                    "title": "Contrôle Tiroir Caisse",
+                    "description": "Détecteur écarts & anti-coulage"
+                },
+                {
+                    "id": "op_anti_arnaque",
+                    "title": "Anti-Arnaque & Scanner",
+                    "description": "Faux Wave & lecture reçus papier"
+                }
+            ]
+        },
+        {
+            "title": "◼ 𝗖𝗥𝗢𝗜𝗦𝗦𝗔𝗡𝗖𝗘 & 𝗗𝗚𝗜𝗗",
+            "rows": [
+                {
+                    "id": "op_recu_client",
+                    "title": "Émettre Reçu Client",
+                    "description": "Facturette WhatsApp instantanée"
+                },
+                {
+                    "id": "op_credit",
+                    "title": "Relancer Débiteurs",
+                    "description": "Carnet crédits & rappels diplomatiques"
+                },
+                {
+                    "id": "op_fiscalite",
+                    "title": "Simulateur Impôt CGU",
+                    "description": "Barème DGID & provisions fiscales"
+                }
+            ]
+        },
+        {
+            "title": "◼ 𝗖𝗢𝗠𝗣𝗧𝗔𝗕𝗜𝗟𝗜𝗧𝗘́ & 𝗕𝗜𝗟𝗔𝗡",
             "rows": [
                 {
                     "id": "op_vente",
@@ -123,52 +168,12 @@ def build_main_operations_list() -> tuple:
                 {
                     "id": "op_depense",
                     "title": "Noter une Dépense",
-                    "description": "Achats stocks, réassort, loyer ou facture"
+                    "description": "Achats stocks réassort & popote 108"
                 },
-                {
-                    "id": "op_popote",
-                    "title": "Popote Maison (108)",
-                    "description": "Sortie famille sans fausser la marge"
-                },
-                {
-                    "id": "op_credit",
-                    "title": "Carnet Crédits & Relance",
-                    "description": "Suivi dettes clients & acomptes"
-                },
-                {
-                    "id": "op_calculateur_marge",
-                    "title": "Calculateur de Marge",
-                    "description": "Prix de vente & rentabilité nette"
-                }
-            ]
-        },
-        {
-            "title": "◼ 𝗣𝗜𝗟𝗢𝗧𝗔𝗚𝗘 & 𝗦𝗘́𝗖𝗨𝗥𝗜𝗧𝗘́",
-            "rows": [
                 {
                     "id": "op_bilan_pdf",
                     "title": "Mon Bilan SYSCOHADA",
-                    "description": "Liasse certifiée officielle en PDF"
-                },
-                {
-                    "id": "op_infographie",
-                    "title": "Tableau de Bord HD",
-                    "description": "Synthèse financière visuelle"
-                },
-                {
-                    "id": "op_anti_arnaque",
-                    "title": "Anti-Arnaque & Scanner",
-                    "description": "Faux Wave & lecture reçus papier"
-                },
-                {
-                    "id": "op_pret_express",
-                    "title": "Dossier Prêt Express",
-                    "description": "Capacité d'emprunt & banques"
-                },
-                {
-                    "id": "op_cloture_soir",
-                    "title": "Clôture de Caisse 20h",
-                    "description": "Arrêté de caisse & solde du jour"
+                    "description": "Liasse certifiée PDF & Synthèse HD"
                 }
             ]
         }
