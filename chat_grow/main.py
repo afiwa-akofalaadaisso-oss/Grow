@@ -3984,15 +3984,65 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     user_txt_lower = (user_text or "").lower().strip()
     clean_p = str(sender_phone).replace("+", "").replace(" ", "").strip()
 
-    # A) MENU DÉROULANT INTERACTIF (Interactive List)
-    mots_menu = ["menu", "options", "aide", "actions", "commencer", "operations", "opérations", "op_menu"]
-    if user_txt_lower in mots_menu or user_text in ["menu", "Menu", "MENU", "#menu"]:
+    # A) COMPÉTENCES DU COPILOTE & MENU DÉROULANT INTERACTIF (Interactive List)
+    patterns_competences = [
+        "competence", "compétence", "competences", "compétences",
+        "capable", "capacite", "capacité", "capacites", "capacités",
+        "que sais-tu", "que sais tu", "qu'est ce que tu sais", "quest ce que tu sais",
+        "que peux-tu", "que peux tu", "qu'est ce que tu peux", "quest ce que tu peux",
+        "tu peux faire quoi", "tu sais faire quoi", "tu fais quoi", "que fais-tu", "que fais tu",
+        "comment tu m'aide", "comment tu maide", "comment tu peux m'aider", "comment peux-tu m'aider",
+        "qui es-tu", "qui es tu", "c'est quoi growth", "cest quoi growth",
+        "presente toi", "présente-toi", "presente-toi", "présente toi",
+        "fonctionnalite", "fonctionnalité", "fonctionnalites", "fonctionnalités",
+        "à quoi tu sers", "a quoi tu sers", "tu sers a quoi", "tu sers à quoi",
+        "ce que tu es capable", "ce que tu peux faire", "ce que tu sais faire"
+    ]
+    is_competence_req = any(p in user_txt_lower for p in patterns_competences)
+
+    patterns_menu = [
+        "menu", "options", "actions", "commencer", "operations", "opérations",
+        "op_menu", "accueil", "liste", "#menu", "help", "aide"
+    ]
+    is_menu_req = (
+        user_txt_lower in patterns_menu 
+        or user_text.strip().lower() in ["menu", "#menu", "aide", "help", "options"]
+        or any(k in user_txt_lower for k in ["menu principal", "afficher le menu", "donne moi le menu", "voir le menu", "ouvrir le menu"])
+    )
+
+    if is_competence_req:
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
         asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
         return (
-            "📑 *Menu Déroulant Growth Affiché*\n\n"
-            "Cliquez sur le bouton *« Choisir une action »* ci-dessus pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Relance)."
+            "🌟 *GROWTH • COPILOTE FINANCIER & COMPTABLE PME*\n\n"
+            "Je suis votre assistant financier autonome d'élite, conçu pour sécuriser, structurer et propulser la gestion de votre commerce :\n\n"
+            "⚡ *1. Enregistrement Éclair (Texte ou Vocal)*\n"
+            "• Enregistrez vos ventes et dépenses (Espèces, Wave, Orange Money) en 3 secondes.\n"
+            "• Dictez vos opérations par note vocale en wolof ou en français, je les saisis instantanément.\n\n"
+            "📊 *2. Comptabilité SYSCOHADA SMT Conforme*\n"
+            "• Classement automatique dans le plan comptable officiel (701 Ventes, 601 Achats, 605 Fournitures, 108 Popote...).\n"
+            "• Journaux et livres de caisse certifiés conformes, prêts pour les contrôles.\n\n"
+            "📑 *3. Bilan Officiel PDF pour Banques & Prêts*\n"
+            "• Édition en un clic de votre bilan financier certifié et liasse SYSCOHADA en PDF pour obtenir des financements bancaires et microcrédits.\n\n"
+            "📈 *4. Tableau de Bord Financier & Synthèse HD*\n"
+            "• Génération de votre carte visuelle haute définition récapitulant vos ventes réelles, charges, marge commerciale et trésorerie disponible.\n\n"
+            "🍛 *5. Règle d'Or Popote Maison (Compte 108)*\n"
+            "• Vos retraits personnels et familiaux sont isolés pour protéger votre caisse sans jamais fausser votre rentabilité commerciale.\n\n"
+            "🤝 *6. Carnet de Crédits & Relances Débiteurs*\n"
+            "• Suivi des dettes clients, gestion des acomptes par tranches et génération de messages de relance automatiques et polis.\n\n"
+            "🏛️ *7. Fiscalité DGID & Alertes Déclarations*\n"
+            "• Suivi de la Contribution Globale Unique (CGU), retenues BRS et calendrier des échéances fiscales.\n\n"
+            "👉 *Pour passer à l'action dès maintenant, cliquez sur « Choisir une action » dans le menu interactif ci-dessus !*"
+        )
+
+    if is_menu_req:
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+        h, b, lbl, secs, ftr = build_main_operations_list()
+        asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
+        return (
+            "📑 *MENU PRINCIPAL GROWTH*\n\n"
+            "Cliquez sur le bouton interactif *« Choisir une action »* ci-dessus pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Carnet Crédits, Outils PME)."
         )
 
     # B) BILAN COMPTABLE SYSCOHADA & DOSSIER PRÊT AVEC CIRCUIT VISA CABINET (Human-in-the-Loop)
