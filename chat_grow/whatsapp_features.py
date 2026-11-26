@@ -479,30 +479,17 @@ async def send_whatsapp_document(
         except Exception as e_up:
             print(f"[WHATSAPP DOC MEDIA ERREUR] {e_up}")
 
-    if media_id:
-        payload = {
-            "messaging_product": "whatsapp",
-            "recipient_type": "individual",
-            "to": clean_phone,
-            "type": "document",
-            "document": {
-                "id": media_id,
-                "filename": filename,
-                "caption": caption[:1024]
-            }
-        }
-    else:
-        payload = {
-            "messaging_product": "whatsapp",
-            "recipient_type": "individual",
-            "to": clean_phone,
-            "type": "document",
-            "document": {
-                "link": doc_url,
-                "filename": filename,
-                "caption": caption[:1024]
-            }
-        }
+    doc_data = {"id": media_id, "filename": filename} if media_id else {"link": doc_url, "filename": filename}
+    if caption and caption.strip():
+        doc_data["caption"] = caption.strip()[:1024]
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": clean_phone,
+        "type": "document",
+        "document": doc_data
+    }
 
     def _sync():
         try:
@@ -828,19 +815,14 @@ async def generer_et_envoyer_bilan_pme(sender_phone: str) -> bool:
         })
 
     pdf_local_path = generer_bilan_pdf(pme_data, ecritures_formattees)
-    pdf_filename = os.path.basename(pdf_local_path)
+    nom_propre = re.sub(r"[^\w\s-]", "", pme_data['nom_entreprise']).strip().replace(" ", "_") or "PME"
+    pdf_filename = f"Bilan_SYSCOHADA_{nom_propre}.pdf"
     base_url = get_media_base_url()
-    public_pdf_url = f"{base_url}/static/documents/{pdf_filename}"
+    public_pdf_url = f"{base_url}/static/documents/{os.path.basename(pdf_local_path)}"
 
-    caption = (
-        f"📄 *Bilan & Liasse Fiscale Officielle SYSCOHADA SMT*\n"
-        f"Entreprise : *{pme_data['nom_entreprise']}*\n"
-        f"Supervisé par le *{cab_nom}* • Scellé SHA-256."
-    )
-
-    # Privilégie le chemin local direct pour upload Meta Media API immédiat
+    # Envoi pur du fichier PDF sans aucun commentaire parasite (consigne stricte utilisateur)
     target_pdf = pdf_local_path if os.path.exists(pdf_local_path) else public_pdf_url
-    return await send_whatsapp_document(clean_p, target_pdf, pdf_filename, caption)
+    return await send_whatsapp_document(clean_p, target_pdf, pdf_filename, caption="")
 
 
 generer_et_envoyer_bilan_pdf = generer_et_envoyer_bilan_pme
