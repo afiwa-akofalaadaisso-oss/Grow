@@ -24,13 +24,18 @@ from dotenv import load_dotenv
 from chat_grow.pdf_generator import generer_bilan_pdf
 from chat_grow.infography_generator import generer_infographie_hebdo
 
-DEFAULT_PHONE_NUMBER_ID = "1402996216237805"
+DEFAULT_PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID", "1432871489913065")
 RENDER_PRODUCTION_URL = "https://grow-2epo.onrender.com"
 
 
 def get_whatsapp_credentials():
     """Charge les clés d'API WhatsApp Cloud."""
-    load_dotenv(override=True)
+    # Charge prioritairement chat_grow/.env si présent
+    env_path = os.path.join(os.path.dirname(__file__), ".env")
+    if os.path.exists(env_path):
+        load_dotenv(env_path, override=True)
+    else:
+        load_dotenv(override=True)
     token = os.getenv("WHATSAPP_TOKEN")
     phone_id = os.getenv("PHONE_NUMBER_ID", DEFAULT_PHONE_NUMBER_ID) or DEFAULT_PHONE_NUMBER_ID
     return token, phone_id
