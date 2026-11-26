@@ -107,39 +107,27 @@ def prompt_rappel_etape(etape: str, onboarding: dict) -> str:
 
     if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
         return (
-            "Pour continuer, comment préférez-vous échanger avec moi au quotidien ?\n"
-            "1) Par Note vocale 🎙️\n"
-            "2) Par Écrit ✍️\n\n"
-            "👉 Répondez simplement 1 ou 2."
+            "Vous pouvez m'écrire par message ou m'envoyer directement des notes vocales en français ou en wolof à tout moment !"
         )
     if etape == "PHASE_2_NUMERO_SECONDAIRE":
         return (
-            "Avez-vous également un numéro pour **Orange Money** à relier à votre compte ?\n"
-            "• Si oui, écrivez-moi simplement votre numéro,\n"
-            "• Si vous n'utilisez que Wave, dites simplement « Non, Wave seulement »."
+            "Avez-vous également un numéro pour Orange Money à relier à votre compte ?\n"
+            "(Si vous utilisez Wave seulement, dites-le moi simplement)."
         )
     if etape == "PHASE_2_CHOIX_OPERATEURS":
         return (
-            "Veuillez choisir votre situation dans le menu déroulant ou me dire quel compte vous utilisez :\n"
-            "Wave Business, Orange Business, ou comptes personnels ?"
+            "Utilisez-vous principalement Wave Business, Orange Business, ou vos comptes personnels ?"
         )
     if etape in ["PHASE_3_IDENTIFICATION_NINEA", "PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
         return (
             "Avez-vous un document NINEA ou Registre de Commerce (RCCM) pour votre entreprise ?\n"
-            "(Si vous n'en avez pas, dites simplement « Non » ou « Pas encore », ce n'est pas obligatoire pour commencer)."
+            "(Si vous n'en avez pas encore, ce n'est pas bloquant, dites-moi simplement « Pas encore »)."
         )
     if etape in ["PHASE_3_NOM_COMMERCIAL_SANS_NINEA", "PHASE_3_NOM_COMMERCIAL"]:
-        return "Quel est le nom commercial ou l'enseigne de votre boutique / activité ?"
-    if etape == "PHASE_3_QUESTION_CABINET":
+        return "Quel est le nom ou l'enseigne de votre entreprise / boutique ?"
+    if etape in ["PHASE_3_QUESTION_CABINET", "PHASE_3_CHOIX_PROPOSITION_CABINET"]:
         return (
-            "Travaillez-vous déjà avec un cabinet comptable partenaire ?\n"
-            "Si oui, quel est son nom ? Si non, répondez simplement « Non »."
-        )
-    if etape == "PHASE_3_CHOIX_PROPOSITION_CABINET":
-        return (
-            "Souhaitez-vous être rattaché(e) à un de nos cabinets partenaires certifiés (ex: Cabinet Adaisso & Partenaires) pour superviser et viser vos bilans ?\n"
-            "1) Oui, me rattacher\n"
-            "2) Non, continuer en gestion autonome"
+            "Travaillez-vous déjà avec un cabinet comptable, ou souhaitez-vous que nous associions votre entreprise à notre cabinet partenaire agréé ONECCA (*Cabinet Adaisso & Partenaires*) ?"
         )
     if etape == "PHASE_2_ACTIVITE_LOCALISATION":
         return (
