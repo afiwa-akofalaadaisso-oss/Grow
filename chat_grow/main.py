@@ -3809,10 +3809,9 @@ async def receive_message(request: Request):
             sender_phone = message.get("from")
             msg_type = message.get("type")
 
-            # 0. Accusé de lecture immédiat (double coche bleue) et réaction "en train de rédiger" (✍️)
+            # 0. Accusé de lecture immédiat (double coche bleue)
             if msg_id:
                 asyncio.create_task(mark_whatsapp_message_as_read(msg_id))
-                asyncio.create_task(send_whatsapp_reaction(sender_phone, msg_id, "✍️"))
 
             # 1. MESSAGE TEXTE
             if msg_type == "text":
@@ -3821,8 +3820,6 @@ async def receive_message(request: Request):
 
                 reply_text = await handle_incoming_message(sender_phone, user_text, None, contact_name)
                 await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=True)
-                if msg_id:
-                    asyncio.create_task(send_whatsapp_reaction(sender_phone, msg_id, "✅"))
 
             # 1.bis BOUTON INTERACTIF OU MENU LISTE CLIQUÉ (Feedback 👍 / 👎, Menu Opérations, Action rapide)
             elif msg_type == "interactive":
