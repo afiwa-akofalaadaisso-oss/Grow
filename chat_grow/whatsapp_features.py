@@ -166,9 +166,85 @@ def build_main_operations_list() -> tuple:
                     "description": "Arrêté de caisse & ventilation"
                 },
                 {
-                    "id": "op_menu_innovations",
-                    "title": "⚡ Outils Avancés & IA",
-                    "description": "Anti-arnaque, Scanner reçu, DGID..."
+                    "id": "op_hub_tpe",
+                    "title": "🌟 Tous les Outils PME",
+                    "description": "Salaires, Marge, Anti-fraude, Scanner..."
+                }
+            ]
+        }
+    ]
+
+    return header_text, body_text, button_label, sections, footer_text
+
+
+def build_all_pme_hub_list() -> tuple:
+    """Construit le catalogue universel des outils et innovations pour PME & TPE."""
+    header_text = "HUB INTÉGRAL PME & TPE"
+    body_text = (
+        "L'arsenal digital complet pour sécuriser, rentabiliser et faire grandir votre entreprise :\n\n"
+        "Sélectionnez un outil spécialisé ci-dessous :"
+    )
+    button_label = "Ouvrir l'outil"
+    footer_text = "Growth • Le Système PME"
+
+    sections = [
+        {
+            "title": "Sécurité & Équipe",
+            "rows": [
+                {
+                    "id": "op_salaires",
+                    "title": "Salaires & Avances",
+                    "description": "Livre de paie commis & apprentis"
+                },
+                {
+                    "id": "op_calculateur_marge",
+                    "title": "Calculateur de Marge",
+                    "description": "Prix de vente & rentabilité nette"
+                },
+                {
+                    "id": "op_controle_caisse",
+                    "title": "Contrôle Tiroir Caisse",
+                    "description": "Détecteur écarts & anti-coulage"
+                },
+                {
+                    "id": "op_anti_arnaque",
+                    "title": "Anti-Arnaque Wave",
+                    "description": "Détecter faux transferts & SMS"
+                },
+                {
+                    "id": "op_scanner_recu",
+                    "title": "Scanner Reçu Froissé",
+                    "description": "Photo ticket grossiste par IA Vision"
+                }
+            ]
+        },
+        {
+            "title": "Croissance & Légalité",
+            "rows": [
+                {
+                    "id": "op_recu_client",
+                    "title": "Émettre Reçu Client",
+                    "description": "Facturette WhatsApp instantanée"
+                },
+                {
+                    "id": "op_relance",
+                    "title": "Relancer Débiteurs",
+                    "description": "Modèles de rappels diplomatiques"
+                },
+                {
+                    "id": "op_barometre",
+                    "title": "Baromètre des Prix",
+                    "description": "Alerte hausse grossistes"
+                },
+                {
+                    "id": "op_fiscalite",
+                    "title": "Simulateur Impôt CGU",
+                    "description": "Barème DGID & provisions fiscales"
+                },
+                {
+                    "id": "op_menu_principal",
+                    "title": "🔙 Menu Principal",
+                    "description": "Revenir aux opérations courantes"
                 }
             ]
         }
@@ -178,69 +254,8 @@ def build_main_operations_list() -> tuple:
 
 
 def build_innovations_menu_list() -> tuple:
-    """Construit le sous-menu interactif des outils avancés et innovations sénégalaises."""
-    header_text = "OUTILS AVANCÉS & IA"
-    body_text = (
-        "Technologies exclusives Growth conçues pour la réalité des commerces au Sénégal :\n\n"
-        "Sélectionnez un outil spécialisé ci-dessous :"
-    )
-    button_label = "Ouvrir l'outil"
-    footer_text = "Growth • Technologies PME"
-
-    sections = [
-        {
-            "title": "Sécurité & Contrôle IA",
-            "rows": [
-                {
-                    "id": "op_anti_arnaque",
-                    "title": "Anti-Arnaque Wave",
-                    "description": "Détecter faux transferts & SMS"
-                },
-                {
-                    "id": "op_scanner_recu",
-                    "title": "Scanner Reçu Froissé",
-                    "description": "Extraire ticket papier par photo"
-                },
-                {
-                    "id": "op_barometre",
-                    "title": "Baromètre des Prix",
-                    "description": "Surveillance hausse grossistes"
-                }
-            ]
-        },
-        {
-            "title": "Gestion & Relations",
-            "rows": [
-                {
-                    "id": "op_recu_client",
-                    "title": "Émettre Reçu Client",
-                    "description": "Reçu numérique WhatsApp instantané"
-                },
-                {
-                    "id": "op_relance",
-                    "title": "Relancer Débiteurs",
-                    "description": "Messages de rappel courtois"
-                },
-                {
-                    "id": "op_fiscalite",
-                    "title": "Échéances DGID",
-                    "description": "Calendrier fiscal & CGU Sénégal"
-                },
-                {
-                    "id": "op_journal_web",
-                    "title": "Mon Journal Web",
-                    "description": "Accès portail sécurisé SHA-256"
-                },
-                {
-                    "id": "op_menu_principal",
-                    "title": "🔙 Menu Principal",
-                    "description": "Revenir au menu général"
-                }
-            ]
-        }
-    ]
-
-    return header_text, body_text, button_label, sections, footer_text
+    """Alias rétro-compatible pour le sous-menu Hub PME."""
+    return build_all_pme_hub_list()
 
 
 async def send_whatsapp_interactive_list(

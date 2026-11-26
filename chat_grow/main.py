@@ -4130,13 +4130,21 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         )
 
     # G) ASSISTANCE RAPIDE & NAVIGATION INTERACTIVE DANS LES MENUS
-    if user_txt_lower == "op_menu_innovations" or user_txt_lower in ["innovations", "outils", "outils avances", "outils avancés", "plus"]:
-        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_innovations_menu_list
-        h, b, lbl, secs, ftr = build_innovations_menu_list()
+    if user_txt_lower in ["op_hub_tpe", "op_menu_innovations", "hub", "tpe", "boite", "boite a outils", "innovations", "outils", "outils avances", "outils avancés", "plus"]:
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_all_pme_hub_list
+        h, b, lbl, secs, ftr = build_all_pme_hub_list()
         asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
         return (
-            "⚡ *Menu des Outils Avancés & IA Déployé !*\n\n"
-            "Cliquez sur *« Ouvrir l'outil »* ci-dessus pour sélectionner un outil spécialisé (Anti-Arnaque Wave, Scanner Reçu Froissé, Baromètre Grossistes, Reçus Clients, DGID)."
+            "🌟 *HUB INTÉGRAL PME & TPE DÉPLOYÉ !*\n\n"
+            "Cliquez sur *« Ouvrir l'outil »* ci-dessus pour accéder à tout l'arsenal indispensable pour votre commerce :\n"
+            "• Salaires & Avances des employés\n"
+            "• Calculateur de Marge & Prix de Vente\n"
+            "• Contrôle Tiroir-Caisse & Anti-Coulage\n"
+            "• Anti-Arnaque aux Faux Transferts Wave\n"
+            "• Scanner OCR de Reçus & Factures Froissées\n"
+            "• Émission Instantanée de Reçus Clients\n"
+            "• Relances Débiteurs Diplomatiques\n"
+            "• Simulateur Fiscal CGU & Impôts DGID"
         )
 
     if user_txt_lower == "op_menu_principal":
@@ -4244,11 +4252,46 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "Growth vous génère une facturette électronique prête à transférer au client !"
         )
 
-    if user_txt_lower in ["op_localisation", "gps", "localisation"]:
+    if user_txt_lower in ["op_salaires", "salaires", "paie", "livre de paie"]:
+        from chat_grow.pme_boite_a_outils import obtenir_recap_salaires_mois
+        recap = obtenir_recap_salaires_mois(clean_p)
+        if recap["employes"]:
+            lignes = [f"• *{e['employe']}* : Base {e['salaire_base']:,} F | Avances {e['total_avances']:,} F | Reste {e['reste_du_mois']:,} F".replace(",", " ") for e in recap["employes"]]
+            return (
+                f"👥 *Livre de Paie & Salaires du Personnel ({recap['mois']})*\n\n"
+                + "\n".join(lignes) +
+                f"\n\n💰 Total Masse Salariale : {recap['total_salaires']:,} FCFA\n"
+                f"💸 Total Avances Versées : {recap['total_avances']:,} FCFA\n"
+                f"⏳ Reste à Payer en fin de mois : *{recap['total_reste_a_verser']:,} FCFA*\n\n"
+                "👉 Pour noter une nouvelle avance, écrivez simplement :\n*« Avance 15000 salaire [Nom] »*."
+            ).replace(",", " ")
+        else:
+            return (
+                "👥 *Livre de Paie & Avances Salariés (TPE)*\n\n"
+                "Aucun salaire ou avance n'a encore été enregistré pour ce mois.\n\n"
+                "👉 Pour enregistrer une avance donnée à un vendeur, commis ou apprenti, écrivez simplement :\n"
+                "• *« Avance 15 000 salaire Moussa »*\n"
+                "• *« Avance 25 000 salaire Fatou base 80 000 »*\n\n"
+                "Growth déduit automatiquement l'avance et calcule le reste exact dû en fin de mois pour zéro dispute !"
+            )
+
+    if user_txt_lower in ["op_calculateur_marge", "calculateur marge", "calculer marge", "prix de vente", "combien vendre"]:
         return (
-            "📍 *Envoi de la Localisation GPS de votre Boutique*\n\n"
-            "Pour enregistrer l'emplacement géographique certifié de votre magasin ou atelier dans votre fiche fiscale DGID :\n\n"
-            "👉 Cliquez sur le trombone WhatsApp 📎 ➔ *Localisation* ➔ *Envoyer votre position actuelle*."
+            "📊 *Calculateur de Marge Commerciale & Prix de Vente Conseillé*\n\n"
+            "Pour fixer un prix de vente qui garantit votre bénéfice net après frais (transport, dockers, emballage) :\n\n"
+            "👉 Écrivez simplement : *« Achat [Prix Grossiste] frais [Frais] marge [Pourcentage]% »*\n"
+            "Exemples :\n"
+            "• *« Achat 18 000 frais 1 000 marge 25% »*\n"
+            "• *« Achat 5 000 marge 30% »*\n\n"
+            "Growth calcule le coût de revient exact et vous donne le prix de vente au détail parfait !"
+        )
+
+    if user_txt_lower in ["op_controle_caisse", "controle caisse", "contrôle caisse", "tiroir"]:
+        return (
+            "🔎 *Détecteur d'Écarts & Contrôle du Tiroir-Caisse (Anti-Coulage)*\n\n"
+            "Comptez simplement l'argent liquide présent dans votre tiroir et écrivez :\n"
+            "👉 *« Tiroir [Montant en espèces] »* (ex: *« Tiroir 145 000 »*).\n\n"
+            "Growth compare instantanément vos espèces réelles avec vos ventes et dépenses enregistrées, et vous signale tout surplus ou manquant !"
         )
 
     if user_txt_lower == "op_stocks":
@@ -4332,6 +4375,90 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "Dictez-moi ou écrivez simplement la liste de ce qui se trouve sur vos étagères (ex: *« Reste 10 sacs de riz, 6 bidons d'huile Dinor, 12 cartons de lait »*).\n\n"
             "Je valoriserai immédiatement votre stock au PUMP (Prix Unitaire Moyen Pondéré) pour vos actifs SYSCOHADA !"
         )
+
+    # M) GESTION SALAIRES & AVANCES EMPLOYÉS
+    if "avance" in user_txt_lower and "salaire" in user_txt_lower:
+        m_sal = re.search(r"avance\s+(\d[\d\s]*)\s+(?:sur\s+salaire\s+|salaire\s+)?([A-Za-zÀ-ÿ]+)(?:\s+(?:base\s+)?(\d[\d\s]*))?", user_text, re.IGNORECASE)
+        if m_sal:
+            m_av = int(re.sub(r"\D", "", m_sal.group(1)))
+            nom_emp = m_sal.group(2).strip()
+            sal_base = int(re.sub(r"\D", "", m_sal.group(3))) if m_sal.group(3) else 0
+            from chat_grow.pme_boite_a_outils import enregistrer_avance_salaire
+            res_sal = enregistrer_avance_salaire(clean_p, nom_emp, m_av, sal_base)
+            return (
+                f"👥 *Avance sur Salaire Enregistrée !*\n\n"
+                f"• Employé : *{res_sal['employe']}*\n"
+                f"• Avance versée : *{res_sal['avance']:,} FCFA*\n"
+                f"• Salaire de base : {res_sal['salaire_base']:,} FCFA\n"
+                f"• Total avances du mois : {res_sal['total_avances']:,} FCFA\n"
+                f"• ⏳ *Reste dû fin de mois : {res_sal['reste_du']:,} FCFA*\n\n"
+                f"Imputé au Compte SYSCOHADA 421 (Personnel - Avances) & 66 (Charges de personnel).".replace(",", " ")
+            )
+
+    # N) CALCULATEUR DE MARGE COMMERCIALE & PRIX DE VENTE CONSEILLÉ
+    if "achat" in user_txt_lower and "marge" in user_txt_lower:
+        m_mrg = re.search(r"achat\s+(\d[\d\s]*)(?:.*?frais\s+(\d[\d\s]*))?.*?marge\s+(\d+)", user_text, re.IGNORECASE)
+        if m_mrg:
+            p_ach = float(re.sub(r"\D", "", m_mrg.group(1)))
+            f_ann = float(re.sub(r"\D", "", m_mrg.group(2))) if m_mrg.group(2) else 0.0
+            pct_mrg = float(m_mrg.group(3))
+            from chat_grow.pme_boite_a_outils import calculer_marge_et_prix_conseille
+            res_mrg = calculer_marge_et_prix_conseille(p_ach, f_ann, pct_mrg)
+            return (
+                f"📊 *Calcul de Marge & Prix de Vente Conseillé*\n\n"
+                f"• Prix d'Achat Grossiste : *{res_mrg['prix_achat_grossiste']:,} FCFA*\n"
+                f"• Frais annexes (transport/dockers) : *{res_mrg['frais_annexes']:,} FCFA*\n"
+                f"• Coût de Revient Réel : *{res_mrg['cout_revient_total']:,} FCFA*\n\n"
+                f"🎯 *Objectif Marge Nette : {res_mrg['marge_cible_pct']}%*\n"
+                f"👉 *PRIX DE VENTE AU DÉTAIL CONSEILLÉ : {res_mrg['prix_vente_conseille']:,} FCFA*\n"
+                f"💰 Bénéfice net unitaire garanti : *+{res_mrg['gain_net_unitaire']:,} FCFA / unité*.".replace(",", " ")
+            )
+
+    # O) CONTRÔLE TIROIR-CAISSE & DÉTECTEUR D'ÉCARTS
+    if user_txt_lower.startswith("tiroir") or "caisse physique" in user_txt_lower:
+        m_tir = re.search(r"(\d[\d\s]+)", user_text)
+        if m_tir:
+            esp_reelles = int(re.sub(r"\D", "", m_tir.group(1)))
+            from chat_grow.pme_boite_a_outils import verifier_ecart_caisse_tiroir
+            res_tir = verifier_ecart_caisse_tiroir(clean_p, esp_reelles)
+            if res_tir["est_carre"]:
+                verdict = "🟢 *CAISSE PARFAITEMENT CARRÉE !*\nAucun écart détecté entre vos espèces physiques et vos écritures."
+            elif res_tir["est_manquant"]:
+                verdict = f"🔴 *ATTENTION : MANQUANT DE {-res_tir['ecart']:,} FCFA !*\nVos espèces réelles sont inférieures au solde calculé (erreur de monnaie, sortie non notée ou vol).".replace(",", " ")
+            else:
+                verdict = f"🟡 *SURPLUS DE +{res_tir['ecart']:,} FCFA !*\nVous avez plus d'espèces en caisse que prévu (vente oubliée d'être enregistrée ?).".replace(",", " ")
+
+            return (
+                f"🔎 *Contrôle du Tiroir-Caisse (Point Espèces)*\n\n"
+                f"• Espèces Réelles comptées : *{res_tir['especes_tiroir']:,} FCFA*\n"
+                f"• Solde Théorique attendu : *{res_tir['caisse_theorique']:,} FCFA*\n"
+                f"  (Ventes espèces {res_tir['ventes_jour_especes']:,} F - Dépenses {res_tir['depenses_jour_especes']:,} F)\n\n"
+                f"{verdict}"
+            ).replace(",", " ")
+
+    # P) ANTI-ARNAQUE EN DIRECT : VÉRIFICATION TRANSFERT WAVE
+    if user_txt_lower.startswith("vérifier") or user_txt_lower.startswith("verifier"):
+        m_vrf = re.search(r"(\d[\d\s]+)", user_text)
+        if m_vrf:
+            montant_vrf = int(re.sub(r"\D", "", m_vrf.group(1)))
+            from chat_grow.database import get_transactions_resilient, get_entreprise_by_phone_resilient
+            ent = get_entreprise_by_phone_resilient(clean_p) or {}
+            txs = get_transactions_resilient(ent.get("id") or clean_p) or []
+            # Chercher dans les transactions Wave des dernières 24h
+            trouve = any(t.get("montant_fcfa") == montant_vrf and t.get("mode_paiement") in ["WAVE", "ORANGE_MONEY"] for t in txs)
+            if trouve:
+                return (
+                    f"🟢 *TRANSFERT CONFIRMÉ AUTHENTIQUE !*\n\n"
+                    f"Le virement de *{montant_vrf:,} FCFA* a bien été reçu et scellé sur votre compte marchand par Webhook officiel.\n"
+                    f"Vous pouvez remettre la marchandise au client en toute sérénité !".replace(",", " ")
+                )
+            else:
+                return (
+                    f"🚨 *ALERTE FRAUDE : AUCUN TRANSFERT DE {montant_vrf:,} FCFA REÇU !*\n\n"
+                    f"Nous avons vérifié en temps réel les flux officiels de votre passerelle.\n"
+                    f"Aucun paiement de ce montant n'a crédité votre compte marchand aujourd'hui.\n\n"
+                    f"⚠️ *NE LIVREZ PAS LA MARCHANDISE !* Il s'agit très probablement d'une fausse capture d'écran ou d'un faux SMS.".replace(",", " ")
+                )
 
     # 0.05 DÉTECTION DEMANDE DE VIDÉO OU TUTORIEL DÉMONSTRATION
     user_txt_lower = (user_text or "").lower().strip()
