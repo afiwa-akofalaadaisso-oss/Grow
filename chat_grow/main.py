@@ -4036,6 +4036,17 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     )
 
 
+    if is_competence_req:
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+        h, b, lbl, secs, ftr = build_main_operations_list()
+        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
+        return (
+            "Je suis votre copilote financier et comptable officiel SYSCOHADA ! "
+            "Je vous aide à piloter votre activité en temps réel : j'enregistre vos ventes et dépenses (en note vocale ou texte, Wave, Orange Money, Caisse), "
+            "je calcule votre rentabilité nette, je sécurise vos encaissements et je transmets vos comptes à votre cabinet d'expertise comptable partenaire.\n\n"
+            "👉 *Consultez le Menu interactif ci-dessus pour choisir directement votre action !*"
+        )
+
     if is_menu_req:
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
