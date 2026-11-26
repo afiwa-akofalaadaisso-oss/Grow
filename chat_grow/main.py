@@ -4147,18 +4147,10 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     if user_txt_lower in ["op_hub_tpe", "op_menu_innovations", "hub", "tpe", "boite", "boite a outils", "innovations", "outils", "outils avances", "outils avancés", "plus"]:
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_all_pme_hub_list
         h, b, lbl, secs, ftr = build_all_pme_hub_list()
-        asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
+        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
         return (
-            "🌟 *HUB INTÉGRAL PME & TPE DÉPLOYÉ !*\n\n"
-            "Cliquez sur *« Ouvrir l'outil »* ci-dessus pour accéder à tout l'arsenal indispensable pour votre commerce :\n"
-            "• Salaires & Avances des employés\n"
-            "• Calculateur de Marge & Prix de Vente\n"
-            "• Contrôle Tiroir-Caisse & Anti-Coulage\n"
-            "• Anti-Arnaque aux Faux Transferts Wave\n"
-            "• Scanner OCR de Reçus & Factures Froissées\n"
-            "• Émission Instantanée de Reçus Clients\n"
-            "• Relances Débiteurs Diplomatiques\n"
-            "• Simulateur Fiscal CGU & Impôts DGID"
+            "🌟 *Arsenal & Outils Spécialisés PME*\n\n"
+            "Cliquez sur le bouton interactif *« Ouvrir l'outil »* ci-dessus pour sélectionner votre outil (Salaires, Calculateur de Marge, Contrôle Tiroir, Anti-Arnaque, Scanner OCR, Impôt CGU)."
         )
 
     if user_txt_lower == "op_menu_principal":
