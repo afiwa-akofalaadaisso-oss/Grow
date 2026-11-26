@@ -5138,22 +5138,17 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     lien_abo = f"{base_url}/abonnement?phone={clean_phone}"
 
     # 0. CERVEAU CONVERSATIONNEL INTELLIGENT (IA GEMINI FLASH)
-    # Intervient pour répondre aux questions libres ou explications hors-parcours
-    # Ne court-circuite JAMAIS les réponses directes aux étapes clés d'onboarding
-    etapes_reponses_directes = [
-        "PHASE_2_CHOIX_OPERATEURS",
-        "PHASE_3_IDENTIFICATION_NINEA",
-        "PHASE_3_NOM_COMMERCIAL",
-        "PHASE_3_NOM_COMMERCIAL_SANS_NINEA",
-        "PHASE_3_QUESTION_CABINET",
-        "PHASE_3_CHOIX_PROPOSITION_CABINET",
-        "PHASE_4_ANCIENS_RELEVES",
-        "PHASE_5_INVENTAIRE_CAISSE_ESPECES",
-        "PHASE_5_INVENTAIRE_IMMOBILISATIONS",
-        "PHASE_5_INVENTAIRE_STOCK",
-        "PHASE_5_INVENTAIRE_CREANCES_DETTES"
+    # Permet à Growth de dialoguer avec la liberté et la finesse de ChatGPT :
+    # Intercepte et répond à TOUTES les questions libres ("comment obtenir le Ninea", "combien ça coûte", etc.)
+    # Ne s'exécute pas si l'utilisateur clique sur un bouton interactif prédéfini.
+    boutons_directs = [
+        "opt_a", "opt_b", "opt_c", "opt_d", "opt_e",
+        "ninea_oui", "ninea_non", "mode_vocal", "mode_ecrit"
     ]
-    if user_text and not media_tuple and etape not in etapes_reponses_directes:
+    u_strip_lower = (user_text or "").strip().lower()
+    est_clic_bouton = u_strip_lower in boutons_directs
+
+    if user_text and not media_tuple and not est_clic_bouton:
         try:
             supervision = await superviser_message_onboarding(
                 sender_phone=sender_phone,
@@ -5507,6 +5502,14 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     # 3.2 NOM COMMERCIAL SANS NINEA
     if etape == "PHASE_3_NOM_COMMERCIAL_SANS_NINEA":
         u_txt = (user_text or "").strip()
+        # Sécurité : Si l'utilisateur pose une question (ex: "dit moi...", "comment..."), ne jamais l'enregistrer comme nom de boutique !
+        mots_question = ["comment", "pourquoi", "dit moi", "dis moi", "combien", "c'est quoi", "qu'est-ce", "?", "est-ce", "qui", "quand", "aide", "ninea", "apix", "rccm"]
+        if any(q in u_txt.lower() for q in mots_question):
+            return (
+                "Pour obtenir votre NINEA, il vous suffit de vous rendre à l'APIX ou au centre fiscal avec votre CNI et 14 000 F (nom propre) ou 24 000 F (nom commercial). C'est délivré en 24h à 48h !\n\n"
+                "👉 Pour continuer la configuration de votre compte Growth dès maintenant, **quel est le nom ou l'enseigne de votre boutique / commerce ?** (ex: *Chez Fatou*, *Boutique Touba*)"
+            )
+
         nom_commercial = nettoyer_nom_entreprise(u_txt)
         if len(nom_commercial) < 2:
             nom_commercial = f"Commerce {clean_phone[-4:]}"
@@ -5536,6 +5539,13 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         u_clean = u_txt.lower()
         mots_sans_cabinet = ["non", "pas de cabinet", "aucun", "pas encore", "amuma", "amu ma", "je n'ai pas", "j'en ai pas", "seul", "moi meme", "moi-même"]
         nom_commercial = onboarding.get("nom_entreprise") or f"Commerce {clean_phone[-4:]}"
+
+        mots_question = ["comment", "pourquoi", "dit moi", "dis moi", "combien", "c'est quoi", "qu'est-ce", "?", "aide"]
+        if any(q in u_clean for q in mots_question):
+            return (
+                "La supervision par un cabinet agréé (comme le Cabinet Adaisso & Partenaires) permet à votre expert d'apposer son visa légal sur vos bilans pour vos dossiers de prêt bancaire et la DGID.\n\n"
+                "👉 Travaillez-vous déjà avec un cabinet comptable ? (Répondez avec son nom, ou dites simplement « Non »)."
+            )
 
         if any(k in u_clean for k in mots_sans_cabinet):
             update_onboarding_state(sender_phone, "etape", "PHASE_3_CHOIX_PROPOSITION_CABINET")

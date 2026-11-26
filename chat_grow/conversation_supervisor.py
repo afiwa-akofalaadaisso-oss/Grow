@@ -43,10 +43,30 @@ def get_description_etape(etape: str, onboarding: dict) -> str:
             f"ÉTAPE : RACCORDEMENT DU DEUXIÈME OPÉRATEUR (Entreprise: {nom_ent}).\n"
             "Action attendue : Donner son numéro Orange Money ou dire 'Non, Wave seulement'."
         )
-    if etape in ["PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
+    if etape == "PHASE_2_CHOIX_OPERATEURS":
+        return (
+            f"ÉTAPE : CHOIX DES OPÉRATEURS & COMPTES BANCAIRES/MOBILES (Entreprise: {nom_ent}).\n"
+            "Action attendue : Choisir son statut (Wave Business, Orange Business, Comptes Personnels, Mixte)."
+        )
+    if etape in ["PHASE_3_IDENTIFICATION_NINEA", "PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
         return (
             f"ÉTAPE : IDENTITÉ OFFICIELLE & NINEA/RCCM (Entreprise: {nom_ent}).\n"
-            "Action attendue : Envoyer la photo du NINEA/RCCM ou dire simplement 'Non' / 'Pas encore' (c'est 100% optionnel)."
+            "Action attendue : Envoyer la photo du NINEA/RCCM ou dire simplement 'Non' / 'Pas encore' (c'est optionnel pour démarrer)."
+        )
+    if etape in ["PHASE_3_NOM_COMMERCIAL_SANS_NINEA", "PHASE_3_NOM_COMMERCIAL"]:
+        return (
+            f"ÉTAPE : NOM COMMERCIAL / ENSEIGNE DU COMMERCE (Entreprise: {nom_ent}).\n"
+            "Action attendue : Donner le nom ou l'enseigne de sa boutique / commerce (ex: 'Boutique Touba', 'Chez Fatou')."
+        )
+    if etape == "PHASE_3_QUESTION_CABINET":
+        return (
+            f"ÉTAPE : SUPERVISION PAR UN CABINET COMPTABLE PARTENAIRE (Entreprise: {nom_ent}).\n"
+            "Action attendue : Dire s'il travaille déjà avec un cabinet comptable (donner le nom) ou dire 'Non' / 'Aucun'."
+        )
+    if etape == "PHASE_3_CHOIX_PROPOSITION_CABINET":
+        return (
+            f"ÉTAPE : RATTACHEMENT À UN CABINET COMPTABLE PARTENAIRE AGRÉÉ (Entreprise: {nom_ent}).\n"
+            "Action attendue : Répondre 1 (Oui pour être rattaché) ou 2 (Non pour gestion autonome)."
         )
     if etape == "PHASE_2_CAPITAL_INITIAL":
         return (
@@ -98,10 +118,28 @@ def prompt_rappel_etape(etape: str, onboarding: dict) -> str:
             "• Si oui, écrivez-moi simplement votre numéro,\n"
             "• Si vous n'utilisez que Wave, dites simplement « Non, Wave seulement »."
         )
-    if etape in ["PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
+    if etape == "PHASE_2_CHOIX_OPERATEURS":
+        return (
+            "Veuillez choisir votre situation dans le menu déroulant ou me dire quel compte vous utilisez :\n"
+            "Wave Business, Orange Business, ou comptes personnels ?"
+        )
+    if etape in ["PHASE_3_IDENTIFICATION_NINEA", "PHASE_2_CREATION_ENTREPRISE", "DEMANDE_NINEA"]:
         return (
             "Avez-vous un document NINEA ou Registre de Commerce (RCCM) pour votre entreprise ?\n"
             "(Si vous n'en avez pas, dites simplement « Non » ou « Pas encore », ce n'est pas obligatoire pour commencer)."
+        )
+    if etape in ["PHASE_3_NOM_COMMERCIAL_SANS_NINEA", "PHASE_3_NOM_COMMERCIAL"]:
+        return "Quel est le nom commercial ou l'enseigne de votre boutique / activité ?"
+    if etape == "PHASE_3_QUESTION_CABINET":
+        return (
+            "Travaillez-vous déjà avec un cabinet comptable partenaire ?\n"
+            "Si oui, quel est son nom ? Si non, répondez simplement « Non »."
+        )
+    if etape == "PHASE_3_CHOIX_PROPOSITION_CABINET":
+        return (
+            "Souhaitez-vous être rattaché(e) à un de nos cabinets partenaires certifiés (ex: Cabinet Adaisso & Partenaires) pour superviser et viser vos bilans ?\n"
+            "1) Oui, me rattacher\n"
+            "2) Non, continuer en gestion autonome"
         )
     if etape == "PHASE_2_ACTIVITE_LOCALISATION":
         return (
@@ -241,6 +279,13 @@ async def superviser_message_onboarding(
     system_prompt = f"""Tu es Growth, le copilote financier et comptable intelligent (SYSCOHADA) pour les PME et commerçants au Sénégal (Dakar).
 Tu es doté d'une intelligence conversationnelle vivante, bienveillante, respectueuse (Teranga sénégalaise) et pédagogique, EXACTEMENT COMME CHATGPT.
 Tu t'exprimes avec clarté, sans jargon inutile, et tu comprends parfaitement le Wolof urbain dakarois, le Français, et le mélange des deux.
+
+CONNAISSANCES JURIDIQUES & FISCALES AU SÉNÉGAL (À UTILISER AVEC EXACTITUDE) :
+- Formalisation d'une Entreprise Individuelle à l'APIX / Greffe du Tribunal (RCCM + NINEA délivrés en 24h-48h) :
+  * Mode 14 000 FCFA : En nom propre (sans nom commercial) = 10 000 F greffe + 4 000 F timbres fiscaux.
+  * Mode 24 000 FCFA : Avec nom commercial / enseigne protégée OAPI = 10 000 F greffe + 10 000 F dépôt OAPI + 4 000 F timbres fiscaux.
+  * Pièces requises : 2 copies CNI + Certificat de résidence + Casier judiciaire (ou attestation sur l'honneur remplie sur place) + 2 timbres de 2 000 F.
+  * Ce document n'est pas bloquant pour démarrer ses écritures sur Growth, mais indispensable pour certifier son bilan et obtenir un prêt bancaire.
 
 RÈGLES FONDAMENTALES :
 1. CONTINUITÉ DU DIALOGUE & INTERDICTION D'EXCUSES INUTILES :
