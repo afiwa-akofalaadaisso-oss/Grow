@@ -5721,10 +5721,9 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 "👉 *Veuillez sélectionner votre opérateur dans le menu interactif ci-dessous :*"
             )
 
-        # Envoi de la vidéo officielle
+        # Envoi de la vidéo officielle (sans écriture / caption)
         tuto_video_url = f"{base_url}/static/videos/growth_demo_officielle.mp4"
-        caption = "Démo Officielle Growth : Enregistrez vos opérations en 1 note vocale WhatsApp"
-        asyncio.create_task(send_whatsapp_video(clean_phone, tuto_video_url, caption))
+        asyncio.create_task(send_whatsapp_video(clean_phone, tuto_video_url, caption=""))
 
         welcome_text = (
             f"Bonjour *{prenom_contact}* !\n\n"
@@ -7501,14 +7500,14 @@ async def send_whatsapp_video(to_phone: str, video_url: str, caption: str = ""):
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json; charset=utf-8"
     }
+    video_payload = {"link": video_url}
+    if caption and str(caption).strip():
+        video_payload["caption"] = str(caption).strip()
     payload = {
         "messaging_product": "whatsapp",
         "to": clean_phone,
         "type": "video",
-        "video": {
-            "link": video_url,
-            "caption": caption
-        }
+        "video": video_payload
     }
 
     def _sync_send_video():
