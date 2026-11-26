@@ -3707,6 +3707,29 @@ async def api_ai_learning_teach(payload: dict = Body(...)):
 
 
 
+def assainir_mention_bilan(texte: str) -> str:
+    """Garantit formellement que Growth ne prétend jamais générer lui-même les bilans."""
+    if not texte or not isinstance(texte, str):
+        return texte
+    remplacements = [
+        (r"je génère tes bilans pour", "je transmets tes demandes de bilan à ton cabinet d'expertise comptable pour"),
+        (r"je génère vos bilans pour", "je transmets vos demandes de bilan à votre cabinet d'expertise comptable pour"),
+        (r"je génère tes bilans", "je prépare tes comptes et transmets la demande de bilan à ton cabinet comptable"),
+        (r"je génère votre bilan", "je prépare vos comptes et transmets la demande de bilan à votre cabinet comptable"),
+        (r"je génère ton bilan", "je prépare tes comptes et transmets la demande de bilan à ton cabinet comptable"),
+        (r"générer votre bilan", "transmettre votre demande de bilan à votre expert-comptable"),
+        (r"générer vos bilans", "transmettre vos demandes de bilan à votre expert-comptable"),
+        (r"générer tes bilans", "transmettre tes demandes de bilan à ton cabinet comptable"),
+        (r"générer ton bilan", "transmettre ta demande de bilan à ton cabinet comptable"),
+        (r"je fais tes bilans", "je prépare tes comptes et transmets la demande à ton cabinet comptable"),
+        (r"je fais votre bilan", "je prépare vos comptes et transmets la demande à votre cabinet comptable"),
+        (r"pour générer votre bilan", "pour transmettre votre demande de bilan à votre expert-comptable"),
+    ]
+    for pattern, repl in remplacements:
+        texte = re.sub(pattern, repl, texte, flags=re.IGNORECASE)
+    return texte
+
+
 async def deliver_whatsapp_response(to_phone: str, reply_text: str, with_feedback_buttons: bool = True):
     """
     Règle d'or de communication Growth :
@@ -3717,6 +3740,8 @@ async def deliver_whatsapp_response(to_phone: str, reply_text: str, with_feedbac
     """
     if not to_phone or not reply_text:
         return
+
+    reply_text = assainir_mention_bilan(reply_text)
 
     clean_p = str(to_phone).replace("+", "").replace(" ", "").strip()
     save_chat_message(clean_p, "growth", reply_text)
@@ -4206,7 +4231,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             f"• Capacité d'Emprunt Estimée : *jusqu'à {pret_fmt}* (sur 24 mois)\n\n"
             "🏛️ *Institutions Financières Partenaires :*\n"
             "CBAO Attijariwafa, Ecobank, Banque de l'Habitat (BHS), PAMECAS, Baobab Microcred, CMS.\n\n"
-            "👉 Pour générer votre Bilan Officiel SYSCOHADA certifié pour la banque, écrivez simplement : *« Bilan »* !"
+            "👉 Pour transmettre votre demande de Bilan Officiel à votre cabinet comptable, écrivez simplement : *« Bilan »* !"
         )
 
     if user_txt_lower in ["op_cloture_soir", "cloture", "clôture", "rituel"]:

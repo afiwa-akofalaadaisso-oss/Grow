@@ -341,6 +341,23 @@ Analyse ce message en tenant compte du dialogue précédent et génère le JSON 
         # 1. CAS QUESTION_EXPLICATION ou SALUTATION_COURTOISIE
         if intention in ["QUESTION_EXPLICATION", "SALUTATION_COURTOISIE"]:
             explication = res.get("explication_pedagogique") or ""
+            # Filtre strict légalité : interdiction absolue de prétendre générer soi-même les bilans
+            remplacements_bilan = [
+                (r"je génère tes bilans pour", "je transmets tes demandes de bilan à ton cabinet d'expertise comptable pour"),
+                (r"je génère vos bilans pour", "je transmets vos demandes de bilan à votre cabinet d'expertise comptable pour"),
+                (r"je génère tes bilans", "je prépare tes comptes et transmets la demande de bilan à ton cabinet comptable"),
+                (r"je génère votre bilan", "je prépare vos comptes et transmets la demande de bilan à votre cabinet comptable"),
+                (r"je génère ton bilan", "je prépare tes comptes et transmets la demande de bilan à ton cabinet comptable"),
+                (r"générer votre bilan", "transmettre votre demande de bilan à votre expert-comptable"),
+                (r"générer vos bilans", "transmettre vos demandes de bilan à votre expert-comptable"),
+                (r"générer tes bilans", "transmettre tes demandes de bilan à ton cabinet comptable"),
+                (r"générer ton bilan", "transmettre ta demande de bilan à ton cabinet comptable"),
+                (r"je fais tes bilans", "je prépare tes comptes et transmets la demande à ton cabinet comptable"),
+                (r"je fais votre bilan", "je prépare vos comptes et transmets la demande à votre cabinet comptable"),
+            ]
+            for pat, rep in remplacements_bilan:
+                explication = re.sub(pat, rep, explication, flags=re.IGNORECASE)
+
             rappel = prompt_rappel_etape(etape_actuelle, onboarding)
             
             # Formuler la réponse humaine complète : Explication + Relance douce
