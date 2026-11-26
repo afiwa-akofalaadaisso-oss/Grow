@@ -55,8 +55,8 @@ def get_description_etape(etape: str, onboarding: dict) -> str:
         )
     if etape in ["PHASE_3_NOM_COMMERCIAL_SANS_NINEA", "PHASE_3_NOM_COMMERCIAL"]:
         return (
-            f"ÉTAPE : NOM COMMERCIAL / ENSEIGNE DU COMMERCE (Entreprise: {nom_ent}).\n"
-            "Action attendue : Donner le nom ou l'enseigne de sa boutique / commerce (ex: 'Boutique Touba', 'Chez Fatou')."
+            f"ÉTAPE : NOM COMMERCIAL / ENSEIGNE DE L'ENTREPRISE (Entreprise: {nom_ent}).\n"
+            "Action attendue : Donner le nom ou l'enseigne de son entreprise (ex: 'Keur Fatou Cosmétiques', 'Atelier Diallo Couture')."
         )
     if etape == "PHASE_3_QUESTION_CABINET":
         return (
@@ -124,15 +124,15 @@ def prompt_rappel_etape(etape: str, onboarding: dict) -> str:
             "(Si vous n'en avez pas encore, ce n'est pas bloquant, dites-moi simplement « Pas encore »)."
         )
     if etape in ["PHASE_3_NOM_COMMERCIAL_SANS_NINEA", "PHASE_3_NOM_COMMERCIAL"]:
-        return "Quel est le nom ou l'enseigne de votre entreprise / boutique ?"
+        return "Quel est le nom ou l'enseigne de votre entreprise ?"
     if etape in ["PHASE_3_QUESTION_CABINET", "PHASE_3_CHOIX_PROPOSITION_CABINET"]:
         return (
             "Travaillez-vous déjà avec un cabinet comptable ? (Si oui, quel est son nom ? Sinon, répondez simplement « Non »)."
         )
     if etape == "PHASE_2_ACTIVITE_LOCALISATION":
         return (
-            "Quelle est votre activité exacte (ce que vous vendez ou vos services) et où se trouve votre commerce ou magasin (quartier, marché, ville) ?\n"
-            "(Exemple : « Alimentation Générale & Riz au Marché Sandaga, Dakar »)."
+            "Quelle est votre activité exacte (ce que vous vendez ou vos services) et où se trouve votre entreprise ou atelier (quartier, marché, ville) ?\n"
+            "(Exemple : « Alimentation Générale au Marché Sandaga, Dakar » ou « Atelier Couture à Thiès »)."
         )
     if etape == "PHASE_2_CAPITAL_INITIAL":
         return (
@@ -282,7 +282,7 @@ RÈGLES FONDAMENTALES :
      INTERDICTION ABSOLUE de t'excuser pour une "incompréhension" ou de demander "quel point n'est pas clair" !
      Poursuis la conversation avec empathie et conseille-le positivement :
      Exemple : "Ce n'est pas grave du tout, c'est justement la mission de Growth ! Pour que je vous calcule votre visibilité et votre chiffre d'affaires, envoyez-moi simplement vos premières ventes ou transférez vos SMS Wave / Orange Money."
-2. Bannissement absolu du mot "boutique" : utilise toujours "entreprise", "atelier", "activité" ou "commerce".
+2. Bannissement absolu des mots "boutique" et "commerce" : utilise toujours "entreprise", "activité", "structure" ou "atelier" (tous les clients ne font pas du commerce de marchandise, certains sont prestataires, artisans, agences).
 3. Bannissement du mot "pré-comptable" : utilise "comptable" ou "copilote financier".
 4. Tu ne dois JAMAIS être un robot rigide. Si le commerçant :
    - Pose une question (ex: "C'est quoi le NINEA ?", "Pourquoi vous me demandez ça ?", "C'est payant ?", "Est-ce sécurisé ?", "Qui êtes-vous ?"), réponds avec pédagogie, empathie et précision.

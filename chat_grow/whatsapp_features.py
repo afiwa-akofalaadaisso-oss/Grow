@@ -755,14 +755,14 @@ def enregistrer_localisation_boutique(
     google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
 
     reponse = (
-        f"📍 *LOCALISATION DE VOTRE BOUTIQUE ENREGISTRÉE !*\n\n"
+        f"📍 *LOCALISATION DE VOTRE ENTREPRISE ENREGISTRÉE !*\n\n"
         f"✅ *Établissement Géocodé :*\n"
-        f"• Nom : {name or 'Siège / Boutique'}\n"
+        f"• Nom : {name or 'Siège / Entreprise'}\n"
         f"• Adresse : {address or 'Emplacement vérifié'}\n"
         f"• Coordonnées : `{latitude:.5f}, {longitude:.5f}`\n\n"
         f"🗺️ *Visualiser sur la carte :*\n{google_maps_link}\n\n"
         f"🏛️ *Utilité Légale & Fiscale :*\n"
-        f"Ces coordonnées sont désormais rattachées à votre dossier NINEA et certifient votre implantation commerciale auprès de la DGID et de votre expert-comptable."
+        f"Ces coordonnées sont désormais rattachées à votre dossier NINEA et certifient votre implantation officielle auprès de la DGID et de votre expert-comptable."
     )
     return reponse
 
@@ -833,7 +833,7 @@ async def generer_et_envoyer_infographie_pme(sender_phone: str) -> bool:
     ent = get_entreprise_by_phone_resilient(clean_p) or {}
     st = get_onboarding_state(clean_p) or {}
 
-    nom_ent = ent.get("nom_entreprise") or ent.get("nom") or st.get("nom_entreprise") or st.get("nom_commercial") or "Votre Commerce"
+    nom_ent = ent.get("nom_entreprise") or ent.get("nom") or st.get("nom_entreprise") or st.get("nom_commercial") or "Votre Entreprise"
     cab_nom = ent.get("cabinet_nom") or st.get("cabinet_nom") or None
 
     pme_data = {

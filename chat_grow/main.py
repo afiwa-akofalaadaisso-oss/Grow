@@ -4136,7 +4136,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     if is_greeting(user_text) and not nom_entreprise_enregistre:
         msg_welcome = (
             "Bonjour et bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA officiel ! 👋\n\n"
-            "Je vous aide à piloter votre commerce en toute sérénité avec **7 jours d'essai 100% gratuit** (sans engagement).\n\n"
+            "Je vous aide à piloter la comptabilité de votre entreprise en toute sérénité avec **7 jours d'essai 100% gratuit** (sans engagement).\n\n"
             "Consultez le menu interactif ci-dessous pour découvrir vos outils !\n\n"
             "💡 *Dès que vous sélectionnez une action dans le menu, nous enregistrerons simplement le nom de votre entreprise pour activer vos 7 jours offerts.*"
         )
@@ -4161,9 +4161,9 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "⚠️ *ENREGISTREMENT DE VOTRE ENTREPRISE REQUIS*\n\n"
             "Pour utiliser les fonctionnalités du menu et activer vos **7 jours d'essai 100% gratuit**, vous devez d'abord enregistrer votre entreprise !\n\n"
             "Tant que votre entreprise n'est pas enregistrée, aucune fonctionnalité ne peut être utilisée.\n\n"
-            "👉 *Quel est le nom ou l'enseigne de votre entreprise / boutique ?*\n"
+            "👉 *Quel est le nom ou l'enseigne de votre entreprise ?*\n"
             "(Exemple : *Keur Fatou Cosmétiques*, *Établissement Diallo*, *Atelier Moussa Couture*).\n\n"
-            "Dès que vous m'indiquez le nom de votre commerce, toutes les fonctionnalités et vos 7 jours offerts s'activent instantanément !"
+            "Dès que vous m'indiquez le nom de votre entreprise, toutes les fonctionnalités et vos 7 jours offerts s'activent instantanément !"
         )
 
     # B) BILAN COMPTABLE SYSCOHADA & DOSSIER PRÊT AVEC CIRCUIT VISA CABINET (Human-in-the-Loop)
@@ -5654,8 +5654,8 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             msg_a = (
                 "*Configuration Wave Business Sélectionnée !*\n\n"
                 "Vos encaissements Wave Business seront reliés directement par webhook automatique.\n\n"
-                "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
+                "Passons à l'identification officielle de votre entreprise :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_a, buttons_ninea))
             return ""
@@ -5667,8 +5667,8 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             msg_b = (
                 "*Configuration Orange Business Sélectionnée !*\n\n"
                 "Vos encaissements Orange Business Sonatel seront reliés directement par webhook partenaire.\n\n"
-                "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
+                "Passons à l'identification officielle de votre entreprise :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_b, buttons_ninea))
             return ""
@@ -5680,8 +5680,8 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             msg_c = (
                 "*Configuration Wave Business + Orange Business Sélectionnée !*\n\n"
                 "Vos deux passerelles professionnelles seront scellées sans aucun mélange avec vos fonds personnels.\n\n"
-                "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
+                "Passons à l'identification officielle de votre entreprise :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_c, buttons_ninea))
             return ""
@@ -5692,11 +5692,11 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             update_onboarding_state(sender_phone, "besoin_ouverture_business", True)
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
             msg_d = (
-                "💡 *Étape Décisive pour Votre Commerce* :\n"
+                "💡 *Étape Décisive pour Votre Entreprise* :\n"
                 "Avec un compte personnel, vos flux d'argent sont mélangés avec vos dépenses de famille. "
                 "Aucune banque ne peut certifier vos comptes avec un compte personnel.\n\n"
                 "👉 *Nous vous accompagnons de A à Z pour ouvrir votre compte Business pro !*\n\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_d, buttons_ninea))
             return ""
@@ -5709,7 +5709,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 "💼 *Excellente décision ! Growth gère vos 5 canaux à la fois sans rien mélanger* :\n"
                 "1. Wave Business • 2. Orange Business • 3. 📱 Wave Perso • 4. 📲 OM Perso • 5. 💵 Caisse Espèces\n\n"
                 "Chaque soir à 20h00, votre rituel de caisse ventilera avec exactitude ces 5 poches distinctes.\n\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_e, buttons_ninea))
             return ""
@@ -5730,8 +5730,8 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 f"🌊 *Compte Marchand Magasin Relié avec Succès (`+{num_mag}`) !*\n\n"
                 f"C'est parfaitement noté : vous échangez avec Growth depuis ce WhatsApp (`+{clean_phone}`), "
                 f"et vos encaissements Wave Business du magasin (`+{num_mag}`) sont automatiquement synchronisés par le webhook !\n\n"
-                "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "Passons à l'identification officielle de votre entreprise :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*\n"
                 "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
             )
 
@@ -5750,8 +5750,8 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 "🌊 *Passerelle Webhook / API Enregistrée avec Succès !*\n\n"
                 f"Exactement ! Vous écrivez depuis votre WhatsApp personnel (`+{clean_phone}`), et vos encaissements "
                 "sont captés directement par le Webhook / l'API de votre compte marchand officiel.\n\n"
-                "Passons à l'identification officielle de votre commerce :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre boutique ?*\n"
+                "Passons à l'identification officielle de votre entreprise :\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*\n"
                 "(Envoyez une photo claire de votre attestation ou écrivez votre numéro NINEA ; si vous n'en avez pas encore, dites simplement « Non » ou « Pas encore »)."
             )
 
@@ -5918,7 +5918,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(q in u_txt.lower() for q in mots_question):
             return (
                 "Pour obtenir votre NINEA, il vous suffit de vous rendre à l'APIX ou au centre fiscal avec votre CNI et 14 000 F (nom propre) ou 24 000 F (nom commercial). C'est délivré en 24h à 48h !\n\n"
-                "👉 Pour continuer la configuration de votre compte Growth dès maintenant, **quel est le nom ou l'enseigne de votre boutique / commerce ?** (ex: *Chez Fatou*, *Boutique Touba*)"
+                "👉 Pour continuer la configuration de votre compte Growth dès maintenant, **quel est le nom ou l'enseigne de votre entreprise ?** (ex: *Chez Fatou*, *Atelier Diop*, *Agence Horizon*)"
             )
 
         nom_commercial = nettoyer_nom_entreprise(u_txt)
@@ -6749,7 +6749,7 @@ async def process_text_with_ai(sender_phone: str, user_text: str) -> str:
     ]):
         return (
             "🐑 *LE POINTAGE DU BERGER : TOUS LES FLUX DE VOTRE BILAN* 📋\n\n"
-            "Comme un berger attentif qui rassemble ses moutons tout au long de la journée, Growth veille sur les 6 flux vitaux de votre commerce pour construire votre Bilan SYSCOHADA :\n\n"
+            "Comme un berger attentif qui rassemble ses moutons tout au long de la journée, Growth veille sur les 6 flux vitaux de votre entreprise pour construire votre Bilan SYSCOHADA :\n\n"
             "1. 🍲 *Popote & Maison (Compte 104)* : Avez-vous pris de l'argent dans la caisse pour le repas de midi ou la famille ?\n"
             "2. 🤝 *Crédits Clients (Compte 411)* : Un client est-il parti avec de la marchandise sans payer comptant ?\n"
             "3. 📦 *Stocks & Réassort (Compte 601)* : Avez-vous reçu un arrivage ou acheté du stock ?\n"
