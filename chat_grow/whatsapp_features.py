@@ -436,8 +436,8 @@ async def send_whatsapp_document(
     caption: str = ""
 ) -> bool:
     """
-    Envoi d'un fichier PDF directement dans WhatsApp via lien public HTTPS.
-    Permet au commerçant de télécharger et visualiser son Bilan / Liasse Fiscale.
+    Envoi d'un fichier PDF directement dans WhatsApp via upload binaire direct Meta Media API
+    ou lien public HTTPS. Permet au commerçant de télécharger et visualiser son Bilan / Liasse.
     """
     token, phone_id = get_whatsapp_credentials()
     if not token or not phone_id or not to_phone or not doc_url:
@@ -450,17 +450,59 @@ async def send_whatsapp_document(
         "Content-Type": "application/json; charset=utf-8"
     }
 
-    payload = {
-        "messaging_product": "whatsapp",
-        "recipient_type": "individual",
-        "to": clean_phone,
-        "type": "document",
-        "document": {
-            "link": doc_url,
-            "filename": filename,
-            "caption": caption[:1024]
+    # Résolution locale pour upload binaire direct (100% fiable, zéro 404)
+    media_id = None
+    local_file = None
+    if os.path.exists(doc_url):
+        local_file = doc_url
+    else:
+        possible = os.path.join(os.path.dirname(__file__), "static", "documents", os.path.basename(doc_url))
+        if os.path.exists(possible):
+            local_file = possible
+
+    if local_file and os.path.exists(local_file):
+        try:
+            import requests
+            upload_url = f"https://graph.facebook.com/v21.0/{phone_id}/media"
+            headers_up = {"Authorization": f"Bearer {token}"}
+            with open(local_file, "rb") as f_up:
+                r_up = requests.post(
+                    upload_url,
+                    headers=headers_up,
+                    files={"file": (filename or os.path.basename(local_file), f_up, "application/pdf")},
+                    data={"messaging_product": "whatsapp"},
+                    timeout=30
+                )
+            if r_up.status_code in [200, 201]:
+                media_id = r_up.json().get("id")
+                print(f"[WHATSAPP DOC MEDIA] PDF {local_file} uploadé direct vers Meta : media_id={media_id}")
+        except Exception as e_up:
+            print(f"[WHATSAPP DOC MEDIA ERREUR] {e_up}")
+
+    if media_id:
+        payload = {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": clean_phone,
+            "type": "document",
+            "document": {
+                "id": media_id,
+                "filename": filename,
+                "caption": caption[:1024]
+            }
         }
-    }
+    else:
+        payload = {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": clean_phone,
+            "type": "document",
+            "document": {
+                "link": doc_url,
+                "filename": filename,
+                "caption": caption[:1024]
+            }
+        }
 
     def _sync():
         try:
@@ -489,7 +531,8 @@ async def send_whatsapp_image(
     caption: str = ""
 ) -> bool:
     """
-    Envoi d'une image HD (ex: Infographie financière 1080x1080) dans WhatsApp.
+    Envoi d'une image HD (ex: Infographie financière 1080x1080) dans WhatsApp
+    via upload binaire direct vers Meta Media API (zéro dépendance d'hébergement externe).
     """
     token, phone_id = get_whatsapp_credentials()
     if not token or not phone_id or not to_phone or not image_url:
@@ -502,16 +545,58 @@ async def send_whatsapp_image(
         "Content-Type": "application/json; charset=utf-8"
     }
 
-    payload = {
-        "messaging_product": "whatsapp",
-        "recipient_type": "individual",
-        "to": clean_phone,
-        "type": "image",
-        "image": {
-            "link": image_url,
-            "caption": caption[:1024]
+    # Résolution locale pour upload binaire direct (100% fiable, zéro 404)
+    media_id = None
+    local_file = None
+    if os.path.exists(image_url):
+        local_file = image_url
+    else:
+        possible = os.path.join(os.path.dirname(__file__), "static", "images", os.path.basename(image_url))
+        if os.path.exists(possible):
+            local_file = possible
+
+    if local_file and os.path.exists(local_file):
+        try:
+            import requests
+            upload_url = f"https://graph.facebook.com/v21.0/{phone_id}/media"
+            headers_up = {"Authorization": f"Bearer {token}"}
+            mime = "image/png" if local_file.endswith(".png") else "image/jpeg"
+            with open(local_file, "rb") as f_up:
+                r_up = requests.post(
+                    upload_url,
+                    headers=headers_up,
+                    files={"file": (os.path.basename(local_file), f_up, mime)},
+                    data={"messaging_product": "whatsapp"},
+                    timeout=30
+                )
+            if r_up.status_code in [200, 201]:
+                media_id = r_up.json().get("id")
+                print(f"[WHATSAPP IMAGE MEDIA] Image {local_file} uploadée direct vers Meta : media_id={media_id}")
+        except Exception as e_up:
+            print(f"[WHATSAPP IMAGE MEDIA ERREUR] {e_up}")
+
+    if media_id:
+        payload = {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": clean_phone,
+            "type": "image",
+            "image": {
+                "id": media_id,
+                "caption": caption[:1024]
+            }
         }
-    }
+    else:
+        payload = {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": clean_phone,
+            "type": "image",
+            "image": {
+                "link": image_url,
+                "caption": caption[:1024]
+            }
+        }
 
     def _sync():
         try:
@@ -753,7 +838,12 @@ async def generer_et_envoyer_bilan_pme(sender_phone: str) -> bool:
         f"Supervisé par le *{cab_nom}* • Scellé SHA-256."
     )
 
-    return await send_whatsapp_document(clean_p, public_pdf_url, pdf_filename, caption)
+    # Privilégie le chemin local direct pour upload Meta Media API immédiat
+    target_pdf = pdf_local_path if os.path.exists(pdf_local_path) else public_pdf_url
+    return await send_whatsapp_document(clean_p, target_pdf, pdf_filename, caption)
+
+
+generer_et_envoyer_bilan_pdf = generer_et_envoyer_bilan_pme
 
 
 async def generer_et_envoyer_infographie_pme(sender_phone: str) -> bool:
@@ -799,4 +889,6 @@ async def generer_et_envoyer_infographie_pme(sender_phone: str) -> bool:
         f"• Trésorerie : *{stats['treso']}*"
     )
 
-    return await send_whatsapp_image(clean_p, public_img_url, caption)
+    # Privilégie le chemin local direct pour upload Meta Media API immédiat
+    target_img = img_local_path if os.path.exists(img_local_path) else public_img_url
+    return await send_whatsapp_image(clean_p, target_img, caption)

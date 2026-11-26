@@ -48,7 +48,7 @@ def generer_infographie_hebdo(pme: dict, stats: dict = None, out_path: str = Non
     # 2. En-tête Marque
     draw.text((70, 70), "GROWTH • COPILOTE FINANCIER & COMPTABLE", fill="#168078", font=font_header)
     draw.text((70, 125), f"BILAN HEBDOMADAIRE : {nom_ent}", fill="#ffffff", font=font_title)
-    cab_nom = pme_info.get("cabinet_nom")
+    cab_nom = pme.get("cabinet_nom")
     supervision_txt = f"Supervision {cab_nom}" if cab_nom else "Gestion Autonome PME"
     draw.text((70, 195), f"Arrêté au {date_jour} • Norme SYSCOHADA SMT • {supervision_txt}", fill="#94a3b8", font=font_meta)
 

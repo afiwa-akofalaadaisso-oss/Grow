@@ -3810,8 +3810,8 @@ async def receive_message(request: Request):
                 ref_msg_id = context.get("id") or message.get("id")
                 print(f"[INTERACTION META] Clic de {sender_phone} : ID='{btn_id}' | Titre='{btn_title}' sur msg {ref_msg_id}")
 
-                if btn_id in ["feedback_like", "feedback_dislike"]:
-                    rating = "LIKE" if btn_id == "feedback_like" else "DISLIKE"
+                if btn_id in ["feedback_like", "feedback_dislike"] or any(k in (btn_title or "").lower() for k in ["utile", "corriger"]):
+                    rating = "LIKE" if (btn_id == "feedback_like" or "utile" in (btn_title or "").lower()) else "DISLIKE"
                     # 1. Enregistrement silencieux du feedback pour évaluer les réponses de Growth
                     enregistrer_feedback_utilisateur(sender_phone, rating, ref_msg_id)
 
@@ -4015,25 +4015,15 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
                 f"👉 *Veuillez patienter quelques instants...* Vous recevrez une notification instantanée dès la signature !"
             )
         else:
-            from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pdf
-            asyncio.create_task(generer_et_envoyer_bilan_pdf(clean_p))
-            return (
-                f"📄 *Bilan Comptable SYSCOHADA SMT en cours d'envoi...*\n\n"
-                f"Votre Bilan officiel pour *{nom_ent}* a été généré sous la norme SYSCOHADA SMT (Système Minimal de Trésorerie).\n"
-                f"Il arrive directement ci-dessus sous forme de document PDF !\n\n"
-                "💡 *Besoin d'un visa expert pour un prêt bancaire ?*\n"
-                "Si votre banque ou microfinance exige l'attestation visée par un expert-comptable agréé ONECCA, vous pouvez demander un rattachement cabinet à tout moment en écrivant *« Visa Cabinet »*."
-            )
+            from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pme
+            await generer_et_envoyer_bilan_pme(clean_p)
+            return ""
 
     # C) INFOGRAPHIE FINANCIÈRE HEBDOMADAIRE HD (IMAGE 1080x1080)
     if user_txt_lower in ["op_infographie", "infographie", "synthèse", "synthese", "graphique", "tableau de bord", "semaine", "mon infographie"]:
         from chat_grow.whatsapp_features import generer_et_envoyer_infographie_pme
-        asyncio.create_task(generer_et_envoyer_infographie_pme(clean_p))
-        return (
-            "📊 *Infographie Financière HD en cours d'envoi...*\n\n"
-            "Votre carte visuelle récapitulant vos ventes, dépenses et trésorerie disponible a été générée au format haute définition.\n"
-            "Elle arrive directement ci-dessus sous forme d'image !"
-        )
+        await generer_et_envoyer_infographie_pme(clean_p)
+        return ""
 
     # D) ÉCHÉANCES FISCALES & RETENUES DGID SÉNÉGAL
     if user_txt_lower in ["op_fiscalite", "impot", "impôt", "impots", "impôts", "dgid", "fiscalite", "fiscalité", "declaration", "déclaration", "calendrier fiscal"]:
@@ -7025,8 +7015,8 @@ Retourne STRICTEMENT un objet JSON valide suivant ce format :
 
 
 DEFAULT_FEEDBACK_BUTTONS = [
-    {"id": "feedback_like", "title": "👍 Utile"},
-    {"id": "feedback_dislike", "title": "👎 À corriger"}
+    {"id": "feedback_like", "title": "🔹 Utile"},
+    {"id": "feedback_dislike", "title": "🔹 À corriger"}
 ]
 
 
