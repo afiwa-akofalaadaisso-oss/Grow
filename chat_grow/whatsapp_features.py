@@ -281,6 +281,9 @@ async def send_whatsapp_cta_url(
             "body": {
                 "text": body_text[:1024]
             },
+            "footer": {
+                "text": (footer_text or "Growth • Cabinet Adaisso & Partenaires")[:60]
+            },
             "action": {
                 "name": "cta_url",
                 "parameters": {
@@ -290,11 +293,6 @@ async def send_whatsapp_cta_url(
             }
         }
     }
-
-    if header_text:
-        payload["interactive"]["header"] = {"type": "text", "text": header_text[:60]}
-    if footer_text:
-        payload["interactive"]["footer"] = {"type": "text", "text": footer_text[:60]}
 
     def _sync():
         try:
