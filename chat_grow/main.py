@@ -3988,11 +3988,14 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     patterns_competences = [
         "competence", "compétence", "competences", "compétences",
         "capable", "capacite", "capacité", "capacites", "capacités",
+        "sais faire", "peux faire", "peux tu faire", "sais tu faire",
+        "faire quoi", "faire qw", "faire koi", "faire kwoi",
+        "tu fais quoi", "tu fais qw", "tu fais koi", "tu fé koi",
         "que sais-tu", "que sais tu", "qu'est ce que tu sais", "quest ce que tu sais",
         "que peux-tu", "que peux tu", "qu'est ce que tu peux", "quest ce que tu peux",
-        "tu peux faire quoi", "tu sais faire quoi", "tu fais quoi", "que fais-tu", "que fais tu",
         "comment tu m'aide", "comment tu maide", "comment tu peux m'aider", "comment peux-tu m'aider",
-        "qui es-tu", "qui es tu", "c'est quoi growth", "cest quoi growth",
+        "qui es-tu", "qui es tu", "qui tu es", "t'es qui", "tu es qui",
+        "c'est quoi growth", "cest quoi growth", "c quoi growth",
         "presente toi", "présente-toi", "presente-toi", "présente toi",
         "fonctionnalite", "fonctionnalité", "fonctionnalites", "fonctionnalités",
         "à quoi tu sers", "a quoi tu sers", "tu sers a quoi", "tu sers à quoi",
@@ -4013,7 +4016,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     if is_competence_req:
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
-        asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
+        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
         return (
             "🌟 *GROWTH • COPILOTE FINANCIER & COMPTABLE PME*\n\n"
             "Je suis votre assistant financier autonome d'élite, conçu pour sécuriser, structurer et propulser la gestion de votre commerce :\n\n"
@@ -4039,7 +4042,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     if is_menu_req:
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
-        asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
+        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
         return (
             "📑 *MENU PRINCIPAL GROWTH*\n\n"
             "Cliquez sur le bouton interactif *« Choisir une action »* ci-dessus pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Carnet Crédits, Outils PME)."
@@ -4190,7 +4193,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     if user_txt_lower == "op_menu_principal":
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
-        asyncio.create_task(send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr))
+        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
         return (
             "🔙 *Retour au Menu Principal*\n\n"
             "Cliquez sur *« Choisir une action »* ci-dessus pour revenir aux opérations principales."
@@ -5449,6 +5452,12 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             )
             action = supervision.get("action")
             if action == "REPONDRE_ET_REORIENTER":
+                u_chk = (user_text or "").lower()
+                # Sécurité absolue : si la question porte sur les capacités ou les compétences, envoyer le menu principal
+                if any(k in u_chk for k in ["faire", "competence", "compétence", "capable", "capacite", "capacité", "growth", "qui es-tu", "qui tu es", "menu", "option"]):
+                    from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+                    h, b, lbl, secs, ftr = build_main_operations_list()
+                    await send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr)
                 return supervision.get("message_reponse")
             if action == "APPLIQUER_CORRECTION":
                 champs_corriges = supervision.get("champs_corriges", {})
