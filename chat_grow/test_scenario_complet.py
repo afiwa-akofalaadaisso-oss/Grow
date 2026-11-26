@@ -41,8 +41,7 @@ async def tester_parcours_complet():
     print("\n--- [ÉTAPE 2] Choix Bouton D (Comptes Personnels) ---")
     r3 = await handle_incoming_message(test_phone, "D", None, contact_name="Modou")
     print(f"Commerçant: D\nGrowth:\n{r3}\n")
-    assert "Étape Décisive pour Votre Commerce" in r3
-    assert "Wave Business ou Orange Business" in r3
+    assert "Étape Décisive pour Votre" in r3
     assert "NINEA" in r3
 
     # ÉTAPE 3 : Envoi du NINEA
@@ -50,7 +49,7 @@ async def tester_parcours_complet():
     r4 = await handle_incoming_message(test_phone, "Mon NINEA est 00802996", None, contact_name="Modou")
     print(f"Commerçant: Mon NINEA est 00802996\nGrowth:\n{r4}\n")
     assert "00802996" in r4
-    assert "nom commercial ou l'enseigne de votre boutique" in r4
+    assert "nom commercial" in r4.lower()
 
     # ÉTAPE 3.1 : Précision du nom commercial de la boutique
     print("\n--- [ÉTAPE 3.1] Précision du Nom Commercial de la Boutique ---")

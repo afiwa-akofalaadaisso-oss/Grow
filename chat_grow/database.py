@@ -822,6 +822,14 @@ def save_or_update_entreprise_resilient(ent_dict: Dict[str, Any]) -> Dict[str, A
     """Crée ou met à jour une entreprise avec réplication locale et queue de secours."""
     ent_id = ent_dict.get("id") or str(uuid.uuid4())
     ent_dict["id"] = ent_id
+    if not ent_dict.get("nom_entreprise"):
+        tel = ent_dict.get("telephone_whatsapp")
+        if tel:
+            ex = get_entreprise_by_phone_resilient(tel)
+            if ex and ex.get("nom_entreprise"):
+                ent_dict["nom_entreprise"] = ex["nom_entreprise"]
+            else:
+                ent_dict["nom_entreprise"] = f"Entreprise {str(tel)[-4:]}"
     mirror_entreprises_to_sqlite([ent_dict])
 
     sp = get_supabase_client()

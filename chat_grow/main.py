@@ -1469,14 +1469,13 @@ async def get_dashboard_data(phone: str = None, entreprise_id: str = None):
 def is_webhook_assistance_request(text: str) -> bool:
     if not text:
         return False
+    # Si l'utilisateur colle une URL ou un identifiant réel, c'est une soumission directe et non une demande d'aide
+    if re.search(r"https?://", text) or re.search(r"m_sn_[a-zA-Z0-9_]+", text, re.IGNORECASE):
+        return False
     t = text.lower().strip()
     keywords = [
-        "webhook", "web hook", "connecter wave", "connexion wave",
-        "configurer wave", "passerelle sms", "automatiser wave",
-        "automatiser mes paiements", "lier mon compte wave", "api wave",
-        "mettre en place wave", "mettre en place mon webhook", "mettre en place leurs webhook",
-        "aide webhook", "comment marche wave", "comment relier wave",
-        "liaison wave", "interception wave", "passerelle", "sms relay"
+        "aide webhook", "comment marche webhook", "comment relier wave", "comment configurer webhook",
+        "aide passerelle", "c'est quoi le webhook", "explication webhook", "tuto webhook"
     ]
     return any(k in t for k in keywords)
 
@@ -1493,20 +1492,16 @@ def is_test_webhook_request(text: str) -> bool:
 def get_webhook_guide_message(base_url: str, sender_phone: str) -> str:
     clean_p = str(sender_phone).replace("+", "").replace(" ", "").strip()
     return (
-        "🔗 *ASSISTANT WEBHOOK, API & NUMÉRO MARCHAND MAGASIN*\n\n"
-        "💡 *Règle d'or : Vous n'avez pas besoin que votre numéro WhatsApp soit le même que celui de votre magasin !*\n"
-        "Ce WhatsApp est votre cockpit personnel (où vous recevez les alertes en direct, dictez vos dépenses et clôturez vos comptes le soir).\n"
-        "Vos encaissements Wave Business ou Orange Business sont captés en direct via le **Webhook / l'API**, même si votre compte marchand est sur un autre numéro ou dans votre terminal TPE au magasin.\n\n"
-        "👉 *3 FAÇONS SIMPLES DE RELIER VOS ENCAISSEMENTS :*\n\n"
+        "🔗 *ASSISTANT WEBHOOK & LIAISON COMPTE MARCHAND PRO*\n\n"
+        "💡 *Règle d'or : Vos encaissements Wave Business ou Orange Business sont captés en direct via le Webhook / l'API.*\n"
+        "Ce WhatsApp personnel est votre salon de bord (pour recevoir vos alertes, clôturer le soir et consulter vos bilans certifiés).\n\n"
+        "👉 *COMMENT CONFIGURER VOTRE WEBHOOK :*\n\n"
         "1. **Wave Business (Portail Marchand business.wave.com) :**\n"
         "• Dans votre espace Wave Business > Paramètres Développeur > Webhooks > Ajouter un Webhook\n"
         f"• Collez l'URL de votre passerelle Growth :\n`{base_url}/webhook/wave?phone={clean_p}`\n"
-        "• Cochez 'Paiements reçus' et enregistrez. Dès lors, chaque vente en boutique vous notifie ici instantanément !\n\n"
-        "2. **Fournir votre Numéro Marchand Magasin ou Account ID :**\n"
-        "• Dites-moi simplement : « Mon numéro magasin est le 76... » ou « Mon ID Wave est M_sn_... ».\n"
-        "• Growth relie immédiatement cette ligne marchande à votre WhatsApp !\n\n"
-        "3. **Passerelle Relais SMS ou Captures d'écran :**\n"
-        "• Si vous utilisez un smartphone magasin ou des captures d'écran de reçus, transférez-les simplement ici.\n\n"
+        "• Enregistrez, puis collez simplement le lien ou votre identifiant ici dans le chat pour activer la synchronisation !\n\n"
+        "2. **Orange Business Sonatel :**\n"
+        "• Activez la passerelle webhook dans votre console Orange Money ou transférez vos reçus officiels.\n\n"
         "🧪 *Pour tester votre liaison immédiatement avec une simulation de 1 000 FCFA, répondez simplement « TESTER WEBHOOK » !*"
     )
 
@@ -4658,6 +4653,35 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             f"{base_url}/dashboard?phone={clean_p}"
         )
 
+    # DÉTECTION & ENREGISTREMENT DIRECT D'UN LIEN OU IDENTIFIANT WEBHOOK PRO COLLÉ DANS LE CHAT
+    if user_text and (re.search(r"https?://[^\s]+", user_text) or re.search(r"m_sn_[a-zA-Z0-9_]+", user_text, re.IGNORECASE)):
+        m_url = re.search(r"https?://[^\s]+", user_text)
+        m_acc = re.search(r"(m_sn_[a-zA-Z0-9_]+|acc_[a-zA-Z0-9_]+)", user_text, re.IGNORECASE)
+        wh_url = m_url.group(0) if m_url else None
+        acc_id = m_acc.group(1) if m_acc else (wh_url or "WEBHOOK_ACTIVE")
+        
+        update_onboarding_state(sender_phone, "wave_account_id", acc_id)
+        if wh_url:
+            update_onboarding_state(sender_phone, "webhook_url", wh_url)
+        update_onboarding_state(sender_phone, "webhook_actif", True)
+        save_or_update_entreprise_resilient({
+            "telephone_whatsapp": clean_p,
+            "donnees_onboarding": {"wave_account_id": acc_id, "webhook_url": wh_url, "webhook_actif": True}
+        })
+        
+        msg_wh_ok = (
+            "🌊 *Passerelle Webhook Enregistrée & Attribuée avec Succès !* 🚀\n\n"
+            f"Votre compte marchand est maintenant officiellement synchronisé avec Growth (`{acc_id[:35]}`). "
+            "Tous vos encaissements numériques seront imputés automatiquement en direct sans saisie manuelle !\n\n"
+        )
+        onb_curr = get_onboarding_state(sender_phone) or {}
+        etape_curr = onb_curr.get("etape", "PHASE_1_ACCUEIL")
+        if etape_curr != "TERMINE":
+            from chat_grow.conversation_supervisor import prompt_rappel_etape
+            rappel = prompt_rappel_etape(etape_curr, onb_curr)
+            return f"{msg_wh_ok}👉 {rappel}"
+        return f"{msg_wh_ok}Vous pouvez m'envoyer dès maintenant vos ventes ou dépenses !"
+
     if is_webhook_assistance_request(user_text):
         base_url = get_public_base_url()
         return get_webhook_guide_message(base_url, sender_phone)
@@ -5649,6 +5673,31 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     u_strip_lower = (user_text or "").strip().lower()
     est_clic_bouton = u_strip_lower in boutons_directs
 
+    # 0.bis INTERCEPTION DES URLS / IDENTIFIANTS WEBHOOK ENVOYÉS DANS LE CHAT
+    if user_text and not media_tuple and any(w in u_strip_lower for w in ["webhook", "web hook", "http://", "https://", "m_sn_", "acc_"]):
+        m_url = re.search(r"https?://[^\s]+", user_text)
+        m_acc = re.search(r"(m_sn_[a-zA-Z0-9_]+|acc_[a-zA-Z0-9_]+)", user_text, re.IGNORECASE)
+        wh_url = m_url.group(0) if m_url else None
+        acc_id = m_acc.group(1) if m_acc else (wh_url or "WEBHOOK_ACTIVE")
+        
+        update_onboarding_state(sender_phone, "wave_account_id", acc_id)
+        if wh_url:
+            update_onboarding_state(sender_phone, "webhook_url", wh_url)
+        update_onboarding_state(sender_phone, "webhook_actif", True)
+        save_or_update_entreprise_resilient({
+            "telephone_whatsapp": clean_phone,
+            "donnees_onboarding": {"wave_account_id": acc_id, "webhook_url": wh_url, "webhook_actif": True}
+        })
+        
+        msg_wh_ok = (
+            "🌊 *Passerelle Webhook Enregistrée & Attribuée avec Succès !* 🚀\n\n"
+            f"Votre compte marchand est maintenant officiellement synchronisé avec Growth (`{acc_id[:35]}`). "
+            "Tous vos encaissements numériques seront imputés automatiquement en direct sans saisie manuelle !\n\n"
+        )
+        from chat_grow.conversation_supervisor import prompt_rappel_etape
+        rappel = prompt_rappel_etape(etape, onboarding)
+        return f"{msg_wh_ok}👉 {rappel}"
+
     if user_text and not media_tuple and not est_clic_bouton:
         # À l'étape 1 (Accueil) :
         # Si c'est une salutation ou un premier contact, laisser passer directement à l'accueil officiel
@@ -5753,14 +5802,11 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(k in u_txt for k in ["opt_a", "bouton a", "a", "wave business", "wave seul", "wave pro", "wave marchande"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "WAVE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            tuto_wave_url = f"{base_url}/static/videos/tuto_webhook_wave.mp4"
-            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_wave_url, "🎬 Tuto Wave : Configuration du Webhook sur le portail Wave Merchant"))
             msg_a = (
                 "🌊 *Configuration Wave Business Sélectionnée !*\n\n"
-                "🎬 Regardez la courte vidéo tutoriel ci-dessus : elle vous explique exactement comment configurer votre URL Webhook sur votre portail Wave Merchant.\n\n"
-                "⚠️ *Exigence Légale Wave :* Pour avoir accès au portail Wave Merchant et générer votre Webhook, Wave exige obligatoirement un document **NINEA et un Registre de Commerce (RCCM)** valides sur votre compte marchand.\n\n"
-                "👉 *Tant que ce lien Webhook n'est pas configuré, vos encaissements ne peuvent pas être automatisés.*\n\n"
-                "Dès que vous avez vérifié vos accès Wave, envoyez-moi votre URL de webhook ou votre numéro Wave Business (`+221...`), ou confirmez votre situation légale :"
+                "Pour relier vos flux et activer le Webhook automatique sur votre portail Wave Merchant, "
+                "Wave exige obligatoirement un document **NINEA et un Registre de Commerce (RCCM)** valides sur votre compte marchand.\n\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_a, buttons_ninea))
             return ""
@@ -5769,12 +5815,11 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(k in u_txt for k in ["opt_b", "bouton b", "b", "orange business", "om business", "orange seul", "orange pro", "sonatel"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "ORANGE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            tuto_om_url = f"{base_url}/static/videos/tuto_webhook_orange.mp4"
-            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_om_url, "🎬 Tuto Orange : Configuration Webhook Orange Business Sonatel"))
             msg_b = (
                 "🍊 *Configuration Orange Business Sélectionnée !*\n\n"
-                "🎬 Regardez la courte vidéo tutoriel ci-dessus : elle vous montre comment relier votre ligne Orange Business Sonatel à Growth par webhook.\n\n"
-                "👉 Dès que vous avez regardé la vidéo, envoyez-moi votre numéro marchand Orange Business, ou confirmez vos documents officiels NINEA / RCCM :"
+                "Pour relier vos flux professionnels Orange Business par Webhook automatique, "
+                "un document **NINEA et un Registre de Commerce (RCCM)** valides sont requis sur votre compte pro.\n\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_b, buttons_ninea))
             return ""
@@ -5783,15 +5828,11 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(k in u_txt for k in ["opt_c", "bouton c", "c", "double business", "les deux", "deux business", "wave et orange business"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "DOUBLE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            tuto_wave_url = f"{base_url}/static/videos/tuto_webhook_wave.mp4"
-            tuto_om_url = f"{base_url}/static/videos/tuto_webhook_orange.mp4"
-            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_wave_url, "🎬 Tuto 1/2 : Webhook sur le portail Wave Merchant"))
-            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_om_url, "🎬 Tuto 2/2 : Webhook Orange Business Sonatel"))
             msg_c = (
-                "🚀 *Configuration Double Business (Wave + Orange) Sélectionnée !*\n\n"
-                "🎬 Regardez les 2 vidéos tutoriels ci-dessus pour la configuration de vos Webhooks Wave et Orange.\n\n"
-                "⚠️ *Rappel :* Pour Wave Business, un NINEA et un Registre de Commerce (RCCM) sont obligatoires pour générer le Webhook.\n\n"
-                "👉 Passez à l'identification officielle de votre entreprise en cliquant ci-dessous :"
+                "🚀 *Configuration Wave & Orange Business Sélectionnée !*\n\n"
+                "Pour automatiser vos flux marchands Wave et Orange via Webhook, "
+                "vos comptes doivent être immatriculés avec un **NINEA et un Registre de Commerce (RCCM)**.\n\n"
+                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_c, buttons_ninea))
             return ""
@@ -5815,14 +5856,10 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(k in u_txt for k in ["opt_e", "bouton e", "e", "mixte", "tout", "tous", "tout a la fois", "tout à la fois", "les 5", "5 en meme temps", "cinq"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "MULTI_5_CANAUX")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
-            tuto_wave_url = f"{base_url}/static/videos/tuto_webhook_wave.mp4"
-            tuto_om_url = f"{base_url}/static/videos/tuto_webhook_orange.mp4"
-            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_wave_url, "🎬 Tuto 1/2 : Webhook sur le portail Wave Merchant"))
-            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_om_url, "🎬 Tuto 2/2 : Webhook Orange Business Sonatel"))
             msg_e = (
                 "💼 *Excellente décision ! Growth gère vos 5 canaux à la fois sans rien mélanger* :\n"
                 "1. 🌊 Wave Business • 2. 🍊 Orange Business • 3. 📱 Wave Perso • 4. 📲 OM Perso • 5. 💵 Caisse Espèces\n\n"
-                "⚠️ *Rappel Wave :* Un NINEA et RCCM sont obligatoires sur votre compte Wave Merchant pour le Webhook.\n"
+                "Pour vos comptes marchands Wave et Orange, un NINEA et un RCCM sont requis pour activer les Webhooks.\n"
                 "Chaque soir à 20h00, votre rituel de caisse ventilera avec exactitude ces 5 poches distinctes.\n\n"
                 "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
@@ -5978,13 +6015,45 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             update_onboarding_state(sender_phone, "capital", capital)
             update_onboarding_state(sender_phone, "etape", "PHASE_3_NOM_COMMERCIAL")
 
-            # Instruction clé utilisateur : sur le NINEA il y a le nom de la personne, donc demander le nom de la boutique !
+            statut_op = onboarding.get("statut_operateurs", "COMPTES_PERSO")
+            tuto_wave_url = f"{base_url}/static/videos/tuto_webhook_wave.mp4"
+            tuto_om_url = f"{base_url}/static/videos/tuto_webhook_orange.mp4"
+            consigne_webhook = ""
+
+            if statut_op == "WAVE_BUSINESS":
+                asyncio.create_task(send_whatsapp_video(clean_phone, tuto_wave_url, caption=""))
+                consigne_webhook = (
+                    "\n\n🎬 **Configuration de votre Webhook Wave Business :**\n"
+                    "1. Renseignez d'abord votre NINEA et votre RCCM sur votre compte Wave Business.\n"
+                    "2. Suivez la courte vidéo tutoriel ci-dessus pour configurer votre Webhook sur le portail Wave Merchant.\n"
+                    "3. Envoyez ensuite votre lien de Webhook ici dans le chat pour que nous puissions lier et attribuer directement votre compte à vos flux numériques Wave !"
+                )
+            elif statut_op == "ORANGE_BUSINESS":
+                asyncio.create_task(send_whatsapp_video(clean_phone, tuto_om_url, caption=""))
+                consigne_webhook = (
+                    "\n\n🎬 **Configuration de votre Webhook Orange Business :**\n"
+                    "1. Renseignez d'abord votre NINEA et votre RCCM sur votre compte Orange Business.\n"
+                    "2. Suivez la courte vidéo tutoriel ci-dessus pour configurer votre Webhook Orange Business.\n"
+                    "3. Envoyez ensuite votre lien de Webhook ici dans le chat pour que nous puissions lier et attribuer directement votre compte à vos flux numériques Orange !"
+                )
+            elif statut_op in ["DOUBLE_BUSINESS", "MULTI_5_CANAUX"]:
+                asyncio.create_task(send_whatsapp_video(clean_phone, tuto_wave_url, caption=""))
+                asyncio.create_task(send_whatsapp_video(clean_phone, tuto_om_url, caption=""))
+                consigne_webhook = (
+                    "\n\n🎬 **Configuration de vos Webhooks Wave & Orange Business :**\n"
+                    "1. Renseignez d'abord votre NINEA et votre RCCM sur vos comptes Wave Business et Orange Business.\n"
+                    "2. Suivez les 2 vidéos tutoriels ci-dessus pour configurer vos Webhooks sur les portails marchands Wave et Orange.\n"
+                    "3. Envoyez vos liens de Webhook ici dans le chat pour que nous puissions lier et attribuer directement vos comptes à vos flux numériques Wave et Orange !"
+                )
+
             return (
-                f"📄 Document NINEA officiel bien reçu et authentifié !\n"
-                f"• Titulaire légal d'état civil : *{nom_personne}*\n"
+                f"📄 *Document NINEA & RCCM officiel authentifié !*\n"
+                f"• Titulaire légal : *{nom_personne}*\n"
                 f"• NINEA officiel : *{ninea}*\n"
-                f"• Secteur d'activité : *{secteur}*\n\n"
-                "🏬 *Quel est le nom commercial ou l'enseigne de votre boutique / entreprise* (le nom écrit sur votre devanture ou connu de vos clients) ?"
+                f"• RCCM : *{rccm}*\n"
+                f"• Secteur d'activité : *{secteur}*{consigne_webhook}\n\n"
+                "👉 *Quel est le nom commercial ou l'enseigne de votre entreprise ?*\n"
+                "(Le nom écrit sur votre devanture ou connu de vos clients)"
             )
 
         return (
