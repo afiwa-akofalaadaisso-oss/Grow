@@ -640,6 +640,7 @@ def activer_ou_renouveler_abonnement(phone: str, montant: float = 10000.0, opera
 def activer_essai_gratuit_7_jours(phone: str, nom_entreprise: str) -> dict:
     """Active immédiatement les 7 jours d'essai gratuit pour une nouvelle entreprise enregistrée."""
     clean_p = str(phone).replace("+", "").replace(" ", "").strip()
+    nom_entreprise = nettoyer_nom_entreprise(nom_entreprise) or str(nom_entreprise).strip()
     now_dt = datetime.now()
     exp_essai = now_dt + timedelta(days=7)
     now_str = now_dt.strftime("%Y-%m-%d %H:%M:%S")
@@ -4110,7 +4111,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
 
     # Cas 1 : L'utilisateur était invité à donner le nom de son entreprise
     if st_flow.get("en_attente_nom_entreprise") and not is_menu_req and not is_competence_req:
-        nom_saisi = user_text.strip()
+        nom_saisi = await extraire_nom_entreprise_intelligent(user_text)
         if len(nom_saisi) >= 2 and not any(k in nom_saisi.lower() for k in ["menu", "annuler", "retour", "reset"]):
             res_7j = activer_essai_gratuit_7_jours(clean_p, nom_saisi)
             action_prec = st_flow.get("action_en_attente")
@@ -5323,6 +5324,57 @@ def nettoyer_nom_entreprise(texte: str) -> str:
     return res_nom
 
 
+async def extraire_nom_entreprise_intelligent(texte: str) -> str:
+    """
+    Extrait avec rigueur et intelligence le nom exact de l'entreprise
+    (ex: 'le nom de mon entreprise est Singa' -> 'Singa', 'c'est Keur Fatou' -> 'Keur Fatou').
+    Utilise d'abord le nettoyeur regex ultra-rapide, puis Gemini Flash en cas d'ambiguïté.
+    """
+    if not texte:
+        return ""
+    nettoye = nettoyer_nom_entreprise(texte)
+    mots = nettoye.split()
+    phrases_parasites = ["le nom de", "mon entreprise", "s'appelle", "s appelle", "mon atelier", "mon activite", "mon activité", "est", "c'est"]
+    if nettoye and len(mots) <= 4 and not any(p in nettoye.lower() for p in phrases_parasites):
+        return nettoye
+
+    # Fallback IA (Gemini Flash) pour extraire l'entité exacte
+    try:
+        from google import genai
+        load_dotenv("chat_grow/.env", override=True)
+        gem_key = os.getenv("GEMINI_API_KEY")
+        if gem_key:
+            client_gem = genai.Client(api_key=gem_key)
+            prompt = (
+                "Tu es un extracteur d'entité pour une application comptable PME. "
+                "L'utilisateur donne le nom de son entreprise dans une phrase en français ou wolof.\n"
+                f"Texte utilisateur : « {texte} »\n\n"
+                "Extrais UNIQUEMENT le nom ou l'enseigne de l'entreprise (1 à 4 mots) sous format JSON brut : "
+                "{\"nom\": \"Nom de l'entreprise\"}\n"
+                "Exemples :\n"
+                "- 'le nom de mon entreprise est Singa' -> {\"nom\": \"Singa\"}\n"
+                "- 'mon entreprise s'appelle Keur Fatou' -> {\"nom\": \"Keur Fatou\"}\n"
+                "- 'c'est Singa' -> {\"nom\": \"Singa\"}\n"
+                "- 'Atelier Moussa Couture' -> {\"nom\": \"Atelier Moussa Couture\"}\n"
+                "Réponds UNIQUEMENT le JSON brut sans balises markdown."
+            )
+            res = client_gem.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt
+            )
+            raw = res.text.strip()
+            m_j = re.search(r'\{.*\}', raw, re.DOTALL)
+            if m_j:
+                rj = json.loads(m_j.group(0))
+                nom_ia = rj.get("nom", "").strip()
+                if nom_ia:
+                    return nettoyer_nom_entreprise(nom_ia)
+    except Exception as e:
+        print(f"Info extracteur nom IA : {e}")
+
+    return nettoye or texte.strip()
+
+
 def extraire_ninea_nom_capital_local(text: str, sender_phone: str = "", contact_name: str = "") -> tuple[str, str, int]:
     """Extrait NINEA, Nom et Capital via le Grand Extracteur Local (0 crédit Anthropic, 100% gratuit)."""
     identite = extract_business_identity_local(text, sender_phone, contact_name)
@@ -5935,9 +5987,9 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     # 3.1 VALIDATION DU NOM COMMERCIAL (AVEC NINEA)
     if etape == "PHASE_3_NOM_COMMERCIAL":
         u_txt = (user_text or "").strip()
-        nom_commercial = nettoyer_nom_entreprise(u_txt)
+        nom_commercial = await extraire_nom_entreprise_intelligent(u_txt)
         if len(nom_commercial) < 2:
-            nom_commercial = f"Boutique {clean_phone[-4:]}"
+            nom_commercial = f"Entreprise {clean_phone[-4:]}"
 
         nom_personne = onboarding.get("nom_personne_physique") or "Gérant"
         ninea = onboarding.get("ninea") or "00802996"
@@ -5976,9 +6028,9 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 "👉 Pour continuer la configuration de votre compte Growth dès maintenant, **quel est le nom ou l'enseigne de votre entreprise ?** (ex: *Chez Fatou*, *Atelier Diop*, *Agence Horizon*)"
             )
 
-        nom_commercial = nettoyer_nom_entreprise(u_txt)
+        nom_commercial = await extraire_nom_entreprise_intelligent(u_txt)
         if len(nom_commercial) < 2:
-            nom_commercial = f"Commerce {clean_phone[-4:]}"
+            nom_commercial = f"Entreprise {clean_phone[-4:]}"
 
         update_onboarding_state(sender_phone, "nom_entreprise", nom_commercial)
         update_onboarding_state(sender_phone, "nom_commercial", nom_commercial)
