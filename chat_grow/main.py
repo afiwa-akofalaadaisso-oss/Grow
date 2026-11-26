@@ -4132,22 +4132,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
             return ""
 
-    # Cas 2 : Premier contact d'un nouvel arrivant sans entreprise enregistrée (Salutations)
-    if is_greeting(user_text) and not nom_entreprise_enregistre:
-        msg_welcome = (
-            "Bonjour et bienvenue sur *Growth*, votre copilote financier et comptable SYSCOHADA officiel ! 👋\n\n"
-            "Je vous aide à piloter la comptabilité de votre entreprise en toute sérénité avec **7 jours d'essai 100% gratuit** (sans engagement).\n\n"
-            "Consultez le menu interactif ci-dessous pour découvrir vos outils !\n\n"
-            "💡 *Dès que vous sélectionnez une action dans le menu, nous enregistrerons simplement le nom de votre entreprise pour activer vos 7 jours offerts.*"
-        )
-        await send_whatsapp_message(clean_p, msg_welcome, with_buttons=False)
-        await asyncio.sleep(1.0)
-        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
-        h, b, lbl, secs, ftr = build_main_operations_list()
-        await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
-        return ""
-
-    # Cas 3 : Clic sur une action du menu sans entreprise enregistrée
+    # Cas 2 : Clic sur une action du menu sans entreprise enregistrée
     actions_operationnelles = [
         "op_vente", "op_depense", "op_popote", "op_credit", "op_bilan_pdf",
         "op_infographie", "op_fiscalite", "op_pret_express", "op_cloture_soir",
@@ -4362,19 +4347,35 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         from chat_grow.database import get_transactions_resilient, get_entreprise_by_phone_resilient
         ent = get_entreprise_by_phone_resilient(clean_p) or {}
         txs = get_transactions_resilient(ent.get("id") or clean_p) or []
+        st_clo = get_onboarding_state(clean_p) or {}
         total_ventes = sum(t.get("montant_fcfa", 0) for t in txs if t.get("type_flux") in ["VENTE", "RECETTE"])
         total_depenses = sum(t.get("montant_fcfa", 0) for t in txs if t.get("type_flux") == "DEPENSE")
-        v_fmt = f"{total_ventes:,} FCFA".replace(",", " ")
-        d_fmt = f"{total_depenses:,} FCFA".replace(",", " ")
         solde_net = total_ventes - total_depenses
-        s_fmt = f"{solde_net:,} FCFA".replace(",", " ")
+
+        # Ventilation des 5 poches distinctes sans aucun mélange
+        caisse_tiroir = int(st_clo.get("caisse_especes_fcfa") or 0)
+        wave_biz = sum(t.get("montant_fcfa", 0) for t in txs if "WAVE" in str(t.get("source_paiement", "")).upper() and t.get("type_flux") in ["VENTE", "RECETTE"])
+        om_biz = sum(t.get("montant_fcfa", 0) for t in txs if "ORANGE" in str(t.get("source_paiement", "")).upper() and t.get("type_flux") in ["VENTE", "RECETTE"])
+        part_certifiee_bancaire = wave_biz + om_biz
+        part_declarative = max(0, total_ventes - part_certifiee_bancaire) + caisse_tiroir
+
         return (
-            "🌙 *Rituel de Clôture de Caisse du Soir (20h00)*\n\n"
-            f"• Total Ventes enregistrées : *{v_fmt}*\n"
-            f"• Total Dépenses & Achats : *{d_fmt}*\n"
-            f"• Solde net de la journée : *{s_fmt}*\n\n"
+            "🌙 *RITUEL DE CLÔTURE DE CAISSE DU SOIR (20h00 / 00h00)*\n\n"
+            f"📊 **SYNTHÈSE DE LA JOURNÉE :**\n"
+            f"• Total Ventes & Recettes : *{total_ventes:,} FCFA*\n"
+            f"• Total Dépenses & Popote : *{total_depenses:,} FCFA*\n"
+            f"• Solde net de la journée : *{solde_net:,} FCFA*\n\n"
+            "💼 **VENTILATION DES 5 POCHES SANS AUCUN MÉLANGE :**\n"
+            f"1. 🌊 Wave Business (Part certifiée Webhook) : *{wave_biz:,} FCFA*\n"
+            f"2. 🍊 Orange Business (Part certifiée Webhook) : *{om_biz:,} FCFA*\n"
+            "3. 📱 Wave Personnel (Recettes déclarées) : *0 FCFA*\n"
+            "4. 📲 OM Personnel (Recettes déclarées) : *0 FCFA*\n"
+            f"5. 💵 Caisse Espèces Tiroir (Compte 571) : *{caisse_tiroir:,} FCFA*\n\n"
+            f"🏛️ **CONFORMITÉ BANQUES & DGID :**\n"
+            f"• Part Certifiée Bancaire & Webhook : *{part_certifiee_bancaire:,} FCFA* (Preuve légale irréfutable)\n"
+            f"• Part Déclarative & Espèces : *{part_declarative:,} FCFA*\n\n"
             "👉 Pour ajuster vos espèces du tiroir ou vos dépenses de popote du soir, dictez simplement une note vocale : *« Caisse fermée, 35 000 en espèces, 5 000 popote »*."
-        )
+        ).replace(",", " ")
 
     if user_txt_lower in ["op_anti_arnaque", "anti arnaque", "faux wave"]:
         return (
@@ -5523,6 +5524,47 @@ def synchroniser_bilan_structurel_depart(clean_phone: str, categorie: str, monta
         print(f"Erreur synchroniser_bilan_structurel_depart: {e}")
 
 
+def preparer_message_et_videos_etape_4(clean_phone: str, statut_op: str, base_url: str) -> str:
+    """Envoie la vidéo tutoriel adaptée selon l'opérateur et retourne le message pour l'Étape 4 (Bilan de Départ)."""
+    statut_op = (statut_op or "").upper()
+    if statut_op in ["WAVE_BUSINESS"]:
+        vid_url = f"{base_url}/static/videos/tuto_releve_wave.mp4"
+        asyncio.create_task(send_whatsapp_video(clean_phone, vid_url, "🎬 Tuto Wave : Relevé officiel PDF sur le portail Wave Merchant"))
+        return (
+            "📊 *ÉTAPE 4 : BILAN D'OUVERTURE & RELEVÉ MARCHAND*\n\n"
+            "🎬 Regardez la vidéo tutoriel ci-dessus : elle vous montre pas à pas comment télécharger votre **relevé officiel de compte en PDF depuis le portail web Wave**.\n\n"
+            "👉 Envoyez-moi votre relevé PDF ici, ou indiquez simplement le solde de départ en FCFA (ou une capture d'écran de votre solde Wave) :"
+        )
+    elif statut_op in ["ORANGE_BUSINESS"]:
+        vid_url = f"{base_url}/static/videos/tuto_releve_orange.mp4"
+        asyncio.create_task(send_whatsapp_video(clean_phone, vid_url, "🎬 Tuto Orange : Relevé officiel PDF dans l'application Orange Money"))
+        return (
+            "📊 *ÉTAPE 4 : BILAN D'OUVERTURE & RELEVÉ MARCHAND*\n\n"
+            "🎬 Regardez la vidéo tutoriel ci-dessus : pour Orange Money, le téléchargement de votre **relevé officiel en PDF se fait directement dans l'application mobile Orange Money** !\n\n"
+            "👉 Envoyez-moi votre relevé PDF ici, ou indiquez simplement le solde de départ en FCFA (ou une capture d'écran de votre solde OM) :"
+        )
+    elif statut_op in ["DOUBLE_BUSINESS", "MULTI_5_CANAUX"]:
+        vid_w = f"{base_url}/static/videos/tuto_releve_wave.mp4"
+        vid_o = f"{base_url}/static/videos/tuto_releve_orange.mp4"
+        asyncio.create_task(send_whatsapp_video(clean_phone, vid_w, "🎬 Tuto 1/2 : Relevé PDF sur le portail web Wave"))
+        asyncio.create_task(send_whatsapp_video(clean_phone, vid_o, "🎬 Tuto 2/2 : Relevé PDF dans l'application Orange Money"))
+        return (
+            "📊 *ÉTAPE 4 : BILAN D'OUVERTURE & HISTORIQUE DES RELEVÉS*\n\n"
+            "🎬 Regardez les 2 vidéos tutoriels ci-dessus selon vos comptes :\n"
+            "• Pour **Wave** : Téléchargement du relevé PDF sur le portail web Wave.\n"
+            "• Pour **Orange** : Téléchargement du relevé PDF directement dans votre application mobile Orange Money.\n\n"
+            "📱 *Pour vos comptes personnels :* Envoyez une capture d'écran claire de vos soldes actuels comme preuve de départ.\n\n"
+            "👉 Envoyez vos relevés PDF ou captures d'écran, ou écrivez vos soldes de départ en FCFA !"
+        )
+    else:
+        return (
+            "📊 *ÉTAPE 4 : BILAN D'OUVERTURE DU PASSÉ*\n\n"
+            "ℹ️ Comme vous utilisez des comptes personnels, vous n'avez pas d'ancien historique marchand à télécharger sur un portail pro.\n\n"
+            "📱 *Capture d'écran obligatoire :* C'est la capture d'écran de votre solde actuel (sur vos comptes personnels Wave ou Orange Money) qui remplace l'ancien relevé et constitue la preuve officielle de votre trésorerie de départ.\n\n"
+            "👉 Veuillez m'envoyer la capture d'écran de votre solde ou indiquez votre montant disponible en FCFA :"
+        )
+
+
 async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple, onboarding: dict, contact_name: str = None) -> str:
     """
     Machine à états stricte pour l'accompagnement Growth conforme au document Word officiel :
@@ -5651,11 +5693,14 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(k in u_txt for k in ["opt_a", "bouton a", "a", "wave business", "wave seul", "wave pro", "wave marchande"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "WAVE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            tuto_wave_url = f"{base_url}/static/videos/tuto_webhook_wave.mp4"
+            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_wave_url, "🎬 Tuto Wave : Configuration du Webhook sur le portail Wave Merchant"))
             msg_a = (
-                "*Configuration Wave Business Sélectionnée !*\n\n"
-                "Vos encaissements Wave Business seront reliés directement par webhook automatique.\n\n"
-                "Passons à l'identification officielle de votre entreprise :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
+                "🌊 *Configuration Wave Business Sélectionnée !*\n\n"
+                "🎬 Regardez la courte vidéo tutoriel ci-dessus : elle vous explique exactement comment configurer votre URL Webhook sur votre portail Wave Merchant.\n\n"
+                "⚠️ *Exigence Légale Wave :* Pour avoir accès au portail Wave Merchant et générer votre Webhook, Wave exige obligatoirement un document **NINEA et un Registre de Commerce (RCCM)** valides sur votre compte marchand.\n\n"
+                "👉 *Tant que ce lien Webhook n'est pas configuré, vos encaissements ne peuvent pas être automatisés.*\n\n"
+                "Dès que vous avez vérifié vos accès Wave, envoyez-moi votre URL de webhook ou votre numéro Wave Business (`+221...`), ou confirmez votre situation légale :"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_a, buttons_ninea))
             return ""
@@ -5664,11 +5709,12 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(k in u_txt for k in ["opt_b", "bouton b", "b", "orange business", "om business", "orange seul", "orange pro", "sonatel"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "ORANGE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            tuto_om_url = f"{base_url}/static/videos/tuto_webhook_orange.mp4"
+            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_om_url, "🎬 Tuto Orange : Configuration Webhook Orange Business Sonatel"))
             msg_b = (
-                "*Configuration Orange Business Sélectionnée !*\n\n"
-                "Vos encaissements Orange Business Sonatel seront reliés directement par webhook partenaire.\n\n"
-                "Passons à l'identification officielle de votre entreprise :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
+                "🍊 *Configuration Orange Business Sélectionnée !*\n\n"
+                "🎬 Regardez la courte vidéo tutoriel ci-dessus : elle vous montre comment relier votre ligne Orange Business Sonatel à Growth par webhook.\n\n"
+                "👉 Dès que vous avez regardé la vidéo, envoyez-moi votre numéro marchand Orange Business, ou confirmez vos documents officiels NINEA / RCCM :"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_b, buttons_ninea))
             return ""
@@ -5677,11 +5723,15 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(k in u_txt for k in ["opt_c", "bouton c", "c", "double business", "les deux", "deux business", "wave et orange business"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "DOUBLE_BUSINESS")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            tuto_wave_url = f"{base_url}/static/videos/tuto_webhook_wave.mp4"
+            tuto_om_url = f"{base_url}/static/videos/tuto_webhook_orange.mp4"
+            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_wave_url, "🎬 Tuto 1/2 : Webhook sur le portail Wave Merchant"))
+            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_om_url, "🎬 Tuto 2/2 : Webhook Orange Business Sonatel"))
             msg_c = (
-                "*Configuration Wave Business + Orange Business Sélectionnée !*\n\n"
-                "Vos deux passerelles professionnelles seront scellées sans aucun mélange avec vos fonds personnels.\n\n"
-                "Passons à l'identification officielle de votre entreprise :\n"
-                "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
+                "🚀 *Configuration Double Business (Wave + Orange) Sélectionnée !*\n\n"
+                "🎬 Regardez les 2 vidéos tutoriels ci-dessus pour la configuration de vos Webhooks Wave et Orange.\n\n"
+                "⚠️ *Rappel :* Pour Wave Business, un NINEA et un Registre de Commerce (RCCM) sont obligatoires pour générer le Webhook.\n\n"
+                "👉 Passez à l'identification officielle de votre entreprise en cliquant ci-dessous :"
             )
             asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_c, buttons_ninea))
             return ""
@@ -5705,9 +5755,14 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         if any(k in u_txt for k in ["opt_e", "bouton e", "e", "mixte", "tout", "tous", "tout a la fois", "tout à la fois", "les 5", "5 en meme temps", "cinq"]):
             update_onboarding_state(sender_phone, "statut_operateurs", "MULTI_5_CANAUX")
             update_onboarding_state(sender_phone, "etape", "PHASE_3_IDENTIFICATION_NINEA")
+            tuto_wave_url = f"{base_url}/static/videos/tuto_webhook_wave.mp4"
+            tuto_om_url = f"{base_url}/static/videos/tuto_webhook_orange.mp4"
+            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_wave_url, "🎬 Tuto 1/2 : Webhook sur le portail Wave Merchant"))
+            asyncio.create_task(send_whatsapp_video(clean_phone, tuto_om_url, "🎬 Tuto 2/2 : Webhook Orange Business Sonatel"))
             msg_e = (
                 "💼 *Excellente décision ! Growth gère vos 5 canaux à la fois sans rien mélanger* :\n"
-                "1. Wave Business • 2. Orange Business • 3. 📱 Wave Perso • 4. 📲 OM Perso • 5. 💵 Caisse Espèces\n\n"
+                "1. 🌊 Wave Business • 2. 🍊 Orange Business • 3. 📱 Wave Perso • 4. 📲 OM Perso • 5. 💵 Caisse Espèces\n\n"
+                "⚠️ *Rappel Wave :* Un NINEA et RCCM sont obligatoires sur votre compte Wave Merchant pour le Webhook.\n"
                 "Chaque soir à 20h00, votre rituel de caisse ventilera avec exactitude ces 5 poches distinctes.\n\n"
                 "👉 *Avez-vous un document NINEA ou un Registre de Commerce (RCCM) pour votre entreprise ?*"
             )
@@ -5957,6 +6012,9 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 "👉 Travaillez-vous déjà avec un cabinet comptable ? (Si oui, écrivez son nom. Si non, répondez simplement « Non »)."
             )
 
+        statut_op = onboarding.get("statut_operateurs", "WAVE_BUSINESS")
+        msg_etape_4 = preparer_message_et_videos_etape_4(clean_phone, statut_op, base_url)
+
         # Vérification si la PME a déjà été créée ou attribuée directement par un cabinet depuis son portail
         deja_attribue = onboarding.get("onboarding_cree_par_cabinet") and onboarding.get("cabinet_nom")
         if deja_attribue:
@@ -5967,8 +6025,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             return (
                 f"✅ *Dossier Rattaché au {nom_cab} !*\n\n"
                 f"Votre entreprise *{nom_commercial}* est supervisée par votre cabinet.\n\n"
-                "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-                "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
+                f"{msg_etape_4}"
             )
 
         # Vérifier si l'utilisateur a explicitement mentionné un cabinet partenaire du réseau
@@ -5992,8 +6049,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 f"✅ *Cabinet Partenaire Reconnecté !*\n\n"
                 f"Votre entreprise *{nom_commercial}* est bien rattachée au *{nom_cab}* (Ordre : `{num_ordre}`).\n"
                 f"Vos écritures seront directement accessibles par votre expert pour viser vos bilans.\n\n"
-                "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-                "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
+                f"{msg_etape_4}"
             )
 
         # RÈGLE D'OR : Aucun cabinet n'est assigné au départ tant que la PME ne l'a pas choisi ou que le cabinet ne l'a pas enregistrée !
@@ -6014,14 +6070,15 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             "👍 *Option Gestion Autonome Validée !*\n\n"
             f"C'est parfaitement noté : vous pilotez *{nom_commercial}* en toute indépendance avec votre copilote IA Growth. "
             "Vous pourrez à tout moment demander à être rattaché(e) à un cabinet partenaire certifié si vous préparez un dossier de prêt bancaire.\n\n"
-            "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-            "Combien avez-vous actuellement dans votre caisse en espèces ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
+            f"{msg_etape_4}"
         )
 
     # 3.4 RÉPONSE À LA PROPOSITION DE CABINET PARTENAIRE (Transition transparente)
     if etape == "PHASE_3_CHOIX_PROPOSITION_CABINET":
         u_txt = (user_text or "").strip().lower()
         nom_commercial = onboarding.get("nom_entreprise") or f"Commerce {clean_phone[-4:]}"
+        statut_op = onboarding.get("statut_operateurs", "WAVE_BUSINESS")
+        msg_etape_4 = preparer_message_et_videos_etape_4(clean_phone, statut_op, base_url)
 
         cab_trouve = trouver_cabinet_partenaire(u_txt)
         if cab_trouve:
@@ -6034,8 +6091,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             return (
                 f"🤝 *Partenariat Confirmé !*\n\n"
                 f"Votre entreprise *{nom_commercial}* est affiliée au *{nom_cab}*.\n\n"
-                "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-                "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
+                f"{msg_etape_4}"
             )
 
         update_onboarding_state(sender_phone, "rattache_cabinet", False)
@@ -6047,8 +6103,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             "👍 *Option Gestion Autonome Validée !*\n\n"
             f"C'est parfaitement noté : vous pilotez *{nom_commercial}* de manière indépendante avec votre IA Growth. "
             "Vous pourrez à tout moment demander un visa d'expert en écrivant *« Bilan »* ou *« Cabinet »*.\n\n"
-            "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-            "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
+            f"{msg_etape_4}"
         )
 
     # =========================================================================
