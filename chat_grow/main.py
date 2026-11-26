@@ -3580,7 +3580,7 @@ async def api_valider_abonnement_client(payload: dict = Body(...)):
     # Envoi AUTOMATIQUE du message de confirmation de paiement sur WhatsApp UNIQUEMENT si pas déjà notifié
     try:
         onboarding = get_onboarding_state(clean_p)
-        etape = onboarding.get("etape", "PHASE_1_ACCUEIL")
+        etape = onboarding.get("etape", "PHASE_1_ACCUEIL") if onboarding else "PHASE_1_ACCUEIL"
         
         # Anti-spam absolu : si déjà envoyé dans les 10 dernières minutes, ne rien renvoyer
         if peut_envoyer_confirmation_paiement(clean_p, cooldown_seconds=600):
@@ -5137,6 +5137,8 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     - Étape 6 : Fin du gratuit & Verrou d'abonnement par lien officiel sécurisé.
     - Étape 7 : Routine quotidienne active, relances 3h (Points Berger) et Rituel 20h00.
     """
+    if onboarding is None:
+        onboarding = get_onboarding_state(sender_phone)
     etape = onboarding.get("etape", "PHASE_1_ACCUEIL")
     clean_phone = str(sender_phone).replace("+", "").replace(" ", "").strip()
     sp = get_supabase()
