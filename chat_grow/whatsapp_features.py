@@ -828,13 +828,17 @@ async def generer_et_envoyer_infographie_pme(sender_phone: str) -> bool:
     ent = get_entreprise_by_phone_resilient(clean_p) or {}
     st = get_onboarding_state(clean_p) or {}
 
+    nom_ent = ent.get("nom_entreprise") or ent.get("nom") or st.get("nom_entreprise") or st.get("nom_commercial") or "Votre Commerce"
+    cab_nom = ent.get("cabinet_nom") or st.get("cabinet_nom") or None
+
     pme_data = {
-        "nom_entreprise": ent.get("nom") or st.get("nom_entreprise") or "Votre Entreprise PME",
-        "telephone": clean_p
+        "nom_entreprise": nom_ent,
+        "telephone": clean_p,
+        "cabinet_nom": cab_nom
     }
 
     ent_id = ent.get("id") or clean_p
-    txs = get_transactions_resilient(ent_id) or []
+    txs = get_transactions_resilient(ent_id) or get_transactions_resilient(clean_p) or []
 
     total_ca = sum(t.get("montant_fcfa", 0) for t in txs if t.get("type_flux") != "DEPENSE")
     total_dep = sum(t.get("montant_fcfa", 0) for t in txs if t.get("type_flux") == "DEPENSE")
@@ -847,7 +851,7 @@ async def generer_et_envoyer_infographie_pme(sender_phone: str) -> bool:
         "nb_operations": len(txs)
     }
 
-    img_local_path = generer_infographie_hebdo(pme_data, stats)
+    img_local_path = generer_infographie_hebdo(pme_data, stats, txs=txs)
     img_filename = os.path.basename(img_local_path)
     base_url = get_media_base_url()
     public_img_url = f"{base_url}/static/images/{img_filename}"
