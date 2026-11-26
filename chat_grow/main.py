@@ -6192,23 +6192,33 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 except Exception as e_ocr:
                     print(f"Info OCR Solde : {e_ocr}")
 
-        if treso_val == 0 and u_txt:
-            treso_val = parse_montant_fcfa(u_txt)
+        u_low = u_txt.lower()
+        a_repondu_zero = any(m in u_low for m in ["aucun", "zero", "zéro", "rien", "amul", "dara", "0", "pas d'argent", "vide", "sans"])
+
+        if treso_val == 0 and not media_tuple and not a_repondu_zero:
+            # Sécurité stricte : Le client n'a pas répondu, on NE PASSE PAS à la suite !
+            return (
+                "ℹ️ *Pour enregistrer votre trésorerie de départ (Compte 521) :*\n\n"
+                "Veuillez m'envoyer votre relevé officiel en PDF, une capture d'écran de votre solde Wave ou Orange Money, "
+                "ou écrivez simplement votre montant disponible en FCFA (ou dites « Zéro » si vous commencez sans fonds)."
+            )
 
         if treso_val > 0:
             synchroniser_bilan_structurel_depart(clean_phone, "TRESORERIE", treso_val, "Solde de départ certifié")
             update_onboarding_state(sender_phone, "tresorerie_depart_fcfa", treso_val)
+        else:
+            update_onboarding_state(sender_phone, "tresorerie_depart_fcfa", 0)
 
         update_onboarding_state(sender_phone, "etape", "PHASE_5_INVENTAIRE_CAISSE_ESPECES")
 
-        # Instruction capitale utilisateur (Req 10) : Demande obligatoire des espèces tiroir 571
+        treso_msg = f"*{treso_val:,.0f} FCFA*" if treso_val > 0 else "*0 FCFA*"
         return (
-            f"📄 Trésorerie de départ sur vos comptes enregistrée (*{treso_val:,.0f} FCFA* au Compte 521) !\n\n"
+            f"📄 Trésorerie de départ sur vos comptes enregistrée ({treso_msg} au Compte 521) !\n\n"
             "Passons à l'Étape 5 : **Inventaire Initial Complet** (standards d'expertise comptable ONECCA / SYSCOHADA) :\n\n"
             "💵 *1. Comptage Obligatoire de votre Caisse Espèces (Tiroir - Compte 571)* :\n"
             "En dehors de vos comptes Wave et Orange Money, combien avez-vous physiquement en liquide (billets et pièces de monnaie) "
-            "dans votre tiroir-caisse, meuble ou coffre de boutique maintenant ?\n\n"
-            "👉 *Dites-moi simplement le montant exact en FCFA (exemple : « J'ai 175 000 F en espèces dans ma caisse » ou « 50 000 FCFA »).*"
+            "dans votre tiroir-caisse, meuble ou coffre maintenant ?\n\n"
+            "👉 *Dites-moi simplement le montant exact en FCFA (exemple : « J'ai 175 000 F en espèces dans ma caisse » ou « 50 000 FCFA », ou dites « Zéro » si votre caisse physique est vide).*"
         )
 
     # =========================================================================
@@ -6218,14 +6228,25 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     # 5.1 COMPTAGE OBLIGATOIRE CAISSE ESPÈCES (COMPTE 571)
     if etape == "PHASE_5_INVENTAIRE_CAISSE_ESPECES":
         u_txt = (user_text or "").strip()
+        u_low = u_txt.lower()
         caisse_val = parse_montant_fcfa(u_txt)
+        a_repondu_zero = any(m in u_low for m in ["aucun", "zero", "zéro", "rien", "amul", "dara", "0", "vide", "sans"])
+
+        if caisse_val == 0 and not a_repondu_zero:
+            # Sécurité stricte : Le client n'a pas répondu, on NE PASSE PAS à la suite !
+            return (
+                "💵 *Comptage de votre Caisse Espèces (Tiroir - Compte 571)* :\n\n"
+                "Combien avez-vous physiquement en liquide (billets et pièces de monnaie) dans votre tiroir de caisse ?\n\n"
+                "👉 *Écrivez votre montant en FCFA (ex: « 50 000 FCFA » ou dites simplement « Zéro » si votre caisse physique est vide).*"
+            )
 
         update_onboarding_state(sender_phone, "caisse_especes_fcfa", caisse_val)
         synchroniser_bilan_structurel_depart(clean_phone, "CAISSE_ESPECES", caisse_val, "Caisse physique tiroir")
         update_onboarding_state(sender_phone, "etape", "PHASE_5_INVENTAIRE_IMMOBILISATIONS")
 
+        caisse_msg = f"*{caisse_val:,.0f} FCFA*" if caisse_val > 0 else "*0 FCFA*"
         return (
-            f"💵 Caisse espèces physique scellée avec succès à *{caisse_val:,.0f} FCFA* (Compte 571 SYSCOHADA) !\n\n"
+            f"💵 Caisse espèces physique scellée avec succès à {caisse_msg} (Compte 571 SYSCOHADA) !\n\n"
             "🛠️ *2. Immobilisations & Équipements Professionnels* (Compte 241/244 SYSCOHADA) :\n"
             "Avez-vous du matériel professionnel, machines, congélateurs, véhicules ou ordinateurs utilisés pour votre activité ?\n"
             "👉 Dites-moi ce que vous possédez et sa valeur d'achat estimée (ex: « 2 congélateurs et 1 balance : 600 000 FCFA », ou dites « Aucun »). "
@@ -6238,6 +6259,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         u_txt = (user_text or "").strip()
         u_low = u_txt.lower()
         mat_val = parse_montant_fcfa(u_txt)
+        a_repondu_aucun = any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "amul", "dara", "0", "pas de materiel"])
         preuve_photo = ""
 
         if media_tuple:
@@ -6249,7 +6271,15 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 update_onboarding_state(sender_phone, "materiel_photo_validee", True)
                 preuve_photo = f"\n📸 Photo de vos équipements scellée dans votre dossier (SHA-256 : {sha_hash[:10]}...) !"
 
-        if any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "amul", "dara", "0"]) and mat_val == 0:
+        if mat_val == 0 and not media_tuple and not a_repondu_aucun:
+            # Sécurité stricte : Le client n'a pas répondu, on NE PASSE PAS à la suite !
+            return (
+                "🛠️ *Équipements & Matériel Professionnel (Compte 241/244)* :\n\n"
+                "Avez-vous du matériel professionnel pour votre activité (machines, congélateurs, balance, véhicule, ordinateur) ?\n\n"
+                "👉 *Indiquez sa valeur d'achat estimée en FCFA ou envoyez une photo (ou répondez simplement « Aucun » si vous n'en avez pas).*"
+            )
+
+        if a_repondu_aucun and mat_val == 0:
             update_onboarding_state(sender_phone, "immobilisations_fcfa", 0)
             synchroniser_bilan_structurel_depart(clean_phone, "MATERIEL", 0, "Aucun équipement")
         else:
@@ -6268,7 +6298,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
             "📦 *3. Stock de Marchandises au Magasin* (Compte 311/321 SYSCOHADA) :\n"
             "Quelle est la valeur totale de votre stock actuel évaluée au **coût d'achat grossiste** "
             "(le prix auquel vous l'avez acheté chez vos grossistes et fournisseurs, et non au prix de vente client) ?\n\n"
-            "👉 Donnez votre estimation en FCFA (ex: « 450 000 FCFA », ou « Zéro » si vous faites des prestations de services)."
+            "👉 Donnez votre estimation en FCFA (ex: « 450 000 FCFA », ou dites « Zéro » si vous faites des prestations de services)."
         )
 
     # 5.3 STOCK AU COÛT GROSSISTE (COMPTE 311/321)
@@ -6276,8 +6306,17 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         u_txt = (user_text or "").strip()
         u_low = u_txt.lower()
         stk_val = parse_montant_fcfa(u_txt)
+        a_repondu_aucun = any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "service", "prestation", "amul", "dara", "0", "pas de stock"])
 
-        if any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "service", "prestation", "amul", "dara", "0"]) and stk_val == 0:
+        if stk_val == 0 and not a_repondu_aucun:
+            # Sécurité stricte : Le client n'a pas répondu, on NE PASSE PAS à la suite !
+            return (
+                "📦 *Stock de Marchandises au Magasin (Compte 311)* :\n\n"
+                "Quelle est la valeur totale de votre stock actuel évaluée au **coût d'achat grossiste** ?\n\n"
+                "👉 *Donnez votre estimation en FCFA (ex: « 450 000 FCFA », ou dites « Zéro » / « Prestation de services » si vous n'avez pas de stock marchandise).*"
+            )
+
+        if a_repondu_aucun and stk_val == 0:
             stk_val = 0
 
         update_onboarding_state(sender_phone, "valeur_stock_fcfa", stk_val)
@@ -6297,21 +6336,16 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         u_txt = (user_text or "").strip()
         u_low = u_txt.lower()
         mnt = parse_montant_fcfa(u_txt)
+        a_repondu_aucun = any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "amul", "dara", "0", "personne", "pas de dette", "pas de credit"])
         nom_ent = onboarding.get("nom_entreprise") or "Votre Entreprise"
 
-        creances_val = 0
-        dettes_val = 0
-
-        if any(m in u_low for m in ["aucun", "zero", "zéro", "non", "rien", "amul", "dara", "0"]):
-            creances_val = 0
-            dettes_val = 0
-        elif mnt > 0:
-            if any(k in u_low for k in ["doit", "client", "crédit", "creance", "créance"]):
-                creances_val = mnt
-            if any(k in u_low for k in ["dois", "dette", "fournisseur", "grossiste", "emprunt"]):
-                dettes_val = mnt
-            if creances_val == 0 and dettes_val == 0:
-                creances_val = mnt
+        if mnt == 0 and not a_repondu_aucun:
+            # Sécurité stricte : Le client n'a pas répondu, on NE PASSE PAS à la suite !
+            return (
+                "🤝 *Créances Clients & Dettes Fournisseurs (Comptes 411 & 401)* :\n\n"
+                "Des clients vous doivent-ils de l'argent ? Devez-vous de l'argent à des grossistes ou banques ?\n\n"
+                "👉 *Exemple : « Des clients me doivent 80 000 F et je dois 120 000 F » (ou répondez simplement « Aucun » si vous n'avez ni dettes ni créances).*"
+            )
 
         update_onboarding_state(sender_phone, "creances_clients_fcfa", creances_val)
         update_onboarding_state(sender_phone, "dettes_fournisseurs_fcfa", dettes_val)
