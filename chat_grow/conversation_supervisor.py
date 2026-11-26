@@ -106,9 +106,7 @@ def prompt_rappel_etape(etape: str, onboarding: dict) -> str:
     nom_ent = onboarding.get("nom_entreprise") or onboarding.get("nom_entreprise_detecte") or "votre entreprise"
 
     if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
-        return (
-            "Êtes-vous prêt à commencer la configuration de votre entreprise ? Dites-moi simplement 'Oui' ou cliquez sur le bouton !"
-        )
+        return "Cliquez sur le bouton ci-dessous pour démarrer !"
     if etape == "PHASE_2_NUMERO_SECONDAIRE":
         return (
             "Avez-vous également un numéro pour Orange Money à relier à votre compte ?\n"
@@ -358,8 +356,11 @@ Analyse ce message en tenant compte du dialogue précédent et génère le JSON 
 
             rappel = prompt_rappel_etape(etape_actuelle, onboarding)
             
-            # Formuler la réponse humaine complète : Explication + Relance douce
-            msg_final = f"{explication}\n\n👉 {rappel}"
+            # Éviter de répéter "Êtes-vous prêt" si l'explication le contient déjà
+            if any(k in explication.lower() for k in ["prêt", "pret", "commencer", "démarrer"]):
+                msg_final = explication
+            else:
+                msg_final = f"{explication}\n\n👉 {rappel}"
             return {
                 "action": "REPONDRE_ET_REORIENTER",
                 "message_reponse": msg_final

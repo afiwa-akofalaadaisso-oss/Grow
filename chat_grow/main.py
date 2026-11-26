@@ -3860,7 +3860,9 @@ async def receive_message(request: Request):
                 print(f"Message texte de {sender_phone} ({contact_name}) : '{user_text}'")
 
                 reply_text = await handle_incoming_message(sender_phone, user_text, None, contact_name)
-                await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=True)
+                st_chk = get_onboarding_state(sender_phone) or {}
+                est_onb = st_chk.get("etape", "PHASE_1_ACCUEIL") != "TERMINE"
+                await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=(not est_onb))
 
             # 1.bis BOUTON INTERACTIF OU MENU LISTE CLIQUÉ (Feedback 👍 / 👎, Menu Opérations, Action rapide)
             elif msg_type == "interactive":
@@ -3895,7 +3897,9 @@ async def receive_message(request: Request):
                     print(f"[FEEDBACK IA] Évaluation enregistrée pour {sender_phone} : {rating} (Réaction {reaction_emoji} posée)")
                 else:
                     reply_text = await handle_incoming_message(sender_phone, btn_id or btn_title, None, contact_name)
-                    await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=True)
+                    st_chk = get_onboarding_state(sender_phone) or {}
+                    est_onb = st_chk.get("etape", "PHASE_1_ACCUEIL") != "TERMINE"
+                    await deliver_whatsapp_response(sender_phone, reply_text, with_feedback_buttons=(not est_onb))
 
             # 2. IMAGE (NINEA, Reçu papier, capture Wave)
             elif msg_type == "image":
@@ -5646,39 +5650,51 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     est_clic_bouton = u_strip_lower in boutons_directs
 
     if user_text and not media_tuple and not est_clic_bouton:
-        try:
-            supervision = await superviser_message_onboarding(
-                sender_phone=sender_phone,
-                user_text=user_text,
-                etape_actuelle=etape,
-                onboarding=onboarding,
-                contact_name=contact_name
-            )
-            action = supervision.get("action")
-            if action == "REPONDRE_ET_REORIENTER":
-                u_chk = (user_text or "").lower()
-                # Sécurité absolue : si la question porte sur les capacités ou les compétences, envoyer le menu principal
-                if any(k in u_chk for k in ["faire", "competence", "compétence", "capable", "capacite", "capacité", "growth", "qui es-tu", "qui tu es", "menu", "option"]):
-                    from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
-                    h, b, lbl, secs, ftr = build_main_operations_list()
-                    await send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr)
-                return supervision.get("message_reponse")
-            if action == "APPLIQUER_CORRECTION":
-                champs_corriges = supervision.get("champs_corriges", {})
-                if "nom_entreprise" in champs_corriges:
-                    n_nom = champs_corriges["nom_entreprise"]
-                    update_onboarding_state(sender_phone, "nom_entreprise", n_nom)
-                    save_or_update_entreprise_resilient({"telephone_whatsapp": clean_phone, "nom_entreprise": n_nom})
-                if "mode_communication" in champs_corriges:
-                    n_mode = "VOCAL" if str(champs_corriges["mode_communication"]).upper() in ["VOCAL", "AUDIO", "VOIX"] else "ECRIT"
-                    update_onboarding_state(sender_phone, "mode_communication", n_mode)
-                return supervision.get("message_reponse")
-            if action == "SAUTER_ETAPE":
-                nouvelle_etape = supervision.get("nouvelle_etape", "PHASE_5_INVENTAIRE_CAISSE_ESPECES")
-                update_onboarding_state(sender_phone, "etape", nouvelle_etape)
-                return supervision.get("message_reponse")
-        except Exception as e_sup:
-            print(f"Info superviseur onboarding : {e_sup}")
+        # À l'étape 1 (Accueil) :
+        # Si c'est une salutation ou un premier contact, laisser passer directement à l'accueil officiel
+        # pour délivrer la vidéo démo et le bouton interactif "Oui, je suis prêt ! 🚀" !
+        if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"] and (is_greeting(user_text) or any(k in u_strip_lower for k in ["salut", "bonjour", "bonsoir", "salam", "hello", "coucou", "qui es tu", "qui es-tu"])):
+            pass
+        else:
+            try:
+                supervision = await superviser_message_onboarding(
+                    sender_phone=sender_phone,
+                    user_text=user_text,
+                    etape_actuelle=etape,
+                    onboarding=onboarding,
+                    contact_name=contact_name
+                )
+                action = supervision.get("action")
+                if action == "REPONDRE_ET_REORIENTER":
+                    u_chk = (user_text or "").lower()
+                    # Sécurité absolue : si la question porte sur les capacités ou les compétences, envoyer le menu principal
+                    if any(k in u_chk for k in ["faire", "competence", "compétence", "capable", "capacite", "capacité", "growth", "qui es-tu", "qui tu es", "menu", "option"]):
+                        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+                        h, b, lbl, secs, ftr = build_main_operations_list()
+                        await send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr)
+                    
+                    msg_rep = supervision.get("message_reponse")
+                    if etape in ["PHASE_1_ACCUEIL", "DEMANDE_MODE"]:
+                        buttons_mode = [{"id": "pret_commencer", "title": "Oui, je suis prêt ! 🚀"}]
+                        asyncio.create_task(send_whatsapp_interactive_buttons(clean_phone, msg_rep, buttons_mode))
+                        return ""
+                    return msg_rep
+                if action == "APPLIQUER_CORRECTION":
+                    champs_corriges = supervision.get("champs_corriges", {})
+                    if "nom_entreprise" in champs_corriges:
+                        n_nom = champs_corriges["nom_entreprise"]
+                        update_onboarding_state(sender_phone, "nom_entreprise", n_nom)
+                        save_or_update_entreprise_resilient({"telephone_whatsapp": clean_phone, "nom_entreprise": n_nom})
+                    if "mode_communication" in champs_corriges:
+                        n_mode = "VOCAL" if str(champs_corriges["mode_communication"]).upper() in ["VOCAL", "AUDIO", "VOIX"] else "ECRIT"
+                        update_onboarding_state(sender_phone, "mode_communication", n_mode)
+                    return supervision.get("message_reponse")
+                if action == "SAUTER_ETAPE":
+                    nouvelle_etape = supervision.get("nouvelle_etape", "PHASE_5_INVENTAIRE_CAISSE_ESPECES")
+                    update_onboarding_state(sender_phone, "etape", nouvelle_etape)
+                    return supervision.get("message_reponse")
+            except Exception as e_sup:
+                print(f"Info superviseur onboarding : {e_sup}")
 
     # =========================================================================
     # ÉTAPE 1 : ACCUEIL & VIDÉO DÉMO OFFICIELLE (PRÊT À COMMENCER)
