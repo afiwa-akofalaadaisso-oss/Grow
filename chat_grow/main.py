@@ -5381,10 +5381,16 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 update_onboarding_state(sender_phone, "ninea_rappel_hebdo", True)
                 update_onboarding_state(sender_phone, "dernier_rappel_ninea", datetime.now().isoformat())
                 return (
-                    "💡 *Conseil Officiel Growth* :\n"
-                    "L'obtention du NINEA au Sénégal est totalement **GRATUITE** et se fait en quelques minutes auprès de votre centre des services fiscaux (DGID) ou de l'APIX. "
-                    "Ce document est indispensable pour certifier vos bilans et obtenir un financement bancaire. Nous vous relancerons chaque semaine pour vous aider à l'obtenir.\n\n"
-                    "Pas d'inquiétude, vous pouvez démarrer dès aujourd'hui !\n\n"
+                    "📋 *Guide Officiel de Formalisation (APIX / Greffe)* :\n\n"
+                    "Pour obtenir votre immatriculation officielle (**RCCM + NINEA**) en 24h à 48h au Sénégal, voici les tarifs légaux exacts selon votre situation :\n\n"
+                    "🔹 *Option 1 : En Nom Propre (sans enseigne) = 14 000 FCFA*\n"
+                    "• 10 000 F (Frais de greffe RCCM) + 4 000 F (2 timbres fiscaux de 2 000 F)\n"
+                    "• Votre activité est enregistrée directement sous votre nom civil.\n\n"
+                    "🔹 *Option 2 : Avec Nom Commercial (enseigne protégée) = 24 000 FCFA*\n"
+                    "• 10 000 F (Greffe) + 10 000 F (Dépôt du nom commercial OAPI) + 4 000 F (Timbres fiscaux)\n"
+                    "• Le nom de votre boutique et votre enseigne sont protégés juridiquement contre toute copie.\n\n"
+                    "📄 *Pièces à fournir :* 2 copies de la CNI + Certificat de résidence + Extrait de casier judiciaire (ou attestation sur l'honneur remplie sur place) + 2 timbres de 2 000 F.\n\n"
+                    "Ce document est capital pour vos demandes de prêt bancaire et vos attestations fiscales. En attendant, pas d'inquiétude : vous pouvez démarrer vos écritures dès aujourd'hui sur Growth !\n\n"
                     "👉 *Quel est le nom commercial ou l'enseigne de votre boutique / activité ?*"
                 )
 
