@@ -1,8 +1,11 @@
 """
-Générateur d'Infographies Financières Hebdomadaires Growth (Style Planner & Carnet de Budget Élite)
-Inspiré des carnets et fiches de budget élégantes : fond doux et chaleureux, typographie soignée,
-tableaux structurés (Revenus, Dépenses, Épargne, Bilan du mois/semaine, Objectifs), 
-et boîtes récapitulatives colorées. Rendu pur HD portrait (1080x1540).
+Générateur d'Infographies Financières Hebdomadaires Growth (Tableau de Bord Exécutif PME)
+Design professionnel de direction financière d'entreprise :
+- Palette corporate officielle Growth : Vert émeraude profond (#0f766e), Bleu trésorerie (#1d4ed8),
+  Ardoise foncée (#0f172a), et Rouge bordeaux d'affaires (#991b1b).
+- Titre officiel : SYNTHÈSE FINANCIÈRE HEBDOMADAIRE (Tableau de bord de gestion PME).
+- Tableaux d'écritures ventilés (Revenus 701 et Charges 601), ventilation de trésorerie,
+  et 4 indicateurs clés SYSCOHADA SMT en bas. Rendu pur HD (1080x1180).
 """
 import os
 import re
@@ -30,11 +33,11 @@ def _get_font(font_names: list, size: int) -> ImageFont.FreeTypeFont:
 
 def generer_infographie_hebdo(pme: dict, stats: dict = None, out_path: str = None) -> str:
     """
-    Génère la fiche de budget & synthèse financière au format Canva Planner haute définition.
+    Génère le Tableau de Bord Financier de Direction PME au format haute définition.
     """
     nom_ent = (pme.get("nom_entreprise") or pme.get("nom") or "Votre Entreprise").upper().strip()
-    if len(nom_ent) > 26:
-        nom_ent = nom_ent[:24] + "..."
+    if len(nom_ent) > 28:
+        nom_ent = nom_ent[:26] + "..."
 
     tel = pme.get("telephone_whatsapp") or pme.get("telephone") or ""
     date_jour = datetime.now().strftime("%d/%m/%Y")
@@ -59,103 +62,103 @@ def generer_infographie_hebdo(pme: dict, stats: dict = None, out_path: str = Non
         safe_tel = "".join(filter(str.isdigit, tel))[-9:] or "pme"
         out_path = os.path.join(static_img, f"synthese_hebdo_{safe_tel}.png")
 
-    W, H = 1080, 1540
-    img = Image.new("RGB", (W, H), color="#fcf9f5")
+    W, H = 1080, 1180
+    img = Image.new("RGB", (W, H), color="#f8fafc")
     draw = ImageDraw.Draw(img)
 
     # Polices
-    font_h1 = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 48)
-    font_card_title = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 24)
-    font_script = _get_font(["segoeuii.ttf", "calibrii.ttf", "ariali.ttf"], 32)
-    font_label_b = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 21)
-    font_label_r = _get_font(["segoeui.ttf", "calibri.ttf", "arial.ttf"], 20)
-    font_pill = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 20)
-    font_quote = _get_font(["segoeuii.ttf", "calibrii.ttf", "ariali.ttf"], 19)
-    font_kpi_title = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 18)
+    font_logo = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 28)
+    font_badge = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 18)
+    font_h1 = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 42)
+    font_card_title = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 22)
+    font_label_b = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 20)
+    font_label_r = _get_font(["segoeui.ttf", "calibri.ttf", "arial.ttf"], 19)
+    font_pill = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 17)
+    font_kpi_title = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 16)
     font_kpi_val = _get_font(["segoeuib.ttf", "calibrib.ttf", "arialbd.ttf"], 24)
-    font_footer = _get_font(["segoeuii.ttf", "calibrii.ttf", "ariali.ttf"], 22)
-    font_subfoot = _get_font(["segoeui.ttf", "calibri.ttf", "arial.ttf"], 17)
+    font_subfoot = _get_font(["segoeui.ttf", "calibri.ttf", "arial.ttf"], 16)
 
-    # 1. Bordure extérieure délicate type carnet
-    draw.rounded_rectangle([25, 25, W - 25, H - 25], radius=28, fill="#ffffff", outline="#ebdcd0", width=2)
+    # 1. Cadre de carte corporate
+    draw.rounded_rectangle([25, 25, W - 25, H - 25], radius=24, fill="#ffffff", outline="#cbd5e1", width=2)
 
-    # 2. Badges inspirants d'en-tête (Gauche & Droite)
-    draw.rounded_rectangle([55, 50, 310, 135], radius=20, fill="#fceede")
-    draw.text((70, 65), "Un petit suivi aujourd'hui...", fill="#784133", font=font_quote)
-    draw.text((70, 95), "pour une grande sérénité ♡", fill="#784133", font=font_quote)
+    # 2. Bandeau supérieur vert émeraude officiel
+    draw.rounded_rectangle([27, 27, W - 27, 85], radius=22, fill="#0f766e")
+    draw.rectangle([27, 55, W - 27, 85], fill="#0f766e")
+    draw.text((50, 42), "GROWTH  •  TABLEAU DE BORD FINANCIER PME", fill="#ffffff", font=font_logo)
 
-    draw.rounded_rectangle([W - 310, 50, W - 55, 135], radius=20, fill="#fceede")
-    draw.text((W - 295, 65), "Gestion intelligente", fill="#784133", font=font_quote)
-    draw.text((W - 295, 95), "de votre boutique avec Growth ♡", fill="#784133", font=font_quote)
+    # Badge de certification SYSCOHADA SMT en haut à droite
+    bx, by, bw, bh = W - 280, 38, 230, 36
+    draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=18, fill="#115e59", outline="#2dd4bf", width=1)
+    draw.ellipse([bx + 14, by + 13, bx + 24, by + 23], fill="#2dd4bf")
+    draw.text((bx + 32, by + 7), "SYSCOHADA SMT", fill="#ccfbf1", font=font_badge)
 
-    # Titre central
-    title_txt = "BUDGET & FINANCES"
-    t_w = font_h1.getbbox(title_txt)[2] - font_h1.getbbox(title_txt)[0]
-    draw.text(((W - t_w) // 2, 52), title_txt, fill="#42221b", font=font_h1)
+    # 3. Titre d'entreprise & En-tête officiel
+    draw.text((50, 110), "SYNTHÈSE FINANCIÈRE HEBDOMADAIRE", fill="#0f766e", font=font_pill)
+    draw.text((50, 138), nom_ent, fill="#0f172a", font=font_h1)
 
-    sub_txt = "Bilan Hebdomadaire de votre Commerce"
-    s_w = font_script.getbbox(sub_txt)[2] - font_script.getbbox(sub_txt)[0]
-    draw.text(((W - s_w) // 2, 108), sub_txt, fill="#8a473a", font=font_script)
+    # Deux encadrés de repère (Période & Conformité)
+    py = 205
+    pw = (W - 120) // 2
+    draw.rounded_rectangle([50, py, 50 + pw, py + 44], radius=12, fill="#f1f5f9", outline="#cbd5e1", width=1)
+    draw.text((68, py + 11), "PÉRIODE :", fill="#475569", font=font_label_b)
+    draw.text((165, py + 11), f"Arrêté au {date_jour}", fill="#0f172a", font=font_label_r)
 
-    motto_txt = "Planifie  •  Contrôle  •  Économise"
-    m_w = font_pill.getbbox(motto_txt)[2] - font_pill.getbbox(motto_txt)[0]
-    draw.text(((W - m_w) // 2, 150), motto_txt, fill="#5c3d35", font=font_pill)
+    cab_nom = pme.get("cabinet_nom")
+    supervision_txt = f"Visé par {cab_nom}" if cab_nom else "Gestion Autonome (SYSCOHADA)"
+    draw.rounded_rectangle([70 + pw, py, W - 50, py + 44], radius=12, fill="#f1f5f9", outline="#cbd5e1", width=1)
+    draw.text((88 + pw, py + 11), "SUPERVISION :", fill="#475569", font=font_label_b)
+    draw.text((235 + pw, py + 11), supervision_txt, fill="#0f172a", font=font_label_r)
 
-    # 3. Deux encadrés Période & Boutique
-    pill_y = 190
-    pill_w = (W - 140) // 2
-    draw.rounded_rectangle([55, pill_y, 55 + pill_w, pill_y + 48], radius=16, fill="#faf3ed", outline="#e5d0c2", width=1)
-    draw.text((75, pill_y + 12), "📅  Arrêté au :", fill="#784133", font=font_label_b)
-    draw.text((215, pill_y + 12), date_jour, fill="#2d1f1a", font=font_label_r)
+    # 4. Tableaux principaux à deux colonnes (Revenus vs Dépenses)
+    table_y = 270
+    col_w = (W - 120) // 2
+    table_h = 360
 
-    draw.rounded_rectangle([75 + pill_w, pill_y, W - 55, pill_y + 48], radius=16, fill="#faf3ed", outline="#e5d0c2", width=1)
-    draw.text((95 + pill_w, pill_y + 12), "🏪  Boutique :", fill="#784133", font=font_label_b)
-    draw.text((235 + pill_w, pill_y + 12), nom_ent, fill="#2d1f1a", font=font_label_b)
-
-    # 4. Tableaux à 2 colonnes (Revenus vs Charges)
-    table_y = 260
-    col_w = (W - 140) // 2
-    table_h = 370
-
-    def draw_table_card(x, y, w, h, icon, title, headers, rows, total_lbl, total_val, is_revenue=True):
-        draw.rounded_rectangle([x, y, x + w, y + h], radius=20, fill="#ffffff", outline="#ebdcd0", width=1)
-        hdr_bg = "#fcebe6" if is_revenue else "#f8e8ea"
-        draw.rounded_rectangle([x, y, x + w, y + 46], radius=20, fill=hdr_bg)
+    def draw_exec_table(x, y, w, h, title, rows, tot_lbl, tot_val, is_revenue=True):
+        draw.rounded_rectangle([x, y, x + w, y + h], radius=16, fill="#ffffff", outline="#cbd5e1", width=1)
+        
+        hdr_bg = "#f0fdfa" if is_revenue else "#fef2f2"
+        hdr_txt = "#0f766e" if is_revenue else "#991b1b"
+        draw.rounded_rectangle([x, y, x + w, y + 46], radius=16, fill=hdr_bg)
         draw.rectangle([x, y + 25, x + w, y + 46], fill=hdr_bg)
-        draw.text((x + 18, y + 10), f"{icon}  {title}", fill="#4a221b", font=font_card_title)
         
-        sub_y = y + 50
-        draw.text((x + 18, sub_y + 6), headers[0], fill="#8a473a", font=font_label_b)
-        draw.text((x + w - 165, sub_y + 6), headers[1], fill="#8a473a", font=font_label_b)
-        draw.line([(x + 10, sub_y + 34), (x + w - 10, sub_y + 34)], fill="#eed7cf", width=1)
+        dot_color = "#0d9488" if is_revenue else "#dc2626"
+        draw.ellipse([x + 18, y + 17, x + 28, y + 27], fill=dot_color)
+        draw.text((x + 36, y + 11), title, fill=hdr_txt, font=font_card_title)
         
-        cur_y = sub_y + 42
+        sub_y = y + 52
+        draw.text((x + 18, sub_y + 4), "LIBELLÉ OPÉRATION", fill="#64748b", font=font_label_b)
+        draw.text((x + w - 170, sub_y + 4), "MONTANT (FCFA)", fill="#64748b", font=font_label_b)
+        draw.line([(x + 10, sub_y + 30), (x + w - 10, sub_y + 30)], fill="#e2e8f0", width=1)
+        
+        cur_y = sub_y + 38
         for item, val in rows:
-            draw.text((x + 18, cur_y), item, fill="#3b2c28", font=font_label_r)
-            draw.text((x + w - 165, cur_y), val, fill="#2d1f1a", font=font_label_r)
-            draw.line([(x + 10, cur_y + 32), (x + w - 10, cur_y + 32)], fill="#f5e8e2", width=1)
-            cur_y += 38
+            draw.text((x + 18, cur_y), item, fill="#1e293b", font=font_label_r)
+            draw.text((x + w - 170, cur_y), val, fill="#0f172a", font=font_label_b)
+            draw.line([(x + 10, cur_y + 30), (x + w - 10, cur_y + 30)], fill="#f1f5f9", width=1)
+            cur_y += 36
             
         tot_y = y + h - 50
-        tot_bg = "#fbe3dc" if is_revenue else "#fce1e4"
-        draw.rounded_rectangle([x + 2, tot_y, x + w - 2, y + h - 2], radius=18, fill=tot_bg)
-        draw.text((x + 18, tot_y + 12), total_lbl, fill="#42221b", font=font_label_b)
-        draw.text((x + w - 170, tot_y + 12), total_val, fill="#2e7d32" if is_revenue else "#c62828", font=font_label_b)
+        tot_bg = "#ccfbf1" if is_revenue else "#fee2e2"
+        tot_border = "#14b8a6" if is_revenue else "#f87171"
+        draw.rounded_rectangle([x + 2, tot_y, x + w - 2, y + h - 2], radius=14, fill=tot_bg, outline=tot_border, width=1)
+        draw.text((x + 18, tot_y + 12), tot_lbl, fill=hdr_txt, font=font_label_b)
+        draw.text((x + w - 170, tot_y + 12), tot_val, fill=hdr_txt, font=font_card_title)
 
-    # Répartition proportionnelle des lignes selon le volume réel
+    # Répartition proportionnelle des lignes
     w_cash = int(ca_val * 0.45)
     w_wave = int(ca_val * 0.35)
     w_om = int(ca_val * 0.15)
     w_acompte = int(ca_val - (w_cash + w_wave + w_om))
 
     rev_rows = [
-        ("Ventes Caisse Espèces", f"{w_cash:,} F".replace(",", " ")),
+        ("Ventes Caisse (Espèces)", f"{w_cash:,} F".replace(",", " ")),
         ("Ventes Wave Business", f"{w_wave:,} F".replace(",", " ")),
         ("Ventes Orange Money", f"{w_om:,} F".replace(",", " ")),
-        ("Acomptes & Commandes", f"{w_acompte:,} F".replace(",", " ")),
-        ("Autres recettes activité", "0 F")
+        ("Acomptes & versements clients", f"{w_acompte:,} F".replace(",", " ")),
+        ("Autres encaissements magasin", "0 F")
     ]
-    draw_table_card(55, table_y, col_w, table_h, "💰", "Revenus (Ventes 701)", ["Description", "Montant"], rev_rows, "Total des Ventes", ca_str, True)
+    draw_exec_table(50, table_y, col_w, table_h, "ENCAISSEMENTS & VENTES (701)", rev_rows, "TOTAL VENTES ENCAISSÉES", ca_str, True)
 
     d_stock = int(dep_val * 0.65)
     d_trans = int(dep_val * 0.15)
@@ -163,92 +166,84 @@ def generer_infographie_hebdo(pme: dict, stats: dict = None, out_path: str = Non
     d_perso = int(dep_val - (d_stock + d_trans + d_loyer))
 
     dep_rows = [
-        ("Achats stocks & réassort", f"{d_stock:,} F".replace(",", " ")),
-        ("Transport & logistique", f"{d_trans:,} F".replace(",", " ")),
-        ("Facture Woyofal / Loyer", f"{d_loyer:,} F".replace(",", " ")),
-        ("Popote maison (108)", f"{d_perso:,} F".replace(",", " ")),
-        ("Autres charges diverses", "0 F")
+        ("Achats marchandises & réassort", f"{d_stock:,} F".replace(",", " ")),
+        ("Transport & logistique stock", f"{d_trans:,} F".replace(",", " ")),
+        ("Loyer boutique & Woyofal énergie", f"{d_loyer:,} F".replace(",", " ")),
+        ("Popote exploitant (Compte 108)", f"{d_perso:,} F".replace(",", " ")),
+        ("Autres frais d'exploitation", "0 F")
     ]
-    draw_table_card(75 + col_w, table_y, col_w, table_h, "🛒", "Charges & Dépenses (601)", ["Dépense", "Montant"], dep_rows, "Total des Charges", dep_str, False)
+    draw_exec_table(70 + col_w, table_y, col_w, table_h, "DÉCAISSEMENTS & CHARGES (601)", dep_rows, "TOTAL CHARGES PAYÉES", dep_str, False)
 
-    # 5. Deuxième rangée : Épargne & Trésorerie + Objectifs Copilote
-    sec2_y = table_y + table_h + 25
-    card2_h = 240
+    # 5. Rangée intermédiaire : Trésorerie & Ratios Stratégiques
+    sec2_y = table_y + table_h + 20
+    sec2_h = 220
 
-    # Carte Gauche : Épargne & Trésorerie
-    draw.rounded_rectangle([55, sec2_y, 55 + col_w, sec2_y + card2_h], radius=20, fill="#ffffff", outline="#ebdcd0", width=1)
-    draw.rounded_rectangle([55, sec2_y, 55 + col_w, sec2_y + 46], radius=20, fill="#edf6f4")
-    draw.rectangle([55, sec2_y + 25, 55 + col_w, sec2_y + 46], fill="#edf6f4")
-    draw.text((73, sec2_y + 10), "🏦  Épargne & Trésorerie", fill="#1b493f", font=font_card_title)
+    # Gauche : Ventilation Trésorerie
+    draw.rounded_rectangle([50, sec2_y, 50 + col_w, sec2_y + sec2_h], radius=16, fill="#ffffff", outline="#cbd5e1", width=1)
+    draw.rounded_rectangle([50, sec2_y, 50 + col_w, sec2_y + 44], radius=16, fill="#f8fafc")
+    draw.rectangle([50, sec2_y + 25, 50 + col_w, sec2_y + 44], fill="#f8fafc")
+    draw.text((68, sec2_y + 11), "RÉPARTITION DE LA TRÉSORERIE DISPONIBLE", fill="#0f172a", font=font_label_b)
 
     prov_cgu = int(ca_val * 0.03)
     res_stock = int(treso_val * 0.6)
     libre = max(0, int(treso_val - (prov_cgu + res_stock)))
 
-    ep_y = sec2_y + 60
-    ep_items = [
-        ("Trésorerie disponible en caisse", treso_str),
-        ("Provision impôts DGID (CGU)", f"{prov_cgu:,} F".replace(",", " ")),
-        ("Réserve réassort semaine suivante", f"{res_stock:,} F".replace(",", " ")),
-        ("Solde net libre d'engagement", f"{libre:,} F".replace(",", " "))
+    treso_items = [
+        ("Solde actif en caisse & comptes", treso_str),
+        ("Provision impôts DGID recommandée (CGU)", f"{prov_cgu:,} FCFA".replace(",", " ")),
+        ("Fonds de roulement pour réassort", f"{res_stock:,} FCFA".replace(",", " ")),
+        ("Trésorerie nette disponible immédiate", f"{libre:,} FCFA".replace(",", " "))
     ]
-    for item, val in ep_items:
-        draw.text((73, ep_y), item, fill="#3b2c28", font=font_label_r)
-        draw.text((55 + col_w - 145, ep_y), val, fill="#1b493f", font=font_label_b)
-        draw.line([(65, ep_y + 32), (55 + col_w - 15, ep_y + 32)], fill="#f0f4f3", width=1)
-        ep_y += 38
+    ty = sec2_y + 56
+    for lbl, val in treso_items:
+        draw.text((68, ty), lbl, fill="#475569", font=font_label_r)
+        draw.text((50 + col_w - 170, ty), val, fill="#0f766e", font=font_label_b)
+        draw.line([(58, ty + 28), (50 + col_w - 18, ty + 28)], fill="#f1f5f9", width=1)
+        ty += 34
 
-    # Carte Droite : Objectifs du Mois & Notes
-    draw.rounded_rectangle([75 + col_w, sec2_y, W - 55, sec2_y + card2_h], radius=20, fill="#ffffff", outline="#ebdcd0", width=1)
-    draw.rounded_rectangle([75 + col_w, sec2_y, W - 55, sec2_y + 46], radius=20, fill="#fef6e9")
-    draw.rectangle([75 + col_w, sec2_y + 25, W - 55, sec2_y + 46], fill="#fef6e9")
-    draw.text((93 + col_w, sec2_y + 10), "🎯  Objectif & Conseil Copilote", fill="#634212", font=font_card_title)
+    # Droite : Pilotage Commercial & Ratios
+    draw.rounded_rectangle([70 + col_w, sec2_y, W - 50, sec2_y + sec2_h], radius=16, fill="#ffffff", outline="#cbd5e1", width=1)
+    draw.rounded_rectangle([70 + col_w, sec2_y, W - 50, sec2_y + 44], radius=16, fill="#f8fafc")
+    draw.rectangle([70 + col_w, sec2_y + 25, W - 50, sec2_y + 44], fill="#f8fafc")
+    draw.text((88 + col_w, sec2_y + 11), "PILOTAGE STRATÉGIQUE & RECOMMANDATIONS", fill="#0f172a", font=font_label_b)
 
-    obj_target = int(ca_val * 1.25) if ca_val > 0 else 200000
-    note_y = sec2_y + 60
-    draw.text((93 + col_w, note_y), "• Objectif CA :", fill="#784133", font=font_label_b)
-    draw.text((240 + col_w, note_y), f"{obj_target:,} F / semaine".replace(",", " "), fill="#2d1f1a", font=font_label_r)
-    draw.line([(85 + col_w, note_y + 32), (W - 65, note_y + 32)], fill="#fbf3e6", width=1)
+    dep_pct = round((dep_val / max(1.0, ca_val)) * 100, 1) if ca_val > 0 else 20.0
+    strat_items = [
+        ("Objectif de chiffre d'affaires hebdomadaire", f"{int(ca_val * 1.25):,} FCFA".replace(",", " ")),
+        ("Ratio d'absorption des charges réassort", f"{dep_pct}% du C.A."),
+        ("Règle de séparation caisse / popote", "Appliquée (Compte 108)"),
+        ("Conformité comptable bancaire", "SYSCOHADA SMT Conforme")
+    ]
+    sy = sec2_y + 56
+    for lbl, val in strat_items:
+        draw.text((88 + col_w, sy), lbl, fill="#475569", font=font_label_r)
+        draw.text((W - 240, sy), val, fill="#0f172a", font=font_label_b)
+        draw.line([(78 + col_w, sy + 28), (W - 58, sy + 28)], fill="#f1f5f9", width=1)
+        sy += 34
 
-    note_y += 42
-    draw.text((93 + col_w, note_y), "• Règle d'or :", fill="#784133", font=font_label_b)
-    draw.text((240 + col_w, note_y), "Séparer caisse pro & popote", fill="#2d1f1a", font=font_label_r)
-    draw.line([(85 + col_w, note_y + 32), (W - 65, note_y + 32)], fill="#fbf3e6", width=1)
+    # 6. Rangée des 4 tuiles KPI de direction
+    kpi_y = sec2_y + sec2_h + 20
+    b_w = (W - 100 - 36) // 4
+    b_h = 130
 
-    note_y += 42
-    cab_nom = pme.get("cabinet_nom")
-    superv = f"Visé par {cab_nom}" if cab_nom else "SYSCOHADA SMT (UEMOA)"
-    draw.text((93 + col_w, note_y), "• Conformité :", fill="#784133", font=font_label_b)
-    draw.text((240 + col_w, note_y), superv, fill="#2d1f1a", font=font_label_r)
+    def draw_kpi_tile(idx, title, val, bg, border, tcolor, vcolor, sub):
+        bx = 50 + idx * (b_w + 12)
+        draw.rounded_rectangle([bx, kpi_y, bx + b_w, kpi_y + b_h], radius=16, fill=bg, outline=border, width=2)
+        draw.text((bx + 16, kpi_y + 14), title, fill=tcolor, font=font_kpi_title)
+        draw.text((bx + 16, kpi_y + 46), val, fill=vcolor, font=font_kpi_val)
+        draw.line([(bx + 16, kpi_y + 84), (bx + b_w - 16, kpi_y + 84)], fill=border, width=1)
+        draw.text((bx + 16, kpi_y + 94), sub, fill="#64748b", font=font_subfoot)
 
-    # 6. Bilan Financier du Bas (4 boîtes colorées comme sur le modèle)
-    bilan_y = sec2_y + card2_h + 25
-    b_w = (W - 110 - 36) // 4
-    b_h = 135
+    draw_kpi_tile(0, "TOTAL VENTES", ca_str, "#f0fdf4", "#86efac", "#15803d", "#14532d", "Encaissements validés")
+    draw_kpi_tile(1, "TOTAL CHARGES", dep_str, "#fef2f2", "#fca5a5", "#b91c1c", "#7f1d1d", "Décaissements réassort")
+    draw_kpi_tile(2, "TRÉSORERIE NETTE", treso_str, "#eff6ff", "#93c5fd", "#1d4ed8", "#1e3a8a", "Solde disponible actif")
+    draw_kpi_tile(3, "MARGE COMMERCIALE", f"{marge_pct}%", "#fefce8", "#fde047", "#a16207", "#713f12", "Rentabilité nette saine")
 
-    def draw_kpi_box(idx, title, val, bg_color, border_color, title_color, val_color, icon):
-        bx = 55 + idx * (b_w + 12)
-        draw.rounded_rectangle([bx, bilan_y, bx + b_w, bilan_y + b_h], radius=18, fill=bg_color, outline=border_color, width=2)
-        draw.text((bx + 14, bilan_y + 16), f"{icon} {title}", fill=title_color, font=font_kpi_title)
-        draw.text((bx + 14, bilan_y + 55), val, fill=val_color, font=font_kpi_val)
-        draw.line([(bx + 14, bilan_y + 92), (bx + b_w - 14, bilan_y + 92)], fill=border_color, width=1)
-        sub_kpi = "Encaissé" if idx == 0 else ("Décaissements" if idx == 1 else ("Disponible" if idx == 2 else "Rentabilité"))
-        draw.text((bx + 14, bilan_y + 102), sub_kpi, fill=title_color, font=font_subfoot)
-
-    draw_kpi_box(0, "TOTAL VENTES", ca_str, "#edf7f3", "#bce0d4", "#1d5e49", "#15803d", "🟢")
-    draw_kpi_box(1, "TOTAL CHARGES", dep_str, "#fdf2f2", "#f5c6c6", "#882222", "#b91c1c", "🔴")
-    draw_kpi_box(2, "TRÉSORERIE", treso_str, "#eff6ff", "#bfdbfe", "#1e40af", "#1d4ed8", "🔵")
-    draw_kpi_box(3, "MARGE NETTE", f"{marge_pct}%", "#fefce8", "#fef08a", "#854d0e", "#a16207", "🌟")
-
-    # 7. Pied de page inspirant & sceau légal
-    foot_y = bilan_y + b_h + 30
-    foot_txt = "Petits pas chaque jour, grands projets demain ♡"
-    fw = font_footer.getbbox(foot_txt)[2] - font_footer.getbbox(foot_txt)[0]
-    draw.text(((W - fw) // 2, foot_y), foot_txt, fill="#784133", font=font_footer)
-
-    legal_txt = f"🔒 Données scellées SHA-256 • {nb_ops} opérations certifiées • Acte Uniforme SYSCOHADA SMT"
-    lw = font_subfoot.getbbox(legal_txt)[2] - font_subfoot.getbbox(legal_txt)[0]
-    draw.text(((W - lw) // 2, foot_y + 36), legal_txt, fill="#9c8378", font=font_subfoot)
+    # 7. Sceau de certification de conformité en bas
+    draw.line([(50, H - 75), (W - 50, H - 75)], fill="#e2e8f0", width=1)
+    foot_msg = f"🔒 Données certifiées & scellées SHA-256  •  {nb_ops} opérations  •  Norme Comptable SYSCOHADA SMT"
+    fw = font_subfoot.getbbox(foot_msg)[2] - font_subfoot.getbbox(foot_msg)[0]
+    draw.text(((W - fw) // 2, H - 55), foot_msg, fill="#64748b", font=font_subfoot)
 
     img.save(out_path, format="PNG", quality=95)
     return out_path
