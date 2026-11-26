@@ -3998,22 +3998,32 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
     # B) BILAN COMPTABLE SYSCOHADA & DOSSIER PRÊT AVEC CIRCUIT VISA CABINET (Human-in-the-Loop)
     mots_bilan = ["op_bilan_pdf", "bilan", "liasse", "pdf", "mon bilan", "bilan pdf", "télécharger bilan", "telecharger bilan", "pret", "prêt", "banque", "attestation banque", "attestation", "visa"]
     if any(k in user_txt_lower for k in ["bilan", "liasse", "attestation"]) or user_txt_lower in mots_bilan:
-        from chat_grow.visa_manager import creer_demande_visa
         st = get_onboarding_state(clean_p) or {}
         nom_ent = st.get("nom_entreprise") or "Votre Entreprise"
-        cab_nom = st.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
+        cab_nom = st.get("cabinet_nom")
+        a_un_cabinet = bool(st.get("rattache_cabinet") and cab_nom)
 
-        # Création de la demande officielle rattachée au cabinet spécifique de la PME
-        demande = creer_demande_visa(clean_p, nom_ent, "BILAN_SYSCOHADA", "Dossier bancaire et conformité", cabinet_nom=cab_nom)
-
-        return (
-            f"⏳ *DEMANDE TRANSMISE À VOTRE EXPERT-COMPTABLE*\n\n"
-            f"Votre demande de Bilan Officiel & Attestation SYSCOHADA pour *{nom_ent}* a bien été transmise à votre cabinet (*{cab_nom}*).\n\n"
-            f"🔍 *Circuit de Contrôle & Visa Légal :*\n"
-            f"• Vos écritures et pièces Wave/OM/Caisse sont en cours d'examen par votre expert.\n"
-            f"• Dès que votre expert valide et appose son visa officiel sur son portail, je vous expédie votre document PDF certifié directement ici sur WhatsApp !\n\n"
-            f"👉 *Veuillez patienter quelques instants...* Vous recevrez une notification instantanée dès la signature !"
-        )
+        if a_un_cabinet:
+            from chat_grow.visa_manager import creer_demande_visa
+            demande = creer_demande_visa(clean_p, nom_ent, "BILAN_SYSCOHADA", "Dossier bancaire et conformité", cabinet_nom=cab_nom)
+            return (
+                f"⏳ *DEMANDE TRANSMISE À VOTRE EXPERT-COMPTABLE*\n\n"
+                f"Votre demande de Bilan Officiel & Attestation SYSCOHADA pour *{nom_ent}* a bien été transmise à votre cabinet (*{cab_nom}*).\n\n"
+                f"🔍 *Circuit de Contrôle & Visa Légal :*\n"
+                f"• Vos écritures et pièces Wave/OM/Caisse sont en cours d'examen par votre expert.\n"
+                f"• Dès que votre expert valide et appose son visa officiel sur son portail, je vous expédie votre document PDF certifié directement ici sur WhatsApp !\n\n"
+                f"👉 *Veuillez patienter quelques instants...* Vous recevrez une notification instantanée dès la signature !"
+            )
+        else:
+            from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pdf
+            asyncio.create_task(generer_et_envoyer_bilan_pdf(clean_p))
+            return (
+                f"📄 *Bilan Comptable SYSCOHADA SMT en cours d'envoi...*\n\n"
+                f"Votre Bilan officiel pour *{nom_ent}* a été généré sous la norme SYSCOHADA SMT (Système Minimal de Trésorerie).\n"
+                f"Il arrive directement ci-dessus sous forme de document PDF !\n\n"
+                "💡 *Besoin d'un visa expert pour un prêt bancaire ?*\n"
+                "Si votre banque ou microfinance exige l'attestation visée par un expert-comptable agréé ONECCA, vous pouvez demander un rattachement cabinet à tout moment en écrivant *« Visa Cabinet »*."
+            )
 
     # C) INFOGRAPHIE FINANCIÈRE HEBDOMADAIRE HD (IMAGE 1080x1080)
     if user_txt_lower in ["op_infographie", "infographie", "synthèse", "synthese", "graphique", "tableau de bord", "semaine", "mon infographie"]:
@@ -5538,59 +5548,69 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         mots_question = ["comment", "pourquoi", "dit moi", "dis moi", "combien", "c'est quoi", "qu'est-ce", "?", "aide"]
         if any(q in u_clean for q in mots_question):
             return (
-                "La supervision par un cabinet agréé (comme le Cabinet Adaisso & Partenaires) permet à votre expert d'apposer son visa légal sur vos bilans pour vos dossiers de prêt bancaire et la DGID.\n\n"
-                "👉 Travaillez-vous déjà avec un cabinet comptable ? (Répondez avec son nom, ou dites simplement « Non »)."
+                "La supervision par un cabinet agréé permet à votre expert d'apposer son visa légal sur vos bilans pour vos dossiers de prêt bancaire et la DGID.\n\n"
+                "👉 Travaillez-vous déjà avec un cabinet comptable ? (Si oui, écrivez son nom. Si non, répondez simplement « Non »)."
             )
 
-        mots_autonome = ["seul", "autonome", "moi meme", "moi-même", "sans cabinet", "pas besoin"]
-        if any(k in u_clean for k in mots_autonome):
-            update_onboarding_state(sender_phone, "rattache_cabinet", False)
-            update_onboarding_state(sender_phone, "gestion_autonome", True)
+        # Vérification si la PME a déjà été créée ou attribuée directement par un cabinet depuis son portail
+        deja_attribue = onboarding.get("onboarding_cree_par_cabinet") and onboarding.get("cabinet_nom")
+        if deja_attribue:
+            nom_cab = onboarding.get("cabinet_nom")
+            cab_id = onboarding.get("cabinet_id") or ""
+            update_onboarding_state(sender_phone, "rattache_cabinet", True)
             update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
             return (
-                "👍 *Option Gestion Autonome Validée !*\n\n"
-                f"C'est parfaitement noté : vous pilotez *{nom_commercial}* de manière indépendante avec votre IA Growth. "
-                "Vous pourrez à tout moment solliciter un visa d'expert-comptable pour une demande de prêt en un simple mot.\n\n"
+                f"✅ *Dossier Rattaché au {nom_cab} !*\n\n"
+                f"Votre entreprise *{nom_commercial}* est supervisée par votre cabinet.\n\n"
                 "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-                "Combien avez-vous actuellement en espèces dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
+                "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
             )
 
+        # Vérifier si l'utilisateur a explicitement mentionné un cabinet partenaire du réseau
         cab_trouve = trouver_cabinet_partenaire(u_txt)
         if cab_trouve:
             nom_cab = cab_trouve["nom_cabinet"]
             cab_id = cab_trouve["id"]
             num_ordre = cab_trouve.get("numero_ordre") or "ONECCA"
-        else:
-            # Association automatique au cabinet partenaire officiel certifié ONECCA
-            nom_cab = "Cabinet Adaisso & Partenaires"
-            cab_id = "cbt_ca859b52ffb9"
-            num_ordre = "ONECCA-SN-2024"
+            update_onboarding_state(sender_phone, "rattache_cabinet", True)
+            update_onboarding_state(sender_phone, "cabinet_nom", nom_cab)
+            update_onboarding_state(sender_phone, "cabinet_id", cab_id)
+            update_onboarding_state(sender_phone, "gestion_autonome", False)
+            update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
+            save_or_update_entreprise_resilient({
+                "telephone_whatsapp": clean_phone,
+                "nom_entreprise": nom_commercial,
+                "cabinet_id": cab_id,
+                "cabinet_nom": nom_cab
+            })
+            return (
+                f"✅ *Cabinet Partenaire Reconnecté !*\n\n"
+                f"Votre entreprise *{nom_commercial}* est bien rattachée au *{nom_cab}* (Ordre : `{num_ordre}`).\n"
+                f"Vos écritures seront directement accessibles par votre expert pour viser vos bilans.\n\n"
+                "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
+                "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
+            )
 
-        update_onboarding_state(sender_phone, "rattache_cabinet", True)
-        update_onboarding_state(sender_phone, "cabinet_nom", nom_cab)
-        update_onboarding_state(sender_phone, "cabinet_id", cab_id)
+        # RÈGLE D'OR : Aucun cabinet n'est assigné au départ tant que la PME ne l'a pas choisi ou que le cabinet ne l'a pas enregistrée !
+        # L'entreprise démarre donc en GESTION AUTONOME (zéro cabinet imposé).
+        update_onboarding_state(sender_phone, "rattache_cabinet", False)
+        update_onboarding_state(sender_phone, "cabinet_nom", None)
+        update_onboarding_state(sender_phone, "cabinet_id", None)
+        update_onboarding_state(sender_phone, "gestion_autonome", True)
         update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
         save_or_update_entreprise_resilient({
             "telephone_whatsapp": clean_phone,
             "nom_entreprise": nom_commercial,
-            "cabinet_id": cab_id,
-            "cabinet_nom": nom_cab
+            "cabinet_id": None,
+            "cabinet_nom": None
         })
-        try:
-            from chat_grow.database import get_sqlite_conn
-            c_up = get_sqlite_conn()
-            c_up.execute("UPDATE entreprises SET cabinet_id = ?, cabinet_nom = ? WHERE telephone_whatsapp = ? OR telephone_whatsapp = ?", (cab_id, nom_cab, clean_phone, f"+{clean_phone}"))
-            c_up.commit()
-            c_up.close()
-        except Exception:
-            pass
 
         return (
-            f"✅ *Supervision Agréée Activée !*\n\n"
-            f"Pour que vos bilans soient certifiés et reconnus par les banques (CBAO, Ecobank, PAMECAS...) pour vos demandes de financement, "
-            f"votre entreprise *{nom_commercial}* est affiliée au *{nom_cab}* (Ordre des Experts-Comptables ONECCA).\n\n"
+            "👍 *Option Gestion Autonome Validée !*\n\n"
+            f"C'est parfaitement noté : vous pilotez *{nom_commercial}* en toute indépendance avec votre copilote IA Growth. "
+            "Vous pourrez à tout moment demander à être rattaché(e) à un cabinet partenaire certifié si vous préparez un dossier de prêt bancaire.\n\n"
             "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-            "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *150 000 FCFA* ou envoyez une capture de solde)."
+            "Combien avez-vous actuellement dans votre caisse en espèces ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
         )
 
     # 3.4 RÉPONSE À LA PROPOSITION DE CABINET PARTENAIRE (Transition transparente)
@@ -5598,38 +5618,32 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         u_txt = (user_text or "").strip().lower()
         nom_commercial = onboarding.get("nom_entreprise") or f"Commerce {clean_phone[-4:]}"
 
-        mots_autonome = ["seul", "autonome", "moi meme", "moi-même", "sans cabinet", "pas besoin", "2"]
-        if any(k in u_txt for k in mots_autonome):
-            update_onboarding_state(sender_phone, "rattache_cabinet", False)
-            update_onboarding_state(sender_phone, "gestion_autonome", True)
+        cab_trouve = trouver_cabinet_partenaire(u_txt)
+        if cab_trouve:
+            nom_cab = cab_trouve["nom_cabinet"]
+            cab_id = cab_trouve["id"]
+            update_onboarding_state(sender_phone, "rattache_cabinet", True)
+            update_onboarding_state(sender_phone, "cabinet_nom", nom_cab)
+            update_onboarding_state(sender_phone, "cabinet_id", cab_id)
             update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
             return (
-                "👍 *Option Gestion Autonome Validée !*\n\n"
-                f"C'est parfaitement noté : vous pilotez *{nom_commercial}* de manière indépendante avec votre IA Growth. "
-                "Vous pourrez à tout moment demander un visa d'expert en écrivant *« Bilan »* ou *« Cabinet »*.\n\n"
+                f"🤝 *Partenariat Confirmé !*\n\n"
+                f"Votre entreprise *{nom_commercial}* est affiliée au *{nom_cab}*.\n\n"
                 "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-                "Combien avez-vous actuellement en espèces dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
+                "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
             )
 
-        nom_cab = "Cabinet Adaisso & Partenaires"
-        cab_id = "cbt_ca859b52ffb9"
-        update_onboarding_state(sender_phone, "rattache_cabinet", True)
-        update_onboarding_state(sender_phone, "cabinet_nom", nom_cab)
-        update_onboarding_state(sender_phone, "cabinet_id", cab_id)
+        update_onboarding_state(sender_phone, "rattache_cabinet", False)
+        update_onboarding_state(sender_phone, "cabinet_nom", None)
+        update_onboarding_state(sender_phone, "cabinet_id", None)
+        update_onboarding_state(sender_phone, "gestion_autonome", True)
         update_onboarding_state(sender_phone, "etape", "PHASE_4_ANCIENS_RELEVES")
-        save_or_update_entreprise_resilient({
-            "telephone_whatsapp": clean_phone,
-            "nom_entreprise": nom_commercial,
-            "cabinet_id": cab_id,
-            "cabinet_nom": nom_cab
-        })
-
         return (
-            f"🤝 *Partenariat Confirmé avec Succès !*\n\n"
-            f"Votre entreprise *{nom_commercial}* est affiliée au *{nom_cab}* (Ordre des Experts-Comptables ONECCA).\n"
-            "Vos bilans financiers seront supervisés et visés par le cabinet pour garantir votre crédibilité bancaire.\n\n"
+            "👍 *Option Gestion Autonome Validée !*\n\n"
+            f"C'est parfaitement noté : vous pilotez *{nom_commercial}* de manière indépendante avec votre IA Growth. "
+            "Vous pourrez à tout moment demander un visa d'expert en écrivant *« Bilan »* ou *« Cabinet »*.\n\n"
             "Pour démarrer votre journal de caisse dès aujourd'hui :\n"
-            "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *150 000 FCFA* ou envoyez une capture de solde)."
+            "Combien avez-vous actuellement dans votre caisse ou sur votre compte Wave ? (ex: *100 000 FCFA* ou envoyez une capture de solde)."
         )
 
     # =========================================================================

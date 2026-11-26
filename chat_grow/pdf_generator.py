@@ -92,10 +92,13 @@ def generer_bilan_pdf(pme: dict, ecritures: list = None, out_path: str = None) -
 
     story = []
 
+    nom_cab = pme.get("cabinet_nom")
+    supervision_html = f"Supervision : {nom_cab} &bull; ONECCA Sénégal" if nom_cab else "Système SYSCOHADA SMT &bull; Gestion Autonome"
+
     # 1. En-tête officiel Cabinet & Norme
     header_data = [
         [
-            Paragraph("<b>GROWTH &bull; COPILOTE FINANCIER PME</b><br/><font color='#64748b' size='8'>Supervision : Cabinet Adaisso & Partenaires &bull; ONECCA Sénégal</font>", body_style),
+            Paragraph(f"<b>GROWTH &bull; COPILOTE FINANCIER PME</b><br/><font color='#64748b' size='8'>{supervision_html}</font>", body_style),
             Paragraph(f"<font color='#168078'><b>ATTESTATION COMPTABLE OFFICIELLE</b></font><br/><font color='#64748b' size='8'>Date d'arrêté : {date_jour}</font>", ParagraphStyle('RHeader', parent=body_style, alignment=2))
         ]
     ]
@@ -256,12 +259,17 @@ def generer_bilan_pdf(pme: dict, ecritures: list = None, out_path: str = None) -
     story.append(Spacer(1, 16))
 
     # 6. Scellé de conformité & Signature Expert
-    nom_cab = pme.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
+    nom_cab = pme.get("cabinet_nom")
     sha_hash = hashlib.sha256(f"{nom_ent}_{date_jour}_{total_credit}".encode("utf-8")).hexdigest()[:16].upper()
+    if nom_cab:
+        visa_html = f"<b>VISA EXPERT-COMPTABLE</b><br/><font color='#168078' size='7.5'>{nom_cab}<br/>Dossier Certifié Régulier</font>"
+    else:
+        visa_html = "<b>CONFORMITÉ SYSCOHADA</b><br/><font color='#168078' size='7.5'>Copilote IA Growth<br/>Gestion Autonome</font>"
+
     legal_footer = [
         [
             Paragraph(f"<b>SCELLÉ NUMÉRIQUE DE CONFORMITÉ :</b><br/><font color='#64748b' size='7.5'>SHA-256 : {sha_hash} &bull; Horodatage certifié conforme à la loi sénégalaise sur les transactions électroniques et aux exigences d'archivage légal de 10 ans de l'Acte Uniforme SYSCOHADA.</font>", small_muted),
-            Paragraph(f"<b>VISA EXPERT-COMPTABLE</b><br/><font color='#168078' size='7.5'>{nom_cab}<br/>Dossier Certifié Régulier</font>", ParagraphStyle('Visa', parent=small_muted, alignment=2))
+            Paragraph(visa_html, ParagraphStyle('Visa', parent=small_muted, alignment=2))
         ]
     ]
     t_foot = Table(legal_footer, colWidths=[13*cm, 5*cm])

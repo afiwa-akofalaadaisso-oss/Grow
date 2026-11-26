@@ -109,7 +109,7 @@ def build_main_operations_list() -> tuple:
         "Que souhaitez-vous enregistrer ou consulter aujourd'hui ?"
     )
     button_label = "Choisir une action"
-    footer_text = "Growth • Cabinet Adaisso & Partenaires"
+    footer_text = "Growth • Copilote Financier PME"
 
     sections = [
         {
@@ -254,7 +254,7 @@ async def send_whatsapp_cta_url(
     button_text: str,
     url_target: str,
     header_text: Optional[str] = "📊 ACCÈS SÉCURISÉ GROWTH",
-    footer_text: Optional[str] = "Cabinet Adaisso & Partenaires"
+    footer_text: Optional[str] = "Growth • Copilote Financier PME"
 ) -> bool:
     """
     Envoie un message interactif natif avec bouton Call-To-Action URL.
@@ -282,7 +282,7 @@ async def send_whatsapp_cta_url(
                 "text": body_text[:1024]
             },
             "footer": {
-                "text": (footer_text or "Growth • Cabinet Adaisso & Partenaires")[:60]
+                "text": (footer_text or "Growth • Copilote Financier PME")[:60]
             },
             "action": {
                 "name": "cta_url",
@@ -555,7 +555,7 @@ def calculer_alerte_fiscale_dgid(chiffre_affaires: int = 0) -> str:
         f"⏱️ Plus que *{jours_restants_15} jours* pour déclarer et reverser les retenues à la source (BRS / VRS / Salaires).\n\n"
         f"📚 *Dépôt Liasse Fiscale & Bilan SYSCOHADA :*\n"
         f"Échéance légale : *30/04/{annee_bilan}* (dans {jours_restants_bilan} jours).\n\n"
-        f"💡 *Recommandations du Cabinet Adaisso & Partenaires :*\n"
+        f"💡 *Recommandations Fiscales Growth :*\n"
         f"1. Conservez toutes vos factures fournisseurs et tickets pour justifier vos charges déductibles.\n"
         f"2. Votre journal d'écritures est scellé cryptographiquement sous SHA-256 (Archivage légal 10 ans).\n"
         f"{f'3. Provision préconisée sur vos ventes : *{prov_fmt}* mis de côté.' if provision_cgu_estimee > 0 else '3. Enregistrez vos premières opérations pour calculer vos provisions en direct.'}\n\n"
@@ -625,7 +625,7 @@ async def generer_et_envoyer_bilan_pme(sender_phone: str) -> bool:
     ent = get_entreprise_by_phone_resilient(clean_p) or {}
     st = get_onboarding_state(clean_p) or {}
 
-    cab_nom = ent.get("cabinet_nom") or st.get("cabinet_nom") or "Cabinet Adaisso & Partenaires"
+    cab_nom = ent.get("cabinet_nom") or st.get("cabinet_nom") or None
     pme_data = {
         "nom_entreprise": ent.get("nom") or st.get("nom_entreprise") or "Votre Entreprise PME",
         "telephone": clean_p,

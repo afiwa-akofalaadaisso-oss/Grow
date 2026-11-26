@@ -41,7 +41,7 @@ def creer_demande_visa(
     nom_entreprise: str,
     type_document: str = "BILAN_SYSCOHADA",
     motif: str = "Dépôt légal ou dossier bancaire",
-    cabinet_nom: str = "Cabinet Adaisso & Partenaires",
+    cabinet_nom: Optional[str] = None,
     cabinet_id: str = ""
 ) -> dict:
     """Enregistre une nouvelle demande de visa officiel rattachée à son cabinet comptable spécifique."""
@@ -58,7 +58,7 @@ def creer_demande_visa(
         "id": demande_id,
         "telephone": clean_p,
         "nom_entreprise": nom_entreprise or "Entreprise PME",
-        "cabinet_nom": cabinet_nom or "Cabinet Adaisso & Partenaires",
+        "cabinet_nom": cabinet_nom or "Cabinet Partenaire ONECCA",
         "cabinet_id": cabinet_id or "",
         "type_document": type_document,
         "libelle_document": "Bilan SYSCOHADA SMT & Liasse Fiscale" if type_document == "BILAN_SYSCOHADA" else "Fiche de Solvabilité & Capacité d'Emprunt",

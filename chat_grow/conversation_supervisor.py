@@ -127,7 +127,7 @@ def prompt_rappel_etape(etape: str, onboarding: dict) -> str:
         return "Quel est le nom ou l'enseigne de votre entreprise / boutique ?"
     if etape in ["PHASE_3_QUESTION_CABINET", "PHASE_3_CHOIX_PROPOSITION_CABINET"]:
         return (
-            "Travaillez-vous déjà avec un cabinet comptable, ou souhaitez-vous que nous associions votre entreprise à notre cabinet partenaire agréé ONECCA (*Cabinet Adaisso & Partenaires*) ?"
+            "Travaillez-vous déjà avec un cabinet comptable ? (Si oui, quel est son nom ? Sinon, répondez simplement « Non »)."
         )
     if etape == "PHASE_2_ACTIVITE_LOCALISATION":
         return (
