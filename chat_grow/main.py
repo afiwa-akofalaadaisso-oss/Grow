@@ -6343,27 +6343,31 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
         mode_comm = onboarding.get("mode_communication") or "VOCAL"
         mode_str = "en note vocale 🎙️" if mode_comm == "VOCAL" else "par message écrit ✍️"
 
-        return (
-            f"🎉 *Félicitations {nom_ent} ! Votre dossier d'entreprise et votre Bilan d'Ouverture initial sont 100% scellés conformes SYSCOHADA SMT !*\n\n"
-            "📊 **Votre Bilan d'Ouverture Certifié :**\n"
-            f"• 💵 Caisse Espèces Tiroir (571) : *{caisse_especes:,.0f} FCFA*\n"
-            f"• 📱 Trésorerie Comptes Marchands (521) : *{treso_comptes:,.0f} FCFA*\n"
-            f"• 📦 Stock de Marchandises Grossiste (311) : *{stock_fcfa:,.0f} FCFA*\n"
-            f"• 🛠️ Immobilisations & Équipements (241) : *{immo_fcfa:,.0f} FCFA* (Amortissements programmés)\n"
-            f"• 🤝 Créances Clients (411) : *{creances_val:,.0f} FCFA*\n"
-            f"• 💼 Dettes Fournisseurs (401) : *{dettes_val:,.0f} FCFA*\n\n"
-            "🎁 **VOTRE CADEAU DE BIENVENUE : 7 JOURS D'ESSAI GRATUIT OFFERTS !**\n"
-            f"Pour vous permettre de vivre l'expérience Growth en situation réelle dans votre boutique, nous vous offrons **7 jours d'accès complet 100% gratuit jusqu'au {exp_fr}** (aucun engagement, aucune carte requise).\n\n"
-            "⚡ **Toutes vos fonctionnalités sont débloquées dès maintenant :**\n"
-            "• Saisie vocale de vos ventes et dépenses en 1.5s chrono (Wolof ou Français)\n"
-            "• Encaissements numériques Wave Business silencieux et automatiques\n"
-            "• Grand Rituel de Clôture consolidé chaque soir à 00h00 (avec note vocale audio et Journal Web)\n\n"
-            f"👉 *Faites le test tout de suite : dictez-moi votre première vente, dépense ou envoyez votre premier reçu {mode_str} !*\n\n"
-            "💡 *Pourquoi 10 000 F (seulement 330 F/jour) avec Growth ?*\n"
-            "Là où un cabinet comptable classique vous demande plus de 50 000 FCFA/mois rien que pour récolter péniblement vos reçus et vous en redemande encore pour monter le bilan, chez Growth la collecte est 100% vocale et automatique avec une simplicité absolue pour seulement 330 F / jour ! Et en cas de besoin de bilan officiel (demande de prêt bancaire, visa fiscal DGID, etc.), rendez-vous directement chez nos cabinets comptables partenaires agréés avec vos données déjà 100% prêtes.\n\n"
-            "👉 *Tranquillité d'esprit (Optionnel) :* Si vous souhaitez régler votre abonnement dès aujourd'hui sans attendre, vos 30 jours s'ajouteront directement à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
+        # 1. Envoi de la vidéo de félicitations & déblocage officiel
+        vid_deblocage_url = f"{base_url}/static/videos/tuto_bilan_deblocage.mp4"
+        caption_vid = f"🎬 Félicitations {nom_ent} : Bilan d'Ouverture Scellé & 7 Jours Gratuits Débloqués !"
+        asyncio.create_task(send_whatsapp_video(clean_phone, vid_deblocage_url, caption_vid))
+
+        # 2. Message élégant et synthétique avec règle des flux automatiques vs manuels
+        msg_synthese = (
+            f"🎉 *Félicitations {nom_ent} ! Votre Bilan d'Ouverture initial est scellé conforme SYSCOHADA SMT.* 🚀\n\n"
+            f"🎁 **Vos 7 jours d'essai 100% gratuit sont débloqués jusqu'au {exp_fr}** (aucun engagement, aucune carte requise).\n\n"
+            "⚡ **RÈGLE DES FLUX AUTOMATIQUES & SAISIE MANUELLE :**\n"
+            "• 🌊 *Encaissements Wave & Orange Business :* Tout ce qui passe par vos flux et notifications marchandes est **déjà capté et stocké automatiquement en direct sans rien avoir à faire** !\n"
+            "• 🎙️ *Les autres opérations :* Vous n'avez qu'à me dicter vous-même en note vocale ou texte uniquement vos autres opérations (espèces du tiroir, popote, crédits clients ou achats au marché).\n\n"
+            f"💡 *Option Sérénité (37 Jours) :* Si vous souhaitez régler votre abonnement mensuel (seulement 330 F/jour, soit 10 000 F/mois) dès aujourd'hui sans attendre, vos 30 jours s'ajouteront à vos 7 jours offerts (soit 37 jours de sérénité totale) :\n"
             f"👉 *Lien de règlement Wave :* {lien_abo}"
         )
+        await send_whatsapp_message(clean_phone, msg_synthese, with_buttons=False)
+        await asyncio.sleep(1.0)
+
+        # 3. Menu déroulant interactif natif présentant toutes les fonctionnalités débloquées
+        from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
+        h, b, lbl, secs, ftr = build_main_operations_list()
+        h = "VOS OUTILS DÉBLOQUÉS"
+        b = "✨ Voici toutes vos fonctionnalités désormais débloquées ! Choisissez une action ci-dessous ou dictez-moi directement vos opérations en note vocale :"
+        await send_whatsapp_interactive_list(clean_phone, h, b, lbl, secs, ftr)
+        return ""
 
     # =========================================================================
     # ÉTAPE 6 (SUITE) : COMPTES EN ATTENTE D'ABONNEMENT (HISTORIQUE OU POST-ESSAI)
