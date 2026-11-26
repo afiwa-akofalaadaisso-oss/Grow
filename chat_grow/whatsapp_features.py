@@ -63,7 +63,7 @@ def build_operators_choice_list() -> tuple:
 
     sections = [
         {
-            "title": "◼ 𝗖𝗢𝗠𝗣𝗧𝗘𝗦 𝗣𝗥𝗢",
+            "title": "COMPTES PROFESSIONNELS",
             "rows": [
                 {
                     "id": "opt_a",
@@ -83,7 +83,7 @@ def build_operators_choice_list() -> tuple:
             ]
         },
         {
-            "title": "◼ 𝗖𝗢𝗠𝗣𝗧𝗘𝗦 𝗣𝗘𝗥𝗦𝗢",
+            "title": "COMPTES PERSONNELS",
             "rows": [
                 {
                     "id": "opt_d",
@@ -113,7 +113,7 @@ def build_main_operations_list() -> tuple:
 
     sections = [
         {
-            "title": "◼ 𝗘́𝗖𝗥𝗜𝗧𝗨𝗥𝗘𝗦 & 𝗖𝗔𝗜𝗦𝗦𝗘",
+            "title": "ÉCRITURES & CAISSE",
             "rows": [
                 {
                     "id": "op_vente",
@@ -138,7 +138,7 @@ def build_main_operations_list() -> tuple:
             ]
         },
         {
-            "title": "◼ 𝗣𝗜𝗟𝗢𝗧𝗔𝗚𝗘 & 𝗘𝗫𝗣𝗘𝗥𝗧𝗜𝗦𝗘",
+            "title": "PILOTAGE & SÉCURITÉ",
             "rows": [
                 {
                     "id": "op_bilan_pdf",
@@ -168,7 +168,7 @@ def build_main_operations_list() -> tuple:
             ]
         },
         {
-            "title": "◼ 𝗔𝗥𝗦𝗘𝗡𝗔𝗟 𝗢𝗨𝗧𝗜𝗟𝗦 𝗣𝗠𝗘",
+            "title": "ARSENAL OUTILS PME",
             "rows": [
                 {
                     "id": "op_hub_tpe",
@@ -194,7 +194,7 @@ def build_all_pme_hub_list() -> tuple:
 
     sections = [
         {
-            "title": "◼ 𝗦𝗘́𝗖𝗨𝗥𝗜𝗧𝗘́ & 𝗘́𝗤𝗨𝗜𝗣𝗘",
+            "title": "SÉCURITÉ & ÉQUIPE",
             "rows": [
                 {
                     "id": "op_salaires",
@@ -224,7 +224,7 @@ def build_all_pme_hub_list() -> tuple:
             ]
         },
         {
-            "title": "◼ 𝗖𝗥𝗢𝗜𝗦𝗦𝗔𝗡𝗖𝗘 & 𝗗𝗚𝗜𝗗",
+            "title": "CROISSANCE & DGID",
             "rows": [
                 {
                     "id": "op_recu_client",
