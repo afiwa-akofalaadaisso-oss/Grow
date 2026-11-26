@@ -4084,7 +4084,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "👉 *Consultez le Menu interactif ci-dessous pour choisir directement votre action !*"
         )
         await send_whatsapp_message(clean_p, msg_comp, with_buttons=False)
-        await asyncio.sleep(0.4)
+        await asyncio.sleep(1.0)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
@@ -4096,7 +4096,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "Cliquez sur le bouton interactif *« Choisir une action »* ci-dessous pour sélectionner directement l'opération souhaitée (Ventes, Dépenses, Bilan PDF, Infographie, Carnet Crédits, Outils PME)."
         )
         await send_whatsapp_message(clean_p, msg_menu, with_buttons=False)
-        await asyncio.sleep(0.4)
+        await asyncio.sleep(1.0)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
@@ -4126,7 +4126,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
                 f"Toutes vos fonctionnalités sont désormais débloquées ! Choisissez une action dans le menu ci-dessous ou dictez-moi directement vos opérations en note vocale !{suite_prec}"
             )
             await send_whatsapp_message(clean_p, msg_confirm, with_buttons=False)
-            await asyncio.sleep(0.4)
+            await asyncio.sleep(1.0)
             from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
             h, b, lbl, secs, ftr = build_main_operations_list()
             await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
@@ -4141,7 +4141,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "💡 *Dès que vous sélectionnez une action dans le menu, nous enregistrerons simplement le nom de votre entreprise pour activer vos 7 jours offerts.*"
         )
         await send_whatsapp_message(clean_p, msg_welcome, with_buttons=False)
-        await asyncio.sleep(0.4)
+        await asyncio.sleep(1.0)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
@@ -4293,7 +4293,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "Cliquez sur le bouton interactif *« Ouvrir l'outil »* ci-dessous pour sélectionner votre outil (Salaires, Calculateur de Marge, Contrôle Tiroir, Anti-Arnaque, Scanner OCR, Impôt CGU)."
         )
         await send_whatsapp_message(clean_p, msg_hub, with_buttons=False)
-        await asyncio.sleep(0.4)
+        await asyncio.sleep(1.0)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_all_pme_hub_list
         h, b, lbl, secs, ftr = build_all_pme_hub_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
@@ -4305,7 +4305,7 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
             "Cliquez sur *« Choisir une action »* ci-dessous pour revenir aux opérations principales."
         )
         await send_whatsapp_message(clean_p, msg_back, with_buttons=False)
-        await asyncio.sleep(0.4)
+        await asyncio.sleep(1.0)
         from chat_grow.whatsapp_features import send_whatsapp_interactive_list, build_main_operations_list
         h, b, lbl, secs, ftr = build_main_operations_list()
         await send_whatsapp_interactive_list(clean_p, h, b, lbl, secs, ftr)
