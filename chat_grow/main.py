@@ -4031,21 +4031,17 @@ async def handle_incoming_message(sender_phone: str, user_text: str, media_tuple
         cab_nom = st.get("cabinet_nom")
         a_un_cabinet = bool(st.get("rattache_cabinet") and cab_nom)
 
-        if a_un_cabinet:
-            from chat_grow.visa_manager import creer_demande_visa
-            demande = creer_demande_visa(clean_p, nom_ent, "BILAN_SYSCOHADA", "Dossier bancaire et conformité", cabinet_nom=cab_nom)
-            return (
-                f"⏳ *DEMANDE TRANSMISE À VOTRE EXPERT-COMPTABLE*\n\n"
-                f"Votre demande de Bilan Officiel & Attestation SYSCOHADA pour *{nom_ent}* a bien été transmise à votre cabinet (*{cab_nom}*).\n\n"
-                f"🔍 *Circuit de Contrôle & Visa Légal :*\n"
-                f"• Vos écritures et pièces Wave/OM/Caisse sont en cours d'examen par votre expert.\n"
-                f"• Dès que votre expert valide et appose son visa officiel sur son portail, je vous expédie votre document PDF certifié directement ici sur WhatsApp !\n\n"
-                f"👉 *Veuillez patienter quelques instants...* Vous recevrez une notification instantanée dès la signature !"
-            )
-        else:
-            from chat_grow.whatsapp_features import generer_et_envoyer_bilan_pme
-            await generer_et_envoyer_bilan_pme(clean_p)
-            return ""
+        cabinet_cible = cab_nom or "Cabinet d'Expertise Comptable Agréé ONECCA"
+        from chat_grow.visa_manager import creer_demande_visa
+        demande = creer_demande_visa(clean_p, nom_ent, "BILAN_SYSCOHADA", "Dossier bancaire et conformité", cabinet_nom=cabinet_cible)
+        return (
+            f"📑 *DEMANDE TRANSMISE À VOTRE EXPERT-COMPTABLE*\n\n"
+            f"Votre demande de Bilan Officiel SYSCOHADA pour *{nom_ent}* a bien été transmise à votre cabinet (*{cabinet_cible}*).\n\n"
+            f"🔍 *Circuit de Contrôle & Visa Légal :*\n"
+            f"• Vos écritures et pièces justificatives (Wave, OM, Caisse) sont en cours d'examen par votre expert-comptable.\n"
+            f"• Dès que votre expert valide et appose son visa officiel sur son portail, vous recevez votre document PDF certifié directement ici dans cette discussion WhatsApp !\n\n"
+            f"👉 *Votre dossier est en cours de traitement.* Vous recevrez une notification instantanée dès la signature officielle !"
+        )
 
     # C) INFOGRAPHIE FINANCIÈRE HEBDOMADAIRE HD (IMAGE 1080x1080)
     if user_txt_lower in ["op_infographie", "infographie", "synthèse", "synthese", "graphique", "tableau de bord", "semaine", "mon infographie"]:
@@ -6661,6 +6657,12 @@ Tu gères la trésorerie au jour le jour (Wave, Orange Money, Espèces), les imp
 
 INTERDICTION ABSOLUE D'UTILISER LE MOINDRE EMOJI :
 Aucun smiley, aucun symbole graphique, aucun drapeau. Ton style doit etre sobre, institutionnel, respectueux, clair et precis.
+
+RÈGLE D'OR SUR LE BILAN FINANCIER & L'EXPERTISE COMPTABLE :
+Tu ne génères JAMAIS toi-même les bilans comptables de l'entreprise de façon isolée !
+Tu prépares et structures rigoureusement les écritures et pièces (Caisse, Wave, Orange Money), puis tu FAIS PARVENIR LA DEMANDE AU CABINET D'EXPERTISE COMPTABLE partenaire.
+Dès que l'expert-comptable examine, valide et appose son visa légal, le commerçant reçoit son bilan certifié directement ici dans la discussion WhatsApp sous forme de document PDF officiel.
+Tu ne dis jamais "je génère ton bilan", mais toujours : "Je prépare tes comptes et je transmets la demande à ton cabinet comptable, et dès que c'est visé, tu le reçois directement ici dans notre discussion WhatsApp."
 
 TRAITEMENT DES NOTIFICATIONS ET SMS D'OPERATEURS (Wave, Orange Money, Free Money) :
 - Si l'utilisateur colle ou transfere un SMS de transfert Wave ou Orange Money :

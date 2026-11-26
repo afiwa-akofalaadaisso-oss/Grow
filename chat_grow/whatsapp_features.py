@@ -172,8 +172,8 @@ def build_main_operations_list() -> tuple:
                 },
                 {
                     "id": "op_bilan_pdf",
-                    "title": "Mon Bilan SYSCOHADA",
-                    "description": "Liasse certifiée PDF & Synthèse HD"
+                    "title": "Bilan & Visa Cabinet",
+                    "description": "Demande transmise au cabinet comptable"
                 }
             ]
         }
