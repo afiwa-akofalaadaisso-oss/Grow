@@ -5314,14 +5314,14 @@ def nettoyer_nom_entreprise(texte: str) -> str:
         return ""
     t = texte.strip().strip("\"'«»“”")
     
-    # 0. Salutations
+    # 0. Salutations et politesses
     t = re.sub(r"^(?:bonjour|salut|bonsoir|hello|merci|ok|d['’]accord|svp|s['’]il\s+vous\s+pla[îi]t)\s*[,!;:.]?\s*", "", t, flags=re.IGNORECASE).strip()
     
     # A. Formules "le nom (de ...)? (est|c'est|cest|c est|c|:)"
-    t = re.sub(r"^(?:le\s+nom(?:\s+commercial)?(?:\s+(?:de\s+|d['’])(?:mon\s+|ma\s+|notre\s+|la\s+|l['’])?\s*(?:entreprise|soci[ée]t[ée]|boutique|commerce|magasin|atelier|agence|bo[îi]te))?\s*(?:est|c['’\s]?est|\bc\b|:))\s*", "", t, flags=re.IGNORECASE).strip()
+    t = re.sub(r"^(?:le\s+nom(?:\s+commercial)?(?:\s+(?:de\s+|d['’])(?:mon\s+|ma\s+|notre\s+|la\s+|l['’])?\s*(?:entreprise|soci[ée]t[ée]|boutique|commerce|magasin|atelier|agence|bo[îi]te|activit[ée]|structure|projet|service))?\s*(?:est|c['’\s]?est|\bc\b|:))\s*", "", t, flags=re.IGNORECASE).strip()
     
-    # B. "(mon|ma|notre|l'|la)\s*(entreprise|société|boutique|commerce|magasin|atelier|agence|boîte|enseigne)\s*(est|c'est|cest|c est|c|s'appelle|se nomme)?\s*:?"
-    t = re.sub(r"^(?:(?:mon|ma|notre|l['’\s]?|la)\s*(?:entreprise|soci[ée]t[ée]|boutique|commerce|magasin|atelier|agence|bo[îi]te|enseigne))\s*(?:est|c['’\s]?est|\bc\b|s['’\s]?appelle|se\s+nomme)?\s*:?\s*", "", t, flags=re.IGNORECASE).strip()
+    # B. "(mon|ma|notre|l'|la)\s*(entreprise|société|boutique|commerce|magasin|atelier|agence|boîte|enseigne|activité|structure)\s*(est|c'est|cest|c est|c|s'appelle|se nomme)?\s*:?"
+    t = re.sub(r"^(?:(?:mon|ma|notre|l['’\s]?|la)\s*(?:entreprise|soci[ée]t[ée]|boutique|commerce|magasin|atelier|agence|bo[îi]te|enseigne|activit[ée]|structure|projet|service))\s*(?:est|c['’\s]?est|\bc\b|s['’\s]?appelle|se\s+nomme)?\s*:?\s*", "", t, flags=re.IGNORECASE).strip()
     
     # C. "c'est X", "cest X", "c est X", "il s'agit de X", "il sagit de X", "nom: X", "nom X"
     t = re.sub(r"^(?:c['’\s]?est|\bc\b|il\s+s['’\s]?agit\s+de|je\s+m['’\s]?appelle|nous\s+sommes|nom\s*:?)\s*", "", t, flags=re.IGNORECASE).strip()
@@ -5329,7 +5329,7 @@ def nettoyer_nom_entreprise(texte: str) -> str:
     # D. Répétition si enchaîné (ex: "est X", "c'est X")
     t = re.sub(r"^(?:est|c['’\s]?est|\bc\b|:)\s*", "", t, flags=re.IGNORECASE).strip()
     
-    # D2. Normaliser 'la/le/l' boutique X' -> 'Boutique X'
+    # D2. Normaliser 'la/le/l' boutique X' -> 'Entreprise X'
     t = re.sub(r"^(?:la|le|l['’\s]?)\s+(boutique|magasin|atelier|commerce|agence|soci[ée]t[ée]|bo[îi]te)\b", r"\1", t, flags=re.IGNORECASE).strip()
     
     # E. Supprimer les guillemets et ponctuations
@@ -5939,17 +5939,23 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
                 update_onboarding_state(sender_phone, "ninea_rappel_hebdo", True)
                 update_onboarding_state(sender_phone, "dernier_rappel_ninea", datetime.now().isoformat())
                 return (
-                    "📋 *Guide Officiel de Formalisation (APIX / Greffe)* :\n\n"
-                    "Pour obtenir votre immatriculation officielle (**RCCM + NINEA**) en 24h à 48h au Sénégal, voici les tarifs légaux exacts selon votre situation :\n\n"
-                    "🔹 *Option 1 : En Nom Propre (sans enseigne) = 14 000 FCFA*\n"
-                    "• 10 000 F (Frais de greffe RCCM) + 4 000 F (2 timbres fiscaux de 2 000 F)\n"
-                    "• Votre activité est enregistrée directement sous votre nom civil.\n\n"
-                    "🔹 *Option 2 : Avec Nom Commercial (enseigne protégée) = 24 000 FCFA*\n"
-                    "• 10 000 F (Greffe) + 10 000 F (Dépôt du nom commercial OAPI) + 4 000 F (Timbres fiscaux)\n"
-                    "• Le nom de votre boutique et votre enseigne sont protégés juridiquement contre toute copie.\n\n"
-                    "📄 *Pièces à fournir :* 2 copies de la CNI + Certificat de résidence + Extrait de casier judiciaire (ou attestation sur l'honneur remplie sur place) + 2 timbres de 2 000 F.\n\n"
-                    "Ce document est capital pour vos demandes de prêt bancaire et vos attestations fiscales. En attendant, pas d'inquiétude : vous pouvez démarrer vos écritures dès aujourd'hui sur Growth !\n\n"
-                    "👉 *Quel est le nom commercial ou l'enseigne de votre boutique / activité ?*"
+                    "👍 *C'est bien noté, pas d'inquiétude : on ne s'arrête pas, on avance !*\n\n"
+                    "⚠️ **Ce qu'il faut savoir concernant vos flux numériques :**\n"
+                    "Sans document NINEA et Registre de Commerce (RCCM), les opérateurs (Wave Business et Orange Business) ne peuvent pas activer de compte marchand professionnel. Vos encaissements en ligne ne pourront donc **pas être captés automatiquement par Webhook**.\n\n"
+                    "🛡️ **Mais Growth prend immédiatement en charge à 100% :**\n"
+                    "• 💵 Vos ventes en espèces (caisse tiroir physique)\n"
+                    "• 🛒 Vos dépenses courantes & achats comptant\n"
+                    "• 🍲 La popote familiale & prélèvements personnels\n"
+                    "• 🤝 Vos créances clients (carnet de crédit / dettes des clients)\n"
+                    "• 💼 Vos dettes fournisseurs & réassorts de marchandises\n"
+                    "• 📦 Le suivi de vos stocks et de vos équipements\n\n"
+                    "📱 *Option de secours pour vos flux en ligne :*\n"
+                    "Si vous le souhaitez, vous pouvez chaque soir nous envoyer les captures de vos relevés de la journée ou nous transférer directement vos SMS de réception de paiement.\n\n"
+                    "💡 *Conseil important & bienveillant :*\n"
+                    "Au quotidien, transférer manuellement tous vos SMS et relevés chaque soir sera vite contraignant, lourd et difficile pour vous. "
+                    "Il vaut donc vraiment la peine de faire votre formalisation (**RCCM + NINEA à l'APIX ou au Greffe en 24h à 48h : 14 000 F en nom propre ou 24 000 F avec nom commercial**). "
+                    "Nous vous enverrons un petit rappel chaque semaine pour vous accompagner. Dès que vous les aurez, nous brancherons le Webhook et Growth gérera tout automatiquement à votre place !\n\n"
+                    "👉 **Pour continuer et finaliser votre configuration : quel est le nom commercial ou l'enseigne de votre entreprise ?**"
                 )
 
         # Cas 2 : L'utilisateur a envoyé une photo ou un document justificatif NINEA
@@ -6132,7 +6138,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     if etape == "PHASE_3_QUESTION_CABINET":
         u_txt = (user_text or "").strip()
         u_clean = u_txt.lower()
-        nom_commercial = onboarding.get("nom_entreprise") or f"Commerce {clean_phone[-4:]}"
+        nom_commercial = onboarding.get("nom_entreprise") or f"Entreprise {clean_phone[-4:]}"
 
         mots_question = ["comment", "pourquoi", "dit moi", "dis moi", "combien", "c'est quoi", "qu'est-ce", "?", "aide"]
         if any(q in u_clean for q in mots_question):
@@ -6205,7 +6211,7 @@ async def process_onboarding_step(sender_phone: str, user_text: str, media_tuple
     # 3.4 RÉPONSE À LA PROPOSITION DE CABINET PARTENAIRE (Transition transparente)
     if etape == "PHASE_3_CHOIX_PROPOSITION_CABINET":
         u_txt = (user_text or "").strip().lower()
-        nom_commercial = onboarding.get("nom_entreprise") or f"Commerce {clean_phone[-4:]}"
+        nom_commercial = onboarding.get("nom_entreprise") or f"Entreprise {clean_phone[-4:]}"
         statut_op = onboarding.get("statut_operateurs", "WAVE_BUSINESS")
         msg_etape_4 = preparer_message_et_videos_etape_4(clean_phone, statut_op, base_url)
 
@@ -8241,10 +8247,13 @@ async def check_and_send_ninea_weekly_reminders():
                 msg = (
                     f"Bonjour {nom_ent} ! 📊\n\n"
                     "C'est Growth, votre copilote financier et comptable.\n\n"
-                    "Petit rappel hebdomadaire : Pour certifier officiellement votre bilan auprès de nos banques partenaires (financements, prêts, ouverture de compte pro), "
-                    "n'oubliez pas de nous envoyer en photo votre attestation d'immatriculation NINEA dès que vous l'avez en main.\n\n"
-                    "📸 Il vous suffit de la prendre en photo et de l'envoyer ici même sur WhatsApp !\n"
-                    "(Si vous ne l'avez pas encore obtenue, aucun souci : votre comptabilité quotidienne continue de tourner normalement chaque jour)."
+                    "🔔 *Petit rappel pour vos flux automatiques :*\n"
+                    "Avez-vous pu déposer votre dossier à l'APIX ou au Greffe pour votre **NINEA et Registre de Commerce (RCCM)** ?\n\n"
+                    "Dès que vous les obtenez :\n"
+                    "1. Prenez-les simplement en photo ici sur WhatsApp.\n"
+                    "2. Nous activerons immédiatement votre Webhook Wave Business / Orange Business.\n"
+                    "3. Vous n'aurez plus besoin de saisir ni de transférer manuellement vos SMS et relevés chaque soir : tout remontera en direct et automatiquement !\n\n"
+                    "📸 Envoyez-nous la photo dès réception ! (En attendant, nous continuons de suivre vos espèces, popote, dettes et stocks avec soin)."
                 )
                 await deliver_whatsapp_response(clean_p, msg)
                 update_onboarding_state(phone, "dernier_rappel_ninea", now.isoformat())
