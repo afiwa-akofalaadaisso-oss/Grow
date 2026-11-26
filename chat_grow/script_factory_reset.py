@@ -26,7 +26,7 @@ if os.path.exists(sqlite_path):
     print(f"✅ grow_compta.db copié dans {BACKUP_DIR}")
 
 # 2. Sauvegarde des fichiers JSON
-json_files = ["onboarding_states.json", "pme_otp_registry.json", "comptables_registry.json"]
+json_files = ["onboarding_states.json", "pme_otp_registry.json", "comptables_registry.json", "demandes_visa_cabinet.json", "fournisseurs_memoire.json"]
 for jf in json_files:
     jp = os.path.join(os.path.dirname(__file__), jf)
     if os.path.exists(jp):
@@ -125,5 +125,12 @@ if os.path.exists(otp_path):
     with open(otp_path, "w", encoding="utf-8") as f:
         json.dump({}, f, indent=2)
     print("🧹 chat_grow/pme_otp_registry.json réinitialisé à {}")
+
+# Demandes Visa -> []
+visa_path = os.path.join(os.path.dirname(__file__), "demandes_visa_cabinet.json")
+if os.path.exists(visa_path):
+    with open(visa_path, "w", encoding="utf-8") as f:
+        json.dump([], f, indent=2)
+    print("🧹 chat_grow/demandes_visa_cabinet.json réinitialisé à []")
 
 print("\n🎉 REMISE À ZÉRO TERMINÉE AVEC SUCCÈS ! GROWTH EST 100% VIERGE ET SORTI DU CARTON.")
