@@ -562,28 +562,17 @@ async def send_whatsapp_image(
         except Exception as e_up:
             print(f"[WHATSAPP IMAGE MEDIA ERREUR] {e_up}")
 
-    if media_id:
-        payload = {
-            "messaging_product": "whatsapp",
-            "recipient_type": "individual",
-            "to": clean_phone,
-            "type": "image",
-            "image": {
-                "id": media_id,
-                "caption": caption[:1024]
-            }
-        }
-    else:
-        payload = {
-            "messaging_product": "whatsapp",
-            "recipient_type": "individual",
-            "to": clean_phone,
-            "type": "image",
-            "image": {
-                "link": image_url,
-                "caption": caption[:1024]
-            }
-        }
+    img_data = {"id": media_id} if media_id else {"link": image_url}
+    if caption and caption.strip():
+        img_data["caption"] = caption.strip()[:1024]
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": clean_phone,
+        "type": "image",
+        "image": img_data
+    }
 
     def _sync():
         try:
@@ -863,14 +852,6 @@ async def generer_et_envoyer_infographie_pme(sender_phone: str) -> bool:
     base_url = get_media_base_url()
     public_img_url = f"{base_url}/static/images/{img_filename}"
 
-    caption = (
-        f"📊 *Synthèse Financière Hebdomadaire*\n"
-        f"*{pme_data['nom_entreprise']}* • Norme SYSCOHADA SMT\n"
-        f"• Ventes : *{stats['ca']}*\n"
-        f"• Dépenses : *{stats['depenses']}*\n"
-        f"• Trésorerie : *{stats['treso']}*"
-    )
-
-    # Privilégie le chemin local direct pour upload Meta Media API immédiat
+    # Envoi pur de l'image haute définition sans aucun commentaire parasite (consigne stricte utilisateur)
     target_img = img_local_path if os.path.exists(img_local_path) else public_img_url
-    return await send_whatsapp_image(clean_p, target_img, caption)
+    return await send_whatsapp_image(clean_p, target_img, caption="")
